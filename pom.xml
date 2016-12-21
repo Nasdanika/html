@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.nasdanika.html</groupId>
+	<artifactId>org.nasdanika.html.aggregator</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+  	<name>Nasdanika HTML</name>
+	<packaging>pom</packaging>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.1</version>
+				<configuration>
+					<linksource>true</linksource>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<modules>
+
+		<module>org.nasdanika.html</module>
+		<module>org.nasdanika.html.tests</module>
+		<module>org.nasdanika.html.feature</module>
+		<module>org.nasdanika.html.repository</module>
+
+	</modules>
+</project>

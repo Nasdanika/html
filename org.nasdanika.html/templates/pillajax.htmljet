@@ -1,0 +1,10 @@
+<%@ jet package="org.nasdanika.html.impl" class="PillAjaxDataToggleScriptRenderer" %>
+
+<script>
+	$('[data-toggle="pillajax"]').click(function(e) {
+	    var $this = $(this)
+	    nsdLoad($this.attr('data-target'), $this.attr('href'));	
+	    $this.tab('show');
+	    return false;
+	});
+</script>

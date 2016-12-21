@@ -1,0 +1,40 @@
+<%@ jet package="org.nasdanika.html.impl" class="ApplicationPanelRenderer" %>
+
+<%
+	ApplicationPanelConfig config = (ApplicationPanelConfig) argument;
+%>
+
+<div class="panel panel-<%=config.getStyle()%>"<% if (config.getWidth()>0) { %> style="width: <%=config.getWidth()%>px; margin: 0 auto; margin-top: 10px"<% } %> <%=config.getAttributes()%>>
+	<% if (config.getHeader()!=null) { %>
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<% if (config.getHeaderLink()==null) { %>
+					<%=config.getHeader()%>
+				<% } else { %>
+					<a href="<%=config.getHeaderLink()%>"><%=config.getHeader()%></a>
+				<% } %>
+			</h3>
+		</div>
+	<% } %>
+
+	<div class="panel-body" <% if (config.getMinHeight()>0) { %>style="min-height: <%=config.getMinHeight()%>px"<% } %>>
+
+		<%=config.getNavigation()%>
+
+		<% if (config.getContentPanels().size()==1) { %>
+			<%=config.getContentPanels().get(0)%>
+		<% } else { %>		
+			<div class="row">
+				<% for (Object contentPanel: config.getContentPanels()) { %>
+					<%=contentPanel%>
+				<% } %>			
+			</div>
+		<% } %>						
+	</div>
+	
+	<% if (config.getFooter()!=null) { %>
+		<div class="panel-footer">
+			<div style="display: table; margin: 0 auto"><%=config.getFooter()%></div>
+		</div>
+	<% } %>
+</div>

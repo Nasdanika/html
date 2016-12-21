@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.nasdanika.html</groupId>
+	<artifactId>org.nasdanika.html.parent</artifactId>
+	<name>HTML Parent</name>
+	<version>0.1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<!-- tycho requires maven >= 3.0 -->
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
+
+	<properties>
+		<tycho-version>0.25.0</tycho-version>
+		<neon-repo.url>http://download.eclipse.org/releases/neon</neon-repo.url>
+	</properties>
+
+	<repositories>
+		<!-- configure p2 repository to resolve against -->
+		<repository>
+			<id>neon</id>
+			<url>${neon-repo.url}</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>orbit</id>
+				<url>http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository</url>
+			<layout>p2</layout>
+		</repository>
+		<!-- 
+		<repository>
+			<id>jetty</id>
+			<url>http://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.3.9.v20160517</url>
+			<layout>p2</layout>
+		</repository>
+		-->
+		<repository>
+			<id>third-party</id>
+			<url>http://www.nasdanika.org/third-party/org.nasdanika.third-party.repository/target/repository</url>
+			<!-- <url>http://www.nasdanika.org/third_party_repository</url> -->
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>maven-osgi</id>
+			<url>http://www.nasdanika.org/maven-osgi</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>slf4j</id>
+			<url>http://www.nasdanika.org/slf4j</url>
+			<layout>p2</layout>
+		</repository>
+	</repositories>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<!-- 
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.tycho.extras</groupId>
+					<artifactId>tycho-document-bundle-plugin</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		-->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.3</version>
+				<configuration>
+					<linksource>true</linksource>
+					<failOnError>false</failOnError>
+					
+			        	<doclet>ch.raffael.doclets.pegdown.PegdownDoclet</doclet>
+			        	<docletArtifact>
+			         		<groupId>ch.raffael.pegdown-doclet</groupId>
+			         		<artifactId>pegdown-doclet</artifactId>
+			        		<version>1.1</version>
+			        	</docletArtifact>
+			        	<useStandardDocletOptions>true</useStandardDocletOptions>
+					
+					<links>
+						<link>http://download.eclipse.org/modeling/emf/emf/javadoc/2.11</link>
+						<link>http://help.eclipse.org/neon/topic/org.eclipse.emf.cdo.doc/javadoc</link>		
+						<link>http://help.eclipse.org/neon/topic/org.eclipse.platform.doc.isv/reference/api</link>
+						<link>http://stleary.github.io/JSON-java</link>			
+						<link>https://osgi.org/javadoc/r4v42/</link>
+						<link>http://seleniumhq.github.io/selenium/docs/api/java/</link>
+					</links>
+				</configuration>				
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-document-bundle-plugin</artifactId>
+				<version>${tycho-version}</version>
+			</plugin>			
+			<plugin>
+				<!-- enable tycho build extension -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<pomDependencies>consider</pomDependencies>
+					<!-- configure the p2 target environments for multi-platform build -->
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+			<!-- enable source bundle generation -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<execution>
+						<id>plugin-source</id>
+						<goals>
+							<goal>plugin-source</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<modules>
+		<module>../org.nasdanika.html</module>
+		<module>../org.nasdanika.html.feature</module>
+		<module>../org.nasdanika.html.tests</module>
+		<module>../org.nasdanika.html.repository</module>
+	</modules>
+	<!-- For resolution of JavaDoc between modules -->
+	<url>http://www.nasdanika.org/server/apidocs/parent/</url>
+	<organization>
+		<name>Nasdanika LLC</name>
+		<url>http://www.nasdanika.org</url>
+	</organization>
+	<scm>
+		<url>https://github.com/Nasdanika/html</url>
+	</scm>
+</project>
