@@ -32,77 +32,77 @@ class FontAwesomeImpl<T extends UIElement<?>> implements FontAwesome<T>, AutoClo
 	@Override
 	public FontAwesome<T> brand(Brand brand) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+brand.name().replace('_', '-'));
+		getTarget().addClass("fa-"+brand.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> chart(Chart chart) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+chart.name().replace('_', '-'));
+		getTarget().addClass("fa-"+chart.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> currency(Currency currency) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+currency.name().replace('_', '-'));
+		getTarget().addClass("fa-"+currency.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> directional(Directional directional) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+directional.name().replace('_', '-'));
+		getTarget().addClass("fa-"+directional.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> fileType(FileType fileType) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+fileType.name().replace('_', '-'));
+		getTarget().addClass("fa-"+fileType.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> formControl(FormControl formControl) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+formControl.name().replace('_', '-'));
+		getTarget().addClass("fa-"+formControl.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> medical(Medical medical) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+medical.name().replace('_', '-'));
+		getTarget().addClass("fa-"+medical.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> payment(Payment payment) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+payment.name().replace('_', '-'));
+		getTarget().addClass("fa-"+payment.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> spinner(Spinner spinner) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+spinner.name().replace('_', '-'));
+		getTarget().addClass("fa-"+spinner.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> videoPlayer(VideoPlayer videoPlayer) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+videoPlayer.name().replace('_', '-'));
+		getTarget().addClass("fa-"+videoPlayer.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> webApplication(WebApplication webApplication) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+webApplication.name().replace('_', '-'));
+		getTarget().addClass("fa-"+webApplication.literal);
 		return this;
 	}
 	
@@ -110,28 +110,28 @@ class FontAwesomeImpl<T extends UIElement<?>> implements FontAwesome<T>, AutoClo
 	@Override
 	public FontAwesome<T> hand(FontAwesome.Hand hand) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+hand.name().replace('_', '-'));
+		getTarget().addClass("fa-"+hand.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> transportation(Transportation transportation) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+transportation.name().replace('_', '-'));
+		getTarget().addClass("fa-"+transportation.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> gender(Gender gender) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+gender.name().replace('_', '-'));
+		getTarget().addClass("fa-"+gender.literal);
 		return this;
 	}
 
 	@Override
 	public FontAwesome<T> textEditor(TextEditor textEditor) {
 		getTarget().addClass("fa");
-		getTarget().addClass("fa-"+textEditor.name().replace('_', '-'));
+		getTarget().addClass("fa-"+textEditor.literal);
 		return this;
 	}
 	
@@ -238,6 +238,13 @@ class FontAwesomeImpl<T extends UIElement<?>> implements FontAwesome<T>, AutoClo
 	@Override
 	public FontAwesome<T> style(Bootstrap.Style style) {
 		target.addClass("text-"+style.name().toLowerCase());
+		return this;
+	}
+
+	@Override
+	public FontAwesome<T> accessibility(Accessibility accessibility) {
+		getTarget().addClass("fa");
+		getTarget().addClass("fa-"+accessibility.literal);
 		return this;
 	}
 	
