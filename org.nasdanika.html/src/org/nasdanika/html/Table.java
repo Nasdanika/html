@@ -28,4 +28,10 @@ public interface Table extends UIElement<Table>, RowContainer<Table> {
 	
 	RowContainer<?> footer();
 	
+	/**
+	 * Creates ``col`` tag in the ``colgroup``.
+	 * @return
+	 */
+	Tag col();
+	
 }

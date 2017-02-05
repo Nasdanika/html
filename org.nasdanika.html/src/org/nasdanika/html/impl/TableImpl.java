@@ -6,6 +6,8 @@ import java.util.List;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.RowContainer;
 import org.nasdanika.html.Table;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.Tag.TagName;
 
 class TableImpl extends RowContainerImpl<Table> implements Table {
 	
@@ -124,9 +126,21 @@ class TableImpl extends RowContainerImpl<Table> implements Table {
 		return this;
 	}
 	
+	private Tag colgroup;
 	private RowContainer<?> header;
 	private RowContainer<?> body;
-	private RowContainer<?> footer;	
+	private RowContainer<?> footer;
+	
+	@Override
+	public Tag col() {
+		if (colgroup == null) {
+			colgroup = factory.tag(TagName.colgroup);
+			content.add(colgroup);
+		}
+		Tag col = factory.tag(TagName.col);
+		colgroup.content(col);
+		return col;
+	}
 
 	@Override
 	public RowContainer<?> header() {
