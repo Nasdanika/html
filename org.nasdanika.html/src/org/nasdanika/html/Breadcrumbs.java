@@ -9,5 +9,7 @@ public interface Breadcrumbs extends UIElement<Breadcrumbs> {
 	 * @return
 	 */
 	Breadcrumbs item(Object href, Object... content);
+	
+	boolean isEmpty();
 
 }
