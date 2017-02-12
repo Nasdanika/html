@@ -38,7 +38,7 @@ public class ApplicationPanelRenderer
   protected final String TEXT_24 = NL + "\t\t\t\t";
   protected final String TEXT_25 = "\t\t\t" + NL + "\t\t\t</div>" + NL + "\t\t";
   protected final String TEXT_26 = "\t\t\t\t\t\t" + NL + "\t</div>" + NL + "\t" + NL + "\t";
-  protected final String TEXT_27 = NL + "\t\t<div class=\"panel-footer\">" + NL + "\t\t\t<div style=\"display: table; margin: 0 auto\">";
+  protected final String TEXT_27 = NL + "\t\t<div class=\"panel-footer\">" + NL + "\t\t\t<div style=\"display: table;\">";
   protected final String TEXT_28 = "</div>" + NL + "\t\t</div>" + NL + "\t";
   protected final String TEXT_29 = NL + "</div>";
   protected final String TEXT_30 = NL;

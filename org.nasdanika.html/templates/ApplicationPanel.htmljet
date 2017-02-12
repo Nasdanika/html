@@ -34,7 +34,7 @@
 	
 	<% if (config.getFooter()!=null) { %>
 		<div class="panel-footer">
-			<div style="display: table; margin: 0 auto"><%=config.getFooter()%></div>
+			<div style="display: table;"><%=config.getFooter()%></div>
 		</div>
 	<% } %>
 </div>
