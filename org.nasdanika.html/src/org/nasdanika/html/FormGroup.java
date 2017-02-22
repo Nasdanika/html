@@ -9,14 +9,14 @@ public interface FormGroup<T extends FormGroup<T>> extends UIElement<T> {
 		
 		private Bootstrap.Style style;
 		
-		Status(Bootstrap.Style style) {
+		private Status(Bootstrap.Style style) {
 			this.style = style;
 		}
 		
 		/**
 		 * @return Style corresponding to status.
 		 */
-		Bootstrap.Style toStyle() {
+		public Bootstrap.Style toStyle() {
 			return style;
 		}
 		
