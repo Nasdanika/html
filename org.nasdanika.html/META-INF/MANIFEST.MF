@@ -4,7 +4,7 @@ Bundle-Name: HTML/Bootstrap/Angular/Knockout/Font Awesome bundle
 Bundle-SymbolicName: org.nasdanika.html
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: Nasdanika LLC
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.nasdanika.html,
  org.nasdanika.html.impl
 Bundle-ClassPath: .
