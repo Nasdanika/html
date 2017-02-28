@@ -431,7 +431,7 @@ public class DefaultHTMLFactory extends AbstractHTMLFactory {
 
 	@Override
 	public FontAwesome<Tag> fontAwesome() {
-		return span("").fontAwesome();
+		return span().fontAwesome();
 	}
 	
 	@Override
