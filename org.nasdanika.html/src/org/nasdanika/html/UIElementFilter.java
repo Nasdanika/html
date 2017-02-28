@@ -122,4 +122,24 @@ public class UIElementFilter<T extends UIElement<T>> implements UIElement<T> {
 		return target.jQuery(expr);
 	}
 	
+	@Override
+	public Object getData() {
+		return target.getData();
+	}
+	
+	@Override
+	public Object getData(String key) {
+		return target.getData(key);
+	}
+	
+	@Override
+	public T setData(Object data) {
+		return target.setData(data);
+	}
+	
+	@Override
+	public T setData(String key, Object data) {
+		return target.setData(key, data);
+	}
+	
 }

@@ -392,4 +392,34 @@ public interface UIElement<T extends UIElement<T>> extends AutoCloseable, Produc
 	 * @return
 	 */
 	String jQuery(String expr);
+	
+	/**
+	 * Sets the application defined UI element data. This data is not used for rendering by UI elements.
+	 * Applications may put arbitrary objects in this field. 
+	 * @param data
+	 * @return this UI element.
+	 */
+	T setData(Object data);
+	
+	/**
+	 * Returns the application defined UI element data, or null if it has not been set. 
+	 * @return
+	 */
+	Object getData();
+	
+	/**
+	 * Sets the application defined property of the UI element with the specified name to the given value.
+	 * Applications may associate arbitrary objects with the UI element. This data is not used for rendering by UI elements.
+	 * @param key
+	 * @param data
+	 * @return this UI element.
+	 */
+	T setData(String key, Object data);
+	
+	/**
+	 * Returns the application defined property of the UI element with the specified name, or null if it has not been set.
+	 * @param Key
+	 * @return
+	 */
+	Object getData(String key);
 }

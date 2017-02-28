@@ -1449,6 +1449,34 @@ public abstract class UIElementImpl<T extends UIElement<T>> implements UIElement
 		return "jQuery('#"+getId()+"')."+expr;
 	}
 	
+	private Object data;
+	private Map<String, Object> properties = new HashMap<>();
+	
+	@Override
+	public Object getData() {
+		return data;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public T setData(Object data) {
+		this.data = data;
+		return (T) this;
+	}
+	
+	@Override
+	public Object getData(String key) {
+		return properties.get(key);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public T setData(String key, Object data) {
+		properties.put(key, data);
+		return (T) this;
+	}
+	
+	
 }
 
 
