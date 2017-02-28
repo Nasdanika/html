@@ -138,4 +138,6 @@ public interface Tag extends UIElement<Tag>, Container<Tag> {
 		
 	}
 
+	String getTagName();
+	
 }

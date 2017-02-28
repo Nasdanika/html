@@ -22,5 +22,10 @@ class TagImpl extends UIElementImpl<Tag> implements Tag {
 	protected List<Object> getContent() {
 		return content;
 	}
+	
+	@Override
+	public String getTagName() {
+		return super.getTagName();
+	}
 
 }
