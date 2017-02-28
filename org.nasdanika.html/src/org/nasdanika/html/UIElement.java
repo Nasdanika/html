@@ -363,6 +363,12 @@ public interface UIElement<T extends UIElement<T>> extends AutoCloseable, Produc
 	FontAwesome<T> fontAwesome();
 	
 	/**
+	 * {@link JsTree} instance to configure this element. Applicable only to list items (li).
+	 * @return
+	 */
+	JsTree jsTree();
+	
+	/**
 	 * @return Knockout interface instance to manipulate Knockout.js binding.
 	 */
 	Knockout<T> knockout();
@@ -378,5 +384,12 @@ public interface UIElement<T extends UIElement<T>> extends AutoCloseable, Produc
 	 * @return Factory used to create this element.
 	 */
 	HTMLFactory getFactory();	
-	
+
+	/**
+	 * Convenience method for constructing ``jQuery('#<element id>').<expr>`` strings.
+	 * If id is not set, it is set to ``factory.nextId()``.
+	 * @param expr Expression to add after ``jQuery('#<element id>').``.
+	 * @return
+	 */
+	String jQuery(String expr);
 }

@@ -17,15 +17,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.json.JSONObject;
 import org.nasdanika.html.Angular;
 import org.nasdanika.html.Bootstrap;
 import org.nasdanika.html.Bootstrap.Grid;
 import org.nasdanika.html.FactoryProducer;
 import org.nasdanika.html.FontAwesome;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.JsTree;
 import org.nasdanika.html.Knockout;
 import org.nasdanika.html.KnockoutBindingsSource;
-import org.nasdanika.html.KnockoutControlFlow;
 import org.nasdanika.html.Producer;
 import org.nasdanika.html.ProducerException;
 import org.nasdanika.html.Style;
@@ -1367,6 +1368,85 @@ public abstract class UIElementImpl<T extends UIElement<T>> implements UIElement
 	
 	public boolean isEmpty() {
 		return getContent().isEmpty();
+	}
+	
+	private JsTree jsTree;
+	
+	@Override
+	public JsTree jsTree() {
+		if (jsTree == null) {
+			jsTree = new JsTree() {
+				
+				private boolean selected;
+				private boolean opened;
+				private boolean disabled;
+				private String icon;
+				private FontAwesome<Tag> fontAwesome;
+				
+				@Override
+				public JsTree selected(boolean selected) {
+					this.selected = selected;
+					return this;
+				}
+				
+				@Override
+				public JsTree opened(boolean opened) {
+					this.opened = opened;
+					return this;
+				}
+				
+				@Override
+				public FontAwesome<Tag> icon() {
+					icon = null;
+					fontAwesome = getFactory().fontAwesome();
+					return fontAwesome;
+				}
+				
+				@Override
+				public JsTree icon(String icon) {
+					fontAwesome = null;
+					this.icon = icon;
+					return this;
+				}
+				
+				@Override
+				public JsTree disabled(boolean disabled) {
+					this.disabled = disabled;
+					return this;
+				}
+				
+				@Override
+				public String toString() {
+					JSONObject data = new JSONObject();
+					if (selected) {
+						data.put("selected", true);
+					}
+					if (opened) {
+						data.put("opened", true);
+					}
+					if (disabled) {
+						data.put("disabled", true);
+					}
+					if (icon != null) {
+						data.put("icon", icon);
+					} else if (fontAwesome != null) {
+						data.put("icon", ((TagImpl) fontAwesome.getTarget()).classes());
+					}
+					return data.toString(); // Escape???
+				}
+			};
+			
+			attribute("data-jstree", jsTree);
+		}
+		return jsTree;
+	}
+	
+	@Override
+	public String jQuery(String expr) {
+		if (getId() == null) {
+			id(factory.nextId());
+		}
+		return "jQuery('#"+getId()+"')."+expr;
 	}
 	
 }

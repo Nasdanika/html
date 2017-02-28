@@ -112,4 +112,14 @@ public class UIElementFilter<T extends UIElement<T>> implements UIElement<T> {
 		return target.getFactory();
 	}
 
+	@Override
+	public JsTree jsTree() {
+		return target.jsTree();
+	}
+	
+	@Override
+	public String jQuery(String expr) {
+		return target.jQuery(expr);
+	}
+	
 }
