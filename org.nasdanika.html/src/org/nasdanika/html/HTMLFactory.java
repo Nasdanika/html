@@ -70,6 +70,14 @@ public interface HTMLFactory {
 		public String code() {
 			return name().replace('_', '-');
 		}
+		
+		/**
+		 * Creates input with {@link HTMLFactory}.INSTANCE.
+		 * @return
+		 */
+		public Input create() {
+			return HTMLFactory.INSTANCE.input(this);
+		}
 	}
 	
 	Fragment fragment(Object... content);
