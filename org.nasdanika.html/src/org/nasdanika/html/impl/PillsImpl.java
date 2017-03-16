@@ -23,6 +23,7 @@ class PillsImpl extends UIElementImpl<Pills> implements Pills {
 	
 	private abstract class Pill implements AutoCloseable {
 		int idx;
+		boolean active;
 		Object name;
 		
 		@Override
@@ -30,15 +31,16 @@ class PillsImpl extends UIElementImpl<Pills> implements Pills {
 			UIElementImpl.close(name);			
 		}
 
-		Pill(Object name, int idx) {
+		Pill(Object name, int idx, boolean active) {
 			super();
 			this.name = name;
 			this.idx = idx;
+			this.active = active;
 		}	
 		
 		Tag li() {
 			Tag ret = factory.tag("li");
-			if (idx==0) {
+			if (active) {
 				ret.addClass("active");
 			}
 			ret.content(link());			
@@ -47,7 +49,7 @@ class PillsImpl extends UIElementImpl<Pills> implements Pills {
 		
 		Tag div() {
 			Tag ret = factory.div(pillContent()).addClass("tab-pane").id(pillsId+"_"+idx);
-			if (idx==0) {
+			if (active) {
 				ret.addClass("active");
 			}
 			return ret;
@@ -61,8 +63,8 @@ class PillsImpl extends UIElementImpl<Pills> implements Pills {
 	
 	private class ContentPill extends Pill {
 		
-		ContentPill(Object name, int idx, Object content) {
-			super(name, idx);
+		ContentPill(Object name, int idx, Object content, boolean active) {
+			super(name, idx, active);
 			this.content = content;
 		}
 
@@ -88,8 +90,8 @@ class PillsImpl extends UIElementImpl<Pills> implements Pills {
 	
 	private class AjaxPill extends Pill {
 		
-		AjaxPill(Object name, int idx, Object location) {
-			super(name, idx);
+		AjaxPill(Object name, int idx, Object location, boolean active) {
+			super(name, idx, active);
 			this.location = location;
 		}
 
@@ -132,15 +134,27 @@ class PillsImpl extends UIElementImpl<Pills> implements Pills {
 
 	@Override
 	public Pills item(Object name, Object content) {
-		pills.add(new ContentPill(name, pills.size(), content));
+		item(name, content, pills.isEmpty());
 		return this;
 	}
 
 	@Override
 	public Pills ajaxItem(Object name, Object location) {
-		pills.add(new AjaxPill(name, pills.size(), location));
+		ajaxItem(name, location, pills.isEmpty());
 		return this;
 	}
+	
+	@Override
+	public Pills item(Object name, Object content, boolean active) {
+		pills.add(new ContentPill(name, pills.size(), content, active));
+		return this;
+	}	
+	
+	@Override
+	public Pills ajaxItem(Object name, Object location, boolean active) {
+		pills.add(new AjaxPill(name, pills.size(), location, active));
+		return this;
+	}	
 	
 	private PillAjaxDataToggleScriptRenderer pillAjaxDataToggleScriptRenderer = new PillAjaxDataToggleScriptRenderer();
 	private boolean stacked;

@@ -18,4 +18,8 @@ public interface Pills extends UIElement<Pills>, NamedItemsContainer<UIElement<?
 	 */
 	Pills pillsWidth(Bootstrap.DeviceSize deviceSize, int width);	
 	
+	Pills item(Object name, Object content, boolean active);
+
+	Pills ajaxItem(Object name, Object location, boolean active);	
+	
 }
