@@ -129,6 +129,15 @@ public interface Tag extends UIElement<Tag>, Container<Tag> {
 			return paired;
 		}
 		
+		/**
+		 * Creates tag with {@link HTMLFactory}.INSTANCE.
+		 * @param content
+		 * @return
+		 */
+		public Tag create(Object... content) {
+			return HTMLFactory.INSTANCE.tag(this, content);
+		}
+		
 		private TagName() {
 		}
 		
