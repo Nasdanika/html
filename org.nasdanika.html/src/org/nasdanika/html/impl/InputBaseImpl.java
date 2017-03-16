@@ -32,7 +32,7 @@ abstract class InputBaseImpl<T extends InputBase<T>> extends UIElementImpl<T> im
 
 	@Override
 	public T disabled() {
-		return autofocus(true);
+		return disabled(true);
 	}
 
 	@SuppressWarnings("unchecked")
