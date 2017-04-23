@@ -1,6 +1,6 @@
 # HTML
 
-[org.nasdanika.html](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/index.html) bundle provides [fluent API](https://en.wikipedia.org/wiki/Fluent_interface) for building HTML code including:
+[org.nasdanika.html](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/index.html) bundle provides [fluent API](https://en.wikipedia.org/wiki/Fluent_interface) for building HTML code including:
 
 * HTML (low level), 
 * [Bootstrap](http://getbootstrap.com/), 
