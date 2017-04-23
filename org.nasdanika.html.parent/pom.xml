@@ -15,7 +15,7 @@
 	</prerequisites>
 
 	<properties>
-		<tycho-version>0.25.0</tycho-version>
+		<tycho-version>1.0.0</tycho-version>
 		<neon-repo.url>http://download.eclipse.org/releases/neon</neon-repo.url>
 	</properties>
 
@@ -28,7 +28,7 @@
 		</repository>
 		<repository>
 			<id>orbit</id>
-				<url>http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository</url>
+				<url>http://download.eclipse.org/tools/orbit/downloads/drops/R20170307180635/repository</url>
 			<layout>p2</layout>
 		</repository>
 		<!-- 
