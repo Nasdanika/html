@@ -2,9 +2,30 @@ package org.nasdanika.html;
 
 public interface NamedItemsContainer<I, T extends NamedItemsContainer<I, ?>> {
 
-	I item(Object name, Object content);
+	/**
+	 * The first item is active the rest is not.
+	 * @param name
+	 * @param content
+	 * @return
+	 */
+	default I item(Object name, Object content) {
+		return item(name, content, this.isEmpty());
+	}
 	
-	I ajaxItem(Object name, Object location);
+	default I ajaxItem(Object name, Object location) {
+		return ajaxItem(name, location, this.isEmpty());
+	}
+	
+	/**
+	 * Explicitly set active item state.
+	 * @param name
+	 * @param content
+	 * @param active
+	 * @return
+	 */
+	I item(Object name, Object content, boolean active);
+	
+	I ajaxItem(Object name, Object location, boolean active);
 	
 	boolean isEmpty();
 	

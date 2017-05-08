@@ -21,7 +21,7 @@ public interface Accordion extends UIElement<Accordion>, NamedItemsContainer<UIE
 	 * @param location
 	 * @return
 	 */
-	UIElement<?> ajaxItem(Object title, Bootstrap.Style style, Object id, Object location);	
+	UIElement<?> ajaxItem(Object title, Bootstrap.Style style, boolean initial, Object id, Object location);	
 	
 	/**
 	 * Style to apply to items which don't explicitly set their own style.

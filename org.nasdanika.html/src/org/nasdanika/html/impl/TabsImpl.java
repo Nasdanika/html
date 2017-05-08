@@ -19,6 +19,7 @@ class TabsImpl extends UIElementImpl<Tabs> implements Tabs {
 	
 	private abstract class Tab implements AutoCloseable {
 		int idx;
+		boolean active;
 		Object name;
 		
 		@Override
@@ -26,15 +27,21 @@ class TabsImpl extends UIElementImpl<Tabs> implements Tabs {
 			UIElementImpl.close(name);			
 		}
 
-		Tab(Object name, int idx) {
+		Tab(Object name, int idx, boolean active) {
 			super();
 			this.name = name;
 			this.idx = idx;
+			this.active = active;
+			if (active) {
+				for (Tab tab: tabs) {
+					tab.active = false;
+				}
+			}
 		}	
 		
 		Object li() {
 			Tag ret = factory.tag("li");
-			if (idx==0) {
+			if (active) {
 				ret.addClass("active");
 			}
 			ret.content(link());			
@@ -43,7 +50,7 @@ class TabsImpl extends UIElementImpl<Tabs> implements Tabs {
 		
 		Tag div() {
 			Tag ret = factory.div(tabContent()).addClass("tab-pane").id(tabId+"_"+idx);
-			if (idx==0) {
+			if (active) {
 				ret.addClass("active");
 			}
 			return ret;
@@ -57,8 +64,8 @@ class TabsImpl extends UIElementImpl<Tabs> implements Tabs {
 	
 	private class ContentTab extends Tab {
 		
-		ContentTab(Object name, int idx, Object content) {
-			super(name, idx);
+		ContentTab(Object name, int idx, boolean active, Object content) {
+			super(name, idx, active);
 			this.content = content;
 		}
 
@@ -84,8 +91,8 @@ class TabsImpl extends UIElementImpl<Tabs> implements Tabs {
 	
 	private class AjaxTab extends Tab {
 		
-		AjaxTab(Object name, int idx, Object location) {
-			super(name, idx);
+		AjaxTab(Object name, int idx, boolean active, Object location) {
+			super(name, idx, active);
 			this.location = location;
 		}
 
@@ -129,14 +136,14 @@ class TabsImpl extends UIElementImpl<Tabs> implements Tabs {
 	}
 
 	@Override
-	public Tabs item(Object name, Object content) {
-		tabs.add(new ContentTab(name, tabs.size(), content));
+	public Tabs item(Object name, Object content, boolean active) {
+		tabs.add(new ContentTab(name, tabs.size(), active, content));
 		return this;
 	}
 
 	@Override
-	public Tabs ajaxItem(Object name, Object location) {
-		tabs.add(new AjaxTab(name, tabs.size(), location));
+	public Tabs ajaxItem(Object name, Object location, boolean active) {
+		tabs.add(new AjaxTab(name, tabs.size(), active, location));
 		return this;
 	}
 	

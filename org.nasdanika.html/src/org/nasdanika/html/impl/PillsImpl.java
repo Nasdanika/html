@@ -36,6 +36,11 @@ class PillsImpl extends UIElementImpl<Pills> implements Pills {
 			this.name = name;
 			this.idx = idx;
 			this.active = active;
+			if (active) {
+				for (Pill pill: pills) {
+					pill.active = false;
+				}
+			}
 		}	
 		
 		Tag li() {
@@ -130,18 +135,6 @@ class PillsImpl extends UIElementImpl<Pills> implements Pills {
 	public void close() throws Exception {
 		super.close();
 		close(pills);
-	}
-
-	@Override
-	public Pills item(Object name, Object content) {
-		item(name, content, pills.isEmpty());
-		return this;
-	}
-
-	@Override
-	public Pills ajaxItem(Object name, Object location) {
-		ajaxItem(name, location, pills.isEmpty());
-		return this;
 	}
 	
 	@Override

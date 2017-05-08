@@ -85,15 +85,15 @@ class AccordionImpl extends UIElementImpl<Accordion> implements	Accordion {
 	}
 
 	@Override
-	public UIElement<?> item(Object name, Object itemContent) {
-		Item item = new Item(name, new Object[] {itemContent}, null, style, this.content.isEmpty(), null);
+	public UIElement<?> item(Object name, Object itemContent, boolean active) {
+		Item item = new Item(name, new Object[] {itemContent}, null, style, active, null);
 		this.content.add(item);
 		return item;
 	}
 
 	@Override
-	public UIElement<?> ajaxItem(Object name, Object location) {
-		return ajaxItem(name, null, null, location);
+	public UIElement<?> ajaxItem(Object name, Object location, boolean active) {
+		return ajaxItem(name, null, active, null, location);
 	}
 
 	@Override
@@ -102,8 +102,8 @@ class AccordionImpl extends UIElementImpl<Accordion> implements	Accordion {
 	}
 
 	@Override
-	public UIElement<?> ajaxItem(Object title,	Bootstrap.Style style, Object id, Object location) {
-		Item item = new Item(title, null, location, style, this.content.isEmpty(), id);
+	public UIElement<?> ajaxItem(Object title, Bootstrap.Style style, boolean initial, Object id, Object location) {
+		Item item = new Item(title, null, location, style, initial, id);
 		this.content.add(item);
 		return item;
 	}
