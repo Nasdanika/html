@@ -81,7 +81,7 @@ class FieldContainerImpl<T extends FieldContainer<T>> implements FieldContainer<
 				UIElement<?> controlDiv = form.factory.div(tag);
 				controlDiv.addClass("col-"+form.deviceSize.code+"-"+(12-form.labelWidth));
 				controlDiv.addClass("col-"+form.deviceSize.code+"-offset-"+form.labelWidth);
-				return controlDiv.produce(indent);
+				return form.factory.div(controlDiv.produce(indent)).bootstrap().grid().row();
 			}
 						
 			/**
