@@ -7,6 +7,7 @@
 * [Font Awesome](https://fortawesome.github.io/Font-Awesome/), 
 * [AngularJS](https://angularjs.org/), 
 * [Knockout](http://knockoutjs.com/index.html),
+* [jsTree](https://www.jstree.com/),
 * Application - convenience methods and interfaces for constructing single page router applications with a header, navigation bar, content panels and footer.  
 
 The goal of the bundle is to provide a Java developer a set of API's to build modern Web UI (Bootstrap, Font Awesome) and Single-Page Applications (AngularJS, KnockoutJS) without having to switch contexts (Java -> HTML, Bootstrap, ...) and without having to remember all the minutia of the underlying frameworks - API's, enumerations, and IDE code completion reduce mental load.   
