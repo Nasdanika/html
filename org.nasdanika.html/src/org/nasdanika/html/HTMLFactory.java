@@ -343,4 +343,6 @@ public interface HTMLFactory {
 	 */
 	String interpolate(Object input, String token, Object value);
 	
+	JsTreeNode jsTreeNode();
+	
 }
