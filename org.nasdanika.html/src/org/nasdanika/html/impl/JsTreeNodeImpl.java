@@ -145,8 +145,4 @@ class JsTreeNodeImpl implements JsTreeNode {
 		return toJSON().toString();
 	}
 
-	@Override
-	public int compareTo(JsTreeNode o) {
-		return String.valueOf(text).compareTo(String.valueOf(((JsTreeNodeImpl) o).text));
-	}	
 }

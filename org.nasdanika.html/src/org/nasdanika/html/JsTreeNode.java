@@ -6,11 +6,10 @@ import org.json.JSONObject;
 
 /**
  * This interface can be used to build JsTree JSON data. ``toString()`` method of the implementation outputs JSON.
- * Compares nodes by their text.
  * @author Pavel Vlasov
  *
  */
-public interface JsTreeNode extends JsTree, Comparable<JsTreeNode> {
+public interface JsTreeNode extends JsTree {
 	
 	JsTree id(Object id);
 	
