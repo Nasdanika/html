@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.function.Predicate;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -100,9 +100,28 @@ class JsTreeNodeImpl implements JsTreeNode {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public JSONObject toJSON() {
+		return toJSON(null);
+	}	
+	
+	@Override
+	public JSONObject toJSON(Predicate<JsTreeNode> filter) {
+		JSONArray jch = new JSONArray();
+		for (JsTreeNode child: children) {
+			if (child != null) {
+				JSONObject jsonChild = ((JsTreeNodeImpl) child).toJSON(filter);
+				if (jsonChild != null) {
+					jch.put(jsonChild);
+				}
+			}
+		}
+		
+		if (jch.length() == 0 && filter != null && !filter.test(this)) {
+			return null; // no children, this one is not accepted.
+		}
+		
 		JSONObject data = new JSONObject();
 		JSONObject state = new JSONObject();
 		if (selected) {
@@ -127,12 +146,6 @@ class JsTreeNodeImpl implements JsTreeNode {
 			data.put("text", text.toString());
 		}
 		
-		JSONArray jch = new JSONArray();
-		for (JsTreeNode child: children) {
-			if (child != null) {
-				jch.put(((JsTreeNodeImpl) child).toJSON());
-			}
-		}
 		data.put("children", jch);
 
 		data.put("li_attr", liAttributes);
@@ -143,6 +156,40 @@ class JsTreeNodeImpl implements JsTreeNode {
 	
 	public String toString() {
 		return toJSON().toString();
+	}	
+	
+	private Object data;
+	private Map<String, Object> properties = new HashMap<>();
+	
+	@Override
+	public Object getData() {
+		return data;
+	}
+	
+	@Override
+	public JsTreeNode setData(Object data) {
+		this.data = data;
+		return this;
+	}
+	
+	@Override
+	public Object getData(String key) {
+		return properties.get(key);
+	}
+	
+	@Override
+	public JsTreeNode setData(String key, Object data) {
+		properties.put(key, data);
+		return this;
+	}
+
+	@Override
+	public <R> R accept(Collector<R> collector) {
+		List<R> childResults = new ArrayList<R>();
+		for (JsTreeNode child: children()) {
+			childResults.add(child.accept(collector));
+		}
+		return collector.visit(this, childResults);
 	}
 
 }
