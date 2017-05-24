@@ -1,12 +1,13 @@
 package org.nasdanika.html;
 
+import java.util.function.Consumer;
 
 /**
  * @author Pavel
  *
  * @param <T>
  */
-public interface Container<T extends Container<?>> extends AutoCloseable {
+public interface Container<T extends Container<?>> extends AutoCloseable, Consumer<Object> {
 
 	/**
 	 * Adds content to the container.
@@ -16,5 +17,10 @@ public interface Container<T extends Container<?>> extends AutoCloseable {
 	T content(Object... content);
 	
 	boolean isEmpty();
+	
+	@Override
+	default void accept(Object content) {
+		content(content);		
+	}
 	
 }
