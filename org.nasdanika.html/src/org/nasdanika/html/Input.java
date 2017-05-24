@@ -1,5 +1,7 @@
 package org.nasdanika.html;
 
+import org.nasdanika.html.HTMLFactory.InputType;
+
 /**
  * A generic UI element. It doesn't add any functionality, only binds UIElement and Container generic parameter to self for convenience.
  * @author Pavel
@@ -38,5 +40,7 @@ public interface Input extends InputBase<Input>, Container<Input> {
 	Input placeholder(Object placeholder);
 	
 	Input step(Object step);	
+	
+	InputType getType();	
 
 }
