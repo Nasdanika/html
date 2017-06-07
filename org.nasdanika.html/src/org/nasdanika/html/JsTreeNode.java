@@ -26,9 +26,11 @@ public interface JsTreeNode extends JsTree {
 	
 	<R> R accept(Collector<R> collector);
 	
-	JsTree id(Object id);
+	JsTreeNode id(Object id);
 	
-	JsTree text(Object text);
+	Object getId();
+	
+	JsTreeNode text(Object text);
 	
 	List<JsTreeNode> children();
 
@@ -38,7 +40,7 @@ public interface JsTreeNode extends JsTree {
 	 * @param value
 	 * @return
 	 */
-	JsTree listItemAttribute(String name, Object value);
+	JsTreeNode listItemAttribute(String name, Object value);
 	
 	/**
 	 * Attribute for the generated A node.
@@ -46,7 +48,7 @@ public interface JsTreeNode extends JsTree {
 	 * @param value
 	 * @return
 	 */
-	JsTree anchorAttribute(String name, Object value);
+	JsTreeNode anchorAttribute(String name, Object value);
 	
 	JSONObject toJSON();
 	

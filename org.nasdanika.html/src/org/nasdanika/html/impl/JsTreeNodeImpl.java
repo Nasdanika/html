@@ -65,13 +65,18 @@ class JsTreeNodeImpl implements JsTreeNode {
 	}
 
 	@Override
-	public JsTree id(Object id) {
+	public JsTreeNode id(Object id) {
 		this.id = id;
 		return this;
 	}
+	
+	@Override
+	public Object getId() {
+		return id;
+	}
 
 	@Override
-	public JsTree text(Object text) {
+	public JsTreeNode text(Object text) {
 		this.text = text;
 		return this;
 	}
@@ -82,7 +87,7 @@ class JsTreeNodeImpl implements JsTreeNode {
 	}
 
 	@Override
-	public JsTree listItemAttribute(String name, Object value) {
+	public JsTreeNode listItemAttribute(String name, Object value) {
 		if (value == null) {
 			liAttributes.remove(name);
 		} else {
@@ -92,7 +97,7 @@ class JsTreeNodeImpl implements JsTreeNode {
 	}
 
 	@Override
-	public JsTree anchorAttribute(String name, Object value) {
+	public JsTreeNode anchorAttribute(String name, Object value) {
 		if (value == null) {
 			aAttributes.remove(name);					
 		} else {
