@@ -345,4 +345,6 @@ public interface HTMLFactory {
 	
 	JsTreeNode jsTreeNode();
 	
+	JsTreeContextMenuItem jsTreeContextMenuItem();
+	
 }

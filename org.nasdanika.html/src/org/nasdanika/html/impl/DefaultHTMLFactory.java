@@ -1,13 +1,9 @@
 package org.nasdanika.html.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.nasdanika.html.Accordion;
 import org.nasdanika.html.ApplicationPanel;
 import org.nasdanika.html.Bootstrap;
@@ -24,7 +20,7 @@ import org.nasdanika.html.FontAwesome.Spinner;
 import org.nasdanika.html.FontAwesome.Stack;
 import org.nasdanika.html.Form;
 import org.nasdanika.html.InputGroup;
-import org.nasdanika.html.JsTree;
+import org.nasdanika.html.JsTreeContextMenuItem;
 import org.nasdanika.html.JsTreeNode;
 import org.nasdanika.html.KnockoutVirtualElement;
 import org.nasdanika.html.LinkGroup;
@@ -565,6 +561,11 @@ public class DefaultHTMLFactory extends AbstractHTMLFactory {
 	@Override
 	public JsTreeNode jsTreeNode() {
 		return new JsTreeNodeImpl(this);
+	}
+	
+	@Override
+	public JsTreeContextMenuItem jsTreeContextMenuItem() {
+		return new JsTreeContextMenuItemImpl();
 	}
 	
 }

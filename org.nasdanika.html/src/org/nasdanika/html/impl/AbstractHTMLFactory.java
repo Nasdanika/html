@@ -52,13 +52,11 @@ public abstract class AbstractHTMLFactory implements HTMLFactory {
 	public void setFactoryProducerAdapter(FactoryProducer.Adapter adapter) {
 		this.factoryProducerAdapter = adapter;
 	}
-	
-	
+		
 	@Override
 	public String nextId() {
 		return "nsd_"+Long.toString(idCounter.incrementAndGet(), Character.MAX_RADIX);
-	}
-	
+	}	
 
 	@Override
 	public Tag tag(String tagName, final Object... content) {
