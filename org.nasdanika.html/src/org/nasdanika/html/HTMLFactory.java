@@ -47,7 +47,6 @@ public interface HTMLFactory {
 		checkbox,
 		color,
 		date, 
-		datetime, 
 		datetime_local, 
 		email,
 		file,
