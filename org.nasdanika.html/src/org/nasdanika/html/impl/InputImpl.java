@@ -14,7 +14,7 @@ class InputImpl extends InputBaseImpl<Input> implements Input {
 	InputImpl(HTMLFactory factory, HTMLFactory.InputType type) {
 		super(factory, TagName.input);
 		this.type = type;
-		attribute("type", type);
+		attribute("type", type.code());
 	}
 	
 	@Override
