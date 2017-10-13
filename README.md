@@ -387,12 +387,22 @@ The library depends on [Apache Commons Lang 3](https://commons.apache.org/proper
 
 ## API Documentation
 
-* http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/)
+* http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/
 
 ## P2 Repository
 
 * ``http://www.nasdanika.org/products/html/repository``
 * [Archived](http://www.nasdanika.org/products/html/org.nasdanika.html.repository-0.1.0-SNAPSHOT.zip)
+
+## Use in a Maven project
+
+```xml
+<dependency>
+	<groupId>org.nasdanika.html</groupId>
+	<artifactId>org.nasdanika.html</artifactId>
+	<version>1.2.0</version>
+</dependency>
+```
 
 ## Examples
 
