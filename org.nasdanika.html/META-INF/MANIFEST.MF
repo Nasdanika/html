@@ -9,4 +9,4 @@ Export-Package: org.nasdanika.html,
  org.nasdanika.html.impl
 Bundle-ClassPath: .
 Require-Bundle: org.apache.commons.lang3;bundle-version="3.3.2",
- json;bundle-version="20160212.0.0"
+ json;bundle-version="20170516.0.0"
