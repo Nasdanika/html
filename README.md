@@ -13,7 +13,7 @@
 The goal of the bundle is to provide a Java developer a set of API's to build modern Web UI (Bootstrap, Font Awesome) and Single-Page Applications (AngularJS, KnockoutJS) without having to switch contexts (Java -> HTML, Bootstrap, ...) and without having to remember all the minutia of the underlying frameworks - API's, enumerations, and IDE code completion reduce mental load.   
 
 The library uses [Factory](https://en.wikipedia.org/wiki/Factory_(object-oriented_programming))/[Builder](https://en.wikipedia.org/wiki/Builder_pattern) patterns, similar to [Java DOM XML API](https://docs.oracle.com/javase/tutorial/jaxp/dom/index.html):
-* An instance of [HTMLFactory](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/HTMLFactory.html) is used to create instances of API interfaces.
+* An instance of [HTMLFactory](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/HTMLFactory.html) is used to create instances of API interfaces.
 * Instances created by the factory act as builders. 
 * HTML markup is produced by invoking ``toString()`` or ``produce()`` methods of API interfaces.
 
@@ -23,9 +23,9 @@ Example:
 String scriptTag = htmlFactory.tag(TagName.script, getClass().getResource("Script.js")).toString();
 ```
 
-In applications where HTML API is used out of the context of a web request [DefaultHTMLFactory](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/impl/DefaultHTMLFactory.html) class can be directly instantiated and used as HTMLFactory implementation. In a context of a web request, e.g. in routes or route operations, and instance of HTMLFactory can be obtained either by adapting [HttpServletRequestContext](http://www.nasdanika.org/server/apidocs/org.nasdanika.web/target/site/apidocs/org/nasdanika/web/HttpServletRequestContext.html) or by specifying a context parameter - in this case the framework will adapt the context to HTMLFactory.
+In applications where HTML API is used out of the context of a web request [DefaultHTMLFactory](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/impl/DefaultHTMLFactory.html) class can be directly instantiated and used as HTMLFactory implementation. In a context of a web request, e.g. in routes or route operations, and instance of HTMLFactory can be obtained either by adapting [HttpServletRequestContext](http://www.nasdanika.org/server/apidocs/org.nasdanika.web/target/site/apidocs/org/nasdanika/web/HttpServletRequestContext.html) or by specifying a context parameter - in this case the framework will adapt the context to HTMLFactory.
 
-Many HTML interfaces extend [Producer](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Producer.html) and [AutoCloseable](http://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html). Many API methods take objects as arguments to build a composite HTML object from parts.
+Many HTML interfaces extend [Producer](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Producer.html) and [AutoCloseable](http://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html). Many API methods take objects as arguments to build a composite HTML object from parts.
 
 The simplest way to produce HTML from an object created by HTMLFactory is to invoke its ``toString()`` method. In classes which implement ``Producer`` ``toString()`` invokes ``produce()`` and then stringifies its return value:
 
@@ -35,12 +35,12 @@ public String toString() {
 }
 ```
 
-Objects are converted to HTML string (stringified) using the following algorithm (see. [UIElementImpl.toHTML()](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/src-html/org/nasdanika/html/impl/UIElementImpl.html#line.1063) source code):  
+Objects are converted to HTML string (stringified) using the following algorithm (see. [UIElementImpl.toHTML()](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/src-html/org/nasdanika/html/impl/UIElementImpl.html#line.1063) source code):  
 
 * If object is ``null`` then it is treated as a blank string.
 * If object is [String](http://docs.oracle.com/javase/8/docs/api/java/lang/String.html), then it is used as-is. 
 * If object implements Producer, then its ``produce()`` method is invoked and return value is recursively passed to stringification. 
-* If object implements [FactoryProducer](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/FactoryProducer.html), then its ``produce(HTMLFactory)`` method is invoked and return value is recursively passed to stringification. 
+* If object implements [FactoryProducer](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/FactoryProducer.html), then its ``produce(HTMLFactory)`` method is invoked and return value is recursively passed to stringification. 
 * If ``Producer.Adapter`` was set in the factory with ``setProducerAdapter()`` method, then the adapter is used to adapt object to producer. If adapter returns non-null value then it is passed to stringification.
 * If ``FactoryProducer.Adapter`` was set in the factory with ``setFactoryProducerAdapter()`` method, then the adapter is used to adapt object to factory producer. If the adapter returns non-null value then it is passed to stringification.
 * If object is [InputStream](http://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html) or [Reader](http://docs.oracle.com/javase/8/docs/api/java/io/Reader.html), its content is converted to string.
@@ -58,21 +58,21 @@ When ``close()`` method is invoked on HTML object, the object invokes ``close`` 
 ``Producer`` and ``FactoryProducer`` are functional interfaces. It allows to assemble HTML objects from lambdas and method references.
 
 ## Low level API
-Low level HTML API provide means to construct HTML elements and manipulate their content and attributes. Higher level API implementations are built leveraging low-level API. The base interface for most HTML element interfaces is [UIElement](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/UIElement.html). HTML [Tag](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Tag.html) can be created using ``tag(String, Object...)`` and ``tag(TagName, Object...)`` methods of HTMLFactory, where [TagName](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Tag.TagName.html) is an enumeration of tag names. 
+Low level HTML API provide means to construct HTML elements and manipulate their content and attributes. Higher level API implementations are built leveraging low-level API. The base interface for most HTML element interfaces is [UIElement](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/UIElement.html). HTML [Tag](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Tag.html) can be created using ``tag(String, Object...)`` and ``tag(TagName, Object...)`` methods of HTMLFactory, where [TagName](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Tag.TagName.html) is an enumeration of tag names. 
 
 ``div(Object...)`` and ``span(Object...)`` are convenience methods - they invoke ``tag()`` behind the scenes.
 
 ``nextId()`` method can be used to generate element ID's.
 
-``input(InputType)`` method can be used to create [input](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Input.html) elements. [InputType](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/HTMLFactory.InputType.html) is an enumeration of input types. [TextArea](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/TextArea.html) and [Select](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Select.html) are created by ``textArea()`` and ``select()`` methods respectively.
+``input(InputType)`` method can be used to create [input](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Input.html) elements. [InputType](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/HTMLFactory.InputType.html) is an enumeration of input types. [TextArea](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/TextArea.html) and [Select](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Select.html) are created by ``textArea()`` and ``select()`` methods respectively.
 
-``fragment(Object...)`` method creates a [Fragment](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Fragment.html), which is a collection of HTML elements which can be operated on as single unit.
+``fragment(Object...)`` method creates a [Fragment](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Fragment.html), which is a collection of HTML elements which can be operated on as single unit.
 
 Some other low-level factory methods include ``link(Object, Object...)``, ``ol(Iterable<?>)``, and ``ul(Iterable<?>)``.
 
 ## CSS Styles
 
-CSS styles can be set with ``style(String,Object)`` method or with UIElement ``style()`` method which returns [Style](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Style.html) interface providing bindings for frequently used styles, e.g.
+CSS styles can be set with ``style(String,Object)`` method or with UIElement ``style()`` method which returns [Style](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Style.html) interface providing bindings for frequently used styles, e.g.
 
 ```java
 Tag tag = htmlFactory.div(content).style().text().size("150%");
@@ -81,18 +81,18 @@ Tag tag = htmlFactory.div(content).style().text().size("150%");
 ## Bootstrap
 The HTML bundle API provides interfaces and methods for the majority of [Bootstrap](http://getbootstrap.com/) elements. The API attempts to follow Bootstrap documentation as close as possible - interface and method names shall be self-descriptive after getting familiar with Bootstrap.
 
-Bootstrap classes can be set on any UIElement by invoking ``bootstrap()`` method and then one of [Bootstrap](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Boostrap.html) interface methods, e.g.:
+Bootstrap classes can be set on any UIElement by invoking ``bootstrap()`` method and then one of [Bootstrap](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Boostrap.html) interface methods, e.g.:
 
 ```java
 Tag tag = htmlFactory.div(content).bootstrap().grid().container();
 ```
 
 ### Forms
-Bootstrap forms functionality is available through [Form](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Form.html) interface. Inputs shall be created by 
-HTMLFactory and then added to [FormGroup](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/FormGroup.html), [FormInputGroup](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/FormInputGroup.html) or [InputGroup](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/InputGroup.html) by invoking respective Form methods.
+Bootstrap forms functionality is available through [Form](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Form.html) interface. Inputs shall be created by 
+HTMLFactory and then added to [FormGroup](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/FormGroup.html), [FormInputGroup](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/FormInputGroup.html) or [InputGroup](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/InputGroup.html) by invoking respective Form methods.
 
 ### Glyphicons
-[Glyphicons](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Bootstrap.Glyphicon.html) enumeration contains a list of [Bootstrap glyphs](http://getbootstrap.com/components/#glyphicons) and ``glyphicon(Glyphicon)`` method can be used to create a glyph:
+[Glyphicons](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Bootstrap.Glyphicon.html) enumeration contains a list of [Bootstrap glyphs](http://getbootstrap.com/components/#glyphicons) and ``glyphicon(Glyphicon)`` method can be used to create a glyph:
 
 ```java
 Tag searchGlyph = htmlFactory.glyphicon(Glyphicon.search);
@@ -108,26 +108,26 @@ Tag searchGlyph = htmlFactory.glyphicon(Glyphicon.search);
 mySpan.fontAwesome().webApplication(WebApplication.desktop)
 ```
 
-``fontAwesome()`` factory method is a shortcut for ``span().fontAwesome()``. [FontAwesome.Stack](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/FontAwesome.Stack.html) interface is used for creating [stacked icons](https://fortawesome.github.io/Font-Awesome/examples/#stacked), it can be created with the factory method ``fontAwesomeStack()``.
+``fontAwesome()`` factory method is a shortcut for ``span().fontAwesome()``. [FontAwesome.Stack](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/FontAwesome.Stack.html) interface is used for creating [stacked icons](https://fortawesome.github.io/Font-Awesome/examples/#stacked), it can be created with the factory method ``fontAwesomeStack()``.
 
 ## AngularJS
-[AngularJS](https://angularjs.org/) directives can be added to UIElement's by invoking ``angular()`` method and then one of methods of returned [Angular](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Angular.html) instance:
+[AngularJS](https://angularjs.org/) directives can be added to UIElement's by invoking ``angular()`` method and then one of methods of returned [Angular](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Angular.html) instance:
 
 ```java
 myButton.angular().click("doCoolStuff()")
 ```
 
 ## Knockout
-Similarly to AngularJS directives, [Knockout](http://knockoutjs.com/index.html) bindings can be added to UIElement's by invoking ``knockout()`` methods and then of of methods of returned [Knockout](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Knockout.html) instance:
+Similarly to AngularJS directives, [Knockout](http://knockoutjs.com/index.html) bindings can be added to UIElement's by invoking ``knockout()`` methods and then of of methods of returned [Knockout](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Knockout.html) instance:
 
 ```java
 myButton.knockout().click("doCoolStuff()")
 ```
 
-[Knockout virtual elements](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/KnockoutVirtualElement.html) can be created with the factory's ``knockoutVirtualElement(Object... content)`` method.
+[Knockout virtual elements](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/KnockoutVirtualElement.html) can be created with the factory's ``knockoutVirtualElement(Object... content)`` method.
 
 ## Templates and interpolation
-HTMLFactory supports simple templating two [interpolate](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/HTMLFactory.html#interpolate-java.lang.Object-org.nasdanika.html.HTMLFactory.TokenSource-) methods which expand ``{{token name}}`` tokens in the source. Source is stringified before expansion using the algorithm explained above.
+HTMLFactory supports simple templating two [interpolate](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/HTMLFactory.html#interpolate-java.lang.Object-org.nasdanika.html.HTMLFactory.TokenSource-) methods which expand ``{{token name}}`` tokens in the source. Source is stringified before expansion using the algorithm explained above.
 
 If simple interpolation is not enough, you can use [JET](https://eclipse.org/modeling/m2t/?project=jet) templates, [Mustache for Java](https://github.com/spullara/mustache.java) or any other template engine you like.
 
@@ -142,7 +142,7 @@ Tag script = htmlFactory.tag(TagName.script, htmlFactory.interpolate(getClass().
 
 ## Application
 
-``applicationPanel()`` factory methods creates an instance of [ApplicationPanel](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/ApplicationPanel.html), which provides a convenient way to create web pages with a header, navigation bar, several content panels and a footer.
+``applicationPanel()`` factory methods creates an instance of [ApplicationPanel](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/ApplicationPanel.html), which provides a convenient way to create web pages with a header, navigation bar, several content panels and a footer.
 
 ``routerApplication()`` factory method generates a single-page application with a [Backbone route](http://backbonejs.org/#Router) which loads server-side content using AJAX to an HTML element with ``id`` specified in the route path. In this page's URL from the information center ``http://localhost:8080/information-center/router/doc.html#router/doc-content//information-center/router/doc/bundle/org.nasdanika.web/doc/html.md``:
 
@@ -155,7 +155,7 @@ Tag script = htmlFactory.tag(TagName.script, htmlFactory.interpolate(getClass().
 
 Stylesheets and scripts used by the application can be set at the HTMLFactory level or specified by the client code. In Nasdanika Foundation Server applications application-wide scripts and stylesheets are configured through extensions in ``plugin.xml`` of the application bundle.
 
-``bootstrapRouterApplication()`` method is similar to ``routerApplicationMethod()`` but allows to specify a UI [Theme](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/target/site/apidocs/org/nasdanika/html/Theme). [Nasdanika Application Workspace Wizard](Home) generates applications with the default Bootstrap theme and themes from [Bootswatch](https://bootswatch.com/).
+``bootstrapRouterApplication()`` method is similar to ``routerApplicationMethod()`` but allows to specify a UI [Theme](http://www.nasdanika.org/products/html/apidocs/org.nasdanika.html/apidocs/org/nasdanika/html/Theme). [Nasdanika Application Workspace Wizard](Home) generates applications with the default Bootstrap theme and themes from [Bootswatch](https://bootswatch.com/).
 
 ## Sample code
 The code below was generated by a wizard:
