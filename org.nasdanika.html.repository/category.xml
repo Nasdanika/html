@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.nasdanika.html.feature_0.1.0.qualifier.jar" id="org.nasdanika.html.feature" version="0.1.0.qualifier">
+   <feature url="features/org.nasdanika.html.feature_1.2.0.qualifier.jar" id="org.nasdanika.html.feature" version="1.2.0.qualifier">
       <category name="org.nasdanika.runtime"/>
    </feature>
    <category-def name="org.nasdanika.runtime" label="Runtime bundles">

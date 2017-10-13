@@ -2,7 +2,7 @@
 <feature
       id="org.nasdanika.html.feature"
       label="Nasdanika HTML/Bootstrap UI builder"
-      version="0.1.0.qualifier">
+      version="1.2.0.qualifier">
 
    <description>
       Nasdanika HTML/Bootsrapi UI builder.
