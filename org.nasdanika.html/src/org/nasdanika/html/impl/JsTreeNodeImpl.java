@@ -27,6 +27,7 @@ class JsTreeNodeImpl implements JsTreeNode {
 	private String icon;
 	private FontAwesome<Tag> fontAwesome;
 	private HTMLFactory factory;
+	private boolean hasChildren;
 	
 	JsTreeNodeImpl(HTMLFactory factory) {
 		this.factory = factory;
@@ -123,7 +124,7 @@ class JsTreeNodeImpl implements JsTreeNode {
 			}
 		}
 		
-		if (jch.length() == 0 && filter != null && !filter.test(this)) {
+		if (jch.length() == 0 && filter != null && !filter.test(this) && hasChildren) {
 			return null; // no children, this one is not accepted.
 		}
 		
@@ -151,7 +152,7 @@ class JsTreeNodeImpl implements JsTreeNode {
 			data.put("text", text.toString());
 		}
 		
-		data.put("children", jch);
+		data.put("children", jch.length() == 0 && hasChildren ? true : jch);
 
 		data.put("li_attr", liAttributes);
 		data.put("a_attr", aAttributes);
@@ -195,6 +196,12 @@ class JsTreeNodeImpl implements JsTreeNode {
 			childResults.add(child.accept(collector));
 		}
 		return collector.visit(this, childResults);
+	}
+
+	@Override
+	public JsTreeNode hasChildren() {
+		hasChildren = true;
+		return this;
 	}
 
 }
