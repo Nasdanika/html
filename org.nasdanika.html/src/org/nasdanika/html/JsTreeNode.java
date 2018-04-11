@@ -83,6 +83,12 @@ public interface JsTreeNode extends JsTree {
 	JsTreeNode setData(String key, Object data);
 	
 	/**
+	 * If this method is invoked and children collection is empty then toJSON outputs children:true, which can be used in Ajax lazy loading of menus.
+	 * @return
+	 */
+	JsTreeNode hasChildren();
+	
+	/**
 	 * Returns the application defined property of the node with the specified name, or null if it has not been set.
 	 * @param Key
 	 * @return
