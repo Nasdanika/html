@@ -1,0 +1,48 @@
+<project>
+ 
+  <publishDate position="right"/>
+  <version position="right"/>
+  
+  <body>
+ 
+    <breadcrumbs>
+      <item name="Nasdanika" href="../site/index.html"/>
+      <item name="HTML" href="index.html"/>
+    </breadcrumbs>
+ 
+   <menu name="Main">
+      <item name="Overview" href="index.html" />
+      <item name="API Documentation" href="apidocs/index.html" />
+      <item name="Project information" href="project-info.html" />      
+   </menu>
+
+   <menu name="Issues">
+      <item name="Roadmap" href="../../mantis/roadmap_page.php?project_id=3" />
+      <item name="All" href="../../mantis/view_all_bug_page.php?project_id=3" />
+      <item name="Change Log" href="../../mantis/changelog_page.php?project_id=3" />
+   </menu>
+ 
+   <footer><![CDATA[All rights reserved.]]></footer>
+ 
+  </body>    
+ 
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.7</version>
+  </skin>
+  
+  <custom>
+    <fluidoSkin>
+      <gitHub>
+        <projectId>nasdanika/html</projectId>
+        <ribbonOrientation>right</ribbonOrientation>
+        <ribbonColor>gray</ribbonColor>
+      </gitHub>
+      <googleSearch>
+        <sitesearch>https://www.nasdanika.org/products/html</sitesearch>
+      </googleSearch>      
+    </fluidoSkin>
+  </custom>
+ 
+</project>

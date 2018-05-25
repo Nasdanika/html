@@ -1,0 +1,28 @@
+# Java Maven CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details 
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/openjdk:8-jdk
+      
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    working_directory: ~/repo
+
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
+    
+    steps:
+      - checkout
+      - run: wget http://nasdanika.org/commons-net-1.4.1.jar
+      - run: wget http://nasdanika.org/jakarta-oro-2.0.8.jar    
+      - run: ant -verbose -f ftp-clean.xml -lib commons-net-1.4.1.jar:jakarta-oro-2.0.8.jar -Dftp.server=$FTP_SERVER -Dftp.user=$FTP_USER -Dftp.password=$FTP_PASSWORD -Dcircle.artifacts=$CIRCLE_ARTIFACTS
+      - run: cd org.nasdanika.html.parent; mvn -s ../.circleci/settings.xml clean javadoc:javadoc package site-deploy
