@@ -386,8 +386,8 @@ The library depends on [Apache Commons Lang 3](https://commons.apache.org/proper
 
 ## P2 Repository
 
-* ``http://www.nasdanika.org/products/html/repository``
-* [Archived](http://www.nasdanika.org/products/html/org.nasdanika.html.repository-0.1.0-SNAPSHOT.zip)
+* ``https://www.nasdanika.org/products/html/repository``
+* [Archived](https://www.nasdanika.org/products/html/org.nasdanika.html.repository-0.1.0-SNAPSHOT.zip)
 
 ## Use in a Maven project
 
