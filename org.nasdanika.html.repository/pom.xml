@@ -45,13 +45,14 @@
 								<resource>
 									<directory>${basedir}/target</directory>
 									<includes>repository/**</includes>
+									<includes>org.nasdanika.html-*.zip</includes>
 									<filtering>false</filtering>
 								</resource>
 							</resources>
 						</configuration>
 					</execution>
 					<execution>
-						<id>copy-model-javadoc</id>
+						<id>copy-javadoc</id>
 						<phase>pre-site</phase>
 						<goals>
 							<goal>copy-resources</goal>
