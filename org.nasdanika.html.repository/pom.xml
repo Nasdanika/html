@@ -44,8 +44,10 @@
 							<resources>
 								<resource>
 									<directory>${basedir}/target</directory>
-									<includes>repository/**</includes>
-									<includes>org.nasdanika.html-*.zip</includes>
+									<includes>
+										<include>repository/**</include>
+										<include>org.nasdanika.html.repository-*.zip</include>
+									</includes>
 									<filtering>false</filtering>
 								</resource>
 							</resources>
