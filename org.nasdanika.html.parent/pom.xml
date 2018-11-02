@@ -39,13 +39,12 @@
 		-->
 		<repository>
 			<id>third-party</id>
-			<url>http://www.nasdanika.org/third-party/org.nasdanika.third-party.repository/target/repository</url>
-			<!-- <url>http://www.nasdanika.org/third_party_repository</url> -->
+			<url>http://www.nasdanika.org/products/third-party/repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>maven-osgi</id>
-			<url>http://www.nasdanika.org/maven-osgi</url>
+			<url>http://www.nasdanika.org/products/maven-osgi/repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
@@ -171,6 +170,13 @@
 	</build>
 	<modules>
 		<module>../org.nasdanika.html</module>
+		<!-- 
+		<module>../org.nasdanika.html.bootstrap</module>
+		<module>../org.nasdanika.html.knockout</module>
+		<module>../org.nasdanika.html.fontawesome</module>
+		<module>../org.nasdanika.html.jstree</module>
+		<module>../org.nasdanika.html.emf</module>
+		 -->
 		<module>../org.nasdanika.html.feature</module>
 		<module>../org.nasdanika.html.tests</module>
 		<module>../org.nasdanika.html.repository</module>
