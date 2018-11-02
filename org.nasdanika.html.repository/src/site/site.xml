@@ -6,20 +6,28 @@
   <body>
  
     <breadcrumbs>
-      <item name="Nasdanika" href="../site/index.html"/>
+      <item name="Nasdanika" href="../../site/1.0.0/index.html"/>
       <item name="HTML" href="index.html"/>
     </breadcrumbs>
  
    <menu name="Main">
       <item name="Overview" href="index.html" />
-      <item name="API Documentation" href="apidocs/index.html" />
       <item name="Project information" href="project-info.html" />      
    </menu>
 
+   <menu name="Java API Documentation">
+      <item name="Core" href="apidocs/core/index.html" />
+      <item name="Bootstrap" href="apidocs/bootstrap/index.html" />
+      <item name="Knockout" href="apidocs/knockout/index.html" />
+      <item name="Fontawesome" href="apidocs/fontawesome/index.html" />
+      <item name="JsTree" href="apidocs/jstree/index.html" />
+      <item name="EMF" href="apidocs/emf/index.html" />
+   </menu>
+
    <menu name="Issues">
-      <item name="Roadmap" href="../../mantis/roadmap_page.php?project_id=3" />
-      <item name="All" href="../../mantis/view_all_bug_page.php?project_id=3" />
-      <item name="Change Log" href="../../mantis/changelog_page.php?project_id=3" />
+      <item name="Roadmap" href="../../../mantis/roadmap_page.php?project_id=3" />
+      <item name="All" href="../../../mantis/view_all_bug_page.php?project_id=3" />
+      <item name="Change Log" href="../../../mantis/changelog_page.php?project_id=3" />
    </menu>
  
    <footer><![CDATA[All rights reserved.]]></footer>
@@ -40,7 +48,7 @@
         <ribbonColor>gray</ribbonColor>
       </gitHub>
       <googleSearch>
-        <sitesearch>https://www.nasdanika.org/products/html</sitesearch>
+        <sitesearch>https://www.nasdanika.org/products/html/${project.version}</sitesearch>
       </googleSearch>      
     </fluidoSkin>
   </custom>

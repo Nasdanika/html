@@ -81,11 +81,11 @@
 			</plugin>
 		</plugins>
 	</build>
-	<url>https://www.nasdanika.org/products/html/</url>
+	<url>https://www.nasdanika.org/products/html/${project.version}</url>
 	<distributionManagement>
 		<site>
 			<id>nasdanika-org</id>
-			<url>ftp://${env.FTP_SERVER}/html</url>
+			<url>ftp://${env.FTP_SERVER}/html/${project.version}/</url>
 		</site>
 	</distributionManagement>	
 
