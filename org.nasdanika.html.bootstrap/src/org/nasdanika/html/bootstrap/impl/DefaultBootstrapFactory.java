@@ -3,42 +3,8 @@ package org.nasdanika.html.bootstrap.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.nasdanika.html.Accordion;
-import org.nasdanika.html.ApplicationPanel;
-import org.nasdanika.html.Bootstrap;
-import org.nasdanika.html.Breadcrumbs;
-import org.nasdanika.html.Button;
-import org.nasdanika.html.ButtonGroup;
-import org.nasdanika.html.ButtonToolbar;
-import org.nasdanika.html.Carousel;
-import org.nasdanika.html.Dropdown;
-import org.nasdanika.html.FontAwesome;
-import org.nasdanika.html.FontAwesome.Directional;
-import org.nasdanika.html.FontAwesome.Size;
-import org.nasdanika.html.FontAwesome.Spinner;
-import org.nasdanika.html.FontAwesome.Stack;
-import org.nasdanika.html.Form;
-import org.nasdanika.html.HTMLElement;
-import org.nasdanika.html.HTMLFactory;
-import org.nasdanika.html.InputGroup;
-import org.nasdanika.html.JsTreeContextMenuItem;
-import org.nasdanika.html.JsTreeNode;
-import org.nasdanika.html.KnockoutVirtualElement;
-import org.nasdanika.html.LinkGroup;
-import org.nasdanika.html.ListGroup;
-import org.nasdanika.html.Modal;
-import org.nasdanika.html.Navbar;
-import org.nasdanika.html.Pills;
-import org.nasdanika.html.Style;
-import org.nasdanika.html.Table;
-import org.nasdanika.html.Tabs;
-import org.nasdanika.html.Tag;
-import org.nasdanika.html.Tag.TagName;
-import org.nasdanika.html.Theme;
-import org.nasdanika.html.UIElement;
-import org.nasdanika.html.Well;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Well;
 
 /**
  * HTML factory which relies on Bootstrap styles and scripts.

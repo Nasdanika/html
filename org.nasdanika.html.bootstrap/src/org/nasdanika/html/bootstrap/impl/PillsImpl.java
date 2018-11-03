@@ -1,4 +1,4 @@
-package org.nasdanika.html.impl;
+package org.nasdanika.html.bootstrap.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;

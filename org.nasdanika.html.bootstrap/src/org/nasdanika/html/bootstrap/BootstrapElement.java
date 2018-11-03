@@ -5,5 +5,7 @@ import org.nasdanika.html.HTMLElement;
 public interface BootstrapElement<H extends HTMLElement<?>> {
 	
 	H toHTMLElement();
+	
+	BootstrapFactory getFactory();
 
 }

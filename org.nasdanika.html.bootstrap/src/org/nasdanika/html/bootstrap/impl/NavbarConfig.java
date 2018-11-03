@@ -1,4 +1,4 @@
-package org.nasdanika.html.impl;
+package org.nasdanika.html.bootstrap.impl;
 
 interface NavbarConfig {
 
