@@ -2,11 +2,11 @@ package org.nasdanika.html;
 
 import java.util.List;
 
-public interface RowContainer<T extends RowContainer<T>> extends Container<T>, UIElement<T> {
+public interface RowContainer<T extends RowContainer<T>> extends Container<T>, HTMLElement<T> {
 	
-	interface Row extends UIElement<Row>, Container<Row> {
+	interface Row extends HTMLElement<Row>, Container<Row> {
 		
-		interface Cell extends UIElement<Cell>, Container<Cell> {
+		interface Cell extends HTMLElement<Cell>, Container<Cell> {
 			
 			Cell colspan(int colspan);
 			
@@ -17,8 +17,6 @@ public interface RowContainer<T extends RowContainer<T>> extends Container<T>, U
 		Cell cell(Object... content);
 		
 		Cell header(Object... content);
-		
-		Row style(Bootstrap.Style style);
 		
 		List<Cell> cells();
 		

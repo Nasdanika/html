@@ -3,7 +3,6 @@ package org.nasdanika.html.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nasdanika.html.Bootstrap;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.RowContainer;
 
@@ -58,11 +57,6 @@ class RowContainerImpl<T extends RowContainer<T>> extends UIElementImpl<T> imple
 			CellImpl cell = new CellImpl(true, content);
 			this.content.add(cell);
 			return cell;
-		}
-
-		@Override
-		public Row style(org.nasdanika.html.Bootstrap.Style style) {
-			return attribute("class", Bootstrap.Style.PRIMARY.equals(style) ? "active" : style.name().toLowerCase());
 		}
 		
 		@Override

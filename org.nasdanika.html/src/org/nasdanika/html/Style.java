@@ -1,13 +1,13 @@
 package org.nasdanika.html;
 
-import org.nasdanika.html.UIElement.HTMLColor;
+import org.nasdanika.html.HTMLElement.HTMLColor;
 
 /**
  * Java bindings for frequently used CSS styles. 
  * @author Pavel Vlasov
  *
  */
-public interface Style<T extends UIElement<T>> {
+public interface Style<T extends HTMLElement<T>> {
 	
 	/**
 	 * Base for interfaces with normal, initial, and inherit methods. 
@@ -55,8 +55,6 @@ public interface Style<T extends UIElement<T>> {
 		T value(Object color);
 		
 		T htmlColor(HTMLColor color);
-		
-		T bootstrapColor(Bootstrap.Color color);
 		
 	}
 	

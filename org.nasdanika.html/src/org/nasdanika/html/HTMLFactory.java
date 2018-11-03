@@ -6,8 +6,7 @@ import org.nasdanika.html.impl.DefaultHTMLFactory;
 
 
 /**
- * Implementations of this class abstract HTML rendering code from underlying JavaScript/CSS frameworks and
- * rendering of low-level HTML primitives. 
+ * Implementations of this class abstract HTML rendering code from rendering of low-level HTML primitives. 
  * @author Pavel
  *
  */
@@ -39,8 +38,6 @@ public interface HTMLFactory {
 	Tag div(Object... content);
 	
 	Tag span(Object... content);
-	
-	Tag badge(Object... content);
 	
 	enum InputType { 
 		button,
@@ -102,118 +99,11 @@ public interface HTMLFactory {
 	
 	Tag ol(Iterable<?> items);
 	
-	Tabs tabs();
-	
-	Pills pills();
-	
-	Tag panel(Bootstrap.Style style, Object header, Object body, Object footer);
-	
-	/**
-	 * Builds a router reference in a form <code>#router/&lt;targetElement&gt;/&lt;path&gt;</code>
-	 * @param targetElement
-	 * @param path
-	 * @return
-	 */
-	AutoCloseable routeRef(final Object targetElement, final Object path);	
-
-	/**
-	 * Build a link for the in-page router.
-	 * @param targetElement
-	 * @param path
-	 * @param text
-	 * @param hint
-	 * @return
-	 */
-	Tag routeLink(Object targetElement, Object path, Object... content);	
-	
-	/**
-	 * Generates a router application with Bootstrap script and style.
-	 * @param title Application title.
-	 * @param initialRoute Initial route to navigate.
-	 * @param head Declarations to add to head, e.g. script and css references.
-	 * @param body Application body.
-	 * @return
-	 */
-	AutoCloseable bootstrapRouterApplication(
-			Theme theme,
-			Object title, 
-			Object initialRoute, 
-			Object head, 
-			Object... body);
-	
-	/**
-	 * Generates a router application
-	 * @param title Application title.
-	 * @param initialRoute Initial route to navigate.
-	 * @param head Declarations to add to head, e.g. script and css references.
-	 * @param body Application body.
-	 * @return
-	 */
-	AutoCloseable routerApplication(
-			Object title, 
-			Object initialRoute, 
-			Object head, 
-			Object... body);
-
-	Tag label(Bootstrap.Style style, Object... content);
-	
-	Tag alert(Bootstrap.Style style, boolean dismissable, Object... content);
-	
-	// TODO - code from InputStream/Reader, e.g. from class loader resource, escape for putting to attributes, e.g. onclick() 
-	// String code(InputStream in, boolean escape);
-	
-	/****************************
-	 *  Complex elements API's  *
-	 ****************************/
-
-	ListGroup listGroup();
-	
-	LinkGroup linkGroup();
-	
-	Navbar navbar(Object brand, Object brandRef);
-	
 	Table table();
 			
-	ApplicationPanel applicationPanel();
-	
 	Button button(Object... content);
 	
 	Form form();
-	
-	InputGroup<?> inputGroup(Object control);
-
-	Accordion accordion();
-	
-	Object collapsible(Bootstrap.Style style, Object title, boolean collapsed, Object... content);
-	
-	enum Placement { LEFT, TOP, RIGHT, BOTTOM }
-	
-	/**
-	 * Adds attributes to the element, typically a button, to make it a popover. 
-	 * This method does not initialize the popover, it shall be done through JavaScript <code>$(selector).popover();</code> e.g.
-	 * <code>$('#my_popover_button').popover();</code>
-	 * @param element Element
-	 * @param placement popover placement.
-	 * @param title popover title
-	 * @param text popover text
-	 * @return
-	 */
-	<T extends UIElement<?>> T popover(T element, Placement placement, String title, String text);
-	
-	/**
-	 * Adds tooltip to the element. 
-	 * This method does not initialize the tooltip, it shall be done through JavaScript <code>$(selector).tooltip();</code> e.g.
-	 * <code>$('#my_button').tooltip();</code>
-	 * @param element Element
-	 * @param placement tooltip placement.
-	 * @param text tooltip text
-	 * @return
-	 */
-	<T extends UIElement<?>> T tooltip(T element, Placement placement, String text);	
-	
-	Tag glyphicon(Bootstrap.Glyphicon glyphicon);
-	
-	Modal modal();
 	
 	/**
 	 * Generates document.title = title script.
@@ -236,33 +126,9 @@ public interface HTMLFactory {
 	 */
 	Tag inject(Object selector, Object... content);
 	
-	Breadcrumbs breadcrumbs();
-	
-	ButtonGroup buttonGroup(Button... buttons);
-	
-	ButtonToolbar buttonToolbar(ButtonGroup... buttonGroups);
-	
 	// --- JavaScript ---
 	
 	Function function(Object... param);
-	
-	/**
-	 * Generates RequireJS <code>require([module list], function)</code> 
-	 * @param function
-	 * @param module
-	 * @return
-	 */
-	Require require(Object function, Object... module);
-
-	Carousel carousel();
-	
-	/**
-	 * Shortcut for <code>factory.span().fontAwesome();</code>
-	 * @return
-	 */
-	FontAwesome<Tag> fontAwesome();
-	
-	FontAwesome.Stack fontAwesomeStack();
 	
 	/**
 	 * Creates an overlay div with vertically and horizontally centered content.
@@ -272,36 +138,11 @@ public interface HTMLFactory {
 	Tag overlay(Object... content);
 	
 	/**
-	 * Creates an overlay div with a spinning spinner.
-	 * @param spinner
-	 * @return
-	 */
-	Tag spinnerOverlay(FontAwesome.Spinner spinner);
-	
-	/**
 	 * Generates JavaScript code (without script tag) to size the overlay and then display it.
 	 * @param overlaySelector
 	 * @param overlayedSelector
 	 */
 	String showOverlay(String overlaySelector, String overlayedSelector, int widthAdjustment, int heightAdjustment);
-	
-	Well well(Object... content);
-	
-	/**
-	 * Generates script to stack modals as demonstrated at http://miles-by-motorcycle.com/static/bootstrap-modal/index.html
-	 * @return
-	 */
-	Tag stackModal();
-	
-	Dropdown<?> dropdown(UIElement<?> toggle);
-	
-	/**
-	 * Dropdown with the caret-down toggle.
-	 * @return
-	 */
-	Dropdown<?> caretDropdown();
-	
-	KnockoutVirtualElement knockoutVirtualElement(Object... content);
 	
 	/**
 	 * Source of token values for interpolation.
@@ -341,9 +182,5 @@ public interface HTMLFactory {
 	 * @return
 	 */
 	String interpolate(Object input, String token, Object value);
-	
-	JsTreeNode jsTreeNode();
-	
-	JsTreeContextMenuItem jsTreeContextMenuItem();
 	
 }

@@ -1,11 +1,10 @@
 package org.nasdanika.html.impl;
 
-import org.nasdanika.html.Bootstrap;
+import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.HTMLElement.HTMLColor;
 import org.nasdanika.html.Style;
-import org.nasdanika.html.UIElement;
-import org.nasdanika.html.UIElement.HTMLColor;
 
-class StyleImpl<T extends UIElement<T>> implements Style<T> {
+class StyleImpl<T extends HTMLElement<T>> implements Style<T> {
 	
 	/**
 	 * Helper base class
@@ -389,11 +388,6 @@ class StyleImpl<T extends UIElement<T>> implements Style<T> {
 		@Override
 		public T htmlColor(HTMLColor color) {
 			return super.value(color.name());
-		}
-
-		@Override
-		public T bootstrapColor(Bootstrap.Color color) {
-			return super.value(color.code);
 		}
 		
 	}

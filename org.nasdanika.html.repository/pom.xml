@@ -7,9 +7,14 @@
 	<parent>
 		<groupId>org.nasdanika.html</groupId>
 		<artifactId>org.nasdanika.html.parent</artifactId>
-		<version>1.2.0-SNAPSHOT</version>
+		<version>2.0.0-SNAPSHOT</version>
 		<relativePath>../org.nasdanika.html.parent</relativePath>
 	</parent>
+	
+	<properties>
+		<siteDir>html/${project.version}</siteDir>
+	</properties>
+	
 	<build>
 		<extensions>
 			<!-- Enabling the use of FTP -->
@@ -20,6 +25,29 @@
 			</extension>
 		</extensions>
 		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<skipAssembly>false</skipAssembly>
+					<outputDirectory>${project.build.directory}/site</outputDirectory>
+					<formats>zip</formats>
+					<finalName>html</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<descriptor>src/assembly/workspace.xml</descriptor>
+					</descriptors>
+				</configuration>
+			        <executions>
+			          <execution>
+			            <id>create-archive</id>
+			            <phase>pre-site</phase>
+			            <goals>
+			              <goal>single</goal>
+			            </goals>
+			          </execution>
+			        </executions>
+			</plugin>			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-site-plugin</artifactId>
@@ -54,16 +82,96 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>copy-javadoc</id>
+						<id>copy-core-javadoc</id>
 						<phase>pre-site</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs</outputDirectory>
+							<outputDirectory>${basedir}/target/site/apidocs/core</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/../org.nasdanika.html/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-bootstrap-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/bootstrap</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../org.nasdanika.html.bootstrap/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-fontawesome-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/fontawesome</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../org.nasdanika.html.fontawesome/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-knockout-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/knockout</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../org.nasdanika.html.knockout/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-jstree-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/jstree</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../org.nasdanika.html.jstree/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-emf-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/emf</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../org.nasdanika.html.emf/target/site/apidocs</directory>
 									<filtering>false</filtering>
 								</resource>								
 							</resources>
@@ -79,13 +187,56 @@
 					<includeAllDependencies>true</includeAllDependencies>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>ftp</id>
+						<phase>post-site</phase>
+						<configuration>
+							<target>
+								<ftp passive="yes" action="mkdir" server="${env.FTP_SERVER}" userid="${env.FTP_USER}" password="${env.FTP_PASSWORD}" remotedir="/${siteDir}"/>
+							
+								<ftp passive="yes" action="delete" server="${env.FTP_SERVER}" userid="${env.FTP_USER}" password="${env.FTP_PASSWORD}" remotedir="/${siteDir}">
+									<fileset defaultexcludes="false">
+										<include name="**" />
+									</fileset>
+								</ftp>
+								
+								<ftp passive="yes" action="rmdir" server="${env.FTP_SERVER}" userid="${env.FTP_USER}" password="${env.FTP_PASSWORD}" remotedir="/${siteDir}">
+									<fileset defaultexcludes="false">
+										<include name="**" />
+									</fileset>
+								</ftp>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>commons-net</groupId>
+						<artifactId>commons-net</artifactId>
+						<version>1.4.1</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-commons-net</artifactId>
+						<version>1.8.1</version>
+					</dependency>
+				</dependencies>
+			</plugin>					
 		</plugins>
 	</build>
-	<url>https://www.nasdanika.org/products/html/${project.version}</url>
+	<url>https://www.nasdanika.org/products/${siteDir}/</url>
 	<distributionManagement>
 		<site>
 			<id>nasdanika-org</id>
-			<url>ftp://${env.FTP_SERVER}/html/${project.version}/</url>
+			<url>ftp://${env.FTP_SERVER}/${siteDir}</url>
 		</site>
 	</distributionManagement>	
 

@@ -22,7 +22,4 @@ jobs:
     
     steps:
       - checkout
-      - run: wget http://nasdanika.org/commons-net-1.4.1.jar
-      - run: wget http://nasdanika.org/jakarta-oro-2.0.8.jar    
-      - run: ant -verbose -f ftp-clean.xml -lib commons-net-1.4.1.jar:jakarta-oro-2.0.8.jar -Dftp.server=$FTP_SERVER -Dftp.user=$FTP_USER -Dftp.password=$FTP_PASSWORD -Dcircle.artifacts=$CIRCLE_ARTIFACTS
       - run: cd org.nasdanika.html.parent; mvn -s ../.circleci/settings.xml clean javadoc:javadoc package site-deploy

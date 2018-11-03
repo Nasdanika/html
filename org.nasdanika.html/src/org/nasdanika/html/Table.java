@@ -1,26 +1,13 @@
 package org.nasdanika.html;
 
-public interface Table extends UIElement<Table>, RowContainer<Table> {
+public interface Table extends HTMLElement<Table>, RowContainer<Table> {
+		
+	/**
+	 * Creates ``col`` tag in the ``colgroup``.
+	 * @return
+	 */
+	Tag col();
 	
-	Table bordered(boolean bordered);
-	
-	Table hover(boolean hover);
-	
-	Table striped(boolean striped);
-	
-	Table condensed(boolean condensed);
-	
-	Table responsive(boolean responsive);
-
-	Table bordered();
-	
-	Table hover();
-	
-	Table striped();
-	
-	Table condensed();
-	
-	Table responsive();
 
 	RowContainer<?> header();
 
@@ -28,10 +15,5 @@ public interface Table extends UIElement<Table>, RowContainer<Table> {
 	
 	RowContainer<?> footer();
 	
-	/**
-	 * Creates ``col`` tag in the ``colgroup``.
-	 * @return
-	 */
-	Tag col();
 	
 }

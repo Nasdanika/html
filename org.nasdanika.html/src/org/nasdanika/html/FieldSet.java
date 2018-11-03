@@ -1,7 +1,7 @@
 package org.nasdanika.html;
 
 
-public interface FieldSet extends UIElement<FieldSet>, FieldContainer<FieldSet> {
+public interface FieldSet extends HTMLElement<FieldSet>, FieldContainer<FieldSet> {
 	
 	FieldSet disabled(boolean disabled);
 	

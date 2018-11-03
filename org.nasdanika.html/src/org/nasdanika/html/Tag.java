@@ -8,7 +8,7 @@ package org.nasdanika.html;
  * @author Pavel
  *
  */
-public interface Tag extends UIElement<Tag>, Container<Tag> {
+public interface Tag extends HTMLElement<Tag>, Container<Tag> {
 
 	enum TagName {
 		a(true),

@@ -6,7 +6,7 @@
 	<groupId>org.nasdanika.html</groupId>
 	<artifactId>org.nasdanika.html.parent</artifactId>
 	<name>HTML Parent</name>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>2.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<!-- tycho requires maven >= 3.0 -->
@@ -15,28 +15,21 @@
 	</prerequisites>
 
 	<properties>
-		<tycho-version>1.1.0</tycho-version>
+		<tycho-version>1.2.0</tycho-version>
 	</properties>
 
 	<repositories>
 		<!-- configure p2 repository to resolve against -->
 		<repository>
-			<id>oxygen</id>
-			<url>http://download.eclipse.org/releases/oxygen</url>
+			<id>eclipse</id>
+			<url>http://download.eclipse.org/releases/photon</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>orbit</id>
-				<url>http://download.eclipse.org/tools/orbit/downloads/drops/R20170516192513/repository</url>
+				<url>http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository</url>
 			<layout>p2</layout>
 		</repository>
-		<!-- 
-		<repository>
-			<id>jetty</id>
-			<url>http://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.3.9.v20160517</url>
-			<layout>p2</layout>
-		</repository>
-		-->
 		<repository>
 			<id>third-party</id>
 			<url>http://www.nasdanika.org/products/third-party/repository</url>
@@ -92,7 +85,14 @@
 			        <skip>true</skip>
 			        <skipDeploy>true</skipDeploy>
 			    </configuration>
-			</plugin>		
+			</plugin>	
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+				    <skipAssembly>true</skipAssembly>
+				</configuration>
+			</plugin>						
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -170,15 +170,15 @@
 	</build>
 	<modules>
 		<module>../org.nasdanika.html</module>
-		<!-- 
 		<module>../org.nasdanika.html.bootstrap</module>
+		<!-- 
 		<module>../org.nasdanika.html.knockout</module>
 		<module>../org.nasdanika.html.fontawesome</module>
 		<module>../org.nasdanika.html.jstree</module>
 		<module>../org.nasdanika.html.emf</module>
-		 -->
-		<module>../org.nasdanika.html.feature</module>
 		<module>../org.nasdanika.html.tests</module>
+		-->
+		<module>../org.nasdanika.html.feature</module>
 		<module>../org.nasdanika.html.repository</module>
 	</modules>
 	<!-- For resolution of JavaDoc between modules -->

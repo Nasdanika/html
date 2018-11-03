@@ -1,29 +1,7 @@
 package org.nasdanika.html;
 
 
-public interface Form extends UIElement<Form>, FieldContainer<Form> {
-	
-	/**
-	 * Sets the form as horizontal.
-	 * @param deviceSize Device size code to use in column width specifications.
-	 * @param labelWidth Label column width.
-	 * @return
-	 */
-	Form horizontal(Bootstrap.DeviceSize deviceSize, int labelWidth);
-	
-	/**
-	 * 
-	 * @param inline Inline form if true.
-	 * @param hideLabels Adds "sr-only" class to labels if true.
-	 * @return
-	 */
-	Form inline(boolean inline, boolean hideLabels);
-	
-	/**
-	 * Same as inline(true, true);
-	 * @return
-	 */
-	Form inline();	
+public interface Form extends HTMLElement<Form>, FieldContainer<Form> {
 	
 	// Standard form attributes
 	
@@ -58,13 +36,6 @@ public interface Form extends UIElement<Form>, FieldContainer<Form> {
 	Form novalidate(boolean novalidate);
 	
 	Form target(String target);		
-	
-	/**
-	 * Adds AngularJS submit attribute.
-	 * @param handler
-	 * @return
-	 */
-	Form ngSubmit(Object handler);
 	
 }
 
