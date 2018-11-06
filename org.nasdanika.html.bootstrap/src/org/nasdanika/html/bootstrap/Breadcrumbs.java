@@ -4,14 +4,14 @@ import org.nasdanika.html.Tag;
 
 public interface Breadcrumbs extends BootstrapElement<Tag> {
 	
+	boolean isEmpty();
+	
 	/**
-	 * Adds breadcrumbs entry
-	 * @param href Reference, if null, then given item is considered active.
-	 * @param content entry content.
+	 * Adds a breadcrumb item. href can be null - in this case the item is marked as active (last item).
+	 * @param href
+	 * @param content
 	 * @return
 	 */
 	Breadcrumbs item(Object href, Object... content);
-	
-	boolean isEmpty();
 
 }

@@ -46,6 +46,10 @@ public class HTMLElementFilter<T extends HTMLElement<T>> implements HTMLElement<
 		return target.attribute(name, value);
 	}
 
+	public T attribute(String name, Object value, boolean condition) {
+		return target.attribute(name, value, condition);
+	}
+
 	public String getAttribute(String name) {
 		return target.getAttribute(name);
 	}
@@ -55,6 +59,10 @@ public class HTMLElementFilter<T extends HTMLElement<T>> implements HTMLElement<
 	}
 
 	public T addClass(Object... clazz) {
+		return target.addClass(clazz);
+	}
+
+	public T addClassConditional(boolean condition, Object... clazz) {
 		return target.addClass(clazz);
 	}
 

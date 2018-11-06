@@ -1,23 +1,38 @@
 package org.nasdanika.html.bootstrap.impl;
 
-import org.nasdanika.html.Breadcrumbs;
-import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.Tag.TagName;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Breadcrumbs;
 
-class BreadcrumbsImpl extends UIElementImpl<Breadcrumbs> implements Breadcrumbs {
-
-	public BreadcrumbsImpl(HTMLFactory factory) {
-		super(factory, TagName.ol);
-		addClass("breadcrumb");
-	}
+class BreadcrumbsImpl extends BootstrapElementImpl<Tag> implements Breadcrumbs {
 	
+	private Tag nav;
+	private Tag ol;
+
+	public BreadcrumbsImpl(BootstrapFactory factory) {
+		super(factory);
+		nav = getFactory().getHTMLFactory().tag("nav").attribute("aria-label", "breadcrumb");
+		ol = getFactory().getHTMLFactory().tag(TagName.ol).addClass("breadcrumb");
+		nav.content(ol);
+	}
+
 	@Override
-	public Breadcrumbs item(Object href, Object... itemContent) {
-		if (href==null) {
-			this.content.add(factory.tag(TagName.li, itemContent).addClass("active"));
-		} else {
-			this.content.add(factory.tag(TagName.li, factory.link(href, itemContent)));
-		}
+	public Tag toHTMLElement() {
+		return nav;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return ol.isEmpty();
+	}
+
+	@Override
+	public Breadcrumbs item(Object href, Object... content) {
+		ol.content(getFactory().getHTMLFactory()
+				.tag(TagName.li, href== null ? content : new Object[] { getFactory().getHTMLFactory().link(href, content) })
+				.addClass("breadcrumb-item")
+				.addClassConditional(href == null, "active"));
 		return this;
 	}
 

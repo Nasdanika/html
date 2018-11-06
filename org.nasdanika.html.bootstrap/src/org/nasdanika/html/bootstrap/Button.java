@@ -1,31 +1,39 @@
 package org.nasdanika.html.bootstrap;
 
-import org.nasdanika.html.Container;
+import org.nasdanika.html.HTMLElement;
 
-public interface Button extends BootstrapElement<org.nasdanika.html.Button>, Dropdown<Button>, Container<Button> {
-		
-	Button style(Bootstrap.Style style);
+public interface Button<H extends HTMLElement<?>> extends BootstrapElement<H> {
 	
-	Button size(Bootstrap.Size size);
+	Button<H> large();
+	Button<H> large(boolean large);
 	
-	Button block(boolean block);
+	Button<H> small();
+	Button<H> small(boolean small);
 	
-	Button block();
+	Button<H> block();
+	Button<H> block(boolean block);
 	
-	Button active(boolean active);
+	Button<H> active();
+	Button<H> active(boolean active);
 	
-	Button active();
 	
-	Button disabled(boolean disabled);
+	Button<H> disabled();
 	
-	Button disabled();
+	/**
+	 * Sets disabled attribute for buttons, adds disabled class otherwise.
+	 * @param disabled
+	 * @return
+	 */
+	Button<H> disabled(boolean disabled);
 	
-	Button split(boolean split);
+	Button<H> dataToggle();
 	
-	Button split();
+	/**
+	 * Sets data-toggle to button.
+	 * @param dataToggle
+	 * @return
+	 */
+	Button<H> dataToggle(boolean dataToggle);
 	
-	Button dropup(boolean dropup);
-	
-	Button dropup();
 
 }

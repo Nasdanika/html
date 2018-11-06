@@ -331,6 +331,13 @@ public interface HTMLElement<T extends HTMLElement<T>> extends AutoCloseable, Pr
 	 */
 	T attribute(String name, Object value);
 	
+	/**
+	 * Conditionally sets attribute. A convenience method for writing more compact code.
+	 * @return
+	 * 
+	 */
+	T attribute(String name, Object value, boolean condition);	
+	
 	String getAttribute(String name);
 	
 	/**
@@ -349,6 +356,14 @@ public interface HTMLElement<T extends HTMLElement<T>> extends AutoCloseable, Pr
 	 * @return
 	 */
 	T addClass(Object... clazz);
+	
+	/**
+	 * Adds class definition if condition is true. Convenience method to write shorter code.
+	 * @param clazz
+	 * @return
+	 */
+	T addClassConditional(boolean condition, Object... clazz);
+	
 	
 	T comment(String comment);
 	

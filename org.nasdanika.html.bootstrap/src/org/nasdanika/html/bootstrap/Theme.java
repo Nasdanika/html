@@ -1,5 +1,10 @@
 package org.nasdanika.html.bootstrap;
 
+/**
+ * Enumeration for out-of-the-box and Bootswatch themes.
+ * @author Pavel Vlasov
+ *
+ */
 public enum Theme {
 	/** No theme **/
 	None,
@@ -18,17 +23,27 @@ public enum Theme {
 	/** Bootswatch theme **/
 	Journal,
 	/** Bootswatch theme **/
+	Litera,
+	/** Bootswatch theme **/
 	Lumen,
 	/** Bootswatch theme **/
-	Paper,
+	Lux,
 	/** Bootswatch theme **/
-	Readable,
+	Materia,
+	/** Bootswatch theme **/
+	Minty,	
+	/** Bootswatch theme **/
+	Pulse,
 	/** Bootswatch theme **/
 	Sandstone,
 	/** Bootswatch theme **/
 	Simplex,
 	/** Bootswatch theme **/
+	Sketchy,
+	/** Bootswatch theme **/
 	Slate,
+	/** Bootswatch theme **/
+	Solar,
 	/** Bootswatch theme **/
 	Spacelab,
 	/** Bootswatch theme **/

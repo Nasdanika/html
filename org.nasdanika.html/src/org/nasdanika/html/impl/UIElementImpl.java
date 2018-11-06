@@ -33,8 +33,6 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 
 
 	private static final String STYLE = "style";
-
-	private static final String DATA_BIND = "data-bind";
 	
 	private static final String CLASS = "class";
 	
@@ -47,10 +45,6 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 	protected Map<String, Object> attributes = new LinkedHashMap<>();
 	
 	private Map<String, Object> styles = new LinkedHashMap<>();
-	
-	private Map<String, Object> koDataBindEntries = new LinkedHashMap<>();
-	
-	private Map<String, Object> koInitialValueEntries = new HashMap<>();
 
 	protected HTMLFactory factory;
 	
@@ -81,11 +75,10 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 		StringBuilder attributeBuilder = new StringBuilder();
 		
 		for (Entry<String, Object> a: attributes.entrySet()) {
-			if (!DATA_BIND.equals(a.getKey()) 
-					&& !STYLE.equals(a.getKey()) 
+			if (!STYLE.equals(a.getKey())
 					&& !CLASS.equals(a.getKey()) 
 					&& !Arrays.asList(excluded).contains(a.getKey())) {
-				if (attributeBuilder.length()>0) {
+				if (attributeBuilder.length() > 0) {
 					attributeBuilder.append(" ");
 				}				
 				Object value = a.getValue();
@@ -105,16 +98,6 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 					attributeBuilder.append(" ");
 				}
 				attributeBuilder.append(STYLE+"=\""+styleBuilder+"\"");				
-			}
-		}
-		
-		if (!Arrays.asList(excluded).contains(DATA_BIND)) {
-			StringBuilder dataBindBuilder = dataBinds();
-			if (dataBindBuilder.length()>0) {
-				if (attributeBuilder.length()>0) {
-					attributeBuilder.append(" ");
-				}
-				attributeBuilder.append(DATA_BIND+"=\""+dataBindBuilder+"\"");				
 			}
 		}
 		
@@ -146,20 +129,6 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 			classBuilder.append(stringify(attributes.get(CLASS), 0));
 		}
 		return classBuilder;
-	}
-
-	protected StringBuilder dataBinds() {
-		StringBuilder dataBindBuilder = new StringBuilder();
-		if (attributes.containsKey(DATA_BIND)) {
-			dataBindBuilder.append(stringify(attributes.get(DATA_BIND), 0));
-		}
-		for (Entry<String, Object> se: koDataBindEntries.entrySet()) {
-			if (dataBindBuilder.length()>0 && !dataBindBuilder.toString().trim().endsWith(",")) {
-				dataBindBuilder.append(",");
-			}
-			dataBindBuilder.append(se.getKey()+":"+stringify(se.getValue(), 0));
-		}
-		return dataBindBuilder;
 	}
 
 	protected StringBuilder styles() {
@@ -228,6 +197,12 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 		}
 		return (T) this;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public T attribute(String name, Object value, boolean condition) {
+		return condition ? attribute(name, value) : (T) this;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -241,8 +216,6 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 	}
 	
 	private List<Object> classes = new ArrayList<>();
-
-	private Object remoteContent;
 
 	private String comment;
 	
@@ -262,6 +235,12 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 			}
 		}
 		return (T) this;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public T addClassConditional(boolean condition, Object... clazz) {
+		return condition ? addClass(clazz) : (T) this;
 	}
 	
 	protected void removeClass(Object... clazz) {
@@ -300,8 +279,6 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 		for (Object style: styles.values()) {
 			close(style);
 		}	
-		close(remoteContent);
-		
 		for (Object c: getContent()) {
 			close(c);
 		}
@@ -344,14 +321,6 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 	public T on(String event, InputStream handler) throws IOException {
 		return on(event, new InputStreamReader(handler));
 	}		
-	
-	protected String genLoadRemoteContentScript() {
-		if (remoteContent==null) {
-			return "";
-		}
-		
-		return factory.tag("script", "nsdLoad(\"#"+getId()+"\", \""+remoteContent+"\");").toString();
-	}
 			
 	@SuppressWarnings("unchecked")
 	@Override
@@ -522,7 +491,7 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 		if (!theContent.isEmpty() && !hasNonUIElementContent) {
 			indent(sb, indent);
 		}
-		return sb.append("</").append(getTagName()).append(">").append(genLoadRemoteContentScript()).toString();
+		return sb.append("</").append(getTagName()).append(">").toString();
 	}
 
 	private boolean forceEndTag() {

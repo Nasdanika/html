@@ -16,5 +16,10 @@ abstract class BootstrapElementImpl<H extends HTMLElement<?>> implements Bootstr
 	public BootstrapFactory getFactory() {
 		return factory;
 	}
+	
+	@Override
+	public String toString() {
+		return toHTMLElement().toString();
+	}
 
 }

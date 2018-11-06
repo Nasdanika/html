@@ -28,4 +28,9 @@ class TagImpl extends UIElementImpl<Tag> implements Tag {
 		return super.getTagName();
 	}
 
+	@Override
+	public boolean is(TagName tagName) {
+		return getTagName().equalsIgnoreCase(tagName.name());
+	}
+
 }

@@ -149,4 +149,6 @@ public interface Tag extends HTMLElement<Tag>, Container<Tag> {
 
 	String getTagName();
 	
+	boolean is(TagName tagName);
+	
 }

@@ -25,4 +25,16 @@ class ButtonImpl extends UIElementImpl<Button> implements Button {
 	public Button content(Object... content) {
 		return super.content(content);
 	}
+
+	@Override
+	public Button disabled(boolean disabled) {
+		attribute("disabled", disabled ? true : null);
+		return this;
+	}
+
+	@Override
+	public Button disabled() {
+		return disabled(true);
+	}
+	
 }
