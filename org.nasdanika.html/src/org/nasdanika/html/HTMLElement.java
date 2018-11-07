@@ -9,7 +9,7 @@ import java.io.Reader;
  * @author Pavel
  *
  */
-public interface HTMLElement<T extends HTMLElement<T>> extends AutoCloseable, Producer, Markup {
+public interface HTMLElement<T extends HTMLElement<T>> extends AutoCloseable, Producer, BlockElement {
 	
 	/**
 	 * HTML Color codes.

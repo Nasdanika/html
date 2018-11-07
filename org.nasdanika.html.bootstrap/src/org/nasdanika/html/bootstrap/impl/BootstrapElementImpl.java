@@ -8,7 +8,7 @@ abstract class BootstrapElementImpl<H extends HTMLElement<?>> implements Bootstr
 	
 	private BootstrapFactory factory;
 
-	public BootstrapElementImpl(BootstrapFactory factory) {
+	protected BootstrapElementImpl(BootstrapFactory factory) {
 		this.factory = factory;
 	}
 	

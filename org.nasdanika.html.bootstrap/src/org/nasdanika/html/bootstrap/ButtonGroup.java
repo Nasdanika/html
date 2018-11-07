@@ -1,8 +1,9 @@
 package org.nasdanika.html.bootstrap;
 
+import org.nasdanika.html.BlockElement;
 import org.nasdanika.html.Tag;
 
-public interface ButtonGroup extends BootstrapElement<Tag> {
+public interface ButtonGroup extends BootstrapElement<Tag>, BlockElement {
 	
 	ButtonGroup large();
 	ButtonGroup large(boolean large);

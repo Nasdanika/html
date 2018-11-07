@@ -1,8 +1,8 @@
 package org.nasdanika.html.bootstrap;
 
-import org.nasdanika.html.Tag.TagName;
+import org.nasdanika.html.BlockElement;
 
-public interface Dropdown {
+public interface Dropdown extends BlockElement {
 	
 	Dropdown item(Object href, boolean active, boolean disabled, Object... content);
 	
