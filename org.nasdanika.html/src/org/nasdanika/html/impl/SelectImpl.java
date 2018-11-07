@@ -11,10 +11,10 @@ class SelectImpl extends InputBaseImpl<Select> implements Select {
 		super(factory, TagName.select);
 	}
 	
-	private class OptionGroupImpl extends UIElementImpl<OptionGroup> implements OptionGroup {
+	private class OptionGroupImpl extends HTMLElementImpl<OptionGroup> implements OptionGroup {
 		
 		public OptionGroupImpl(Object label) {
-			super(SelectImpl.this.factory, TagName.optgroup);
+			super(SelectImpl.this.factory, TagName.optgroup, false);
 			attribute("label", label);
 		}
 

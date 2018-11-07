@@ -5,10 +5,10 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.InputBase;
 import org.nasdanika.html.Tag;
 
-abstract class InputBaseImpl<T extends InputBase<T>> extends UIElementImpl<T> implements InputBase<T> {
+abstract class InputBaseImpl<T extends InputBase<T>> extends HTMLElementImpl<T> implements InputBase<T> {
 	
 	InputBaseImpl(HTMLFactory factory, String tagName) {
-		super(factory, tagName);
+		super(factory, tagName, false);
 	}
 
 	InputBaseImpl(HTMLFactory factory, Tag.TagName tagName) {

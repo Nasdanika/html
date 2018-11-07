@@ -7,12 +7,12 @@ import org.nasdanika.html.FormFragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag.TagName;
 
-class FormImpl extends UIElementImpl<Form> implements Form {
+class FormImpl extends HTMLElementImpl<Form> implements Form {
 	
 	private FieldContainerImpl<Form> container;
 
 	FormImpl(HTMLFactory factory) {
-		super(factory, TagName.form);
+		super(factory, TagName.form, false);
 		container = new FieldContainerImpl<Form>(factory, this, this);
 		this.content.add(container);
 	}

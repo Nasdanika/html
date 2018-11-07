@@ -4,10 +4,10 @@ import org.nasdanika.html.Button;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag.TagName;
 
-class ButtonImpl extends UIElementImpl<Button> implements Button {
+class ButtonImpl extends HTMLElementImpl<Button> implements Button {
 	
 	ButtonImpl(HTMLFactory factory, Object... content) {
-		super(factory, TagName.button);
+		super(factory, TagName.button, false);
 		for (Object c: content) {
 			if (c!=null) {
 				this.content.add(c);

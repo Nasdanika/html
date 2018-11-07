@@ -10,14 +10,27 @@ import org.nasdanika.html.bootstrap.Color;
 class ButtonImpl<H extends HTMLElement<?>> extends BootstrapElementImpl<H> implements Button<H> {
 
 	H htmlElement;
+	private Color color;
+	private boolean outline;
 	
 	public ButtonImpl(BootstrapFactory factory, H htmlElement, Color color, boolean outline) {
 		super(factory);
 		this.htmlElement = htmlElement;
 		htmlElement.addClass("btn")
 		.addClassConditional(!outline, "btn-"+color.code)
-		.addClassConditional(!outline, "btn-outline-"+color.code)
+		.addClassConditional(outline, "btn-outline-"+color.code)
 		.attribute("role", "button", htmlElement instanceof Tag && ((Tag) htmlElement).is(TagName.a) ); // For <a>
+		
+		this.color = color;
+		this.outline = outline;
+	}
+	
+	Color getColor() {
+		return color;
+	}
+	
+	boolean isOutline() {
+		return outline;
 	}
 
 	@Override
@@ -93,6 +106,16 @@ class ButtonImpl<H extends HTMLElement<?>> extends BootstrapElementImpl<H> imple
 	public Button<H> dataToggle(boolean dataToggle) {
 		htmlElement.attribute("data-toggle", "button", dataToggle);
 		return null;
+	}
+
+	@Override
+	public void close() throws Exception {
+		htmlElement.close();		
+	}
+
+	@Override
+	public Object produce(int indent) {
+		return htmlElement.produce(indent);
 	}
 
 }

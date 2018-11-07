@@ -35,7 +35,32 @@ public interface HTMLFactory {
 	
 	Tag tag(Tag.TagName tagName, Object... content);
 	
+	/**
+	 * Creates a tag which is rendered only if it has content.
+	 * @param tagName
+	 * @param content
+	 * @return
+	 */
+	Tag nonEmptyTag(String tagName, Object... content);
+
+	/**
+	 * Creates a tag which is rendered only if it has content.
+	 * @param tagName
+	 * @param content
+	 * @return
+	 */
+	Tag nonEmptyTag(Tag.TagName tagName, Object... content);
+	
+	
 	Tag div(Object... content);
+	
+	/**
+	 * Creates a div which is rendered only if it has content.
+	 * @param content
+	 * @return
+	 */
+	Tag nonEmptyDiv(Object... content);
+	
 	
 	Tag span(Object... content);
 	

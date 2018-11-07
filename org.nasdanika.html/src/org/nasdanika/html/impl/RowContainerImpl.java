@@ -6,22 +6,22 @@ import java.util.List;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.RowContainer;
 
-class RowContainerImpl<T extends RowContainer<T>> extends UIElementImpl<T> implements RowContainer<T> {
+class RowContainerImpl<T extends RowContainer<T>> extends HTMLElementImpl<T> implements RowContainer<T> {
 
 	RowContainerImpl(HTMLFactory factory, String tagName) {
-		super(factory, tagName);
+		super(factory, tagName, false);
 	}
 
-	class RowImpl extends UIElementImpl<Row> implements Row {
+	class RowImpl extends HTMLElementImpl<Row> implements Row {
 		
 		RowImpl() {
-			super(RowContainerImpl.this.factory, "tr");
+			super(RowContainerImpl.this.factory, "tr", false);
 		}
 		
-		class CellImpl extends UIElementImpl<Cell> implements Cell {
+		class CellImpl extends HTMLElementImpl<Cell> implements Cell {
 			
 			CellImpl(boolean isHeader, Object... content) {
-				super(RowContainerImpl.this.factory, isHeader ? "th" : "td");
+				super(RowContainerImpl.this.factory, isHeader ? "th" : "td", false);
 				content(content);
 			}
 

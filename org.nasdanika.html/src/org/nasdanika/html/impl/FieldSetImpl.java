@@ -7,12 +7,12 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.Tag.TagName;
 
-class FieldSetImpl extends UIElementImpl<FieldSet> implements FieldSet {
+class FieldSetImpl extends HTMLElementImpl<FieldSet> implements FieldSet {
 	
 	private FieldContainerImpl<FieldSet> container;
 
 	FieldSetImpl(HTMLFactory factory, FormImpl form) {
-		super(factory, "fieldset");
+		super(factory, "fieldset", false);
 		container = new FieldContainerImpl<FieldSet>(factory, this, form);	
 		this.content.add(container);
 	}

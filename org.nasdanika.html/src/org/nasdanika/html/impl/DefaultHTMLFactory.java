@@ -64,17 +64,27 @@ public class DefaultHTMLFactory implements HTMLFactory {
 
 	@Override
 	public Tag tag(String tagName, final Object... content) {
-		return new TagImpl(this, tagName, content);
+		return new TagImpl(this, tagName, false, content);
 	}
 	
 	@Override
 	public Tag tag(TagName tagName, Object... content) {
 		return tag(tagName.name(), content);
 	}
+	
+@Override
+	public Tag nonEmptyTag(String tagName, Object... content) {
+	return new TagImpl(this, tagName, true, content);
+	}
+
+	@Override
+	public Tag nonEmptyTag(TagName tagName, Object... content) {
+		return nonEmptyTag(tagName.name(), content);
+	}
 
 	@Override
 	public Tag ul(final Iterable<?> items) {
-		return new TagImpl(this, "ul") {
+		return new TagImpl(this, "ul", false) {
 			
 			@Override
 			protected List<Object> getContent() {
@@ -90,7 +100,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 
 	@Override
 	public Tag ol(final Iterable<?> items) {
-		return new TagImpl(this, "ol") {
+		return new TagImpl(this, "ol", false) {
 			
 			@Override
 			protected List<Object> getContent() {
@@ -107,7 +117,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	@SuppressWarnings("resource")
 	@Override
 	public Tag link(Object href, final Object... content) {
-		return new TagImpl(this, "a", content).attribute("href", href);
+		return new TagImpl(this, "a", false, content).attribute("href", href);
 	}
 	
 	@Override
@@ -134,12 +144,13 @@ public class DefaultHTMLFactory implements HTMLFactory {
 
 	@Override
 	public Tag div(Object... content) {
-		if (content.length==0) {
-			return tag(TagName.div, "");
-		}
 		return tag(TagName.div, content);
 	}
-
+	
+	@Override
+	public Tag nonEmptyDiv(Object... content) {
+		return nonEmptyTag(TagName.div, content);
+	}
 
 	@Override
 	public Tag span(Object... content) {
@@ -284,7 +295,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	 */
 	@Override
 	public String interpolate(Object input, TokenSource tokenSource) {
-		return interpolate(UIElementImpl.stringify(input, 0, this), tokenSource);
+		return interpolate(HTMLElementImpl.stringify(input, 0, this), tokenSource);
 	}
 	
 	/**
@@ -296,7 +307,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	 */
 	@Override
 	public String interpolate(Object input, Map<String, Object> env) {
-		return interpolate(UIElementImpl.stringify(input, 0, this), env);
+		return interpolate(HTMLElementImpl.stringify(input, 0, this), env);
 	}	
 	
 	@Override

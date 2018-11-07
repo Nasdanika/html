@@ -22,6 +22,7 @@ import org.nasdanika.html.Producer;
 import org.nasdanika.html.ProducerException;
 import org.nasdanika.html.Style;
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.Markup;
 
 /**
  * Base class for UI elements
@@ -29,7 +30,7 @@ import org.nasdanika.html.Tag;
  *
  * @param <T>
  */
-public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLElement<T>, AutoCloseable {
+public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLElement<T>, AutoCloseable {
 
 
 	private static final String STYLE = "style";
@@ -47,18 +48,28 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 	private Map<String, Object> styles = new LinkedHashMap<>();
 
 	protected HTMLFactory factory;
+
+	private boolean nonEmpty;
 	
 	public HTMLFactory getFactory() {
 		return factory;
 	}
 	
-	public UIElementImpl(HTMLFactory factory, Tag.TagName tagName) {
-		this(factory, tagName.name());
+	public HTMLElementImpl(HTMLFactory factory, Tag.TagName tagName, boolean nonEmpty) {
+		this(factory, tagName.name(), nonEmpty);
 	}
 	
-	public UIElementImpl(HTMLFactory factory, String tagName) {
+	/**
+	 * 
+	 * @param factory
+	 * @param tagName
+	 * @param nonEmpty If true then the element is rendered only if it has content, i.e. there is no point to 
+	 * render an empty element.
+	 */
+	public HTMLElementImpl(HTMLFactory factory, String tagName, boolean nonEmpty) {
 		this.factory = factory;
 		this.tagName = tagName;
+		this.nonEmpty = nonEmpty;
 	}
 	
 	@Override
@@ -176,7 +187,7 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 	 * Merges attributes from the source element into this element.
 	 * @param source
 	 */
-	protected void merge(UIElementImpl<?> source) {
+	protected void merge(HTMLElementImpl<?> source) {
 		this.attributes.putAll(source.attributes);
 		this.classes.addAll(source.classes);
 		this.styles.putAll(source.styles);
@@ -477,14 +488,20 @@ public abstract class UIElementImpl<T extends HTMLElement<T>> implements HTMLEle
 				theContent.add(c);
 			}			
 		}
-		if (theContent.isEmpty() && !forceEndTag()) {
-			return indent(renderComment(indent), indent).append("<"+getTagName()+attributes()+"/>").toString();
+		if (theContent.isEmpty()) {
+			if (nonEmpty) {
+				return "";
+			}
+			
+			if (!forceEndTag()) {
+				return indent(renderComment(indent), indent).append("<"+getTagName()+attributes()+"/>").toString();
+			}
 		}
 		StringBuilder sb = indent(renderComment(indent), indent).append("<").append(getTagName()).append(attributes()).append(">");
 		boolean hasNonUIElementContent = false;
 		for (Object c: theContent) {
 			sb.append(stringify(c, indent+1));
-			if (!(c instanceof HTMLElement)) {
+			if (!(c instanceof Markup)) {
 				hasNonUIElementContent = true;
 			}
 		}

@@ -36,4 +36,14 @@ class BreadcrumbsImpl extends BootstrapElementImpl<Tag> implements Breadcrumbs {
 		return this;
 	}
 
+	@Override
+	public void close() throws Exception {
+		nav.close();		
+	}
+
+	@Override
+	public Object produce(int indent) {
+		return nav.produce(indent);
+	}
+
 }

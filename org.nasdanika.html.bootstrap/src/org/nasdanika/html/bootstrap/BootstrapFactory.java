@@ -35,26 +35,32 @@ public interface BootstrapFactory {
 	 */
 	<H extends HTMLElement<?>> Button<H> button(H htmlElement, Color color, boolean outline);
 	
+	ButtonGroup buttonGroup(boolean vertical);
+	
+	ButtonToolbar buttonToolbar();
+	
+	Dropdown dropdown(Button<?> button, boolean split, Direction direction);
+
+	InputGroup inputGroup();
 		
 	/* TODO - Implement, add factory method and remove
-	 * Button group
-	 * Card
-	 * Carousel
-	 * Collapse
-	 * Dropdown
 	 * Form
-	 * Input group
 	 * Jumbotron
 	 * List group
 	 * Modal
 	 * Navs - tabs, pills
 	 * Navbar
 	 * Pagination
+	 * Table
+	 * Tooltip
+	 * 
 	 * Popover
 	 * Progress
 	 * Scrollspy
-	 * Table
-	 * Tooltip 
+	 * Card
+	 * Carousel
+	 * Collapse
+	 *  
 	 */
 	
 }

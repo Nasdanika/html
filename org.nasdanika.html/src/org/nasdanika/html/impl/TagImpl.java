@@ -5,10 +5,10 @@ import java.util.List;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 
-class TagImpl extends UIElementImpl<Tag> implements Tag {
+class TagImpl extends HTMLElementImpl<Tag> implements Tag {
 	
-	TagImpl(HTMLFactory factory, String tagName, Object... content) {
-		super(factory, tagName);
+	TagImpl(HTMLFactory factory, String tagName, boolean nonEmpty, Object... content) {
+		super(factory, tagName, nonEmpty);
 		for (Object c: content) {
 			this.content.add(c);
 		}
