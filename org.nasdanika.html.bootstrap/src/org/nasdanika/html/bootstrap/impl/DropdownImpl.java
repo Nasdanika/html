@@ -10,16 +10,14 @@ import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 
-class DropdownImpl extends BootstrapElementImpl<Tag> implements Dropdown {
+class DropdownImpl extends WrappingBootstrapElementImpl<Tag> implements Dropdown {
 	
-	private Tag root;
 	private Tag menu;
 
-	public DropdownImpl(BootstrapFactory factory, Button<?> button, boolean split, Direction direction) {
-		super(factory);
+	DropdownImpl(BootstrapFactory factory, Button<?> button, boolean split, Direction direction) {
+		super(factory, factory.getHTMLFactory().div().addClass("btn-group"));
 		HTMLFactory htmlFactory = getFactory().getHTMLFactory();
-		root = htmlFactory.div().addClass("btn-group");
-		root.content(button);
+		htmlElement.content(button);
 
 		switch (direction) {
 		case DOWN:
@@ -28,7 +26,7 @@ class DropdownImpl extends BootstrapElementImpl<Tag> implements Dropdown {
 		case LEFT:
 		case RIGHT:
 		case UP:
-			root.addClass("drop"+direction.name().toLowerCase());
+			htmlElement.addClass("drop"+direction.name().toLowerCase());
 			break;
 		default:
 			break;
@@ -46,7 +44,7 @@ class DropdownImpl extends BootstrapElementImpl<Tag> implements Dropdown {
 					((ButtonImpl<?>) button).isOutline()); 
 			
 			toggleHtmlElement = splitHtmlButton;
-			root.content(splitButton);
+			htmlElement.content(splitButton);
 		}
 		
 		toggleHtmlElement
@@ -60,7 +58,7 @@ class DropdownImpl extends BootstrapElementImpl<Tag> implements Dropdown {
 		}		
 		
 		menu = htmlFactory.div().addClass("dropdown-menu").attribute("arial-labelledby", toggleHtmlElement.getId());
-		root.content(menu);
+		htmlElement.content(menu);
 	}
 
 	@Override
@@ -89,21 +87,6 @@ class DropdownImpl extends BootstrapElementImpl<Tag> implements Dropdown {
 	public Dropdown form(Form form) {
 		menu.content(form);
 		return this;
-	}
-
-	@Override
-	public Tag toHTMLElement() {
-		return root;
-	}
-
-	@Override
-	public void close() throws Exception {
-		root.close();
-	}
-
-	@Override
-	public Object produce(int indent) {
-		return root.produce(indent);
 	}
 
 }

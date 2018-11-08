@@ -42,6 +42,30 @@ public interface BootstrapFactory {
 	Dropdown dropdown(Button<?> button, boolean split, Direction direction);
 
 	InputGroup inputGroup();
+	
+	Table table(org.nasdanika.html.Table htmlTable);
+	
+	/**
+	 * Wraps HTML row.
+	 * @param row
+	 * @return
+	 */
+	RowContainer.Row row(org.nasdanika.html.RowContainer.Row htmlRow);
+
+	/**
+	 * Wraps HTML cell.
+	 * @param htmlCell
+	 * @return
+	 */
+	RowContainer.Row.Cell cell(org.nasdanika.html.RowContainer.Row.Cell htmlCell);
+	
+	
+	/**
+	 * Creates a new HTML Table, wraps it into Bootstrap table and returns.
+	 * @return
+	 */
+	Table table();
+	
 		
 	/* TODO - Implement, add factory method and remove
 	 * Form
@@ -51,7 +75,6 @@ public interface BootstrapFactory {
 	 * Navs - tabs, pills
 	 * Navbar
 	 * Pagination
-	 * Table
 	 * Tooltip
 	 * 
 	 * Popover

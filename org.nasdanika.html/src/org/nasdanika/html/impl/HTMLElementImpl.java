@@ -22,7 +22,7 @@ import org.nasdanika.html.Producer;
 import org.nasdanika.html.ProducerException;
 import org.nasdanika.html.Style;
 import org.nasdanika.html.Tag;
-import org.nasdanika.html.BlockElement;
+import org.nasdanika.html.Markup;
 
 /**
  * Base class for UI elements
@@ -501,7 +501,7 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 		boolean hasNonUIElementContent = false;
 		for (Object c: theContent) {
 			sb.append(stringify(c, indent+1));
-			if (!(c instanceof BlockElement)) {
+			if (!(c instanceof Markup)) {
 				hasNonUIElementContent = true;
 			}
 		}

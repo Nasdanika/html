@@ -4,12 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.nasdanika.html.HTMLFactory;
-import org.nasdanika.html.RowContainer;
 import org.nasdanika.html.Table;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.Tag.TagName;
 
 class TableImpl extends RowContainerImpl<Table> implements Table {
+	
+	private class TableHeaderImpl extends RowContainerImpl<TableHeader> implements TableHeader {
+
+		TableHeaderImpl() {
+			super(TableImpl.this.getFactory(), "thead");			
+		}
+		
+	}
+	
+	private class TableBodyImpl extends RowContainerImpl<TableBody> implements TableBody {
+
+		TableBodyImpl() {
+			super(TableImpl.this.getFactory(), "tbody");			
+		}
+		
+	}
+	
+	private class TableFooterImpl extends RowContainerImpl<TableFooter> implements TableFooter {
+
+		TableFooterImpl() {
+			super(TableImpl.this.getFactory(), "tfoot");			
+		}
+		
+	}
 	
 	TableImpl(HTMLFactory factory) {
 		super(factory, "table");
@@ -56,9 +79,10 @@ class TableImpl extends RowContainerImpl<Table> implements Table {
 	}
 	
 	private Tag colgroup;
-	private RowContainer<?> header;
-	private RowContainer<?> body;
-	private RowContainer<?> footer;
+	private TableHeader header;
+	private TableBody body;
+	private TableFooter footer;
+	private Tag caption;
 	
 	@Override
 	public Tag col() {
@@ -72,9 +96,9 @@ class TableImpl extends RowContainerImpl<Table> implements Table {
 	}
 
 	@Override
-	public RowContainer<?> header() {
+	public TableHeader header() {
 		if (header == null) {
-			header = new RowContainerImpl<>(factory, "thead");
+			header = new TableHeaderImpl();
 			content.add(header);
 		}
 		
@@ -82,9 +106,9 @@ class TableImpl extends RowContainerImpl<Table> implements Table {
 	}
 
 	@Override
-	public RowContainer<?> body() {
+	public TableBody body() {
 		if (body == null) {
-			body = new RowContainerImpl<>(factory, "tbody");
+			body = new TableBodyImpl();
 			content.add(body);
 		}
 		
@@ -92,13 +116,25 @@ class TableImpl extends RowContainerImpl<Table> implements Table {
 	}
 
 	@Override
-	public RowContainer<?> footer() {
+	public TableFooter footer() {
 		if (footer == null) {
-			footer = new RowContainerImpl<>(factory, "tfoot");
+			footer = new TableFooterImpl();
 			content.add(footer);
 		}
 		
 		return footer;
+	}
+
+	@Override
+	public Table caption(Object... content) {
+		if (caption == null) {
+			caption = getFactory().nonEmptyTag(TagName.caption, content);
+			content(caption);
+		} else {
+			caption.content(content);
+		}
+		
+		return this;
 	}
 
 }

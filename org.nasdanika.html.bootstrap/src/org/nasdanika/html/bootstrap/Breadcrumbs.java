@@ -1,9 +1,9 @@
 package org.nasdanika.html.bootstrap;
 
-import org.nasdanika.html.BlockElement;
+import org.nasdanika.html.Markup;
 import org.nasdanika.html.Tag;
 
-public interface Breadcrumbs extends BootstrapElement<Tag>, BlockElement {
+public interface Breadcrumbs extends BootstrapElement<Tag>, Markup {
 	
 	boolean isEmpty();
 	

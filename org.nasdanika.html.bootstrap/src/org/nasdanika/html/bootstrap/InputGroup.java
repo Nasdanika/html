@@ -1,10 +1,10 @@
 package org.nasdanika.html.bootstrap;
 
-import org.nasdanika.html.BlockElement;
+import org.nasdanika.html.Markup;
 import org.nasdanika.html.InputBase;
 import org.nasdanika.html.Tag;
 
-public interface InputGroup extends BootstrapElement<Tag>, BlockElement {
+public interface InputGroup extends BootstrapElement<Tag>, Markup {
 	
 	InputGroup prepend(Object content);
 	

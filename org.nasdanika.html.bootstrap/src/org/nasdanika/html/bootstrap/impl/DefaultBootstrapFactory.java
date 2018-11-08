@@ -5,7 +5,6 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLFactory.InputType;
 import org.nasdanika.html.Input;
 import org.nasdanika.html.Tag;
-import org.nasdanika.html.Tag.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
 import org.nasdanika.html.bootstrap.Button;
@@ -15,6 +14,11 @@ import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.InputGroup;
+import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.bootstrap.RowContainer.Row;
+import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
+import org.nasdanika.html.bootstrap.Table.TableBody;
+import org.nasdanika.html.bootstrap.Table.TableHeader;
 
 /**
  * HTML factory which relies on Bootstrap styles and scripts.
@@ -98,6 +102,26 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		return new InputGroupImpl(this);
 	}
 	
+	@Override
+	public Table table(org.nasdanika.html.Table htmlTable) {
+		return new TableImpl(this, htmlTable);
+	}
+	
+	@Override
+	public Table table() {
+		return table(htmlFactory.table());
+	}
+	
+	@Override
+	public Row row(org.nasdanika.html.RowContainer.Row htmlRow) {
+		return new RowImpl(this, htmlRow);
+	}
+	
+	@Override
+	public Cell cell(org.nasdanika.html.RowContainer.Row.Cell htmlCell) {
+		return new CellImpl(this, htmlCell);
+	}
+	
 	/**
 	 * Basic testing/demo, paste output to https://www.w3schools.com/bootstrap4/tryit.asp?filename=trybs_default&stacked=h body
 	 * @param args
@@ -142,6 +166,16 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		inputGroup.prepend("@");
 		inputGroup.append("Zorro").large();
 		System.out.println(inputGroup);
+		
+		// Tables
+		
+		Table table = factory.table().striped();
+		table.toHTMLElement().caption("My table");
+		TableHeader header = table.header();
+		header.headerRow("A", "B", "C");
+		TableBody body = table.body();
+		body.row("One", "Two", "Three");		
+		System.out.println(table);
 	}
 	
 }

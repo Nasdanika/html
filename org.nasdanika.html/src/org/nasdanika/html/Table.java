@@ -1,6 +1,20 @@
 package org.nasdanika.html;
 
-public interface Table extends HTMLElement<Table>, RowContainer<Table> {
+public interface Table extends RowContainer<Table> {
+	
+	Table caption(Object... content);
+	
+	interface TableHeader extends RowContainer<TableHeader> {
+		
+	}
+	
+	interface TableFooter extends RowContainer<TableFooter> {
+		
+	}
+	
+	interface TableBody extends RowContainer<TableBody> {
+		
+	}
 		
 	/**
 	 * Creates ``col`` tag in the ``colgroup``.
@@ -9,11 +23,11 @@ public interface Table extends HTMLElement<Table>, RowContainer<Table> {
 	Tag col();
 	
 
-	RowContainer<?> header();
+	TableHeader header();
 
-	RowContainer<?> body();
+	TableBody body();
 	
-	RowContainer<?> footer();
+	TableFooter footer();
 	
 	
 }

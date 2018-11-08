@@ -7,35 +7,19 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.InputGroup;
 
-class InputGroupImpl extends BootstrapElementImpl<Tag> implements InputGroup  {
+class InputGroupImpl extends WrappingBootstrapElementImpl<Tag> implements InputGroup  {
 
-	private Tag root;	
 	private Tag prepend;
 	private Fragment inputs;
 	private Tag append;
 	
-	public InputGroupImpl(BootstrapFactory factory) {
-		super(factory);
+	InputGroupImpl(BootstrapFactory factory) {
+		super(factory, factory.getHTMLFactory().div().addClass("input-group"));
 		HTMLFactory htmlFactory = getFactory().getHTMLFactory();
 		prepend = htmlFactory.nonEmptyDiv().addClass("input-group-prepend");
 		inputs = htmlFactory.fragment();
 		append = htmlFactory.nonEmptyDiv().addClass("input-group-append");
-		root = htmlFactory.div(prepend, inputs, append).addClass("input-group");
-	}
-
-	@Override
-	public Tag toHTMLElement() {
-		return root;
-	}
-
-	@Override
-	public void close() throws Exception {
-		root.close();
-	}
-
-	@Override
-	public Object produce(int indent) {
-		return root.produce(indent);
+		htmlElement.content(prepend, inputs, append);
 	}
 	
 	protected Object wrapContent(Object content) {
@@ -68,7 +52,7 @@ class InputGroupImpl extends BootstrapElementImpl<Tag> implements InputGroup  {
 
 	@Override
 	public InputGroup large(boolean large) {
-		root.addClassConditional(large, "input-group-lg");
+		htmlElement.addClassConditional(large, "input-group-lg");
 		return this;
 	}
 
@@ -79,7 +63,7 @@ class InputGroupImpl extends BootstrapElementImpl<Tag> implements InputGroup  {
 
 	@Override
 	public InputGroup small(boolean small) {
-		root.addClassConditional(small, "input-group-sm");
+		htmlElement.addClassConditional(small, "input-group-sm");
 		return this;
 	}
 

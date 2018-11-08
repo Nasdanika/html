@@ -6,18 +6,10 @@ import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.Dropdown;
 
-class ButtonGroupImpl extends BootstrapElementImpl<Tag> implements ButtonGroup {
+class ButtonGroupImpl extends WrappingBootstrapElementImpl<Tag> implements ButtonGroup {
 	
-	private Tag tag;
-
-	public ButtonGroupImpl(BootstrapFactory factory, boolean vertical) {
-		super(factory);
-		tag = getFactory().getHTMLFactory().div().addClass(vertical? "btn-group-vertical" : "btn-group").attribute("role", "group");
-	}
-
-	@Override
-	public Tag toHTMLElement() {
-		return tag;
+	ButtonGroupImpl(BootstrapFactory factory, boolean vertical) {
+		super(factory, factory.getHTMLFactory().div().addClass(vertical? "btn-group-vertical" : "btn-group").attribute("role", "group"));
 	}
 
 	@Override
@@ -27,7 +19,7 @@ class ButtonGroupImpl extends BootstrapElementImpl<Tag> implements ButtonGroup {
 
 	@Override
 	public ButtonGroup large(boolean large) {
-		tag.addClass("btn-group-lg");
+		htmlElement.addClass("btn-group-lg");
 		return this;
 	}
 
@@ -38,30 +30,30 @@ class ButtonGroupImpl extends BootstrapElementImpl<Tag> implements ButtonGroup {
 
 	@Override
 	public ButtonGroup small(boolean small) {
-		tag.addClass("btn-group-sm");
+		htmlElement.addClass("btn-group-sm");
 		return this;
 	}
 
 	@Override
 	public ButtonGroup add(Button<?> button) {
-		tag.content(button);
+		htmlElement.content(button);
 		return this;
 	}
 
 	@Override
 	public ButtonGroup add(Dropdown dropdown) {
-		tag.content(dropdown);
+		htmlElement.content(dropdown);
 		return this;
 	}
 
 	@Override
 	public void close() throws Exception {
-		tag.close();		
+		htmlElement.close();		
 	}
 
 	@Override
 	public Object produce(int indent) {
-		return tag.produce(indent);
+		return htmlElement.produce(indent);
 	}
 
 }
