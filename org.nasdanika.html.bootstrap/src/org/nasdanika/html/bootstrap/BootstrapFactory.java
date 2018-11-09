@@ -2,6 +2,7 @@ package org.nasdanika.html.bootstrap;
 
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.InputBase;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.impl.DefaultBootstrapFactory;
 
@@ -66,17 +67,18 @@ public interface BootstrapFactory {
 	 */
 	Table table();
 	
+	FormGroup formGroup(Object label, InputBase<?> input, Object hint);	
 		
 	/* TODO - Implement, add factory method and remove
-	 * Form
-	 * Jumbotron
-	 * List group
-	 * Modal
 	 * Navs - tabs, pills
 	 * Navbar
-	 * Pagination
+	 * Modal
 	 * Tooltip
-	 * 
+
+	 * TODO - create issues to implement in later versions (Bootstrap category).
+	 * Pagination
+	 * Jumbotron
+	 * List group
 	 * Popover
 	 * Progress
 	 * Scrollspy
@@ -84,6 +86,7 @@ public interface BootstrapFactory {
 	 * Carousel
 	 * Collapse
 	 *  
+	 *  Other TODO's - load(Map) - to load configuration from, say, YAML files. For both HTML and Bootstrap elements.
 	 */
 	
 }

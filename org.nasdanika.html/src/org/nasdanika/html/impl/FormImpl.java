@@ -5,6 +5,7 @@ import org.nasdanika.html.FieldSet;
 import org.nasdanika.html.Form;
 import org.nasdanika.html.FormFragment;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Markup;
 import org.nasdanika.html.Tag.TagName;
 
 class FormImpl extends HTMLElementImpl<Form> implements Form {
@@ -13,7 +14,14 @@ class FormImpl extends HTMLElementImpl<Form> implements Form {
 
 	FormImpl(HTMLFactory factory) {
 		super(factory, TagName.form, false);
-		container = new FieldContainerImpl<Form>(factory, this, this);
+		class MarkupFieldContainerImpl extends FieldContainerImpl<Form> implements Markup {
+
+			MarkupFieldContainerImpl(HTMLFactory factory, Form master, FormImpl form) {
+				super(factory, master, form);
+			}
+			
+		}
+		container = new MarkupFieldContainerImpl(factory, this, this);
 		this.content.add(container);
 	}
 

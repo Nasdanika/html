@@ -7,14 +7,15 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.InputGroup;
 
-class InputGroupImpl extends WrappingBootstrapElementImpl<Tag> implements InputGroup  {
+class InputGroupImpl extends DivWrappingBootstrapElementImpl implements InputGroup  {
 
 	private Tag prepend;
 	private Fragment inputs;
 	private Tag append;
 	
 	InputGroupImpl(BootstrapFactory factory) {
-		super(factory, factory.getHTMLFactory().div().addClass("input-group"));
+		super(factory);
+		htmlElement.addClass("input-group");
 		HTMLFactory htmlFactory = getFactory().getHTMLFactory();
 		prepend = htmlFactory.nonEmptyDiv().addClass("input-group-prepend");
 		inputs = htmlFactory.fragment();

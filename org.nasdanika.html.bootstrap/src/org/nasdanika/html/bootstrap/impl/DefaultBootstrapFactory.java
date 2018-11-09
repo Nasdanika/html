@@ -1,9 +1,11 @@
 package org.nasdanika.html.bootstrap.impl;
 
+import org.nasdanika.html.Form;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLFactory.InputType;
 import org.nasdanika.html.Input;
+import org.nasdanika.html.InputBase;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
@@ -13,6 +15,7 @@ import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
+import org.nasdanika.html.bootstrap.FormGroup;
 import org.nasdanika.html.bootstrap.InputGroup;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
@@ -122,6 +125,11 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		return new CellImpl(this, htmlCell);
 	}
 	
+	@Override
+	public FormGroup formGroup(Object label, InputBase<?> input, Object hint) {
+		return new FormGroupImpl(this, label, input, hint);
+	}
+	
 	/**
 	 * Basic testing/demo, paste output to https://www.w3schools.com/bootstrap4/tryit.asp?filename=trybs_default&stacked=h body
 	 * @param args
@@ -176,6 +184,25 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		TableBody body = table.body();
 		body.row("One", "Two", "Three");		
 		System.out.println(table);
+		
+		// Forms
+		
+		Form form = htmlFactory.form();
+		
+		form.content(factory.formGroup("Email address", htmlFactory.input(InputType.email).value("email@example.com"), "We'll never share").large().plainText());
+		form.content(factory.formGroup("Password", htmlFactory.input(InputType.password).disabled(), null).small());
+		form.content(factory.formGroup("Check me out", htmlFactory.input(InputType.checkbox), null).invalid("Oh, no"));
+
+		form.content(factory.formGroup("1", htmlFactory.input(InputType.radio), null).inline());
+		form.content(factory.formGroup("2", htmlFactory.input(InputType.radio), null).inline());
+		form.content(factory.formGroup("3", htmlFactory.input(InputType.radio), null).inline());
+
+		form.content(factory.formGroup("City", htmlFactory.input(InputType.text), "City").valid());
+		form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "State").invalid("No such state"));
+
+		
+		
+		System.out.println(form);
 	}
 	
 }

@@ -10,12 +10,13 @@ import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 
-class DropdownImpl extends WrappingBootstrapElementImpl<Tag> implements Dropdown {
+class DropdownImpl extends DivWrappingBootstrapElementImpl implements Dropdown {
 	
 	private Tag menu;
 
 	DropdownImpl(BootstrapFactory factory, Button<?> button, boolean split, Direction direction) {
-		super(factory, factory.getHTMLFactory().div().addClass("btn-group"));
+		super(factory);
+		htmlElement.addClass("btn-group");
 		HTMLFactory htmlFactory = getFactory().getHTMLFactory();
 		htmlElement.content(button);
 

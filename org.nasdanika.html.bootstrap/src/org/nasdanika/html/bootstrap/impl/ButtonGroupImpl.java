@@ -1,15 +1,15 @@
 package org.nasdanika.html.bootstrap.impl;
 
-import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.Dropdown;
 
-class ButtonGroupImpl extends WrappingBootstrapElementImpl<Tag> implements ButtonGroup {
+class ButtonGroupImpl extends DivWrappingBootstrapElementImpl implements ButtonGroup {
 	
 	ButtonGroupImpl(BootstrapFactory factory, boolean vertical) {
-		super(factory, factory.getHTMLFactory().div().addClass(vertical? "btn-group-vertical" : "btn-group").attribute("role", "group"));
+		super(factory);
+		htmlElement.addClass(vertical? "btn-group-vertical" : "btn-group").attribute("role", "group");
 	}
 
 	@Override
