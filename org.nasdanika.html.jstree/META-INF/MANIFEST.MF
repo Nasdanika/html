@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: HTML JS Tree Bundle
+Bundle-SymbolicName: org.nasdanika.html.jstree
+Bundle-Version: 2.0.0.qualifier
+Bundle-Vendor: Nasdanika LLC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.nasdanika.html.jstree,
+ org.nasdanika.html.jstree.impl
+Bundle-ClassPath: .
+Require-Bundle: json;bundle-version="20180130.0.0"
+Automatic-Module-Name: org.nasdanika.html.jstree
