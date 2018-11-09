@@ -33,7 +33,7 @@ public interface HTMLFactory {
 	 */
 	Tag tag(String tagName, Object... content);
 	
-	Tag tag(Tag.TagName tagName, Object... content);
+	Tag tag(TagName tagName, Object... content);
 	
 	/**
 	 * Creates a tag which is rendered only if it has content.
@@ -49,7 +49,7 @@ public interface HTMLFactory {
 	 * @param content
 	 * @return
 	 */
-	Tag nonEmptyTag(Tag.TagName tagName, Object... content);
+	Tag nonEmptyTag(TagName tagName, Object... content);
 	
 	
 	Tag div(Object... content);
@@ -63,43 +63,6 @@ public interface HTMLFactory {
 	
 	
 	Tag span(Object... content);
-	
-	enum InputType { 
-		button,
-		checkbox,
-		color,
-		date, 
-		datetime_local, 
-		email,
-		file,
-		hidden,
-		image,
-		month, 
-		number, 
-		password,
-		radio,
-		range, 
-		reset,
-		search,
-		submit,
-		tel,
-		text,
-		time, 
-		url,
-		week;
-	
-		public String code() {
-			return name().replace('_', '-');
-		}
-		
-		/**
-		 * Creates input with {@link HTMLFactory}.INSTANCE.
-		 * @return
-		 */
-		public Input create() {
-			return HTMLFactory.INSTANCE.input(this);
-		}
-	}
 	
 	Fragment fragment(Object... content);
 	
@@ -169,17 +132,6 @@ public interface HTMLFactory {
 	 */
 	String showOverlay(String overlaySelector, String overlayedSelector, int widthAdjustment, int heightAdjustment);
 	
-	/**
-	 * Source of token values for interpolation.
-	 * @author Pavel Vlasov.
-	 *
-	 */
-	interface TokenSource {
-		
-		Object get(String token);
-		
-	}
-
 	/**
 	 * Expands tokens in the form of <code>{{token name}}</code> to their values.
 	 * If a token is not found expansion is not processed.

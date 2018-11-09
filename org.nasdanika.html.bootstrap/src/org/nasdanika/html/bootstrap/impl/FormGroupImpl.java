@@ -1,9 +1,9 @@
 package org.nasdanika.html.bootstrap.impl;
 
-import org.nasdanika.html.HTMLFactory.InputType;
 import org.nasdanika.html.Input;
 import org.nasdanika.html.InputBase;
-import org.nasdanika.html.Tag.TagName;
+import org.nasdanika.html.InputType;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.FormGroup;
 

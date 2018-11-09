@@ -6,7 +6,7 @@ import org.nasdanika.html.Form;
 import org.nasdanika.html.FormFragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Markup;
-import org.nasdanika.html.Tag.TagName;
+import org.nasdanika.html.TagName;
 
 class FormImpl extends HTMLElementImpl<Form> implements Form {
 	

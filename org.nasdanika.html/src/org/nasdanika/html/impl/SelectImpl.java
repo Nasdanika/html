@@ -3,7 +3,7 @@ package org.nasdanika.html.impl;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
-import org.nasdanika.html.Tag.TagName;
+import org.nasdanika.html.TagName;
 
 class SelectImpl extends InputBaseImpl<Select> implements Select {
 	

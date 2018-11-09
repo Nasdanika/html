@@ -5,7 +5,7 @@ import org.nasdanika.html.FieldSet;
 import org.nasdanika.html.FormFragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
-import org.nasdanika.html.Tag.TagName;
+import org.nasdanika.html.TagName;
 
 class FieldSetImpl extends HTMLElementImpl<FieldSet> implements FieldSet {
 	

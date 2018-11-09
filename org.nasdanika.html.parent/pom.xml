@@ -171,11 +171,12 @@
 	<modules>
 		<module>../org.nasdanika.html</module>
 		<module>../org.nasdanika.html.bootstrap</module>
+		<module>../org.nasdanika.html.jstree</module>
+		<module>../org.nasdanika.html.emf</module>
+
 		<!-- 
 		<module>../org.nasdanika.html.knockout</module>
 		<module>../org.nasdanika.html.fontawesome</module>
-		<module>../org.nasdanika.html.jstree</module>
-		<module>../org.nasdanika.html.emf</module>
 		<module>../org.nasdanika.html.tests</module>
 		-->
 		<module>../org.nasdanika.html.feature</module>

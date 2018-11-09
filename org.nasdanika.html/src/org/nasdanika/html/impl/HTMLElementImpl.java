@@ -21,7 +21,7 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Producer;
 import org.nasdanika.html.ProducerException;
 import org.nasdanika.html.Style;
-import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.Markup;
 
 /**
@@ -55,7 +55,7 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 		return factory;
 	}
 	
-	public HTMLElementImpl(HTMLFactory factory, Tag.TagName tagName, boolean nonEmpty) {
+	public HTMLElementImpl(HTMLFactory factory, TagName tagName, boolean nonEmpty) {
 		this(factory, tagName.name(), nonEmpty);
 	}
 	
@@ -512,7 +512,7 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 	}
 
 	private boolean forceEndTag() {
-		for (Tag.TagName tagName: Tag.TagName.values()) {
+		for (TagName tagName: TagName.values()) {
 			if (tagName.name().equalsIgnoreCase(this.tagName)) {
 				return tagName.isPaired();
 			}

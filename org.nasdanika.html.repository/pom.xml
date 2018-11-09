@@ -82,13 +82,13 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>copy-core-javadoc</id>
+						<id>copy-html-javadoc</id>
 						<phase>pre-site</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/core</outputDirectory>
+							<outputDirectory>${basedir}/target/site/apidocs/html</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/../org.nasdanika.html/target/site/apidocs</directory>

@@ -17,15 +17,17 @@ import org.nasdanika.html.FactoryProducer;
 import org.nasdanika.html.Form;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.Function;
-import org.nasdanika.html.HTMLElement.HTMLColor;
+import org.nasdanika.html.Color;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Input;
+import org.nasdanika.html.InputType;
 import org.nasdanika.html.Producer;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.Table;
 import org.nasdanika.html.Tag;
-import org.nasdanika.html.Tag.TagName;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.TextArea;
+import org.nasdanika.html.TokenSource;
 
 /**
  * HTML factory which relies on Bootstrap styles and scripts.
@@ -376,7 +378,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 				.style("position", "absolute")
 				.style("width", "100%")
 				.style("height", "100%")
-				.style().background().color().htmlColor(HTMLColor.Silver)
+				.style().background().color().color(Color.Silver)
 				.style("opacity", 0.7)
 				.style("z-index", 10)
 				.style("display", "block");

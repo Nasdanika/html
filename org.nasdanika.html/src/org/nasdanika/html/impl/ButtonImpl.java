@@ -2,7 +2,7 @@ package org.nasdanika.html.impl;
 
 import org.nasdanika.html.Button;
 import org.nasdanika.html.HTMLFactory;
-import org.nasdanika.html.Tag.TagName;
+import org.nasdanika.html.TagName;
 
 class ButtonImpl extends HTMLElementImpl<Button> implements Button {
 	

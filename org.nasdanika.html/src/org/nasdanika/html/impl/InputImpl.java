@@ -3,15 +3,15 @@ package org.nasdanika.html.impl;
 import org.nasdanika.html.Form.EncType;
 import org.nasdanika.html.Form.Method;
 import org.nasdanika.html.HTMLFactory;
-import org.nasdanika.html.HTMLFactory.InputType;
 import org.nasdanika.html.Input;
-import org.nasdanika.html.Tag.TagName;
+import org.nasdanika.html.InputType;
+import org.nasdanika.html.TagName;
 
 class InputImpl extends InputBaseImpl<Input> implements Input {
 		
 	private InputType type;
 
-	InputImpl(HTMLFactory factory, HTMLFactory.InputType type) {
+	InputImpl(HTMLFactory factory, InputType type) {
 		super(factory, TagName.input);
 		this.type = type;
 		attribute("type", type.code());

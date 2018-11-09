@@ -1,7 +1,6 @@
 package org.nasdanika.html.impl;
 
 import org.nasdanika.html.HTMLElement;
-import org.nasdanika.html.HTMLElement.HTMLColor;
 import org.nasdanika.html.Style;
 
 class StyleImpl<T extends HTMLElement<T>> implements Style<T> {
@@ -386,7 +385,7 @@ class StyleImpl<T extends HTMLElement<T>> implements Style<T> {
 		}
 
 		@Override
-		public T htmlColor(HTMLColor color) {
+		public T color(org.nasdanika.html.Color color) {
 			return super.value(color.name());
 		}
 		

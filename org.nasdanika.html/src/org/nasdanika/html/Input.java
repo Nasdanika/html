@@ -1,7 +1,5 @@
 package org.nasdanika.html;
 
-import org.nasdanika.html.HTMLFactory.InputType;
-
 /**
  * A generic UI element. It doesn't add any functionality, only binds UIElement and Container generic parameter to self for convenience.
  * @author Pavel

@@ -3,7 +3,7 @@ package org.nasdanika.html.impl;
 import org.nasdanika.html.Form;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.InputBase;
-import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 
 abstract class InputBaseImpl<T extends InputBase<T>> extends HTMLElementImpl<T> implements InputBase<T> {
 	
@@ -11,7 +11,7 @@ abstract class InputBaseImpl<T extends InputBase<T>> extends HTMLElementImpl<T> 
 		super(factory, tagName, false);
 	}
 
-	InputBaseImpl(HTMLFactory factory, Tag.TagName tagName) {
+	InputBaseImpl(HTMLFactory factory, TagName tagName) {
 		this(factory, tagName.name());
 	}
 
