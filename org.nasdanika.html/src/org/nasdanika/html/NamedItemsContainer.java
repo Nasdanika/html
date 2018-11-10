@@ -6,10 +6,8 @@ package org.nasdanika.html;
  *
  * @param <I>
  */
-public interface NamedItemsContainer<I> {
+public interface NamedItemsContainer {
 
-	/**
-	 */
 	void item(Object name, Object content);
 	
 	boolean isEmpty();

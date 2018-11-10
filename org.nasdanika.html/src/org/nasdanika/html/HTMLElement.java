@@ -3,6 +3,7 @@ package org.nasdanika.html;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.List;
 
 /**
  * Abstraction of a UI element. toString() produces HTML markup.
@@ -262,4 +263,10 @@ public interface HTMLElement<T extends HTMLElement<T>> extends AutoCloseable, Pr
 	 * @return
 	 */
 	Object getData(String key);
+	
+	/**
+	 * @return Element content.
+	 */
+	List<Object> getContent();
+	
 }

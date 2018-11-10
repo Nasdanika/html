@@ -160,4 +160,10 @@ public interface HTMLFactory {
 	 */
 	String interpolate(Object input, String token, Object value);
 	
+	/**
+	 * Creates a named items container which wraps name in the specified tag, e.g. H2.
+	 * @param tagName
+	 * @return
+	 */
+	NamedItemsContainer tagNamedItemsContainer(TagName tagName);
 }

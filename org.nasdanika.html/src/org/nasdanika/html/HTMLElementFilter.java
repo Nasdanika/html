@@ -3,6 +3,7 @@ package org.nasdanika.html;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.List;
 
 public class HTMLElementFilter<T extends HTMLElement<T>> implements HTMLElement<T> {
 
@@ -120,6 +121,11 @@ public class HTMLElementFilter<T extends HTMLElement<T>> implements HTMLElement<
 	@Override
 	public T setData(String key, Object data) {
 		return target.setData(key, data);
+	}
+	
+	@Override
+	public List<Object> getContent() {
+		return target.getContent();
 	}
 	
 }

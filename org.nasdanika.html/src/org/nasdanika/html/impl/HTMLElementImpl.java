@@ -468,7 +468,7 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 	
 	protected List<Object> content = new ArrayList<>();	
 	
-	protected List<Object> getContent() {
+	public List<Object> getContent() {
 		return content;
 	}
 	

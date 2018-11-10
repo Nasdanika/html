@@ -21,6 +21,7 @@ import org.nasdanika.html.Color;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Input;
 import org.nasdanika.html.InputType;
+import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Producer;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.Table;
@@ -89,7 +90,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 		return new TagImpl(this, "ul", false) {
 			
 			@Override
-			protected List<Object> getContent() {
+			public List<Object> getContent() {
 				List<Object> ret = new ArrayList<>();
 				for (Object item: items) {
 					ret.add("<li>"+item+"</li>");
@@ -105,7 +106,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 		return new TagImpl(this, "ol", false) {
 			
 			@Override
-			protected List<Object> getContent() {
+			public List<Object> getContent() {
 				List<Object> ret = new ArrayList<>();
 				for (Object item: items) {
 					ret.add("<li>"+item+"</li>");
@@ -387,6 +388,35 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	@Override
 	public String showOverlay(String overlaySelector, String overlaidSelector, int widthAdjustment, int heightAdjustment) {
 		return "(function(overlay, overlaid) { overlay.width(overlaid.width()+"+widthAdjustment+"); overlay.height(overlaid.height()+"+heightAdjustment+"); overlay.show(); })(jQuery('"+overlaySelector+"'),jQuery('"+overlaidSelector+"'));";		
+	}
+
+	@Override
+	public NamedItemsContainer tagNamedItemsContainer(TagName tagName) {
+		class NamedItemsContainerImpl implements NamedItemsContainer, Producer {
+			Fragment fragment = fragment();
+
+			@Override
+			public Object produce(int indent) {
+				return fragment.produce(indent);
+			}
+			
+			@Override
+			public String toString() {
+				return fragment.toString();
+			}
+
+			@Override
+			public void item(Object name, Object content) {
+				fragment.content(tag(tagName).content(name), content);
+			}
+
+			@Override
+			public boolean isEmpty() {
+				return fragment.isEmpty();
+			}
+			
+		}
+		return new NamedItemsContainerImpl();
 	}
 	
 }

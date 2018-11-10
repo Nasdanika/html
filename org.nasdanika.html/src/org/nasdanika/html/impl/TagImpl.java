@@ -20,7 +20,7 @@ class TagImpl extends HTMLElementImpl<Tag> implements Tag {
 		return super.content(content);
 	}
 	
-	protected List<Object> getContent() {
+	public List<Object> getContent() {
 		return content;
 	}
 	
