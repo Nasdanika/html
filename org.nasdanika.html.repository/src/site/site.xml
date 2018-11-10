@@ -14,11 +14,9 @@
       <item name="Overview" href="index.html" />
       <item name="HTML" href="apidocs/html.html" />
       <item name="Bootstrap" href="apidocs/bootstrap.html" />
-      <!--
-      <item name="Knockout" href="apidocs/knockout.html" />
       <item name="Fontawesome" href="apidocs/fontawesome.html" />
-      -->
       <item name="JsTree" href="apidocs/jstree.html" />
+      <item name="Knockout" href="apidocs/knockout.html" />
       <item name="EMF" href="apidocs/emf.html" />
       <item name="Project information" href="project-info.html" />      
    </menu>
