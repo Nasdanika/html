@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KnockoutJS bindings
+Bundle-SymbolicName: org.nasdanika.html.knockout
+Bundle-Version: 2.0.0.qualifier
+Bundle-Vendor: Nasdanika LLC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.nasdanika.html.knockout,
+ org.nasdanika.html.knockout.impl
+Bundle-ClassPath: .
+Require-Bundle: org.nasdanika.html;bundle-version="2.0.0"
