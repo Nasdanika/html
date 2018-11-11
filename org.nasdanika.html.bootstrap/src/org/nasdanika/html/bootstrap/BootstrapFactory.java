@@ -67,13 +67,26 @@ public interface BootstrapFactory {
 	 */
 	Table table();
 	
-	FormGroup formGroup(Object label, InputBase<?> input, Object hint);	
+	FormGroup formGroup(Object label, InputBase<?> input, Object hint);
+	
+	<H extends HTMLElement<?>> H tooltip(H htmlElement, Object tooltip, boolean html, Placement placement);
+	
+	<B extends BootstrapElement<?>> B tooltip(B bootstrapElement, Object tooltip, boolean html, Placement placement);
+	
+	/**
+	 * @return Script to initialize tooltips.
+	 */
+	Tag initTooltipScript();
+	
+	Navs tabs();
+	
+	Navs pills();
+	
 		
 	/* TODO - Implement, add factory method and remove
 	 * Navs - tabs, pills
 	 * Navbar
 	 * Modal
-	 * Tooltip
 
 	 * TODO - create issues to implement in later versions (Bootstrap category).
 	 * Pagination

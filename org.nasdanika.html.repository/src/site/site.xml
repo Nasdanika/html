@@ -13,21 +13,19 @@
    <menu name="Main">
       <item name="Overview" href="index.html" />
       <item name="HTML" href="apidocs/html.html" />
-      <item name="Bootstrap" href="apidocs/bootstrap.html" />
-      <item name="Fontawesome" href="apidocs/fontawesome.html" />
-      <item name="JsTree" href="apidocs/jstree.html" />
-      <item name="Knockout" href="apidocs/knockout.html" />
-      <item name="EMF" href="apidocs/emf.html" />
+      <item name="Bootstrap" href="bootstrap.html" />
+      <item name="Fontawesome" href="fontawesome.html" />
+      <item name="JsTree" href="jstree.html" />
+      <item name="Knockout" href="knockout.html" />
+      <item name="EMF" href="emf.html" />
       <item name="Project information" href="project-info.html" />      
    </menu>
 
    <menu name="Java API Documentation">
       <item name="HTML" href="apidocs/html/index.html" />
       <item name="Bootstrap" href="apidocs/bootstrap/index.html" />
-      <!--
       <item name="Knockout" href="apidocs/knockout/index.html" />
       <item name="Fontawesome" href="apidocs/fontawesome/index.html" />
-      -->
       <item name="JsTree" href="apidocs/jstree/index.html" />
       <item name="EMF" href="apidocs/emf/index.html" />
    </menu>

@@ -7,3 +7,12 @@ Bundle-Vendor: Nasdanika LLC
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.nasdanika.html.emf
 Bundle-ClassPath: .
+Require-Bundle: org.eclipse.emf.ecore,
+ org.nasdanika.html;bundle-version="2.0.0",
+ org.nasdanika.html.bootstrap;bundle-version="2.0.0",
+ org.nasdanika.html.fontawesome;bundle-version="2.0.0",
+ org.nasdanika.html.jstree;bundle-version="2.0.0",
+ org.nasdanika.html.knockout;bundle-version="2.0.0",
+ org.apache.commons.codec;bundle-version="1.11.0",
+ org.apache.commons.lang3;bundle-version="3.7.0",
+ org.apache.commons.text;bundle-version="1.4.0"

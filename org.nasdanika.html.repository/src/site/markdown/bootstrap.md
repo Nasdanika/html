@@ -100,3 +100,24 @@ form.content(factory.formGroup("3", htmlFactory.input(InputType.radio), null).in
 form.content(factory.formGroup("City", htmlFactory.input(InputType.text), "City").valid());
 form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "State").invalid("No such state"));
 ```
+
+## Tooltip
+
+```
+org.nasdanika.html.Button hButton = htmlFactory.button("Button");	
+Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
+factory.tooltip(button, "I am a <I>tooltip</I>." , true, Placement.BOTTOM);
+Tag initScript = factory.initTooltipScript();
+```
+
+## Navs
+
+```
+Navs navs = factory.tabs();
+navs.item("First", "First content");
+navs.item("Second", "Second content");
+navs.item("Third", "Third content");
+navs.item("Fourth", "Fourth content");
+```
+
+For pills use ``factory.pills()`` method.

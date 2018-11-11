@@ -7,6 +7,8 @@ import org.nasdanika.html.Input;
 import org.nasdanika.html.InputBase;
 import org.nasdanika.html.InputType;
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
+import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
 import org.nasdanika.html.bootstrap.Button;
@@ -17,9 +19,11 @@ import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.FormGroup;
 import org.nasdanika.html.bootstrap.InputGroup;
-import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.bootstrap.Navs;
+import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
+import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.bootstrap.Table.TableBody;
 import org.nasdanika.html.bootstrap.Table.TableHeader;
 
@@ -130,6 +134,37 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		return new FormGroupImpl(this, label, input, hint);
 	}
 	
+	@Override
+	public <B extends BootstrapElement<?>> B tooltip(B bootstrapElement, Object tooltip, boolean html, Placement placement) {
+		tooltip(bootstrapElement.toHTMLElement(), tooltip, html, placement);
+		return bootstrapElement;
+	}
+	
+	@Override
+	public <H extends HTMLElement<?>> H tooltip(H htmlElement, Object tooltip, boolean html, Placement placement) {
+		htmlElement
+			.attribute("data-toggle", "tooltip")
+			.attribute("data-placement", placement.name().toLowerCase())			
+			.attribute("data-html", "true", html)
+			.attribute("title", tooltip);		
+		return htmlElement;
+	}
+	
+	@Override
+	public Tag initTooltipScript() {
+		return htmlFactory.nonEmptyTag(TagName.script, "$(function () { $('[data-toggle=\"tooltip\"]').tooltip(); });");
+	}
+	
+	@Override
+	public Navs pills() {
+		return new NavsImpl(this, true);
+	}
+	
+	@Override
+	public Navs tabs() {
+		return new NavsImpl(this, false);
+	}
+	
 	/**
 	 * Basic testing/demo, paste output to https://www.w3schools.com/bootstrap4/tryit.asp?filename=trybs_default&stacked=h body
 	 * @param args
@@ -149,7 +184,10 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 
 		org.nasdanika.html.Button hButton = htmlFactory.button("Button");	
 		Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
-		System.out.println(button);
+		factory.tooltip(button, "I am a <I>tooltip</I>." , true, Placement.BOTTOM);
+		System.out.println(button);				
+		
+		System.out.println(factory.initTooltipScript());
 		
 		ButtonGroup buttonGroup = factory.buttonGroup(false);
 		buttonGroup.add(button);
@@ -199,10 +237,19 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 
 		form.content(factory.formGroup("City", htmlFactory.input(InputType.text), "City").valid());
 		form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "State").invalid("No such state"));
-
-		
 		
 		System.out.println(form);
+		
+		// Navs		
+		Navs navs = factory.tabs();
+		navs.item("First", "First content");
+		navs.item("Second", "Second content");
+		navs.item("Third", "Third content");
+		navs.item("Fourth", "Fourth content");
+		
+		System.out.println(navs);
+		
+		
 	}
 	
 }

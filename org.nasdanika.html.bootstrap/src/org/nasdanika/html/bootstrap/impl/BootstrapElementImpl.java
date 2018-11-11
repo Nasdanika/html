@@ -21,5 +21,10 @@ abstract class BootstrapElementImpl<H extends HTMLElement<?>> implements Bootstr
 	public String toString() {
 		return toHTMLElement().toString();
 	}
+	
+	@Override
+	public Object produce(int indent) {
+		return toHTMLElement().produce(indent);
+	}
 
 }
