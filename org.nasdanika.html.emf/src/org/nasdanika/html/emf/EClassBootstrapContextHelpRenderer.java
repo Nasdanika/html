@@ -19,6 +19,6 @@ public class EClassBootstrapContextHelpRenderer extends EClassBootstrapRenderer 
 		super(eClass);
 	}
 	
-	// TODO - ability to turn context help on and off.
+	// TODO - ability to turn context help on and off
 
 }
