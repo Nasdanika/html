@@ -20,5 +20,7 @@ public class EClassBootstrapContextHelpRenderer extends EClassBootstrapRenderer 
 	}
 	
 	// TODO - ability to turn context help on and off
+	
+	// consumer to add modal declarations
 
 }

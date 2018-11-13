@@ -18,6 +18,11 @@ public class KnockoutEObjectRenderer<T extends EObject> extends EObjectRenderer<
 		this.knockoutFactory = knockoutFactory;
 	}
 	
+	public KnockoutEObjectRenderer(T eObject) {
+		super(eObject);
+		this.knockoutFactory = KnockoutFactory.INSTANCE;
+	}
+	
 	// TODO - configurable which aspects to bind, e.g. only the edit form.
 	
 	// TODO - render view model script too, possibly as a module. 
