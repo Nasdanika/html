@@ -8,17 +8,17 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
  * @author Pavel Vlasov
  *
  */
-public class EClassBootstrapRenderer extends EClassHTMLRenderer {
+public class EClassBootstrapRenderer<RC extends RenderingContext> extends EClassHTMLRenderer<RC> {
 
 	protected BootstrapFactory bootstrapFactory;
 	
-	public EClassBootstrapRenderer(EClass eClass, BootstrapFactory bootstrapFactory) {
-		super(eClass, bootstrapFactory.getHTMLFactory());
+	public EClassBootstrapRenderer(EClass eClass, BootstrapFactory bootstrapFactory, RC renderingContext) {
+		super(eClass, bootstrapFactory.getHTMLFactory(), renderingContext);
 		this.bootstrapFactory = bootstrapFactory;
 	}
 	
-	public EClassBootstrapRenderer(EClass eClass) {
-		this(eClass, BootstrapFactory.INSTANCE);
+	public EClassBootstrapRenderer(EClass eClass, RC renderingContext) {
+		this(eClass, BootstrapFactory.INSTANCE, renderingContext);
 	}
 
 }

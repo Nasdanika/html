@@ -9,14 +9,14 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
  * @author Pavel Vlasov
  *
  */
-public class EClassBootstrapContextHelpRenderer extends EClassBootstrapRenderer {
+public class EClassBootstrapContextHelpRenderer<RC extends RenderingContext> extends EClassBootstrapRenderer<RC> {
 	
-	public EClassBootstrapContextHelpRenderer(EClass eClass, BootstrapFactory bootstrapFactory) {
-		super(eClass, bootstrapFactory);
+	public EClassBootstrapContextHelpRenderer(EClass eClass, BootstrapFactory bootstrapFactory, RC renderingContext) {
+		super(eClass, bootstrapFactory, renderingContext);
 	}
 	
-	public EClassBootstrapContextHelpRenderer(EClass eClass) {
-		super(eClass);
+	public EClassBootstrapContextHelpRenderer(EClass eClass, RC renderingContext) {
+		super(eClass, renderingContext);
 	}
 	
 	// TODO - ability to turn context help on and off

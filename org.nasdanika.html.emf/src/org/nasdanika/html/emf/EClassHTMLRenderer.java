@@ -9,18 +9,20 @@ import org.nasdanika.html.HTMLFactory;
  * Renders HTML using EClass metadata.
  * @author Pavel Vlasov
  */
-public class EClassHTMLRenderer implements Renderer {
+public class EClassHTMLRenderer<RC extends RenderingContext> implements Renderer {
 	
 	protected EClass eClass;
 	protected HTMLFactory htmlFactory;
+	protected RC renderingContext;
 
-	public EClassHTMLRenderer(EClass eClass, HTMLFactory htmlFactory) {
+	public EClassHTMLRenderer(EClass eClass, HTMLFactory htmlFactory, RC renderingContext) {
 		this.eClass = eClass;
 		this.htmlFactory = htmlFactory;
+		this.renderingContext = renderingContext;
 	}
 	
-	public EClassHTMLRenderer(EClass eClass) {
-		this(eClass, HTMLFactory.INSTANCE);
+	public EClassHTMLRenderer(EClass eClass, RC renderingContext) {
+		this(eClass, HTMLFactory.INSTANCE, renderingContext);
 	}
 
 	@Override

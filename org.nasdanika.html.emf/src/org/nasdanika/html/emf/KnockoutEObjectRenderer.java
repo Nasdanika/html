@@ -9,17 +9,17 @@ import org.nasdanika.html.knockout.KnockoutFactory;
  * @author Pavel Vlasov
  *
  */
-public class KnockoutEObjectRenderer<T extends EObject> extends EObjectRenderer<T> {
+public class KnockoutEObjectRenderer<T extends EObject, RC extends RenderingContext> extends EObjectRenderer<T,RC> {
 
 	protected KnockoutFactory knockoutFactory;
 
-	public KnockoutEObjectRenderer(T eObject, BootstrapFactory  bootstrapFactory, KnockoutFactory knockoutFactory) {
-		super(eObject, bootstrapFactory);
+	public KnockoutEObjectRenderer(T eObject, BootstrapFactory  bootstrapFactory, KnockoutFactory knockoutFactory, RC renderingContext) {
+		super(eObject, bootstrapFactory, renderingContext);
 		this.knockoutFactory = knockoutFactory;
 	}
 	
-	public KnockoutEObjectRenderer(T eObject) {
-		super(eObject);
+	public KnockoutEObjectRenderer(T eObject, RC renderingContext) {
+		super(eObject, renderingContext);
 		this.knockoutFactory = KnockoutFactory.INSTANCE;
 	}
 	

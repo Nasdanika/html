@@ -8,17 +8,17 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
  * @author Pavel Vlasov
  *
  */
-public class EObjectRenderer<T extends EObject> extends EClassBootstrapContextHelpRenderer {
+public class EObjectRenderer<T extends EObject, RC extends RenderingContext> extends EClassBootstrapContextHelpRenderer<RC> {
 
 	protected T eObject;
 
-	public EObjectRenderer(T eObject, BootstrapFactory bootstrapFactory) {
-		super(eObject.eClass(), bootstrapFactory);
+	public EObjectRenderer(T eObject, BootstrapFactory bootstrapFactory, RC renderingContext) {
+		super(eObject.eClass(), bootstrapFactory, renderingContext);
 		this.eObject = eObject;
 	}
 	
-	public EObjectRenderer(EObject eObject) {
-		super(eObject.eClass());
+	public EObjectRenderer(EObject eObject, RC renderingContext) {
+		super(eObject.eClass(), renderingContext);
 	}
 	
 	// Object path
