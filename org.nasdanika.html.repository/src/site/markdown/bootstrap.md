@@ -121,3 +121,13 @@ navs.item("Fourth", "Fourth content");
 ```
 
 For pills use ``factory.pills()`` method.
+
+## Grid, background and text style
+
+```
+Container container = factory.container();
+Row row = container.row();
+row.col("Col 1").border(Color.DARK).background(Color.WARNING).text().color(Color.PRIMARY);
+row.col("Col 2").border(Color.PRIMARY).text().weight(Weight.BOLD).alignment(Alignment.CENTER);
+row.col("Col 3").border(Color.WARNING, Placement.RIGHT).background(Color.SECONDARY).text().monospace();		
+```

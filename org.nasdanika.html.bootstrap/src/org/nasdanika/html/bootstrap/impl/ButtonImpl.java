@@ -7,7 +7,7 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.Color;
 
-class ButtonImpl<H extends HTMLElement<?>> extends WrappingBootstrapElementImpl<H> implements Button<H> {
+class ButtonImpl<H extends HTMLElement<?>> extends WrappingBootstrapElementImpl<H,Button<H>> implements Button<H> {
 
 	private Color color;
 	private boolean outline;

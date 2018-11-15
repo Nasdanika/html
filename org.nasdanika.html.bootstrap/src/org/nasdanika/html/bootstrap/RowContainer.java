@@ -2,16 +2,16 @@ package org.nasdanika.html.bootstrap;
 
 import java.util.List;
 
-public interface RowContainer<T extends org.nasdanika.html.RowContainer<T>> extends BootstrapElement<T> {
+public interface RowContainer<T extends org.nasdanika.html.RowContainer<T>, B extends BootstrapElement<T,B>> extends BootstrapElement<T,B> {
 	
-	interface Row extends BootstrapElement<org.nasdanika.html.RowContainer.Row> {
+	interface Row extends BootstrapElement<org.nasdanika.html.RowContainer.Row,Row> {
 		
 		Row color(Color color);
 		
 		Row backgroundColor(Color color);		
 		
 		
-		interface Cell extends BootstrapElement<org.nasdanika.html.RowContainer.Row.Cell> {
+		interface Cell extends BootstrapElement<org.nasdanika.html.RowContainer.Row.Cell,Cell> {
 			
 			Cell color(Color color);			
 

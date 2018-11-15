@@ -5,7 +5,7 @@ import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.Dropdown;
 
-class ButtonGroupImpl extends DivWrappingBootstrapElementImpl implements ButtonGroup {
+class ButtonGroupImpl extends DivWrappingBootstrapElementImpl<ButtonGroup> implements ButtonGroup {
 	
 	ButtonGroupImpl(BootstrapFactory factory, boolean vertical) {
 		super(factory);

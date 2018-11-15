@@ -71,7 +71,7 @@ public interface BootstrapFactory {
 	
 	<H extends HTMLElement<?>> H tooltip(H htmlElement, Object tooltip, boolean html, Placement placement);
 	
-	<B extends BootstrapElement<?>> B tooltip(B bootstrapElement, Object tooltip, boolean html, Placement placement);
+	<B extends BootstrapElement<?,?>> B tooltip(B bootstrapElement, Object tooltip, boolean html, Placement placement);
 	
 	/**
 	 * @return Script to initialize tooltips.
@@ -81,6 +81,15 @@ public interface BootstrapFactory {
 	Navs tabs();
 	
 	Navs pills();
+	
+	Container container();
+	
+	Container container(Tag div);
+	
+	Container fluidContainer();
+	
+	Container fluidContainer(Tag div);
+	
 	
 		
 	/* TODO - Implement, add factory method and remove

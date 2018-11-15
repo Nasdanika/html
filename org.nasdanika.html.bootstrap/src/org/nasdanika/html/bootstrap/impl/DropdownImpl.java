@@ -10,7 +10,7 @@ import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 
-class DropdownImpl extends DivWrappingBootstrapElementImpl implements Dropdown {
+class DropdownImpl extends DivWrappingBootstrapElementImpl<Dropdown> implements Dropdown {
 	
 	private Tag menu;
 

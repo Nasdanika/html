@@ -1,8 +1,8 @@
 package org.nasdanika.html.bootstrap;
 
-import org.nasdanika.html.Markup;
+import org.nasdanika.html.Tag;
 
-public interface Dropdown extends Markup {
+public interface Dropdown extends BootstrapElement<Tag,Dropdown> {
 	
 	Dropdown item(Object href, boolean active, boolean disabled, Object... content);
 	

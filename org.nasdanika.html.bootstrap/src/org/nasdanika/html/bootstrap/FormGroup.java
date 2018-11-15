@@ -2,7 +2,7 @@ package org.nasdanika.html.bootstrap;
 
 import org.nasdanika.html.Tag;
 
-public interface FormGroup extends BootstrapElement<Tag> {
+public interface FormGroup extends BootstrapElement<Tag,FormGroup> {
 	
 	FormGroup large();
 	

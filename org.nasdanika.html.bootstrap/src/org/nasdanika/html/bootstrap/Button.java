@@ -2,7 +2,7 @@ package org.nasdanika.html.bootstrap;
 
 import org.nasdanika.html.HTMLElement;
 
-public interface Button<H extends HTMLElement<?>> extends BootstrapElement<H> {
+public interface Button<H extends HTMLElement<?>> extends BootstrapElement<H, Button<H>> {
 	
 	Button<H> large();
 	Button<H> large(boolean large);

@@ -3,7 +3,7 @@ package org.nasdanika.html.bootstrap.impl;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Table;
 
-class TableImpl extends RowContainerImpl<org.nasdanika.html.Table> implements Table  {
+class TableImpl extends RowContainerImpl<org.nasdanika.html.Table, Table> implements Table  {
 
 	TableImpl(BootstrapFactory factory, org.nasdanika.html.Table htmlTable) {
 		super(factory, htmlTable);

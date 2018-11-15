@@ -7,7 +7,7 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.InputGroup;
 
-class InputGroupImpl extends DivWrappingBootstrapElementImpl implements InputGroup  {
+class InputGroupImpl extends DivWrappingBootstrapElementImpl<InputGroup> implements InputGroup  {
 
 	private Tag prepend;
 	private Fragment inputs;

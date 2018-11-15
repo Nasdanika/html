@@ -5,7 +5,7 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
 
-class BreadcrumbsImpl extends WrappingBootstrapElementImpl<Tag> implements Breadcrumbs {
+class BreadcrumbsImpl extends WrappingBootstrapElementImpl<Tag,Breadcrumbs> implements Breadcrumbs {
 	
 	private Tag ol;
 

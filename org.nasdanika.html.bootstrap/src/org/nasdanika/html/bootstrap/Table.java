@@ -1,8 +1,8 @@
 package org.nasdanika.html.bootstrap;
 
-public interface Table extends RowContainer<org.nasdanika.html.Table> {
+public interface Table extends RowContainer<org.nasdanika.html.Table, Table> {
 		
-	interface TableHeader extends RowContainer<org.nasdanika.html.Table.TableHeader> {
+	interface TableHeader extends RowContainer<org.nasdanika.html.Table.TableHeader, TableHeader> {
 
 		TableHeader dark();
 		
@@ -14,11 +14,11 @@ public interface Table extends RowContainer<org.nasdanika.html.Table> {
 		
 	}
 	
-	interface TableBody extends RowContainer<org.nasdanika.html.Table.TableBody> {
+	interface TableBody extends RowContainer<org.nasdanika.html.Table.TableBody, TableBody> {
 		
 	}
 
-	interface TableFooter extends RowContainer<org.nasdanika.html.Table.TableFooter> {
+	interface TableFooter extends RowContainer<org.nasdanika.html.Table.TableFooter, TableFooter> {
 		
 	}	
 	

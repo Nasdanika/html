@@ -15,6 +15,8 @@ import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.Container.Row.Col;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.FormGroup;
@@ -26,6 +28,8 @@ import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.bootstrap.Table.TableBody;
 import org.nasdanika.html.bootstrap.Table.TableHeader;
+import org.nasdanika.html.bootstrap.Text.Alignment;
+import org.nasdanika.html.bootstrap.Text.Weight;
 
 /**
  * HTML factory which relies on Bootstrap styles and scripts.
@@ -135,7 +139,7 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	}
 	
 	@Override
-	public <B extends BootstrapElement<?>> B tooltip(B bootstrapElement, Object tooltip, boolean html, Placement placement) {
+	public <B extends BootstrapElement<?,?>> B tooltip(B bootstrapElement, Object tooltip, boolean html, Placement placement) {
 		tooltip(bootstrapElement.toHTMLElement(), tooltip, html, placement);
 		return bootstrapElement;
 	}
@@ -164,6 +168,27 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	public Navs tabs() {
 		return new NavsImpl(this, false);
 	}
+	
+	@Override
+	public Container container() {
+		return container(htmlFactory.div());
+	}
+
+	@Override
+	public Container container(Tag div) {
+		return new ContainerImpl(this, div, false);
+	}
+
+	@Override
+	public Container fluidContainer() {
+		return fluidContainer(htmlFactory.div());
+	}
+
+	@Override
+	public Container fluidContainer(Tag div) {
+		return new ContainerImpl(this, div, true);
+	}
+	
 	
 	/**
 	 * Basic testing/demo, paste output to https://www.w3schools.com/bootstrap4/tryit.asp?filename=trybs_default&stacked=h body
@@ -249,7 +274,14 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		
 		System.out.println(navs);
 		
-		
+		// Containers		
+		Container container = factory.container();
+		org.nasdanika.html.bootstrap.Container.Row row = container.row();
+		row.col("Col 1").border(Color.DARK).background(Color.WARNING).text().color(Color.PRIMARY);
+		row.col("Col 2").border(Color.PRIMARY).text().weight(Weight.BOLD).alignment(Alignment.CENTER);
+		row.col("Col 3").border(Color.WARNING, Placement.RIGHT).background(Color.SECONDARY).text().monospace();		
+	
+		System.out.println(container);
 	}
 	
 }

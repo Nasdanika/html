@@ -8,7 +8,7 @@ import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.RowContainer;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 
-class RowImpl extends WrappingBootstrapElementImpl<org.nasdanika.html.RowContainer.Row> implements RowContainer.Row  {
+class RowImpl extends WrappingBootstrapElementImpl<org.nasdanika.html.RowContainer.Row,Row> implements RowContainer.Row  {
 
 	RowImpl(BootstrapFactory factory, org.nasdanika.html.RowContainer.Row htmlRow) {
 		super(factory, htmlRow);

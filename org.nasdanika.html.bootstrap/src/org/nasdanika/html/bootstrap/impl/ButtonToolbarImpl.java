@@ -4,7 +4,7 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 
-class ButtonToolbarImpl extends DivWrappingBootstrapElementImpl implements ButtonToolbar {
+class ButtonToolbarImpl extends DivWrappingBootstrapElementImpl<ButtonToolbar> implements ButtonToolbar {
 	
 	ButtonToolbarImpl(BootstrapFactory factory) {
 		super(factory);

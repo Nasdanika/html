@@ -7,7 +7,7 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.FormGroup;
 
-class FormGroupImpl extends DivWrappingBootstrapElementImpl implements FormGroup {
+class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> implements FormGroup {
 
 	private InputBase<?> input;
 

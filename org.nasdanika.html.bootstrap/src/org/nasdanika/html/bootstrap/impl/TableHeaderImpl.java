@@ -4,7 +4,7 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.bootstrap.Table.TableHeader;
 
-class TableHeaderImpl extends RowContainerImpl<org.nasdanika.html.Table.TableHeader> implements Table.TableHeader  {
+class TableHeaderImpl extends RowContainerImpl<org.nasdanika.html.Table.TableHeader, Table.TableHeader> implements Table.TableHeader  {
 
 	TableHeaderImpl(BootstrapFactory factory, org.nasdanika.html.Table.TableHeader htmlHeader) {
 		super(factory, htmlHeader);

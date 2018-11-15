@@ -8,7 +8,7 @@ import org.nasdanika.html.Tag;
  * @author Pavel Vlasov
  *
  */
-public interface Navs extends BootstrapElement<Tag>, NamedItemsContainer {
+public interface Navs extends BootstrapElement<Tag,Navs>, NamedItemsContainer {
 	
 	/**
 	 * Adds 

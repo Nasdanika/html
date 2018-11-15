@@ -6,7 +6,7 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Navs;
 
-public class NavsImpl extends BootstrapElementImpl<Tag> implements Navs {
+public class NavsImpl extends BootstrapElementImpl<Tag,Navs> implements Navs {
 	
 	private Fragment fragment;
 	private Tag navDiv;
