@@ -166,4 +166,10 @@ public interface HTMLFactory {
 	 * @return
 	 */
 	NamedItemsContainer tagNamedItemsContainer(TagName tagName);
+	
+	/**
+	 * Creates HTML page.
+	 * @return
+	 */
+	HTMLPage page();
 }

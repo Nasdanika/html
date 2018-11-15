@@ -2,6 +2,7 @@ package org.nasdanika.html.bootstrap;
 
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.InputBase;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.impl.DefaultBootstrapFactory;
@@ -90,6 +91,17 @@ public interface BootstrapFactory {
 	
 	Container fluidContainer(Tag div);
 	
+	/**
+	 * Creates an HTML page with meta tags required by Bootstrap.
+	 * @return
+	 */
+	HTMLPage bootstrapHTMLPage();
+	
+	/**
+	 * Creates an HTML page with Bootstrap stylesheet and scripts served from CDN.
+	 * @return
+	 */
+	HTMLPage bootstrapCdnHTMLPage();
 	
 		
 	/* TODO - Implement, add factory method and remove

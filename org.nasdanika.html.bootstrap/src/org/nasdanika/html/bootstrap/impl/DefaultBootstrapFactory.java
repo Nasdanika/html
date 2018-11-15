@@ -3,6 +3,7 @@ package org.nasdanika.html.bootstrap.impl;
 import org.nasdanika.html.Form;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Input;
 import org.nasdanika.html.InputBase;
 import org.nasdanika.html.InputType;
@@ -16,7 +17,6 @@ import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
-import org.nasdanika.html.bootstrap.Container.Row.Col;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.FormGroup;
@@ -189,6 +189,24 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		return new ContainerImpl(this, div, true);
 	}
 	
+	@Override
+	public HTMLPage bootstrapHTMLPage() {
+		HTMLPage page = getHTMLFactory().page();
+		page.head(getHTMLFactory().tag(TagName.meta).attribute("charset", "utf-8"));
+		page.head(getHTMLFactory().tag(TagName.meta).attribute("name", "viewport").attribute("content", "width=device-width, initial-scale=1, shrink-to-fit=no"));
+		return page;
+	}
+	
+	@Override
+	public HTMLPage bootstrapCdnHTMLPage() {
+		HTMLPage page = bootstrapHTMLPage();
+		page.stylesheet("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css");
+		page.script("https://code.jquery.com/jquery-3.3.1.slim.min.js");
+		page.script("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js");
+		page.script("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js");
+		return page;
+	}
+	
 	
 	/**
 	 * Basic testing/demo, paste output to https://www.w3schools.com/bootstrap4/tryit.asp?filename=trybs_default&stacked=h body
@@ -280,8 +298,31 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		row.col("Col 1").border(Color.DARK).background(Color.WARNING).text().color(Color.PRIMARY);
 		row.col("Col 2").border(Color.PRIMARY).text().weight(Weight.BOLD).alignment(Alignment.CENTER);
 		row.col("Col 3").border(Color.WARNING, Placement.RIGHT).background(Color.SECONDARY).text().monospace();		
-	
+			
 		System.out.println(container);
+		
+		// HTML page
+		HTMLPage page = factory.getHTMLFactory().page();
+		page.head(factory.getHTMLFactory().tag(TagName.meta).attribute("charset", "utf-8"));
+		page.head(factory.getHTMLFactory().tag(TagName.meta).attribute("name", "viewport").attribute("content", "width=device-width, initial-scale=1, shrink-to-fit=no"));
+		
+		page.title("Demo");
+		page.stylesheet("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css");
+		page.script("https://code.jquery.com/jquery-3.3.1.slim.min.js");
+		page.script("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js");
+		page.script("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js");
+		
+		page.body(container);
+		
+		System.out.println(page);
+		
+		// Bootstrap page
+		HTMLPage bootstrapPage = factory.bootstrapCdnHTMLPage();
+		bootstrapPage.title("Bootstrap demo");
+		bootstrapPage.body(container);		
+		System.out.println(bootstrapPage);
+		
+		
 	}
 	
 }

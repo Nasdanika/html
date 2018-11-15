@@ -19,6 +19,7 @@ import org.nasdanika.html.Fragment;
 import org.nasdanika.html.Function;
 import org.nasdanika.html.Color;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Input;
 import org.nasdanika.html.InputType;
 import org.nasdanika.html.NamedItemsContainer;
@@ -417,6 +418,11 @@ public class DefaultHTMLFactory implements HTMLFactory {
 			
 		}
 		return new NamedItemsContainerImpl();
+	}
+	
+	@Override
+	public HTMLPage page() {
+		return new HTMLPageImpl(this);
 	}
 	
 }
