@@ -1,15 +1,15 @@
 package org.nasdanika.html.bootstrap;
 
+import org.nasdanika.html.HTMLPage;
+
 /**
  * Enumeration for out-of-the-box and Bootswatch themes.
  * @author Pavel Vlasov
  *
  */
 public enum Theme {
-	/** No theme **/
-	None,
-	/** Default optional Bootstrap theme **/
-	Default,
+	/** Default Bootstrap theme **/
+	Default("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"),
 	/** Bootswatch theme **/
 	Cerulean,
 	/** Bootswatch theme **/
@@ -51,5 +51,28 @@ public enum Theme {
 	/** Bootswatch theme **/
 	United,
 	/** Bootswatch theme **/
-	Yeti
+	Yeti;
+	
+	/**
+	 * CDN location of theme stylesheet.
+	 */
+	public final String stylesheetCdnURL;
+	
+	/**
+	 * Adds CDN stylesheet declaration to the page.
+	 * @param page
+	 * @return
+	 */
+	public <P extends HTMLPage> P cdn(P page) {
+		page.stylesheet(stylesheetCdnURL);
+		return page;
+	}
+	
+	private Theme() {
+		stylesheetCdnURL = "https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/"+name().toLowerCase()+"/bootstrap.min.css";
+	}
+	
+	private Theme(String stylesheetCdnURL) {
+		this.stylesheetCdnURL = stylesheetCdnURL;
+	}
 }

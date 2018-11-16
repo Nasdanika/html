@@ -35,7 +35,7 @@ public class HTMLPageImpl implements HTMLPage {
 	 * @param url
 	 */
 	public HTMLPage script(Object url) {
-		head(factory.tag(TagName.script).attribute("scr", url));
+		head(factory.tag(TagName.script).attribute("src", url));
 		return this;
 	}
 	
@@ -70,6 +70,21 @@ public class HTMLPageImpl implements HTMLPage {
 	public String toString() {
 		return HTMLElementImpl.stringify(produce(0), 0, factory);
 	}
-	
+
+	@Override
+	public HTMLPage lang(Object lang) {
+		html.attribute("lang", lang);
+		return this;
+	}
+
+	@Override
+	public HTMLFactory getFactory() {
+		return factory;
+	}
+
+	@Override
+	public void close() throws Exception {
+		html.close();		
+	}	
 
 }

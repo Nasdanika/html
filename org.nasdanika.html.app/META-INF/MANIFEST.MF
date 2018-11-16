@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Classes for rendering HTML applications
+Bundle-SymbolicName: org.nasdanika.html.app
+Bundle-Version: 2.0.0.qualifier
+Bundle-Vendor: Nasdanika LLC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: .
+Require-Bundle: org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport,
+ org.nasdanika.html.bootstrap;bundle-version="2.0.0";visibility:=reexport,
+ org.nasdanika.html.fontawesome;bundle-version="2.0.0";visibility:=reexport,
+ org.nasdanika.html.jstree;bundle-version="2.0.0";visibility:=reexport,
+ org.nasdanika.html.knockout;bundle-version="2.0.0";visibility:=reexport

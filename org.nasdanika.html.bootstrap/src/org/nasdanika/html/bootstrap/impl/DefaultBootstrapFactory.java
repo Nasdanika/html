@@ -30,6 +30,7 @@ import org.nasdanika.html.bootstrap.Table.TableBody;
 import org.nasdanika.html.bootstrap.Table.TableHeader;
 import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.bootstrap.Text.Weight;
+import org.nasdanika.html.bootstrap.Theme;
 
 /**
  * HTML factory which relies on Bootstrap styles and scripts.
@@ -190,23 +191,42 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	}
 	
 	@Override
-	public HTMLPage bootstrapHTMLPage() {
-		HTMLPage page = getHTMLFactory().page();
-		page.head(getHTMLFactory().tag(TagName.meta).attribute("charset", "utf-8"));
-		page.head(getHTMLFactory().tag(TagName.meta).attribute("name", "viewport").attribute("content", "width=device-width, initial-scale=1, shrink-to-fit=no"));
+	public <P extends HTMLPage> P bootstrapHTMLPage(P page) {
+		page
+			.head(getHTMLFactory().tag(TagName.meta).attribute("charset", "utf-8"))
+			.head(getHTMLFactory().tag(TagName.meta).attribute("name", "viewport").attribute("content", "width=device-width, initial-scale=1, shrink-to-fit=no"));
 		return page;
 	}
 	
 	@Override
-	public HTMLPage bootstrapCdnHTMLPage() {
-		HTMLPage page = bootstrapHTMLPage();
-		page.stylesheet("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css");
-		page.script("https://code.jquery.com/jquery-3.3.1.slim.min.js");
-		page.script("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js");
-		page.script("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js");
+	public <P extends HTMLPage> P bootstrapCdnHTMLPage(P page, Theme theme) {
+		theme.cdn(page);
+		bootstrapHTMLPage(page)
+			.script("https://code.jquery.com/jquery-3.3.1.min.js")
+			.script("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js")
+			.script("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js");
 		return page;
 	}
 	
+	@Override
+	public <P extends HTMLPage> P bootstrapCdnHTMLPage(P page) {
+		return bootstrapCdnHTMLPage(page, Theme.Default);
+	}
+	
+	@Override
+	public HTMLPage bootstrapHTMLPage() {
+		return bootstrapHTMLPage(getHTMLFactory().page());
+	}
+	
+	@Override
+	public HTMLPage bootstrapCdnHTMLPage(Theme theme) {
+		return bootstrapCdnHTMLPage(bootstrapHTMLPage(), theme);
+	}
+	
+	@Override
+	public HTMLPage bootstrapCdnHTMLPage() {
+		return bootstrapCdnHTMLPage(Theme.Default);
+	}	
 	
 	/**
 	 * Basic testing/demo, paste output to https://www.w3schools.com/bootstrap4/tryit.asp?filename=trybs_default&stacked=h body
@@ -317,7 +337,7 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		System.out.println(page);
 		
 		// Bootstrap page
-		HTMLPage bootstrapPage = factory.bootstrapCdnHTMLPage();
+		HTMLPage bootstrapPage = factory.bootstrapCdnHTMLPage(Theme.Cerulean);
 		bootstrapPage.title("Bootstrap demo");
 		bootstrapPage.body(container);		
 		System.out.println(bootstrapPage);

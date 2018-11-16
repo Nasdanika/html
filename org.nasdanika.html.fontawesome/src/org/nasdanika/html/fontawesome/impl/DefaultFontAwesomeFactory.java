@@ -2,6 +2,7 @@ package org.nasdanika.html.fontawesome.impl;
 
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.fontawesome.Icon;
@@ -97,6 +98,12 @@ public class DefaultFontAwesomeFactory implements FontAwesomeFactory {
 	@Override
 	public <T extends HTMLElement<?>> Icon<T> from(String icon, Style style, T htmlElement) {
 		return new IconImpl<T>(icon, style, htmlElement);
+	}
+
+	@Override
+	public <P extends HTMLPage> P cdn(P page) {
+		page.stylesheet("https://use.fontawesome.com/releases/v5.5.0/css/all.css");
+		return page;
 	}
 	
 }

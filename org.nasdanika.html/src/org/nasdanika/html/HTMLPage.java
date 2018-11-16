@@ -5,7 +5,14 @@ package org.nasdanika.html;
  * @author Pavel Vlasov
  *
  */
-public interface HTMLPage extends Producer {
+public interface HTMLPage extends Producer, AutoCloseable {
+	
+	/**
+	 * Adds lang attribute to html tag.
+	 * @param lang
+	 * @return
+	 */
+	HTMLPage lang(Object lang);
 	
 	/**
 	 * Adds content to html head element of the page.
@@ -37,5 +44,7 @@ public interface HTMLPage extends Producer {
 	 * @return
 	 */
 	HTMLPage body(Object... content);
+	
+	HTMLFactory getFactory();
 	
 }

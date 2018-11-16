@@ -92,6 +92,30 @@ public interface BootstrapFactory {
 	Container fluidContainer(Tag div);
 	
 	/**
+	 * Adds bootstrap required meta tags to the page.
+	 * @param htmlPage
+	 * @return
+	 */
+	<P extends HTMLPage> P bootstrapHTMLPage(P htmlPage);
+
+	/**
+	 * Adds bootstrap required meta tags and stylesheet and script tags to load
+	 * resources from CDN.
+	 * @param htmlPage
+	 * @return
+	 */
+	<P extends HTMLPage> P bootstrapCdnHTMLPage(P htmlPage);
+	
+	/**
+	 * Adds bootstrap required meta tags, default or Bootswatch stylesheet and script tags to load
+	 * resources from CDN.
+	 * @param htmlPage
+	 * @param theme Bootswatch theme, uses default theme is null or Default.
+	 * @return
+	 */
+	<P extends HTMLPage> P bootstrapCdnHTMLPage(P htmlPage, Theme theme);		
+	
+	/**
 	 * Creates an HTML page with meta tags required by Bootstrap.
 	 * @return
 	 */
@@ -103,6 +127,12 @@ public interface BootstrapFactory {
 	 */
 	HTMLPage bootstrapCdnHTMLPage();
 	
+	/**
+	 * Creates an HTML page with Bootstrap stylesheet and scripts served from CDN.
+	 * @param theme Bootswatch theme. Uses the default Bootstrap theme if null or Default.
+	 * @return
+	 */
+	HTMLPage bootstrapCdnHTMLPage(Theme theme);		
 		
 	/* TODO - Implement, add factory method and remove
 	 * Navs - tabs, pills

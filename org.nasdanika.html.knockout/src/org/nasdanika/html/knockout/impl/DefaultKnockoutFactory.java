@@ -2,6 +2,7 @@ package org.nasdanika.html.knockout.impl;
 
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.knockout.Knockout;
 import org.nasdanika.html.knockout.KnockoutFactory;
 import org.nasdanika.html.knockout.KnockoutVirtualElement;
@@ -28,6 +29,12 @@ public class DefaultKnockoutFactory implements KnockoutFactory {
 	@Override
 	public KnockoutVirtualElement virtualElement(Object... content) {
 		return new KnockoutVirtualElementImpl(this, content);
+	}
+
+	@Override
+	public <P extends HTMLPage> P cdn(P page) {
+		page.script("https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js");
+		return page;
 	}	
 
 }

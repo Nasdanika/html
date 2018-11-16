@@ -8,5 +8,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.nasdanika.html.jstree,
  org.nasdanika.html.jstree.impl
 Bundle-ClassPath: .
-Require-Bundle: json;bundle-version="20180130.0.0"
+Require-Bundle: json;bundle-version="20180130.0.0";visibility:=reexport,
+ org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport
 Automatic-Module-Name: org.nasdanika.html.jstree

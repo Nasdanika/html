@@ -135,7 +135,7 @@ row.col("Col 3").border(Color.WARNING, Placement.RIGHT).background(Color.SECONDA
 ## Bootstrap CDN HTML Page
 
 ```
-HTMLPage bootstrapPage = factory.bootstrapCdnHTMLPage();
+HTMLPage bootstrapPage = factory.bootstrapCdnHTMLPage(Theme.Cerulean);
 bootstrapPage.title("Bootstrap demo");
 bootstrapPage.body(container);		
 ```

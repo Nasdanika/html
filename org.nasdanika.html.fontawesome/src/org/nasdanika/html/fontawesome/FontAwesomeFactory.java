@@ -2,6 +2,7 @@ package org.nasdanika.html.fontawesome;
 
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.fontawesome.impl.DefaultFontAwesomeFactory;
 
@@ -20,5 +21,12 @@ public interface FontAwesomeFactory {
 	Icon.Stack stack();
 	
 	HTMLFactory getHTMLFactory();
+	
+	/**
+	 * Adds Fontawesome stylesheet declaration pointing to CDN.
+	 * @param page
+	 * @return
+	 */
+	<P extends HTMLPage> P cdn(P page);
 	
 }

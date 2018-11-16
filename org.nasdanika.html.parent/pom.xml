@@ -175,6 +175,7 @@
 		<module>../org.nasdanika.html.emf</module>
 		<module>../org.nasdanika.html.knockout</module>
 		<module>../org.nasdanika.html.fontawesome</module>
+		<module>../org.nasdanika.html.app</module>
 
 		<!-- 
 		<module>../org.nasdanika.html.tests</module>
