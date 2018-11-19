@@ -38,11 +38,13 @@ public interface JsTreeFactory {
 	
 	
 	/**
-	 * Builds JsTree object for loading nodes using AJAX from the specified URL.
-	 * @param url
+	 * Builds JsTree object for loading nodes and context menus using AJAX from the specified URL's.
+	 * Node id is passed to the server side in "id" request parameter.
+	 * @param nodesUrl URL to load nodes.
+	 * @param contextMenuUrl URL to load context menus. Can be null. 
 	 * @return String representation because JSON does not support functions.
 	 */
-	String buildAjaxJsTree(String url);
+	String buildAjaxJsTree(String nodesUrl, String contextMenuUrl);
 	
 	/**
 	 * Generates script tag for binding jsTree to html element.
@@ -60,7 +62,6 @@ public interface JsTreeFactory {
 	 */
 	Tag bind(HTMLElement<?> htmlElement, Object jsTree);
 	
-	HTMLFactory getHTMLFactory();
-	
+	HTMLFactory getHTMLFactory();	
 	
 }

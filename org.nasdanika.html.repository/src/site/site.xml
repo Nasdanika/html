@@ -17,6 +17,7 @@
       <item name="Fontawesome" href="fontawesome.html" />
       <item name="JsTree" href="jstree.html" />
       <item name="Knockout" href="knockout.html" />
+      <item name="Application" href="app.html" />
       <item name="EMF" href="emf.html" />
       <item name="Project information" href="project-info.html" />      
    </menu>
@@ -27,6 +28,7 @@
       <item name="Knockout" href="apidocs/knockout/index.html" />
       <item name="Fontawesome" href="apidocs/fontawesome/index.html" />
       <item name="JsTree" href="apidocs/jstree/index.html" />
+      <item name="Application" href="apidocs/app/index.html" />
       <item name="EMF" href="apidocs/emf/index.html" />
    </menu>
 

@@ -1,5 +1,7 @@
 package org.nasdanika.html.jstree;
 
+import org.json.JSONObject;
+
 /**
  * Builds JsTree context menu item - https://www.jstree.com/api/#/?q=$.jstree.defaults.contextmenu&f=$.jstree.defaults.contextmenu.items.
  * Use toString() to produce JavaScript.
@@ -102,4 +104,10 @@ public interface JsTreeContextMenuItem {
 	 */
 	JsTreeContextMenuItem subMenu(Object subMenu);
 	
+	/**
+	 * JSON representation of the menu object - for AJAX menus.
+	 * Action is converted to JSON and shall be converted to a function on the browser side.
+	 * @return
+	 */
+	JSONObject toJSON();
 }

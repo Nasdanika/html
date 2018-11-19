@@ -21,5 +21,11 @@ public interface BootstrapElement<H extends HTMLElement<?>, B extends BootstrapE
 	B background(Color color);
 	
 	Text<B> text();
+	
+	Spacing<B> margin();
+	
+	Spacing<B> padding();
+	
+	Float<B> _float();
 
 }

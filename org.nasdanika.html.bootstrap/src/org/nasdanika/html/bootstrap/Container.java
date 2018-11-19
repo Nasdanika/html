@@ -1,6 +1,7 @@
 package org.nasdanika.html.bootstrap;
 
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.bootstrap.Container.Row.Col;
 
 /**
  * Bootstrap container.
@@ -16,6 +17,10 @@ public interface Container extends BootstrapElement<Tag,Container> {
 			Col width(int width);
 			
 			Col width(DeviceSize deviceSize, int width);
+			
+			public Col widthAuto();
+
+			public Col widthAuto(DeviceSize deviceSize);
 			
 		}
 		

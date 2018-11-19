@@ -172,4 +172,18 @@ public interface HTMLFactory {
 	 * @return
 	 */
 	HTMLPage page();
+	
+	/**
+	 * Creates a mutable token source with initial token.
+	 * @param token
+	 * @param value
+	 * @return
+	 */
+	MutableTokenSource mutableTokenSource(String token, Object value);
+	
+	/**
+	 * Creates a new mutable token source.
+	 * @return
+	 */
+	MutableTokenSource mutableTokenSource();	
 }

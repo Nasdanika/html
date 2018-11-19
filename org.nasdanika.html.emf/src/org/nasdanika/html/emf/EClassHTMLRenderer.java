@@ -4,6 +4,9 @@ package org.nasdanika.html.emf;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.EClass;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ActionImpl;
+import org.nasdanika.html.app.NavigationActionImpl;
 
 /**
  * Renders HTML using EClass metadata.
@@ -86,18 +89,6 @@ public class EClassHTMLRenderer<RC extends RenderingContext> implements Renderer
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public Object renderLink() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object renderTree() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	/**
 	 * Derives label (display name) from a name. This implementation splits by camel case,
@@ -112,6 +103,21 @@ public class EClassHTMLRenderer<RC extends RenderingContext> implements Renderer
 			cca[i] = cca[i].toLowerCase();
 		}
 		return StringUtils.join(cca, " ");
+	}
+
+	@Override
+	public Action getViewAction() {
+		// For initial testing.
+		NavigationActionImpl ret = new NavigationActionImpl();
+		ret.setLabel("Test");
+		ret.setIcon("far fa-user");
+		ret.setHref("somewhere");
+		ret.setId("L1000-view");
+		ret.setTooltip("Opens view page");
+		ret.getChildren().add(new ActionImpl());
+		
+		
+		return ret;
 	}
 
 

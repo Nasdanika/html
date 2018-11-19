@@ -11,3 +11,5 @@ Require-Bundle: org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport,
  org.nasdanika.html.fontawesome;bundle-version="2.0.0";visibility:=reexport,
  org.nasdanika.html.jstree;bundle-version="2.0.0";visibility:=reexport,
  org.nasdanika.html.knockout;bundle-version="2.0.0";visibility:=reexport
+Automatic-Module-Name: org.nasdanika.html.app
+Export-Package: org.nasdanika.html.app

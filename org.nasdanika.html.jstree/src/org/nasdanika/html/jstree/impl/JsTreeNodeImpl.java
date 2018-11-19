@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.nasdanika.html.jstree.JsTree;
 import org.nasdanika.html.jstree.JsTreeNode;
 
 class JsTreeNodeImpl implements JsTreeNode {
@@ -25,25 +24,25 @@ class JsTreeNodeImpl implements JsTreeNode {
 	private boolean hasChildren;
 	
 	@Override
-	public JsTree selected(boolean selected) {
+	public JsTreeNode selected(boolean selected) {
 		this.selected = selected;
 		return this;
 	}
 	
 	@Override
-	public JsTree opened(boolean opened) {
+	public JsTreeNode opened(boolean opened) {
 		this.opened = opened;
 		return this;
 	}
 	
 	@Override
-	public JsTree icon(String icon) {
+	public JsTreeNode icon(String icon) {
 		this.icon = icon;
 		return this;
 	}
 	
 	@Override
-	public JsTree disabled(boolean disabled) {
+	public JsTreeNode disabled(boolean disabled) {
 		this.disabled = disabled;
 		return this;
 	}
@@ -133,10 +132,20 @@ class JsTreeNodeImpl implements JsTreeNode {
 			data.put("text", text.toString());
 		}
 		
-		data.put("children", jch.length() == 0 && hasChildren ? true : jch);
+		if (jch.length() == 0) {
+			if (hasChildren) {
+				data.put("children", true);				
+			}
+		} else {
+			data.put("children", jch);
+		}
 
-		data.put("li_attr", liAttributes);
-		data.put("a_attr", aAttributes);
+		if (!liAttributes.isEmpty()) {
+			data.put("li_attr", liAttributes);
+		}
+		if (!aAttributes.isEmpty()) {
+			data.put("a_attr", aAttributes);
+		}
 		
 		return data;
 	}
@@ -183,6 +192,13 @@ class JsTreeNodeImpl implements JsTreeNode {
 	public JsTreeNode hasChildren() {
 		hasChildren = true;
 		return this;
+	}
+	
+	@Override
+	public JsTreeNode createChild() {
+		JsTreeNodeImpl child = new JsTreeNodeImpl();
+		children.add(child);
+		return child;
 	}
 
 }

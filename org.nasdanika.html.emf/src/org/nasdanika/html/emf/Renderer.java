@@ -1,11 +1,18 @@
 package org.nasdanika.html.emf;
 
+import org.nasdanika.html.app.Action;
+
 /**
  * Renders different aspects of a class/object.
  * @author Pavel Vlasov
  *
  */
 public interface Renderer {
+	
+	/**
+	 * @return View action.
+	 */
+	Action getViewAction(); 
 	
 	/**
 	 * Renders a view of an object.
@@ -19,14 +26,4 @@ public interface Renderer {
 	 */
 	Object renderEdit();
 	
-	/**
-	 * Renders a link to the object view.
-	 */
-	Object renderLink();
-	
-	/**
-	 * Renders a tree representation of the object structure.
-	 * @return
-	 */
-	Object renderTree();
 }

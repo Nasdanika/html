@@ -41,6 +41,18 @@ public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> i
 				return this;
 			}
 			
+			@Override
+			public Col widthAuto() {
+				htmlElement.addClass("col-auto");
+				return this;
+			}
+
+			@Override
+			public Col widthAuto(DeviceSize deviceSize) {
+				htmlElement.addClass("col-"+deviceSize.code+"-auto");
+				return this;
+			}			
+			
 		}
 
 		@Override

@@ -9,3 +9,4 @@ Export-Package: org.nasdanika.html.bootstrap,
  org.nasdanika.html.bootstrap.impl
 Bundle-ClassPath: .
 Require-Bundle: org.nasdanika.html;bundle-version="2.0.0"
+Automatic-Module-Name: org.nasdanika.html.bootstrap

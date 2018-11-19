@@ -5,6 +5,8 @@
 The entry point to the API is [BootstrapFactory](apidocs/bootstrap/index.html?org/nasdanika/html/bootstrap/BootstrapFactory.html).
 It can be obtained as ``BootstrapFactory factory = BootstrapFactory.INSTANCE;``.  
 
+[Demo](bootstrap/demo.html).
+
 ## Basic example
 
 ```

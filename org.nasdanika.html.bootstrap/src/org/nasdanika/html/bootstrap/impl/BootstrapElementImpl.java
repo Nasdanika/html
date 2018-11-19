@@ -6,6 +6,7 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.Placement;
+import org.nasdanika.html.bootstrap.Spacing;
 import org.nasdanika.html.bootstrap.Text;
 
 abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends BootstrapElement<H,B>> implements BootstrapElement<H,B> {
@@ -114,6 +115,24 @@ abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends Bootstrap
 			}
 			
 		};
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public org.nasdanika.html.bootstrap.Float<B> _float() {
+		return new FloatImpl<B>((B) this);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Spacing<B> margin() {
+		return new SpacingImpl<B>((B) this, "m");
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Spacing<B> padding() {
+		return new SpacingImpl<B>((B) this, "p");
 	}
 
 }

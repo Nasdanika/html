@@ -7,6 +7,7 @@ Nasdanika HTML features several bundles providing [fluent API](https://en.wikipe
 * [Font Awesome](fontawesome.html), 
 * [KnockoutJS](knockout.html), 
 * [jsTree](jstree.html),
+* [Application](app.html) - Java API's for building HTML applications.
 * [EMF](emf.html) - renders HTML based on EClass metadata including annotations and EObject data.
 
 ## Resources

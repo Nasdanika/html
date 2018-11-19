@@ -10,7 +10,32 @@ import org.json.JSONObject;
  * @author Pavel Vlasov
  *
  */
-public interface JsTreeNode extends JsTree {
+public interface JsTreeNode {
+	
+	default JsTreeNode opened() {
+		return opened(true);
+	}
+	
+	JsTreeNode opened(boolean opened);
+	
+	default JsTreeNode selected() {
+		return selected(true);
+	}
+	
+	JsTreeNode selected(boolean selected);
+	
+	default JsTreeNode disabled() {
+		return disabled(true);
+	}
+	
+	JsTreeNode disabled(boolean disabled);
+	
+	/**
+	 * Sets icon - image URL or (glyph) icon class.
+	 * @param icon
+	 * @return
+	 */
+	JsTreeNode icon(String icon);	
 	
 	/**
 	 * Used to traverse the tree and collect values.
@@ -33,6 +58,12 @@ public interface JsTreeNode extends JsTree {
 	JsTreeNode text(Object text);
 	
 	List<JsTreeNode> children();
+	
+	/**
+	 * Creates a new node and adds to the list of children.
+	 * @return
+	 */
+	JsTreeNode createChild();
 
 	/**
 	 * Attribute for the generated LI node.
@@ -83,7 +114,7 @@ public interface JsTreeNode extends JsTree {
 	JsTreeNode setData(String key, Object data);
 	
 	/**
-	 * If this method is invoked and children collection is empty then toJSON outputs children:true, which can be used in Ajax lazy loading of menus.
+	 * If this method is invoked and children collection is empty then toJSON outputs children:true, which can be used in Ajax lazy loading.
 	 * @return
 	 */
 	JsTreeNode hasChildren();

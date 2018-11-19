@@ -134,7 +134,7 @@ public class BootstrapContainerApplication implements Application {
 				container.border(Color.DANGER);
 				header.border(Color.DANGER).background(Color.PRIMARY);
 				navigation.border(Color.DANGER);
-				leftPanel.border(Color.DANGER).width(2);
+				leftPanel.border(Color.DANGER).widthAuto();
 				footer.border(Color.DANGER);
 				content.border(Color.DANGER);
 			}
@@ -152,7 +152,7 @@ public class BootstrapContainerApplication implements Application {
 		rootNode.icon("far fa-user");
 		rootNode.text("User");
 		
-		app.getHTMLPage().body(jsTreeFactory.bind(treeContainer, jsTreeFactory.buildAjaxJsTree("govno.html")));		
+		app.getHTMLPage().body(jsTreeFactory.bind(treeContainer, jsTreeFactory.buildAjaxJsTree("jstree.json", null)));		
 		
 		System.out.println(app);
 	}

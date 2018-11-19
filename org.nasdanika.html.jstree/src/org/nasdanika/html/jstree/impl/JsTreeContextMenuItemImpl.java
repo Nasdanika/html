@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.json.JSONObject;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
 
 class JsTreeContextMenuItemImpl implements JsTreeContextMenuItem {
@@ -175,4 +176,46 @@ class JsTreeContextMenuItemImpl implements JsTreeContextMenuItem {
 		return ret.toString();
 	}
 
+	@Override
+	public JSONObject toJSON() {
+		JSONObject ret = new JSONObject();
+		if (action != null) {
+			ret.put("action", action);
+		}
+		if (disabled) {
+			ret.put("_disabled",true);
+		}
+		if (icon != null) {
+			ret.put("icon", icon);
+		}
+		if (label != null) {
+			ret.put("label", label);
+		}
+		if (separatorAfter) {
+			ret.put("separator_after", true);
+		}
+		if (separatorBefore) {
+			ret.put("separator_before", true);
+		}
+		if (shortcut != null) {
+			ret.put("shortcut", shortcut);
+		}
+		if (shortcutLabel != null) {
+			ret.put("shortcut_label", shortcutLabel);
+		}
+		if (title != null) {
+			ret.put("title", title);
+		}
+		if (subMenuObj != null) {
+			ret.put("submenu", subMenuObj);
+		} else if (!subMenu.isEmpty()) {
+			JSONObject jSubmenu = new JSONObject();
+			ret.put("submenu", jSubmenu);
+			for (Entry<String, JsTreeContextMenuItem> sme: subMenu.entrySet()) {
+				ret.put(sme.getKey(), sme.getValue().toJSON());
+			}
+		}
+		return ret;
+	}
+	
 }

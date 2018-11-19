@@ -1,6 +1,7 @@
 package org.nasdanika.html.bootstrap.impl;
 
 import org.nasdanika.html.Form;
+import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
@@ -232,34 +233,57 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	 * Basic testing/demo, paste output to https://www.w3schools.com/bootstrap4/tryit.asp?filename=trybs_default&stacked=h body
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		BootstrapFactory factory = BootstrapFactory.INSTANCE;
 		HTMLFactory htmlFactory = factory.getHTMLFactory();
 		
-		System.out.println(factory.alert(Color.INFO, "Alert"));
-		System.out.println(factory.badge(true, Color.INFO, "Badge"));
-		System.out.println(factory.badgeLink("#", false, Color.WARNING, "Badge link"));
+		Fragment content = htmlFactory.fragment();
+
+		content.content(TagName.h1.create("Bootstrap demo"));
+		
+		content.content(TagName.h2.create("Alert"));
+		
+		content.content(factory.alert(Color.INFO, "Alert"));
+		
+		content.content(TagName.h2.create("Badge"));		
+		content.content(factory.badge(true, Color.INFO, "Badge"));
+		content.content(factory.badgeLink("#", false, Color.WARNING, "Badge link"));
+		
+		
+		content.content(TagName.h2.create("Breadcrumbs"));
 		
 		Breadcrumbs breadcrumbs = factory.breadcrums();
 		breadcrumbs.item("#", "First");
 		breadcrumbs.item(null, "Last");
-		System.out.println(breadcrumbs);
+		content.content(breadcrumbs);
 
+		
+		content.content(TagName.h2.create("Button"));
+		
 		org.nasdanika.html.Button hButton = htmlFactory.button("Button");	
 		Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
 		factory.tooltip(button, "I am a <I>tooltip</I>." , true, Placement.BOTTOM);
-		System.out.println(button);				
+		content.content(button);				
 		
-		System.out.println(factory.initTooltipScript());
+		content.content(factory.initTooltipScript());
+		
+		
+		content.content(TagName.h2.create("Button group"));
 		
 		ButtonGroup buttonGroup = factory.buttonGroup(false);
 		buttonGroup.add(button);
 		buttonGroup.add(button);
-		System.out.println(buttonGroup);
+		content.content(buttonGroup);
+
+		
+		content.content(TagName.h2.create("Button toolbar"));
 		
 		ButtonToolbar toolbar = factory.buttonToolbar();
 		toolbar.add(buttonGroup);
-		System.out.println(toolbar);
+		content.content(toolbar);
+
+		
+		content.content(TagName.h2.create("Dropdown"));
 		
 		Dropdown dropdown = factory.dropdown(button, true, Direction.DOWN);
 		dropdown.item("#", false, false, "Item 1");
@@ -267,16 +291,19 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		dropdown.item("#", true, false, "Item 1");
 		dropdown.divider();
 		dropdown.item("#", false, true, "Item 1");
-		System.out.println(dropdown);
+		content.content(dropdown);
+
+		
+		content.content(TagName.h2.create("Input group"));
 		
 		InputGroup inputGroup = factory.inputGroup();
 		Input input = htmlFactory.input(InputType.text);
 		inputGroup.input(input);
 		inputGroup.prepend("@");
 		inputGroup.append("Zorro").large();
-		System.out.println(inputGroup);
+		content.content(inputGroup);
 		
-		// Tables
+		content.content(TagName.h2.create("Table"));
 		
 		Table table = factory.table().striped();
 		table.toHTMLElement().caption("My table");
@@ -284,9 +311,9 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		header.headerRow("A", "B", "C");
 		TableBody body = table.body();
 		body.row("One", "Two", "Three");		
-		System.out.println(table);
+		content.content(table);
 		
-		// Forms
+		content.content(TagName.h2.create("Form"));
 		
 		Form form = htmlFactory.form();
 		
@@ -301,48 +328,33 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		form.content(factory.formGroup("City", htmlFactory.input(InputType.text), "City").valid());
 		form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "State").invalid("No such state"));
 		
-		System.out.println(form);
+		content.content(form);
 		
-		// Navs		
+		content.content(TagName.h2.create("Navs"));
+		
 		Navs navs = factory.tabs();
 		navs.item("First", "First content");
 		navs.item("Second", "Second content");
 		navs.item("Third", "Third content");
 		navs.item("Fourth", "Fourth content");
 		
-		System.out.println(navs);
+		content.content(navs);
 		
-		// Containers		
+		content.content(TagName.h2.create("Containers"));
+		
 		Container container = factory.container();
+		container.row().col(content);
 		org.nasdanika.html.bootstrap.Container.Row row = container.row();
 		row.col("Col 1").border(Color.DARK).background(Color.WARNING).text().color(Color.PRIMARY);
 		row.col("Col 2").border(Color.PRIMARY).text().weight(Weight.BOLD).alignment(Alignment.CENTER);
 		row.col("Col 3").border(Color.WARNING, Placement.RIGHT).background(Color.SECONDARY).text().monospace();		
 			
-		System.out.println(container);
-		
-		// HTML page
-		HTMLPage page = factory.getHTMLFactory().page();
-		page.head(factory.getHTMLFactory().tag(TagName.meta).attribute("charset", "utf-8"));
-		page.head(factory.getHTMLFactory().tag(TagName.meta).attribute("name", "viewport").attribute("content", "width=device-width, initial-scale=1, shrink-to-fit=no"));
-		
-		page.title("Demo");
-		page.stylesheet("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css");
-		page.script("https://code.jquery.com/jquery-3.3.1.slim.min.js");
-		page.script("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js");
-		page.script("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js");
-		
-		page.body(container);
-		
-		System.out.println(page);
-		
 		// Bootstrap page
-		HTMLPage bootstrapPage = factory.bootstrapCdnHTMLPage(Theme.Cerulean);
+		HTMLPage bootstrapPage = factory.bootstrapCdnHTMLPage();//Theme.Cerulean);
 		bootstrapPage.title("Bootstrap demo");
-		bootstrapPage.body(container);		
+		bootstrapPage.body(container);
+		
 		System.out.println(bootstrapPage);
-		
-		
 	}
 	
 }

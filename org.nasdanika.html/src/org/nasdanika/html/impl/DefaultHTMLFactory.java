@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -13,15 +14,16 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.nasdanika.html.Button;
+import org.nasdanika.html.Color;
 import org.nasdanika.html.FactoryProducer;
 import org.nasdanika.html.Form;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.Function;
-import org.nasdanika.html.Color;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Input;
 import org.nasdanika.html.InputType;
+import org.nasdanika.html.MutableTokenSource;
 import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Producer;
 import org.nasdanika.html.Select;
@@ -423,6 +425,32 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	@Override
 	public HTMLPage page() {
 		return new HTMLPageImpl(this);
+	}
+	
+	@Override
+	public MutableTokenSource mutableTokenSource() {
+		return new MutableTokenSource() {
+			
+			private Map<String, Object> tokens = new HashMap<>();
+			
+			@Override
+			public Object get(String token) {
+				return tokens.get(token);
+			}
+			
+			@Override
+			public MutableTokenSource put(String token, Object value) {
+				if (value != null) {
+					tokens.put(token, value);
+				}
+				return this;
+			}
+		};
+	}
+	
+	@Override
+	public MutableTokenSource mutableTokenSource(String token, Object value) {
+		return mutableTokenSource().put(token, value);
 	}
 	
 }

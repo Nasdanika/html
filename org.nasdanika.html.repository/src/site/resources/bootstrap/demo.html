@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <title>Bootstrap demo</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h1>Bootstrap demo</h1>
+          <h2>Alert</h2>
+          <div role="alert" class="alert alert-info">Alert</div>
+          <h2>Badge</h2>
+          <span class="badge badge-info badge-pill">Badge</span>
+          <a href="#" class="badge badge-warning">Badge link</a>
+          <h2>Breadcrumbs</h2>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="#">First</a>
+              </li>
+              <li class="breadcrumb-item active">Last</li>
+            </ol>
+          </nav>
+          <h2>Button</h2>
+          <button data-toggle="tooltip" data-placement="bottom" data-html="true" title="I am a &lt;I&gt;tooltip&lt;/I&gt;." class="btn btn-primary">Button</button>
+          <script>$(function () { $('[data-toggle="tooltip"]').tooltip(); });</script>
+          <h2>Button group</h2>
+          <div role="group" class="btn-group">
+            <button data-toggle="tooltip" data-placement="bottom" data-html="true" title="I am a &lt;I&gt;tooltip&lt;/I&gt;." class="btn btn-primary">Button</button>
+            <button data-toggle="tooltip" data-placement="bottom" data-html="true" title="I am a &lt;I&gt;tooltip&lt;/I&gt;." class="btn btn-primary">Button</button>
+          </div>
+          <h2>Button toolbar</h2>
+          <div role="toolbar" class="btn-toolbar">
+            <div role="group" class="btn-group">
+              <button data-toggle="tooltip" data-placement="bottom" data-html="true" title="I am a &lt;I&gt;tooltip&lt;/I&gt;." class="btn btn-primary">Button</button>
+              <button data-toggle="tooltip" data-placement="bottom" data-html="true" title="I am a &lt;I&gt;tooltip&lt;/I&gt;." class="btn btn-primary">Button</button>
+            </div>
+          </div>
+          <h2>Dropdown</h2>
+          <div class="btn-group">
+            <button data-toggle="tooltip" data-placement="bottom" data-html="true" title="I am a &lt;I&gt;tooltip&lt;/I&gt;." class="btn btn-primary">Button</button>
+            <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="nsd_1" class="dropdown-toggle-split btn btn-primary dropdown-toggle">
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div arial-labelledby="nsd_1" class="dropdown-menu">
+              <a href="#" class="dropdown-item">Item 1</a>
+              <h6 class="dropdown-header">Header</h6>
+              <a href="#" class="dropdown-item active">Item 1</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item disabled">Item 1</a>
+            </div>
+          </div>
+          <h2>Input group</h2>
+          <div class="input-group input-group-lg">
+            <div class="input-group-prepend">
+              <span class="input-group-text">@</span>
+            </div>
+            <input type="text" class="form-control"/>
+            <div class="input-group-append">
+              <span class="input-group-text">Zorro</span>
+            </div>
+          </div>
+          <h2>Table</h2>
+          <table class="table table-striped">
+            <caption>My table</caption>
+            <thead>
+              <tr>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>One</td>
+                <td>Two</td>
+                <td>Three</td>
+              </tr>
+            </tbody>
+          </table>
+          <h2>Form</h2>
+          <form>
+            <div class="form-group">
+              <label>Email address</label>
+              <input type="email" value="email@example.com" class="form-control form-control-lg form-control-plaintext"/>
+              <small class="form-text text-muted">Email address</small>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" disabled class="form-control form-control-sm"/>
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input is-invalid"/>
+              <label class="form-check-label">Check me out</label>
+              <div class="invalid-feedback">Oh, no</div>
+            </div>
+            <div class="form-group form-check form-check-inline">
+              <input type="radio" class="form-check-input"/>
+              <label class="form-check-label">1</label>
+            </div>
+            <div class="form-group form-check form-check-inline">
+              <input type="radio" class="form-check-input"/>
+              <label class="form-check-label">2</label>
+            </div>
+            <div class="form-group form-check form-check-inline">
+              <input type="radio" class="form-check-input"/>
+              <label class="form-check-label">3</label>
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" class="form-control is-valid"/>
+              <small class="form-text text-muted">City</small>
+            </div>
+            <div class="form-group">
+              <label>State</label>
+              <input type="text" class="form-control is-invalid"/>
+              <small class="form-text text-muted">State</small>
+              <div class="invalid-feedback">No such state</div>
+            </div>
+          </form>
+          <h2>Navs</h2>
+          <nav>
+            <div role="tablist" class="nav nav-tabs">
+              <a href="#nav-nsd_2" data-toggle="tab" role="tab" class="nav-item nav-link active">First</a>
+              <a href="#nav-nsd_3" data-toggle="tab" role="tab" class="nav-item nav-link">Second</a>
+              <a href="#nav-nsd_4" data-toggle="tab" role="tab" class="nav-item nav-link">Third</a>
+              <a href="#nav-nsd_5" data-toggle="tab" role="tab" class="nav-item nav-link">Fourth</a>
+            </div>
+          </nav>
+          <div class="tab-content">
+            <div id="nav-nsd_2" role="tabpanel" class="tab-pane fade show active">First content</div>
+            <div id="nav-nsd_3" role="tabpanel" class="tab-pane fade">Second content</div>
+            <div id="nav-nsd_4" role="tabpanel" class="tab-pane fade">Third content</div>
+            <div id="nav-nsd_5" role="tabpanel" class="tab-pane fade">Fourth content</div>
+          </div>
+          <h2>Containers</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col border border-dark bg-warning text-primary">Col 1</div>
+        <div class="col border border-primary font-weight-bold text-center">Col 2</div>
+        <div class="col border-right border-warning bg-secondary text-monospace">Col 3</div>
+      </div>
+    </div>
+  </body>
+</html>
