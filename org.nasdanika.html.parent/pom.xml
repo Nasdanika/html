@@ -177,9 +177,7 @@
 		<module>../org.nasdanika.html.fontawesome</module>
 		<module>../org.nasdanika.html.app</module>
 
-		<!-- 
 		<module>../org.nasdanika.html.tests</module>
-		-->
 		<module>../org.nasdanika.html.feature</module>
 		<module>../org.nasdanika.html.repository</module>
 	</modules>

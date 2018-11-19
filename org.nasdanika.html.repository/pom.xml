@@ -193,6 +193,23 @@
 							</resources>
 						</configuration>
 					</execution>
+					<execution>
+						<id>copy-test-dumps</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/test-dumps</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../org.nasdanika.html.tests/target/test-dumps
+									</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>

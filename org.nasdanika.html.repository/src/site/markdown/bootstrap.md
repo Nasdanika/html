@@ -5,15 +5,22 @@
 The entry point to the API is [BootstrapFactory](apidocs/bootstrap/index.html?org/nasdanika/html/bootstrap/BootstrapFactory.html).
 It can be obtained as ``BootstrapFactory factory = BootstrapFactory.INSTANCE;``.  
 
-[Demo](bootstrap/demo.html).
-
-## Basic example
+## Alert
 
 ```
 BootstrapFactory factory = BootstrapFactory.INSTANCE;
-System.out.println(factory.alert(Color.INFO, "Alert"));
-System.out.println(factory.badge(true, Color.INFO, "Badge"));
-System.out.println(factory.badgeLink("#", false, Color.WARNING, "Badge link"));
+Tag alert = factory.alert(Color.INFO, "Alert");
+```
+
+<iframe src="test-dumps/bootstrap/alert.html" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
+
+
+## Badge 
+
+```
+BootstrapFactory factory = BootstrapFactory.INSTANCE;
+Tag badge = factory.badge(true, Color.INFO, "Badge");
+Tag badgeLink = factory.badgeLink("#", false, Color.WARNING, "Badge link");
 ```
 
 ## Breadcrumbs

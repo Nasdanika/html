@@ -2,6 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>org.nasdanika.html.feature</artifactId>
   <packaging>eclipse-feature</packaging>
+  <name>Nasdanika HTML Feature</name>
   <parent>
   	<groupId>org.nasdanika.html</groupId>
   	<artifactId>org.nasdanika.html.parent</artifactId>

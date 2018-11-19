@@ -22,4 +22,4 @@ jobs:
     
     steps:
       - checkout
-      - run: cd org.nasdanika.html.parent; mvn -s ../.circleci/settings.xml clean javadoc:javadoc package site-deploy
+      - run: cd org.nasdanika.html.parent; mvn -s ../.circleci/settings.xml clean javadoc:javadoc verify site-deploy
