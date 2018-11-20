@@ -12,7 +12,7 @@ BootstrapFactory factory = BootstrapFactory.INSTANCE;
 Tag alert = factory.alert(Color.INFO, "Alert");
 ```
 
-<iframe src="test-dumps/bootstrap/alert.html" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
+<iframe src="test-dumps/bootstrap/alert.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
 
 ## Badge 
