@@ -1,8 +1,7 @@
 package org.nasdanika.html.app;
 
+import java.nio.file.Path;
 import java.util.List;
-
-import org.nasdanika.html.bootstrap.Color;
 
 /**
  * Abstraction of something that can be invoked.
@@ -10,41 +9,13 @@ import org.nasdanika.html.bootstrap.Color;
  * @author Pavel Vlasov
  *
  */
-public interface Action {
-	
-	/**
-	 * Action icon. URL if contains slash, css class otherwise, e.g. 'far fa-user'.
-	 * @return
-	 */
-	String getIcon();
-	
-	/**
-	 * Action label.
-	 * @return
-	 */
-	String getLabel();
+public interface Action extends Label {
 	
 	/**
 	 * Action may be disabled.
 	 * @return
 	 */
 	boolean isDisabled();
-		
-	/**
-	 * @return Short help text, typically rendered as 'title' attribute.
-	 */
-	String getTooltip();
-	
-	/**
-	 * @return Bootstrap color. Applicable only to bootstrap-based UI elements.
-	 */
-	Color getColor();
-	
-	/**
-	 * Indicates that action UI element shall be rendered as outline, not "solid" - see https://getbootstrap.com/docs/4.1/components/buttons/#outline-buttons 
-	 * @return
-	 */
-	boolean isOutline();
 	
 	/**
 	 * If this method returns a non-null value then when the action UI is activated (e.g. button clicked) a confirmation dialog is shown
@@ -76,16 +47,30 @@ public interface Action {
 	List<Action> getContextActions();		
 	
 	/**
-	 * Action id. The same action may be rendered as different UI elements and the UI may be structures to dispatch actions invocations to a function
-	 * and pass elements or action id to it. In "object-oriented" UI's action id may be formed from object id, action, and optional qualifier. E.g. L3-view-accounts.
+	 * Parent action.
 	 * @return
 	 */
-	String getId();
+	Action getParent();
 	
 	/**
-	 * A detailed action description which can be shown to the user in, say, a dialog box.
+	 * Action path in the hierarchy starting from the root action, not including the action itself.
 	 * @return
-	 */	
-	String getDescription();
+	 */
+	List<Path> getPath();
+	
+	/**
+	 * Executes the action and returns result to be displayed in the UI.
+	 * @return
+	 */
+	Object execute();
+	
+	/**
+	 * Actions may be displayed in different parts of the application, e.g. in the left navigation tree
+	 * and/or in sections below the parent action. This method allows to select actions to be displayed in 
+	 * a particular place. E.g. if this method returns true for 'tree' role then the action will appear in the tree
+	 * @param role
+	 * @return
+	 */
+	boolean isInRole(String role);
 	
 }

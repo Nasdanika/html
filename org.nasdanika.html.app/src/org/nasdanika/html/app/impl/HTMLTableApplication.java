@@ -1,9 +1,10 @@
-package org.nasdanika.html.app;
+package org.nasdanika.html.app.impl;
 
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.RowContainer.Row;
 import org.nasdanika.html.RowContainer.Row.Cell;
+import org.nasdanika.html.app.Application;
 import org.nasdanika.html.Table;
 
 /**

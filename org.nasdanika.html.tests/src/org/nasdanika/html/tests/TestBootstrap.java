@@ -22,7 +22,7 @@ public class TestBootstrap extends HTMLTestBase {
 	
 	@Test
 	public void testAlert() throws Exception {
-		dump("bootstrap/alert.html", "Bootstrap alert", BootstrapFactory.INSTANCE.alert(Color.INFO, "Alert"));
+		writePage("bootstrap/alert.html", "Bootstrap alert", BootstrapFactory.INSTANCE.alert(Color.INFO, "Alert"));
 	}
 
 }

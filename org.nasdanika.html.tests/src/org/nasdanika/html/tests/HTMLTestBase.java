@@ -2,6 +2,7 @@ package org.nasdanika.html.tests;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Writer;
 
 import org.junit.Assert;
@@ -14,13 +15,13 @@ import org.nasdanika.html.knockout.KnockoutFactory;
 public class HTMLTestBase {
 	
 	/**
-	 * Writes content to bootstrap page and to a file under repository site.
+	 * Writes content to bootstrap/fontawesome/jstree/knockout page and to a file under repository site.
 	 * @param path
 	 * @param title
 	 * @param content
 	 * @throws Exception
 	 */
-	protected void dump(String path, String title, Object... content) throws Exception {		
+	protected void writePage(String path, String title, Object... content) throws IOException {		
 		HTMLPage bootstrapPage = BootstrapFactory.INSTANCE.bootstrapCdnHTMLPage();
 		FontAwesomeFactory.INSTANCE.cdn(bootstrapPage);
 		JsTreeFactory.INSTANCE.cdn(bootstrapPage);
@@ -28,7 +29,15 @@ public class HTMLTestBase {
 		// More declarations as needed.		
 		bootstrapPage.title(title);
 		bootstrapPage.body(content);
-		
+		writeFile(path, bootstrapPage.toString());
+	}
+	
+	/**
+	 * Writes text file.
+	 * @param path
+	 * @param content
+	 */
+	protected void writeFile(String path, String content) throws IOException {
 		File target = new File(("target/test-dumps/"+path).replace("/", File.separator));
 		File parent = target.getParentFile();
 		if (!parent.exists()) {
@@ -37,10 +46,10 @@ public class HTMLTestBase {
 			}
 		}
 		
-		System.out.println("Dumping '"+title+"' to "+target.getAbsolutePath());
 		try (Writer writer = new FileWriter(target)) {
-			writer.write(bootstrapPage.toString());
+			writer.write(content);
 		}		
+		
 	}
 
 }

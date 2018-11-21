@@ -1,6 +1,8 @@
-package org.nasdanika.html.app;
+package org.nasdanika.html.app.impl;
 
 import java.util.Map;
+
+import org.nasdanika.html.app.NavigationAction;
 
 public class NavigationActionImpl extends ActionImpl implements NavigationAction {
 		

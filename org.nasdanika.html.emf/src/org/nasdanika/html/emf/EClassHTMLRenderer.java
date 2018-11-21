@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionImpl;
-import org.nasdanika.html.app.NavigationActionImpl;
+import org.nasdanika.html.app.impl.NavigationActionImpl;
 
 /**
  * Renders HTML using EClass metadata.

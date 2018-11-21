@@ -1,13 +1,15 @@
-package org.nasdanika.html.app;
+package org.nasdanika.html.app.impl;
 
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ApplicationRenderer;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
 import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
 
-public class ActionRendererImpl implements ActionRenderer {
+public class ApplicationRendererImpl implements ApplicationRenderer {
 	
 	protected JsTreeFactory jsTreeFactory = JsTreeFactory.INSTANCE;
 
@@ -70,7 +72,7 @@ public class ActionRendererImpl implements ActionRenderer {
 		JsTreeNode ret = jsTreeFactory.jsTreeNode();
 		
 		ret.icon(action.getIcon());
-		ret.text(action.getLabel());
+		ret.text(action.getText());
 		ret.anchorAttribute("title", action.getTooltip());
 		ret.id(action.getId());
 		ret.disabled(action.isDisabled());

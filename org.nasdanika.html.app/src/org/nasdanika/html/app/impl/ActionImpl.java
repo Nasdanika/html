@@ -1,4 +1,4 @@
-package org.nasdanika.html.app;
+package org.nasdanika.html.app.impl;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,8 @@
-package org.nasdanika.html.app;
+package org.nasdanika.html.app.impl;
 
 import java.util.List;
 
+import org.nasdanika.html.app.Action;
 import org.nasdanika.html.bootstrap.Color;
 
 public class ActionFilter implements Action {

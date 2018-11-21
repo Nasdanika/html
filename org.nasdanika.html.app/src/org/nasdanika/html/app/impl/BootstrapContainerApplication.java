@@ -1,7 +1,8 @@
-package org.nasdanika.html.app;
+package org.nasdanika.html.app.impl;
 
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.app.Application;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
