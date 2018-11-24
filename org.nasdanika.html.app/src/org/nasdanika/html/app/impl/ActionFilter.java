@@ -1,65 +1,59 @@
 package org.nasdanika.html.app.impl;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import org.nasdanika.html.app.Action;
-import org.nasdanika.html.bootstrap.Color;
 
-public class ActionFilter implements Action {
-	
-	private Action target;
-	
-	public String getIcon() {
-		return target.getIcon();
+public class ActionFilter<T extends Action> extends LabelFilter<T> implements Action {
+
+	protected ActionFilter(T target) {
+		super(target);
 	}
 
-	public String getLabel() {
-		return target.getLabel();
-	}
-
+	@Override
 	public boolean isDisabled() {
 		return target.isDisabled();
 	}
 
-	public String getTooltip() {
-		return target.getTooltip();
-	}
-
-	public Color getColor() {
-		return target.getColor();
-	}
-
-	public boolean isOutline() {
-		return target.isOutline();
-	}
-
+	@Override
 	public String getConfirmation() {
 		return target.getConfirmation();
 	}
 
+	@Override
 	public boolean isFloatRight() {
 		return target.isFloatRight();
 	}
 
+	@Override
 	public List<Action> getChildren() {
 		return target.getChildren();
 	}
 
+	@Override
 	public List<Action> getContextActions() {
 		return target.getContextActions();
 	}
 
-	public String getId() {
-		return target.getId();
+	@Override
+	public Action getParent() {
+		return target.getParent();
 	}
 
-	public String getDescription() {
-		return target.getDescription();
+	@Override
+	public List<Path> getPath() {
+		return target.getPath();
 	}
 
-	public ActionFilter(Action target) {
-		this.target = target;
+	@Override
+	public Object execute() {
+		return target.execute();
 	}
 
-	
+	@Override
+	public boolean isInRole(String role) {
+		return target.isInRole(role);
+	}
+		
 }

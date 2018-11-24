@@ -6,8 +6,13 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.junit.Assert;
+import org.nasdanika.html.HTMLElement.Event;
 import org.nasdanika.html.HTMLPage;
+import org.nasdanika.html.Select;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.InputGroup;
+import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.knockout.KnockoutFactory;
@@ -15,7 +20,7 @@ import org.nasdanika.html.knockout.KnockoutFactory;
 public class HTMLTestBase {
 	
 	/**
-	 * Writes content to bootstrap/fontawesome/jstree/knockout page and to a file under repository site.
+	 * Writes content to a bootstrap/fontawesome/jstree/knockout page and to a file under repository site.
 	 * @param path
 	 * @param title
 	 * @param content
@@ -33,6 +38,31 @@ public class HTMLTestBase {
 	}
 	
 	/**
+	 * Writes content to a bootstrap/fontawesome/jstree/knockout page and to a file under repository site.
+	 * A theme select is added above the content for live switching between available themes.
+	 * @param path
+	 * @param title
+	 * @param content
+	 * @throws IOException
+	 */
+	protected void writeThemedPage(String path, String title, Object... content) throws IOException {		
+		BootstrapFactory factory = BootstrapFactory.INSTANCE;
+		Container container = factory.container();
+		Select select = factory.getHTMLFactory().select();
+		select.on(Event.change, "document.getElementById('"+Theme.STYLESHEET_ID+"').href = this.value;");
+		for (Theme theme: Theme.values()) {
+			select.option(theme.stylesheetCdnURL, theme.name(), theme == Theme.Default, false);
+		}
+		InputGroup selectInputGroup = factory.inputGroup();
+		selectInputGroup.prepend("Select Bootstrap theme");
+//		selectInputGroup.append(FontAwesomeFactory.INSTANCE.icon("desktop", Style.SOLID));
+		selectInputGroup.input(select);		
+		container.row().margin().bottom(1).toBootstrapElement().col(selectInputGroup);
+		container.row().col(content);
+		writePage(path, title, container);
+	}
+	
+	/**
 	 * Writes text file.
 	 * @param path
 	 * @param content
@@ -46,6 +76,7 @@ public class HTMLTestBase {
 			}
 		}
 		
+		System.out.println("Writing to "+target.getAbsolutePath());
 		try (Writer writer = new FileWriter(target)) {
 			writer.write(content);
 		}		

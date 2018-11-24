@@ -24,19 +24,19 @@ public interface HTMLPage extends Producer, AutoCloseable {
 	 * Adds external script to the header.
 	 * @param url
 	 */
-	HTMLPage script(Object url);
+	Tag script(Object url);
 	
 	/**
 	 * Adds stylesheet to the header.
 	 * @param url
 	 */
-	HTMLPage stylesheet(Object url);
+	Tag stylesheet(Object url);
 		
 	/**
 	 * Adds page title.
 	 * @param title
 	 */
-	HTMLPage title(Object title);
+	Tag title(Object title);
 
 	/**
 	 * Adds content to HTML body element of the page.

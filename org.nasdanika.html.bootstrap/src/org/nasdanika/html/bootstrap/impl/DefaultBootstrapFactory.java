@@ -202,10 +202,10 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	@Override
 	public <P extends HTMLPage> P bootstrapCdnHTMLPage(P page, Theme theme) {
 		theme.cdn(page);
-		bootstrapHTMLPage(page)
-			.script("https://code.jquery.com/jquery-3.3.1.min.js")
-			.script("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js")
-			.script("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js");
+		P bootstrapPage = bootstrapHTMLPage(page);
+		bootstrapPage.script("https://code.jquery.com/jquery-3.3.1.min.js");
+		bootstrapPage.script("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js");
+		bootstrapPage.script("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js");
 		return page;
 	}
 	

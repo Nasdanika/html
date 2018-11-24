@@ -7,26 +7,15 @@
 	    <version>2.0.0-SNAPSHOT</version>
 	    <relativePath>../org.nasdanika.html.parent/jar-pom.xml</relativePath>
 	  </parent>
-	<artifactId>org.nasdanika.html</artifactId>
+	<artifactId>org.nasdanika.html.jstree</artifactId>
 	<packaging>jar</packaging>
-	<name>Nasdanika HTML</name>
-	<description>Classes for generating HTML UI.</description>
-
+	<name>Nasdanika HTML JsTree</name>
+	<description>Classes for generating JsTree nodes and context menus.</description>
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.7</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-text</artifactId>
-		    <version>1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20180130</version>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>org.nasdanika.html</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>

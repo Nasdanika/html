@@ -5,8 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.EClass;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
-import org.nasdanika.html.app.ActionImpl;
-import org.nasdanika.html.app.impl.NavigationActionImpl;
 
 /**
  * Renders HTML using EClass metadata.
@@ -108,16 +106,17 @@ public class EClassHTMLRenderer<RC extends RenderingContext> implements Renderer
 	@Override
 	public Action getViewAction() {
 		// For initial testing.
-		NavigationActionImpl ret = new NavigationActionImpl();
-		ret.setLabel("Test");
-		ret.setIcon("far fa-user");
-		ret.setHref("somewhere");
-		ret.setId("L1000-view");
-		ret.setTooltip("Opens view page");
-		ret.getChildren().add(new ActionImpl());
-		
-		
-		return ret;
+//		NavigationActionImpl ret = new NavigationActionImpl();
+//		ret.setLabel("Test");
+//		ret.setIcon("far fa-user");
+//		ret.setHref("somewhere");
+//		ret.setId("L1000-view");
+//		ret.setTooltip("Opens view page");
+//		ret.getChildren().add(new ActionImpl());
+//		
+//		
+//		return ret;
+		return null;
 	}
 
 

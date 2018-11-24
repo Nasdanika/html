@@ -36,6 +36,11 @@
 			<layout>p2</layout>
 		</repository>
 		<repository>
+			<id>bank</id>
+			<url>http://www.nasdanika.org/products/bank/1.0.0-SNAPSHOT/repository</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
 			<id>maven-osgi</id>
 			<url>http://www.nasdanika.org/products/maven-osgi/repository</url>
 			<layout>p2</layout>
@@ -172,10 +177,11 @@
 		<module>../org.nasdanika.html</module>
 		<module>../org.nasdanika.html.bootstrap</module>
 		<module>../org.nasdanika.html.jstree</module>
-		<module>../org.nasdanika.html.emf</module>
 		<module>../org.nasdanika.html.knockout</module>
 		<module>../org.nasdanika.html.fontawesome</module>
 		<module>../org.nasdanika.html.app</module>
+		
+		<module>../org.nasdanika.html.emf</module>		
 
 		<module>../org.nasdanika.html.tests</module>
 		<module>../org.nasdanika.html.feature</module>

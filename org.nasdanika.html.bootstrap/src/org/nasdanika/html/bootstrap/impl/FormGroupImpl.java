@@ -7,11 +7,11 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.FormGroup;
 
-class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> implements FormGroup {
+public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> implements FormGroup {
 
 	private InputBase<?> input;
 
-	FormGroupImpl(BootstrapFactory factory, Object label, InputBase<?> input, Object hint) {
+	public FormGroupImpl(BootstrapFactory factory, Object label, InputBase<?> input, Object hint) {
 		super(factory);
 		this.input = input;
 		htmlElement.addClass("form-group");

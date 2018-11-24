@@ -7,13 +7,13 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.InputGroup;
 
-class InputGroupImpl extends DivWrappingBootstrapElementImpl<InputGroup> implements InputGroup  {
+public class InputGroupImpl extends DivWrappingBootstrapElementImpl<InputGroup> implements InputGroup  {
 
 	private Tag prepend;
 	private Fragment inputs;
 	private Tag append;
 	
-	InputGroupImpl(BootstrapFactory factory) {
+	public InputGroupImpl(BootstrapFactory factory) {
 		super(factory);
 		htmlElement.addClass("input-group");
 		HTMLFactory htmlFactory = getFactory().getHTMLFactory();

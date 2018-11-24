@@ -8,7 +8,7 @@ public class FloatImpl<B extends BootstrapElement<?, ?>> implements org.nasdanik
 	
 	private B bootstrapElement;
 
-	FloatImpl(B bootstrapElement) {
+	public FloatImpl(B bootstrapElement) {
 		this.bootstrapElement = bootstrapElement;
 	}
 

@@ -7,7 +7,7 @@ import org.nasdanika.html.bootstrap.DeviceSize;
 
 public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> implements Container {
 
-	ContainerImpl(BootstrapFactory factory, Tag htmlElement, boolean fluent) {
+	public ContainerImpl(BootstrapFactory factory, Tag htmlElement, boolean fluent) {
 		super(factory, htmlElement);
 		htmlElement
 			.addClassConditional(!fluent, "container")

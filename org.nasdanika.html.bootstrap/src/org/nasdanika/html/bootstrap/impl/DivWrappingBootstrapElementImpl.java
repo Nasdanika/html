@@ -9,7 +9,7 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
  * @author Pavel Vlasov
  *
  */
-class DivWrappingBootstrapElementImpl<B extends BootstrapElement<Tag,B>> extends WrappingBootstrapElementImpl<Tag,B> {
+public class DivWrappingBootstrapElementImpl<B extends BootstrapElement<Tag,B>> extends WrappingBootstrapElementImpl<Tag,B> {
 
 	protected DivWrappingBootstrapElementImpl(BootstrapFactory factory) {
 		super(factory, factory.getHTMLFactory().div());

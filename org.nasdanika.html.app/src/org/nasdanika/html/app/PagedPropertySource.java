@@ -29,11 +29,11 @@ public interface PagedPropertySource extends PropertySource {
 	Pages getPages();
 	
 	/**
-	 * Filtred and sorted values organized in pages.
+	 * Filter and sort maps are keyed by property descriptor id's.
 	 * @param filter
 	 * @param sort Sort ascending if false, i.e. 1, 2, 3, or descending is true, i.e. 3, 2, 1.
-	 * @return
+	 * @return Filtred and sorted values organized in pages
 	 */
-	Pages getPages(Map<PropertyDescriptor, String> filter, Map<PropertyDescriptor, Boolean> sort);
+	Pages getPages(Map<Object, String> filter, Map<Object, Boolean> sort);
 
 }

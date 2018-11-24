@@ -54,6 +54,11 @@ public enum Theme {
 	Yeti;
 	
 	/**
+	 * id of bootstrap stylesheet link head tag.
+	 */
+	public static final String STYLESHEET_ID = "nsd-bootstrap-theme-stylesheet";
+	
+	/**
 	 * CDN location of theme stylesheet.
 	 */
 	public final String stylesheetCdnURL;
@@ -64,7 +69,7 @@ public enum Theme {
 	 * @return
 	 */
 	public <P extends HTMLPage> P cdn(P page) {
-		page.stylesheet(stylesheetCdnURL);
+		page.stylesheet(stylesheetCdnURL).id(STYLESHEET_ID);
 		return page;
 	}
 	

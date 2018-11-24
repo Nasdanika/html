@@ -34,18 +34,20 @@ public class HTMLPageImpl implements HTMLPage {
 	 * Adds external script to the header.
 	 * @param url
 	 */
-	public HTMLPage script(Object url) {
-		head(factory.tag(TagName.script).attribute("src", url));
-		return this;
+	public Tag script(Object url) {
+		Tag script = factory.tag(TagName.script).attribute("src", url);
+		head(script);
+		return script;
 	}
 	
 	/**
 	 * Adds stylesheet to the header.
 	 * @param url
 	 */
-	public HTMLPage stylesheet(Object url) {
-		head(factory.tag(TagName.link).attribute("rel", "stylesheet").attribute("href", url));
-		return this;
+	public Tag stylesheet(Object url) {
+		Tag stylesheet = factory.tag(TagName.link).attribute("rel", "stylesheet").attribute("href", url);
+		head(stylesheet);
+		return stylesheet;
 	}
 	
 	/**
@@ -61,9 +63,10 @@ public class HTMLPageImpl implements HTMLPage {
 	 * Adds page title.
 	 * @param title
 	 */
-	public HTMLPage title(Object title) {
-		head(factory.tag(TagName.title, title));
-		return this;
+	public Tag title(Object title) {
+		Tag ret = factory.tag(TagName.title, title);
+		head(ret);
+		return ret;
 	}
 	
 	@Override

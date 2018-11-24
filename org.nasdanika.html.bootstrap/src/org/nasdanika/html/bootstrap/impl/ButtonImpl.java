@@ -7,12 +7,12 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.Color;
 
-class ButtonImpl<H extends HTMLElement<?>> extends WrappingBootstrapElementImpl<H,Button<H>> implements Button<H> {
+public class ButtonImpl<H extends HTMLElement<?>> extends WrappingBootstrapElementImpl<H,Button<H>> implements Button<H> {
 
 	private Color color;
 	private boolean outline;
 	
-	ButtonImpl(BootstrapFactory factory, H htmlElement, Color color, boolean outline) {
+	public ButtonImpl(BootstrapFactory factory, H htmlElement, Color color, boolean outline) {
 		super(factory, htmlElement);
 		htmlElement.addClass("btn")
 		.addClassConditional(!outline, "btn-"+color.code)

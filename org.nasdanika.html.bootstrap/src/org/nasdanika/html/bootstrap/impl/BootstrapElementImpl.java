@@ -9,7 +9,7 @@ import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.Spacing;
 import org.nasdanika.html.bootstrap.Text;
 
-abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends BootstrapElement<H,B>> implements BootstrapElement<H,B> {
+public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends BootstrapElement<H,B>> implements BootstrapElement<H,B> {
 	
 	private BootstrapFactory factory;
 

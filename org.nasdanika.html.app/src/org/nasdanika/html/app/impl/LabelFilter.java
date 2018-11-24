@@ -42,7 +42,7 @@ public class LabelFilter<T extends Label> implements Label {
 	}
 
 	@Override
-	public String getId() {
+	public Object getId() {
 		return target.getId();
 	}
 

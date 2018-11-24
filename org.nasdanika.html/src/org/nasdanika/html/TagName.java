@@ -50,7 +50,7 @@ public enum TagName {
 	hgroup,
 	hr,
 	html,
-	i,
+	i(true),
 	iframe(true),
 	img,
 	input,

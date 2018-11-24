@@ -10,7 +10,7 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
  *
  * @param <H>
  */
-class WrappingBootstrapElementImpl<H extends HTMLElement<?>, B extends BootstrapElement<H,B>> extends BootstrapElementImpl<H,B> {
+public class WrappingBootstrapElementImpl<H extends HTMLElement<?>, B extends BootstrapElement<H,B>> extends BootstrapElementImpl<H,B> {
 
 	protected H htmlElement;
 
