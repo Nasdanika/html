@@ -8,10 +8,10 @@ import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Container.Row;
 import org.nasdanika.html.bootstrap.Container.Row.Col;
-import org.nasdanika.html.jstree.JsTreeFactory;
-import org.nasdanika.html.jstree.JsTreeNode;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
+import org.nasdanika.html.jstree.JsTreeFactory;
+import org.nasdanika.html.jstree.JsTreeNode;
 
 /**
  * Application which uses Bootstrap container for content layout.

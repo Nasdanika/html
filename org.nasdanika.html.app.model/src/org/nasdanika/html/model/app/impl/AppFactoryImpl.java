@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.model.app.*;
 
 /**
@@ -59,6 +60,10 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case AppPackage.LABEL: return (EObject)createLabel();
+			case AppPackage.ACTION: return (EObject)createAction();
+			case AppPackage.THEMED_ACTION: return (EObject)createThemedAction();
+			case AppPackage.CONTENT_ACTION: return (EObject)createContentAction();
+			case AppPackage.THEMED_CONTENT_ACTION: return (EObject)createThemedContentAction();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -74,6 +79,8 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 		switch (eDataType.getClassifierID()) {
 			case AppPackage.COLOR:
 				return createColorFromString(eDataType, initialValue);
+			case AppPackage.THEME:
+				return createThemeFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -89,6 +96,8 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 		switch (eDataType.getClassifierID()) {
 			case AppPackage.COLOR:
 				return convertColorToString(eDataType, instanceValue);
+			case AppPackage.THEME:
+				return convertThemeToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -109,6 +118,46 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Action createAction() {
+		ActionImpl action = new ActionImpl();
+		return action;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ThemedAction createThemedAction() {
+		ThemedActionImpl themedAction = new ThemedActionImpl();
+		return themedAction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ContentAction createContentAction() {
+		ContentActionImpl contentAction = new ContentActionImpl();
+		return contentAction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ThemedContentAction createThemedContentAction() {
+		ThemedContentActionImpl themedContentAction = new ThemedContentActionImpl();
+		return themedContentAction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Color createColorFromString(EDataType eDataType, String initialValue) {
 		return (Color)super.createFromString(eDataType, initialValue);
 	}
@@ -119,6 +168,24 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * @generated
 	 */
 	public String convertColorToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Theme createThemeFromString(EDataType eDataType, String initialValue) {
+		return (Theme)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertThemeToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

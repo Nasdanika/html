@@ -7,6 +7,8 @@ package org.nasdanika.html.app;
  * @author Pavel Vlasov
  *
  */
-public interface SingleValuePropertySource extends PropertySource, SingleValueDataSource {
+public interface SingleValueDataSource extends DataSource {
+	
+	Object getValue();
 
 }

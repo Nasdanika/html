@@ -16,4 +16,33 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="tooltip" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="outline" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Theme" instanceClassName="org.nasdanika.html.bootstrap.Theme"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IThemed" instanceClassName="org.nasdanika.html.app.Themed"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IAction" instanceClassName="org.nasdanika.html.app.Action"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//IAction #//Label">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This action implementation delegates to an ``org.nasdanika.html.app.Executable`` adapter or throws an exception is there is no such adapter. "/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
+        eType="#//Action" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="confirmation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextActions" upperBound="-1"
+        eType="#//Action" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="floatRight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="roles" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="disabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ThemedAction" eSuperTypes="#//Action #//IThemed">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="theme" eType="#//Theme"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContentAction" eSuperTypes="#//Action">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This action returns content as a result of execution."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="content" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ThemedContentAction" eSuperTypes="#//ContentAction #//ThemedAction"/>
 </ecore:EPackage>

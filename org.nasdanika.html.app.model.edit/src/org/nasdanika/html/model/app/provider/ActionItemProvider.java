@@ -5,10 +5,13 @@ package org.nasdanika.html.model.app.provider;
 
 import java.util.Collection;
 import java.util.List;
+
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
+
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
@@ -20,16 +23,17 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
+import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
-import org.nasdanika.html.model.app.Label;
 
 /**
- * This is the item provider adapter for a {@link org.nasdanika.html.model.app.Label} object.
+ * This is the item provider adapter for a {@link org.nasdanika.html.model.app.Action} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class LabelItemProvider 
+public class ActionItemProvider 
 	extends CDOItemProviderAdapterEx
 	implements
 		IEditingDomainItemProvider,
@@ -43,7 +47,7 @@ public class LabelItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public LabelItemProvider(AdapterFactory adapterFactory) {
+	public ActionItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -65,6 +69,10 @@ public class LabelItemProvider
 			addTextPropertyDescriptor(object);
 			addTooltipPropertyDescriptor(object);
 			addOutlinePropertyDescriptor(object);
+			addConfirmationPropertyDescriptor(object);
+			addFloatRightPropertyDescriptor(object);
+			addRolesPropertyDescriptor(object);
+			addDisabledPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -224,14 +232,133 @@ public class LabelItemProvider
 	}
 
 	/**
-	 * This returns Label.gif.
+	 * This adds a property descriptor for the Confirmation feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addConfirmationPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Action_confirmation_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Action_confirmation_feature", "_UI_Action_type"),
+				 AppPackage.Literals.ACTION__CONFIRMATION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Float Right feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addFloatRightPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Action_floatRight_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Action_floatRight_feature", "_UI_Action_type"),
+				 AppPackage.Literals.ACTION__FLOAT_RIGHT,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Roles feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addRolesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Action_roles_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Action_roles_feature", "_UI_Action_type"),
+				 AppPackage.Literals.ACTION__ROLES,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Disabled feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addDisabledPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Action_disabled_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Action_disabled_feature", "_UI_Action_type"),
+				 AppPackage.Literals.ACTION__DISABLED,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+		if (childrenFeatures == null) {
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(AppPackage.Literals.ACTION__CHILDREN);
+			childrenFeatures.add(AppPackage.Literals.ACTION__CONTEXT_ACTIONS);
+		}
+		return childrenFeatures;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EStructuralFeature getChildFeature(Object object, Object child) {
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
+
+		return super.getChildFeature(object, child);
+	}
+
+	/**
+	 * This returns Action.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Label"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Action"));
 	}
 
 	/**
@@ -242,10 +369,10 @@ public class LabelItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Label)object).getId();
+		String label = ((Action)object).getId();
 		return label == null || label.length() == 0 ?
-			getString("_UI_Label_type") :
-			getString("_UI_Label_type") + " " + label;
+			getString("_UI_Action_type") :
+			getString("_UI_Action_type") + " " + label;
 	}
 
 
@@ -260,15 +387,23 @@ public class LabelItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Label.class)) {
-			case AppPackage.LABEL__COLOR:
-			case AppPackage.LABEL__DESCRIPTION:
-			case AppPackage.LABEL__ICON:
-			case AppPackage.LABEL__ID:
-			case AppPackage.LABEL__TEXT:
-			case AppPackage.LABEL__TOOLTIP:
-			case AppPackage.LABEL__OUTLINE:
+		switch (notification.getFeatureID(Action.class)) {
+			case AppPackage.ACTION__COLOR:
+			case AppPackage.ACTION__DESCRIPTION:
+			case AppPackage.ACTION__ICON:
+			case AppPackage.ACTION__ID:
+			case AppPackage.ACTION__TEXT:
+			case AppPackage.ACTION__TOOLTIP:
+			case AppPackage.ACTION__OUTLINE:
+			case AppPackage.ACTION__CONFIRMATION:
+			case AppPackage.ACTION__FLOAT_RIGHT:
+			case AppPackage.ACTION__ROLES:
+			case AppPackage.ACTION__DISABLED:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case AppPackage.ACTION__CHILDREN:
+			case AppPackage.ACTION__CONTEXT_ACTIONS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
 		super.notifyChanged(notification);
@@ -284,6 +419,69 @@ public class LabelItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CHILDREN,
+				 AppFactory.eINSTANCE.createAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CHILDREN,
+				 AppFactory.eINSTANCE.createThemedAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CHILDREN,
+				 AppFactory.eINSTANCE.createContentAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CHILDREN,
+				 AppFactory.eINSTANCE.createThemedContentAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CONTEXT_ACTIONS,
+				 AppFactory.eINSTANCE.createAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CONTEXT_ACTIONS,
+				 AppFactory.eINSTANCE.createThemedAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CONTEXT_ACTIONS,
+				 AppFactory.eINSTANCE.createContentAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CONTEXT_ACTIONS,
+				 AppFactory.eINSTANCE.createThemedContentAction()));
+	}
+
+	/**
+	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+		Object childFeature = feature;
+		Object childObject = child;
+
+		boolean qualify =
+			childFeature == AppPackage.Literals.ACTION__CHILDREN ||
+			childFeature == AppPackage.Literals.ACTION__CONTEXT_ACTIONS;
+
+		if (qualify) {
+			return getString
+				("_UI_CreateChild_text2",
+				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
+		}
+		return super.getCreateChildText(owner, feature, child, selection);
 	}
 
 	/**

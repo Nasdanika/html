@@ -1,6 +1,5 @@
 package org.nasdanika.html.app;
 
-import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -9,7 +8,7 @@ import java.util.List;
  * @author Pavel Vlasov
  *
  */
-public interface Action extends Label {
+public interface Action extends Label, Executable {
 	
 	/**
 	 * Action may be disabled.
@@ -35,7 +34,7 @@ public interface Action extends Label {
 	 * Implementations may create child actions list on access to optimize processing in cases of, say on-demand ajax loading.
 	 * @return
 	 */
-	List<Action> getChildren();
+	List<? extends Action> getChildren();
 	
 	/**
 	 * Actions which are typically rendered as context menu. For example, View customer action may have View account action as its child - so it is appears
@@ -44,7 +43,7 @@ public interface Action extends Label {
 	 * E.g. for view Customer.accounts reference child actions would be account view actions and context actions may include "Open account" action.    
 	 * @return
 	 */
-	List<Action> getContextActions();		
+	List<? extends Action> getContextActions();		
 	
 	/**
 	 * Parent action.
@@ -56,13 +55,7 @@ public interface Action extends Label {
 	 * Action path in the hierarchy starting from the root action, not including the action itself.
 	 * @return
 	 */
-	List<Path> getPath();
-	
-	/**
-	 * Executes the action and returns result to be displayed in the UI.
-	 * @return
-	 */
-	Object execute();
+	List<Action> getPath();
 	
 	/**
 	 * Actions may be displayed in different parts of the application, e.g. in the left navigation tree

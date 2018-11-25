@@ -7,7 +7,9 @@ import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
 
+import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.Themed;
 import org.nasdanika.html.model.app.*;
 
 /**
@@ -80,6 +82,61 @@ public class AppSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case AppPackage.ITHEMED: {
+				Themed iThemed = (Themed)theEObject;
+				T result = caseIThemed(iThemed);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.IACTION: {
+				Action iAction = (Action)theEObject;
+				T result = caseIAction(iAction);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.ACTION: {
+				org.nasdanika.html.model.app.Action action = (org.nasdanika.html.model.app.Action)theEObject;
+				T result = caseAction(action);
+				if (result == null) result = caseIAction(action);
+				if (result == null) result = caseLabel(action);
+				if (result == null) result = caseILabel(action);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.THEMED_ACTION: {
+				ThemedAction themedAction = (ThemedAction)theEObject;
+				T result = caseThemedAction(themedAction);
+				if (result == null) result = caseAction(themedAction);
+				if (result == null) result = caseIThemed(themedAction);
+				if (result == null) result = caseIAction(themedAction);
+				if (result == null) result = caseLabel(themedAction);
+				if (result == null) result = caseILabel(themedAction);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.CONTENT_ACTION: {
+				ContentAction contentAction = (ContentAction)theEObject;
+				T result = caseContentAction(contentAction);
+				if (result == null) result = caseAction(contentAction);
+				if (result == null) result = caseIAction(contentAction);
+				if (result == null) result = caseLabel(contentAction);
+				if (result == null) result = caseILabel(contentAction);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.THEMED_CONTENT_ACTION: {
+				ThemedContentAction themedContentAction = (ThemedContentAction)theEObject;
+				T result = caseThemedContentAction(themedContentAction);
+				if (result == null) result = caseContentAction(themedContentAction);
+				if (result == null) result = caseThemedAction(themedContentAction);
+				if (result == null) result = caseAction(themedContentAction);
+				if (result == null) result = caseIThemed(themedContentAction);
+				if (result == null) result = caseIAction(themedContentAction);
+				if (result == null) result = caseLabel(themedContentAction);
+				if (result == null) result = caseILabel(themedContentAction);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -111,6 +168,96 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseLabel(org.nasdanika.html.model.app.Label object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IThemed</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IThemed</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIThemed(Themed object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IAction</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IAction</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIAction(Action object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Action</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Action</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAction(org.nasdanika.html.model.app.Action object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Themed Action</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Themed Action</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseThemedAction(ThemedAction object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Content Action</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Content Action</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseContentAction(ContentAction object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Themed Content Action</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Themed Content Action</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseThemedContentAction(ThemedContentAction object) {
 		return null;
 	}
 

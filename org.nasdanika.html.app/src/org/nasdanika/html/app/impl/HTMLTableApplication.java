@@ -4,8 +4,8 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.RowContainer.Row;
 import org.nasdanika.html.RowContainer.Row.Cell;
-import org.nasdanika.html.app.Application;
 import org.nasdanika.html.Table;
+import org.nasdanika.html.app.Application;
 
 /**
  * HTML Application which uses HTML {@link Table} as application backing HTML structure.

@@ -1,11 +1,5 @@
 package org.nasdanika.html.app.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.nasdanika.html.bootstrap.Color;
-
 ///**
 // * Implementation of action.
 // */

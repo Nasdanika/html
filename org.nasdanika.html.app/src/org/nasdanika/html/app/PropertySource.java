@@ -7,7 +7,7 @@ import java.util.List;
  * @author Pavel Vlasov
  *
  */
-public interface PropertySource extends Label {
+public interface PropertySource extends Label, DataSource {
 	
 	/**
 	 * Property descriptors.
@@ -17,26 +17,10 @@ public interface PropertySource extends Label {
 	
 	/**
 	 * Actions which can be performed on this property source. Typically are rendered below
-	 * the property source view.
+	 * the property source view. For a single-value property source object/value actions and property source actions are typically rendered together in 
+	 * the same button group.
 	 * @return
 	 */
 	List<Action> getActions();
-	
-	/**
-	 * Version of the object or null if not supported. 
-	 * Versions can be used to detect concurrent modifications.
-	 * @param obj
-	 * @return
-	 */
-	Object getVersion(Object obj);
-	
-	/**
-	 * Updates object with a list of deltas.
-	 * @param obj Object to update.
-	 * @param version Object version when original values were taken.
-	 * @param deltas A list of changes in values.
-	 * @return
-	 */
-	Diagnostic update(Object obj, Object version, List<Delta> deltas);
 	
 }

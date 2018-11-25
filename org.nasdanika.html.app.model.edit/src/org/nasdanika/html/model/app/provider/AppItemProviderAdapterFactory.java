@@ -95,6 +95,98 @@ public class AppItemProviderAdapterFactory extends AppAdapterFactory implements 
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.app.Action} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ActionItemProvider actionItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.app.Action}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createActionAdapter() {
+		if (actionItemProvider == null) {
+			actionItemProvider = new ActionItemProvider(this);
+		}
+
+		return actionItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.app.ThemedAction} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ThemedActionItemProvider themedActionItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.app.ThemedAction}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createThemedActionAdapter() {
+		if (themedActionItemProvider == null) {
+			themedActionItemProvider = new ThemedActionItemProvider(this);
+		}
+
+		return themedActionItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.app.ContentAction} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ContentActionItemProvider contentActionItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.app.ContentAction}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createContentActionAdapter() {
+		if (contentActionItemProvider == null) {
+			contentActionItemProvider = new ContentActionItemProvider(this);
+		}
+
+		return contentActionItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.app.ThemedContentAction} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ThemedContentActionItemProvider themedContentActionItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.app.ThemedContentAction}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createThemedContentActionAdapter() {
+		if (themedContentActionItemProvider == null) {
+			themedContentActionItemProvider = new ThemedContentActionItemProvider(this);
+		}
+
+		return themedContentActionItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -194,6 +286,10 @@ public class AppItemProviderAdapterFactory extends AppAdapterFactory implements 
 	 */
 	public void dispose() {
 		if (labelItemProvider != null) labelItemProvider.dispose();
+		if (actionItemProvider != null) actionItemProvider.dispose();
+		if (themedActionItemProvider != null) themedActionItemProvider.dispose();
+		if (contentActionItemProvider != null) contentActionItemProvider.dispose();
+		if (themedContentActionItemProvider != null) themedContentActionItemProvider.dispose();
 	}
 
 }

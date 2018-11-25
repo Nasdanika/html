@@ -10,6 +10,7 @@
   <genPackages prefix="App" basePackage="org.nasdanika.html.model" disposableProviderFactory="true"
       ecorePackage="app.ecore#/">
     <genDataTypes ecoreDataType="app.ecore#//Color"/>
+    <genDataTypes ecoreDataType="app.ecore#//Theme"/>
     <genClasses ecoreClass="app.ecore#//ILabel"/>
     <genClasses ecoreClass="app.ecore#//Label">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/color"/>
@@ -20,5 +21,22 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/tooltip"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/outline"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="app.ecore#//IThemed"/>
+    <genClasses image="false" ecoreClass="app.ecore#//IAction"/>
+    <genClasses ecoreClass="app.ecore#//Action">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/children"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/confirmation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/contextActions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/floatRight"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/roles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/disabled"/>
+    </genClasses>
+    <genClasses ecoreClass="app.ecore#//ThemedAction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ThemedAction/theme"/>
+    </genClasses>
+    <genClasses ecoreClass="app.ecore#//ContentAction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ContentAction/content"/>
+    </genClasses>
+    <genClasses ecoreClass="app.ecore#//ThemedContentAction"/>
   </genPackages>
 </genmodel:GenModel>

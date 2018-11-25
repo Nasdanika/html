@@ -14,12 +14,5 @@
             genModel="model/app.genmodel"/>
    </extension>
 
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated app -->
-      <package
-            uri="urn:org.nasdanika.html.app"
-            class="org.nasdanika.html.model.app.AppPackage"
-            genModel="model/app.genmodel"/>
-   </extension>
-
+null
 </plugin>

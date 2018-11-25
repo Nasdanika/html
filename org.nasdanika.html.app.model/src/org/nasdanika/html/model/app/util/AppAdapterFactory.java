@@ -9,7 +9,9 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 
+import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.Themed;
 import org.nasdanika.html.model.app.*;
 
 /**
@@ -77,6 +79,30 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 				return createLabelAdapter();
 			}
 			@Override
+			public Adapter caseIThemed(Themed object) {
+				return createIThemedAdapter();
+			}
+			@Override
+			public Adapter caseIAction(Action object) {
+				return createIActionAdapter();
+			}
+			@Override
+			public Adapter caseAction(org.nasdanika.html.model.app.Action object) {
+				return createActionAdapter();
+			}
+			@Override
+			public Adapter caseThemedAction(ThemedAction object) {
+				return createThemedActionAdapter();
+			}
+			@Override
+			public Adapter caseContentAction(ContentAction object) {
+				return createContentActionAdapter();
+			}
+			@Override
+			public Adapter caseThemedContentAction(ThemedContentAction object) {
+				return createThemedContentActionAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -107,6 +133,90 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createLabelAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.app.Themed <em>IThemed</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.app.Themed
+	 * @generated
+	 */
+	public Adapter createIThemedAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.app.Action <em>IAction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.app.Action
+	 * @generated
+	 */
+	public Adapter createIActionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.app.Action <em>Action</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.app.Action
+	 * @generated
+	 */
+	public Adapter createActionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.app.ThemedAction <em>Themed Action</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.app.ThemedAction
+	 * @generated
+	 */
+	public Adapter createThemedActionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.app.ContentAction <em>Content Action</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.app.ContentAction
+	 * @generated
+	 */
+	public Adapter createContentActionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.app.ThemedContentAction <em>Themed Content Action</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.app.ThemedContentAction
+	 * @generated
+	 */
+	public Adapter createThemedContentActionAdapter() {
 		return null;
 	}
 

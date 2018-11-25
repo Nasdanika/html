@@ -7,12 +7,19 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Themed;
 import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.ContentAction;
 import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.ThemedAction;
+import org.nasdanika.html.model.app.ThemedContentAction;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,7 +40,56 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass iThemedEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iActionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass actionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass themedActionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass contentActionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass themedContentActionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EDataType colorEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType themeEDataType = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -180,8 +236,143 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getIThemed() {
+		return iThemedEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getIAction() {
+		return iActionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getAction() {
+		return actionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAction_Children() {
+		return (EReference)actionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAction_Confirmation() {
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAction_ContextActions() {
+		return (EReference)actionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAction_FloatRight() {
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAction_Roles() {
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAction_Disabled() {
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getThemedAction() {
+		return themedActionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getThemedAction_Theme() {
+		return (EAttribute)themedActionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getContentAction() {
+		return contentActionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getContentAction_Content() {
+		return (EAttribute)contentActionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getThemedContentAction() {
+		return themedContentActionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getColor() {
 		return colorEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getTheme() {
+		return themeEDataType;
 	}
 
 	/**
@@ -232,8 +423,29 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(labelEClass, LABEL__TOOLTIP);
 		createEAttribute(labelEClass, LABEL__OUTLINE);
 
+		iThemedEClass = createEClass(ITHEMED);
+
+		iActionEClass = createEClass(IACTION);
+
+		actionEClass = createEClass(ACTION);
+		createEReference(actionEClass, ACTION__CHILDREN);
+		createEAttribute(actionEClass, ACTION__CONFIRMATION);
+		createEReference(actionEClass, ACTION__CONTEXT_ACTIONS);
+		createEAttribute(actionEClass, ACTION__FLOAT_RIGHT);
+		createEAttribute(actionEClass, ACTION__ROLES);
+		createEAttribute(actionEClass, ACTION__DISABLED);
+
+		themedActionEClass = createEClass(THEMED_ACTION);
+		createEAttribute(themedActionEClass, THEMED_ACTION__THEME);
+
+		contentActionEClass = createEClass(CONTENT_ACTION);
+		createEAttribute(contentActionEClass, CONTENT_ACTION__CONTENT);
+
+		themedContentActionEClass = createEClass(THEMED_CONTENT_ACTION);
+
 		// Create data types
 		colorEDataType = createEDataType(COLOR);
+		themeEDataType = createEDataType(THEME);
 	}
 
 	/**
@@ -265,6 +477,13 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		// Add supertypes to classes
 		labelEClass.getESuperTypes().add(this.getILabel());
+		actionEClass.getESuperTypes().add(this.getIAction());
+		actionEClass.getESuperTypes().add(this.getLabel());
+		themedActionEClass.getESuperTypes().add(this.getAction());
+		themedActionEClass.getESuperTypes().add(this.getIThemed());
+		contentActionEClass.getESuperTypes().add(this.getAction());
+		themedContentActionEClass.getESuperTypes().add(this.getContentAction());
+		themedContentActionEClass.getESuperTypes().add(this.getThemedAction());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(iLabelEClass, org.nasdanika.html.app.Label.class, "ILabel", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
@@ -278,8 +497,29 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getLabel_Tooltip(), ecorePackage.getEString(), "tooltip", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Outline(), ecorePackage.getEBoolean(), "outline", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(iThemedEClass, Themed.class, "IThemed", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(iActionEClass, Action.class, "IAction", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(actionEClass, org.nasdanika.html.model.app.Action.class, "Action", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getAction_Children(), this.getAction(), null, "children", null, 0, -1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_Confirmation(), ecorePackage.getEString(), "confirmation", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_ContextActions(), this.getAction(), null, "contextActions", null, 0, -1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_FloatRight(), ecorePackage.getEBoolean(), "floatRight", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_Roles(), ecorePackage.getEString(), "roles", null, 0, -1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_Disabled(), ecorePackage.getEBoolean(), "disabled", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(themedActionEClass, ThemedAction.class, "ThemedAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getThemedAction_Theme(), this.getTheme(), "theme", null, 0, 1, ThemedAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(contentActionEClass, ContentAction.class, "ContentAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getContentAction_Content(), ecorePackage.getEString(), "content", null, 0, 1, ContentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(themedContentActionEClass, ThemedContentAction.class, "ThemedContentAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
 		// Initialize data types
 		initEDataType(colorEDataType, Color.class, "Color", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(themeEDataType, Theme.class, "Theme", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

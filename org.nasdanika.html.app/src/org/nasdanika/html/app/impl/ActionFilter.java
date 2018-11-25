@@ -1,6 +1,5 @@
 package org.nasdanika.html.app.impl;
 
-import java.nio.file.Path;
 import java.util.List;
 
 import org.nasdanika.html.app.Action;
@@ -27,12 +26,12 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	}
 
 	@Override
-	public List<Action> getChildren() {
+	public List<? extends Action> getChildren() {
 		return target.getChildren();
 	}
 
 	@Override
-	public List<Action> getContextActions() {
+	public List<? extends Action> getContextActions() {
 		return target.getContextActions();
 	}
 
@@ -42,7 +41,7 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	}
 
 	@Override
-	public List<Path> getPath() {
+	public List<Action> getPath() {
 		return target.getPath();
 	}
 
