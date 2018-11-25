@@ -49,7 +49,12 @@
 			<id>slf4j</id>
 			<url>http://www.nasdanika.org/slf4j</url>
 			<layout>p2</layout>
-		</repository>
+		</repository>	
+		<repository>
+			<id>nasdanika-presentation</id>
+			<url>https://www.nasdanika.org/products/presentation/repository</url>
+			<layout>p2</layout>
+		</repository>								
 	</repositories>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -180,6 +185,10 @@
 		<module>../org.nasdanika.html.knockout</module>
 		<module>../org.nasdanika.html.fontawesome</module>
 		<module>../org.nasdanika.html.app</module>
+
+		<module>../org.nasdanika.html.app.model</module>
+		<module>../org.nasdanika.html.app.model.edit</module>
+		<module>../org.nasdanika.html.app.model.editor</module>
 		
 		<module>../org.nasdanika.html.emf</module>		
 

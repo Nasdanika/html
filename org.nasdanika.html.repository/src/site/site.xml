@@ -18,6 +18,9 @@
       <item name="JsTree" href="jstree.html" />
       <item name="Knockout" href="knockout.html" />
       <item name="Application" href="app.html" />
+      <item name="Application Model" href="app-model.html">
+	      <item name="Model Documentation" href="app-model-doc"/>      
+      </item>
       <item name="EMF" href="emf.html" />
       <item name="Project information" href="project-info.html" />      
    </menu>
@@ -28,8 +31,12 @@
       <item name="Knockout" href="apidocs/knockout/index.html" />
       <item name="Fontawesome" href="apidocs/fontawesome/index.html" />
       <item name="JsTree" href="apidocs/jstree/index.html" />
-      <item name="Application" href="apidocs/app/index.html" />
-      <item name="EMF" href="apidocs/emf/index.html" />
+      <item name="Application" href="apidocs/app/index.html">
+      	<item name="Model" href="apidocs/app-model/index.html"/>
+      	<item name="Edit" href="apidocs/app-model-edit/index.html"/>
+      	<item name="Editor" href="apidocs/app-model-editor/index.html"/>      
+      </item>
+      <item name="EMF" href="apidocs/emf/index.html" />      
    </menu>
 
    <menu name="Issues">

@@ -8,6 +8,8 @@ Nasdanika HTML features several bundles providing [fluent API](https://en.wikipe
 * [KnockoutJS](knockout.html), 
 * [jsTree](jstree.html),
 * [Application](app.html) - Java API's for building HTML applications.
+* [Application Model](app-model.html) - EMF model implementing the application API. It can be used for application prototyping and as a transformation step in the application rendering process.
+    * [Model documentation](app-model-doc).
 * [EMF](emf.html) - renders HTML based on EClass metadata including annotations and EObject data.
 
 ## Resources

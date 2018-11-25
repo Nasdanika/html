@@ -178,6 +178,54 @@
 						</configuration>
 					</execution>
 					<execution>
+						<id>copy-app-model-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/app-model</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../org.nasdanika.html.app.model/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-app-model-edit-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/app-model-edit</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../org.nasdanika.html.app.model.edit/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-app-model-editor-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/app-model-editor</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../org.nasdanika.html.app.model.editor/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
 						<id>copy-emf-javadoc</id>
 						<phase>pre-site</phase>
 						<goals>

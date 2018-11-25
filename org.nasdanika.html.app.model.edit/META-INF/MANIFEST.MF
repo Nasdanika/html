@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.nasdanika.html.app.model.edit;singleton:=true
+Automatic-Module-Name: org.nasdanika.html.app.model.edit
+Bundle-Version: 2.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-Activator: org.nasdanika.html.model.app.provider.AppEditPlugin$Implementation
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.nasdanika.html.model.app.provider
+Require-Bundle: org.eclipse.core.runtime,
+ org.nasdanika.html.app.model;visibility:=reexport,
+ org.eclipse.emf.cdo.edit;bundle-version="4.4.200"
+Bundle-ActivationPolicy: lazy

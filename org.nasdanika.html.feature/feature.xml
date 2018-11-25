@@ -16,6 +16,10 @@
       Eclipse Public License.
    </license>
 
+   <requires>
+      <import feature="org.nasdanika.presentation.feature" version="0.1.0"/>
+   </requires>
+
    <plugin
          id="org.nasdanika.html"
          download-size="0"
@@ -87,6 +91,34 @@
          unpack="false"/>
 
    <plugin
+         id="org.nasdanika.html.app"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.nasdanika.html.app.model"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.nasdanika.html.app.model.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.nasdanika.html.app.model.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.nasdanika.html.bootstrap.source"
          download-size="0"
          install-size="0"
@@ -116,6 +148,34 @@
 
    <plugin
          id="org.nasdanika.html.knockout.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.nasdanika.html.app.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.nasdanika.html.app.model.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.nasdanika.html.app.model.edit.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.nasdanika.html.app.model.editor.source"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.nasdanika.html.app.model/src" modelPluginID="org.nasdanika.html.app.model"
+    modelName="App" rootExtendsInterface="org.eclipse.emf.cdo.CDOObject" rootExtendsClass="org.eclipse.emf.internal.cdo.CDOObjectImpl"
+    reflectiveDelegation="true" importerID="org.eclipse.emf.importer.cdo" featureDelegation="Reflective"
+    complianceLevel="8.0" copyrightFields="false" providerRootExtendsClass="org.nasdanika.html.model.app.provider.CDOItemProviderAdapterEx"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>app.ecore</foreignModel>
+  <modelPluginVariables>CDO=org.eclipse.emf.cdo</modelPluginVariables>
+  <genPackages prefix="App" basePackage="org.nasdanika.html.model" disposableProviderFactory="true"
+      ecorePackage="app.ecore#/">
+    <genDataTypes ecoreDataType="app.ecore#//Color"/>
+    <genClasses ecoreClass="app.ecore#//ILabel"/>
+    <genClasses ecoreClass="app.ecore#//Label">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/color"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/icon"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/text"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/tooltip"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/outline"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
