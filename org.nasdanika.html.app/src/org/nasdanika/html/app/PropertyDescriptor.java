@@ -9,8 +9,7 @@ import org.nasdanika.html.InputType;
  *
  */
 public interface PropertyDescriptor extends Label, Property {
-		
-	
+			
 	/**
 	 * Property input type. If property descriptor implements {@link ChoiceProvider} or {@link LookupChoiceProvider} then 
 	 * radio input type indicates that choices shall be rendered as a list/tree with radio buttons for choice selection.

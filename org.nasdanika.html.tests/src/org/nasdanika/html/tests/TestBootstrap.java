@@ -93,6 +93,8 @@ public class TestBootstrap extends HTMLTestBase {
 		resource.getContents().add(action);
 		System.out.println(action.execute());
 		System.out.println(action.execute());
+		
+		System.out.println(action.getChildren());
 	}
 	
 }

@@ -27,6 +27,8 @@ public interface Property {
 	 * @return
 	 */
 	Object getEditValue(Object obj);
+	
+	List<Choice> getChoices(Object obj);
 		
 	/**
 	 * @return true if property can be edited. If this method returns false then the property is rendered for view in 
