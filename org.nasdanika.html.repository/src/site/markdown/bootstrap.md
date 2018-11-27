@@ -22,7 +22,7 @@ Tag badge = factory.badge(true, Color.INFO, "Badge");
 Tag badgeLink = factory.badgeLink("#", false, Color.WARNING, "Badge link");
 ```
 
-<iframe src="test-dumps/bootstrap/badge.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
+<iframe src="test-dumps/bootstrap/badge.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ## Breadcrumbs
 
@@ -33,6 +33,8 @@ breadcrumbs.item(null, "Last");
 System.out.println(breadcrumbs);
 ```
 
+<iframe src="test-dumps/bootstrap/breadcrumbs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
 ## Button
 
 ```
@@ -41,6 +43,8 @@ org.nasdanika.html.Button hButton = htmlFactory.button("Button");
 Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
 System.out.println(button);
 ```
+
+<iframe src="test-dumps/bootstrap/button.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ## Button group
 
@@ -51,6 +55,8 @@ buttonGroup.add(button);
 System.out.println(buttonGroup);
 ```
 
+<iframe src="test-dumps/bootstrap/button-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
 ## Button toolbar
 
 ```		
@@ -58,6 +64,8 @@ ButtonToolbar toolbar = factory.buttonToolbar();
 toolbar.add(buttonGroup);
 System.out.println(toolbar);
 ```
+
+<iframe src="test-dumps/bootstrap/button-toolbar.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 	
 ## Dropdown
 
@@ -71,6 +79,8 @@ dropdown.item("#", false, true, "Item 1");
 System.out.println(dropdown);
 ```
 
+<iframe src="test-dumps/bootstrap/dropdown.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
 ## Input group
 		
 ```		
@@ -81,6 +91,8 @@ inputGroup.prepend("@");
 inputGroup.append("Something").large();
 System.out.println(inputGroup);
 ```
+
+<iframe src="test-dumps/bootstrap/input-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 	
 ## Table
 
@@ -93,6 +105,8 @@ TableBody body = table.body();
 body.row("One", "Two", "Three");		
 System.out.println(table);
 ```
+
+<iframe src="test-dumps/bootstrap/table.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ## Form		
 
@@ -111,6 +125,8 @@ form.content(factory.formGroup("City", htmlFactory.input(InputType.text), "City"
 form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "State").invalid("No such state"));
 ```
 
+<iframe src="test-dumps/bootstrap/form.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
 ## Tooltip
 
 ```
@@ -119,6 +135,8 @@ Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY
 factory.tooltip(button, "I am a <I>tooltip</I>." , true, Placement.BOTTOM);
 Tag initScript = factory.initTooltipScript();
 ```
+
+<iframe src="test-dumps/bootstrap/tooltip.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ## Navs
 
@@ -129,6 +147,8 @@ navs.item("Second", "Second content");
 navs.item("Third", "Third content");
 navs.item("Fourth", "Fourth content");
 ```
+
+<iframe src="test-dumps/bootstrap/navs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 For pills use ``factory.pills()`` method.
 
@@ -141,6 +161,8 @@ row.col("Col 1").border(Color.DARK).background(Color.WARNING).text().color(Color
 row.col("Col 2").border(Color.PRIMARY).text().weight(Weight.BOLD).alignment(Alignment.CENTER);
 row.col("Col 3").border(Color.WARNING, Placement.RIGHT).background(Color.SECONDARY).text().monospace();		
 ```
+
+<iframe src="test-dumps/bootstrap/misc.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ## Bootstrap CDN HTML Page
 

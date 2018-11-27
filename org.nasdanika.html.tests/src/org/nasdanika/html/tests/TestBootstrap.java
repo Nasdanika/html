@@ -14,12 +14,9 @@ import org.junit.Test;
 import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
 import org.nasdanika.html.Form;
-import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
-import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Input;
 import org.nasdanika.html.InputType;
-import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Executable;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
@@ -71,49 +68,70 @@ public class TestBootstrap extends HTMLTestBase {
 				BootstrapFactory.INSTANCE.badgeLink("#", false, Color.WARNING, "Badge link"));
 	}
 	
-	
-	
 	@Test
-	public void testStuff() throws Exception {
-		BootstrapFactory factory = BootstrapFactory.INSTANCE;
-		HTMLFactory htmlFactory = factory.getHTMLFactory();
-		
-		Fragment content = htmlFactory.fragment();
-		
-		content.content(TagName.h2.create("Breadcrumbs"));
-		
-		Breadcrumbs breadcrumbs = factory.breadcrums();
+	public void testBreadcrumbs() throws Exception {
+		Breadcrumbs breadcrumbs = BootstrapFactory.INSTANCE.breadcrums();
 		breadcrumbs.item("#", "First");
 		breadcrumbs.item(null, "Last");
-		content.content(breadcrumbs);
-
+		writeThemedPage("bootstrap/breadcrumbs.html", "Bootstrap breadcrumbs", breadcrumbs); 
+	}
 		
-		content.content(TagName.h2.create("Button"));
+	@Test
+	public void testButton() throws Exception {
+		BootstrapFactory factory = BootstrapFactory.INSTANCE;
+		HTMLFactory htmlFactory = factory.getHTMLFactory();
+		org.nasdanika.html.Button hButton = htmlFactory.button("Button");	
+		Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
+		writeThemedPage("bootstrap/button.html", "Bootstrap button", button); 
+	}
 		
+	@Test
+	public void testTooltip() throws Exception {
+		BootstrapFactory factory = BootstrapFactory.INSTANCE;
+		HTMLFactory htmlFactory = factory.getHTMLFactory();
 		org.nasdanika.html.Button hButton = htmlFactory.button("Button");	
 		Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
 		factory.tooltip(button, "I am a <I>tooltip</I>." , true, Placement.BOTTOM);
-		content.content(button);				
-		
-		content.content(factory.initTooltipScript());
-		
-		
-		content.content(TagName.h2.create("Button group"));
+		writeThemedPage("bootstrap/tooltip.html", "Bootstrap tooltip", button, factory.initTooltipScript()); 
+	}
+	
+	@Test
+	public void testButtonGroup() throws Exception {
+		BootstrapFactory factory = BootstrapFactory.INSTANCE;
+		HTMLFactory htmlFactory = factory.getHTMLFactory();
+		org.nasdanika.html.Button hButton = htmlFactory.button("Button");	
+		Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
 		
 		ButtonGroup buttonGroup = factory.buttonGroup(false);
 		buttonGroup.add(button);
 		buttonGroup.add(button);
-		content.content(buttonGroup);
-
 		
-		content.content(TagName.h2.create("Button toolbar"));
+		writeThemedPage("bootstrap/button-group.html", "Bootstrap group", buttonGroup); 
+	}
+	
+	@Test
+	public void testButtonToolbar() throws Exception {
+		BootstrapFactory factory = BootstrapFactory.INSTANCE;
+		HTMLFactory htmlFactory = factory.getHTMLFactory();
+		org.nasdanika.html.Button hButton = htmlFactory.button("Button");	
+		Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
+		
+		ButtonGroup buttonGroup = factory.buttonGroup(false);
+		buttonGroup.add(button);
+		buttonGroup.add(button);
 		
 		ButtonToolbar toolbar = factory.buttonToolbar();
 		toolbar.add(buttonGroup);
-		content.content(toolbar);
-
 		
-		content.content(TagName.h2.create("Dropdown"));
+		writeThemedPage("bootstrap/button-toolbar.html", "Bootstrap toolbar", toolbar); 
+	}
+	
+	@Test
+	public void testDropdown() throws Exception {
+		BootstrapFactory factory = BootstrapFactory.INSTANCE;
+		HTMLFactory htmlFactory = factory.getHTMLFactory();
+		org.nasdanika.html.Button hButton = htmlFactory.button("Button");	
+		Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
 		
 		Dropdown dropdown = factory.dropdown(button, true, Direction.DOWN);
 		dropdown.item("#", false, false, "Item 1");
@@ -121,30 +139,43 @@ public class TestBootstrap extends HTMLTestBase {
 		dropdown.item("#", true, false, "Item 1");
 		dropdown.divider();
 		dropdown.item("#", false, true, "Item 1");
-		content.content(dropdown);
+				
+		writeThemedPage("bootstrap/dropdown.html", "Bootstrap dropdown", dropdown); 
+	}
+	
+	@Test
+	public void testInputGroup() throws Exception {
+		BootstrapFactory factory = BootstrapFactory.INSTANCE;
+		HTMLFactory htmlFactory = factory.getHTMLFactory();
 
-		
-		content.content(TagName.h2.create("Input group"));
-		
 		InputGroup inputGroup = factory.inputGroup();
 		Input input = htmlFactory.input(InputType.text);
 		inputGroup.input(input);
 		inputGroup.prepend("@");
 		inputGroup.append("Zorro").large();
-		content.content(inputGroup);
-		
-		content.content(TagName.h2.create("Table"));
-		
+				
+		writeThemedPage("bootstrap/input-group.html", "Bootstrap input group", inputGroup); 
+	}
+	
+	@Test
+	public void testTable() throws Exception {
+		BootstrapFactory factory = BootstrapFactory.INSTANCE;
+
 		Table table = factory.table().striped();
 		table.toHTMLElement().caption("My table");
 		TableHeader header = table.header();
 		header.headerRow("A", "B", "C");
 		TableBody body = table.body();
 		body.row("One", "Two", "Three");		
-		content.content(table);
-		
-		content.content(TagName.h2.create("Form"));
-		
+				
+		writeThemedPage("bootstrap/input-group.html", "Bootstrap input group", table); 
+	}
+	
+	@Test
+	public void testForm() throws Exception {
+		BootstrapFactory factory = BootstrapFactory.INSTANCE;
+		HTMLFactory htmlFactory = factory.getHTMLFactory();
+
 		Form form = htmlFactory.form();
 		
 		form.content(factory.formGroup("Email address", htmlFactory.input(InputType.email).value("email@example.com"), "We'll never share").large().plainText());
@@ -157,35 +188,33 @@ public class TestBootstrap extends HTMLTestBase {
 
 		form.content(factory.formGroup("City", htmlFactory.input(InputType.text), "City").valid());
 		form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "State").invalid("No such state"));
-		
-		content.content(form);
-		
-		content.content(TagName.h2.create("Navs"));
-		
-		Navs navs = factory.tabs();
+				
+		writeThemedPage("bootstrap/form.html", "Bootstrap form", form); 
+	}
+	
+	@Test
+	public void testNavs() throws Exception {
+		Navs navs = BootstrapFactory.INSTANCE.tabs();
 		navs.item("First", "First content");
 		navs.item("Second", "Second content");
 		navs.item("Third", "Third content");
 		navs.item("Fourth", "Fourth content");
-		
-		content.content(navs);
-		
-		content.content(TagName.h2.create("Containers"));
+				
+		writeThemedPage("bootstrap/form.html", "Bootstrap form", navs); 
+	}
+	
+	@Test
+	public void testMisc() throws Exception {
+		BootstrapFactory factory = BootstrapFactory.INSTANCE;
 		
 		Container container = factory.container();
-		container.row().col(content);
+		container.row().col("Some row content");
 		org.nasdanika.html.bootstrap.Container.Row row = container.row();
 		row.col("Col 1").border(Color.DARK).background(Color.WARNING).text().color(Color.PRIMARY);
 		row.col("Col 2").border(Color.PRIMARY).text().weight(Weight.BOLD).alignment(Alignment.CENTER);
 		row.col("Col 3").border(Color.WARNING, Placement.RIGHT).background(Color.SECONDARY).text().monospace();		
-			
-		// Bootstrap page
-		HTMLPage bootstrapPage = factory.bootstrapCdnHTMLPage();//Theme.Cerulean);
-		bootstrapPage.title("Bootstrap demo");
-		bootstrapPage.body(container);
-		
-		System.out.println(bootstrapPage);
-		
+				
+		writeThemedPage("bootstrap/misc.html", "Bootstrap misc", container); 
 	}
 	
 	// TODO - move to a different class
