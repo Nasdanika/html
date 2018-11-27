@@ -30,7 +30,6 @@ Tag badgeLink = factory.badgeLink("#", false, Color.WARNING, "Badge link");
 Breadcrumbs breadcrumbs = factory.breadcrums();
 breadcrumbs.item("#", "First");
 breadcrumbs.item(null, "Last");
-System.out.println(breadcrumbs);
 ```
 
 <iframe src="test-dumps/bootstrap/breadcrumbs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
@@ -41,7 +40,6 @@ System.out.println(breadcrumbs);
 HTMLFactory htmlFactory = factory.getHTMLFactory();		
 org.nasdanika.html.Button hButton = htmlFactory.button("Button");	
 Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
-System.out.println(button);
 ```
 
 <iframe src="test-dumps/bootstrap/button.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
@@ -52,7 +50,6 @@ System.out.println(button);
 ButtonGroup buttonGroup = factory.buttonGroup(false);
 buttonGroup.add(button);
 buttonGroup.add(button);
-System.out.println(buttonGroup);
 ```
 
 <iframe src="test-dumps/bootstrap/button-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
@@ -62,7 +59,6 @@ System.out.println(buttonGroup);
 ```		
 ButtonToolbar toolbar = factory.buttonToolbar();
 toolbar.add(buttonGroup);
-System.out.println(toolbar);
 ```
 
 <iframe src="test-dumps/bootstrap/button-toolbar.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
@@ -76,10 +72,9 @@ dropdown.header("Header");
 dropdown.item("#", true, false, "Item 1");
 dropdown.divider();
 dropdown.item("#", false, true, "Item 1");
-System.out.println(dropdown);
 ```
 
-<iframe src="test-dumps/bootstrap/dropdown.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="test-dumps/bootstrap/dropdown.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 150) + 'px'"></iframe>
 
 ## Input group
 		
@@ -89,7 +84,6 @@ Input input = htmlFactory.input(InputType.text);
 inputGroup.input(input);
 inputGroup.prepend("@");
 inputGroup.append("Something").large();
-System.out.println(inputGroup);
 ```
 
 <iframe src="test-dumps/bootstrap/input-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
@@ -103,7 +97,6 @@ TableHeader header = table.header();
 header.headerRow("A", "B", "C");
 TableBody body = table.body();
 body.row("One", "Two", "Three");		
-System.out.println(table);
 ```
 
 <iframe src="test-dumps/bootstrap/table.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>

@@ -123,39 +123,5 @@ public class BootstrapContainerApplication implements Application {
 	public void close() throws Exception {
 		page.close();		
 	}
-		
-	/**
-	 * For demo
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Application app = new BootstrapContainerApplication(Theme.Litera) {
-			
-			{
-				container.border(Color.DANGER);
-				header.border(Color.DANGER).background(Color.PRIMARY);
-				navigation.border(Color.DANGER);
-				leftPanel.border(Color.DANGER).widthAuto();
-				footer.border(Color.DANGER);
-				content.border(Color.DANGER);
-			}
-			
-		};
-		Tag treeContainer = app.getHTMLPage().getFactory().div();
-		app.header("header").navigation("navigation").leftPanel(treeContainer).content("content").footer("footer");
-		
-		JsTreeFactory jsTreeFactory = JsTreeFactory.INSTANCE;
-		jsTreeFactory.cdn(app.getHTMLPage());
-		
-		FontAwesomeFactory.INSTANCE.cdn(app.getHTMLPage());
-				
-		JsTreeNode rootNode = jsTreeFactory.jsTreeNode();
-		rootNode.icon("far fa-user");
-		rootNode.text("User");
-		
-		app.getHTMLPage().body(jsTreeFactory.bind(treeContainer, jsTreeFactory.buildAjaxJsTree("jstree.json", null)));		
-		
-		System.out.println(app);
-	}
 
 }
