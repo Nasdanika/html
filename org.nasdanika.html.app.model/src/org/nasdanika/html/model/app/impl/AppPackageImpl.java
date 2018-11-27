@@ -5,6 +5,7 @@ package org.nasdanika.html.model.app.impl;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.EReference;
@@ -17,6 +18,7 @@ import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.ContentAction;
+import org.nasdanika.html.model.app.ContentType;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.ThemedAction;
 import org.nasdanika.html.model.app.ThemedContentAction;
@@ -76,6 +78,13 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	private EClass themedContentActionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum contentTypeEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -353,8 +362,26 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getContentAction_ContentType() {
+		return (EAttribute)contentActionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getThemedContentAction() {
 		return themedContentActionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getContentType() {
+		return contentTypeEEnum;
 	}
 
 	/**
@@ -440,8 +467,12 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		contentActionEClass = createEClass(CONTENT_ACTION);
 		createEAttribute(contentActionEClass, CONTENT_ACTION__CONTENT);
+		createEAttribute(contentActionEClass, CONTENT_ACTION__CONTENT_TYPE);
 
 		themedContentActionEClass = createEClass(THEMED_CONTENT_ACTION);
+
+		// Create enums
+		contentTypeEEnum = createEEnum(CONTENT_TYPE);
 
 		// Create data types
 		colorEDataType = createEDataType(COLOR);
@@ -514,8 +545,15 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		initEClass(contentActionEClass, ContentAction.class, "ContentAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getContentAction_Content(), ecorePackage.getEString(), "content", null, 0, 1, ContentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getContentAction_ContentType(), this.getContentType(), "contentType", null, 0, 1, ContentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(themedContentActionEClass, ThemedContentAction.class, "ThemedContentAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		// Initialize enums and add enum literals
+		initEEnum(contentTypeEEnum, ContentType.class, "ContentType");
+		addEEnumLiteral(contentTypeEEnum, ContentType.TEXT);
+		addEEnumLiteral(contentTypeEEnum, ContentType.HTML);
+		addEEnumLiteral(contentTypeEEnum, ContentType.MARKDOWN);
 
 		// Initialize data types
 		initEDataType(colorEDataType, Color.class, "Color", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

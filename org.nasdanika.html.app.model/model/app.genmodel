@@ -9,12 +9,17 @@
   <modelPluginVariables>CDO=org.eclipse.emf.cdo</modelPluginVariables>
   <genPackages prefix="App" basePackage="org.nasdanika.html.model" disposableProviderFactory="true"
       ecorePackage="app.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="app.ecore#//ContentType">
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//ContentType/Text"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//ContentType/HTML"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//ContentType/Markdown"/>
+    </genEnums>
     <genDataTypes ecoreDataType="app.ecore#//Color"/>
     <genDataTypes ecoreDataType="app.ecore#//Theme"/>
     <genClasses ecoreClass="app.ecore#//ILabel"/>
     <genClasses ecoreClass="app.ecore#//Label">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/color"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/description"/>
+      <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute app.ecore#//Label/description"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/icon"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/text"/>
@@ -35,7 +40,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ThemedAction/theme"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//ContentAction">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ContentAction/content"/>
+      <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute app.ecore#//ContentAction/content"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ContentAction/contentType"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//ThemedContentAction"/>
   </genPackages>

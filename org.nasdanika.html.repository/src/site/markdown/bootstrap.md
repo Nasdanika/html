@@ -14,7 +14,6 @@ Tag alert = factory.alert(Color.INFO, "Alert");
 
 <iframe src="test-dumps/bootstrap/alert.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
-
 ## Badge 
 
 ```
@@ -22,6 +21,8 @@ BootstrapFactory factory = BootstrapFactory.INSTANCE;
 Tag badge = factory.badge(true, Color.INFO, "Badge");
 Tag badgeLink = factory.badgeLink("#", false, Color.WARNING, "Badge link");
 ```
+
+<iframe src="test-dumps/bootstrap/badge.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
 ## Breadcrumbs
 

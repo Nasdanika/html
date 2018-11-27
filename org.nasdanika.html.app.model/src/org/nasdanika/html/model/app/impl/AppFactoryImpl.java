@@ -77,6 +77,8 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
+			case AppPackage.CONTENT_TYPE:
+				return createContentTypeFromString(eDataType, initialValue);
 			case AppPackage.COLOR:
 				return createColorFromString(eDataType, initialValue);
 			case AppPackage.THEME:
@@ -94,6 +96,8 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
+			case AppPackage.CONTENT_TYPE:
+				return convertContentTypeToString(eDataType, instanceValue);
 			case AppPackage.COLOR:
 				return convertColorToString(eDataType, instanceValue);
 			case AppPackage.THEME:
@@ -151,6 +155,26 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	public ThemedContentAction createThemedContentAction() {
 		ThemedContentActionImpl themedContentAction = new ThemedContentActionImpl();
 		return themedContentAction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ContentType createContentTypeFromString(EDataType eDataType, String initialValue) {
+		ContentType result = ContentType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertContentTypeToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
 	}
 
 	/**

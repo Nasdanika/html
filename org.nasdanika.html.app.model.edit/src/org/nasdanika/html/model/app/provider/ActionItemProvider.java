@@ -114,7 +114,7 @@ public class ActionItemProvider
 				 getString("_UI_PropertyDescriptor_description", "_UI_Label_description_feature", "_UI_Label_type"),
 				 AppPackage.Literals.LABEL__DESCRIPTION,
 				 true,
-				 false,
+				 true,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,

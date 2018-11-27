@@ -5,6 +5,7 @@ package org.nasdanika.html.model.app;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -672,13 +673,22 @@ public interface AppPackage extends EPackage {
 	int CONTENT_ACTION__CONTENT = ACTION_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Content Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_ACTION__CONTENT_TYPE = ACTION_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Content Action</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_ACTION_FEATURE_COUNT = ACTION_FEATURE_COUNT + 1;
+	int CONTENT_ACTION_FEATURE_COUNT = ACTION_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Content Action</em>' class.
@@ -826,6 +836,15 @@ public interface AppPackage extends EPackage {
 	int THEMED_CONTENT_ACTION__CONTENT = CONTENT_ACTION__CONTENT;
 
 	/**
+	 * The feature id for the '<em><b>Content Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int THEMED_CONTENT_ACTION__CONTENT_TYPE = CONTENT_ACTION__CONTENT_TYPE;
+
+	/**
 	 * The feature id for the '<em><b>Theme</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -853,6 +872,16 @@ public interface AppPackage extends EPackage {
 	int THEMED_CONTENT_ACTION_OPERATION_COUNT = CONTENT_ACTION_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.app.ContentType <em>Content Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.app.ContentType
+	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getContentType()
+	 * @generated
+	 */
+	int CONTENT_TYPE = 8;
+
+	/**
 	 * The meta object id for the '<em>Color</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -860,7 +889,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getColor()
 	 * @generated
 	 */
-	int COLOR = 8;
+	int COLOR = 9;
 
 
 	/**
@@ -871,7 +900,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getTheme()
 	 * @generated
 	 */
-	int THEME = 9;
+	int THEME = 10;
 
 
 	/**
@@ -1102,6 +1131,17 @@ public interface AppPackage extends EPackage {
 	EAttribute getContentAction_Content();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.ContentAction#getContentType <em>Content Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Content Type</em>'.
+	 * @see org.nasdanika.html.model.app.ContentAction#getContentType()
+	 * @see #getContentAction()
+	 * @generated
+	 */
+	EAttribute getContentAction_ContentType();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ThemedContentAction <em>Themed Content Action</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1110,6 +1150,16 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getThemedContentAction();
+
+	/**
+	 * Returns the meta object for enum '{@link org.nasdanika.html.model.app.ContentType <em>Content Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Content Type</em>'.
+	 * @see org.nasdanika.html.model.app.ContentType
+	 * @generated
+	 */
+	EEnum getContentType();
 
 	/**
 	 * Returns the meta object for data type '{@link org.nasdanika.html.bootstrap.Color <em>Color</em>}'.
@@ -1348,6 +1398,14 @@ public interface AppPackage extends EPackage {
 		EAttribute CONTENT_ACTION__CONTENT = eINSTANCE.getContentAction_Content();
 
 		/**
+		 * The meta object literal for the '<em><b>Content Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONTENT_ACTION__CONTENT_TYPE = eINSTANCE.getContentAction_ContentType();
+
+		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ThemedContentActionImpl <em>Themed Content Action</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1356,6 +1414,16 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EClass THEMED_CONTENT_ACTION = eINSTANCE.getThemedContentAction();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.app.ContentType <em>Content Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.app.ContentType
+		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getContentType()
+		 * @generated
+		 */
+		EEnum CONTENT_TYPE = eINSTANCE.getContentType();
 
 		/**
 		 * The meta object literal for the '<em>Color</em>' data type.

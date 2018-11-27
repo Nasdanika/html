@@ -46,6 +46,7 @@ public class ContentActionItemProvider extends ActionItemProvider {
 			super.getPropertyDescriptors(object);
 
 			addContentPropertyDescriptor(object);
+			addContentTypePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -64,6 +65,28 @@ public class ContentActionItemProvider extends ActionItemProvider {
 				 getString("_UI_ContentAction_content_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_ContentAction_content_feature", "_UI_ContentAction_type"),
 				 AppPackage.Literals.CONTENT_ACTION__CONTENT,
+				 true,
+				 true,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Content Type feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addContentTypePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_ContentAction_contentType_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ContentAction_contentType_feature", "_UI_ContentAction_type"),
+				 AppPackage.Literals.CONTENT_ACTION__CONTENT_TYPE,
 				 true,
 				 false,
 				 false,
@@ -111,6 +134,7 @@ public class ContentActionItemProvider extends ActionItemProvider {
 
 		switch (notification.getFeatureID(ContentAction.class)) {
 			case AppPackage.CONTENT_ACTION__CONTENT:
+			case AppPackage.CONTENT_ACTION__CONTENT_TYPE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

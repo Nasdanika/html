@@ -17,6 +17,7 @@ package org.nasdanika.html.model.app;
  * </p>
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.ContentAction#getContent <em>Content</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.ContentAction#getContentType <em>Content Type</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getContentAction()
@@ -49,5 +50,34 @@ public interface ContentAction extends Action {
 	 * @generated
 	 */
 	void setContent(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Content Type</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.nasdanika.html.model.app.ContentType}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Content Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Content Type</em>' attribute.
+	 * @see org.nasdanika.html.model.app.ContentType
+	 * @see #setContentType(ContentType)
+	 * @see org.nasdanika.html.model.app.AppPackage#getContentAction_ContentType()
+	 * @model
+	 * @generated
+	 */
+	ContentType getContentType();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.ContentAction#getContentType <em>Content Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Content Type</em>' attribute.
+	 * @see org.nasdanika.html.model.app.ContentType
+	 * @see #getContentType()
+	 * @generated
+	 */
+	void setContentType(ContentType value);
 
 } // ContentAction
