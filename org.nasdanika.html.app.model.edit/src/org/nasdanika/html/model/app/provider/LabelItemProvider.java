@@ -238,11 +238,12 @@ public class LabelItemProvider
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Label)object).getId();
+		Label theLabel = (Label)object;
+		String label = "["+theLabel.getId()+"] "+theLabel.getText();
 		return label == null || label.length() == 0 ?
 			getString("_UI_Label_type") :
 			getString("_UI_Label_type") + " " + label;

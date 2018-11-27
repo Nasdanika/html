@@ -13,8 +13,9 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-
+import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.ThemedContentAction;
 
 /**
@@ -87,11 +88,12 @@ public class ThemedContentActionItemProvider extends ContentActionItemProvider {
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ThemedContentAction)object).getId();
+		Label action = (Action)object;
+		String label = "["+action.getId()+"] "+action.getText();
 		return label == null || label.length() == 0 ?
 			getString("_UI_ThemedContentAction_type") :
 			getString("_UI_ThemedContentAction_type") + " " + label;
