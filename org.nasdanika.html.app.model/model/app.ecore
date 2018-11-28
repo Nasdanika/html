@@ -34,6 +34,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="roles" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="disabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="activator" eType="#//ActionActivator"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ThemedAction" eSuperTypes="#//Action #//IThemed">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="theme" eType="#//Theme"/>
@@ -50,5 +52,20 @@
     <eLiterals name="Text"/>
     <eLiterals name="HTML" value="1"/>
     <eLiterals name="Markdown" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IActionActivator" instanceClassName="org.nasdanika.html.app.ActionActivator"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="INavigationActionActivator" instanceClassName="org.nasdanika.html.app.NavigationActionActivator"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IScriptActionActivator" instanceClassName="org.nasdanika.html.app.ScriptActionActivator"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ActionActivator" abstract="true" eSuperTypes="#//IActionActivator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NavigationActionActivator" abstract="true"
+      eSuperTypes="#//INavigationActionActivator #//ActionActivator">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="href" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScriptActionActivator" abstract="true"
+      eSuperTypes="#//IScriptActionActivator #//ActionActivator">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="code" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

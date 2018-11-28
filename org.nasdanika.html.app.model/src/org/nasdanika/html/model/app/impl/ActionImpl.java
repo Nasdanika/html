@@ -15,6 +15,7 @@ import org.nasdanika.html.app.Executable;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.ActionActivator;
 import org.nasdanika.html.model.app.AppPackage;
 
 /**
@@ -38,6 +39,7 @@ import org.nasdanika.html.model.app.AppPackage;
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isFloatRight <em>Float Right</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getRoles <em>Roles</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isDisabled <em>Disabled</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getActivator <em>Activator</em>}</li>
  * </ul>
  *
  * @generated
@@ -280,6 +282,24 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 */
 	public void setDisabled(boolean newDisabled) {
 		eSet(AppPackage.Literals.ACTION__DISABLED, newDisabled);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ActionActivator getActivator() {
+		return (ActionActivator)eGet(AppPackage.Literals.ACTION__ACTIVATOR, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setActivator(ActionActivator newActivator) {
+		eSet(AppPackage.Literals.ACTION__ACTIVATOR, newActivator);
 	}
 
 	/**

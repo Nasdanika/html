@@ -334,6 +334,7 @@ public class ActionItemProvider
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(AppPackage.Literals.ACTION__CHILDREN);
 			childrenFeatures.add(AppPackage.Literals.ACTION__CONTEXT_ACTIONS);
+			childrenFeatures.add(AppPackage.Literals.ACTION__ACTIVATOR);
 		}
 		return childrenFeatures;
 	}
@@ -405,6 +406,7 @@ public class ActionItemProvider
 				return;
 			case AppPackage.ACTION__CHILDREN:
 			case AppPackage.ACTION__CONTEXT_ACTIONS:
+			case AppPackage.ACTION__ACTIVATOR:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}

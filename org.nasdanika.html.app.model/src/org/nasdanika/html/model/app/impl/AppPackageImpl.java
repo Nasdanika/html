@@ -12,6 +12,9 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ActionActivator;
+import org.nasdanika.html.app.NavigationActionActivator;
+import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.Themed;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Theme;
@@ -78,6 +81,48 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	private EClass themedContentActionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iActionActivatorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iNavigationActionActivatorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iScriptActionActivatorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass actionActivatorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass navigationActionActivatorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass scriptActionActivatorEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -326,6 +371,15 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getAction_Activator() {
+		return (EReference)actionEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getThemedAction() {
 		return themedActionEClass;
 	}
@@ -373,6 +427,78 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	public EClass getThemedContentAction() {
 		return themedContentActionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getIActionActivator() {
+		return iActionActivatorEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getINavigationActionActivator() {
+		return iNavigationActionActivatorEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getIScriptActionActivator() {
+		return iScriptActionActivatorEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getActionActivator() {
+		return actionActivatorEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getNavigationActionActivator() {
+		return navigationActionActivatorEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getNavigationActionActivator_Href() {
+		return (EAttribute)navigationActionActivatorEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getScriptActionActivator() {
+		return scriptActionActivatorEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getScriptActionActivator_Code() {
+		return (EAttribute)scriptActionActivatorEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -461,6 +587,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(actionEClass, ACTION__FLOAT_RIGHT);
 		createEAttribute(actionEClass, ACTION__ROLES);
 		createEAttribute(actionEClass, ACTION__DISABLED);
+		createEReference(actionEClass, ACTION__ACTIVATOR);
 
 		themedActionEClass = createEClass(THEMED_ACTION);
 		createEAttribute(themedActionEClass, THEMED_ACTION__THEME);
@@ -470,6 +597,20 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(contentActionEClass, CONTENT_ACTION__CONTENT_TYPE);
 
 		themedContentActionEClass = createEClass(THEMED_CONTENT_ACTION);
+
+		iActionActivatorEClass = createEClass(IACTION_ACTIVATOR);
+
+		iNavigationActionActivatorEClass = createEClass(INAVIGATION_ACTION_ACTIVATOR);
+
+		iScriptActionActivatorEClass = createEClass(ISCRIPT_ACTION_ACTIVATOR);
+
+		actionActivatorEClass = createEClass(ACTION_ACTIVATOR);
+
+		navigationActionActivatorEClass = createEClass(NAVIGATION_ACTION_ACTIVATOR);
+		createEAttribute(navigationActionActivatorEClass, NAVIGATION_ACTION_ACTIVATOR__HREF);
+
+		scriptActionActivatorEClass = createEClass(SCRIPT_ACTION_ACTIVATOR);
+		createEAttribute(scriptActionActivatorEClass, SCRIPT_ACTION_ACTIVATOR__CODE);
 
 		// Create enums
 		contentTypeEEnum = createEEnum(CONTENT_TYPE);
@@ -515,6 +656,11 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		contentActionEClass.getESuperTypes().add(this.getAction());
 		themedContentActionEClass.getESuperTypes().add(this.getContentAction());
 		themedContentActionEClass.getESuperTypes().add(this.getThemedAction());
+		actionActivatorEClass.getESuperTypes().add(this.getIActionActivator());
+		navigationActionActivatorEClass.getESuperTypes().add(this.getINavigationActionActivator());
+		navigationActionActivatorEClass.getESuperTypes().add(this.getActionActivator());
+		scriptActionActivatorEClass.getESuperTypes().add(this.getIScriptActionActivator());
+		scriptActionActivatorEClass.getESuperTypes().add(this.getActionActivator());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(iLabelEClass, org.nasdanika.html.app.Label.class, "ILabel", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
@@ -539,6 +685,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getAction_FloatRight(), ecorePackage.getEBoolean(), "floatRight", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Roles(), ecorePackage.getEString(), "roles", null, 0, -1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Disabled(), ecorePackage.getEBoolean(), "disabled", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Activator(), this.getActionActivator(), null, "activator", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(themedActionEClass, ThemedAction.class, "ThemedAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getThemedAction_Theme(), this.getTheme(), "theme", null, 0, 1, ThemedAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -548,6 +695,20 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getContentAction_ContentType(), this.getContentType(), "contentType", null, 0, 1, ContentAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(themedContentActionEClass, ThemedContentAction.class, "ThemedContentAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(iActionActivatorEClass, ActionActivator.class, "IActionActivator", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(iNavigationActionActivatorEClass, NavigationActionActivator.class, "INavigationActionActivator", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(iScriptActionActivatorEClass, ScriptActionActivator.class, "IScriptActionActivator", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(actionActivatorEClass, org.nasdanika.html.model.app.ActionActivator.class, "ActionActivator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(navigationActionActivatorEClass, org.nasdanika.html.model.app.NavigationActionActivator.class, "NavigationActionActivator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getNavigationActionActivator_Href(), ecorePackage.getEString(), "href", null, 0, 1, org.nasdanika.html.model.app.NavigationActionActivator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(scriptActionActivatorEClass, org.nasdanika.html.model.app.ScriptActionActivator.class, "ScriptActionActivator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getScriptActionActivator_Code(), ecorePackage.getEString(), "code", null, 0, 1, org.nasdanika.html.model.app.ScriptActionActivator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(contentTypeEEnum, ContentType.class, "ContentType");

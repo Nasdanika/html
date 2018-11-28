@@ -1,11 +1,11 @@
 package org.nasdanika.html.app;
 
 /**
- * Action which navigates to specified location/URL. 
+ * Action activator which navigates to specified location/URL. 
  * @author Pavel Vlasov
  *
  */
-public interface NavigationAction extends Action {
+public interface NavigationActionActivator extends ActionActivator {
 	
 	/**
 	 * @return Navigation target (URL). If this method returns null then the UI may use id-based action execution. 

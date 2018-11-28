@@ -365,13 +365,22 @@ public interface AppPackage extends EPackage {
 	int ACTION__DISABLED = IACTION_FEATURE_COUNT + 12;
 
 	/**
+	 * The feature id for the '<em><b>Activator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__ACTIVATOR = IACTION_FEATURE_COUNT + 13;
+
+	/**
 	 * The number of structural features of the '<em>Action</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_FEATURE_COUNT = IACTION_FEATURE_COUNT + 13;
+	int ACTION_FEATURE_COUNT = IACTION_FEATURE_COUNT + 14;
 
 	/**
 	 * The number of operations of the '<em>Action</em>' class.
@@ -508,6 +517,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int THEMED_ACTION__DISABLED = ACTION__DISABLED;
+
+	/**
+	 * The feature id for the '<em><b>Activator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int THEMED_ACTION__ACTIVATOR = ACTION__ACTIVATOR;
 
 	/**
 	 * The feature id for the '<em><b>Theme</b></em>' attribute.
@@ -662,6 +680,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_ACTION__DISABLED = ACTION__DISABLED;
+
+	/**
+	 * The feature id for the '<em><b>Activator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_ACTION__ACTIVATOR = ACTION__ACTIVATOR;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' attribute.
@@ -827,6 +854,15 @@ public interface AppPackage extends EPackage {
 	int THEMED_CONTENT_ACTION__DISABLED = CONTENT_ACTION__DISABLED;
 
 	/**
+	 * The feature id for the '<em><b>Activator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int THEMED_CONTENT_ACTION__ACTIVATOR = CONTENT_ACTION__ACTIVATOR;
+
+	/**
 	 * The feature id for the '<em><b>Content</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -872,6 +908,192 @@ public interface AppPackage extends EPackage {
 	int THEMED_CONTENT_ACTION_OPERATION_COUNT = CONTENT_ACTION_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.nasdanika.html.app.ActionActivator <em>IAction Activator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.app.ActionActivator
+	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getIActionActivator()
+	 * @generated
+	 */
+	int IACTION_ACTIVATOR = 8;
+
+	/**
+	 * The number of structural features of the '<em>IAction Activator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IACTION_ACTIVATOR_FEATURE_COUNT = 0;
+
+	/**
+	 * The number of operations of the '<em>IAction Activator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IACTION_ACTIVATOR_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.app.NavigationActionActivator <em>INavigation Action Activator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.app.NavigationActionActivator
+	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getINavigationActionActivator()
+	 * @generated
+	 */
+	int INAVIGATION_ACTION_ACTIVATOR = 9;
+
+	/**
+	 * The number of structural features of the '<em>INavigation Action Activator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INAVIGATION_ACTION_ACTIVATOR_FEATURE_COUNT = 0;
+
+	/**
+	 * The number of operations of the '<em>INavigation Action Activator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INAVIGATION_ACTION_ACTIVATOR_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.app.ScriptActionActivator <em>IScript Action Activator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.app.ScriptActionActivator
+	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getIScriptActionActivator()
+	 * @generated
+	 */
+	int ISCRIPT_ACTION_ACTIVATOR = 10;
+
+	/**
+	 * The number of structural features of the '<em>IScript Action Activator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ISCRIPT_ACTION_ACTIVATOR_FEATURE_COUNT = 0;
+
+	/**
+	 * The number of operations of the '<em>IScript Action Activator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ISCRIPT_ACTION_ACTIVATOR_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.ActionActivatorImpl <em>Action Activator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.app.impl.ActionActivatorImpl
+	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getActionActivator()
+	 * @generated
+	 */
+	int ACTION_ACTIVATOR = 11;
+
+	/**
+	 * The number of structural features of the '<em>Action Activator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_ACTIVATOR_FEATURE_COUNT = IACTION_ACTIVATOR_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Action Activator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_ACTIVATOR_OPERATION_COUNT = IACTION_ACTIVATOR_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.NavigationActionActivatorImpl <em>Navigation Action Activator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.app.impl.NavigationActionActivatorImpl
+	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getNavigationActionActivator()
+	 * @generated
+	 */
+	int NAVIGATION_ACTION_ACTIVATOR = 12;
+
+	/**
+	 * The feature id for the '<em><b>Href</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_ACTION_ACTIVATOR__HREF = INAVIGATION_ACTION_ACTIVATOR_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Navigation Action Activator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_ACTION_ACTIVATOR_FEATURE_COUNT = INAVIGATION_ACTION_ACTIVATOR_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Navigation Action Activator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_ACTION_ACTIVATOR_OPERATION_COUNT = INAVIGATION_ACTION_ACTIVATOR_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.ScriptActionActivatorImpl <em>Script Action Activator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.app.impl.ScriptActionActivatorImpl
+	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getScriptActionActivator()
+	 * @generated
+	 */
+	int SCRIPT_ACTION_ACTIVATOR = 13;
+
+	/**
+	 * The feature id for the '<em><b>Code</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT_ACTION_ACTIVATOR__CODE = ISCRIPT_ACTION_ACTIVATOR_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Script Action Activator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT_ACTION_ACTIVATOR_FEATURE_COUNT = ISCRIPT_ACTION_ACTIVATOR_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Script Action Activator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT_ACTION_ACTIVATOR_OPERATION_COUNT = ISCRIPT_ACTION_ACTIVATOR_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.ContentType <em>Content Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -879,7 +1101,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getContentType()
 	 * @generated
 	 */
-	int CONTENT_TYPE = 8;
+	int CONTENT_TYPE = 14;
 
 	/**
 	 * The meta object id for the '<em>Color</em>' data type.
@@ -889,7 +1111,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getColor()
 	 * @generated
 	 */
-	int COLOR = 9;
+	int COLOR = 15;
 
 
 	/**
@@ -900,7 +1122,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getTheme()
 	 * @generated
 	 */
-	int THEME = 10;
+	int THEME = 16;
 
 
 	/**
@@ -1089,6 +1311,17 @@ public interface AppPackage extends EPackage {
 	EAttribute getAction_Disabled();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.Action#getActivator <em>Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Activator</em>'.
+	 * @see org.nasdanika.html.model.app.Action#getActivator()
+	 * @see #getAction()
+	 * @generated
+	 */
+	EReference getAction_Activator();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ThemedAction <em>Themed Action</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1150,6 +1383,91 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getThemedContentAction();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.app.ActionActivator <em>IAction Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IAction Activator</em>'.
+	 * @see org.nasdanika.html.app.ActionActivator
+	 * @model instanceClass="org.nasdanika.html.app.ActionActivator"
+	 * @generated
+	 */
+	EClass getIActionActivator();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.app.NavigationActionActivator <em>INavigation Action Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>INavigation Action Activator</em>'.
+	 * @see org.nasdanika.html.app.NavigationActionActivator
+	 * @model instanceClass="org.nasdanika.html.app.NavigationActionActivator"
+	 * @generated
+	 */
+	EClass getINavigationActionActivator();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.app.ScriptActionActivator <em>IScript Action Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IScript Action Activator</em>'.
+	 * @see org.nasdanika.html.app.ScriptActionActivator
+	 * @model instanceClass="org.nasdanika.html.app.ScriptActionActivator"
+	 * @generated
+	 */
+	EClass getIScriptActionActivator();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ActionActivator <em>Action Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Action Activator</em>'.
+	 * @see org.nasdanika.html.model.app.ActionActivator
+	 * @generated
+	 */
+	EClass getActionActivator();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.NavigationActionActivator <em>Navigation Action Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Navigation Action Activator</em>'.
+	 * @see org.nasdanika.html.model.app.NavigationActionActivator
+	 * @generated
+	 */
+	EClass getNavigationActionActivator();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.NavigationActionActivator#getHref <em>Href</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Href</em>'.
+	 * @see org.nasdanika.html.model.app.NavigationActionActivator#getHref()
+	 * @see #getNavigationActionActivator()
+	 * @generated
+	 */
+	EAttribute getNavigationActionActivator_Href();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ScriptActionActivator <em>Script Action Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Script Action Activator</em>'.
+	 * @see org.nasdanika.html.model.app.ScriptActionActivator
+	 * @generated
+	 */
+	EClass getScriptActionActivator();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.ScriptActionActivator#getCode <em>Code</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Code</em>'.
+	 * @see org.nasdanika.html.model.app.ScriptActionActivator#getCode()
+	 * @see #getScriptActionActivator()
+	 * @generated
+	 */
+	EAttribute getScriptActionActivator_Code();
 
 	/**
 	 * Returns the meta object for enum '{@link org.nasdanika.html.model.app.ContentType <em>Content Type</em>}'.
@@ -1362,6 +1680,14 @@ public interface AppPackage extends EPackage {
 		EAttribute ACTION__DISABLED = eINSTANCE.getAction_Disabled();
 
 		/**
+		 * The meta object literal for the '<em><b>Activator</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ACTION__ACTIVATOR = eINSTANCE.getAction_Activator();
+
+		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ThemedActionImpl <em>Themed Action</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1414,6 +1740,82 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EClass THEMED_CONTENT_ACTION = eINSTANCE.getThemedContentAction();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.app.ActionActivator <em>IAction Activator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.app.ActionActivator
+		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getIActionActivator()
+		 * @generated
+		 */
+		EClass IACTION_ACTIVATOR = eINSTANCE.getIActionActivator();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.app.NavigationActionActivator <em>INavigation Action Activator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.app.NavigationActionActivator
+		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getINavigationActionActivator()
+		 * @generated
+		 */
+		EClass INAVIGATION_ACTION_ACTIVATOR = eINSTANCE.getINavigationActionActivator();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.app.ScriptActionActivator <em>IScript Action Activator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.app.ScriptActionActivator
+		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getIScriptActionActivator()
+		 * @generated
+		 */
+		EClass ISCRIPT_ACTION_ACTIVATOR = eINSTANCE.getIScriptActionActivator();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ActionActivatorImpl <em>Action Activator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.app.impl.ActionActivatorImpl
+		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getActionActivator()
+		 * @generated
+		 */
+		EClass ACTION_ACTIVATOR = eINSTANCE.getActionActivator();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.NavigationActionActivatorImpl <em>Navigation Action Activator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.app.impl.NavigationActionActivatorImpl
+		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getNavigationActionActivator()
+		 * @generated
+		 */
+		EClass NAVIGATION_ACTION_ACTIVATOR = eINSTANCE.getNavigationActionActivator();
+
+		/**
+		 * The meta object literal for the '<em><b>Href</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NAVIGATION_ACTION_ACTIVATOR__HREF = eINSTANCE.getNavigationActionActivator_Href();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ScriptActionActivatorImpl <em>Script Action Activator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.app.impl.ScriptActionActivatorImpl
+		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getScriptActionActivator()
+		 * @generated
+		 */
+		EClass SCRIPT_ACTION_ACTIVATOR = eINSTANCE.getScriptActionActivator();
+
+		/**
+		 * The meta object literal for the '<em><b>Code</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SCRIPT_ACTION_ACTIVATOR__CODE = eINSTANCE.getScriptActionActivator_Code();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.ContentType <em>Content Type</em>}' enum.

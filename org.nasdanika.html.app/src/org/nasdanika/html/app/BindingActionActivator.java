@@ -1,11 +1,11 @@
 package org.nasdanika.html.app;
 
 /**
- * Action which performs its own binding to the UI element. 
+ * Action activator which performs its own binding to the UI element. 
  * @author Pavel Vlasov
  *
  */
-public interface BindingAction extends Action {
+public interface BindingActionActivator extends ActionActivator {
 	
 	/**
 	 * Binds action to the UI element.

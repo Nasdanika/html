@@ -7,11 +7,11 @@ import org.nasdanika.html.jstree.JsTreeContextMenuItem;
 import org.nasdanika.html.jstree.JsTreeNode;
 
 /**
- * Renders application-level abstractions as UI elements.
+ * Generates UI elements from application interfaces.
  * @author Pavel Vlasov
  *
  */
-public interface ApplicationRenderer {
+public interface ViewGenerator {
 	
 	Tag link(Action action);
 	

@@ -18,6 +18,8 @@ Nasdanika HTML features several bundles providing [fluent API](https://en.wikipe
     * ``https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/repository``
     * [Archived](https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/org.nasdanika.html.repository-2.0.0-SNAPSHOT.zip)
 * [Sources](html.zip)
+* [NasdanikaBank.app](NasdanikaBank.app) - a sample model with several actions for demo and testing purposes. It is also available as a resource in ``org.nasdanika.app.model`` bundle.    
+
  
 ## How to contribute
 

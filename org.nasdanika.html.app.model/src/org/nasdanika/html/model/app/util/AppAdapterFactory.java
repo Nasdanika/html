@@ -10,7 +10,10 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.NavigationActionActivator;
+import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.Themed;
 import org.nasdanika.html.model.app.*;
 
@@ -101,6 +104,30 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseThemedContentAction(ThemedContentAction object) {
 				return createThemedContentActionAdapter();
+			}
+			@Override
+			public Adapter caseIActionActivator(ActionActivator object) {
+				return createIActionActivatorAdapter();
+			}
+			@Override
+			public Adapter caseINavigationActionActivator(NavigationActionActivator object) {
+				return createINavigationActionActivatorAdapter();
+			}
+			@Override
+			public Adapter caseIScriptActionActivator(ScriptActionActivator object) {
+				return createIScriptActionActivatorAdapter();
+			}
+			@Override
+			public Adapter caseActionActivator(org.nasdanika.html.model.app.ActionActivator object) {
+				return createActionActivatorAdapter();
+			}
+			@Override
+			public Adapter caseNavigationActionActivator(org.nasdanika.html.model.app.NavigationActionActivator object) {
+				return createNavigationActionActivatorAdapter();
+			}
+			@Override
+			public Adapter caseScriptActionActivator(org.nasdanika.html.model.app.ScriptActionActivator object) {
+				return createScriptActionActivatorAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -217,6 +244,90 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createThemedContentActionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.app.ActionActivator <em>IAction Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.app.ActionActivator
+	 * @generated
+	 */
+	public Adapter createIActionActivatorAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.app.NavigationActionActivator <em>INavigation Action Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.app.NavigationActionActivator
+	 * @generated
+	 */
+	public Adapter createINavigationActionActivatorAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.app.ScriptActionActivator <em>IScript Action Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.app.ScriptActionActivator
+	 * @generated
+	 */
+	public Adapter createIScriptActionActivatorAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.app.ActionActivator <em>Action Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.app.ActionActivator
+	 * @generated
+	 */
+	public Adapter createActionActivatorAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.app.NavigationActionActivator <em>Navigation Action Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.app.NavigationActionActivator
+	 * @generated
+	 */
+	public Adapter createNavigationActionActivatorAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.app.ScriptActionActivator <em>Script Action Activator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.app.ScriptActionActivator
+	 * @generated
+	 */
+	public Adapter createScriptActionActivatorAdapter() {
 		return null;
 	}
 

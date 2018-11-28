@@ -28,20 +28,28 @@ import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.html.model.app.AppPackage;
 
 
 public class TestApp extends HTMLTestBase {
 	
 	protected Bank bank;
+	protected Action appAction;
 	
 	@Before
 	public void loadModels() {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+		
 		resourceSet.getPackageRegistry().put(BankPackage.eNS_URI, BankPackage.eINSTANCE);
-		URI uri = URI.createPlatformPluginURI("org.nasdanika.bank/Nasdanika.bank", false);
-		Resource resource = resourceSet.getResource(uri, true);
-		bank = (Bank) resource.getContents().iterator().next();
+		URI bankUri = URI.createPlatformPluginURI("org.nasdanika.bank/Nasdanika.bank", false);
+		Resource bankResource = resourceSet.getResource(bankUri, true);
+		bank = (Bank) bankResource.getContents().iterator().next();
+		
+		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
+		URI appUri = URI.createPlatformPluginURI("org.nasdanika.app.model/NasdanikaBank.app", false);
+		Resource appResource = resourceSet.getResource(appUri, true);
+		appAction = (Action) appResource.getContents().iterator().next();		
 	}
 	
 	@Test

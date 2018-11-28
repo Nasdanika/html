@@ -8,7 +8,10 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.NavigationActionActivator;
+import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.Themed;
 import org.nasdanika.html.model.app.*;
 
@@ -137,6 +140,49 @@ public class AppSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case AppPackage.IACTION_ACTIVATOR: {
+				ActionActivator iActionActivator = (ActionActivator)theEObject;
+				T result = caseIActionActivator(iActionActivator);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.INAVIGATION_ACTION_ACTIVATOR: {
+				NavigationActionActivator iNavigationActionActivator = (NavigationActionActivator)theEObject;
+				T result = caseINavigationActionActivator(iNavigationActionActivator);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.ISCRIPT_ACTION_ACTIVATOR: {
+				ScriptActionActivator iScriptActionActivator = (ScriptActionActivator)theEObject;
+				T result = caseIScriptActionActivator(iScriptActionActivator);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.ACTION_ACTIVATOR: {
+				org.nasdanika.html.model.app.ActionActivator actionActivator = (org.nasdanika.html.model.app.ActionActivator)theEObject;
+				T result = caseActionActivator(actionActivator);
+				if (result == null) result = caseIActionActivator(actionActivator);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.NAVIGATION_ACTION_ACTIVATOR: {
+				org.nasdanika.html.model.app.NavigationActionActivator navigationActionActivator = (org.nasdanika.html.model.app.NavigationActionActivator)theEObject;
+				T result = caseNavigationActionActivator(navigationActionActivator);
+				if (result == null) result = caseINavigationActionActivator(navigationActionActivator);
+				if (result == null) result = caseActionActivator(navigationActionActivator);
+				if (result == null) result = caseIActionActivator(navigationActionActivator);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.SCRIPT_ACTION_ACTIVATOR: {
+				org.nasdanika.html.model.app.ScriptActionActivator scriptActionActivator = (org.nasdanika.html.model.app.ScriptActionActivator)theEObject;
+				T result = caseScriptActionActivator(scriptActionActivator);
+				if (result == null) result = caseIScriptActionActivator(scriptActionActivator);
+				if (result == null) result = caseActionActivator(scriptActionActivator);
+				if (result == null) result = caseIActionActivator(scriptActionActivator);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -258,6 +304,96 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseThemedContentAction(ThemedContentAction object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IAction Activator</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IAction Activator</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIActionActivator(ActionActivator object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>INavigation Action Activator</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>INavigation Action Activator</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseINavigationActionActivator(NavigationActionActivator object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IScript Action Activator</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IScript Action Activator</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIScriptActionActivator(ScriptActionActivator object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Action Activator</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Action Activator</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseActionActivator(org.nasdanika.html.model.app.ActionActivator object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Navigation Action Activator</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Navigation Action Activator</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNavigationActionActivator(org.nasdanika.html.model.app.NavigationActionActivator object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Script Action Activator</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Script Action Activator</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseScriptActionActivator(org.nasdanika.html.model.app.ScriptActionActivator object) {
 		return null;
 	}
 

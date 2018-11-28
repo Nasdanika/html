@@ -2,14 +2,14 @@ package org.nasdanika.html.app.impl;
 
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
-import org.nasdanika.html.app.ApplicationRenderer;
+import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
 import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
 
-public class ApplicationRendererImpl implements ApplicationRenderer {
+public class ApplicationRendererImpl implements ViewGenerator {
 	
 	protected JsTreeFactory jsTreeFactory = JsTreeFactory.INSTANCE;
 

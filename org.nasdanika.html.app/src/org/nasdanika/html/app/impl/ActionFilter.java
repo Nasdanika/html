@@ -3,6 +3,7 @@ package org.nasdanika.html.app.impl;
 import java.util.List;
 
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ActionActivator;
 
 public class ActionFilter<T extends Action> extends LabelFilter<T> implements Action {
 
@@ -53,6 +54,11 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	@Override
 	public boolean isInRole(String role) {
 		return target.isInRole(role);
+	}
+
+	@Override
+	public ActionActivator getActivator() {
+		return target.getActivator();
 	}
 		
 }

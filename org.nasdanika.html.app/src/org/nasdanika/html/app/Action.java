@@ -66,4 +66,6 @@ public interface Action extends Label, Executable {
 	 */
 	boolean isInRole(String role);
 	
+	ActionActivator getActivator();
+	
 }

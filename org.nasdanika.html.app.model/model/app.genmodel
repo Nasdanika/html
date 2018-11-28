@@ -35,6 +35,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/floatRight"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/roles"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/disabled"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/activator"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//ThemedAction">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ThemedAction/theme"/>
@@ -44,5 +45,15 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ContentAction/contentType"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//ThemedContentAction"/>
+    <genClasses image="false" ecoreClass="app.ecore#//IActionActivator"/>
+    <genClasses image="false" ecoreClass="app.ecore#//INavigationActionActivator"/>
+    <genClasses image="false" ecoreClass="app.ecore#//IScriptActionActivator"/>
+    <genClasses image="false" ecoreClass="app.ecore#//ActionActivator"/>
+    <genClasses image="false" ecoreClass="app.ecore#//NavigationActionActivator">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//NavigationActionActivator/href"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="app.ecore#//ScriptActionActivator">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ScriptActionActivator/code"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
