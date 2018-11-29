@@ -187,6 +187,52 @@ public class AppItemProviderAdapterFactory extends AppAdapterFactory implements 
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.app.NavigationActionActivator} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected NavigationActionActivatorItemProvider navigationActionActivatorItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.app.NavigationActionActivator}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createNavigationActionActivatorAdapter() {
+		if (navigationActionActivatorItemProvider == null) {
+			navigationActionActivatorItemProvider = new NavigationActionActivatorItemProvider(this);
+		}
+
+		return navigationActionActivatorItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.app.ScriptActionActivator} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ScriptActionActivatorItemProvider scriptActionActivatorItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.app.ScriptActionActivator}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createScriptActionActivatorAdapter() {
+		if (scriptActionActivatorItemProvider == null) {
+			scriptActionActivatorItemProvider = new ScriptActionActivatorItemProvider(this);
+		}
+
+		return scriptActionActivatorItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -290,6 +336,8 @@ public class AppItemProviderAdapterFactory extends AppAdapterFactory implements 
 		if (themedActionItemProvider != null) themedActionItemProvider.dispose();
 		if (contentActionItemProvider != null) contentActionItemProvider.dispose();
 		if (themedContentActionItemProvider != null) themedContentActionItemProvider.dispose();
+		if (navigationActionActivatorItemProvider != null) navigationActionActivatorItemProvider.dispose();
+		if (scriptActionActivatorItemProvider != null) scriptActionActivatorItemProvider.dispose();
 	}
 
 }

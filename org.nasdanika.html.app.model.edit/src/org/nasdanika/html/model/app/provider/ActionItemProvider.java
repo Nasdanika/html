@@ -463,6 +463,16 @@ public class ActionItemProvider
 			(createChildParameter
 				(AppPackage.Literals.ACTION__CONTEXT_ACTIONS,
 				 AppFactory.eINSTANCE.createThemedContentAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__ACTIVATOR,
+				 AppFactory.eINSTANCE.createNavigationActionActivator()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__ACTIVATOR,
+				 AppFactory.eINSTANCE.createScriptActionActivator()));
 	}
 
 	/**
