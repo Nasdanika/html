@@ -61,7 +61,7 @@
       abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="ActionActivator" abstract="true" eSuperTypes="#//IActionActivator"/>
   <eClassifiers xsi:type="ecore:EClass" name="NavigationActionActivator" eSuperTypes="#//INavigationActionActivator #//ActionActivator">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="href" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="url" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScriptActionActivator" eSuperTypes="#//IScriptActionActivator #//ActionActivator">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="code" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

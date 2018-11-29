@@ -8,6 +8,7 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.HTMLElement.Event;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
+import org.nasdanika.html.app.BindingActionActivator;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
@@ -51,13 +52,25 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	@Override
 	public Tag link(Action action) {
 		Tag ret = label(action, getHTMLFactory().tag(TagName.a));
-		ActionActivator activator = action.getActivator();
+		ActionActivator activator = getActionActivator(action);
 		if (activator instanceof NavigationActionActivator) {
-			ret.attribute("href", ((NavigationActionActivator) activator).getHref());
+			ret.attribute("href", ((NavigationActionActivator) activator).getUrl());
 		} else if (activator instanceof ScriptActionActivator) {
 			ret.on(Event.click, ((ScriptActionActivator) activator).getCode());
+		} else if (activator instanceof BindingActionActivator) {
+			((BindingActionActivator) activator).bind(ret);
 		}
 		return ret;
+	}
+
+	/**
+	 * This implementation returns action.getActivator(). 
+	 * Override to customize, e.g. resolve by action id.
+	 * @param action
+	 * @return
+	 */
+	protected ActionActivator getActionActivator(Action action) {
+		return action.getActivator();
 	}
 
 	@Override

@@ -12,7 +12,7 @@ package org.nasdanika.html.model.app;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.nasdanika.html.model.app.NavigationActionActivator#getHref <em>Href</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.NavigationActionActivator#getUrl <em>Url</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getNavigationActionActivator()
@@ -20,30 +20,31 @@ package org.nasdanika.html.model.app;
  * @generated
  */
 public interface NavigationActionActivator extends org.nasdanika.html.app.NavigationActionActivator, ActionActivator {
+
 	/**
-	 * Returns the value of the '<em><b>Href</b></em>' attribute.
+	 * Returns the value of the '<em><b>Url</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Href</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Url</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Href</em>' attribute.
-	 * @see #setHref(String)
-	 * @see org.nasdanika.html.model.app.AppPackage#getNavigationActionActivator_Href()
+	 * @return the value of the '<em>Url</em>' attribute.
+	 * @see #setUrl(String)
+	 * @see org.nasdanika.html.model.app.AppPackage#getNavigationActionActivator_Url()
 	 * @model
 	 * @generated
 	 */
-	String getHref();
+	String getUrl();
 
 	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.NavigationActionActivator#getHref <em>Href</em>}' attribute.
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.NavigationActionActivator#getUrl <em>Url</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Href</em>' attribute.
-	 * @see #getHref()
+	 * @param value the new value of the '<em>Url</em>' attribute.
+	 * @see #getUrl()
 	 * @generated
 	 */
-	void setHref(String value);
+	void setUrl(String value);
 
 } // NavigationActionActivator

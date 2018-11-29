@@ -1,7 +1,5 @@
 package org.nasdanika.html.tests;
 
-import java.util.function.Consumer;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notifier;
@@ -9,6 +7,7 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -27,13 +26,11 @@ import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.Executable;
-import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.Themed;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.BootstrapContainerApplication;
 import org.nasdanika.html.app.impl.HTMLTableApplication;
-import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
@@ -48,6 +45,8 @@ import org.nasdanika.html.knockout.KnockoutFactory;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.NavigationActionActivator;
+import org.nasdanika.html.model.app.ScriptActionActivator;
 
 
 public class TestApp extends HTMLTestBase {
@@ -56,7 +55,7 @@ public class TestApp extends HTMLTestBase {
 	protected Action appAction;
 	
 	@Before
-	public void loadModels() {
+	public void loadModels() throws Exception {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		
@@ -68,7 +67,33 @@ public class TestApp extends HTMLTestBase {
 		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
 		URI appUri = URI.createPlatformPluginURI("org.nasdanika.html.app.model/NasdanikaBank.app", false);
 		Resource appResource = resourceSet.getResource(appUri, true);
+						
+//		// For testing
+//		TreeIterator<EObject> atit = appResource.getAllContents();
+//		while (atit.hasNext()) {
+//			EObject next = atit.next();
+//			if (next instanceof org.nasdanika.html.model.app.Action) {
+//				org.nasdanika.html.model.app.Action ma = (org.nasdanika.html.model.app.Action) next;
+////				if (ma.getActivator() == null && !"transfer".equals(ma.getId())) {
+////					NavigationActionActivator activator = AppFactory.eINSTANCE.createNavigationActionActivator();
+////					activator.setUrl((ma.getId() == null ? ma.hashCode() : ma.getId())+".html");
+////					ma.setActivator(activator);
+////				}
+//				if (ma.getActivator() instanceof NavigationActionActivator) {
+//					System.out.println(ma.getText() + " -> " + ((NavigationActionActivator) ma.getActivator()).getUrl());
+//					for (EAttribute a: ma.getActivator().eClass().getEAllAttributes()) {
+//						System.out.println("\t"+a.getName()+" = "+ma.getActivator().eGet(a));
+//					}
+//				} else if (ma.getActivator() instanceof ScriptActionActivator) {
+//					System.out.println(ma.getText() + " => " + ((ScriptActionActivator) ma.getActivator()).getCode());					
+//				}
+//			}
+//		}
+//		
+//		appResource.save(System.out, null);
+
 		appAction = (Action) appResource.getContents().iterator().next();		
+		
 	}
 	
 	@Test
@@ -148,36 +173,18 @@ public class TestApp extends HTMLTestBase {
 			}
 			
 		}
-		class NavigationActionActivatorAdapter extends AdapterImpl implements NavigationActionActivator {
-			
-			
-			@Override
-			public boolean isAdapterForType(Object type) {
-				return Executable.class == type;
-			}
-
-			@Override
-			public String getHref() {
-				Action action = (Action) getTarget();
-				return (action.getId() == null ? action.hashCode() : action.getId())+".html";
-			}			
-			
-		}
 		
 		AdapterFactory af = new AdapterFactoryImpl() {
 			
 			@Override
 			public boolean isFactoryForType(Object type) {
-				return Executable.class == type || ActionActivator.class == type;
+				return Executable.class == type;
 			}
 			
 			@Override
 			protected Adapter createAdapter(Notifier target, Object type) {
 				if (Executable.class == type) {
 					return new ExecutableAdapter();
-				}
-				if (ActionActivator.class == type) {
-					return new NavigationActionActivatorAdapter();
 				}
 				return null;
 			}
@@ -193,12 +200,13 @@ public class TestApp extends HTMLTestBase {
 					actionActivator = (ActionActivator) EcoreUtil.getRegisteredAdapter(next, ActionActivator.class);
 				}
 				if (actionActivator instanceof NavigationActionActivator) {
-					String href = ((NavigationActionActivator) actionActivator).getHref();
+					String href = ((NavigationActionActivator) actionActivator).getUrl();
 					if (href != null) {
 						
 						Theme theme;
-						if (appAction.getChildren().get(0) instanceof Themed) {
-							theme = ((Themed) appAction.getChildren().get(0)).getTheme();
+						Action principalAction = appAction.getChildren().get(0);
+						if (principalAction instanceof Themed) {
+							theme = ((Themed) principalAction).getTheme();
 						} else if (appAction instanceof Themed) {
 							theme = ((Themed) appAction).getTheme();
 						} else {
@@ -208,7 +216,7 @@ public class TestApp extends HTMLTestBase {
 						try (Application app = new BootstrapContainerApplication(theme) {
 							
 							{
-								header.background(Color.PRIMARY).text().color(Color.SECONDARY);
+								header.background(Color.PRIMARY);
 								navigationBar.background(Color.LIGHT).text().color(Color.DARK);
 								
 								footer.background(Color.SECONDARY);
@@ -234,25 +242,12 @@ public class TestApp extends HTMLTestBase {
 							}
 							
 						}) {
-							// TODO - iterate all and generate for those which have navigation activator.
-							ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction.getChildren().get(0).getChildren().get(0)) {
-								
+							ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), (Action) next) {
 								@Override
-								protected ViewGenerator createViewGenerator(Consumer<?> contentConsumer) {
-									return new ViewGeneratorImpl(contentConsumer) {
-										@Override
-										protected ActionActivator getActionActivator(org.nasdanika.html.app.Action action) {
-											ActionActivator actionActivator = super.getActionActivator(action);
-											if (actionActivator == null && !"transfer".equals(action.getId()) && action instanceof EObject) {
-												actionActivator = (ActionActivator) EcoreUtil.getRegisteredAdapter((EObject) action, ActionActivator.class);
-											}
-											return actionActivator;
-										}
-									};
+								protected Object generateHeader(ViewGenerator viewGenerator, Object result) {
+									return ((Tag) super.generateHeader(viewGenerator, result)).addClass("text-dark", "text-decoration: none");
 								}
-								
-							};
-							
+							};							
 							appBuilder.build(app);
 							writeFile("app/action/"+href, app.toString());
 						}

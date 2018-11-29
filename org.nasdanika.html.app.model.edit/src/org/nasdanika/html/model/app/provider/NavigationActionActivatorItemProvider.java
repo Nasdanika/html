@@ -10,7 +10,6 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -20,7 +19,6 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.NavigationActionActivator;
 
@@ -59,25 +57,25 @@ public class NavigationActionActivatorItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addHrefPropertyDescriptor(object);
+			addUrlPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Href feature.
+	 * This adds a property descriptor for the Url feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addHrefPropertyDescriptor(Object object) {
+	protected void addUrlPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_NavigationActionActivator_href_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_NavigationActionActivator_href_feature", "_UI_NavigationActionActivator_type"),
-				 AppPackage.Literals.NAVIGATION_ACTION_ACTIVATOR__HREF,
+				 getString("_UI_NavigationActionActivator_url_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_NavigationActionActivator_url_feature", "_UI_NavigationActionActivator_type"),
+				 AppPackage.Literals.NAVIGATION_ACTION_ACTIVATOR__URL,
 				 true,
 				 false,
 				 false,
@@ -105,7 +103,7 @@ public class NavigationActionActivatorItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((NavigationActionActivator)object).getHref();
+		String label = ((NavigationActionActivator)object).getUrl();
 		return label == null || label.length() == 0 ?
 			getString("_UI_NavigationActionActivator_type") :
 			getString("_UI_NavigationActionActivator_type") + " " + label;
@@ -124,7 +122,7 @@ public class NavigationActionActivatorItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(NavigationActionActivator.class)) {
-			case AppPackage.NAVIGATION_ACTION_ACTIVATOR__HREF:
+			case AppPackage.NAVIGATION_ACTION_ACTIVATOR__URL:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

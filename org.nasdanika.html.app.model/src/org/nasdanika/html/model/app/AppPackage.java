@@ -1030,13 +1030,13 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_ACTION_ACTIVATOR = 12;
 
 	/**
-	 * The feature id for the '<em><b>Href</b></em>' attribute.
+	 * The feature id for the '<em><b>Url</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_ACTION_ACTIVATOR__HREF = INAVIGATION_ACTION_ACTIVATOR_FEATURE_COUNT + 0;
+	int NAVIGATION_ACTION_ACTIVATOR__URL = INAVIGATION_ACTION_ACTIVATOR_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Navigation Action Activator</em>' class.
@@ -1438,15 +1438,15 @@ public interface AppPackage extends EPackage {
 	EClass getNavigationActionActivator();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.NavigationActionActivator#getHref <em>Href</em>}'.
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.NavigationActionActivator#getUrl <em>Url</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Href</em>'.
-	 * @see org.nasdanika.html.model.app.NavigationActionActivator#getHref()
+	 * @return the meta object for the attribute '<em>Url</em>'.
+	 * @see org.nasdanika.html.model.app.NavigationActionActivator#getUrl()
 	 * @see #getNavigationActionActivator()
 	 * @generated
 	 */
-	EAttribute getNavigationActionActivator_Href();
+	EAttribute getNavigationActionActivator_Url();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ScriptActionActivator <em>Script Action Activator</em>}'.
@@ -1792,12 +1792,12 @@ public interface AppPackage extends EPackage {
 		EClass NAVIGATION_ACTION_ACTIVATOR = eINSTANCE.getNavigationActionActivator();
 
 		/**
-		 * The meta object literal for the '<em><b>Href</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Url</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute NAVIGATION_ACTION_ACTIVATOR__HREF = eINSTANCE.getNavigationActionActivator_Href();
+		EAttribute NAVIGATION_ACTION_ACTIVATOR__URL = eINSTANCE.getNavigationActionActivator_Url();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ScriptActionActivatorImpl <em>Script Action Activator</em>}' class.

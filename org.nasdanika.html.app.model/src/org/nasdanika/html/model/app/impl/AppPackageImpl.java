@@ -479,7 +479,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getNavigationActionActivator_Href() {
+	public EAttribute getNavigationActionActivator_Url() {
 		return (EAttribute)navigationActionActivatorEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -607,7 +607,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		actionActivatorEClass = createEClass(ACTION_ACTIVATOR);
 
 		navigationActionActivatorEClass = createEClass(NAVIGATION_ACTION_ACTIVATOR);
-		createEAttribute(navigationActionActivatorEClass, NAVIGATION_ACTION_ACTIVATOR__HREF);
+		createEAttribute(navigationActionActivatorEClass, NAVIGATION_ACTION_ACTIVATOR__URL);
 
 		scriptActionActivatorEClass = createEClass(SCRIPT_ACTION_ACTIVATOR);
 		createEAttribute(scriptActionActivatorEClass, SCRIPT_ACTION_ACTIVATOR__CODE);
@@ -705,7 +705,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEClass(actionActivatorEClass, org.nasdanika.html.model.app.ActionActivator.class, "ActionActivator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(navigationActionActivatorEClass, org.nasdanika.html.model.app.NavigationActionActivator.class, "NavigationActionActivator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getNavigationActionActivator_Href(), ecorePackage.getEString(), "href", null, 0, 1, org.nasdanika.html.model.app.NavigationActionActivator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNavigationActionActivator_Url(), ecorePackage.getEString(), "url", null, 0, 1, org.nasdanika.html.model.app.NavigationActionActivator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(scriptActionActivatorEClass, org.nasdanika.html.model.app.ScriptActionActivator.class, "ScriptActionActivator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getScriptActionActivator_Code(), ecorePackage.getEString(), "code", null, 0, 1, org.nasdanika.html.model.app.ScriptActionActivator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

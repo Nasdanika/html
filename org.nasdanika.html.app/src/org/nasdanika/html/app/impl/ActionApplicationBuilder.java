@@ -111,7 +111,7 @@ public class ActionApplicationBuilder implements ApplicationBuilder {
 			viewGenerator.label(ca, fragment::content);
 			ActionActivator activator = ca.getActivator();
 			if (activator instanceof NavigationActionActivator) {
-				navBar.item(((NavigationActionActivator) activator).getHref(), ca == activeAction, ca.isDisabled(), fragment);
+				navBar.item(((NavigationActionActivator) activator).getUrl(), ca == activeAction, ca.isDisabled(), fragment);
 			} else if (activator instanceof ScriptActionActivator) {
 				navBar.item("#", ca == activeAction, ca.isDisabled(), fragment).on(Event.click, ((ScriptActionActivator) activator).getCode());				
 			} else if (ca.getChildren().isEmpty()) {
@@ -124,7 +124,7 @@ public class ActionApplicationBuilder implements ApplicationBuilder {
 					viewGenerator.label(cac, cFragment::content);
 					ActionActivator cActivator = cac.getActivator();
 					if (cActivator instanceof NavigationActionActivator) {
-						dropdown.item(((NavigationActionActivator) cActivator).getHref(), cac == activeAction, ca.isDisabled(), cFragment);
+						dropdown.item(((NavigationActionActivator) cActivator).getUrl(), cac == activeAction, ca.isDisabled(), cFragment);
 					} else if (cActivator instanceof ScriptActionActivator) {
 						navBar.item("#", cac == activeAction, cac.isDisabled(), cFragment).on(Event.click, ((ScriptActionActivator) cActivator).getCode());				
 					}

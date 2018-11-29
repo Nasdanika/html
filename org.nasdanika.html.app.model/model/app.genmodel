@@ -50,7 +50,7 @@
     <genClasses image="false" ecoreClass="app.ecore#//IScriptActionActivator"/>
     <genClasses image="false" ecoreClass="app.ecore#//ActionActivator"/>
     <genClasses ecoreClass="app.ecore#//NavigationActionActivator">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//NavigationActionActivator/href"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//NavigationActionActivator/url"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//ScriptActionActivator">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ScriptActionActivator/code"/>

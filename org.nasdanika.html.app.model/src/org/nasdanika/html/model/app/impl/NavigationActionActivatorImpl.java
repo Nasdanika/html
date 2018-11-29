@@ -17,7 +17,7 @@ import org.nasdanika.html.model.app.NavigationActionActivator;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.nasdanika.html.model.app.impl.NavigationActionActivatorImpl#getHref <em>Href</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.NavigationActionActivatorImpl#getUrl <em>Url</em>}</li>
  * </ul>
  *
  * @generated
@@ -57,8 +57,8 @@ public class NavigationActionActivatorImpl extends CDOObjectImpl implements Navi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getHref() {
-		return (String)eGet(AppPackage.Literals.NAVIGATION_ACTION_ACTIVATOR__HREF, true);
+	public String getUrl() {
+		return (String)eGet(AppPackage.Literals.NAVIGATION_ACTION_ACTIVATOR__URL, true);
 	}
 
 	/**
@@ -66,8 +66,8 @@ public class NavigationActionActivatorImpl extends CDOObjectImpl implements Navi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setHref(String newHref) {
-		eSet(AppPackage.Literals.NAVIGATION_ACTION_ACTIVATOR__HREF, newHref);
+	public void setUrl(String newUrl) {
+		eSet(AppPackage.Literals.NAVIGATION_ACTION_ACTIVATOR__URL, newUrl);
 	}
 
 } //NavigationActionActivatorImpl
