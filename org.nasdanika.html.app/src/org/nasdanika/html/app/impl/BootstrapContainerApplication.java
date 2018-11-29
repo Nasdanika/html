@@ -18,7 +18,7 @@ public class BootstrapContainerApplication implements Application {
 	private HTMLPage page;
 	protected Container container;
 	protected Col header;
-	protected Col navigation;
+	protected Col navigationBar;
 	protected Col leftPanel;
 	protected Col content;
 	protected Col footer;
@@ -61,7 +61,7 @@ public class BootstrapContainerApplication implements Application {
 		container = factory.container();
 		page.body(container);
 		header = container.row().col();
-		navigation = container.row().col();
+		navigationBar = container.row().col();
 		contentRow = container.row();
 		leftPanel = contentRow.col();
 		content = contentRow.col();
@@ -76,8 +76,8 @@ public class BootstrapContainerApplication implements Application {
 	}
 
 	@Override
-	public Application navigation(Object... content) {
-		navigation.toHTMLElement().content(content);
+	public Application navigationBar(Object... content) {
+		navigationBar.toHTMLElement().content(content);
 		return this;
 	}
 

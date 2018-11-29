@@ -17,7 +17,7 @@ public class HTMLTableApplication implements Application {
 	
 	protected Table table;
 	protected Cell header;
-	protected Cell navigation;
+	protected Cell navigationBar;
 	protected Cell leftPanel;
 	protected Cell content;
 	protected Cell footer;
@@ -37,7 +37,7 @@ public class HTMLTableApplication implements Application {
 		table = page.getFactory().table();
 		page.body(table);
 		header = table.header().row().cell().colspan(2);
-		navigation = table.body().row().cell().colspan(2);
+		navigationBar = table.body().row().cell().colspan(2);
 		Row contentRow = table.body().row();
 		leftPanel = contentRow.cell();
 		content = contentRow.cell();		
@@ -51,8 +51,8 @@ public class HTMLTableApplication implements Application {
 	}
 
 	@Override
-	public Application navigation(Object... content) {
-		navigation.content(content);
+	public Application navigationBar(Object... content) {
+		navigationBar.content(content);
 		return this;
 	}
 
@@ -92,16 +92,5 @@ public class HTMLTableApplication implements Application {
 	public void close() throws Exception {
 		page.close();		
 	}
-	
-	/**
-	 * For demo
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Application app = new HTMLTableApplication();
-		app.header("header").navigation("navigation").leftPanel("left panel").content("content").footer("footer");
 		
-		System.out.println(app);
-	}
-	
 }

@@ -23,7 +23,7 @@ public interface Application extends Producer, AutoCloseable {
 	 * @param content
 	 * @return
 	 */
-	Application navigation(Object... content);
+	Application navigationBar(Object... content);
 	
 	/**
 	 * Adds left panel content. 

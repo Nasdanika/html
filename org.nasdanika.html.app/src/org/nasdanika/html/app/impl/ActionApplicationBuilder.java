@@ -4,12 +4,22 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.nasdanika.html.Fragment;
+import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.HTMLElement.Event;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
+import org.nasdanika.html.app.NavigationActionActivator;
+import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Dropdown;
+import org.nasdanika.html.bootstrap.Navbar;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.knockout.KnockoutFactory;
@@ -77,7 +87,7 @@ public class ActionApplicationBuilder implements ApplicationBuilder {
 		application.getHTMLPage().body(contentFragment);
 		ViewGenerator viewGenerator = createViewGenerator(contentFragment::content);
 		application.header(generateHeader(viewGenerator, result));
-		application.navigation(generateNavigation(viewGenerator, result));
+		application.navigationBar(generateNavigationBar(viewGenerator, result));
 		application.leftPanel(generateLeftPanel(viewGenerator, result));
 		application.content(generateContent(viewGenerator, result));
 		application.footer(generateFooter(viewGenerator, result));
@@ -87,9 +97,51 @@ public class ActionApplicationBuilder implements ApplicationBuilder {
 		return getBootstrapFactory().display(viewGenerator.link(rootAction), 4);
 	}
 	
-	protected Object generateNavigation(ViewGenerator viewGenerator, Object result) {
-		// TODO Auto-generated method stub
-		return "Navigation";
+	protected Object generateNavigationBar(ViewGenerator viewGenerator, Object result) {
+		if (principalAction == null) {
+			return null;
+		}
+		
+		Tag brand = principalAction.getActivator() == null ? viewGenerator.label(principalAction) : viewGenerator.link(principalAction);
+		Navbar navBar = createNavbar(brand);
+		
+		for (Action ca: principalAction.getContextActions()) {
+			// Children are ignored if activator is not null.
+			Fragment fragment = getHTMLFactory().fragment();
+			viewGenerator.label(ca, fragment::content);
+			ActionActivator activator = ca.getActivator();
+			if (activator instanceof NavigationActionActivator) {
+				navBar.item(((NavigationActionActivator) activator).getHref(), ca == activeAction, ca.isDisabled(), fragment);
+			} else if (activator instanceof ScriptActionActivator) {
+				navBar.item("#", ca == activeAction, ca.isDisabled(), fragment).on(Event.click, ((ScriptActionActivator) activator).getCode());				
+			} else if (ca.getChildren().isEmpty()) {
+				// As text
+				navBar.navbarText(fragment);
+			} else {
+				Dropdown dropdown = navBar.dropdown(fragment);
+				for (Action cac: ca.getChildren()) {
+					Fragment cFragment = getHTMLFactory().fragment();
+					viewGenerator.label(cac, cFragment::content);
+					ActionActivator cActivator = cac.getActivator();
+					if (cActivator instanceof NavigationActionActivator) {
+						dropdown.item(((NavigationActionActivator) cActivator).getHref(), cac == activeAction, ca.isDisabled(), cFragment);
+					} else if (cActivator instanceof ScriptActionActivator) {
+						navBar.item("#", cac == activeAction, cac.isDisabled(), cFragment).on(Event.click, ((ScriptActionActivator) cActivator).getCode());				
+					}
+				}
+			}
+		}
+		
+		return navBar;
+	}
+
+	/**
+	 * Creates navbar. Override to customize Navbar parameters such as background.
+	 * @param brand
+	 * @return
+	 */
+	protected Navbar createNavbar(HTMLElement<?> brand) {
+		return getBootstrapFactory().navbar(DeviceSize.LARGE, false, Color.LIGHT, brand);
 	}
 	
 	protected Object generateLeftPanel(ViewGenerator viewGenerator, Object result) {
