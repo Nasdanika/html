@@ -5,6 +5,7 @@ import org.nasdanika.html.Form;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Input;
 import org.nasdanika.html.InputType;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
 import org.nasdanika.html.bootstrap.Button;
@@ -12,9 +13,11 @@ import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.InputGroup;
+import org.nasdanika.html.bootstrap.Navbar;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.Table;
@@ -174,6 +177,26 @@ public class TestBootstrap extends HTMLTestBase {
 				
 		writeThemedPage("bootstrap/navs.html", "Bootstrap navs", navs); 
 	}
+	
+	@Test
+	public void testNavbar() throws Exception {		
+		Tag brand = HTMLFactory.INSTANCE.link("#", "Nasdanika");
+		Navbar navbar = BootstrapFactory.INSTANCE.navbar(DeviceSize.LARGE, false, Color.LIGHT, brand);
+		navbar.item("#", true, false, "Item 1");
+		navbar.item("#", false, false, "Item 2");
+		navbar.item("#", false, true, "Item 3");
+		
+		Dropdown dropdown = navbar.dropdown("Dropdown 4");
+		dropdown.item("#", false, false, "Item 1");
+		dropdown.header("Header");
+		dropdown.item("#", true, false, "Item 1");
+		dropdown.divider();
+		dropdown.item("#", false, true, "Item 1");
+		
+		navbar.navbarText("Some text");
+				
+		writeThemedPage("bootstrap/navbar.html", "Bootstrap navbar", navbar); 
+	}	
 	
 	@Test
 	public void testMisc() throws Exception {

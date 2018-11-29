@@ -15,8 +15,8 @@ public class ButtonImpl<H extends HTMLElement<?>> extends WrappingBootstrapEleme
 	public ButtonImpl(BootstrapFactory factory, H htmlElement, Color color, boolean outline) {
 		super(factory, htmlElement);
 		htmlElement.addClass("btn")
-		.addClassConditional(!outline, "btn-"+color.code)
-		.addClassConditional(outline, "btn-outline-"+color.code)
+		.addClassConditional(color != null && color.code != null && !outline, "btn-"+color.code)
+		.addClassConditional(color != null && color.code != null && outline, "btn-outline-"+color.code)
 		.attribute("role", "button", htmlElement instanceof Tag && ((Tag) htmlElement).is(TagName.a) ); // For <a>
 		
 		this.color = color;

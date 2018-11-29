@@ -7,6 +7,15 @@ package org.nasdanika.html.bootstrap;
  */
 public enum Color {
 	
+	/**
+	 * No color - for borders means that there should be no border. 
+	 * For other uses is the same as DEFAULT
+	 */
+	NONE(null),
+	/**
+	 * Default color - no specific.
+	 */
+	DEFAULT(null),
 	PRIMARY("primary"),
 	SECONDARY("secondary"),
 	SUCCESS("success"),
@@ -20,7 +29,7 @@ public enum Color {
 	WHITE("white"),
 	BLACK50("black-50"),
 	WHITE50("white-50"),
-	TRANSPARENT("transparent");	
+	TRANSPARENT("transparent");
 	
 	Color(String code) {
 		this.code = code;

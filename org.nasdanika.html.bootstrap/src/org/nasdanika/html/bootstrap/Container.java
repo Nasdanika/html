@@ -1,7 +1,6 @@
 package org.nasdanika.html.bootstrap;
 
 import org.nasdanika.html.Tag;
-import org.nasdanika.html.bootstrap.Container.Row.Col;
 
 /**
  * Bootstrap container.

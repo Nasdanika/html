@@ -13,13 +13,13 @@ class CellImpl extends WrappingBootstrapElementImpl<org.nasdanika.html.RowContai
 
 	@Override
 	public Cell color(Color color) {
-		htmlElement.addClass("table-"+color.code);
+		htmlElement.addClassConditional(color != null && color.code != null, "table-"+color.code);
 		return this;
 	}
 
 	@Override
 	public Cell backgroundColor(Color color) {
-		htmlElement.addClass("bg-"+color.code);
+		htmlElement.addClassConditional(color != null && color.code != null, "bg-"+color.code);
 		return this;
 	}
 

@@ -36,19 +36,19 @@ public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends Bo
 	@Override
 	public B border(Color color, Placement... placement) {
 		H htmlElement = toHTMLElement();
-		if (htmlElement != null) {
+		if (htmlElement != null && color != Color.NONE) {
 			for (Placement p: placement) {
 				htmlElement.addClass("border-"+p.name().toLowerCase());
 			}
 			htmlElement.addClassConditional(placement.length == 0, "border");
-			htmlElement.addClassConditional(color != null, "border-"+color.code);
+			htmlElement.addClassConditional(color != null && color.code != null, "border-"+color.code);
 		}		
 		return (B) this;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public B background(Color color) {
-		toHTMLElement().addClass("bg-"+color.code);
+		toHTMLElement().addClassConditional(color != null && color.code != null, "bg-"+color.code);
 		return (B) this;
 	}
 	
@@ -64,7 +64,7 @@ public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends Bo
 
 			@Override
 			public Text<B> color(Color color) {
-				toHTMLElement().addClass("text-"+color.code);
+				toHTMLElement().addClassConditional(color != null && color.code != null, "text-"+color.code);
 				return this;
 			}
 

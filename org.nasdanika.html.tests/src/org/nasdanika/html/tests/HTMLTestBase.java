@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.junit.Assert;
-import org.nasdanika.html.HTMLElement.Event;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -48,11 +47,7 @@ public class HTMLTestBase {
 	protected void writeThemedPage(String path, String title, Object... content) throws IOException {		
 		BootstrapFactory factory = BootstrapFactory.INSTANCE;
 		Container container = factory.container();
-		Select select = factory.getHTMLFactory().select();
-		select.on(Event.change, "document.getElementById('"+Theme.STYLESHEET_ID+"').href = this.value;");
-		for (Theme theme: Theme.values()) {
-			select.option(theme.stylesheetCdnURL, theme.name(), theme == Theme.Default, false);
-		}
+		Select select = factory.themeSelect(Theme.Default);
 		InputGroup selectInputGroup = factory.inputGroup();
 		selectInputGroup.prepend("Select Bootstrap theme");
 //		selectInputGroup.append(FontAwesomeFactory.INSTANCE.icon("desktop", Style.SOLID));

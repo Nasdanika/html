@@ -4,7 +4,7 @@ Bundle-Name: Core Tests
 Bundle-SymbolicName: org.nasdanika.html.tests
 Bundle-Version: 2.0.0.qualifier
 Bundle-Vendor: Nasdanika LLC
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
  org.nasdanika.html.app;bundle-version="2.0.0",
  org.nasdanika.bank;bundle-version="1.0.0",

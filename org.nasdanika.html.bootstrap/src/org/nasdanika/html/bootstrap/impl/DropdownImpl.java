@@ -4,7 +4,6 @@ import org.nasdanika.html.Form;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
-import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.Direction;
@@ -12,7 +11,7 @@ import org.nasdanika.html.bootstrap.Dropdown;
 
 public class DropdownImpl extends DivWrappingBootstrapElementImpl<Dropdown> implements Dropdown {
 	
-	private Tag menu;
+	protected DropdownMenu menu;
 
 	public DropdownImpl(BootstrapFactory factory, Button<?> button, boolean split, Direction direction) {
 		super(factory);
@@ -58,35 +57,30 @@ public class DropdownImpl extends DivWrappingBootstrapElementImpl<Dropdown> impl
 			toggleHtmlElement.id(htmlFactory.nextId());
 		}		
 		
-		menu = htmlFactory.div().addClass("dropdown-menu").attribute("arial-labelledby", toggleHtmlElement.getId());
-		htmlElement.content(menu);
+		menu = new DropdownMenu(factory);
+		htmlElement.content(menu.toHTMLElement());
 	}
 
 	@Override
-	public Dropdown item(Object href, boolean active, boolean disabled, Object... content) {
-		Tag item = getFactory().getHTMLFactory().link(href, content)
-				.addClass("dropdown-item")
-				.addClassConditional(active, "active")
-				.addClassConditional(disabled, "disabled");
-		menu.content(item);
-		return this;
+	public Tag item(Object href, boolean active, boolean disabled, Object... content) {
+		return menu.item(href, active, disabled, content);
 	}
 
 	@Override
 	public Dropdown header(Object... content) {
-		menu.content(getFactory().getHTMLFactory().tag(TagName.h6, content).addClass("dropdown-header"));
+		menu.header(content);
 		return this;
 	}
 
 	@Override
 	public Dropdown divider() {
-		menu.content(getFactory().getHTMLFactory().div().addClass("dropdown-divider"));
+		menu.divider();
 		return this;
 	}
 
 	@Override
 	public Dropdown form(Form form) {
-		menu.content(form);
+		menu.form(form);
 		return this;
 	}
 

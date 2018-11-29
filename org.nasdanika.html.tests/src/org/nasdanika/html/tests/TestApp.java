@@ -16,16 +16,24 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
+import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Application;
+import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.Executable;
+import org.nasdanika.html.app.Themed;
+import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.BootstrapContainerApplication;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.InputGroup;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
 import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
+import org.nasdanika.html.knockout.KnockoutFactory;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
@@ -47,7 +55,7 @@ public class TestApp extends HTMLTestBase {
 		bank = (Bank) bankResource.getContents().iterator().next();
 		
 		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
-		URI appUri = URI.createPlatformPluginURI("org.nasdanika.app.model/NasdanikaBank.app", false);
+		URI appUri = URI.createPlatformPluginURI("org.nasdanika.html.app.model/NasdanikaBank.app", false);
 		Resource appResource = resourceSet.getResource(appUri, true);
 		appAction = (Action) appResource.getContents().iterator().next();		
 	}
@@ -104,6 +112,84 @@ public class TestApp extends HTMLTestBase {
 			writeFile("app/bootstrap/context-menu.json", menu.toString());
 		}
 	}
+	
+	@Test
+	public void testActionApplication() throws Exception {
+		// Delegating action execution to adapters.
+		class ExecutableAdapter extends AdapterImpl implements Executable {
+			
+			@Override
+			public Object execute() {
+				return "Executing "+getTarget()+" "+this;
+			}
+			
+			@Override
+			public boolean isAdapterForType(Object type) {
+				return Executable.class == type;
+			}
+			
+		}
+		AdapterFactory af = new AdapterFactoryImpl() {
+			
+			@Override
+			public boolean isFactoryForType(Object type) {
+				return Executable.class == type;
+			}
+			
+			@Override
+			protected Adapter createAdapter(Notifier target, Object type) {
+				if (Executable.class == type) {
+					return new ExecutableAdapter();
+				}
+				return null;
+			}
+		};
+		
+		appAction.eResource().getResourceSet().getAdapterFactories().add(af);	
+		
+		Theme theme;
+		if (appAction.getChildren().get(0) instanceof Themed) {
+			theme = ((Themed) appAction.getChildren().get(0)).getTheme();
+		} else if (appAction instanceof Themed) {
+			theme = ((Themed) appAction).getTheme();
+		} else {
+			theme = Theme.Default;
+		}
+		
+		try (Application app = new BootstrapContainerApplication(theme) {
+			
+			{
+				header.background(Color.PRIMARY).text().color(Color.SECONDARY);
+				navigation.background(Color.LIGHT).text().color(Color.DARK);
+				
+				footer.background(Color.SECONDARY);
+				
+				leftPanel.widthAuto();
+				contentRow.toHTMLElement().style("min-height", "500px");
+				container.border(Color.DEFAULT).margin().top(1);
+
+				// Theme select at the bottom for experimentation.
+				BootstrapFactory factory = BootstrapFactory.INSTANCE;
+				Select select = factory.themeSelect(theme);
+				InputGroup selectInputGroup = factory.inputGroup();
+				selectInputGroup.prepend("Select Bootstrap theme");
+				selectInputGroup.input(select);
+				Container themeSelectorContainer = factory.container();
+				themeSelectorContainer.row().col(selectInputGroup).margin().top(2);
+				getHTMLPage().body(themeSelectorContainer);
+								
+				FontAwesomeFactory.INSTANCE.cdn(getHTMLPage());
+				JsTreeFactory.INSTANCE.cdn(getHTMLPage());
+				KnockoutFactory.INSTANCE.cdn(getHTMLPage());
+				
+			}
+			
+		}) {
+			ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction.getChildren().get(0).getChildren().get(0));
+			appBuilder.build(app);
+			writeFile("app/action/index.html", app.toString());
+		}
+	}	
 
 	@Test
 	public void testAppModel() throws Exception {

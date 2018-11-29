@@ -16,13 +16,13 @@ class RowImpl extends WrappingBootstrapElementImpl<org.nasdanika.html.RowContain
 
 	@Override
 	public Row color(Color color) {
-		htmlElement.addClass("table-"+color.code);
+		htmlElement.addClassConditional(color != null && color.code != null, "table-"+color.code);
 		return this;
 	}
 
 	@Override
 	public Row backgroundColor(Color color) {
-		htmlElement.addClass("bg-"+color.code);
+		htmlElement.addClassConditional(color != null && color.code != null, "bg-"+color.code);
 		return this;
 	}
 

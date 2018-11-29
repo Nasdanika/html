@@ -4,6 +4,7 @@ import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.InputBase;
+import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.impl.DefaultBootstrapFactory;
 
@@ -133,9 +134,32 @@ public interface BootstrapFactory {
 	 * @return
 	 */
 	HTMLPage bootstrapCdnHTMLPage(Theme theme);		
+	
+	/**
+	 * Creates a select with themes as options and an event handler to update the application theme on change.  
+	 * @return
+	 */
+	Select themeSelect(Theme selected);
+	
+	/**
+	 * Adds "display-&lt;level&gt;" class.
+	 * @param element
+	 * @param level Display level from 1 (largest) to 4 (smallest).
+	 * @return
+	 */
+	<H extends HTMLElement<?>> H display(H element, int level);
+	
+	/**
+	 * Creates a navbar
+	 * @param expandSize
+	 * @param dark
+	 * @param background
+	 * @param brand
+	 * @return
+	 */
+	Navbar navbar(DeviceSize expandSize, boolean dark, Color background, HTMLElement<?> brand);
 		
 	/* TODO - Implement, add factory method and remove
-	 * Navs - tabs, pills
 	 * Navbar
 	 * Modal
 

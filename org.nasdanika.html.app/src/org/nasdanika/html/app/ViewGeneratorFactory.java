@@ -16,6 +16,6 @@ public interface ViewGeneratorFactory {
 	 * if it is not null. If consumer is null then the generator may adjust its generation logic or fail.  
 	 * @return
 	 */
-	ViewGenerator createViewGenerator(Consumer<?> contentConsumer);
+	ViewGenerator createViewGenerator(Consumer<Object> contentConsumer);
 
 }

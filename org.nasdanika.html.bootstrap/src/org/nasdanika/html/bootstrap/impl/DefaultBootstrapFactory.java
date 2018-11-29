@@ -4,8 +4,10 @@ import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.InputBase;
+import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
+import org.nasdanika.html.HTMLElement.Event;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
@@ -14,10 +16,12 @@ import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.FormGroup;
 import org.nasdanika.html.bootstrap.InputGroup;
+import org.nasdanika.html.bootstrap.Navbar;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
@@ -47,7 +51,7 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	public Tag alert(Color color, Object... content) {
 		return getHTMLFactory().div(content)
 				.addClass("alert")
-				.addClass("alert-"+color.code)
+				.addClassConditional(color != null && color.code != null, "alert-"+color.code)
 				.attribute("role", "alert");
 	}
 
@@ -55,7 +59,7 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	public Tag badge(boolean pill, Color color, Object... content) {
 		Tag ret = getHTMLFactory().span(content)
 				.addClass("badge")
-				.addClass("badge-"+color.code)
+				.addClassConditional(color != null && color.code != null, "badge-"+color.code)
 				.addClassConditional(pill, "badge-pill");
 		return ret;
 	}
@@ -72,7 +76,7 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	public Tag badgeLink(Object href, boolean pill, Color color, Object... content) {
 		Tag ret = getHTMLFactory().link(href, content)
 				.addClass("badge")
-				.addClass("badge-"+color.code)
+				.addClassConditional(color != null && color.code != null, "badge-"+color.code)
 				.addClassConditional(pill, "badge-pill");
 		return ret;
 	}
@@ -219,6 +223,27 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	@Override
 	public HTMLPage bootstrapCdnHTMLPage() {
 		return bootstrapCdnHTMLPage(Theme.Default);
+	}
+
+	@Override
+	public Select themeSelect(Theme selected) {
+		Select select = getHTMLFactory().select();
+		select.on(Event.change, "document.getElementById('"+Theme.STYLESHEET_ID+"').href = this.value;");
+		for (Theme theme: Theme.values()) {
+			select.option(theme.stylesheetCdnURL, theme.name(), theme == selected, false);
+		}
+		return select;
 	}	
+	
+	@Override
+	public <H extends HTMLElement<?>> H display(H element, int level) {
+		element.addClass("display-"+level);
+		return element;
+	}
+
+	@Override
+	public Navbar navbar(DeviceSize expandSize, boolean dark, Color background, HTMLElement<?> brand) {
+		return new NavbarImpl(this, expandSize, dark, background, brand);
+	}
 	
 }

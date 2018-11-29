@@ -145,6 +145,27 @@ navs.item("Fourth", "Fourth content");
 
 For pills use ``factory.pills()`` method.
 
+## Navbar
+
+```
+Tag brand = HTMLFactory.INSTANCE.link("#", "Nasdanika");
+Navbar navbar = BootstrapFactory.INSTANCE.navbar(DeviceSize.LARGE, false, Color.LIGHT, brand);
+navbar.item("#", true, false, "Item 1");
+navbar.item("#", false, false, "Item 2");
+navbar.item("#", false, true, "Item 3");
+		
+Dropdown dropdown = navbar.dropdown("Dropdown 4");
+dropdown.item("#", false, false, "Item 1");
+dropdown.header("Header");
+dropdown.item("#", true, false, "Item 1");
+dropdown.divider();
+dropdown.item("#", false, true, "Item 1");
+		
+navbar.navbarText("Some text");
+```
+
+<iframe src="test-dumps/bootstrap/navbar.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 150) + 'px'"></iframe>
+
 ## Grid, background and text style
 
 ```

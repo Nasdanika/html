@@ -1,5 +1,7 @@
 package org.nasdanika.html.app;
 
+import java.util.function.Consumer;
+
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
@@ -12,6 +14,23 @@ import org.nasdanika.html.jstree.JsTreeNode;
  *
  */
 public interface ViewGenerator {
+	
+	/**
+	 * Outputs icon, text, help tooltip icon to the content consumer.
+	 * @param action
+	 * @param contentConsumer
+	 */
+	void label(Action action, Consumer<Object> contentConsumer);
+	
+	/**
+	 * Outputs icon, text, 
+	 * @param action
+	 * @param container
+	 * @return
+	 */
+	Tag label(Action action, Tag container);	
+	
+	Tag label(Action action);
 	
 	Tag link(Action action);
 	
