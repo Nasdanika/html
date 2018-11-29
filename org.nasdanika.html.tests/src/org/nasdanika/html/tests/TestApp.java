@@ -5,7 +5,9 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -24,10 +26,12 @@ import org.nasdanika.html.app.Executable;
 import org.nasdanika.html.app.Themed;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.BootstrapContainerApplication;
+import org.nasdanika.html.app.impl.HTMLTableApplication;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.InputGroup;
+import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
@@ -37,6 +41,7 @@ import org.nasdanika.html.knockout.KnockoutFactory;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.NavigationActionActivator;
 
 
 public class TestApp extends HTMLTestBase {
@@ -57,17 +62,39 @@ public class TestApp extends HTMLTestBase {
 		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
 		URI appUri = URI.createPlatformPluginURI("org.nasdanika.html.app.model/NasdanikaBank.app", false);
 		Resource appResource = resourceSet.getResource(appUri, true);
-		appAction = (Action) appResource.getContents().iterator().next();		
+		appAction = (Action) appResource.getContents().iterator().next();
+		
+		// For testing
+		TreeIterator<EObject> atit = appResource.getAllContents();
+		while (atit.hasNext()) {
+			EObject next = atit.next();
+			if (next instanceof org.nasdanika.html.model.app.Action) {
+				org.nasdanika.html.model.app.Action ma = (org.nasdanika.html.model.app.Action) next;
+				if (ma.getActivator() == null && ma.getChildren().isEmpty()) {
+					NavigationActionActivator activator = AppFactory.eINSTANCE.createNavigationActionActivator();
+					activator.setHref("#");
+					ma.setActivator(activator);
+				}
+			}
+		}
 	}
 	
 	@Test
-	public void testApp() throws Exception {
+	public void testHTMLApp() throws Exception {
+		try (Application app = new HTMLTableApplication()) {
+			app.header("header").navigationBar("navigation").leftPanel("left panel").content("content").footer("footer");
+			writeFile("app/html/index.html", app.toString());
+		}
+	}
+	
+	@Test
+	public void testBootstrapApp() throws Exception {
 		try (Application app = new BootstrapContainerApplication(Theme.Litera) {
 			
 			{
 				container.border(Color.DANGER);
 				header.border(Color.DANGER).background(Color.PRIMARY);
-				navigation.border(Color.DANGER);
+				navigationBar.border(Color.DANGER);
 				leftPanel.border(Color.DANGER).widthAuto();
 				footer.border(Color.DANGER);
 				content.border(Color.DANGER);
@@ -75,7 +102,7 @@ public class TestApp extends HTMLTestBase {
 			
 		}) {
 			Tag treeContainer = app.getHTMLPage().getFactory().div();
-			app.header("header").navigation("navigation").leftPanel(treeContainer).content("content").footer("footer");
+			app.header("header").navigationBar("navigation").leftPanel(treeContainer).content("content").footer("footer");
 			
 			JsTreeFactory jsTreeFactory = JsTreeFactory.INSTANCE;
 			jsTreeFactory.cdn(app.getHTMLPage());
@@ -160,11 +187,11 @@ public class TestApp extends HTMLTestBase {
 			
 			{
 				header.background(Color.PRIMARY).text().color(Color.SECONDARY);
-				navigation.background(Color.LIGHT).text().color(Color.DARK);
+				navigationBar.background(Color.LIGHT).text().color(Color.DARK);
 				
 				footer.background(Color.SECONDARY);
 				
-				leftPanel.widthAuto();
+				leftPanel.widthAuto().border(Color.DEFAULT, Placement.RIGHT);
 				contentRow.toHTMLElement().style("min-height", "500px");
 				container.border(Color.DEFAULT).margin().top(1);
 
