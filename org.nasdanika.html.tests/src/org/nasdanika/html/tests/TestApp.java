@@ -1,5 +1,7 @@
 package org.nasdanika.html.tests;
 
+import java.util.function.Consumer;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notifier;
@@ -11,6 +13,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,13 +23,17 @@ import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.Executable;
+import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.Themed;
+import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.BootstrapContainerApplication;
 import org.nasdanika.html.app.impl.HTMLTableApplication;
+import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
@@ -41,7 +48,6 @@ import org.nasdanika.html.knockout.KnockoutFactory;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
-import org.nasdanika.html.model.app.NavigationActionActivator;
 
 
 public class TestApp extends HTMLTestBase {
@@ -62,21 +68,7 @@ public class TestApp extends HTMLTestBase {
 		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
 		URI appUri = URI.createPlatformPluginURI("org.nasdanika.html.app.model/NasdanikaBank.app", false);
 		Resource appResource = resourceSet.getResource(appUri, true);
-		appAction = (Action) appResource.getContents().iterator().next();
-		
-		// For testing
-		TreeIterator<EObject> atit = appResource.getAllContents();
-		while (atit.hasNext()) {
-			EObject next = atit.next();
-			if (next instanceof org.nasdanika.html.model.app.Action) {
-				org.nasdanika.html.model.app.Action ma = (org.nasdanika.html.model.app.Action) next;
-				if (ma.getActivator() == null && ma.getChildren().isEmpty()) {
-					NavigationActionActivator activator = AppFactory.eINSTANCE.createNavigationActionActivator();
-					activator.setHref("#");
-					ma.setActivator(activator);
-				}
-			}
-		}
+		appAction = (Action) appResource.getContents().iterator().next();		
 	}
 	
 	@Test
@@ -142,7 +134,7 @@ public class TestApp extends HTMLTestBase {
 	
 	@Test
 	public void testActionApplication() throws Exception {
-		// Delegating action execution to adapters.
+		// Delegating action activator resolution and execution to adapters.
 		class ExecutableAdapter extends AdapterImpl implements Executable {
 			
 			@Override
@@ -156,11 +148,27 @@ public class TestApp extends HTMLTestBase {
 			}
 			
 		}
+		class NavigationActionActivatorAdapter extends AdapterImpl implements NavigationActionActivator {
+			
+			
+			@Override
+			public boolean isAdapterForType(Object type) {
+				return Executable.class == type;
+			}
+
+			@Override
+			public String getHref() {
+				Action action = (Action) getTarget();
+				return (action.getId() == null ? action.hashCode() : action.getId())+".html";
+			}			
+			
+		}
+		
 		AdapterFactory af = new AdapterFactoryImpl() {
 			
 			@Override
 			public boolean isFactoryForType(Object type) {
-				return Executable.class == type;
+				return Executable.class == type || ActionActivator.class == type;
 			}
 			
 			@Override
@@ -168,54 +176,90 @@ public class TestApp extends HTMLTestBase {
 				if (Executable.class == type) {
 					return new ExecutableAdapter();
 				}
+				if (ActionActivator.class == type) {
+					return new NavigationActionActivatorAdapter();
+				}
 				return null;
 			}
 		};
 		
 		appAction.eResource().getResourceSet().getAdapterFactories().add(af);	
-		
-		Theme theme;
-		if (appAction.getChildren().get(0) instanceof Themed) {
-			theme = ((Themed) appAction.getChildren().get(0)).getTheme();
-		} else if (appAction instanceof Themed) {
-			theme = ((Themed) appAction).getTheme();
-		} else {
-			theme = Theme.Default;
-		}
-		
-		try (Application app = new BootstrapContainerApplication(theme) {
-			
-			{
-				header.background(Color.PRIMARY).text().color(Color.SECONDARY);
-				navigationBar.background(Color.LIGHT).text().color(Color.DARK);
-				
-				footer.background(Color.SECONDARY);
-				
-				leftPanel.widthAuto().border(Color.DEFAULT, Placement.RIGHT);
-				contentRow.toHTMLElement().style("min-height", "500px");
-				container.border(Color.DEFAULT).margin().top(1);
-
-				// Theme select at the bottom for experimentation.
-				BootstrapFactory factory = BootstrapFactory.INSTANCE;
-				Select select = factory.themeSelect(theme);
-				InputGroup selectInputGroup = factory.inputGroup();
-				selectInputGroup.prepend("Select Bootstrap theme");
-				selectInputGroup.input(select);
-				Container themeSelectorContainer = factory.container();
-				themeSelectorContainer.row().col(selectInputGroup).margin().top(2);
-				getHTMLPage().body(themeSelectorContainer);
+		TreeIterator<EObject> tit = appAction.eResource().getAllContents();
+		while (tit.hasNext()) {
+			EObject next = tit.next();
+			if (next instanceof Action) {
+				ActionActivator actionActivator = ((Action) next).getActivator();
+				if (actionActivator == null && !"transfer".equals(((Action) next).getId())) {
+					actionActivator = (ActionActivator) EcoreUtil.getRegisteredAdapter(next, ActionActivator.class);
+				}
+				if (actionActivator instanceof NavigationActionActivator) {
+					String href = ((NavigationActionActivator) actionActivator).getHref();
+					if (href != null) {
+						
+						Theme theme;
+						if (appAction.getChildren().get(0) instanceof Themed) {
+							theme = ((Themed) appAction.getChildren().get(0)).getTheme();
+						} else if (appAction instanceof Themed) {
+							theme = ((Themed) appAction).getTheme();
+						} else {
+							theme = Theme.Default;
+						}
+						
+						try (Application app = new BootstrapContainerApplication(theme) {
+							
+							{
+								header.background(Color.PRIMARY).text().color(Color.SECONDARY);
+								navigationBar.background(Color.LIGHT).text().color(Color.DARK);
 								
-				FontAwesomeFactory.INSTANCE.cdn(getHTMLPage());
-				JsTreeFactory.INSTANCE.cdn(getHTMLPage());
-				KnockoutFactory.INSTANCE.cdn(getHTMLPage());
-				
+								footer.background(Color.SECONDARY);
+								
+								leftPanel.widthAuto().border(Color.DEFAULT, Placement.RIGHT);
+								contentRow.toHTMLElement().style("min-height", "500px");
+								container.border(Color.DEFAULT).margin().top(1);
+
+								// Theme select at the bottom for experimentation.
+								BootstrapFactory factory = BootstrapFactory.INSTANCE;
+								Select select = factory.themeSelect(theme);
+								InputGroup selectInputGroup = factory.inputGroup();
+								selectInputGroup.prepend("Select Bootstrap theme");
+								selectInputGroup.input(select);
+								Container themeSelectorContainer = factory.container();
+								themeSelectorContainer.row().col(selectInputGroup).margin().top(2);
+								getHTMLPage().body(themeSelectorContainer);
+												
+								FontAwesomeFactory.INSTANCE.cdn(getHTMLPage());
+								JsTreeFactory.INSTANCE.cdn(getHTMLPage());
+								KnockoutFactory.INSTANCE.cdn(getHTMLPage());
+								
+							}
+							
+						}) {
+							// TODO - iterate all and generate for those which have navigation activator.
+							ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction.getChildren().get(0).getChildren().get(0)) {
+								
+								@Override
+								protected ViewGenerator createViewGenerator(Consumer<?> contentConsumer) {
+									return new ViewGeneratorImpl(contentConsumer) {
+										@Override
+										protected ActionActivator getActionActivator(org.nasdanika.html.app.Action action) {
+											ActionActivator actionActivator = super.getActionActivator(action);
+											if (actionActivator == null && !"transfer".equals(action.getId()) && action instanceof EObject) {
+												actionActivator = (ActionActivator) EcoreUtil.getRegisteredAdapter((EObject) action, ActionActivator.class);
+											}
+											return actionActivator;
+										}
+									};
+								}
+								
+							};
+							
+							appBuilder.build(app);
+							writeFile("app/action/"+href, app.toString());
+						}
+					}
+				}
 			}
-			
-		}) {
-			ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction.getChildren().get(0).getChildren().get(0));
-			appBuilder.build(app);
-			writeFile("app/action/index.html", app.toString());
-		}
+		}		
 	}	
 
 	@Test
