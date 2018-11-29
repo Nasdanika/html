@@ -22,7 +22,7 @@ import org.nasdanika.html.model.app.NavigationActionActivator;
  *
  * @generated
  */
-public abstract class NavigationActionActivatorImpl extends CDOObjectImpl implements NavigationActionActivator {
+public class NavigationActionActivatorImpl extends CDOObjectImpl implements NavigationActionActivator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

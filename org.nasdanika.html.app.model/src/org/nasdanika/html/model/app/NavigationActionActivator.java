@@ -16,7 +16,7 @@ package org.nasdanika.html.model.app;
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getNavigationActionActivator()
- * @model abstract="true" superTypes="org.nasdanika.html.model.app.INavigationActionActivator org.nasdanika.html.model.app.ActionActivator"
+ * @model superTypes="org.nasdanika.html.model.app.INavigationActionActivator org.nasdanika.html.model.app.ActionActivator"
  * @generated
  */
 public interface NavigationActionActivator extends org.nasdanika.html.app.NavigationActionActivator, ActionActivator {

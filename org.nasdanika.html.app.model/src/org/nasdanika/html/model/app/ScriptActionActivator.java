@@ -16,7 +16,7 @@ package org.nasdanika.html.model.app;
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getScriptActionActivator()
- * @model abstract="true" superTypes="org.nasdanika.html.model.app.IScriptActionActivator org.nasdanika.html.model.app.ActionActivator"
+ * @model superTypes="org.nasdanika.html.model.app.IScriptActionActivator org.nasdanika.html.model.app.ActionActivator"
  * @generated
  */
 public interface ScriptActionActivator extends org.nasdanika.html.app.ScriptActionActivator, ActionActivator {

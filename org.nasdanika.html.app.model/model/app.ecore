@@ -60,12 +60,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="IScriptActionActivator" instanceClassName="org.nasdanika.html.app.ScriptActionActivator"
       abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="ActionActivator" abstract="true" eSuperTypes="#//IActionActivator"/>
-  <eClassifiers xsi:type="ecore:EClass" name="NavigationActionActivator" abstract="true"
-      eSuperTypes="#//INavigationActionActivator #//ActionActivator">
+  <eClassifiers xsi:type="ecore:EClass" name="NavigationActionActivator" eSuperTypes="#//INavigationActionActivator #//ActionActivator">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="href" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ScriptActionActivator" abstract="true"
-      eSuperTypes="#//IScriptActionActivator #//ActionActivator">
+  <eClassifiers xsi:type="ecore:EClass" name="ScriptActionActivator" eSuperTypes="#//IScriptActionActivator #//ActionActivator">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="code" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

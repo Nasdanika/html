@@ -704,10 +704,10 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		initEClass(actionActivatorEClass, org.nasdanika.html.model.app.ActionActivator.class, "ActionActivator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(navigationActionActivatorEClass, org.nasdanika.html.model.app.NavigationActionActivator.class, "NavigationActionActivator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(navigationActionActivatorEClass, org.nasdanika.html.model.app.NavigationActionActivator.class, "NavigationActionActivator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNavigationActionActivator_Href(), ecorePackage.getEString(), "href", null, 0, 1, org.nasdanika.html.model.app.NavigationActionActivator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(scriptActionActivatorEClass, org.nasdanika.html.model.app.ScriptActionActivator.class, "ScriptActionActivator", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(scriptActionActivatorEClass, org.nasdanika.html.model.app.ScriptActionActivator.class, "ScriptActionActivator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getScriptActionActivator_Code(), ecorePackage.getEString(), "code", null, 0, 1, org.nasdanika.html.model.app.ScriptActionActivator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals

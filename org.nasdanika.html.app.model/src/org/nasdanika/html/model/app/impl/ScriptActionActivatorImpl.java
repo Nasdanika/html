@@ -22,7 +22,7 @@ import org.nasdanika.html.model.app.ScriptActionActivator;
  *
  * @generated
  */
-public abstract class ScriptActionActivatorImpl extends CDOObjectImpl implements ScriptActionActivator {
+public class ScriptActionActivatorImpl extends CDOObjectImpl implements ScriptActionActivator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

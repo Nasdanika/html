@@ -64,6 +64,8 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 			case AppPackage.THEMED_ACTION: return (EObject)createThemedAction();
 			case AppPackage.CONTENT_ACTION: return (EObject)createContentAction();
 			case AppPackage.THEMED_CONTENT_ACTION: return (EObject)createThemedContentAction();
+			case AppPackage.NAVIGATION_ACTION_ACTIVATOR: return (EObject)createNavigationActionActivator();
+			case AppPackage.SCRIPT_ACTION_ACTIVATOR: return (EObject)createScriptActionActivator();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -155,6 +157,26 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	public ThemedContentAction createThemedContentAction() {
 		ThemedContentActionImpl themedContentAction = new ThemedContentActionImpl();
 		return themedContentAction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NavigationActionActivator createNavigationActionActivator() {
+		NavigationActionActivatorImpl navigationActionActivator = new NavigationActionActivatorImpl();
+		return navigationActionActivator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ScriptActionActivator createScriptActionActivator() {
+		ScriptActionActivatorImpl scriptActionActivator = new ScriptActionActivatorImpl();
+		return scriptActionActivator;
 	}
 
 	/**

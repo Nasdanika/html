@@ -67,6 +67,24 @@ public interface AppFactory extends EFactory {
 	ThemedContentAction createThemedContentAction();
 
 	/**
+	 * Returns a new object of class '<em>Navigation Action Activator</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Navigation Action Activator</em>'.
+	 * @generated
+	 */
+	NavigationActionActivator createNavigationActionActivator();
+
+	/**
+	 * Returns a new object of class '<em>Script Action Activator</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Script Action Activator</em>'.
+	 * @generated
+	 */
+	ScriptActionActivator createScriptActionActivator();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
