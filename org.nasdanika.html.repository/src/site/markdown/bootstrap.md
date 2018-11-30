@@ -29,7 +29,6 @@ actionGroup.contentAction("Four - warning", false, false, Color.WARNING, null, B
 ```						
 
 <iframe src="test-dumps/bootstrap/action-group-content.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
-```
 
 ### Adapt to navs 
 
