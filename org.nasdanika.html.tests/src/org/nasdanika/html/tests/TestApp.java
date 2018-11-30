@@ -1,5 +1,7 @@
 package org.nasdanika.html.tests;
 
+import java.util.Map;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notifier;
@@ -7,7 +9,6 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -46,7 +47,6 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.NavigationActionActivator;
-import org.nasdanika.html.model.app.ScriptActionActivator;
 
 
 public class TestApp extends HTMLTestBase {
@@ -163,7 +163,7 @@ public class TestApp extends HTMLTestBase {
 		class ExecutableAdapter extends AdapterImpl implements Executable {
 			
 			@Override
-			public Object execute() {
+			public Object execute(Map<String, Object> input) {
 				return "Executing "+getTarget()+" "+this;
 			}
 			
@@ -262,9 +262,9 @@ public class TestApp extends HTMLTestBase {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		class ExecutableAdapter extends AdapterImpl implements Executable {
-			
+						
 			@Override
-			public Object execute() {
+			public Object execute(Map<String, Object> input) {
 				return "Executing "+getTarget()+" "+this;
 			}
 			

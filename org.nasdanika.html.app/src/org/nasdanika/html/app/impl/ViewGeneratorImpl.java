@@ -171,6 +171,8 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	@Override
 	public Tag label(Action action, Tag container) {
 		label(action, container::content);
+		container.addClass("nsd-action");
+		container.attribute("data-nsd-action", action.getId());
 		return container;
 	}
 	

@@ -23,7 +23,8 @@ public interface ViewGenerator {
 	void label(Action action, Consumer<Object> contentConsumer);
 	
 	/**
-	 * Outputs icon, text, 
+	 * Outputs icon, text, tooltip.
+	 * Adds "nsd-action" class and "data-nds-action" attribute with action id as value, if id is not null.
 	 * @param action
 	 * @param container
 	 * @return

@@ -133,17 +133,66 @@ Tag initScript = factory.initTooltipScript();
 
 ## Navs
 
+### Simple tabs
+
+Using ``NamedItemsContainer`` interfact methods:
+
 ```
-Navs navs = factory.tabs();
-navs.item("First", "First content");
-navs.item("Second", "Second content");
-navs.item("Third", "Third content");
-navs.item("Fourth", "Fourth content");
+Navs simpleTabs = BootstrapFactory.INSTANCE.tabs();
+simpleTabs.item("First", "First content");
+simpleTabs.item("Second", "Second content");
+simpleTabs.item("Third", "Third content");
+simpleTabs.item("Fourth", "Fourth content");
 ```
 
-<iframe src="test-dumps/bootstrap/navs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="test-dumps/bootstrap/simple-tabs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-For pills use ``factory.pills()`` method.
+### Active and disabled tabs
+
+Helper method:
+
+```
+private Navs navsItems(Navs navs) {
+	navs.item("First", false, false, null, "First content");
+	navs.item("Second", true, false, null, "Second content");
+	navs.item("Third", false, true, null, "Third content");
+	navs.item("Fourth", "Fourth content");
+	return navs;
+}
+```
+
+Tabs:
+
+```
+navsItems(BootstrapFactory.INSTANCE.tabs());
+```
+
+<iframe src="test-dumps/bootstrap/tabs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
+### Pills
+
+```
+navsItems(BootstrapFactory.INSTANCE.pills());
+```
+
+<iframe src="test-dumps/bootstrap/pills.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
+### Vertical pills
+
+* Use ``toHTMLElement()`` method to get access to the backing HTML element and style it.
+* Output nav and content div separately.
+
+```
+Navs verticalPills = navsItems(BootstrapFactory.INSTANCE.pills());
+verticalPills.toHTMLElement().addClass("flex-column");		
+Container container = BootstrapFactory.INSTANCE.container();
+Row row = container.row();
+row.col(verticalPills.toHTMLElement()).widthAuto();
+row.col(verticalPills.getContentDiv());
+```
+
+<iframe src="test-dumps/bootstrap/vertical-pills.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
 
 ## Navbar
 

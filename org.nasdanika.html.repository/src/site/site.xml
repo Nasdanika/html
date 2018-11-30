@@ -26,17 +26,17 @@
    </menu>
 
    <menu name="Java API Documentation">
-      <item name="HTML" href="apidocs/html/index.html" />
-      <item name="Bootstrap" href="apidocs/bootstrap/index.html" />
-      <item name="Knockout" href="apidocs/knockout/index.html" />
-      <item name="Fontawesome" href="apidocs/fontawesome/index.html" />
-      <item name="JsTree" href="apidocs/jstree/index.html" />
-      <item name="Application" href="apidocs/app/index.html">
-      	<item name="Model" href="apidocs/app-model/index.html"/>
-      	<item name="Edit" href="apidocs/app-model-edit/index.html"/>
-      	<item name="Editor" href="apidocs/app-model-editor/index.html"/>      
+      <item name="HTML" href="apidocs/org.nasdanika.html/apidocs/index.html" />
+      <item name="Bootstrap" href="apidocs/org.nasdanika.html.bootstrap/apidocs/index.html" />
+      <item name="Knockout" href="apidocs/org.nasdanika.html.knockout/apidocs/index.html" />
+      <item name="Fontawesome" href="apidocs/org.nasdanika.html.fontawesome/apidocs/index.html" />
+      <item name="JsTree" href="apidocs/org.nasdanika.html.jstree/apidocs/index.html" />
+      <item name="Application" href="apidocs/org.nasdanika.html.app/apidocs/index.html">
+      	<item name="Model" href="apidocs/org.nasdanika.html.app.model/apidocs/index.html"/>
+      	<item name="Edit" href="apidocs/org.nasdanika.html.app.model.edit/apidocs/index.html"/>
+      	<item name="Editor" href="apidocs/org.nasdanika.html.app.model.editor/apidocs/index.html"/>      
       </item>
-      <item name="EMF" href="apidocs/emf/index.html" />      
+      <item name="EMF" href="apidocs/org.nasdanika.html.emf/index.html" />      
    </menu>
 
    <menu name="Issues">

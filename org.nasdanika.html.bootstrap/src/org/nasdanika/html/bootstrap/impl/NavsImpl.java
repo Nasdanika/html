@@ -6,37 +6,36 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Navs;
 
-public class NavsImpl extends BootstrapElementImpl<Tag,Navs> implements Navs {
+public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements Navs {
 	
 	private Fragment fragment;
-	private Tag navDiv;
 	private Tag contentDiv;
 
 	protected NavsImpl(BootstrapFactory factory, boolean pills) {
-		super(factory);
-		navDiv = factory.getHTMLFactory().nonEmptyDiv()
-				.addClass("nav")
-				.addClassConditional(pills, "nav-pills")
-				.addClassConditional(!pills, "nav-tabs")
-				.attribute("role", "tablist");
+		super(factory, factory.getHTMLFactory().nonEmptyDiv());
+		htmlElement
+			.addClass("nav")
+			.addClassConditional(pills, "nav-pills")
+			.addClassConditional(!pills, "nav-tabs")
+			.attribute("role", "tablist");
 		
 		contentDiv = factory.getHTMLFactory().nonEmptyDiv().addClass("tab-content");
-		fragment = factory.getHTMLFactory().fragment(factory.getHTMLFactory().tag(TagName.nav).content(navDiv), contentDiv);
+		fragment = factory.getHTMLFactory().fragment(factory.getHTMLFactory().tag(TagName.nav).content(htmlElement), contentDiv);
 	}
 
 	@Override
 	public void item(Object name, Object content) {
-		item(name, isEmpty(), null, content);
+		item(name, isEmpty(), false, null, content);
 		
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return navDiv.isEmpty();
+		return htmlElement.isEmpty();
 	}
 
 	@Override
-	public Navs item(Object name, boolean active, Object contentId, Object... content) {
+	public Navs item(Object name, boolean active, boolean disabled, Object contentId, Object... content) {
 		if (contentId == null) {
 			contentId = "nav-"+getFactory().getHTMLFactory().nextId();
 		}
@@ -44,8 +43,9 @@ public class NavsImpl extends BootstrapElementImpl<Tag,Navs> implements Navs {
 				.addClass("nav-item", "nav-link")
 				.addClassConditional(active, "active")
 				.attribute("data-toggle", "tab")
+				.addClassConditional(disabled, "disabled")
 				.attribute("role", "tab");
-		navDiv.content(navLink);
+		htmlElement.content(navLink);
 		
 		Tag cDiv = getFactory().getHTMLFactory().nonEmptyDiv(content)
 				.id(contentId)
@@ -55,11 +55,6 @@ public class NavsImpl extends BootstrapElementImpl<Tag,Navs> implements Navs {
 				
 		contentDiv.content(cDiv);		
 		return this;
-	}
-
-	@Override
-	public Tag toHTMLElement() {
-		return navDiv;
 	}
 
 	@Override
@@ -75,6 +70,11 @@ public class NavsImpl extends BootstrapElementImpl<Tag,Navs> implements Navs {
 	@Override
 	public String toString() {
 		return fragment.toString();
+	}
+
+	@Override
+	public Tag getContentDiv() {
+		return contentDiv;
 	}
 
 }

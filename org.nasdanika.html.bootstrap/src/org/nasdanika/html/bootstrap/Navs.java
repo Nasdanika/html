@@ -19,7 +19,15 @@ public interface Navs extends BootstrapElement<Tag,Navs>, NamedItemsContainer {
 	 * @param content
 	 * @return
 	 */
-	Navs item(Object name, boolean active, Object contentId, Object... content);
+	Navs item(Object name, boolean active, boolean disabled, Object contentId, Object... content);
+	
+	/**
+	 * Navs outputs nav container and content div one after another which works fine for horizontal tabs/pills.
+	 * However, for vertial pills it outputs the pills above the content. Use this method and toHTMLElement() to
+	 * output navs and content divs independently, e.g. each into a col in a row.
+	 * @return
+	 */
+	Tag getContentDiv();
 	
 
 }

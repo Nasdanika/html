@@ -197,7 +197,7 @@
 		<module>../org.nasdanika.html.repository</module>
 	</modules>
 	<!-- For resolution of JavaDoc between modules -->
-	<url>http://www.nasdanika.org/products/html/apidocs/parent/</url>
+	<url>http://www.nasdanika.org/products/html/${project.version}/apidocs/parent/</url>
 	<organization>
 		<name>Nasdanika LLC</name>
 		<url>http://www.nasdanika.org</url>

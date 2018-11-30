@@ -13,6 +13,7 @@ import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.Container.Row;
 import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
@@ -169,13 +170,34 @@ public class TestBootstrap extends HTMLTestBase {
 	
 	@Test
 	public void testNavs() throws Exception {
-		Navs navs = BootstrapFactory.INSTANCE.tabs();
-		navs.item("First", "First content");
-		navs.item("Second", "Second content");
-		navs.item("Third", "Third content");
-		navs.item("Fourth", "Fourth content");
+		Navs simpleTabs = BootstrapFactory.INSTANCE.tabs();
+		simpleTabs.item("First", "First content");
+		simpleTabs.item("Second", "Second content");
+		simpleTabs.item("Third", "Third content");
+		simpleTabs.item("Fourth", "Fourth content");
 				
-		writeThemedPage("bootstrap/navs.html", "Bootstrap navs", navs); 
+		writeThemedPage("bootstrap/simple-tabs.html", "Bootstrap simple tabs", simpleTabs);
+		
+		writeThemedPage("bootstrap/tabs.html", "Bootstrap tabs", navsItems(BootstrapFactory.INSTANCE.tabs()));
+		writeThemedPage("bootstrap/pills.html", "Bootstrap pills", navsItems(BootstrapFactory.INSTANCE.pills()));
+		
+		Navs verticalPills = navsItems(BootstrapFactory.INSTANCE.pills());
+		verticalPills.toHTMLElement().addClass("flex-column");		
+		Container container = BootstrapFactory.INSTANCE.container();
+		Row row = container.row();
+		row.col(verticalPills.toHTMLElement()).widthAuto();
+		row.col(verticalPills.getContentDiv());
+		writeThemedPage("bootstrap/vertical-pills.html", "Bootstrap vertical pills", container);
+		
+		// TODO - List group.
+	}
+
+	private Navs navsItems(Navs navs) {
+		navs.item("First", false, false, null, "First content");
+		navs.item("Second", true, false, null, "Second content");
+		navs.item("Third", false, true, null, "Third content");
+		navs.item("Fourth", "Fourth content");
+		return navs;
 	}
 	
 	@Test
