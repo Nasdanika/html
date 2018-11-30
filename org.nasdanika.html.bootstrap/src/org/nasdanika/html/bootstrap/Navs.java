@@ -29,5 +29,4 @@ public interface Navs extends BootstrapElement<Tag,Navs>, NamedItemsContainer {
 	 */
 	Tag getContentDiv();
 	
-
 }

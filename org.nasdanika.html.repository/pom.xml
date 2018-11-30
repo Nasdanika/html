@@ -259,6 +259,23 @@
 						</configuration>
 					</execution>
 					<execution>
+						<id>copy-test-coverage</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/jacoco-aggregate</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../org.nasdanika.html.tests/target/site/jacoco-aggregate
+									</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
 						<id>copy-sample-model</id>
 						<phase>pre-site</phase>
 						<goals>

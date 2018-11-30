@@ -176,6 +176,32 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.2</version>
+				<!-- 
+				<configuration>
+					<excludes>
+						<exclude>**/plugin1/Main.class</exclude>
+					</excludes>
+				</configuration>
+				 -->
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent-integration</goal>
+						</goals>
+					</execution>
+			        <execution>
+			            <id>report</id>
+			            <phase>prepare-package</phase>
+			            <goals>
+			                <goal>report</goal>
+			            </goals>
+			        </execution>					
+				</executions>
+			</plugin>						
 		</plugins>
 	</build>
 	<modules>
@@ -197,7 +223,7 @@
 		<module>../org.nasdanika.html.repository</module>
 	</modules>
 	<!-- For resolution of JavaDoc between modules -->
-	<url>http://www.nasdanika.org/products/html/${project.version}/apidocs/parent/</url>
+	<url>https://www.nasdanika.org/products/html/${project.version}/apidocs/parent/</url>
 	<organization>
 		<name>Nasdanika LLC</name>
 		<url>http://www.nasdanika.org</url>

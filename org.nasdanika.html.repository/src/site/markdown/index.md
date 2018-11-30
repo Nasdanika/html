@@ -12,6 +12,8 @@ Nasdanika HTML features several bundles providing [fluent API](https://en.wikipe
     * [Model documentation](app-model-doc).
 * [EMF](emf.html) - renders HTML based on EClass metadata including annotations and EObject data.
 
+[Test coverage report](jacoco-aggregate/index.html).
+
 ## Resources
 
 * P2 Repository
@@ -19,7 +21,6 @@ Nasdanika HTML features several bundles providing [fluent API](https://en.wikipe
     * [Archived](https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/org.nasdanika.html.repository-2.0.0-SNAPSHOT.zip)
 * [Sources](html.zip)
 * [NasdanikaBank.app](NasdanikaBank.app) - a sample model with several actions for demo and testing purposes. It is also available as a resource in ``org.nasdanika.app.model`` bundle.    
-
  
 ## How to contribute
 

@@ -6,6 +6,7 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Input;
 import org.nasdanika.html.InputType;
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
 import org.nasdanika.html.bootstrap.Button;
@@ -18,6 +19,7 @@ import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.InputGroup;
+import org.nasdanika.html.bootstrap.ListGroup;
 import org.nasdanika.html.bootstrap.Navbar;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Placement;
@@ -188,8 +190,10 @@ public class TestBootstrap extends HTMLTestBase {
 		row.col(verticalPills.toHTMLElement()).widthAuto();
 		row.col(verticalPills.getContentDiv());
 		writeThemedPage("bootstrap/vertical-pills.html", "Bootstrap vertical pills", container);
-		
-		// TODO - List group.
+
+		ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
+		navsItems(actionGroup.asNavs());
+		writeThemedPage("bootstrap/action-group-navs-adapter.html", "Bootstrap action group navs adapter", actionGroup.asContainer());				
 	}
 
 	private Navs navsItems(Navs navs) {
@@ -218,8 +222,56 @@ public class TestBootstrap extends HTMLTestBase {
 		navbar.navbarText("Some text");
 				
 		writeThemedPage("bootstrap/navbar.html", "Bootstrap navbar", navbar); 
+	}
+		
+	@Test
+	public void testListGroup() throws Exception {		
+		ListGroup listGroup = BootstrapFactory.INSTANCE.listGroup(false);
+		
+		listGroup.item(false, false, Color.DEFAULT, "One");
+		listGroup.item(true, false, Color.DEFAULT, "Two - active");
+		listGroup.item(false, true, Color.DEFAULT, "Three - disabled");
+		listGroup.item(false, false, Color.WARNING, "Four - warning");
+						
+		writeThemedPage("bootstrap/list-group.html", "Bootstrap list group", listGroup); 
+	}	
+		
+	@Test
+	public void testFlushListGroup() throws Exception {		
+		ListGroup listGroup = BootstrapFactory.INSTANCE.listGroup(true);
+		
+		listGroup.item(false, false, Color.DEFAULT, "One");
+		listGroup.item(true, false, Color.DEFAULT, "Two - active");
+		listGroup.item(false, true, Color.DEFAULT, "Three - disabled");
+		listGroup.item(false, false, Color.WARNING, "Four - warning");
+						
+		writeThemedPage("bootstrap/list-group-flush.html", "Bootstrap flush list group", listGroup); 
 	}	
 	
+	@Test
+	public void testActionGroup() throws Exception {		
+		ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
+		
+		actionGroup.action(false, false, Color.DEFAULT, "#", "One");
+		actionGroup.action(true, false, Color.DEFAULT, "#", "Two - active");
+		actionGroup.action(false, true, Color.DEFAULT, "#", "Three - disabled");
+		actionGroup.action(false, false, Color.WARNING, "#", "Four - warning");
+						
+		writeThemedPage("bootstrap/action-group.html", "Bootstrap action group", actionGroup); 
+	}	
+		
+	@Test
+	public void testContentActionGroup() throws Exception {		
+		ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
+		
+		actionGroup.contentAction("One", false, false, Color.DEFAULT, null, "First content");
+		actionGroup.contentAction("Two - active", true, false, Color.DEFAULT, "action-xyz", "Active content");
+		actionGroup.contentAction("Three - disabled", false, true, Color.DEFAULT, null, "Disabled content");
+		actionGroup.contentAction("Four - warning", false, false, Color.WARNING, null, BootstrapFactory.INSTANCE.alert(Color.WARNING, "Be careful!"));
+						
+		writeThemedPage("bootstrap/action-group-content.html", "Bootstrap content action group", actionGroup.asContainer()); 
+	}	
+		
 	@Test
 	public void testMisc() throws Exception {
 		BootstrapFactory factory = BootstrapFactory.INSTANCE;

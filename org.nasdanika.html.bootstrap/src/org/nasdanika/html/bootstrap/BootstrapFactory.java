@@ -158,6 +158,10 @@ public interface BootstrapFactory {
 	 * @return
 	 */
 	Navbar navbar(DeviceSize expandSize, boolean dark, Color background, HTMLElement<?> brand);
+	
+	ListGroup listGroup(boolean flush);
+	
+	ActionGroup actionGroup(boolean flush);
 		
 	/* TODO - Implement, add factory method and remove
 	 * Navbar

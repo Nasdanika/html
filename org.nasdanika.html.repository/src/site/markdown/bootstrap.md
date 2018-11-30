@@ -5,6 +5,41 @@
 The entry point to the API is [BootstrapFactory](apidocs/bootstrap/index.html?org/nasdanika/html/bootstrap/BootstrapFactory.html).
 It can be obtained as ``BootstrapFactory factory = BootstrapFactory.INSTANCE;``.  
 
+## Action Group
+
+```
+ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
+		
+actionGroup.action(false, false, Color.DEFAULT, "#", "One");
+actionGroup.action(true, false, Color.DEFAULT, "#", "Two - active");
+actionGroup.action(false, true, Color.DEFAULT, "#", "Three - disabled");
+actionGroup.action(false, false, Color.WARNING, "#", "Four - warning");
+```
+<iframe src="test-dumps/bootstrap/action-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
+
+### With content
+
+```		
+ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
+		
+actionGroup.contentAction("One", false, false, Color.DEFAULT, null, "First content");
+actionGroup.contentAction("Two - active", true, false, Color.DEFAULT, "action-xyz", "Active content");
+actionGroup.contentAction("Three - disabled", false, true, Color.DEFAULT, null, "Disabled content");
+actionGroup.contentAction("Four - warning", false, false, Color.WARNING, null, BootstrapFactory.INSTANCE.alert(Color.WARNING, "Be careful!"));
+```						
+
+<iframe src="test-dumps/bootstrap/action-group-content.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
+```
+
+### Adapt to navs 
+
+```
+ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
+navsItems(actionGroup.asNavs()); // See "Navs" section for navsItems method code.
+```
+
+<iframe src="test-dumps/bootstrap/action-group-navs-adapter.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
+
 ## Alert
 
 ```
@@ -33,6 +68,15 @@ breadcrumbs.item(null, "Last");
 ```
 
 <iframe src="test-dumps/bootstrap/breadcrumbs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
+## Bootstrap CDN HTML Page
+
+```
+HTMLPage bootstrapPage = factory.bootstrapCdnHTMLPage(Theme.Cerulean);
+bootstrapPage.title("Bootstrap demo");
+bootstrapPage.body(container);		
+```
+
 
 ## Button
 
@@ -87,19 +131,6 @@ inputGroup.append("Something").large();
 ```
 
 <iframe src="test-dumps/bootstrap/input-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
-	
-## Table
-
-``` 		
-Table table = factory.table().striped();
-table.toHTMLElement().caption("My table");
-TableHeader header = table.header();
-header.headerRow("A", "B", "C");
-TableBody body = table.body();
-body.row("One", "Two", "Three");		
-```
-
-<iframe src="test-dumps/bootstrap/table.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ## Form		
 
@@ -120,16 +151,44 @@ form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "Stat
 
 <iframe src="test-dumps/bootstrap/form.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-## Tooltip
+## Grid, background and text style
 
 ```
-org.nasdanika.html.Button hButton = htmlFactory.button("Button");	
-Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
-factory.tooltip(button, "I am a <I>tooltip</I>." , true, Placement.BOTTOM);
-Tag initScript = factory.initTooltipScript();
+Container container = factory.container();
+Row row = container.row();
+row.col("Col 1").border(Color.DARK).background(Color.WARNING).text().color(Color.PRIMARY);
+row.col("Col 2").border(Color.PRIMARY).text().weight(Weight.BOLD).alignment(Alignment.CENTER);
+row.col("Col 3").border(Color.WARNING, Placement.RIGHT).background(Color.SECONDARY).text().monospace();		
 ```
 
-<iframe src="test-dumps/bootstrap/tooltip.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="test-dumps/bootstrap/misc.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
+## List Group
+
+```		
+ListGroup listGroup = BootstrapFactory.INSTANCE.listGroup(false);
+		
+listGroup.item(false, false, Color.DEFAULT, "One");
+listGroup.item(true, false, Color.DEFAULT, "Two - active");
+listGroup.item(false, true, Color.DEFAULT, "Three - disabled");
+listGroup.item(false, false, Color.WARNING, "Four - warning");
+```
+	
+<iframe src="test-dumps/bootstrap/list-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+		
+### Flush
+
+```		
+ListGroup listGroup = BootstrapFactory.INSTANCE.listGroup(true);
+		
+listGroup.item(false, false, Color.DEFAULT, "One");
+listGroup.item(true, false, Color.DEFAULT, "Two - active");
+listGroup.item(false, true, Color.DEFAULT, "Three - disabled");
+listGroup.item(false, false, Color.WARNING, "Four - warning");
+```
+
+<iframe src="test-dumps/bootstrap/list-group-flush.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
 
 ## Navs
 
@@ -214,23 +273,27 @@ navbar.navbarText("Some text");
 ```
 
 <iframe src="test-dumps/bootstrap/navbar.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 150) + 'px'"></iframe>
+	
+## Table
 
-## Grid, background and text style
+``` 		
+Table table = factory.table().striped();
+table.toHTMLElement().caption("My table");
+TableHeader header = table.header();
+header.headerRow("A", "B", "C");
+TableBody body = table.body();
+body.row("One", "Two", "Three");		
+```
+
+<iframe src="test-dumps/bootstrap/table.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
+## Tooltip
 
 ```
-Container container = factory.container();
-Row row = container.row();
-row.col("Col 1").border(Color.DARK).background(Color.WARNING).text().color(Color.PRIMARY);
-row.col("Col 2").border(Color.PRIMARY).text().weight(Weight.BOLD).alignment(Alignment.CENTER);
-row.col("Col 3").border(Color.WARNING, Placement.RIGHT).background(Color.SECONDARY).text().monospace();		
+org.nasdanika.html.Button hButton = htmlFactory.button("Button");	
+Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
+factory.tooltip(button, "I am a <I>tooltip</I>." , true, Placement.BOTTOM);
+Tag initScript = factory.initTooltipScript();
 ```
 
-<iframe src="test-dumps/bootstrap/misc.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
-
-## Bootstrap CDN HTML Page
-
-```
-HTMLPage bootstrapPage = factory.bootstrapCdnHTMLPage(Theme.Cerulean);
-bootstrapPage.title("Bootstrap demo");
-bootstrapPage.body(container);		
-```
+<iframe src="test-dumps/bootstrap/tooltip.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>

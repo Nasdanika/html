@@ -8,6 +8,7 @@ import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.HTMLElement.Event;
+import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
@@ -21,6 +22,7 @@ import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.FormGroup;
 import org.nasdanika.html.bootstrap.InputGroup;
+import org.nasdanika.html.bootstrap.ListGroup;
 import org.nasdanika.html.bootstrap.Navbar;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Placement;
@@ -244,6 +246,16 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	@Override
 	public Navbar navbar(DeviceSize expandSize, boolean dark, Color background, HTMLElement<?> brand) {
 		return new NavbarImpl(this, expandSize, dark, background, brand);
+	}
+
+	@Override
+	public ListGroup listGroup(boolean flush) {
+		return new ListGroupImpl(this, flush);
+	}
+
+	@Override
+	public ActionGroup actionGroup(boolean flush) {
+		return new ActionGroupImpl(this, flush);
 	}
 	
 }
