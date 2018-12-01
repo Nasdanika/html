@@ -12,8 +12,6 @@ Nasdanika HTML features several bundles providing [fluent API](https://en.wikipe
     * [Model documentation](app-model-doc).
 * [EMF](emf.html) - renders HTML based on EClass metadata including annotations and EObject data.
 
-[Test coverage report](jacoco-aggregate/index.html).
-
 ## Resources
 
 * P2 Repository
