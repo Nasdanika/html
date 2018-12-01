@@ -24,6 +24,7 @@ import org.nasdanika.html.model.app.Label;
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getText <em>Text</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getTooltip <em>Tooltip</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#isOutline <em>Outline</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getNotification <em>Notification</em>}</li>
  * </ul>
  *
  * @generated
@@ -182,6 +183,24 @@ public class LabelImpl extends CDOObjectImpl implements Label {
 	 */
 	public void setOutline(boolean newOutline) {
 		eSet(AppPackage.Literals.LABEL__OUTLINE, newOutline);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getNotification() {
+		return (String)eGet(AppPackage.Literals.LABEL__NOTIFICATION, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setNotification(String newNotification) {
+		eSet(AppPackage.Literals.LABEL__NOTIFICATION, newNotification);
 	}
 
 } //LabelImpl

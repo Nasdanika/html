@@ -61,6 +61,11 @@ public interface Diagnostic {
 			public Object getId() {
 				return null;
 			}
+
+			@Override
+			public String getNotification() {
+				return null;
+			}
 			
 		};		
 	}

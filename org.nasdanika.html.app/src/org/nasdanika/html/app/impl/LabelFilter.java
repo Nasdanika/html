@@ -46,4 +46,9 @@ public class LabelFilter<T extends Label> implements Label {
 		return target.getId();
 	}
 
+	@Override
+	public String getNotification() {
+		return target.getNotification();
+	}
+
 }

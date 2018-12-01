@@ -21,6 +21,7 @@ import org.nasdanika.html.bootstrap.Color;
  *   <li>{@link org.nasdanika.html.model.app.Label#getText <em>Text</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getTooltip <em>Tooltip</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#isOutline <em>Outline</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Label#getNotification <em>Notification</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getLabel()
@@ -211,4 +212,30 @@ public interface Label extends CDOObject, org.nasdanika.html.app.Label {
 	 * @generated
 	 */
 	void setOutline(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Notification</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Notification</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Notification</em>' attribute.
+	 * @see #setNotification(String)
+	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Notification()
+	 * @model
+	 * @generated
+	 */
+	String getNotification();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getNotification <em>Notification</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Notification</em>' attribute.
+	 * @see #getNotification()
+	 * @generated
+	 */
+	void setNotification(String value);
 } // Label

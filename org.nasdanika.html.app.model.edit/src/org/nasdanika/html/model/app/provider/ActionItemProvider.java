@@ -70,10 +70,12 @@ public class ActionItemProvider
 			addTextPropertyDescriptor(object);
 			addTooltipPropertyDescriptor(object);
 			addOutlinePropertyDescriptor(object);
+			addNotificationPropertyDescriptor(object);
 			addConfirmationPropertyDescriptor(object);
 			addFloatRightPropertyDescriptor(object);
 			addRolesPropertyDescriptor(object);
 			addDisabledPropertyDescriptor(object);
+			addIteratorPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -233,6 +235,28 @@ public class ActionItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Notification feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addNotificationPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Label_notification_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Label_notification_feature", "_UI_Label_type"),
+				 AppPackage.Literals.LABEL__NOTIFICATION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This adds a property descriptor for the Confirmation feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -321,6 +345,28 @@ public class ActionItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Iterator feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addIteratorPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Action_iterator_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Action_iterator_feature", "_UI_Action_type"),
+				 AppPackage.Literals.ACTION__ITERATOR,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
 	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -398,10 +444,12 @@ public class ActionItemProvider
 			case AppPackage.ACTION__TEXT:
 			case AppPackage.ACTION__TOOLTIP:
 			case AppPackage.ACTION__OUTLINE:
+			case AppPackage.ACTION__NOTIFICATION:
 			case AppPackage.ACTION__CONFIRMATION:
 			case AppPackage.ACTION__FLOAT_RIGHT:
 			case AppPackage.ACTION__ROLES:
 			case AppPackage.ACTION__DISABLED:
+			case AppPackage.ACTION__ITERATOR:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case AppPackage.ACTION__CHILDREN:

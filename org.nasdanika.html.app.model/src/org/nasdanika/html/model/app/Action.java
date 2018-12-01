@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.nasdanika.html.model.app.Action#getRoles <em>Roles</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#isDisabled <em>Disabled</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getActivator <em>Activator</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getIterator <em>Iterator</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getAction()
@@ -182,5 +183,33 @@ public interface Action extends org.nasdanika.html.app.Action, Label {
 	 * @generated
 	 */
 	void setActivator(ActionActivator value);
+
+	/**
+	 * Returns the value of the '<em><b>Iterator</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Iterator is used in template instantiation. 
+	 * If this attribute is not null then it is evaluated by the template engine. 
+	 * The result shall be an iterable, array, or stream of template contexts
+	 * to use to instantiate an action for each element.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Iterator</em>' attribute.
+	 * @see #setIterator(String)
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Iterator()
+	 * @model
+	 * @generated
+	 */
+	String getIterator();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getIterator <em>Iterator</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Iterator</em>' attribute.
+	 * @see #getIterator()
+	 * @generated
+	 */
+	void setIterator(String value);
 
 } // Action

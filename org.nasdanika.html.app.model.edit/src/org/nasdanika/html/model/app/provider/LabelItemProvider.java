@@ -65,6 +65,7 @@ public class LabelItemProvider
 			addTextPropertyDescriptor(object);
 			addTooltipPropertyDescriptor(object);
 			addOutlinePropertyDescriptor(object);
+			addNotificationPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -224,6 +225,28 @@ public class LabelItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Notification feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addNotificationPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Label_notification_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Label_notification_feature", "_UI_Label_type"),
+				 AppPackage.Literals.LABEL__NOTIFICATION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This returns Label.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -269,6 +292,7 @@ public class LabelItemProvider
 			case AppPackage.LABEL__TEXT:
 			case AppPackage.LABEL__TOOLTIP:
 			case AppPackage.LABEL__OUTLINE:
+			case AppPackage.LABEL__NOTIFICATION:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

@@ -290,6 +290,15 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getLabel_Notification() {
+		return (EAttribute)labelEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getIThemed() {
 		return iThemedEClass;
 	}
@@ -373,6 +382,15 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	public EReference getAction_Activator() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAction_Iterator() {
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -575,6 +593,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(labelEClass, LABEL__TEXT);
 		createEAttribute(labelEClass, LABEL__TOOLTIP);
 		createEAttribute(labelEClass, LABEL__OUTLINE);
+		createEAttribute(labelEClass, LABEL__NOTIFICATION);
 
 		iThemedEClass = createEClass(ITHEMED);
 
@@ -588,6 +607,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(actionEClass, ACTION__ROLES);
 		createEAttribute(actionEClass, ACTION__DISABLED);
 		createEReference(actionEClass, ACTION__ACTIVATOR);
+		createEAttribute(actionEClass, ACTION__ITERATOR);
 
 		themedActionEClass = createEClass(THEMED_ACTION);
 		createEAttribute(themedActionEClass, THEMED_ACTION__THEME);
@@ -673,6 +693,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getLabel_Text(), ecorePackage.getEString(), "text", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Tooltip(), ecorePackage.getEString(), "tooltip", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Outline(), ecorePackage.getEBoolean(), "outline", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getLabel_Notification(), ecorePackage.getEString(), "notification", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(iThemedEClass, Themed.class, "IThemed", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
@@ -686,6 +707,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getAction_Roles(), ecorePackage.getEString(), "roles", null, 0, -1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Disabled(), ecorePackage.getEBoolean(), "disabled", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_Activator(), this.getActionActivator(), null, "activator", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_Iterator(), ecorePackage.getEString(), "iterator", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(themedActionEClass, ThemedAction.class, "ThemedAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getThemedAction_Theme(), this.getTheme(), "theme", null, 0, 1, ThemedAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

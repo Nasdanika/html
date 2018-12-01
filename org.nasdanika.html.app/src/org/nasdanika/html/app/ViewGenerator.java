@@ -20,7 +20,7 @@ public interface ViewGenerator {
 	 * @param action
 	 * @param contentConsumer
 	 */
-	void label(Action action, Consumer<Object> contentConsumer);
+	void label(Label label, Consumer<Object> contentConsumer);
 	
 	/**
 	 * Outputs icon, text, tooltip.
@@ -29,31 +29,22 @@ public interface ViewGenerator {
 	 * @param container
 	 * @return
 	 */
-	Tag label(Action action, Tag container);	
+	Tag label(Label label, Tag container);	
 	
-	Tag label(Action action);
+	Tag label(Label label);
 	
 	Tag link(Action action);
 	
-	Tag badge(Action action, boolean isPill);
+	
+	// --- TODO ---
+	
+	Tag badge(Label action, boolean isPill);
 	
 	Button<org.nasdanika.html.Button> button(Action action);
 	
 	ButtonGroup buttonGroup(Iterable<Action> actions);
 	
 	ButtonGroup buttonGroup(Action... action);
-	
-	/**
-	 * A button with only the action icon if action has an icon.
-	 * Action name is rendered as a prefix to the tooltip.
-	 * @param action
-	 * @return
-	 */
-	Button<org.nasdanika.html.Button> iconButton(Action action);	
-	
-	ButtonGroup iconButtonGroup(Iterable<Action> actions);
-	
-	ButtonGroup iconButtonGroup(Action... action);
 	
 	JsTreeContextMenuItem jsTreeContextMenuItem(Action action);
 	

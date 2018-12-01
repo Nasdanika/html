@@ -163,13 +163,22 @@ public interface AppPackage extends EPackage {
 	int LABEL__OUTLINE = ILABEL_FEATURE_COUNT + 6;
 
 	/**
+	 * The feature id for the '<em><b>Notification</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__NOTIFICATION = ILABEL_FEATURE_COUNT + 7;
+
+	/**
 	 * The number of structural features of the '<em>Label</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL_FEATURE_COUNT = ILABEL_FEATURE_COUNT + 7;
+	int LABEL_FEATURE_COUNT = ILABEL_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>Label</em>' class.
@@ -311,13 +320,22 @@ public interface AppPackage extends EPackage {
 	int ACTION__OUTLINE = IACTION_FEATURE_COUNT + 6;
 
 	/**
+	 * The feature id for the '<em><b>Notification</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__NOTIFICATION = IACTION_FEATURE_COUNT + 7;
+
+	/**
 	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__CHILDREN = IACTION_FEATURE_COUNT + 7;
+	int ACTION__CHILDREN = IACTION_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Confirmation</b></em>' attribute.
@@ -326,7 +344,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__CONFIRMATION = IACTION_FEATURE_COUNT + 8;
+	int ACTION__CONFIRMATION = IACTION_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Context Actions</b></em>' containment reference list.
@@ -335,7 +353,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__CONTEXT_ACTIONS = IACTION_FEATURE_COUNT + 9;
+	int ACTION__CONTEXT_ACTIONS = IACTION_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Float Right</b></em>' attribute.
@@ -344,7 +362,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__FLOAT_RIGHT = IACTION_FEATURE_COUNT + 10;
+	int ACTION__FLOAT_RIGHT = IACTION_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
@@ -353,7 +371,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__ROLES = IACTION_FEATURE_COUNT + 11;
+	int ACTION__ROLES = IACTION_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Disabled</b></em>' attribute.
@@ -362,7 +380,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__DISABLED = IACTION_FEATURE_COUNT + 12;
+	int ACTION__DISABLED = IACTION_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Activator</b></em>' containment reference.
@@ -371,7 +389,16 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__ACTIVATOR = IACTION_FEATURE_COUNT + 13;
+	int ACTION__ACTIVATOR = IACTION_FEATURE_COUNT + 14;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__ITERATOR = IACTION_FEATURE_COUNT + 15;
 
 	/**
 	 * The number of structural features of the '<em>Action</em>' class.
@@ -380,7 +407,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_FEATURE_COUNT = IACTION_FEATURE_COUNT + 14;
+	int ACTION_FEATURE_COUNT = IACTION_FEATURE_COUNT + 16;
 
 	/**
 	 * The number of operations of the '<em>Action</em>' class.
@@ -465,6 +492,15 @@ public interface AppPackage extends EPackage {
 	int THEMED_ACTION__OUTLINE = ACTION__OUTLINE;
 
 	/**
+	 * The feature id for the '<em><b>Notification</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int THEMED_ACTION__NOTIFICATION = ACTION__NOTIFICATION;
+
+	/**
 	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -526,6 +562,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int THEMED_ACTION__ACTIVATOR = ACTION__ACTIVATOR;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int THEMED_ACTION__ITERATOR = ACTION__ITERATOR;
 
 	/**
 	 * The feature id for the '<em><b>Theme</b></em>' attribute.
@@ -628,6 +673,15 @@ public interface AppPackage extends EPackage {
 	int CONTENT_ACTION__OUTLINE = ACTION__OUTLINE;
 
 	/**
+	 * The feature id for the '<em><b>Notification</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_ACTION__NOTIFICATION = ACTION__NOTIFICATION;
+
+	/**
 	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -689,6 +743,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_ACTION__ACTIVATOR = ACTION__ACTIVATOR;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_ACTION__ITERATOR = ACTION__ITERATOR;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' attribute.
@@ -800,6 +863,15 @@ public interface AppPackage extends EPackage {
 	int THEMED_CONTENT_ACTION__OUTLINE = CONTENT_ACTION__OUTLINE;
 
 	/**
+	 * The feature id for the '<em><b>Notification</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int THEMED_CONTENT_ACTION__NOTIFICATION = CONTENT_ACTION__NOTIFICATION;
+
+	/**
 	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -861,6 +933,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int THEMED_CONTENT_ACTION__ACTIVATOR = CONTENT_ACTION__ACTIVATOR;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int THEMED_CONTENT_ACTION__ITERATOR = CONTENT_ACTION__ITERATOR;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' attribute.
@@ -1213,6 +1294,17 @@ public interface AppPackage extends EPackage {
 	EAttribute getLabel_Outline();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Label#getNotification <em>Notification</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Notification</em>'.
+	 * @see org.nasdanika.html.model.app.Label#getNotification()
+	 * @see #getLabel()
+	 * @generated
+	 */
+	EAttribute getLabel_Notification();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.app.Themed <em>IThemed</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1320,6 +1412,17 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getAction_Activator();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Action#getIterator <em>Iterator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Iterator</em>'.
+	 * @see org.nasdanika.html.model.app.Action#getIterator()
+	 * @see #getAction()
+	 * @generated
+	 */
+	EAttribute getAction_Iterator();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ThemedAction <em>Themed Action</em>}'.
@@ -1602,6 +1705,14 @@ public interface AppPackage extends EPackage {
 		EAttribute LABEL__OUTLINE = eINSTANCE.getLabel_Outline();
 
 		/**
+		 * The meta object literal for the '<em><b>Notification</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LABEL__NOTIFICATION = eINSTANCE.getLabel_Notification();
+
+		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.app.Themed <em>IThemed</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1686,6 +1797,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EReference ACTION__ACTIVATOR = eINSTANCE.getAction_Activator();
+
+		/**
+		 * The meta object literal for the '<em><b>Iterator</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACTION__ITERATOR = eINSTANCE.getAction_Iterator();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ThemedActionImpl <em>Themed Action</em>}' class.

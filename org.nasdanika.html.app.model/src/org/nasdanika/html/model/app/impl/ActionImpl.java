@@ -33,6 +33,7 @@ import org.nasdanika.html.model.app.AppPackage;
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getText <em>Text</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getTooltip <em>Tooltip</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isOutline <em>Outline</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getNotification <em>Notification</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getChildren <em>Children</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getConfirmation <em>Confirmation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getContextActions <em>Context Actions</em>}</li>
@@ -40,6 +41,7 @@ import org.nasdanika.html.model.app.AppPackage;
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getRoles <em>Roles</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isDisabled <em>Disabled</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getActivator <em>Activator</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getIterator <em>Iterator</em>}</li>
  * </ul>
  *
  * @generated
@@ -205,6 +207,24 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getNotification() {
+		return (String)eGet(AppPackage.Literals.LABEL__NOTIFICATION, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setNotification(String newNotification) {
+		eSet(AppPackage.Literals.LABEL__NOTIFICATION, newNotification);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	public EList<Action> getChildren() {
 		return (EList<Action>)eGet(AppPackage.Literals.ACTION__CHILDREN, true);
@@ -307,6 +327,24 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getIterator() {
+		return (String)eGet(AppPackage.Literals.ACTION__ITERATOR, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIterator(String newIterator) {
+		eSet(AppPackage.Literals.ACTION__ITERATOR, newIterator);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Label.class) {
@@ -323,6 +361,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 				case AppPackage.ACTION__TEXT: return AppPackage.LABEL__TEXT;
 				case AppPackage.ACTION__TOOLTIP: return AppPackage.LABEL__TOOLTIP;
 				case AppPackage.ACTION__OUTLINE: return AppPackage.LABEL__OUTLINE;
+				case AppPackage.ACTION__NOTIFICATION: return AppPackage.LABEL__NOTIFICATION;
 				default: return -1;
 			}
 		}
@@ -350,6 +389,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 				case AppPackage.LABEL__TEXT: return AppPackage.ACTION__TEXT;
 				case AppPackage.LABEL__TOOLTIP: return AppPackage.ACTION__TOOLTIP;
 				case AppPackage.LABEL__OUTLINE: return AppPackage.ACTION__OUTLINE;
+				case AppPackage.LABEL__NOTIFICATION: return AppPackage.ACTION__NOTIFICATION;
 				default: return -1;
 			}
 		}

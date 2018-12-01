@@ -2,19 +2,21 @@ package org.nasdanika.html.app.impl;
 
 import java.util.function.Consumer;
 
+import org.nasdanika.html.HTMLElement.Event;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
-import org.nasdanika.html.HTMLElement.Event;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.BindingActionActivator;
+import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
 import org.nasdanika.html.jstree.JsTreeFactory;
@@ -74,7 +76,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	}
 
 	@Override
-	public Tag badge(Action action, boolean isPill) {
+	public Tag badge(Label label, boolean isPill) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -93,24 +95,6 @@ public class ViewGeneratorImpl implements ViewGenerator {
 
 	@Override
 	public ButtonGroup buttonGroup(Action... action) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Button<org.nasdanika.html.Button> iconButton(Action action) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ButtonGroup iconButtonGroup(Iterable<Action> actions) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ButtonGroup iconButtonGroup(Action... action) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -144,8 +128,8 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	}
 
 	@Override
-	public void label(Action action, Consumer<Object> contentConsumer) {
-		String icon = action.getIcon();
+	public void label(Label label, Consumer<Object> contentConsumer) {
+		String icon = label.getIcon();
 		if (icon != null) {
 			Tag iconTag;
 			if (icon.contains("/")) {
@@ -155,30 +139,36 @@ public class ViewGeneratorImpl implements ViewGenerator {
 				// Class
 				iconTag = getHTMLFactory().span().addClass(icon);
 			}
-			if (action.getText() != null) {
+			if (label.getText() != null) {
 				iconTag.style().margin().right("0.1em");
 			}
 			contentConsumer.accept(iconTag);
 		}		
 			
-		if (action.getText() != null) {
-			contentConsumer.accept(action.getText());
+		if (label.getText() != null) {
+			contentConsumer.accept(label.getText());
 		}	
 		
 		// TODO - help content - tooltip, icon, modals, ...
+		
+		if (label.getNotification() != null) {
+			getBootstrapFactory().badge(true, label.getColor() == Color.PRIMARY ? Color.SECONDARY : Color.PRIMARY, label.getNotification());
+		}
 	}
 	
 	@Override
-	public Tag label(Action action, Tag container) {
-		label(action, container::content);
-		container.addClass("nsd-action");
-		container.attribute("data-nsd-action", action.getId());
+	public Tag label(Label label, Tag container) {
+		label(label, container::content);
+		if (label instanceof Action) {
+			container.addClass("nsd-action");
+			container.attribute("data-nsd-action", ((Action) label).getId());
+		}
 		return container;
 	}
 	
 	@Override
-	public Tag label(Action action) {
-		return label(action, getHTMLFactory().span());
+	public Tag label(Label label) {
+		return label(label, getHTMLFactory().span());
 	}
 
 }

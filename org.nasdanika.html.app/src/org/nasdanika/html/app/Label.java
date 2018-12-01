@@ -52,5 +52,11 @@ public interface Label {
 	 * @return
 	 */
 	Object getId();		
+	
+	/**
+	 * A notification, e.g. a number of e-mails in the inbox. Notifications are typically shown as badges.
+	 * @return
+	 */
+	String getNotification();
 
 }

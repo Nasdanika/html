@@ -15,6 +15,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="tooltip" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="outline" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="notification" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Theme" instanceClassName="org.nasdanika.html.bootstrap.Theme"/>
   <eClassifiers xsi:type="ecore:EClass" name="IThemed" instanceClassName="org.nasdanika.html.app.Themed"
@@ -36,6 +37,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="disabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="activator" eType="#//ActionActivator"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="iterator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Iterator is used in template instantiation. &#xA;If this attribute is not null then it is evaluated by the template engine. &#xA;The result shall be an iterable, array, or stream of template contexts&#xA;to use to instantiate an action for each element."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ThemedAction" eSuperTypes="#//Action #//IThemed">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="theme" eType="#//Theme"/>
