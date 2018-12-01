@@ -359,7 +359,7 @@ public class ActionItemProvider
 				 getString("_UI_PropertyDescriptor_description", "_UI_Action_iterator_feature", "_UI_Action_type"),
 				 AppPackage.Literals.ACTION__ITERATOR,
 				 true,
-				 false,
+				 true,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
