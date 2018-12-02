@@ -29,6 +29,13 @@ public interface BootstrapFactory {
 	Tag badge(boolean pill, Object... content);
 	Tag badgeLink(Object href, boolean pill, Color color, Object... content);
 	
+	/**
+	 * Wraps HTML element for applyng Bootstrap styling.
+	 * @param htmlElement
+	 * @return
+	 */
+	<H extends HTMLElement<?>> BootstrapElement<H, BootstrapElement<H, ?>> wrap(H htmlElement);
+	
 	Breadcrumbs breadcrums();
 	
 	/**

@@ -24,6 +24,9 @@
         <activator xsi:type="org.nasdanika.html.app:NavigationActionActivator" url="transfer-external.html"/>
       </children>
     </contextActions>
+    <contextActions icon="fas fa-envelope-square" text="Message center" notification="2">
+      <activator xsi:type="org.nasdanika.html.app:NavigationActionActivator" url="message-center.html"/>
+    </contextActions>
     <activator xsi:type="org.nasdanika.html.app:NavigationActionActivator" url="john-doe.html"/>
   </children>
   <children icon="far fa-envelope" id="contact-us" text="Contact Us">

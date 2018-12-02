@@ -257,5 +257,10 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	public ActionGroup actionGroup(boolean flush) {
 		return new ActionGroupImpl(this, flush);
 	}
+
+	@Override
+	public <H extends HTMLElement<?>> BootstrapElement<H, BootstrapElement<H, ?>> wrap(H htmlElement) {
+		return new WrappingBootstrapElementImpl<H, BootstrapElement<H, ?>>(this, htmlElement);
+	}
 	
 }

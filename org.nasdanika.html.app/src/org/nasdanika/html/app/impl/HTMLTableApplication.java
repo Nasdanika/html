@@ -18,7 +18,7 @@ public class HTMLTableApplication implements Application {
 	protected Table table;
 	protected Cell header;
 	protected Cell navigationBar;
-	protected Cell leftPanel;
+	protected Cell navigationPanel;
 	protected Cell content;
 	protected Cell footer;
 	
@@ -39,7 +39,7 @@ public class HTMLTableApplication implements Application {
 		header = table.header().row().cell().colspan(2);
 		navigationBar = table.body().row().cell().colspan(2);
 		Row contentRow = table.body().row();
-		leftPanel = contentRow.cell();
+		navigationPanel = contentRow.cell();
 		content = contentRow.cell();		
 		footer = table.footer().row().cell().colspan(2);		
 	}
@@ -57,8 +57,8 @@ public class HTMLTableApplication implements Application {
 	}
 
 	@Override
-	public Application leftPanel(Object... content) {
-		leftPanel.content(content);
+	public Application navigationPanel(Object... content) {
+		navigationPanel.content(content);
 		return this;
 	}
 

@@ -32,6 +32,7 @@ import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.BootstrapContainerApplication;
 import org.nasdanika.html.app.impl.HTMLTableApplication;
+import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
@@ -99,7 +100,7 @@ public class TestApp extends HTMLTestBase {
 	@Test
 	public void testHTMLApp() throws Exception {
 		try (Application app = new HTMLTableApplication()) {
-			app.header("header").navigationBar("navigation").leftPanel("left panel").content("content").footer("footer");
+			app.header("Header").navigationBar("Navigation bar").navigationPanel("Navigation panel").content("Content").footer("Footer");
 			writeFile("app/html/index.html", app.toString());
 		}
 	}
@@ -112,14 +113,14 @@ public class TestApp extends HTMLTestBase {
 				container.border(Color.DANGER);
 				header.border(Color.DANGER).background(Color.PRIMARY);
 				navigationBar.border(Color.DANGER);
-				leftPanel.border(Color.DANGER).widthAuto();
+				navigationPanel.border(Color.DANGER).widthAuto();
 				footer.border(Color.DANGER);
 				content.border(Color.DANGER);
 			}
 			
 		}) {
 			Tag treeContainer = app.getHTMLPage().getFactory().div();
-			app.header("header").navigationBar("navigation").leftPanel(treeContainer).content("content").footer("footer");
+			app.header("Header").navigationBar("Navigation bar").navigationPanel(treeContainer).content("Content").footer("Footer");
 			
 			JsTreeFactory jsTreeFactory = JsTreeFactory.INSTANCE;
 			jsTreeFactory.cdn(app.getHTMLPage());
@@ -163,7 +164,7 @@ public class TestApp extends HTMLTestBase {
 		class ExecutableAdapter extends AdapterImpl implements Executable {
 			
 			@Override
-			public Object execute(Map<String, Object> input) {
+			public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
 				return "Executing "+getTarget()+" "+this;
 			}
 			
@@ -221,7 +222,7 @@ public class TestApp extends HTMLTestBase {
 								
 								footer.background(Color.SECONDARY);
 								
-								leftPanel.widthAuto().border(Color.DEFAULT, Placement.RIGHT);
+								navigationPanel.widthAuto().border(Color.DEFAULT, Placement.RIGHT);
 								contentRow.toHTMLElement().style("min-height", "500px");
 								container.border(Color.DEFAULT).margin().top(1);
 
@@ -264,7 +265,7 @@ public class TestApp extends HTMLTestBase {
 		class ExecutableAdapter extends AdapterImpl implements Executable {
 						
 			@Override
-			public Object execute(Map<String, Object> input) {
+			public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
 				return "Executing "+getTarget()+" "+this;
 			}
 			
@@ -292,9 +293,10 @@ public class TestApp extends HTMLTestBase {
 		resourceSet.getAdapterFactories().add(af);
 		Resource resource = resourceSet.createResource(URI.createURI("mem://test.xml")); // Some random URL.
 		Action action = AppFactory.eINSTANCE.createAction();
+		ViewGenerator viewGenerator = new ViewGeneratorImpl(null);
 		resource.getContents().add(action);
-		System.out.println(action.execute());
-		System.out.println(action.execute());
+		System.out.println(action.execute(viewGenerator));
+		System.out.println(action.execute(viewGenerator));
 		
 		System.out.println(action.getChildren());
 	}

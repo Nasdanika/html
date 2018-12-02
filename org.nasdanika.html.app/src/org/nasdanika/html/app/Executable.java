@@ -15,10 +15,10 @@ public interface Executable {
 	 * @param input Optional input data, e.g. HTTP request query parameters. 
 	 * @return
 	 */
-	Object execute(Map<String,Object> input);
+	Object execute(ViewGenerator viewGenerator, Map<String,Object> input);
 
-	default Object execute() {
-		return execute(Collections.emptyMap());
+	default Object execute(ViewGenerator viewGenerator) {
+		return execute(viewGenerator, Collections.emptyMap());
 	}
 
 }

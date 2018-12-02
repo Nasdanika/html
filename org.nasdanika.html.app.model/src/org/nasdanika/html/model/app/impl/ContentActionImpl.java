@@ -2,8 +2,10 @@
  */
 package org.nasdanika.html.model.app.impl;
 
-import org.eclipse.emf.ecore.EClass;
+import java.util.Map;
 
+import org.eclipse.emf.ecore.EClass;
+import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.ContentAction;
 import org.nasdanika.html.model.app.ContentType;
@@ -77,9 +79,10 @@ public class ContentActionImpl extends ActionImpl implements ContentAction {
 	public void setContentType(ContentType newContentType) {
 		eSet(AppPackage.Literals.CONTENT_ACTION__CONTENT_TYPE, newContentType);
 	}
-
+	
 	@Override
-	public Object execute() {
+	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+		// TODO - handle content type - plain text and markdown.
 		return getContent();
 	}
 

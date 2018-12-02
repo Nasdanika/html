@@ -13,6 +13,7 @@ import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 import org.nasdanika.html.app.ApplicationException;
 import org.nasdanika.html.app.Executable;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.ActionActivator;
@@ -414,12 +415,12 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	}
 
 	@Override
-	public Object execute(java.util.Map<String,Object> input) {
+	public Object execute(ViewGenerator viewGenerator, java.util.Map<String,Object> input) {
 		Executable delegate = (Executable) EcoreUtil.getRegisteredAdapter(this, Executable.class);
 		if (delegate == null) {
 			throw new ApplicationException("No execution delegate", this);
 		}
-		return delegate.execute(input);
+		return delegate.execute(viewGenerator, input);
 	}
 
 	@Override

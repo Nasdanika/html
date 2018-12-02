@@ -38,10 +38,11 @@ public class ActionGroupImpl extends DivWrappingBootstrapElementImpl<ActionGroup
 	}
 	
 	protected Tag configureLink(Tag a, boolean active, boolean disabled, Color color) {
+		boolean hasColor = color != null && color.code != null;
 		return a.addClass("list-group-item", "list-group-action")				
 				.addClassConditional(active, "active")
 				.addClassConditional(disabled, "disabled")
-				.addClassConditional(color != null && color.code != null, "list-group-item-"+color.code);
+				.addClassConditional(hasColor, hasColor ? "list-group-item-"+color.code : null);
 	}
 
 	@Override

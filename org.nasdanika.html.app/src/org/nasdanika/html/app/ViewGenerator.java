@@ -1,19 +1,42 @@
 package org.nasdanika.html.app;
 
+import java.util.Map;
 import java.util.function.Consumer;
 
+import org.nasdanika.html.Fragment;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.bootstrap.ActionGroup;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
+import org.nasdanika.html.bootstrap.ListGroup;
+import org.nasdanika.html.bootstrap.Navs;
+import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
+import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
+import org.nasdanika.html.knockout.KnockoutFactory;
 
 /**
- * Generates UI elements from application interfaces.
+ * Provides access to factories and generates UI elements from application interfaces.
  * @author Pavel Vlasov
  *
  */
 public interface ViewGenerator {
+	
+	// --- Access to factories ---
+	
+	HTMLFactory getHTMLFactory();
+	
+	BootstrapFactory getBootstrapFactory();
+	
+	FontAwesomeFactory getFontAwesomeFactory();
+	
+	KnockoutFactory getKnockoutFactory();
+	
+	JsTreeFactory getJsTreeFactory();	
 	
 	/**
 	 * Outputs icon, text, help tooltip icon to the content consumer.
@@ -33,8 +56,84 @@ public interface ViewGenerator {
 	
 	Tag label(Label label);
 	
+	/**
+	 * Outputs label to a fragment.
+	 * @param label
+	 * @return
+	 */
+	Fragment labelFragment(Label label);
+	
 	Tag link(Action action);
 	
+	// --- List & action groups ---
+	
+	/**
+	 * Adds a label to a list group.
+	 * @param listGroup
+	 * @param label
+	 */
+	Tag add(ListGroup listGroup, Label label, boolean active, boolean disabled);
+
+	/**
+	 * Adds a label to a list group.
+	 * @param listGroup
+	 * @param label
+	 */
+	Tag add(ListGroup listGroup, Action action, boolean active);
+	
+	/**
+	 * Adds an action to action group.
+	 * @param actionGroup
+	 * @param action
+	 * @return
+	 */
+	Tag add(ActionGroup actionGroup, Action action, boolean active);
+	
+	/**
+	 * Adds an action to an action group with execution result as content.
+	 * @param actionGroup
+	 * @param action
+	 * @return
+	 */
+	Tag addContent(ActionGroup actionGroup, Action action, boolean active);
+	
+	/**
+	 * Adds an action to navs with execution result as content.
+	 * @param actionGroup
+	 * @param action
+	 * @return
+	 */
+	void add(Navs navs, Action action, boolean active);
+	
+	/**
+	 * Adds an action to an action group with execution result as content.
+	 * @param actionGroup
+	 * @param action
+	 * @return
+	 */
+	Tag addContent(ActionGroup actionGroup, Action action, boolean active, Map<String,Object> input);
+	
+	/**
+	 * Adds an action to navs with execution result as content.
+	 * @param actionGroup
+	 * @param action
+	 * @return
+	 */
+	void add(Navs navs, Action action, boolean active, Map<String,Object> input);
+		
+	/**
+	 * Adds an action to a named items container with label as name and execution result as content. 
+	 * @param container
+	 * @param action
+	 */
+	void add(NamedItemsContainer container, Action action);	
+	
+	/**
+	 * Adds an action to a named items container with label as name and execution result as content. 
+	 * @param container
+	 * @param action
+	 */
+	void add(NamedItemsContainer container, Action action, Map<String,Object> input);
 	
 	// --- TODO ---
 	

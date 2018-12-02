@@ -10,11 +10,11 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
  *
  * @param <H>
  */
-public class WrappingBootstrapElementImpl<H extends HTMLElement<?>, B extends BootstrapElement<H,B>> extends BootstrapElementImpl<H,B> {
+public class WrappingBootstrapElementImpl<H extends HTMLElement<?>, B extends BootstrapElement<H,?>> extends BootstrapElementImpl<H,B> {
 
 	protected H htmlElement;
 
-	protected WrappingBootstrapElementImpl(BootstrapFactory factory, H htmlElement) {
+	public WrappingBootstrapElementImpl(BootstrapFactory factory, H htmlElement) {
 		super(factory);
 		this.htmlElement = htmlElement;
 	}
@@ -27,11 +27,6 @@ public class WrappingBootstrapElementImpl<H extends HTMLElement<?>, B extends Bo
 	@Override
 	public void close() throws Exception {
 		htmlElement.close();		
-	}
-
-	@Override
-	public Object produce(int indent) {
-		return htmlElement.produce(indent);
 	}
 
 }

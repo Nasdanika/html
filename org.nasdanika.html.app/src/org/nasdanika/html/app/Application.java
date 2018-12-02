@@ -26,11 +26,11 @@ public interface Application extends Producer, AutoCloseable {
 	Application navigationBar(Object... content);
 	
 	/**
-	 * Adds left panel content. 
+	 * Adds navigation panel content. 
 	 * @param content
 	 * @return
 	 */
-	Application leftPanel(Object... content);
+	Application navigationPanel(Object... content);
 	
 	/**
 	 * Adds content panel content. 
