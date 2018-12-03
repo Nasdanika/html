@@ -179,7 +179,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		
 		if (label.getNotification() != null) {
 			Tag badge = getBootstrapFactory().badge(true, label.getColor() == Color.PRIMARY ? Color.SECONDARY : Color.PRIMARY, label.getNotification());
-			badge.style().margin().left("0.5em");
+			badge.style().margin().left("0.3em");
 			contentConsumer.accept(badge);
 //			getBootstrapFactory().wrap(badge)._float().right();
 		}
