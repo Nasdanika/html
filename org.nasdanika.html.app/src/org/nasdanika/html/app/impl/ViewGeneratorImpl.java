@@ -72,6 +72,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	}
 	
 	protected void bindLink(Action action, HTMLElement<?> anchor) {
+		// TODO - confirmation.
 		ActionActivator activator = getActionActivator(action);
 		if (activator instanceof NavigationActionActivator) {
 			anchor.attribute("href", ((NavigationActionActivator) activator).getUrl());

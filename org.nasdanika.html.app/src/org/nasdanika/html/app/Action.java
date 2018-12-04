@@ -1,6 +1,9 @@
 package org.nasdanika.html.app;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Abstraction of something that can be invoked.
@@ -67,5 +70,42 @@ public interface Action extends Label, Executable {
 	boolean isInRole(String role);
 	
 	ActionActivator getActivator();
+		
+	@Override
+	default Map<String, Object> toMap() {
+		Map<String, Object> map = Label.super.toMap();
+		if (getActivator() instanceof NavigationActionActivator) {
+			map.put("activator", Collections.singletonMap("url", ((NavigationActionActivator) getActivator()).getUrl()));
+		} else if (getActivator() instanceof ScriptActionActivator) {
+			map.put("activator", Collections.singletonMap("code", ((ScriptActionActivator) getActivator()).getCode()));
+		}
+		if (getChildren() != null) {
+			List<Map<String, Object>> mc = new ArrayList<>();
+			map.put("children", mc);
+			for (Action child: getChildren()) {
+				mc.add(child.toMap());
+			}
+		}
+		if (getContextActions() != null) {
+			List<Map<String, Object>> mcx = new ArrayList<>();
+			map.put("contextActions", mcx);
+			for (Action child: getContextActions()) {
+				mcx.add(child.toMap());
+			}
+		}
+		if (getConfirmation() != null) {
+			map.put("confirmation", getConfirmation());
+		}
+		if (isDisabled()) {
+			map.put("disabled", true);
+		}
+		if (isFloatRight()) {
+			map.put("floatRight", true);
+		}
+		// Roles cannot be stored at this level.
+		return map;
+	}
+	
+	
 	
 }

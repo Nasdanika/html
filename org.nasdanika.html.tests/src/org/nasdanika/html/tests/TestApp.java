@@ -255,7 +255,11 @@ public class TestApp extends HTMLTestBase {
 					}
 				}
 			}
-		}		
+		}	
+		
+		Map<String, Object> actionMap = appAction.toMap();
+		JSONObject actionJson = new JSONObject(actionMap);
+		writeFile("app/action/action.json", actionJson.toString(4));
 	}	
 
 	@Test
