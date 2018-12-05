@@ -26,7 +26,7 @@
     </contextActions>
     <contextActions icon="fas fa-envelope-square" text="Message center" notification="2">
       <activator xsi:type="org.nasdanika.html.app:NavigationActionActivator" url="message-center.html"/>
-    </contextActions>
+    </contextActions>        
     <activator xsi:type="org.nasdanika.html.app:NavigationActionActivator" url="john-doe.html"/>
   </children>
   <contextActions icon="far fa-envelope" id="contact-us" text="Contact Us">

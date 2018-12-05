@@ -15,7 +15,7 @@ public interface Navbar extends BootstrapElement<Tag,Navbar> {
 	 */
 	Tag item(Object href, boolean active, boolean disabled, Object... content);
 	
-	Dropdown dropdown(Object... name); 
+	Dropdown dropdown(boolean active, Object... name); 
 
 	Navbar form(org.nasdanika.html.Form form);
 	

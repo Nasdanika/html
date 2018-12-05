@@ -222,7 +222,7 @@ public class TestBootstrap extends HTMLTestBase {
 		navbar.item("#", false, false, "Item 2");
 		navbar.item("#", false, true, "Item 3");
 		
-		Dropdown dropdown = navbar.dropdown("Dropdown 4");
+		Dropdown dropdown = navbar.dropdown(false, "Dropdown 4");
 		dropdown.item(HTMLFactory.INSTANCE.link("#", "Item 1"), false, false);
 		dropdown.header("Header");
 		dropdown.item(HTMLFactory.INSTANCE.link("#", "Item 2"), true, false);
@@ -245,6 +245,25 @@ public class TestBootstrap extends HTMLTestBase {
 						
 		writeThemedPage("bootstrap/list-group.html", "Bootstrap list group", listGroup); 
 	}	
+		
+	@Test
+	public void testActionGroupInNavs() throws Exception {
+		ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
+		
+		actionGroup.contentAction("One", false, false, Color.DEFAULT, null, "First content");
+		actionGroup.contentAction("Two - active", true, false, Color.DEFAULT, "action-xyz", "Active content");
+		actionGroup.contentAction("Three - disabled", false, true, Color.DEFAULT, null, "Disabled content");
+		actionGroup.contentAction("Four - warning", false, false, Color.WARNING, null, BootstrapFactory.INSTANCE.alert(Color.WARNING, "Be careful!"));
+		
+		Navs simpleTabs = BootstrapFactory.INSTANCE.tabs();
+		simpleTabs.item("First", actionGroup.asContainer().margin().top(1).toBootstrapElement());
+		simpleTabs.item("Second", "Second content");
+		simpleTabs.item("Third", "Third content");
+		simpleTabs.item("Fourth", "Fourth content");
+				
+		writeThemedPage("bootstrap/content-action-group-in-tabs.html", "Bootstrap content action group in tabs", simpleTabs);		
+	}
+	
 		
 	@Test
 	public void testFlushListGroup() throws Exception {		

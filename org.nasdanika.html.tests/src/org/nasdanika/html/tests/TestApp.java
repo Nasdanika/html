@@ -1,5 +1,6 @@
 package org.nasdanika.html.tests;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +113,7 @@ public class TestApp extends HTMLTestBase {
 	
 	@Test
 	public void testBootstrapApp() throws Exception {
-		try (Application app = new BootstrapContainerApplication(Theme.Litera) {
+		try (Application app = new BootstrapContainerApplication(Theme.Litera, false) {
 			
 			{
 				container.border(Color.DANGER);
@@ -220,7 +221,7 @@ public class TestApp extends HTMLTestBase {
 						}
 						
 						for (Entry<String, ApplicationBuilder> be: createApplicationBuilders(principalAction, principalAction.getChildren(), (Action) next).entrySet()) {
-							try (Application app = new BootstrapContainerApplication(theme) {
+							try (Application app = new BootstrapContainerApplication(theme, true) {
 								
 								{
 									header.background(Color.PRIMARY);
@@ -265,18 +266,18 @@ public class TestApp extends HTMLTestBase {
 	
 	protected Map<String, ApplicationBuilder> createApplicationBuilders(Action principalAction, List<? extends Action> navigation, Action selected) {
 		Map<String, ApplicationBuilder> ret = new HashMap<>();
-		ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected) {
+		ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {
 			@Override
-			protected Object generateHeader(ViewGenerator viewGenerator, Object result) {
-				return ((Tag) super.generateHeader(viewGenerator, result)).addClass("text-dark", "text-decoration: none");
+			protected Object generateHeader(ViewGenerator viewGenerator) {
+				return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark", "text-decoration: none");
 			}
 		};			
 		ret.put("link-group", appBuilder);
 		
-		ApplicationBuilder jsTreeAppBuilder = new JsTreeNavigationPanelActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected) {
+		ApplicationBuilder jsTreeAppBuilder = new JsTreeNavigationPanelActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {
 			@Override
-			protected Object generateHeader(ViewGenerator viewGenerator, Object result) {
-				return ((Tag) super.generateHeader(viewGenerator, result)).addClass("text-dark", "text-decoration: none");
+			protected Object generateHeader(ViewGenerator viewGenerator) {
+				return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark", "text-decoration: none");
 			}
 		};			
 		ret.put("js-tree", jsTreeAppBuilder);

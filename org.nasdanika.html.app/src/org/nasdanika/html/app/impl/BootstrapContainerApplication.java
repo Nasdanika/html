@@ -28,37 +28,44 @@ public class BootstrapContainerApplication implements Application {
 	 * Creates bootstrap CDN application
 	 */
 	public BootstrapContainerApplication() {
-		this(BootstrapFactory.INSTANCE);
+		this(BootstrapFactory.INSTANCE, false);
+	}
+
+	/**
+	 * Creates bootstrap CDN application
+	 */
+	public BootstrapContainerApplication(boolean fluid) {
+		this(BootstrapFactory.INSTANCE, fluid);
 	}
 	
 	/**
 	 * Creates bootstrap CDN application
 	 */
-	public BootstrapContainerApplication(BootstrapFactory factory) {
-		this(factory, Theme.Default);
+	public BootstrapContainerApplication(BootstrapFactory factory, boolean fluid) {
+		this(factory, Theme.Default, fluid);
 	}
 	
 	/**
 	 * Creates bootstrap CDN application
 	 */
-	public BootstrapContainerApplication(Theme theme) {
-		this(BootstrapFactory.INSTANCE, theme);
+	public BootstrapContainerApplication(Theme theme, boolean fluid) {
+		this(BootstrapFactory.INSTANCE, theme, fluid);
 	}
 	
 	/**
 	 * Creates bootstrap CDN application
 	 */
-	public BootstrapContainerApplication(BootstrapFactory factory, Theme theme) {
-		this(factory, factory.getHTMLFactory().page());
+	public BootstrapContainerApplication(BootstrapFactory factory, Theme theme, boolean fluid) {
+		this(factory, factory.getHTMLFactory().page(), fluid);
 		factory.bootstrapCdnHTMLPage(page, theme);
 	}		
 	
 	/**
 	 * Creates bootstrap application from bootstrap pre-configured page.
 	 */
-	public BootstrapContainerApplication(BootstrapFactory factory, HTMLPage page) {
+	public BootstrapContainerApplication(BootstrapFactory factory, HTMLPage page, boolean fluid) {
 		this.page = page;
-		container = factory.container();
+		container = fluid ? factory.fluidContainer() : factory.container();
 		page.body(container);
 		header = container.row().col();
 		navigationBar = container.row().col();

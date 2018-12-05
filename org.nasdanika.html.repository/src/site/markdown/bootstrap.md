@@ -277,7 +277,7 @@ navbar.item("#", true, false, "Item 1");
 navbar.item("#", false, false, "Item 2");
 navbar.item("#", false, true, "Item 3");
 		
-Dropdown dropdown = navbar.dropdown("Dropdown 4");
+Dropdown dropdown = navbar.dropdown(false, "Dropdown 4");
 dropdown.item(HTMLFactory.INSTANCE.link("#", "Item 1"), false, false);
 dropdown.header("Header");
 dropdown.item(HTMLFactory.INSTANCE.link("#", "Item 2"), true, false);
