@@ -54,6 +54,7 @@
 			    <configuration>
 			        <skip>false</skip>
 			        <skipDeploy>false</skipDeploy>
+			        <chmod>false</chmod>
 			    </configuration>
 			</plugin>		
 			<plugin>
