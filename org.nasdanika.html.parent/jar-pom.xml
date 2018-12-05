@@ -118,6 +118,45 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
+			
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+						<executions>
+							<execution>
+								<id>ftp</id>
+								<phase>deploy</phase> <!-- Shall it be in install??? -->
+								<configuration>
+									<target>
+										<sshexec host="${env.FTP_SERVER}"
+										         username="${env.FTP_USER}"
+										         password="${env.FTP_PASSWORD}"
+										         command="rm -r /${siteDir}; mkdir /${siteDir}/maven-repository"/>
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.apache.ant</groupId>
+								<artifactId>ant-commons-net</artifactId>
+								<version>1.10.5</version>
+							</dependency>
+					        <dependency>
+					            <groupId>org.apache.ant</groupId>
+					            <artifactId>ant-jsch</artifactId>
+					            <version>1.10.5</version>
+					        </dependency>					
+						</dependencies>
+					</plugin>									
+				</plugins>
+			</build>
 
 			<distributionManagement>
 				<snapshotRepository>
