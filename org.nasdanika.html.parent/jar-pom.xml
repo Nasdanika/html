@@ -132,14 +132,22 @@
 						<executions>
 							<execution>
 								<id>ftp</id>
-								<phase>deploy</phase> <!-- Shall it be in install??? -->
+								<phase>post-site</phase>
 								<configuration>
 									<target>
-										<sshexec host="${env.FTP_SERVER}"
-										         username="${env.FTP_USER}"
-										         password="${env.FTP_PASSWORD}"
-										         command="rm -r /${siteDir}"/>
-										<!-- ; mkdir /${siteDir}/maven-repository -->
+										<ftp passive="yes" action="mkdir" server="${env.FTP_SERVER}" userid="${env.FTP_USER}" password="${env.FTP_PASSWORD}" remotedir="/${siteDir}"/>
+									
+										<ftp passive="yes" action="delete" server="${env.FTP_SERVER}" userid="${env.FTP_USER}" password="${env.FTP_PASSWORD}" remotedir="/${siteDir}">
+											<fileset defaultexcludes="false">
+												<include name="**" />
+											</fileset>
+										</ftp>
+										
+										<ftp passive="yes" action="rmdir" server="${env.FTP_SERVER}" userid="${env.FTP_USER}" password="${env.FTP_PASSWORD}" remotedir="/${siteDir}">
+											<fileset defaultexcludes="false">
+												<include name="**" />
+											</fileset>
+										</ftp>
 									</target>
 								</configuration>
 								<goals>
@@ -153,13 +161,8 @@
 								<artifactId>ant-commons-net</artifactId>
 								<version>1.10.5</version>
 							</dependency>
-					        <dependency>
-					            <groupId>org.apache.ant</groupId>
-					            <artifactId>ant-jsch</artifactId>
-					            <version>1.10.5</version>
-					        </dependency>					
 						</dependencies>
-					</plugin>									
+					</plugin>					
 				</plugins>
 			</build>
 

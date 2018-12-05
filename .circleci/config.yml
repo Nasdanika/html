@@ -22,5 +22,5 @@ jobs:
     
     steps:
       - checkout
-      - run: cd org.nasdanika.html.parent; mvn -X -s ../.circleci/settings.xml -f jar-pom.xml clean deploy
+      - run: cd org.nasdanika.html.parent; mvn -s ../.circleci/settings.xml -f jar-pom.xml clean deploy
       - run: cd org.nasdanika.html.parent; mvn -s ../.circleci/settings.xml clean javadoc:javadoc verify jacoco:report-aggregate site-deploy
