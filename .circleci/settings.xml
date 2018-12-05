@@ -8,6 +8,11 @@
       <id>nasdanika-org</id>
       <username>${env.FTP_USER}</username>
       <password>${env.FTP_PASSWORD}</password>
+	<configuration>
+        	<strictHostKeyChecking>no</strictHostKeyChecking>
+	        <preferredAuthentications>publickey,password</preferredAuthentications>
+	        <interactive>false</interactive>
+      	</configuration>
     </server>
   </servers>
 </settings>
