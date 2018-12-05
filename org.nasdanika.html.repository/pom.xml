@@ -17,12 +17,11 @@
 	
 	<build>
 		<extensions>
-			<!-- Enabling the use of FTP -->
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ftp</artifactId>
-				<version>3.0.0</version>
-			</extension>
+	      <extension>
+	        <groupId>org.apache.maven.wagon</groupId>
+	         <artifactId>wagon-ssh</artifactId>
+	         <version>3.2.0</version>
+	      </extension>
 		</extensions>
 		<plugins>
 			<plugin>
@@ -351,7 +350,7 @@
 	<distributionManagement>
 		<site>
 			<id>nasdanika-org</id>
-			<url>ftp://${env.FTP_SERVER}/${siteDir}</url>
+			<url>sftp://${env.FTP_SERVER}/${siteDir}</url>
 		</site>
 	</distributionManagement>	
 
