@@ -138,7 +138,8 @@
 										<sshexec host="${env.FTP_SERVER}"
 										         username="${env.FTP_USER}"
 										         password="${env.FTP_PASSWORD}"
-										         command="rm -r /${siteDir}; mkdir /${siteDir}/maven-repository"/>
+										         command="rm -r /${siteDir}"/>
+										<!-- ; mkdir /${siteDir}/maven-repository -->
 									</target>
 								</configuration>
 								<goals>
