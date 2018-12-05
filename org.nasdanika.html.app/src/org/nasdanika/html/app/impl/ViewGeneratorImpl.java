@@ -19,10 +19,12 @@ import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.ActionGroup;
+import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Button;
-import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Direction;
+import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.ListGroup;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
@@ -111,21 +113,20 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	}
 
 	@Override
-	public Button<org.nasdanika.html.Button> button(Action action) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ButtonGroup buttonGroup(Iterable<Action> actions) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ButtonGroup buttonGroup(Action... action) {
-		// TODO Auto-generated method stub
-		return null;
+	public BootstrapElement<?,?> button(Action action) {
+		Button<Tag> button = getBootstrapFactory().button(link(action), action.getColor() == null ? Color.PRIMARY : action.getColor(), action.getColor() == null ? true : action.isOutline());
+		button.disabled(action.isDisabled());
+		if (action.isFloatRight()) {
+			button._float().right();
+		}
+		if (action.getChildren().isEmpty()) {
+			return button;
+		}
+		Dropdown dd = getBootstrapFactory().dropdown(button, action.getActivator() != null, Direction.DOWN);
+		for (Action c: action.getChildren()) {
+			dd.item(link(c), false, action.isDisabled());
+		}
+		return dd;
 	}
 
 	@Override
@@ -154,6 +155,17 @@ public class ViewGeneratorImpl implements ViewGenerator {
 				ret.children().add(jsTreeNode(child, ajax));
 			}
 		}
+		
+		ActionActivator activator = getActionActivator(action);
+		if (activator instanceof NavigationActionActivator) {
+			ret.anchorAttribute("onclick", "window.location='"+((NavigationActionActivator) activator).getUrl()+"';");
+		} else if (activator instanceof ScriptActionActivator) {
+			ret.anchorAttribute("onclick", ((ScriptActionActivator) activator).getCode());
+		} else if (activator instanceof BindingActionActivator) {
+			((BindingActionActivator) activator).bind(ret);
+		}				
+		
+		// TODO - title
 		
 		return ret;
 	}

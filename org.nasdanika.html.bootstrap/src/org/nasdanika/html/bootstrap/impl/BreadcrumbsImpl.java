@@ -21,12 +21,13 @@ public class BreadcrumbsImpl extends WrappingBootstrapElementImpl<Tag,Breadcrumb
 	}
 
 	@Override
-	public Breadcrumbs item(Object href, Object... content) {
-		ol.content(getFactory().getHTMLFactory()
-				.tag(TagName.li, href== null ? content : new Object[] { getFactory().getHTMLFactory().link(href, content) })
+	public Tag item(boolean active, Object... content) {
+		Tag liTag = getFactory().getHTMLFactory()
+				.tag(TagName.li, content)
 				.addClass("breadcrumb-item")
-				.addClassConditional(href == null, "active"));
-		return this;
+				.addClassConditional(active, "active");
+		ol.content(liTag);
+		return liTag;
 	}
-
+	
 }

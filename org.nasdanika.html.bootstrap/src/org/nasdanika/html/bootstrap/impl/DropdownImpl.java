@@ -3,7 +3,6 @@ package org.nasdanika.html.bootstrap.impl;
 import org.nasdanika.html.Form;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
-import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.Direction;
@@ -60,10 +59,11 @@ public class DropdownImpl extends DivWrappingBootstrapElementImpl<Dropdown> impl
 		menu = new DropdownMenu(factory);
 		htmlElement.content(menu.toHTMLElement());
 	}
-
+	
 	@Override
-	public Tag item(Object href, boolean active, boolean disabled, Object... content) {
-		return menu.item(href, active, disabled, content);
+	public Dropdown item(HTMLElement<?> item, boolean active, boolean disabled) {
+		menu.item(item, active, disabled);
+		return this;
 	}
 
 	@Override

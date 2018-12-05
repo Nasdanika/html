@@ -1,12 +1,14 @@
 package org.nasdanika.html.app.impl;
 
 import java.util.List;
+import java.util.ListIterator;
 import java.util.function.Consumer;
 
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLElement.Event;
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Application;
@@ -15,6 +17,8 @@ import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.ActionGroup;
+import org.nasdanika.html.bootstrap.BootstrapElement;
+import org.nasdanika.html.bootstrap.Breadcrumbs;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.Dropdown;
@@ -90,7 +94,7 @@ public class ActionApplicationBuilder implements ApplicationBuilder {
 		application.header(generateHeader(viewGenerator, result));
 		application.navigationBar(generateNavigationBar(viewGenerator, result));
 		application.navigationPanel(generateNavigationPanel(viewGenerator, result));
-		application.content(generateContent(viewGenerator, result));
+		application.contentPanel(generateContentPanel(viewGenerator, result));
 		application.footer(generateFooter(viewGenerator, result));
 	}
 	
@@ -121,14 +125,7 @@ public class ActionApplicationBuilder implements ApplicationBuilder {
 			} else {
 				Dropdown dropdown = navBar.dropdown(fragment);
 				for (Action cac: ca.getChildren()) {
-					Fragment cFragment = viewGenerator.getHTMLFactory().fragment();
-					viewGenerator.label(cac, cFragment::content);
-					ActionActivator cActivator = cac.getActivator();
-					if (cActivator instanceof NavigationActionActivator) {
-						dropdown.item(((NavigationActionActivator) cActivator).getUrl(), cac == activeAction, ca.isDisabled(), cFragment);
-					} else if (cActivator instanceof ScriptActionActivator) {
-						navBar.item("#", cac == activeAction, cac.isDisabled(), cFragment).on(Event.click, ((ScriptActionActivator) cActivator).getCode());				
-					}
+					dropdown.item(viewGenerator.link(cac), cac == activeAction, ca.isDisabled());
 				}
 			}
 		}
@@ -153,8 +150,33 @@ public class ActionApplicationBuilder implements ApplicationBuilder {
 		return actionGroup;
 	}
 
-	protected Object generateContent(ViewGenerator viewGenerator, Object result) {
-		return result;
+	protected Object generateContentPanel(ViewGenerator viewGenerator, Object result) {
+		Fragment ret = viewGenerator.getHTMLFactory().fragment();
+		// Breadcrumbs
+		if (activeAction.getPath().size() > 2) {
+			Breadcrumbs breadcrumbs = viewGenerator.getBootstrapFactory().breadcrums();
+			breadcrumbs.margin().top(1);
+			ret.content(breadcrumbs);
+			ListIterator<Action> tit = activeAction.getPath().listIterator(2);
+			while (tit.hasNext()) {
+				breadcrumbs.item(false, viewGenerator.link(tit.next()));
+			}		
+			breadcrumbs.item(true, viewGenerator.label(activeAction));
+		}
+		ret.content(viewGenerator.label(activeAction, viewGenerator.getHTMLFactory().tag(TagName.h2)));
+		ret.content(result);
+
+		// Context actions
+		Tag buttonContainer = viewGenerator.getHTMLFactory().nonEmptyDiv();
+		ret.content(buttonContainer);
+		for (Action ca: activeAction.getContextActions()) {
+			BootstrapElement<?, ?> button = viewGenerator.button(ca);
+			button.margin().right(1).top(1).bottom(1);
+			buttonContainer.content(button);
+		}
+		
+		// Sections
+		return ret;
 	}
 
 	protected Object generateFooter(ViewGenerator viewGenerator, Object result) {

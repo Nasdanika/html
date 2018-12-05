@@ -1,5 +1,6 @@
 package org.nasdanika.html.bootstrap;
 
+import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.Tag;
 
 public interface Dropdown extends BootstrapElement<Tag,Dropdown> {
@@ -12,7 +13,7 @@ public interface Dropdown extends BootstrapElement<Tag,Dropdown> {
 	 * @param content
 	 * @return
 	 */
-	Tag item(Object href, boolean active, boolean disabled, Object... content);
+	Dropdown item(HTMLElement<?> item, boolean active, boolean disabled);
 	
 	Dropdown header(Object... content);
 	

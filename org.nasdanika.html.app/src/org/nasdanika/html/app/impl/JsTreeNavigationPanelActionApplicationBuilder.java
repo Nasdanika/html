@@ -3,7 +3,6 @@ package org.nasdanika.html.app.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
@@ -48,7 +47,7 @@ public class JsTreeNavigationPanelActionApplicationBuilder extends ActionApplica
 			roots.add(jsTreeNode);
 		}
 		JSONObject jsTree = jsTreeFactory.buildJsTree(roots);
-		// TODO - context menus, activation
+		// TODO - context menus
 		Tag script = jsTreeFactory.bind(container, jsTree);
 		return htmlFactory.fragment(container, script);
 	}

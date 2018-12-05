@@ -37,7 +37,7 @@ public interface Application extends Producer, AutoCloseable {
 	 * @param content
 	 * @return
 	 */
-	Application content(Object... content);	
+	Application contentPanel(Object... content);	
 	
 	/**
 	 * Adds footer content.

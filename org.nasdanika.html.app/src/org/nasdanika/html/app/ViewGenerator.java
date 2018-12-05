@@ -8,9 +8,8 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.ActionGroup;
+import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Button;
-import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ListGroup;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
@@ -135,15 +134,14 @@ public interface ViewGenerator {
 	 */
 	void add(NamedItemsContainer container, Action action, Map<String,Object> input);
 	
-	// --- TODO ---
-	
 	Tag badge(Label action, boolean isPill);
 	
-	Button<org.nasdanika.html.Button> button(Action action);
-	
-	ButtonGroup buttonGroup(Iterable<Action> actions);
-	
-	ButtonGroup buttonGroup(Action... action);
+	/**
+	 * Builds a button or a dropdown button if action has children.
+	 * @param action
+	 * @return
+	 */
+	BootstrapElement<?,?> button(Action action);
 	
 	JsTreeContextMenuItem jsTreeContextMenuItem(Action action);
 	

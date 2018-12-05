@@ -61,9 +61,9 @@ Tag badgeLink = factory.badgeLink("#", false, Color.WARNING, "Badge link");
 ## Breadcrumbs
 
 ```		
-Breadcrumbs breadcrumbs = factory.breadcrums();
-breadcrumbs.item("#", "First");
-breadcrumbs.item(null, "Last");
+Breadcrumbs breadcrumbs = BootstrapFactory.INSTANCE.breadcrums();
+breadcrumbs.item(false, breadcrumbs.getFactory().getHTMLFactory().link("#", "First"));
+breadcrumbs.item(true, "Last");
 ```
 
 <iframe src="test-dumps/bootstrap/breadcrumbs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
@@ -120,12 +120,17 @@ card.getFooter().toHTMLElement().content("Footer");
 ## Dropdown
 
 ```		
+BootstrapFactory factory = BootstrapFactory.INSTANCE;
+HTMLFactory htmlFactory = factory.getHTMLFactory();
+org.nasdanika.html.Button hButton = htmlFactory.button("Button");	
+Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
+		
 Dropdown dropdown = factory.dropdown(button, true, Direction.DOWN);
-dropdown.item("#", false, false, "Item 1");
+dropdown.item(htmlFactory.link("#", "Item 1"), false, false);
 dropdown.header("Header");
-dropdown.item("#", true, false, "Item 1");
+dropdown.item(htmlFactory.link("#", "Item 2"), true, false);
 dropdown.divider();
-dropdown.item("#", false, true, "Item 1");
+dropdown.item(htmlFactory.link("#", "Item 3"), false, true);
 ```
 
 <iframe src="test-dumps/bootstrap/dropdown.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 150) + 'px'"></iframe>
@@ -273,11 +278,11 @@ navbar.item("#", false, false, "Item 2");
 navbar.item("#", false, true, "Item 3");
 		
 Dropdown dropdown = navbar.dropdown("Dropdown 4");
-dropdown.item("#", false, false, "Item 1");
+dropdown.item(HTMLFactory.INSTANCE.link("#", "Item 1"), false, false);
 dropdown.header("Header");
-dropdown.item("#", true, false, "Item 1");
+dropdown.item(HTMLFactory.INSTANCE.link("#", "Item 2"), true, false);
 dropdown.divider();
-dropdown.item("#", false, true, "Item 1");
+dropdown.item(HTMLFactory.INSTANCE.link("#", "Item 3"), false, true);
 		
 navbar.navbarText("Some text");
 ```

@@ -19,7 +19,7 @@ public class HTMLTableApplication implements Application {
 	protected Cell header;
 	protected Cell navigationBar;
 	protected Cell navigationPanel;
-	protected Cell content;
+	protected Cell contentPanel;
 	protected Cell footer;
 	
 	private HTMLPage page;
@@ -40,7 +40,7 @@ public class HTMLTableApplication implements Application {
 		navigationBar = table.body().row().cell().colspan(2);
 		Row contentRow = table.body().row();
 		navigationPanel = contentRow.cell();
-		content = contentRow.cell();		
+		contentPanel = contentRow.cell();		
 		footer = table.footer().row().cell().colspan(2);		
 	}
 
@@ -63,8 +63,8 @@ public class HTMLTableApplication implements Application {
 	}
 
 	@Override
-	public Application content(Object... content) {
-		this.content.content(content);
+	public Application contentPanel(Object... content) {
+		this.contentPanel.content(content);
 		return this;
 	}
 

@@ -1,7 +1,7 @@
 package org.nasdanika.html.bootstrap.impl;
 
 import org.nasdanika.html.Form;
-import org.nasdanika.html.Tag;
+import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Dropdown;
@@ -19,13 +19,13 @@ public class DropdownMenu extends DivWrappingBootstrapElementImpl<Dropdown> impl
 	}
 
 	@Override
-	public Tag item(Object href, boolean active, boolean disabled, Object... content) {
-		Tag item = getFactory().getHTMLFactory().link(href, content)
-				.addClass("dropdown-item")
-				.addClassConditional(active, "active")
-				.addClassConditional(disabled, "disabled");
+	public Dropdown item(HTMLElement<?> item, boolean active, boolean disabled) {
+		item
+			.addClass("dropdown-item")
+			.addClassConditional(active, "active")
+			.addClassConditional(disabled, "disabled");
 		htmlElement.content(item);
-		return item;
+		return this;
 	}
 
 	@Override

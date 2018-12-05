@@ -20,7 +20,7 @@ public class BootstrapContainerApplication implements Application {
 	protected Col header;
 	protected Col navigationBar;
 	protected Col navigationPanel;
-	protected Col content;
+	protected Col contentPanel;
 	protected Col footer;
 	protected Row contentRow;
 
@@ -64,7 +64,7 @@ public class BootstrapContainerApplication implements Application {
 		navigationBar = container.row().col();
 		contentRow = container.row();
 		navigationPanel = contentRow.col();
-		content = contentRow.col();
+		contentPanel = contentRow.col();
 		footer = container.row().col();
 	}
 	
@@ -88,8 +88,8 @@ public class BootstrapContainerApplication implements Application {
 	}
 
 	@Override
-	public Application content(Object... content) {
-		this.content.toHTMLElement().content(content);
+	public Application contentPanel(Object... content) {
+		this.contentPanel.toHTMLElement().content(content);
 		return this;
 	}
 

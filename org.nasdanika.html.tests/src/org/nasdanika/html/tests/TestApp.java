@@ -105,7 +105,7 @@ public class TestApp extends HTMLTestBase {
 	@Test
 	public void testHTMLApp() throws Exception {
 		try (Application app = new HTMLTableApplication()) {
-			app.header("Header").navigationBar("Navigation bar").navigationPanel("Navigation panel").content("Content").footer("Footer");
+			app.header("Header").navigationBar("Navigation bar").navigationPanel("Navigation panel").contentPanel("Content").footer("Footer");
 			writeFile("app/html/index.html", app.toString());
 		}
 	}
@@ -120,12 +120,12 @@ public class TestApp extends HTMLTestBase {
 				navigationBar.border(Color.DANGER);
 				navigationPanel.border(Color.DANGER).widthAuto();
 				footer.border(Color.DANGER);
-				content.border(Color.DANGER);
+				contentPanel.border(Color.DANGER);
 			}
 			
 		}) {
 			Tag treeContainer = app.getHTMLPage().getFactory().div();
-			app.header("Header").navigationBar("Navigation bar").navigationPanel(treeContainer).content("Content").footer("Footer");
+			app.header("Header").navigationBar("Navigation bar").navigationPanel(treeContainer).contentPanel("Content").footer("Footer");
 			
 			JsTreeFactory jsTreeFactory = JsTreeFactory.INSTANCE;
 			jsTreeFactory.cdn(app.getHTMLPage());
@@ -219,41 +219,40 @@ public class TestApp extends HTMLTestBase {
 							theme = Theme.Default;
 						}
 						
-						try (Application app = new BootstrapContainerApplication(theme) {
-							
-							{
-								header.background(Color.PRIMARY);
-								navigationBar.background(Color.LIGHT).text().color(Color.DARK);
+						for (Entry<String, ApplicationBuilder> be: createApplicationBuilders(principalAction, principalAction.getChildren(), (Action) next).entrySet()) {
+							try (Application app = new BootstrapContainerApplication(theme) {
 								
-								footer.background(Color.SECONDARY).text().alignment(Alignment.CENTER);
+								{
+									header.background(Color.PRIMARY);
+									navigationBar.background(Color.LIGHT).text().color(Color.DARK);
+									
+									footer.background(Color.SECONDARY).text().alignment(Alignment.CENTER);
+									
+									navigationPanel.widthAuto().border(Color.DEFAULT, Placement.RIGHT);
+									contentRow.toHTMLElement().style("min-height", "500px");
+									container.border(Color.DEFAULT).margin().top(1);
+	
+									// Theme select at the bottom for experimentation.
+									BootstrapFactory factory = BootstrapFactory.INSTANCE;
+									Select select = factory.themeSelect(theme);
+									InputGroup selectInputGroup = factory.inputGroup();
+									selectInputGroup.prepend("Select Bootstrap theme");
+									selectInputGroup.input(select);
+									Container themeSelectorContainer = factory.container();
+									themeSelectorContainer.row().col(selectInputGroup).margin().top(2);
+									getHTMLPage().body(themeSelectorContainer);
+													
+									FontAwesomeFactory.INSTANCE.cdn(getHTMLPage());
+									JsTreeFactory.INSTANCE.cdn(getHTMLPage());
+									KnockoutFactory.INSTANCE.cdn(getHTMLPage());
+									
+								}
 								
-								navigationPanel.widthAuto().border(Color.DEFAULT, Placement.RIGHT);
-								contentRow.toHTMLElement().style("min-height", "500px");
-								container.border(Color.DEFAULT).margin().top(1);
-
-								// Theme select at the bottom for experimentation.
-								BootstrapFactory factory = BootstrapFactory.INSTANCE;
-								Select select = factory.themeSelect(theme);
-								InputGroup selectInputGroup = factory.inputGroup();
-								selectInputGroup.prepend("Select Bootstrap theme");
-								selectInputGroup.input(select);
-								Container themeSelectorContainer = factory.container();
-								themeSelectorContainer.row().col(selectInputGroup).margin().top(2);
-								getHTMLPage().body(themeSelectorContainer);
-												
-								FontAwesomeFactory.INSTANCE.cdn(getHTMLPage());
-								JsTreeFactory.INSTANCE.cdn(getHTMLPage());
-								KnockoutFactory.INSTANCE.cdn(getHTMLPage());
-								
-							}
-							
-						}) {							
-							for (Entry<String, ApplicationBuilder> be: createApplicationBuilders(principalAction, principalAction.getChildren(), (Action) next).entrySet()) {
+							}) {							
 								be.getValue().build(app);
 								writeFile("app/action/"+be.getKey()+"/"+href, app.toString());
-								
 							}
-						}
+						}						
 					}
 				}
 			}

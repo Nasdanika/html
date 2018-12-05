@@ -50,8 +50,8 @@ public class TestBootstrap extends HTMLTestBase {
 	@Test
 	public void testBreadcrumbs() throws Exception {
 		Breadcrumbs breadcrumbs = BootstrapFactory.INSTANCE.breadcrums();
-		breadcrumbs.item("#", "First");
-		breadcrumbs.item(null, "Last");
+		breadcrumbs.item(false, breadcrumbs.getFactory().getHTMLFactory().link("#", "First"));
+		breadcrumbs.item(true, "Last");
 		writeThemedPage("bootstrap/breadcrumbs.html", "Bootstrap breadcrumbs", breadcrumbs); 
 	}
 		
@@ -122,11 +122,11 @@ public class TestBootstrap extends HTMLTestBase {
 		Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
 		
 		Dropdown dropdown = factory.dropdown(button, true, Direction.DOWN);
-		dropdown.item("#", false, false, "Item 1");
+		dropdown.item(htmlFactory.link("#", "Item 1"), false, false);
 		dropdown.header("Header");
-		dropdown.item("#", true, false, "Item 1");
+		dropdown.item(htmlFactory.link("#", "Item 2"), true, false);
 		dropdown.divider();
-		dropdown.item("#", false, true, "Item 1");
+		dropdown.item(htmlFactory.link("#", "Item 3"), false, true);
 				
 		writeThemedPage("bootstrap/dropdown.html", "Bootstrap dropdown", dropdown); 
 	}
@@ -223,11 +223,11 @@ public class TestBootstrap extends HTMLTestBase {
 		navbar.item("#", false, true, "Item 3");
 		
 		Dropdown dropdown = navbar.dropdown("Dropdown 4");
-		dropdown.item("#", false, false, "Item 1");
+		dropdown.item(HTMLFactory.INSTANCE.link("#", "Item 1"), false, false);
 		dropdown.header("Header");
-		dropdown.item("#", true, false, "Item 1");
+		dropdown.item(HTMLFactory.INSTANCE.link("#", "Item 2"), true, false);
 		dropdown.divider();
-		dropdown.item("#", false, true, "Item 1");
+		dropdown.item(HTMLFactory.INSTANCE.link("#", "Item 3"), false, true);
 		
 		navbar.navbarText("Some text");
 				
