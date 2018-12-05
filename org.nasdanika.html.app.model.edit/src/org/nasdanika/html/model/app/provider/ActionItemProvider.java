@@ -73,7 +73,6 @@ public class ActionItemProvider
 			addNotificationPropertyDescriptor(object);
 			addConfirmationPropertyDescriptor(object);
 			addFloatRightPropertyDescriptor(object);
-			addRolesPropertyDescriptor(object);
 			addDisabledPropertyDescriptor(object);
 			addIteratorPropertyDescriptor(object);
 		}
@@ -301,28 +300,6 @@ public class ActionItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Roles feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addRolesPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Action_roles_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Action_roles_feature", "_UI_Action_type"),
-				 AppPackage.Literals.ACTION__ROLES,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
 	 * This adds a property descriptor for the Disabled feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -381,6 +358,7 @@ public class ActionItemProvider
 			childrenFeatures.add(AppPackage.Literals.ACTION__CHILDREN);
 			childrenFeatures.add(AppPackage.Literals.ACTION__CONTEXT_ACTIONS);
 			childrenFeatures.add(AppPackage.Literals.ACTION__ACTIVATOR);
+			childrenFeatures.add(AppPackage.Literals.ACTION__SECTIONS);
 		}
 		return childrenFeatures;
 	}
@@ -447,7 +425,6 @@ public class ActionItemProvider
 			case AppPackage.ACTION__NOTIFICATION:
 			case AppPackage.ACTION__CONFIRMATION:
 			case AppPackage.ACTION__FLOAT_RIGHT:
-			case AppPackage.ACTION__ROLES:
 			case AppPackage.ACTION__DISABLED:
 			case AppPackage.ACTION__ITERATOR:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
@@ -455,6 +432,7 @@ public class ActionItemProvider
 			case AppPackage.ACTION__CHILDREN:
 			case AppPackage.ACTION__CONTEXT_ACTIONS:
 			case AppPackage.ACTION__ACTIVATOR:
+			case AppPackage.ACTION__SECTIONS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -521,6 +499,26 @@ public class ActionItemProvider
 			(createChildParameter
 				(AppPackage.Literals.ACTION__ACTIVATOR,
 				 AppFactory.eINSTANCE.createScriptActionActivator()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__SECTIONS,
+				 AppFactory.eINSTANCE.createAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__SECTIONS,
+				 AppFactory.eINSTANCE.createThemedAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__SECTIONS,
+				 AppFactory.eINSTANCE.createContentAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__SECTIONS,
+				 AppFactory.eINSTANCE.createThemedContentAction()));
 	}
 
 	/**
@@ -536,7 +534,8 @@ public class ActionItemProvider
 
 		boolean qualify =
 			childFeature == AppPackage.Literals.ACTION__CHILDREN ||
-			childFeature == AppPackage.Literals.ACTION__CONTEXT_ACTIONS;
+			childFeature == AppPackage.Literals.ACTION__CONTEXT_ACTIONS ||
+			childFeature == AppPackage.Literals.ACTION__SECTIONS;
 
 		if (qualify) {
 			return getString

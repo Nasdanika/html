@@ -144,7 +144,8 @@ public class ThemedContentActionItemProvider extends ContentActionItemProvider {
 
 		boolean qualify =
 			childFeature == AppPackage.Literals.ACTION__CHILDREN ||
-			childFeature == AppPackage.Literals.ACTION__CONTEXT_ACTIONS;
+			childFeature == AppPackage.Literals.ACTION__CONTEXT_ACTIONS ||
+			childFeature == AppPackage.Literals.ACTION__SECTIONS;
 
 		if (qualify) {
 			return getString

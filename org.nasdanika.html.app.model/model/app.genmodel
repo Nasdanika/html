@@ -34,10 +34,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/confirmation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/contextActions"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/floatRight"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/roles"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/disabled"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/activator"/>
       <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute app.ecore#//Action/iterator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/sections"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//ThemedAction">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ThemedAction/theme"/>

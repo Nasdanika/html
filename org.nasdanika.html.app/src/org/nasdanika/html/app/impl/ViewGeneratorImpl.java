@@ -140,7 +140,9 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		
 		ret.icon(action.getIcon());
 		ret.text(action.getText());
-		ret.anchorAttribute("title", action.getTooltip());
+		if (action.getTooltip() != null) {
+			ret.anchorAttribute("title", action.getTooltip());
+		}
 		ret.id(action.getId());
 		ret.disabled(action.isDisabled());
 		if (ajax) {

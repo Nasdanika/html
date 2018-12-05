@@ -2,6 +2,7 @@
  */
 package org.nasdanika.html.model.app;
 
+import java.util.Map;
 
 /**
  * <!-- begin-user-doc -->
@@ -79,5 +80,17 @@ public interface ContentAction extends Action {
 	 * @generated
 	 */
 	void setContentType(ContentType value);
+	
+	@Override
+	default Map<String, Object> toMap() {
+		Map<String, Object> map = Action.super.toMap();
+		if (getContent() != null) {
+			map.put("content", getContent());
+		}
+		if (getContentType() != null) {
+			map.put("contentType", getContentType().name());
+		}
+		return map;
+	}
 
 } // ContentAction

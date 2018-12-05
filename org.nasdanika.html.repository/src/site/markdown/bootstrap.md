@@ -106,6 +106,17 @@ toolbar.add(buttonGroup);
 
 <iframe src="test-dumps/bootstrap/button-toolbar.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 	
+## Card
+
+```
+Card card = BootstrapFactory.INSTANCE.card();		
+card.getTitle().toHTMLElement().content("Header");
+card.getBody().toHTMLElement().content("Body");
+card.getFooter().toHTMLElement().content("Footer");		
+```
+
+<iframe src="test-dumps/bootstrap/card.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+	
 ## Dropdown
 
 ```		

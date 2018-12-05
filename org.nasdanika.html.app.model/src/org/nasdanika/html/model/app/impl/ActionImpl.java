@@ -39,10 +39,10 @@ import org.nasdanika.html.model.app.AppPackage;
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getConfirmation <em>Confirmation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getContextActions <em>Context Actions</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isFloatRight <em>Float Right</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getRoles <em>Roles</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isDisabled <em>Disabled</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getActivator <em>Activator</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getIterator <em>Iterator</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getSections <em>Sections</em>}</li>
  * </ul>
  *
  * @generated
@@ -282,16 +282,6 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
-	public EList<String> getRoles() {
-		return (EList<String>)eGet(AppPackage.Literals.ACTION__ROLES, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public boolean isDisabled() {
 		return (Boolean)eGet(AppPackage.Literals.ACTION__DISABLED, true);
 	}
@@ -339,6 +329,16 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 */
 	public void setIterator(String newIterator) {
 		eSet(AppPackage.Literals.ACTION__ITERATOR, newIterator);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	public EList<Action> getSections() {
+		return (EList<Action>)eGet(AppPackage.Literals.ACTION__SECTIONS, true);
 	}
 
 	/**
@@ -421,11 +421,6 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 			throw new ApplicationException("No execution delegate", this);
 		}
 		return delegate.execute(viewGenerator, input);
-	}
-
-	@Override
-	public boolean isInRole(String role) {
-		return getRoles().isEmpty() || getRoles().contains(role);
 	}
 
 } //ActionImpl

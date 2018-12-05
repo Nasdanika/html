@@ -30,12 +30,19 @@ public interface BootstrapFactory {
 	Tag badgeLink(Object href, boolean pill, Color color, Object... content);
 	
 	/**
-	 * Wraps HTML element for applyng Bootstrap styling.
+	 * Wraps HTML element for applying Bootstrap styling.
 	 * @param htmlElement
 	 * @return
 	 */
 	<H extends HTMLElement<?>> BootstrapElement<H, BootstrapElement<H, ?>> wrap(H htmlElement);
 	
+	/**
+	 * Wraps tag.
+	 * @param tag
+	 * @return
+	 */
+	TagBootstrapElement wrap(Tag tag);
+			
 	Breadcrumbs breadcrums();
 	
 	/**
@@ -169,9 +176,10 @@ public interface BootstrapFactory {
 	ListGroup listGroup(boolean flush);
 	
 	ActionGroup actionGroup(boolean flush);
+	
+	Card card();
 		
 	/* TODO - Implement, add factory method and remove
-	 * Navbar
 	 * Modal
 
 	 * TODO - create issues to implement in later versions (Bootstrap category).
@@ -181,7 +189,6 @@ public interface BootstrapFactory {
 	 * Popover
 	 * Progress
 	 * Scrollspy
-	 * Card
 	 * Carousel
 	 * Collapse
 	 *  

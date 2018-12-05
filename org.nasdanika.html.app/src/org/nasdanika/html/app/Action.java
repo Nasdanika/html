@@ -33,20 +33,26 @@ public interface Action extends Label, Executable {
 	boolean isFloatRight(); 
 	
 	/**
-	 * Sub-actions. If action has children it may be rendered, for example, as a drop-down button.
+	 * Sub-actions. If action has children it may be displayed, for example, as a drop-down button.
 	 * Implementations may create child actions list on access to optimize processing in cases of, say on-demand ajax loading.
 	 * @return
 	 */
 	List<? extends Action> getChildren();
 	
 	/**
-	 * Actions which are typically rendered as context menu. For example, View customer action may have View account action as its child - so it is appears
+	 * Actions which are typically displayed in a context menu. For example, View customer action may have View account action as its child - so it is appears
 	 * this way in the left navigation panel, and Edit profile context action.
 	 * At the same time context actions may be rendered as a button group at the content area. 
 	 * E.g. for view Customer.accounts reference child actions would be account view actions and context actions may include "Open account" action.    
 	 * @return
 	 */
 	List<? extends Action> getContextActions();		
+	
+	/**
+	 * Actions which are displayed in sections in the content pane.  
+	 * @return
+	 */
+	List<? extends Action> getSections();
 	
 	/**
 	 * Parent action.
@@ -59,15 +65,6 @@ public interface Action extends Label, Executable {
 	 * @return
 	 */
 	List<Action> getPath();
-	
-	/**
-	 * Actions may be displayed in different parts of the application, e.g. in the left navigation tree
-	 * and/or in sections below the parent action. This method allows to select actions to be displayed in 
-	 * a particular place. E.g. if this method returns true for 'tree' role then the action will appear in the tree
-	 * @param role
-	 * @return
-	 */
-	boolean isInRole(String role);
 	
 	ActionActivator getActivator();
 		
@@ -89,8 +86,15 @@ public interface Action extends Label, Executable {
 		if (getContextActions() != null) {
 			List<Map<String, Object>> mcx = new ArrayList<>();
 			map.put("contextActions", mcx);
-			for (Action child: getContextActions()) {
-				mcx.add(child.toMap());
+			for (Action cx: getContextActions()) {
+				mcx.add(cx.toMap());
+			}
+		}
+		if (getSections() != null) {
+			List<Map<String, Object>> ms = new ArrayList<>();
+			map.put("sections", ms);
+			for (Action section: getSections()) {
+				ms.add(section.toMap());
 			}
 		}
 		if (getConfirmation() != null) {

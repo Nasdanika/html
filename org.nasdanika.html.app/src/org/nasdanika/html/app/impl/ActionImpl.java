@@ -2,11 +2,9 @@ package org.nasdanika.html.app.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
@@ -23,10 +21,10 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 	private List<Action> children = new ArrayList<>();
 	private String confirmation;
 	private List<Action> contextActions = new ArrayList<>();
+	private List<Action> sections = new ArrayList<>();
 	private Action parent;
 	private boolean disabled;
 	private boolean floatRight;
-	private Set<String> roles = new HashSet<>();
 	private ActionActivator activator;
 	
 	public ActionImpl() {
@@ -49,17 +47,16 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 				contextActions.add(createAction(c));
 			}
 		}
+		@SuppressWarnings("unchecked")
+		Iterable<Map<String, Object>> sd = (Iterable<Map<String, Object>>) data.get("sections");
+		if (sd != null) {
+			for (Map<String, Object> c: sd) {
+				sections.add(createAction(c));
+			}
+		}		
 		confirmation = (String) data.get("confirmation");
 		disabled = Boolean.TRUE.equals(data.get("disabled"));
 		floatRight = Boolean.TRUE.equals(data.get("floatRight"));
-		
-		@SuppressWarnings("unchecked")
-		Iterable<String> rd = (Iterable<String>) data.get("roles");
-		if (rd != null) {
-			for (String r: rd) {
-				roles.add(r);
-			}
-		}
 		
 		@SuppressWarnings("unchecked")
 		Map<String, String> ad = (Map<String, String>) data.get("activator");
@@ -104,8 +101,9 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 		this.parent = parent;
 	}
 	
-	public Set<String> getRoles() {
-		return roles;
+	@Override
+	public List<? extends Action> getSections() {
+		return sections;
 	}
 
 	@Override
@@ -148,11 +146,6 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 		return ret;
 	}
 
-	@Override
-	public boolean isInRole(String role) {
-		return roles.isEmpty() || roles.contains(role);
-	}
-
 	public void setConfirmation(String confirmation) {
 		this.confirmation = confirmation;
 	}
@@ -163,19 +156,6 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 
 	public void setFloatRight(boolean floatRight) {
 		this.floatRight = floatRight;
-	}
-
-	@Override
-	public Map<String, Object> toMap() {
-		Map<String, Object> map = Action.super.toMap();
-		if (getRoles() != null) {
-			List<String> mr = new ArrayList<>();
-			map.put("roles", mr);
-			for (String role: getRoles()) {
-				mr.add(role);
-			}			
-		}
-		return map;
 	}
 	
 }

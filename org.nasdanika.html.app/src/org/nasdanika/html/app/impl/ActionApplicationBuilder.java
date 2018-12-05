@@ -76,7 +76,6 @@ public class ActionApplicationBuilder implements ApplicationBuilder {
 	public void build(Application application) {
 		// A little trick to solve the chicken and egg problem
 		Fragment[] cf = { null };
-		@SuppressWarnings("unchecked")
 		ViewGenerator viewGenerator = createViewGenerator(content-> cf[0].accept(content));
 		
 		Fragment contentFragment = viewGenerator.getHTMLFactory().fragment();
@@ -159,8 +158,15 @@ public class ActionApplicationBuilder implements ApplicationBuilder {
 	}
 
 	protected Object generateFooter(ViewGenerator viewGenerator, Object result) {
-		// TODO Auto-generated method stub
-		return "Footer";
+		// Single-level footer actions. 
+		Fragment ret = viewGenerator.getHTMLFactory().fragment();
+		for (Action ca: rootAction.getContextActions()) {
+			if (!ret.isEmpty()) {
+				ret.content("&nbsp;&bull;&nbsp;");
+			}
+			ret.content(viewGenerator.link(ca));
+		}
+		return ret;
 	}
 	
 	protected ViewGenerator createViewGenerator(Consumer<?> contentConsumer) {

@@ -12,6 +12,7 @@ import org.nasdanika.html.bootstrap.Breadcrumbs;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
+import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Container.Row;
@@ -53,6 +54,15 @@ public class TestBootstrap extends HTMLTestBase {
 		breadcrumbs.item(null, "Last");
 		writeThemedPage("bootstrap/breadcrumbs.html", "Bootstrap breadcrumbs", breadcrumbs); 
 	}
+		
+	@Test
+	public void testCards() throws Exception {
+		Card card = BootstrapFactory.INSTANCE.card().border(Color.SUCCESS);		
+		card.getTitle().toHTMLElement().content("Header");
+		card.getBody().toHTMLElement().content("Body");
+		card.getFooter().toHTMLElement().content("Footer");		
+		writeThemedPage("bootstrap/card.html", "Bootstrap card", card); 
+	}	
 		
 	@Test
 	public void testButton() throws Exception {

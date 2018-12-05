@@ -52,10 +52,10 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
 		return target.execute(viewGenerator, input);
 	}
-
+	
 	@Override
-	public boolean isInRole(String role) {
-		return target.isInRole(role);
+	public List<? extends Action> getSections() {
+		return target.getSections();
 	}
 
 	@Override

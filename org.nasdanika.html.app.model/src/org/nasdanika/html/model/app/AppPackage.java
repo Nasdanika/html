@@ -365,22 +365,13 @@ public interface AppPackage extends EPackage {
 	int ACTION__FLOAT_RIGHT = IACTION_FEATURE_COUNT + 11;
 
 	/**
-	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION__ROLES = IACTION_FEATURE_COUNT + 12;
-
-	/**
 	 * The feature id for the '<em><b>Disabled</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__DISABLED = IACTION_FEATURE_COUNT + 13;
+	int ACTION__DISABLED = IACTION_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Activator</b></em>' containment reference.
@@ -389,7 +380,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__ACTIVATOR = IACTION_FEATURE_COUNT + 14;
+	int ACTION__ACTIVATOR = IACTION_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Iterator</b></em>' attribute.
@@ -398,7 +389,16 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__ITERATOR = IACTION_FEATURE_COUNT + 15;
+	int ACTION__ITERATOR = IACTION_FEATURE_COUNT + 14;
+
+	/**
+	 * The feature id for the '<em><b>Sections</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__SECTIONS = IACTION_FEATURE_COUNT + 15;
 
 	/**
 	 * The number of structural features of the '<em>Action</em>' class.
@@ -537,15 +537,6 @@ public interface AppPackage extends EPackage {
 	int THEMED_ACTION__FLOAT_RIGHT = ACTION__FLOAT_RIGHT;
 
 	/**
-	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__ROLES = ACTION__ROLES;
-
-	/**
 	 * The feature id for the '<em><b>Disabled</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -571,6 +562,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int THEMED_ACTION__ITERATOR = ACTION__ITERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Sections</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int THEMED_ACTION__SECTIONS = ACTION__SECTIONS;
 
 	/**
 	 * The feature id for the '<em><b>Theme</b></em>' attribute.
@@ -718,15 +718,6 @@ public interface AppPackage extends EPackage {
 	int CONTENT_ACTION__FLOAT_RIGHT = ACTION__FLOAT_RIGHT;
 
 	/**
-	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONTENT_ACTION__ROLES = ACTION__ROLES;
-
-	/**
 	 * The feature id for the '<em><b>Disabled</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -752,6 +743,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_ACTION__ITERATOR = ACTION__ITERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Sections</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_ACTION__SECTIONS = ACTION__SECTIONS;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' attribute.
@@ -908,15 +908,6 @@ public interface AppPackage extends EPackage {
 	int THEMED_CONTENT_ACTION__FLOAT_RIGHT = CONTENT_ACTION__FLOAT_RIGHT;
 
 	/**
-	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__ROLES = CONTENT_ACTION__ROLES;
-
-	/**
 	 * The feature id for the '<em><b>Disabled</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -942,6 +933,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int THEMED_CONTENT_ACTION__ITERATOR = CONTENT_ACTION__ITERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Sections</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int THEMED_CONTENT_ACTION__SECTIONS = CONTENT_ACTION__SECTIONS;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' attribute.
@@ -1381,17 +1381,6 @@ public interface AppPackage extends EPackage {
 	EAttribute getAction_FloatRight();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link org.nasdanika.html.model.app.Action#getRoles <em>Roles</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>Roles</em>'.
-	 * @see org.nasdanika.html.model.app.Action#getRoles()
-	 * @see #getAction()
-	 * @generated
-	 */
-	EAttribute getAction_Roles();
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Action#isDisabled <em>Disabled</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1423,6 +1412,17 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getAction_Iterator();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.Action#getSections <em>Sections</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Sections</em>'.
+	 * @see org.nasdanika.html.model.app.Action#getSections()
+	 * @see #getAction()
+	 * @generated
+	 */
+	EReference getAction_Sections();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ThemedAction <em>Themed Action</em>}'.
@@ -1775,14 +1775,6 @@ public interface AppPackage extends EPackage {
 		EAttribute ACTION__FLOAT_RIGHT = eINSTANCE.getAction_FloatRight();
 
 		/**
-		 * The meta object literal for the '<em><b>Roles</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute ACTION__ROLES = eINSTANCE.getAction_Roles();
-
-		/**
 		 * The meta object literal for the '<em><b>Disabled</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1805,6 +1797,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ACTION__ITERATOR = eINSTANCE.getAction_Iterator();
+
+		/**
+		 * The meta object literal for the '<em><b>Sections</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ACTION__SECTIONS = eINSTANCE.getAction_Sections();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ThemedActionImpl <em>Themed Action</em>}' class.

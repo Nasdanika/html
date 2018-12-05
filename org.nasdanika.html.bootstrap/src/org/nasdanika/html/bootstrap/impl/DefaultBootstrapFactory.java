@@ -15,6 +15,7 @@ import org.nasdanika.html.bootstrap.Breadcrumbs;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
+import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.DeviceSize;
@@ -29,6 +30,7 @@ import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
 import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.bootstrap.TagBootstrapElement;
 import org.nasdanika.html.bootstrap.Theme;
 
 /**
@@ -261,6 +263,16 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	@Override
 	public <H extends HTMLElement<?>> BootstrapElement<H, BootstrapElement<H, ?>> wrap(H htmlElement) {
 		return new WrappingBootstrapElementImpl<H, BootstrapElement<H, ?>>(this, htmlElement);
+	}
+	
+	@Override
+	public TagBootstrapElement wrap(Tag tag) {
+		return new TagBootstrapElementImpl(this, tag);
+	}
+	
+	@Override
+	public Card card() {
+		return new CardImpl(this);
 	}
 	
 }

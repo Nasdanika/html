@@ -1,6 +1,9 @@
 package org.nasdanika.html.tests;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -32,12 +35,14 @@ import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.BootstrapContainerApplication;
 import org.nasdanika.html.app.impl.HTMLTableApplication;
+import org.nasdanika.html.app.impl.JsTreeNavigationPanelActionApplicationBuilder;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.InputGroup;
 import org.nasdanika.html.bootstrap.Placement;
+import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
@@ -220,7 +225,7 @@ public class TestApp extends HTMLTestBase {
 								header.background(Color.PRIMARY);
 								navigationBar.background(Color.LIGHT).text().color(Color.DARK);
 								
-								footer.background(Color.SECONDARY);
+								footer.background(Color.SECONDARY).text().alignment(Alignment.CENTER);
 								
 								navigationPanel.widthAuto().border(Color.DEFAULT, Placement.RIGHT);
 								contentRow.toHTMLElement().style("min-height", "500px");
@@ -242,15 +247,12 @@ public class TestApp extends HTMLTestBase {
 								
 							}
 							
-						}) {
-							ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), (Action) next) {
-								@Override
-								protected Object generateHeader(ViewGenerator viewGenerator, Object result) {
-									return ((Tag) super.generateHeader(viewGenerator, result)).addClass("text-dark", "text-decoration: none");
-								}
-							};							
-							appBuilder.build(app);
-							writeFile("app/action/"+href, app.toString());
+						}) {							
+							for (Entry<String, ApplicationBuilder> be: createApplicationBuilders(principalAction, principalAction.getChildren(), (Action) next).entrySet()) {
+								be.getValue().build(app);
+								writeFile("app/action/"+be.getKey()+"/"+href, app.toString());
+								
+							}
 						}
 					}
 				}
@@ -261,6 +263,27 @@ public class TestApp extends HTMLTestBase {
 		JSONObject actionJson = new JSONObject(actionMap);
 		writeFile("app/action/action.json", actionJson.toString(4));
 	}	
+	
+	protected Map<String, ApplicationBuilder> createApplicationBuilders(Action principalAction, List<? extends Action> navigation, Action selected) {
+		Map<String, ApplicationBuilder> ret = new HashMap<>();
+		ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected) {
+			@Override
+			protected Object generateHeader(ViewGenerator viewGenerator, Object result) {
+				return ((Tag) super.generateHeader(viewGenerator, result)).addClass("text-dark", "text-decoration: none");
+			}
+		};			
+		ret.put("link-group", appBuilder);
+		
+		ApplicationBuilder jsTreeAppBuilder = new JsTreeNavigationPanelActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected) {
+			@Override
+			protected Object generateHeader(ViewGenerator viewGenerator, Object result) {
+				return ((Tag) super.generateHeader(viewGenerator, result)).addClass("text-dark", "text-decoration: none");
+			}
+		};			
+		ret.put("js-tree", jsTreeAppBuilder);
+		
+		return ret;
+	}
 
 	@Test
 	public void testAppModel() throws Exception {

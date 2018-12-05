@@ -21,10 +21,10 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.nasdanika.html.model.app.Action#getConfirmation <em>Confirmation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getContextActions <em>Context Actions</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#isFloatRight <em>Float Right</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getRoles <em>Roles</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#isDisabled <em>Disabled</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getActivator <em>Activator</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getIterator <em>Iterator</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getSections <em>Sections</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getAction()
@@ -117,22 +117,6 @@ public interface Action extends org.nasdanika.html.app.Action, Label {
 	void setFloatRight(boolean value);
 
 	/**
-	 * Returns the value of the '<em><b>Roles</b></em>' attribute list.
-	 * The list contents are of type {@link java.lang.String}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Roles</em>' attribute list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Roles</em>' attribute list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Roles()
-	 * @model
-	 * @generated
-	 */
-	EList<String> getRoles();
-
-	/**
 	 * Returns the value of the '<em><b>Disabled</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -211,5 +195,21 @@ public interface Action extends org.nasdanika.html.app.Action, Label {
 	 * @generated
 	 */
 	void setIterator(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Sections</b></em>' containment reference list.
+	 * The list contents are of type {@link org.nasdanika.html.model.app.Action}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Sections</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Sections</em>' containment reference list.
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Sections()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Action> getSections();
 
 } // Action
