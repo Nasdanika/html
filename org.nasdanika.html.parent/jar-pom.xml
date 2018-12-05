@@ -9,6 +9,10 @@
 	<description>Classes for generating HTML UI.</description>
 
 	<url>https://github.com/Nasdanika/html</url>
+		
+	<properties>
+		<siteDir>html/${project.version}</siteDir>
+	</properties>	
 
 	<licenses>
 		<license>
