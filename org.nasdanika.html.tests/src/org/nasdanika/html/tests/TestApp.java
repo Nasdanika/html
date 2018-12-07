@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.ActionActivator;
@@ -33,10 +34,11 @@ import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.Executable;
 import org.nasdanika.html.app.Themed;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.BootstrapContainerApplication;
 import org.nasdanika.html.app.impl.HTMLTableApplication;
-import org.nasdanika.html.app.impl.JsTreeNavigationPanelActionApplicationBuilder;
+import org.nasdanika.html.app.impl.JsTreeNavigationPanelViewPart;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
@@ -121,12 +123,18 @@ public class TestApp extends HTMLTestBase {
 				navigationBar.border(Color.DANGER);
 				navigationPanel.border(Color.DANGER).widthAuto();
 				footer.border(Color.DANGER);
-				contentPanel.border(Color.DANGER);
+				contentPanel.border(Color.DANGER).toHTMLElement().style("min-height", "25em");
 			}
 			
 		}) {
 			Tag treeContainer = app.getHTMLPage().getFactory().div();
-			app.header("Header").navigationBar("Navigation bar").navigationPanel(treeContainer).contentPanel("Content").footer("Footer");
+			HTMLFactory htmlFactory = HTMLFactory.INSTANCE;
+			app
+				.header("Header")
+				.navigationBar("Navigation bar")
+				.navigationPanel(treeContainer)
+				.contentPanel(htmlFactory.overlay("Content overlay"), "Content")
+				.footer("Footer");
 			
 			JsTreeFactory jsTreeFactory = JsTreeFactory.INSTANCE;
 			jsTreeFactory.cdn(app.getHTMLPage());
@@ -274,12 +282,17 @@ public class TestApp extends HTMLTestBase {
 		};			
 		ret.put("link-group", appBuilder);
 		
-		ApplicationBuilder jsTreeAppBuilder = new JsTreeNavigationPanelActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {
+		ActionApplicationBuilder jsTreeAppBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {
 			@Override
 			protected Object generateHeader(ViewGenerator viewGenerator) {
 				return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark", "text-decoration: none");
 			}
-		};			
+			
+			@Override
+			protected ViewPart getNavigationPanelViewPart() {
+				return new JsTreeNavigationPanelViewPart(navigationPanelActions, activeAction);
+			}
+		};		
 		ret.put("js-tree", jsTreeAppBuilder);
 		
 		return ret;
@@ -320,7 +333,7 @@ public class TestApp extends HTMLTestBase {
 		resourceSet.getAdapterFactories().add(af);
 		Resource resource = resourceSet.createResource(URI.createURI("mem://test.xml")); // Some random URL.
 		Action action = AppFactory.eINSTANCE.createAction();
-		ViewGenerator viewGenerator = new ViewGeneratorImpl(null);
+		ViewGenerator viewGenerator = new ViewGeneratorImpl(null, null);
 		resource.getContents().add(action);
 		System.out.println(action.execute(viewGenerator));
 		System.out.println(action.execute(viewGenerator));

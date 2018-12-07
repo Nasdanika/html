@@ -16,13 +16,6 @@ public interface Diagnostic {
 	Object getMessage();
 	
 	List<Diagnostic> getChildren();
-	
-	/**
-	 * Diagnostic source, e.g. a property descriptor or property id for property-level diagnostic or property source or null for
-	 * object level diagnostic.
-	 * @return
-	 */
-	Object getSource();
 
 	default Label asLabel() {
 		return new Label() {

@@ -35,10 +35,19 @@ import org.nasdanika.html.knockout.KnockoutFactory;
 
 public class ViewGeneratorImpl implements ViewGenerator {
 	
-	protected Consumer<?> contentConsumer;
+	/**
+	 * Content passed to this consumer is added to the head of the HTML page. E.g. stylesheets or scripts.
+	 */
+	protected Consumer<?> headContentConsumer;
 
-	public ViewGeneratorImpl(Consumer<?> contentConsumer) {
-		this.contentConsumer = contentConsumer;
+	/**
+	 * Content passed to this consumer is added to the body of the HTML page. E.g. modal dialogs definitions.
+	 */
+	protected Consumer<?> bodyContentConsumer;
+	
+	public ViewGeneratorImpl(Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
+		this.headContentConsumer = headContentConsumer;
+		this.bodyContentConsumer = bodyContentConsumer;
 	}
 	
 	@Override

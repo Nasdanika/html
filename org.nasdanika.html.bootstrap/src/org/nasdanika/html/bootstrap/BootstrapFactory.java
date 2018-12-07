@@ -185,7 +185,6 @@ public interface BootstrapFactory {
 	 * TODO - create issues to implement in later versions (Bootstrap category).
 	 * Pagination
 	 * Jumbotron
-	 * List group
 	 * Popover
 	 * Progress
 	 * Scrollspy

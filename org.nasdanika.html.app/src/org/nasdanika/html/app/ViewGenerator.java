@@ -40,7 +40,7 @@ public interface ViewGenerator {
 	/**
 	 * Outputs icon, text, help tooltip icon to the content consumer.
 	 * @param action
-	 * @param contentConsumer
+	 * @param bodyContentConsumer
 	 */
 	void label(Label label, Consumer<Object> contentConsumer);
 	
@@ -163,7 +163,7 @@ public interface ViewGenerator {
 	
 	// TODO - jsTree
 	
-	// TO
+	// TODO - charts from PropertySources.
 	
 
 }

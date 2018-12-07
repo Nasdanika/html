@@ -380,6 +380,8 @@ public class DefaultHTMLFactory implements HTMLFactory {
 		
 		return div(contentDiv)
 				.style("position", "absolute")
+				.style("top", "0")
+				.style("left", "0")
 				.style("width", "100%")
 				.style("height", "100%")
 				.style().background().color().color(Color.Silver)

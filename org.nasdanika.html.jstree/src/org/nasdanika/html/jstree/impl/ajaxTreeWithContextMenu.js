@@ -1,7 +1,9 @@
 { 
 	'core' : { 
 		'data' : { 
-			'url' : '{{nodesUrl}}',
+			'url' : function (node) {
+				return {{nodesUrl}}; // Expression, use node.id to access node id.
+			},
 			'data' : function (node) {
 				return { 'id' : node.id }; 
 			} 
@@ -10,9 +12,8 @@
 	'plugins' : [ 'contextmenu' ],
 	'contextmenu' : {
 		'items' : function(node, callback) {
-			$.getJSON("{{contextMenuUrl}}?id="+node.id, function(data, status) {
+			$.getJSON({{contextMenuUrl}}, function(data, status) { // Expression, use node.id to access node id. 
 		        if ("success" == status) {
-		        	// TODO - action to function - how - all actions are URL's or JSON objects and switch(type)?
 		        	for (var key in data) {
 		        	    if (data.hasOwnProperty(key)) {
 		        	    	var item = data[key];
