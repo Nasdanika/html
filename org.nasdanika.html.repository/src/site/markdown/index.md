@@ -1,24 +1,37 @@
 # HTML
 
-Nasdanika HTML features several bundles providing [fluent API](https://en.wikipedia.org/wiki/Fluent_interface) for building HTML code including:
+Nasdanika HTML features several libraries providing [fluent API](https://en.wikipedia.org/wiki/Fluent_interface) for building HTML user interfaces. 
+The goal of the libraries is to allow Java developers being more productive by:
+* Working in Java instead of switching between Java for the server side development and HTML, JavaScript and CSS for the client side development.
+* Apply the power of Java such as inheritance, polymorphism, patterns, e.g. a strategy pattern, etc. to building HTML user interfaces.
+* Operate on a higher level of abstraction thinking in terms of, say, actions and view parts instead of individual HTML elements.
+* Think about the Web User Interface as a Java interface - a collection of methods/actions which the user can invoke.
+* Think about users as asynchronous method invocations - a user is invoked by passing them a callback (user) interface.
 
-* [HTML](html.html) (low level), 
-* [Bootstrap](bootstrap.html), 
-* [Font Awesome](fontawesome.html), 
-* [KnockoutJS](knockout.html), 
-* [jsTree](jstree.html),
-* [Application](app.html) - Java API's for building HTML applications.
-* [Application Model](app-model.html) - EMF model implementing the application API. It can be used for application prototyping and as a transformation step in the application rendering process.
+Nasdanika HTML libraries, except EMF, are provided as both Maven jar's and Equinox/OSGi bundles. It allows to use them in both Maven/plain Java and OSGi applications. 
+The EMF library is provided only as an OSGi bundle.        
+
+## Libraries/Bundles
+
+* [HTML](html.html) - Low-level API's to build HTML 5 code. 
+* [Bootstrap](bootstrap.html) - [Bootstrap 4.x](https://getbootstrap.com/) Java bindings, including [Bootswatch](https://bootswatch.com/) themes. 
+* [Font Awesome](fontawesome.html) - [Font Awesome 5.x](https://fontawesome.com/) Java bindings. 
+* [KnockoutJS](knockout.html) - [Knockout JS 3.4.x](https://knockoutjs.com/) Java bindings. 
+* [jsTree](jstree.html) - [jsTree 3.3.7](https://www.jstree.com/) Java bindings,
+* [Application](app.html) - Java API's for building HTML applications using higher level abstractions of actions and property sources.
+* [Application Model](app-model.html) - EMF model implementing the action API and a model editor.
     * [Model documentation](app-model-doc).
-* [EMF](emf.html) - renders HTML based on EClass metadata including annotations and EObject data.
+* [EMF](emf.html) - Uses [Ecore](https://www.eclipse.org/modeling/emf/) metadata and annotations to build actions and property sources backed by [EObject](http://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/index.html?org/eclipse/emf/ecore/EObject.html)'s. .
 
 ## Resources
 
 * P2 Repository
     * ``https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/repository``
     * [Archived](https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/org.nasdanika.html.repository-2.0.0-SNAPSHOT.zip)
+* Maven Repository - ``https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/maven-repository``    
 * [Sources](html.zip)
-* [NasdanikaBank.app](NasdanikaBank.app) - a sample model with several actions for demo and testing purposes. It is also available as a resource in ``org.nasdanika.app.model`` bundle.    
+* [NasdanikaBank.app](NasdanikaBank.app) - a sample model with several actions for demo and testing purposes. It is also available as a resource in ``org.nasdanika.app.model`` bundle.
+* [Spring Boot demo](https://github.com/Nasdanika/html-spring-boot-demo) - A Spring Boot application which uses Nasdanika HTML libraries to build Web UI.    
  
 ## How to contribute
 

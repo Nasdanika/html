@@ -5,7 +5,6 @@
 The entry point to the API is [HTMLFactory](apidocs/html/index.html?org/nasdanika/html/HTMLFactory.html).
 It can be obtained as ``HTMLFactory factory = HTMLFactory.INSTANCE;``.  
 
-
 ## Examples
 
 ### HTML Page
@@ -24,3 +23,13 @@ page.script("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min
 		
 page.body("Hello");
 ```
+
+## Simple templating (interpolation)
+
+HTMLFactory has several ``interpolate`` methods which replace ``{{token name}}`` entries in the input with token values obtained from [TokenSource](apidocs/html/index.html?org/nasdanika/html/TokenSource.html), Map<String, Object> or a single key/value pair.
+
+
+There is also [MutableTokenSource](apidocs/html/index.html?org/nasdanika/html/MutableTokenSource.html] interface which can be used to accumulate tokens without having to create a map. 
+MutableTokensource can be created with ``mutableTokenSource()`` factory methods.
+
+Interpolation input can be   

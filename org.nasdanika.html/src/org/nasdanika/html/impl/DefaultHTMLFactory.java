@@ -447,6 +447,11 @@ public class DefaultHTMLFactory implements HTMLFactory {
 				}
 				return this;
 			}
+
+			@Override
+			public String interpolate(Object input) {
+				return DefaultHTMLFactory.this.interpolate(input, this);
+			}
 		};
 	}
 	

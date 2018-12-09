@@ -160,10 +160,10 @@ public interface ViewGenerator {
 	 *  - List groups
 	 *  - JsTree
 	 */
-	
-	// TODO - jsTree
-	
+		
 	// TODO - charts from PropertySources.
+	
+	 
 	
 
 }

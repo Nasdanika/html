@@ -135,7 +135,7 @@ public interface HTMLFactory {
 	/**
 	 * Expands tokens in the form of <code>{{token name}}</code> to their values.
 	 * If a token is not found expansion is not processed.
-	 * @param input
+	 * @param input String, Reader, InputStream or URL.
 	 * @param tokenSource
 	 * @return
 	 */
@@ -144,7 +144,7 @@ public interface HTMLFactory {
 	/**
 	 * Expands tokens in the form of <code>{{token name}}</code> to their values.
 	 * If a token is not found expansion is not processed.
-	 * @param input
+	 * @param input String, Reader, InputStream or URL.
 	 * @param env
 	 * @return
 	 */
@@ -153,7 +153,7 @@ public interface HTMLFactory {
 	/**
 	 * Expands a single token in the form of <code>{{token name}}</code> to its value.
 	 * If a token is not found expansion is not processed.
-	 * @param input 
+	 * @param input String, Reader, InputStream or URL.
 	 * @param token
 	 * @param value
 	 * @return
