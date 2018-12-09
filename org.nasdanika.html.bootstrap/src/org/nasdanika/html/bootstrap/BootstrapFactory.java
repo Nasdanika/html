@@ -180,7 +180,8 @@ public interface BootstrapFactory {
 	Card card();
 		
 	/* TODO - Implement, add factory method and remove
-	 * Modal
+	 * Modal, 
+	 * Ajax modal - JSON response - header, footer, body, size. Clear content, overlay with a spinner, hide footer if no footer content, call update content to resize, show error message on error.
 
 	 * TODO - create issues to implement in later versions (Bootstrap category).
 	 * Pagination

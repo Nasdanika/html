@@ -1,11 +1,59 @@
 # Bootstrap
 
-[Java API](apidocs/bootstrap/index.html) to build [Bootstrap](https://getbootstrap.com/) HTML.
+[Java API](apidocs/org.nasdanika.html.bootstrap/apidocs/index.html) to build [Bootstrap](https://getbootstrap.com/) HTML.
 
-The entry point to the API is [BootstrapFactory](apidocs/bootstrap/index.html?org/nasdanika/html/bootstrap/BootstrapFactory.html).
+The entry point to the API is [BootstrapFactory](apidocs/org.nasdanika.html.bootstrap/apidocs/index.html?org/nasdanika/html/bootstrap/BootstrapFactory.html).
 It can be obtained as ``BootstrapFactory factory = BootstrapFactory.INSTANCE;``.  
 
-## Action Group
+[BootstrapElement](apidocs/org.nasdanika.html.bootstrap/apidocs/index.html?org/nasdanika/html/bootstrap/BootstrapElement.html) is the base interface for other elements.
+It has ``toHTMLElement()`` method providing access to the [HTMLElement](apidocs/org.nasdanika.html/apidocs/index.html?org/nasdanika/html/HTMLElement.html) this BootstrapElement wraps. 
+In most cases the wrapped HTML element is the outer element containing all other elements, but there are a few documented special cases, e.g. an action group with content.
+BootstrapElement delegates its ``toString()`` and ``produce()`` to the underlying HTML element.
+
+``org.nasdanika.html.bootstrap`` bundle has ``resources`` folder containing Bootstrap CSS and JavaScript, [Bootswatch](https://bootswatch.com/) themes, and [jQuery](https://jquery.com/). 
+These resources can be used to generate self-sufficient Web UI without dependency on CDN's. 
+
+## Use in Maven projects
+
+Add repository and dependency as shown below:
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	...	
+	<repositories>
+		...
+		<repository>
+			<id>nasdanika-html-snapshots</id>
+			<name>nasdanika-html-snapshots</name>
+			<url>https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/maven-repository</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<layout>default</layout>
+		</repository>
+		...
+	</repositories>	
+	...		
+	<dependencies>
+		...		
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>org.nasdanika.html.bootstrap</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		...
+	</dependencies>
+	...
+</project>
+```
+
+## Examples
+
+The below sections provide examples of how to use Bootstrap API's.
+
+### Action Group
 
 ```
 ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
@@ -17,7 +65,7 @@ actionGroup.action(false, false, Color.WARNING, "#", "Four - warning");
 ```
 <iframe src="test-dumps/bootstrap/action-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
-### With content
+#### With content
 
 ```		
 ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
@@ -30,7 +78,7 @@ actionGroup.contentAction("Four - warning", false, false, Color.WARNING, null, B
 
 <iframe src="test-dumps/bootstrap/action-group-content.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
-### Adapt to navs 
+#### Adapt to navs 
 
 ```
 ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
@@ -39,7 +87,7 @@ navsItems(actionGroup.asNavs()); // See "Navs" section for navsItems method code
 
 <iframe src="test-dumps/bootstrap/action-group-navs-adapter.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
-## Alert
+### Alert
 
 ```
 BootstrapFactory factory = BootstrapFactory.INSTANCE;
@@ -48,7 +96,7 @@ Tag alert = factory.alert(Color.INFO, "Alert");
 
 <iframe src="test-dumps/bootstrap/alert.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
-## Badge 
+### Badge 
 
 ```
 BootstrapFactory factory = BootstrapFactory.INSTANCE;
@@ -58,7 +106,7 @@ Tag badgeLink = factory.badgeLink("#", false, Color.WARNING, "Badge link");
 
 <iframe src="test-dumps/bootstrap/badge.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-## Breadcrumbs
+### Breadcrumbs
 
 ```		
 Breadcrumbs breadcrumbs = BootstrapFactory.INSTANCE.breadcrums();
@@ -68,7 +116,7 @@ breadcrumbs.item(true, "Last");
 
 <iframe src="test-dumps/bootstrap/breadcrumbs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-## Bootstrap CDN HTML Page
+### Bootstrap CDN HTML Page
 
 ```
 HTMLPage bootstrapPage = factory.bootstrapCdnHTMLPage(Theme.Cerulean);
@@ -76,8 +124,7 @@ bootstrapPage.title("Bootstrap demo");
 bootstrapPage.body(container);		
 ```
 
-
-## Button
+### Button
 
 ```
 HTMLFactory htmlFactory = factory.getHTMLFactory();		
@@ -87,7 +134,7 @@ Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY
 
 <iframe src="test-dumps/bootstrap/button.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-## Button group
+### Button group
 
 ```		
 ButtonGroup buttonGroup = factory.buttonGroup(false);
@@ -97,7 +144,7 @@ buttonGroup.add(button);
 
 <iframe src="test-dumps/bootstrap/button-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-## Button toolbar
+### Button toolbar
 
 ```		
 ButtonToolbar toolbar = factory.buttonToolbar();
@@ -106,7 +153,7 @@ toolbar.add(buttonGroup);
 
 <iframe src="test-dumps/bootstrap/button-toolbar.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 	
-## Card
+### Card
 
 ```
 Card card = BootstrapFactory.INSTANCE.card();		
@@ -117,7 +164,7 @@ card.getFooter().toHTMLElement().content("Footer");
 
 <iframe src="test-dumps/bootstrap/card.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 	
-## Dropdown
+### Dropdown
 
 ```		
 BootstrapFactory factory = BootstrapFactory.INSTANCE;
@@ -135,7 +182,7 @@ dropdown.item(htmlFactory.link("#", "Item 3"), false, true);
 
 <iframe src="test-dumps/bootstrap/dropdown.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 150) + 'px'"></iframe>
 
-## Input group
+### Input group
 		
 ```		
 InputGroup inputGroup = factory.inputGroup();
@@ -147,7 +194,7 @@ inputGroup.append("Something").large();
 
 <iframe src="test-dumps/bootstrap/input-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-## Form		
+### Form		
 
 ```		
 Form form = htmlFactory.form();
@@ -166,7 +213,7 @@ form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "Stat
 
 <iframe src="test-dumps/bootstrap/form.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-## Grid, background and text style
+### Grid, background and text style
 
 ```
 Container container = factory.container();
@@ -178,7 +225,7 @@ row.col("Col 3").border(Color.WARNING, Placement.RIGHT).background(Color.SECONDA
 
 <iframe src="test-dumps/bootstrap/misc.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-## List Group
+### List Group
 
 ```		
 ListGroup listGroup = BootstrapFactory.INSTANCE.listGroup(false);
@@ -191,7 +238,7 @@ listGroup.item(false, false, Color.WARNING, "Four - warning");
 	
 <iframe src="test-dumps/bootstrap/list-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 		
-### Flush
+#### Flush
 
 ```		
 ListGroup listGroup = BootstrapFactory.INSTANCE.listGroup(true);
@@ -205,9 +252,9 @@ listGroup.item(false, false, Color.WARNING, "Four - warning");
 <iframe src="test-dumps/bootstrap/list-group-flush.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 
-## Navs
+### Navs
 
-### Simple tabs
+#### Simple tabs
 
 Using ``NamedItemsContainer`` interfact methods:
 
@@ -221,7 +268,7 @@ simpleTabs.item("Fourth", "Fourth content");
 
 <iframe src="test-dumps/bootstrap/simple-tabs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-### Active and disabled tabs
+#### Active and disabled tabs
 
 Helper method:
 
@@ -243,7 +290,7 @@ navsItems(BootstrapFactory.INSTANCE.tabs());
 
 <iframe src="test-dumps/bootstrap/tabs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-### Pills
+#### Pills
 
 ```
 navsItems(BootstrapFactory.INSTANCE.pills());
@@ -251,7 +298,7 @@ navsItems(BootstrapFactory.INSTANCE.pills());
 
 <iframe src="test-dumps/bootstrap/pills.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-### Vertical pills
+#### Vertical pills
 
 * Use ``toHTMLElement()`` method to get access to the backing HTML element and style it.
 * Output nav and content div separately.
@@ -268,7 +315,7 @@ row.col(verticalPills.getContentDiv());
 <iframe src="test-dumps/bootstrap/vertical-pills.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 
-## Navbar
+### Navbar
 
 ```
 Tag brand = HTMLFactory.INSTANCE.link("#", "Nasdanika");
@@ -289,7 +336,7 @@ navbar.navbarText("Some text");
 
 <iframe src="test-dumps/bootstrap/navbar.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 150) + 'px'"></iframe>
 	
-## Table
+### Table
 
 ``` 		
 Table table = factory.table().striped();
@@ -302,7 +349,7 @@ body.row("One", "Two", "Three");
 
 <iframe src="test-dumps/bootstrap/table.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-## Tooltip
+### Tooltip
 
 ```
 org.nasdanika.html.Button hButton = htmlFactory.button("Button");	

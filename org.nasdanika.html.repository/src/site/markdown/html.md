@@ -81,3 +81,39 @@ The code snippet below shows how to interpolate classloader resource with a sing
 ```
 System.out.println(HTMLFactory.INSTANCE.interpolate(getClass().getResource("test-resource.txt"), "addressee", "world"));		
 ```   
+
+## Use in Maven projects
+
+Add repository and dependency as shown below:
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	...	
+	<repositories>
+		...
+		<repository>
+			<id>nasdanika-html-snapshots</id>
+			<name>nasdanika-html-snapshots</name>
+			<url>https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/maven-repository</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<layout>default</layout>
+		</repository>
+		...
+	</repositories>	
+	...		
+	<dependencies>
+		...		
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>org.nasdanika.html</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		...
+	</dependencies>
+	...
+</project>
+```

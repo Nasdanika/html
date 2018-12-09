@@ -1,3 +1,3 @@
 # EMF
 
-[Java API](apidocs/emf/index.html) for generating HTML from EClass metadata, including annotations, and EObject data.
+[Java API](apidocs/org.nasdanika.html.emf/apidocs/index.html) for generating HTML from EClass metadata, including annotations, and EObject data.
