@@ -100,20 +100,6 @@ public interface HTMLFactory {
 	 */
 	Tag title(Object title);
 	
-	/**
-	 * Generates a DIV and a script to inject content into an element
-	 * specified by selector, if such element exists. After injection the 
-	 * content is removed from the DOM tree. If target container does not exist then 
-	 * nothing happens and the content remains where it is. This method can 
-	 * be used in single page applications to update, say, breadcrumbs
-	 * when a new content is loaded in one of page containers.   
-	 * 
-	 * @param selector
-	 * @param content
-	 * @return A DIV contai
-	 */
-	Tag inject(Object selector, Object... content);
-	
 	// --- JavaScript ---
 	
 	Function function(Object... param);

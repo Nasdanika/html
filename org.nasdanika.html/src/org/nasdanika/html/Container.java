@@ -7,7 +7,7 @@ import java.util.function.Consumer;
  *
  * @param <T>
  */
-public interface Container<T extends Container<?>> extends AutoCloseable, Consumer<Object> {
+public interface Container<T extends Container<?>> extends Consumer<Object> {
 
 	/**
 	 * Adds content to the container.

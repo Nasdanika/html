@@ -85,9 +85,4 @@ public class HTMLPageImpl implements HTMLPage {
 		return factory;
 	}
 
-	@Override
-	public void close() throws Exception {
-		html.close();		
-	}	
-
 }

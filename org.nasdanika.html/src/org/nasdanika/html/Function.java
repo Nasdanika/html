@@ -5,7 +5,7 @@ package org.nasdanika.html;
  * @author Pavel Vlasov
  *
  */
-public interface Function extends AutoCloseable {
+public interface Function {
 	
 	Function parameter(Object... param);
 

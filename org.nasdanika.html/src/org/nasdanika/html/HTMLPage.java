@@ -5,7 +5,7 @@ package org.nasdanika.html;
  * @author Pavel Vlasov
  *
  */
-public interface HTMLPage extends Producer, AutoCloseable {
+public interface HTMLPage extends Producer {
 	
 	/**
 	 * Adds lang attribute to html tag.

@@ -152,25 +152,6 @@ public class DefaultHTMLFactory implements HTMLFactory {
 			List<Object> code = new ArrayList<>();
 	
 			@Override
-			public void close() throws Exception {
-				for (Object obj: code) {
-					if (obj instanceof AutoCloseable) {
-						((AutoCloseable) obj).close();
-					}
-				}
-				for (Object obj: binds) {
-					if (obj instanceof AutoCloseable) {
-						((AutoCloseable) obj).close();
-					}
-				}				
-				for (Object obj: params) {
-					if (obj instanceof AutoCloseable) {
-						((AutoCloseable) obj).close();
-					}
-				}				
-			}
-	
-			@Override
 			public Function code(Object... code) {
 				for (Object obj: code) {
 					if (obj != null) {
@@ -323,28 +304,6 @@ public class DefaultHTMLFactory implements HTMLFactory {
 			};
 		};
 		return tag("script", "document.title=\"", escapedTitle, "\";");
-	}
-	
-	@Override
-	public Tag inject(final Object selector, Object... content) {
-		final String topId = nextId()+"_inject_container";
-		final String contentId = nextId()+"_inject_content";
-		Object script = new AutoCloseable() {
-			
-			@Override
-			public String toString() {
-				return "if ($(\""+selector+"\").length>0) { $(\""+selector+"\").html($(\"#"+contentId+"\").html()); $(\"#"+topId+"\").remove(); }";
-			}
-									
-			@Override
-			public void close() throws Exception {
-				if (selector instanceof AutoCloseable) {
-					((AutoCloseable) selector).close();
-				}
-				
-			}
-		};
-		return div(div(content).id(contentId), tag("script", script)).id(topId);
 	}
 
 	@Override

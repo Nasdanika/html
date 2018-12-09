@@ -7,10 +7,6 @@ import java.util.List;
 
 public class HTMLElementFilter<T extends HTMLElement<T>> implements HTMLElement<T> {
 
-	public void close() throws Exception {
-		target.close();
-	}
-
 	public T on(Event event, Object handler) {
 		return target.on(event, handler);
 	}

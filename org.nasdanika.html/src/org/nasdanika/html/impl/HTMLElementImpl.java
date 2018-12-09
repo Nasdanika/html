@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.text.StringEscapeUtils;
+import org.nasdanika.html.Event;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Markup;
@@ -29,7 +30,7 @@ import org.nasdanika.html.TagName;
  *
  * @param <T>
  */
-public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLElement<T>, AutoCloseable {
+public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLElement<T> {
 
 
 	private static final String STYLE = "style";
@@ -256,41 +257,6 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 	protected void removeClass(Object... clazz) {
 		for (Object clz: clazz) {
 			classes.remove(clz);
-		}
-	}
-	
-	/**
-	 * Helper method
-	 * @param o
-	 * @throws Exception
-	 */
-	protected static void close(Object o) throws Exception {
-		if (o instanceof AutoCloseable) {
-			((AutoCloseable) o).close();
-		} else if (o!=null && o.getClass().isArray()) {
-			for (Object e: (Object[]) o) {
-				close(e);
-			}
-		} else if (o instanceof Iterable) {
-			for (Object e: (Iterable<?>) o) {
-				close(e);
-			}
-		}
-	}
-	
-	@Override
-	public void close() throws Exception {
-		for (Object attr: attributes.values()) {
-			close(attr);
-		}		
-		for (Object cls: classes) {
-			close(cls);
-		}		
-		for (Object style: styles.values()) {
-			close(style);
-		}	
-		for (Object c: getContent()) {
-			close(c);
 		}
 	}
 

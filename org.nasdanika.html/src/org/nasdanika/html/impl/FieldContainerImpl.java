@@ -67,18 +67,7 @@ class FieldContainerImpl<T extends FieldContainer<T>> implements FieldContainer<
 		}
 		return sb.toString();
 	}
-	
-	
-
-	@Override
-	public void close() throws Exception {
-		for (Object o: content) {
-			if (o instanceof AutoCloseable) {
-				((AutoCloseable) o).close();
-			}
-		}
-	}
-	
+		
 	protected String stringify(Object content, int indent) {
 		return HTMLElementImpl.stringify(content, indent);
 	}

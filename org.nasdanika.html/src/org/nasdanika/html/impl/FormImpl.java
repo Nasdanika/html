@@ -44,12 +44,6 @@ class FormImpl extends HTMLElementImpl<Form> implements Form {
 	public FormFragment formFragment() {
 		return container.formFragment();
 	}
-	
-	@Override
-	public void close() throws Exception {
-		super.close();
-		close(container);		
-	}
 
 	@Override
 	public Form action(Object action) {

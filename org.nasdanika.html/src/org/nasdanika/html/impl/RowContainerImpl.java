@@ -58,14 +58,6 @@ class RowContainerImpl<T extends RowContainer<T>> extends HTMLElementImpl<T> imp
 			this.content.add(cell);
 			return cell;
 		}
-		
-		@Override
-		public void close() throws Exception {
-			super.close();
-			for (Object c: content) {
-				close(c);
-			}			
-		}
 
 		@Override
 		public List<Cell> cells() {

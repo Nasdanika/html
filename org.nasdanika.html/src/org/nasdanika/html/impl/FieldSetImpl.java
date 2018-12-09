@@ -55,10 +55,4 @@ class FieldSetImpl extends HTMLElementImpl<FieldSet> implements FieldSet {
 		return disabled(true);
 	}
 
-	@Override
-	public void close() throws Exception {
-		super.close();
-		container.close();		
-	}	
-
 }

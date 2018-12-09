@@ -23,15 +23,6 @@ class FragmentImpl implements Fragment {
 		}
 		return this;
 	}
-
-	@Override
-	public void close() throws Exception {
-		for (Object c: content) {
-			if (c instanceof AutoCloseable) {
-				((AutoCloseable) c).close();
-			}
-		}
-	}
 	
 	List<Object> getAllContent() {
 		List<Object> ret = new ArrayList<>();
