@@ -3,11 +3,34 @@
 [Java API](apidocs/org.nasdanika.html/apidocs/index.html) to build HTML.
 
 The entry point to the API is [HTMLFactory](apidocs/org.nasdanika.html/apidocs/index.html?org/nasdanika/html/HTMLFactory.html).
-It can be obtained as ``HTMLFactory factory = HTMLFactory.INSTANCE;``.  
+It can be obtained as ``HTMLFactory factory = HTMLFactory.INSTANCE;``.
 
-## Examples
+## HTMLElement
 
-### HTML Page
+[HTMLElement](apidocs/org.nasdanika.html/apidocs/index.html?org/nasdanika/html/HTMLElement.html) is the base interface for other interfaces representing HTML elements. 
+It has methods to set attributes, css classes and styles, and event handlers.
+
+## Container  
+
+[Container](apidocs/org.nasdanika.html/apidocs/index.html?org/nasdanika/html/Container.html) interface is implemented by elements which support content, e.g. 
+[Tag](apidocs/org.nasdanika.html/apidocs/index.html?org/nasdanika/html/Tag.html). 
+
+Content can be added to container by calling ``content()`` method and passing multiple elements or by calling ``accept()`` method inherited from Consumer.
+
+## Tag  
+
+Generic tag element. It can be created by calling one of HTMLFactory ``tag()`` methods and passing either String tag name or [TagName](apidocs/org.nasdanika.html/apidocs/index.html?org/nasdanika/html/TagName.html) as the first argument and zero or more content objects.
+
+## Fragment  
+
+[Fragment](apidocs/org.nasdanika.html/apidocs/index.html?org/nasdanika/html/Fragment.html) is used to group several elements together without creating
+an HTML element. For example, it may be used return a group of HTML elements from a method.
+
+## Non-empty tags and divs  
+
+HTMLFactory ``nonEmptyTag()`` and ``nonEmptyDiv()`` methods create tags and divs which produce output only if they have content.
+
+## Example - create an HTML Page
 
 ```
 // HTML page
@@ -52,4 +75,9 @@ HTMLFactory has several ``interpolate`` methods which replace ``{{token name}}``
 There is also [MutableTokenSource](apidocs/org.nasdanika.html/apidocs/index.html?org/nasdanika/html/MutableTokenSource.html] interface which can be used to accumulate tokens without having to create a map. 
 MutableTokensource can be created with ``mutableTokenSource()`` factory methods.
 
-Interpolation input can be   
+Interpolation input is first stringified (see above) and then tokens get replaced.
+The code snippet below shows how to interpolate classloader resource with a single token:
+
+```
+System.out.println(HTMLFactory.INSTANCE.interpolate(getClass().getResource("test-resource.txt"), "addressee", "world"));		
+```   
