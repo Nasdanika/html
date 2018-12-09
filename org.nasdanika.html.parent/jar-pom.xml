@@ -132,7 +132,7 @@
 						<executions>
 							<execution>
 								<id>ftp</id>
-								<phase>post-site</phase>
+								<phase>deploy</phase>
 								<configuration>
 									<target>
 										<ftp passive="yes" action="mkdir" server="${env.FTP_SERVER}" userid="${env.FTP_USER}" password="${env.FTP_PASSWORD}" remotedir="/${siteDir}"/>
