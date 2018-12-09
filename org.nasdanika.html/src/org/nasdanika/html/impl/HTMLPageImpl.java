@@ -71,7 +71,7 @@ public class HTMLPageImpl implements HTMLPage {
 	
 	@Override
 	public String toString() {
-		return HTMLElementImpl.stringify(produce(0), 0, factory);
+		return HTMLElementImpl.stringify(produce(0));
 	}
 
 	@Override

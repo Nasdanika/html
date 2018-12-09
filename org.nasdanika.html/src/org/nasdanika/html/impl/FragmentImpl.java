@@ -50,7 +50,7 @@ class FragmentImpl implements Fragment {
 		StringBuilder sb = new StringBuilder();
 		for (Object c: content) {
 			try {
-				sb.append(HTMLElementImpl.stringify(c, indent, factory));
+				sb.append(HTMLElementImpl.stringify(c, indent));
 			} catch (Exception e) {
 				sb.append(e);
 			}

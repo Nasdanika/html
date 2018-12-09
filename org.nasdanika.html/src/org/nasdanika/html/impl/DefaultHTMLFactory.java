@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.text.StringEscapeUtils;
 import org.nasdanika.html.Button;
 import org.nasdanika.html.Color;
-import org.nasdanika.html.FactoryProducer;
 import org.nasdanika.html.Form;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.Function;
@@ -42,26 +41,6 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	
 	
 	private static AtomicLong idCounter = new AtomicLong();
-	
-	private Producer.Adapter producerAdapter;
-	
-	public Producer.Adapter getProducerAdapter() {
-		return producerAdapter;
-	}
-	
-	public void setProducerAdapter(Producer.Adapter adapter) {
-		this.producerAdapter = adapter;
-	}
-	
-	private FactoryProducer.Adapter factoryProducerAdapter;
-	
-	public FactoryProducer.Adapter getFactoryProducerAdapter() {
-		return factoryProducerAdapter;
-	}
-	
-	public void setFactoryProducerAdapter(FactoryProducer.Adapter adapter) {
-		this.factoryProducerAdapter = adapter;
-	}
 		
 	@Override
 	public String nextId() {
@@ -301,7 +280,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	 */
 	@Override
 	public String interpolate(Object input, TokenSource tokenSource) {
-		return interpolate(HTMLElementImpl.stringify(input, 0, this), tokenSource);
+		return interpolate(HTMLElementImpl.stringify(input), tokenSource);
 	}
 	
 	/**
@@ -313,7 +292,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	 */
 	@Override
 	public String interpolate(Object input, Map<String, Object> env) {
-		return interpolate(HTMLElementImpl.stringify(input, 0, this), env);
+		return interpolate(HTMLElementImpl.stringify(input), env);
 	}	
 	
 	@Override

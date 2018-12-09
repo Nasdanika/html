@@ -15,14 +15,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.nasdanika.html.FactoryProducer;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Markup;
 import org.nasdanika.html.Producer;
 import org.nasdanika.html.ProducerException;
 import org.nasdanika.html.Style;
 import org.nasdanika.html.TagName;
-import org.nasdanika.html.Markup;
 
 /**
  * Base class for UI elements
@@ -339,18 +338,23 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 		this.comment = comment;
 		return (T) this;
 	}
+	
+	/**
+	 * Special handling for input streams, readers, producers and URL's.
+	 * @param content
+	 * @return
+	 */
+	public static String stringify(Object content) {
+		return stringify(content, 0);
+	}
+	
 		
 	/**
 	 * Special handling for input streams, readers, producers and URL's.
 	 * @param content
 	 * @return
 	 */
-	public static String stringify(
-			Object content, 
-			int indent,
-			HTMLFactory factory,
-			Producer.Adapter producerAdapter, 
-			FactoryProducer.Adapter factoryProducerAdapter) {
+	public static String stringify(Object content, int indent) {
 		try {
 			if (content == null) {
 				return "";
@@ -361,29 +365,11 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 			}
 			
 			if (content instanceof Producer) {
-				return stringify(((Producer) content).produce(indent), indent, factory, producerAdapter, factoryProducerAdapter);
-			}
-			
-			if (content instanceof FactoryProducer) {
-				return stringify(((FactoryProducer) content).produce(factory, indent), indent, factory, producerAdapter, factoryProducerAdapter);
-			}
-			
-			if (content!=null && producerAdapter!=null) {
-				Producer producer = producerAdapter.asProducer(content);
-				if (producer!=null) {
-					return stringify(producer, indent, factory, producerAdapter, factoryProducerAdapter);
-				}
-			}
-			
-			if (content!=null && factoryProducerAdapter!=null) {
-				FactoryProducer factoryProducer = factoryProducerAdapter.asFactoryProducer(content);
-				if (factoryProducer!=null) {
-					return stringify(factoryProducer, indent, factory, producerAdapter, factoryProducerAdapter);
-				}
+				return stringify(((Producer) content).produce(indent), indent);
 			}
 			
 			if (content instanceof InputStream) {
-				return stringify(new InputStreamReader((InputStream) content), indent, factory, producerAdapter, factoryProducerAdapter);
+				return stringify(new InputStreamReader((InputStream) content), indent);
 			}
 			if (content instanceof Reader) {
 				StringWriter sw = new StringWriter();
@@ -396,7 +382,7 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 			}
 			
 			if (content instanceof URL) {
-				return stringify(((URL) content).openStream(), indent, factory, producerAdapter, factoryProducerAdapter);
+				return stringify(((URL) content).openStream(), indent);
 			}
 	
 			return content.toString();
@@ -405,19 +391,6 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 		} catch (Exception e) {
 			throw new ProducerException(e);
 		}
-	}
-	
-	public static String stringify(Object content, int indent, HTMLFactory factory) {
-		return stringify(
-				content,
-				indent,
-				factory,
-				factory instanceof DefaultHTMLFactory ? ((DefaultHTMLFactory) factory).getProducerAdapter() : null,
-				factory instanceof DefaultHTMLFactory ? ((DefaultHTMLFactory) factory).getFactoryProducerAdapter() : null);
-	}
-	
-	protected String stringify(Object content, int indent) {
-		return stringify(content, indent, factory);
 	}
 	
 	/**

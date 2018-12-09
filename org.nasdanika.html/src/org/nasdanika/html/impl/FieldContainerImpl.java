@@ -80,7 +80,7 @@ class FieldContainerImpl<T extends FieldContainer<T>> implements FieldContainer<
 	}
 	
 	protected String stringify(Object content, int indent) {
-		return HTMLElementImpl.stringify(content, indent, factory);
+		return HTMLElementImpl.stringify(content, indent);
 	}
 	
 	/**

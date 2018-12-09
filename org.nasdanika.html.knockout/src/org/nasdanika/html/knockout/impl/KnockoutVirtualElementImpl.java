@@ -72,12 +72,12 @@ class KnockoutVirtualElementImpl extends KnockoutControlFlowImpl<KnockoutVirtual
 		StringBuilder sb = HTMLElementImpl.indent(indent).append("<!-- ko ")
 				.append(binding)
 				.append(": ")
-				.append(HTMLElementImpl.stringify(expression, 0, factory.getHTMLFactory()))
+				.append(HTMLElementImpl.stringify(expression))
 				.append(" -->")
 				.append(System.lineSeparator());
 		
 		for (Object c: theContent) {
-			sb.append(HTMLElementImpl.stringify(c, indent+1, factory.getHTMLFactory()));
+			sb.append(HTMLElementImpl.stringify(c, indent+1));
 		}
 		return HTMLElementImpl.indent(sb, indent).append("<!-- /ko -->").toString();
 	}

@@ -7,16 +7,6 @@ package org.nasdanika.html;
  */
 public interface Producer {
 	
-	/**
-	 * Adapter to Producer. 
-	 * @author Pavel Vlasov
-	 *
-	 */
-	interface Adapter {
-		
-		Producer asProducer(Object obj);
-		
-	}
 	
 	/**
 	 * Produces content.
