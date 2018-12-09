@@ -4,9 +4,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
-import org.nasdanika.html.HTMLElement.Event;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Tag;

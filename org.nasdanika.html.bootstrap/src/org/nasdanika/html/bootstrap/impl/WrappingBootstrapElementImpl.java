@@ -24,9 +24,4 @@ public class WrappingBootstrapElementImpl<H extends HTMLElement<?>, B extends Bo
 		return htmlElement;
 	}
 
-	@Override
-	public void close() throws Exception {
-		htmlElement.close();		
-	}
-
 }

@@ -52,18 +52,6 @@ class KnockoutVirtualElementImpl extends KnockoutControlFlowImpl<KnockoutVirtual
 		}
 		return this;
 	}
-
-	@Override
-	public void close() throws Exception {
-		if (expression instanceof AutoCloseable) {
-			((AutoCloseable) expression).close();
-		}
-		for (Object c: getContent()) {
-			if (c instanceof AutoCloseable) {
-				((AutoCloseable) c).close();
-			}
-		}
-	}
 		
 	@Override
 	public String produce(int indent) {		

@@ -107,15 +107,14 @@ public class TestApp extends HTMLTestBase {
 	
 	@Test
 	public void testHTMLApp() throws Exception {
-		try (Application app = new HTMLTableApplication()) {
-			app.header("Header").navigationBar("Navigation bar").navigationPanel("Navigation panel").contentPanel("Content").footer("Footer");
-			writeFile("app/html/index.html", app.toString());
-		}
+		Application app = new HTMLTableApplication();
+		app.header("Header").navigationBar("Navigation bar").navigationPanel("Navigation panel").contentPanel("Content").footer("Footer");
+		writeFile("app/html/index.html", app.toString());
 	}
 	
 	@Test
 	public void testBootstrapApp() throws Exception {
-		try (Application app = new BootstrapContainerApplication(Theme.Litera, false) {
+		Application app = new BootstrapContainerApplication(Theme.Litera, false) {
 			
 			{
 				container.border(Color.DANGER);
@@ -126,50 +125,50 @@ public class TestApp extends HTMLTestBase {
 				contentPanel.border(Color.DANGER).toHTMLElement().style("min-height", "25em");
 			}
 			
-		}) {
-			Tag treeContainer = app.getHTMLPage().getFactory().div();
-			HTMLFactory htmlFactory = HTMLFactory.INSTANCE;
-			app
-				.header("Header")
-				.navigationBar("Navigation bar")
-				.navigationPanel(treeContainer)
-				.contentPanel(htmlFactory.overlay("Content overlay"), "Content")
-				.footer("Footer");
-			
-			JsTreeFactory jsTreeFactory = JsTreeFactory.INSTANCE;
-			jsTreeFactory.cdn(app.getHTMLPage());
-			
-			FontAwesomeFactory.INSTANCE.cdn(app.getHTMLPage());
-					
-			JsTreeNode rootNode = jsTreeFactory.jsTreeNode();
-			rootNode.icon("far fa-user");
-			rootNode.text("User");
-			
-			app.getHTMLPage().body(jsTreeFactory.bind(treeContainer, jsTreeFactory.buildAjaxJsTree("jstree.json", "context-menu.json")));		
-			
-			writeFile("app/bootstrap/index.html", app.toString());
-			
-			// JsTree
-			JSONArray jsTreeNodes = new JSONArray();
-			
-			JsTreeNode childNode = jsTreeFactory.jsTreeNode();
-			childNode.icon("far fa-user");
-			childNode.text("Child");
-			childNode.hasChildren();
-			childNode.id(jsTreeFactory.getHTMLFactory().nextId());
-			jsTreeNodes.put(childNode.toJSON());
-			writeFile("app/bootstrap/jstree.json", jsTreeNodes.toString());
-			
-			// JsTree context menu
-			JsTreeContextMenuItem item = jsTreeFactory.jsTreeContextMenuItem();
-			item.label("Do it!");
-			item.icon("far fa-user");
-			item.action("window.location.href='http://www.nasdanika.org'; console.log('hey');");
-			
-			JSONObject menu = new JSONObject();
-			menu.put("do-it", item.toJSON());
-			writeFile("app/bootstrap/context-menu.json", menu.toString());
-		}
+		};
+		
+		Tag treeContainer = app.getHTMLPage().getFactory().div();
+		HTMLFactory htmlFactory = HTMLFactory.INSTANCE;
+		app
+			.header("Header")
+			.navigationBar("Navigation bar")
+			.navigationPanel(treeContainer)
+			.contentPanel(htmlFactory.overlay("Content overlay"), "Content")
+			.footer("Footer");
+		
+		JsTreeFactory jsTreeFactory = JsTreeFactory.INSTANCE;
+		jsTreeFactory.cdn(app.getHTMLPage());
+		
+		FontAwesomeFactory.INSTANCE.cdn(app.getHTMLPage());
+				
+		JsTreeNode rootNode = jsTreeFactory.jsTreeNode();
+		rootNode.icon("far fa-user");
+		rootNode.text("User");
+		
+		app.getHTMLPage().body(jsTreeFactory.bind(treeContainer, jsTreeFactory.buildAjaxJsTree("jstree.json", "context-menu.json")));		
+		
+		writeFile("app/bootstrap/index.html", app.toString());
+		
+		// JsTree
+		JSONArray jsTreeNodes = new JSONArray();
+		
+		JsTreeNode childNode = jsTreeFactory.jsTreeNode();
+		childNode.icon("far fa-user");
+		childNode.text("Child");
+		childNode.hasChildren();
+		childNode.id(jsTreeFactory.getHTMLFactory().nextId());
+		jsTreeNodes.put(childNode.toJSON());
+		writeFile("app/bootstrap/jstree.json", jsTreeNodes.toString());
+		
+		// JsTree context menu
+		JsTreeContextMenuItem item = jsTreeFactory.jsTreeContextMenuItem();
+		item.label("Do it!");
+		item.icon("far fa-user");
+		item.action("window.location.href='http://www.nasdanika.org'; console.log('hey');");
+		
+		JSONObject menu = new JSONObject();
+		menu.put("do-it", item.toJSON());
+		writeFile("app/bootstrap/context-menu.json", menu.toString());
 	}
 	
 	@Test
@@ -229,7 +228,7 @@ public class TestApp extends HTMLTestBase {
 						}
 						
 						for (Entry<String, ApplicationBuilder> be: createApplicationBuilders(principalAction, principalAction.getChildren(), (Action) next).entrySet()) {
-							try (Application app = new BootstrapContainerApplication(theme, true) {
+							Application app = new BootstrapContainerApplication(theme, true) {
 								
 								{
 									header.background(Color.PRIMARY);
@@ -257,10 +256,9 @@ public class TestApp extends HTMLTestBase {
 									
 								}
 								
-							}) {							
-								be.getValue().build(app);
-								writeFile("app/action/"+be.getKey()+"/"+href, app.toString());
-							}
+							};
+							be.getValue().build(app);
+							writeFile("app/action/"+be.getKey()+"/"+href, app.toString());
 						}						
 					}
 				}

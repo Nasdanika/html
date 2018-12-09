@@ -107,11 +107,6 @@ public class ButtonImpl<H extends HTMLElement<?>> extends WrappingBootstrapEleme
 	}
 
 	@Override
-	public void close() throws Exception {
-		htmlElement.close();		
-	}
-
-	@Override
 	public Object produce(int indent) {
 		return htmlElement.produce(indent);
 	}

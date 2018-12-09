@@ -88,9 +88,5 @@ public class HTMLTableApplication implements Application {
 	public String toString() {
 		return page.toString();
 	}
-	@Override
-	public void close() throws Exception {
-		page.close();		
-	}
 		
 }

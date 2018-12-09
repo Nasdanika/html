@@ -3,7 +3,7 @@ package org.nasdanika.html.fontawesome.impl;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.fontawesome.Icon;
 
-class IconImpl<T extends HTMLElement<?>> implements Icon<T>, AutoCloseable {
+class IconImpl<T extends HTMLElement<?>> implements Icon<T> {
 	/**
 	 * 
 	 */
@@ -125,11 +125,6 @@ class IconImpl<T extends HTMLElement<?>> implements Icon<T>, AutoCloseable {
 	@Override
 	public String toString() {
 		return target.toString();
-	}
-
-	@Override
-	public void close() throws Exception {
-		target.close();		
 	}
 	
 }

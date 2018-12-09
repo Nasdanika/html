@@ -52,7 +52,7 @@ public interface Icon<T extends HTMLElement<?>> {
 	Icon<T> flip(Flip flip);
 	
 	
-	interface Stack extends AutoCloseable {
+	interface Stack {
 		
 		enum IconSize { x1, x2, x3, x4, x5 }
 	

@@ -73,11 +73,6 @@ public class DefaultFontAwesomeFactory implements FontAwesomeFactory {
 			}
 
 			@Override
-			public void close() throws Exception {
-				span.close();				
-			}
-
-			@Override
 			public Stack icon(Icon<?> icon, IconSize size, boolean inverse) {
 				return icon(icon.toHTMLElement(), size, inverse);
 			}

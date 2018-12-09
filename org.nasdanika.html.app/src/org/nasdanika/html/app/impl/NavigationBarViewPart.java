@@ -1,9 +1,9 @@
 package org.nasdanika.html.app.impl;
 
+import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.Tag;
-import org.nasdanika.html.HTMLElement.Event;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.NavigationActionActivator;

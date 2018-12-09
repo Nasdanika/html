@@ -121,9 +121,4 @@ public class BootstrapContainerApplication implements Application {
 		return page.toString();
 	}
 
-	@Override
-	public void close() throws Exception {
-		page.close();		
-	}
-
 }

@@ -58,11 +58,6 @@ public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements 
 	}
 
 	@Override
-	public void close() throws Exception {
-		fragment.close();
-	}
-
-	@Override
 	public Object produce(int indent) {
 		return fragment.produce(indent);
 	}

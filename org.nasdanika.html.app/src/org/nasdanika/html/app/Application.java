@@ -9,7 +9,7 @@ import org.nasdanika.html.Producer;
  * @author Pavel Vlasov
  *
  */
-public interface Application extends Producer, AutoCloseable {
+public interface Application extends Producer {
 	
 	/**
 	 * Adds header content. 

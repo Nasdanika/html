@@ -1,5 +1,6 @@
 package org.nasdanika.html.bootstrap.impl;
 
+import org.nasdanika.html.Event;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
@@ -7,7 +8,6 @@ import org.nasdanika.html.InputBase;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
-import org.nasdanika.html.HTMLElement.Event;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
