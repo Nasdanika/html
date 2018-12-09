@@ -145,7 +145,7 @@ public class TestApp extends HTMLTestBase {
 		rootNode.icon("far fa-user");
 		rootNode.text("User");
 		
-		app.getHTMLPage().body(jsTreeFactory.bind(treeContainer, jsTreeFactory.buildAjaxJsTree("jstree.json", "context-menu.json")));		
+		app.getHTMLPage().body(jsTreeFactory.bind(treeContainer, jsTreeFactory.buildAjaxJsTree("'jstree.json'", "'context-menu.json'")));		
 		
 		writeFile("app/bootstrap/index.html", app.toString());
 		
