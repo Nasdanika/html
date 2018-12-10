@@ -40,9 +40,16 @@ public class NavigationBarViewPart implements ViewPart {
 			viewGenerator.label(ca, fragment::content);
 			ActionActivator activator = ca.getActivator();
 			if (activator instanceof NavigationActionActivator) {
-				navBar.item(((NavigationActionActivator) activator).getUrl(), Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment);
+				Tag item = navBar.item(((NavigationActionActivator) activator).getUrl(), Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment);
+				if (ca.getConfirmation() != null) {
+					item.on(Event.click, "return confirm('"+ca.getConfirmation()+"');");
+				}
 			} else if (activator instanceof ScriptActionActivator) {
-				navBar.item("#", Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment).on(Event.click, ((ScriptActionActivator) activator).getCode());				
+				String code = ((ScriptActionActivator) activator).getCode();
+				if (ca.getConfirmation() != null) {
+					code = "if (confirm('"+ca.getConfirmation()+"')) { "+code+" }";
+				}
+				navBar.item("#", Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment).on(Event.click, code);				
 			} else if (ca.getChildren().isEmpty()) {
 				// As text
 				navBar.navbarText(fragment);

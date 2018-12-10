@@ -8,8 +8,10 @@ The goal of the libraries is to allow Java developers being more productive by:
 * Think about the Web User Interface as a Java interface - a collection of methods/actions which the user can invoke.
 * Think about users as asynchronous method invocations - a user is invoked by passing them a callback (user) interface.
 
-Nasdanika HTML libraries, except EMF, are provided as both Maven jar's and Equinox/OSGi bundles. It allows to use them in both Maven/plain Java and OSGi applications. 
-The EMF library is provided only as an OSGi bundle.        
+Nasdanika HTML libraries, except the application model and EMF ones, are provided as both Maven jar's and Equinox/OSGi bundles. It allows to use them in both Maven/plain Java and OSGi applications. 
+The application model and EMF libraries have dependencies on Eclipse/Equinox bundles and are provided only as an OSGi bundle.
+
+Nasdanika HTML libraries can be used to build both static Web sites, e.g. documentation, and dynamic web applications.        
 
 ## Libraries/Bundles
 

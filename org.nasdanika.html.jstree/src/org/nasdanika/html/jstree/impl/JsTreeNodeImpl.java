@@ -121,7 +121,9 @@ class JsTreeNodeImpl implements JsTreeNode {
 		if (disabled) {
 			state.put("disabled", true);
 		}
-		data.put("state", state);
+		if (state.length() > 0) {
+			data.put("state", state);
+		}
 		if (icon != null) {
 			data.put("icon", icon);
 		} 

@@ -9,6 +9,7 @@ import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.ActionGroup;
@@ -18,6 +19,9 @@ import org.nasdanika.html.bootstrap.Navs;
 
 /**
  * Generates section.
+ * 
+ * TODO - Use Ajax if section action has {@link NavigationActionActivator}. 
+ * 
  * @author Pavel Vlasov
  *
  */

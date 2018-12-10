@@ -87,8 +87,15 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		ActionActivator activator = getActionActivator(action);
 		if (activator instanceof NavigationActionActivator) {
 			anchor.attribute("href", ((NavigationActionActivator) activator).getUrl());
+			if (action.getConfirmation() != null) {
+				anchor.on(Event.click, "return confirm('"+action.getConfirmation()+"');");
+			}
 		} else if (activator instanceof ScriptActionActivator) {
-			anchor.on(Event.click, ((ScriptActionActivator) activator).getCode());
+			String code = ((ScriptActionActivator) activator).getCode();
+			if (action.getConfirmation() != null) {
+				code = "if (confirm('"+action.getConfirmation()+"')) { "+code+" }";
+			}
+			anchor.on(Event.click, code);
 		} else if (activator instanceof BindingActionActivator) {
 			((BindingActionActivator) activator).bind(anchor);
 		}		
@@ -96,13 +103,23 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	
 	protected void bind(Action action, HTMLElement<?> element) {
 		ActionActivator activator = getActionActivator(action);
-		if (activator instanceof NavigationActionActivator) {
-			element.on(Event.click, "location.href='"+((NavigationActionActivator) activator).getUrl()+"'");
-		} else if (activator instanceof ScriptActionActivator) {
-			element.on(Event.click, ((ScriptActionActivator) activator).getCode());
-		} else if (activator instanceof BindingActionActivator) {
+		if (activator instanceof BindingActionActivator) {
 			((BindingActionActivator) activator).bind(element);
-		}				
+		} else {
+			String code = null; 
+			if (activator instanceof NavigationActionActivator) {
+				code = "location.href='"+((NavigationActionActivator) activator).getUrl()+"'";
+			} else if (activator instanceof ScriptActionActivator) {
+				code = ((ScriptActionActivator) activator).getCode();
+			}
+			
+			if (code != null) {
+				if (action.getConfirmation() != null) {
+					code = "if (confirm('"+action.getConfirmation()+"')) { "+code+" }";
+				}
+				element.on(Event.click, code);
+			}
+		}
 	}
 
 	/**

@@ -76,30 +76,6 @@ public class TestApp extends HTMLTestBase {
 		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
 		URI appUri = URI.createPlatformPluginURI("org.nasdanika.html.app.model/NasdanikaBank.app", false);
 		Resource appResource = resourceSet.getResource(appUri, true);
-						
-//		// For testing
-//		TreeIterator<EObject> atit = appResource.getAllContents();
-//		while (atit.hasNext()) {
-//			EObject next = atit.next();
-//			if (next instanceof org.nasdanika.html.model.app.Action) {
-//				org.nasdanika.html.model.app.Action ma = (org.nasdanika.html.model.app.Action) next;
-////				if (ma.getActivator() == null && !"transfer".equals(ma.getId())) {
-////					NavigationActionActivator activator = AppFactory.eINSTANCE.createNavigationActionActivator();
-////					activator.setUrl((ma.getId() == null ? ma.hashCode() : ma.getId())+".html");
-////					ma.setActivator(activator);
-////				}
-//				if (ma.getActivator() instanceof NavigationActionActivator) {
-//					System.out.println(ma.getText() + " -> " + ((NavigationActionActivator) ma.getActivator()).getUrl());
-//					for (EAttribute a: ma.getActivator().eClass().getEAllAttributes()) {
-//						System.out.println("\t"+a.getName()+" = "+ma.getActivator().eGet(a));
-//					}
-//				} else if (ma.getActivator() instanceof ScriptActionActivator) {
-//					System.out.println(ma.getText() + " => " + ((ScriptActionActivator) ma.getActivator()).getCode());					
-//				}
-//			}
-//		}
-//		
-//		appResource.save(System.out, null);
 
 		appAction = (Action) appResource.getContents().iterator().next();		
 		
@@ -133,34 +109,39 @@ public class TestApp extends HTMLTestBase {
 			.header("Header")
 			.navigationBar("Navigation bar")
 			.navigationPanel(treeContainer)
-			.contentPanel(htmlFactory.overlay("Content overlay"), "Content")
+			.contentPanel(/* htmlFactory.overlay("Content overlay"), */ "Content")
 			.footer("Footer");
 		
 		JsTreeFactory jsTreeFactory = JsTreeFactory.INSTANCE;
 		jsTreeFactory.cdn(app.getHTMLPage());
 		
 		FontAwesomeFactory.INSTANCE.cdn(app.getHTMLPage());
-				
-		JsTreeNode rootNode = jsTreeFactory.jsTreeNode();
-		rootNode.icon("far fa-user");
-		rootNode.text("User");
 		
-		app.getHTMLPage().body(jsTreeFactory.bind(treeContainer, jsTreeFactory.buildAjaxJsTree("'jstree.json'", "'context-menu.json'")));		
+		app.getHTMLPage().body(jsTreeFactory.bind(treeContainer, jsTreeFactory.buildAjaxJsTree("node.id == '#' ? 'jstree.json' : 'jstree-' + node.id + '.json'", "'context-menu-' + node.id + '.json'")));		
 		
 		writeFile("app/bootstrap/index.html", app.toString());
 		
 		// JsTree
-		JSONArray jsTreeNodes = new JSONArray();
+				
+		JsTreeNode rootNode = jsTreeFactory.jsTreeNode();
+		rootNode.icon("far fa-user");
+		rootNode.text("User");
+		rootNode.id(htmlFactory.nextId());
+		rootNode.hasChildren();
+		JSONArray jsTreeRootNodes = new JSONArray();
+		jsTreeRootNodes.put(rootNode.toJSON());
+		writeFile("app/bootstrap/jstree.json", jsTreeRootNodes.toString());		
+		
+		JSONArray jsTreeChildNodes = new JSONArray();
 		
 		JsTreeNode childNode = jsTreeFactory.jsTreeNode();
 		childNode.icon("far fa-user");
 		childNode.text("Child");
-		childNode.hasChildren();
 		childNode.id(jsTreeFactory.getHTMLFactory().nextId());
-		jsTreeNodes.put(childNode.toJSON());
-		writeFile("app/bootstrap/jstree.json", jsTreeNodes.toString());
+		jsTreeChildNodes.put(childNode.toJSON());
+		writeFile("app/bootstrap/jstree-"+rootNode.getId()+".json", jsTreeChildNodes.toString());
 		
-		// JsTree context menu
+		// JsTree context menu - the same menu for both nodes.
 		JsTreeContextMenuItem item = jsTreeFactory.jsTreeContextMenuItem();
 		item.label("Do it!");
 		item.icon("far fa-user");
@@ -168,7 +149,8 @@ public class TestApp extends HTMLTestBase {
 		
 		JSONObject menu = new JSONObject();
 		menu.put("do-it", item.toJSON());
-		writeFile("app/bootstrap/context-menu.json", menu.toString());
+		writeFile("app/bootstrap/context-menu-"+rootNode.getId()+".json", menu.toString());
+		writeFile("app/bootstrap/context-menu-"+childNode.getId()+".json", menu.toString());
 	}
 	
 	@Test

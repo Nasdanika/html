@@ -77,34 +77,39 @@ app
 	.header("Header")
 	.navigationBar("Navigation bar")
 	.navigationPanel(treeContainer)
-	.contentPanel(htmlFactory.overlay("Content overlay"), "Content")
+	.contentPanel(/* htmlFactory.overlay("Content overlay"), */ "Content")
 	.footer("Footer");
 
 JsTreeFactory jsTreeFactory = JsTreeFactory.INSTANCE;
 jsTreeFactory.cdn(app.getHTMLPage());
 
 FontAwesomeFactory.INSTANCE.cdn(app.getHTMLPage());
-		
-JsTreeNode rootNode = jsTreeFactory.jsTreeNode();
-rootNode.icon("far fa-user");
-rootNode.text("User");
 
-app.getHTMLPage().body(jsTreeFactory.bind(treeContainer, jsTreeFactory.buildAjaxJsTree("'jstree.json'", "'context-menu.json'")));		
+app.getHTMLPage().body(jsTreeFactory.bind(treeContainer, jsTreeFactory.buildAjaxJsTree("node.id == '#' ? 'jstree.json' : 'jstree-' + node.id + '.json'", "'context-menu-' + node.id + '.json'")));		
 
 writeFile("app/bootstrap/index.html", app.toString());
 
 // JsTree
-JSONArray jsTreeNodes = new JSONArray();
+		
+JsTreeNode rootNode = jsTreeFactory.jsTreeNode();
+rootNode.icon("far fa-user");
+rootNode.text("User");
+rootNode.id(htmlFactory.nextId());
+rootNode.hasChildren();
+JSONArray jsTreeRootNodes = new JSONArray();
+jsTreeRootNodes.put(rootNode.toJSON());
+writeFile("app/bootstrap/jstree.json", jsTreeRootNodes.toString());		
+
+JSONArray jsTreeChildNodes = new JSONArray();
 
 JsTreeNode childNode = jsTreeFactory.jsTreeNode();
 childNode.icon("far fa-user");
 childNode.text("Child");
-childNode.hasChildren();
 childNode.id(jsTreeFactory.getHTMLFactory().nextId());
-jsTreeNodes.put(childNode.toJSON());
-writeFile("app/bootstrap/jstree.json", jsTreeNodes.toString());
+jsTreeChildNodes.put(childNode.toJSON());
+writeFile("app/bootstrap/jstree-"+rootNode.getId()+".json", jsTreeChildNodes.toString());
 
-// JsTree context menu
+// JsTree context menu - the same menu for both nodes.
 JsTreeContextMenuItem item = jsTreeFactory.jsTreeContextMenuItem();
 item.label("Do it!");
 item.icon("far fa-user");
@@ -112,7 +117,8 @@ item.action("window.location.href='http://www.nasdanika.org'; console.log('hey')
 
 JSONObject menu = new JSONObject();
 menu.put("do-it", item.toJSON());
-writeFile("app/bootstrap/context-menu.json", menu.toString());
+writeFile("app/bootstrap/context-menu-"+rootNode.getId()+".json", menu.toString());
+writeFile("app/bootstrap/context-menu-"+childNode.getId()+".json", menu.toString());
 ```
 
 The application: 
@@ -121,16 +127,125 @@ The application:
 
 ## Label
 
+[Label](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Label.html) is something that can be displayed in a variety of ways. It has the following attributes:
+* Icon - image URL (if there is slash) or css class, e.g. ``fas fa-user``.
+* Text
+* Color and Outline - used when a label is displayed as a badge or a button.
+* Id - used by sub-interfaces, e.g. actions.
+* Tooltip
+* Description - more detailed description than a tooltip. It can be displayed in a modal 
+* Notification - can be displayed as a badge next the text.
+
+Label is a base interface for [Action](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Action.html) and a number of other interfaces. 
+
 ## Action
+
+[Action](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Action.html) is the unit of system/user interaction. 
+I may be thought of as a method in a callback interface (Web UI) passed to the user. 
+The user interacts with the system by "invoking callback methods" - activating actions so they get executed by the system.
+
+Action extends [Executable](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Executable.html), it allows to separate processing (``execute()`` method) from  presentation (other action attributes) and have actions delegating to executable.
 
 ### Action activator
 
+[ActionActivator](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/ActionActivator.html)s are used to trigger action execution on the server side. 
+There are three types of action activators:
+* [NavigationActionActivator](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/NavigationActionActivator.html) - when user clicks on the action UI element it triggers navigation to the specified URL.
+* [ScriptActionActivator](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/ScriptActionActivator.html) - when user clicks on the action UI element it triggers execution of the specified script.
+* [BindingActionActivator](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/BindingActionActivator.html) - the activator is responsible for configure the UI element to activate action execution. For example, such a binder may add KnockoutJS click binding.
+
+In the above text is it assumed that UI elements are activated by a mouse click. However, they may be activated differently, e.g. for a form action activation shall happen on form submit.
+In this case the navigation url would go to the action attribute of the form and the script code would go to the onSubmit handler.
+
+### Contained actions
+
+Actions have 3 collections of contained (sub) actions - children, context actions, and sections.
+
+Child actions correspond to contained objects and are typically rendered in the navigation panel. For example a bank customer has/owns accounts. 
+Actions to view such accounts would be displayed in the navigation panel. 
+In entity-relationship terms child actions correspond to containment references and in Java terms they correspond to fields. 
+You may also think of them as "view <noun>" actions. E.g. "view account".  
+
+Context actions get their name from the fact that they are displayed as a JsTree context menu items. 
+They are also output as buttons in the content panel.
+Context actions correspond to methods/operations/verbs. E.g. "open account" context action of a "view customer" action.
+
+Section actions play the same role as child actions, but they are displayed in the content panel of the contained action. 
+For example, "view transactions" section action of "view statement" action would display a list of transactions below statement details.
+Section actions may be executed along with the containing action. In this case they don't need an activator.
+Section actions with NavigationActionActivators may be executed by loading section content using AJAX.  
+
 ## View generator
+
+[ViewGenerator](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/ViewGenerator.html) provides access to lower-level API's factories and methods to build
+UI elements from application abstractions such as actions. 
 
 ## View part
 
+[ViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/ViewPart.html) generates Web UI leveraging ViewGenerator passed to its ``generate()`` method. 
+
 ## Application builder
 
-ViewPartApplicationBuilder 
-ActionApplicationBuilder, view parts...
+[ApplicationBuilder](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/ApplicationBuilder.html) builds an application passed to its ``build()`` method.
+
+## ViewPartApplicationBuilder
+
+[ViewPartApplicationBuilder](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/ViewPartApplicationBuilder.html) is an abstract implementation of ApplicationBuilder.
+It creates a ViewGenerator, view parts for the header, navigation bar, navigation panel, content panel, and footer, and then delegates application building to the view parts.
+
+## ActionApplicationBuilder
+  
+[ActionApplicationBuilder](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/ActionApplicationBuilder.html) is a concrete subclass of ViewPartApplicationBuilder
+which builds application from an action hierarchy.
+It uses 3 actions to build the application:
+* Active action - action which has been executed and results of its execution are presented to the user in the content panel. This action or its parent in the path are selected in the navigation bar or the navigation panel.
+* Principal action - this action's link is displayed as the navigation bar brand. Context actions are displayed in the navigation bar, and child actions are displayed in the navigation panel. The action takes its name from the fact that it would typically represent the security principal. 
+* Root action - this action's link is displayed in the header and its context actions are displayed in the footer.
+
+The builder has several constructors. One of them takes just the active action and derives principal and root actions from the active action as the first and the second elements of the action path.
+
+In the examples below "view account" is an active action, "John Doe" is the principal action and the "Bank of Nasdanika" is the root action.
+
+ActionApplicationBuilder delegates building to the following view parts:
+* [NavigationBarViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/NavigationBarViewPart.html) 
+* [ActionGroupNavigationPanelViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/ActionGroupNavigationPanelViewPart.html) which can be replaced with * [JsTreeNavigationPanelViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/JsTreeNavigationPanelViewPart.html) 
+* [ContentPanelViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/ContentPanelViewPart.html) which in turn delegates to [SectionViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/SectionViewPart.html) 
+* [FooterViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/FooterViewPart.html)
+
+The header view part is so simple that it is implemented as a lambda one-liner. 
+
+### Action group navigation panel
+
+The code snippet below shows how an application builder is constructed for the default action group navigation panel.
+  
+```
+ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {
+	@Override
+	protected Object generateHeader(ViewGenerator viewGenerator) {
+		return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark", "text-decoration: none");
+	}
+};			
+```
+
+Full code is available in the [testActionApplication](https://github.com/Nasdanika/html/blob/master/org.nasdanika.html.tests/src/org/nasdanika/html/tests/TestApp.java#L157) method.
+
+<iframe src="/test-dumps/app/action/link-group/credit-card-9012.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
+
+   
+### jsTree navigation panel
+
+```		
+ActionApplicationBuilder jsTreeAppBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {
+	@Override
+	protected Object generateHeader(ViewGenerator viewGenerator) {
+		return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark", "text-decoration: none");
+	}
+		@Override
+	protected ViewPart getNavigationPanelViewPart() {
+			return new JsTreeNavigationPanelViewPart(navigationPanelActions, activeAction);
+		}
+	};		
+```
+  
+<iframe src="/test-dumps/app/action/js-tree/credit-card-9012.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
