@@ -164,7 +164,7 @@ Actions have 3 collections of contained (sub) actions - children, context action
 Child actions correspond to contained objects and are typically rendered in the navigation panel. For example a bank customer has/owns accounts. 
 Actions to view such accounts would be displayed in the navigation panel. 
 In entity-relationship terms child actions correspond to containment references and in Java terms they correspond to fields. 
-You may also think of them as "view <noun>" actions. E.g. "view account".  
+You may also think of them as "view (noun)" actions. E.g. "view account".  
 
 Context actions get their name from the fact that they are displayed as a JsTree context menu items. 
 They are also output as buttons in the content panel.
@@ -249,3 +249,6 @@ ActionApplicationBuilder jsTreeAppBuilder = new ActionApplicationBuilder(appActi
   
 <iframe src="/test-dumps/app/action/js-tree/credit-card-9012.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
+## Property sources
+
+TODO - work in progress...
