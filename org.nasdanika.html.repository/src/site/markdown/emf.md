@@ -26,3 +26,7 @@ This approach will allow fine-grained customization of the generation process.
 Adapters may be using EMF metadata, model annotations, and resource bundles so a good deal of UI customization may require no coding.
 Also in the future a generator may be provided similar to [Codegen ECore Web UI](https://github.com/Nasdanika/codegen-ecore-web-ui) to generate adapters from a configuration
 model instead of creating them manually.    
+
+In dynamic web applications adapters with resolved metadata and security permissions may be cached in the web session. In this case they need to be keyed by CDOID and adapter type. 
+Adapters may also cache already generated pieces. Such pieces shall have associated view timestamp and be used only if there were no changes in the view.
+The cache might be memory-sensitive - soft-referenced. Some adapters which do not hold principal-specific data may be cached at the application level instead of the session level.
