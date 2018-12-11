@@ -48,5 +48,5 @@ public final class Util {
 		return equal(activeAction, a) || contains(activeAction.getPath(), a);
 	}
 	
-
+	// TODO - sectionLevel(Action)
 }

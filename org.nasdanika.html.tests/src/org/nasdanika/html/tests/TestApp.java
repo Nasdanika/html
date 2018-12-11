@@ -257,7 +257,7 @@ public class TestApp extends HTMLTestBase {
 		ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {
 			@Override
 			protected Object generateHeader(ViewGenerator viewGenerator) {
-				return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark", "text-decoration: none");
+				return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark").style().text().decoration().none();
 			}
 		};			
 		ret.put("link-group", appBuilder);
@@ -265,7 +265,7 @@ public class TestApp extends HTMLTestBase {
 		ActionApplicationBuilder jsTreeAppBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {
 			@Override
 			protected Object generateHeader(ViewGenerator viewGenerator) {
-				return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark", "text-decoration: none");
+				return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark").style().text().decoration().none();
 			}
 			
 			@Override

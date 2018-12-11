@@ -222,7 +222,7 @@ The code snippet below shows how an application builder is constructed for the d
 ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {
 	@Override
 	protected Object generateHeader(ViewGenerator viewGenerator) {
-		return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark", "text-decoration: none");
+		return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark").style().text().decoration().none();
 	}
 };			
 ```
@@ -238,7 +238,7 @@ Full code is available in the [testActionApplication](https://github.com/Nasdani
 ActionApplicationBuilder jsTreeAppBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {
 	@Override
 	protected Object generateHeader(ViewGenerator viewGenerator) {
-		return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark", "text-decoration: none");
+		return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark").style().text().decoration().none();
 	}
 		@Override
 	protected ViewPart getNavigationPanelViewPart() {

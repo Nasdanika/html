@@ -31,6 +31,8 @@ public class SectionViewPart implements ViewPart {
 	protected Action activeAction;
 	protected int level;
 	private Map<String, Object> input;
+	
+	// TODO - constructor taking level from Util.sectionLevel()
 
 	public SectionViewPart(Action section, Action activeAction, Map<String, Object> input, int level) {
 		this.section = section;
