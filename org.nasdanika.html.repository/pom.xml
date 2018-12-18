@@ -12,7 +12,7 @@
 	</parent>
 	
 	<properties>
-		<siteDir>html/${project.version}</siteDir>
+		<siteDir>html/${project.version}/${env.CIRCLE_BRANCH}</siteDir>
 	</properties>
 	
 	<build>

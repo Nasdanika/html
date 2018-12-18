@@ -6,13 +6,13 @@
   <body>
  
     <breadcrumbs>
-      <item name="Nasdanika" href="../../site/1.0.0/index.html"/>
+      <item name="Nasdanika" href="../../../../"/>
       <item name="HTML" href="index.html"/>
     </breadcrumbs>
  
    <menu name="Main">
       <item name="Overview" href="index.html" />
-      <item name="HTML" href="apidocs/html.html" />
+      <item name="HTML" href="html.html" />
       <item name="Bootstrap" href="bootstrap.html" />
       <item name="Fontawesome" href="fontawesome.html" />
       <item name="JsTree" href="jstree.html" />
