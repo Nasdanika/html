@@ -401,13 +401,22 @@ public interface AppPackage extends EPackage {
 	int ACTION__SECTIONS = IACTION_FEATURE_COUNT + 15;
 
 	/**
+	 * The feature id for the '<em><b>Category</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__CATEGORY = IACTION_FEATURE_COUNT + 16;
+
+	/**
 	 * The number of structural features of the '<em>Action</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_FEATURE_COUNT = IACTION_FEATURE_COUNT + 16;
+	int ACTION_FEATURE_COUNT = IACTION_FEATURE_COUNT + 17;
 
 	/**
 	 * The number of operations of the '<em>Action</em>' class.
@@ -571,6 +580,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int THEMED_ACTION__SECTIONS = ACTION__SECTIONS;
+
+	/**
+	 * The feature id for the '<em><b>Category</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int THEMED_ACTION__CATEGORY = ACTION__CATEGORY;
 
 	/**
 	 * The feature id for the '<em><b>Theme</b></em>' attribute.
@@ -752,6 +770,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_ACTION__SECTIONS = ACTION__SECTIONS;
+
+	/**
+	 * The feature id for the '<em><b>Category</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_ACTION__CATEGORY = ACTION__CATEGORY;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' attribute.
@@ -942,6 +969,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int THEMED_CONTENT_ACTION__SECTIONS = CONTENT_ACTION__SECTIONS;
+
+	/**
+	 * The feature id for the '<em><b>Category</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int THEMED_CONTENT_ACTION__CATEGORY = CONTENT_ACTION__CATEGORY;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' attribute.
@@ -1425,6 +1461,17 @@ public interface AppPackage extends EPackage {
 	EReference getAction_Sections();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.Action#getCategory <em>Category</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Category</em>'.
+	 * @see org.nasdanika.html.model.app.Action#getCategory()
+	 * @see #getAction()
+	 * @generated
+	 */
+	EReference getAction_Category();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ThemedAction <em>Themed Action</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1805,6 +1852,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EReference ACTION__SECTIONS = eINSTANCE.getAction_Sections();
+
+		/**
+		 * The meta object literal for the '<em><b>Category</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ACTION__CATEGORY = eINSTANCE.getAction_Category();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ThemedActionImpl <em>Themed Action</em>}' class.

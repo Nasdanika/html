@@ -398,6 +398,15 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getAction_Category() {
+		return (EReference)actionEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getThemedAction() {
 		return themedActionEClass;
 	}
@@ -608,6 +617,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEReference(actionEClass, ACTION__ACTIVATOR);
 		createEAttribute(actionEClass, ACTION__ITERATOR);
 		createEReference(actionEClass, ACTION__SECTIONS);
+		createEReference(actionEClass, ACTION__CATEGORY);
 
 		themedActionEClass = createEClass(THEMED_ACTION);
 		createEAttribute(themedActionEClass, THEMED_ACTION__THEME);
@@ -708,6 +718,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEReference(getAction_Activator(), this.getActionActivator(), null, "activator", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Iterator(), ecorePackage.getEString(), "iterator", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_Sections(), this.getAction(), null, "sections", null, 0, -1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Category(), this.getLabel(), null, "category", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(themedActionEClass, ThemedAction.class, "ThemedAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getThemedAction_Theme(), this.getTheme(), "theme", null, 0, 1, ThemedAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

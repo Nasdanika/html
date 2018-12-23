@@ -42,6 +42,8 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sections" upperBound="-1"
         eType="#//Action" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="category" eType="#//Label"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ThemedAction" eSuperTypes="#//Action #//IThemed">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="theme" eType="#//Theme"/>

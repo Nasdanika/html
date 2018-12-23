@@ -18,6 +18,7 @@ import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -48,6 +49,16 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	public ViewGeneratorImpl(Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
 		this.headContentConsumer = headContentConsumer;
 		this.bodyContentConsumer = bodyContentConsumer;
+	}
+	
+	@Override
+	public Consumer<?> getBodyContentConsumer() {
+		return bodyContentConsumer;
+	}
+	
+	@Override
+	public Consumer<?> getHeadContentConsumer() {
+		return headContentConsumer;
 	}
 	
 	@Override
@@ -97,14 +108,14 @@ public class ViewGeneratorImpl implements ViewGenerator {
 			}
 			anchor.on(Event.click, code);
 		} else if (activator instanceof BindingActionActivator) {
-			((BindingActionActivator) activator).bind(anchor);
+			((BindingActionActivator) activator).bind(anchor, this);
 		}		
 	}
 	
 	protected void bind(Action action, HTMLElement<?> element) {
 		ActionActivator activator = getActionActivator(action);
 		if (activator instanceof BindingActionActivator) {
-			((BindingActionActivator) activator).bind(element);
+			((BindingActionActivator) activator).bind(element, this);
 		} else {
 			String code = null; 
 			if (activator instanceof NavigationActionActivator) {
@@ -188,7 +199,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		} else if (activator instanceof ScriptActionActivator) {
 			ret.anchorAttribute("onclick", ((ScriptActionActivator) activator).getCode());
 		} else if (activator instanceof BindingActionActivator) {
-			((BindingActionActivator) activator).bind(ret);
+			((BindingActionActivator) activator).bind(ret, this);
 		}				
 		
 		// TODO - title
@@ -258,7 +269,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 
 	@Override
 	public void add(NamedItemsContainer container, Action action, Map<String,Object> input) {
-		container.item(labelFragment(action), action.execute(this, input));		
+		container.item(labelFragment(action), processViewPart(action.execute(this, input)));		
 	}
 
 	@Override
@@ -291,13 +302,20 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	@Override
 	public Tag addContent(ActionGroup actionGroup, Action action, boolean active, Map<String,Object> input) {
 		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
-		return actionGroup.contentAction(labelFragment(action), active, action.isDisabled(), action.getColor(), contentId, action.execute(this, input));
+		return actionGroup.contentAction(labelFragment(action), active, action.isDisabled(), action.getColor(), contentId, processViewPart(action.execute(this, input)));
 	}
 
 	@Override
 	public void add(Navs navs, Action action, boolean active, Map<String,Object> input) {
 		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
-		navs.item(labelFragment(action), active, action.isDisabled(), contentId, action.execute(this, input));
+		navs.item(labelFragment(action), active, action.isDisabled(), contentId, processViewPart(action.execute(this, input)));
+	}
+	
+	protected Object processViewPart(Object obj) {
+		if (obj instanceof ViewPart) {
+			return ((ViewPart) obj).generate(this);
+		}
+		return obj;
 	}
 	
 }

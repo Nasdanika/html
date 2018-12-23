@@ -43,6 +43,7 @@ import org.nasdanika.html.model.app.AppPackage;
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getActivator <em>Activator</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getIterator <em>Iterator</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getSections <em>Sections</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getCategory <em>Category</em>}</li>
  * </ul>
  *
  * @generated
@@ -339,6 +340,24 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	@SuppressWarnings("unchecked")
 	public EList<Action> getSections() {
 		return (EList<Action>)eGet(AppPackage.Literals.ACTION__SECTIONS, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public org.nasdanika.html.model.app.Label getCategory() {
+		return (org.nasdanika.html.model.app.Label)eGet(AppPackage.Literals.ACTION__CATEGORY, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setCategory(org.nasdanika.html.model.app.Label newCategory) {
+		eSet(AppPackage.Literals.ACTION__CATEGORY, newCategory);
 	}
 
 	/**

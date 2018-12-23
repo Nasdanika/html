@@ -169,7 +169,8 @@ public class ContentActionItemProvider extends ActionItemProvider {
 		boolean qualify =
 			childFeature == AppPackage.Literals.ACTION__CHILDREN ||
 			childFeature == AppPackage.Literals.ACTION__CONTEXT_ACTIONS ||
-			childFeature == AppPackage.Literals.ACTION__SECTIONS;
+			childFeature == AppPackage.Literals.ACTION__SECTIONS ||
+			childFeature == AppPackage.Literals.ACTION__CATEGORY;
 
 		if (qualify) {
 			return getString

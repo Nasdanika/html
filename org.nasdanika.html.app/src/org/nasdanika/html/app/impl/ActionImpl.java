@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
+import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
 
@@ -26,6 +27,7 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 	private boolean disabled;
 	private boolean floatRight;
 	private ActionActivator activator;
+	private Label category;
 	
 	public ActionImpl() {
 		
@@ -84,6 +86,12 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 				}
 			}
 		}
+		
+		@SuppressWarnings("unchecked")
+		Map<String, Object> catd = (Map<String,Object>) data.get("category");
+		if (catd != null) {
+			category = new LabelImpl(catd);
+		}
 	}
 	
 	@Override
@@ -93,6 +101,15 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 	
 	public void setActivator(ActionActivator activator) {
 		this.activator = activator;
+	}
+	
+	@Override
+	public Label getCategory() {
+		return category;
+	}
+	
+	public void setCategory(Label category) {
+		this.category = category;
 	}
 	
 	protected abstract Action createAction(Map<String, Object> cd);

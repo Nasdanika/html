@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Pavel Vlasov
  *
  */
-public interface Action extends Label, Executable {
+public interface Action extends Label, Executable, Categorized {
 	
 	/**
 	 * Action may be disabled.
@@ -105,6 +105,9 @@ public interface Action extends Label, Executable {
 		}
 		if (isFloatRight()) {
 			map.put("floatRight", true);
+		}
+		if (getCategory() != null) {
+			map.put("category", getCategory().toMap());
 		}
 		// Roles cannot be stored at this level.
 		return map;

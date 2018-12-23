@@ -1,33 +1,70 @@
 package org.nasdanika.html.app.impl;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Categorized;
+import org.nasdanika.html.app.Label;
 
 public final class Util {
 
 	private Util() {
 		// Utility
 	}
-	
-	
+		
 	/**
-	 * Compares actions by id and then using equals.
-	 * @param a1
-	 * @param a2
+	 * Compares objects by id and then using equals.
+	 * @param l1
+	 * @param l2
 	 * @return
 	 */
-	public static boolean equal(Action a1, Action a2) {
-		if (a1 == a2) {
+	 public static <T extends Label> boolean equal(T l1, T l2) {
+		if (l1 == l2) {
 			return true;
 		}
-		if (a1 == null || a2 == null) {
+		if (l1 == null || l2 == null) {
 			return false;
 		}
-		if (a1.getId() != null && a1.getId().equals(a2.getId())) {
+		if (l1.getId() != null && l1.getId().equals(l2.getId())) {
 			return true;
 		}
-		return a1.equals(a2);
+		return l1.equals(l2);
+	}
+	 
+	/**
+	 * Groups items by category. Categories are listed in the order in appearance. Uncategorized entries (null category) 
+	 * are listed before any categories.
+	 * @param items
+	 * @return
+	 */
+	public static <T extends Categorized> List<Map.Entry<Label, List<T>>> groupByCategory(Iterable<T> items) {
+		List<T> uncategorized = new ArrayList<>();
+		List<Map.Entry<Label, List<T>>> ret = new ArrayList<>();
+		I: for (T item: items) {
+			Label category = item.getCategory();
+			if (category == null) {
+				uncategorized.add(item);
+			} else {
+				for (Entry<Label, List<T>> e: ret) {
+					if (equal(e.getKey(), category)) {
+						e.getValue().add(item);
+						continue I;
+					}
+				}
+				List<T> ci = new ArrayList<>();
+				ci.add(item);
+				ret.add(new AbstractMap.SimpleEntry<Label, List<T>>(category, ci));
+			}
+		}		
+		if (!uncategorized.isEmpty()) {
+			ret.add(new AbstractMap.SimpleEntry<Label, List<T>>(null, uncategorized));
+		}
+		return ret;
 	}
 	
 	public static  boolean contains(Collection<? extends Action> collection, Action action) {

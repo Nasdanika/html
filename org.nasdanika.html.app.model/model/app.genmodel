@@ -38,6 +38,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/activator"/>
       <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute app.ecore#//Action/iterator"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/sections"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/category"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//ThemedAction">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ThemedAction/theme"/>

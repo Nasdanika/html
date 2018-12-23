@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.nasdanika.html.model.app.Action#getActivator <em>Activator</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getIterator <em>Iterator</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getSections <em>Sections</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getCategory <em>Category</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getAction()
@@ -211,5 +212,31 @@ public interface Action extends org.nasdanika.html.app.Action, Label {
 	 * @generated
 	 */
 	EList<Action> getSections();
+
+	/**
+	 * Returns the value of the '<em><b>Category</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Category</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Category</em>' containment reference.
+	 * @see #setCategory(Label)
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Category()
+	 * @model containment="true"
+	 * @generated
+	 */
+	Label getCategory();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getCategory <em>Category</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Category</em>' containment reference.
+	 * @see #getCategory()
+	 * @generated
+	 */
+	void setCategory(Label value);
 
 } // Action

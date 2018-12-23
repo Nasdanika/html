@@ -140,8 +140,21 @@ Label is a base interface for [Action](apidocs/org.nasdanika.html.app/apidocs/in
 
 ## Action
 
-[Action](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Action.html) is the unit of system/user interaction. 
-I may be thought of as a method in a callback interface (Web UI) passed to the user. 
+[Action](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Action.html) is the unit of system/user interaction.
+
+Actions define a vocabulary of human/system interaction. In such a vocabulary actions are "verbs". 
+E.g. "View transactions" or "Submit payment". 
+If actions are verbs, then property sources are nouns. They are explained in below.
+
+Thinking in terms of actions allows to stay focus on functionality and not get distracted by lower-level concerns such as button colors.
+One of my friends once told me a long time ago that "it is much easier to make a functional application fast than a fast application functional".
+Thinking in actions helps to deliver functionality faster and take care of non-functional requirements later. 
+
+While the framework allows to refine appearance of UI elements on a case-by-case basis having a consistent UI increases clarity of human-system interactions.  
+ 
+Where there's a vocabulary there's a dictionary. Building an application in terms of actions and property sources allows to create and publish such a dictionary as part of the build process.   
+
+In Java terms an action may be thought of as a method in a callback interface (Web UI) passed to a user. 
 The user interacts with the system by "invoking callback methods" - activating actions so they get executed by the system.
 
 Action extends [Executable](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Executable.html), it allows to separate processing (``execute()`` method) from  presentation (other action attributes) and have actions delegating to executable.
@@ -174,6 +187,23 @@ Section actions play the same role as child actions, but they are displayed in t
 For example, "view transactions" section action of "view statement" action would display a list of transactions below statement details.
 Section actions may be executed along with the containing action. In this case they don't need an activator.
 Section actions with NavigationActionActivators may be executed by loading section content using AJAX.  
+
+### Action categories
+
+Action extends [Categorized](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Categorized.html).
+It allows to group actions into categories.
+Anonymous categories have id but no text and icon.
+
+Categories are presented in the UI in following ways:
+
+* Dropdown - headers for named categories and separators for anonymous.
+* Action groups - different action groups for categories. Named categories are represented as action groups in cards with the category icon and text in the header.
+* jsTree
+   * Nodes - a node for named categories, anonymous categories are not supported - treated as uncategorized.
+   * Context menu - dividers for anonymous categories, and sub-menus for named categories.
+* Buttons - button groups, all categories are treated as anonymous.
+* Sections - named categories add an extra level. Anonymous categories are displayed as a horizontal lines (HR) in header sections and as separate action groups, not supported in navs.  
+ 
 
 ## View generator
 

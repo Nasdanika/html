@@ -74,3 +74,7 @@ Starts HTTP server (Jetty?) on a random port or fixed port, opens a web browser.
 
 * Duplicate ID's - error.
 * Empty actions - warning.
+
+### Web UI
+
+It is possible to build a web application for editing application/action models with functionality similar to the application editor, but in a web browser.

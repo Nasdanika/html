@@ -359,6 +359,7 @@ public class ActionItemProvider
 			childrenFeatures.add(AppPackage.Literals.ACTION__CONTEXT_ACTIONS);
 			childrenFeatures.add(AppPackage.Literals.ACTION__ACTIVATOR);
 			childrenFeatures.add(AppPackage.Literals.ACTION__SECTIONS);
+			childrenFeatures.add(AppPackage.Literals.ACTION__CATEGORY);
 		}
 		return childrenFeatures;
 	}
@@ -433,6 +434,7 @@ public class ActionItemProvider
 			case AppPackage.ACTION__CONTEXT_ACTIONS:
 			case AppPackage.ACTION__ACTIVATOR:
 			case AppPackage.ACTION__SECTIONS:
+			case AppPackage.ACTION__CATEGORY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -519,6 +521,31 @@ public class ActionItemProvider
 			(createChildParameter
 				(AppPackage.Literals.ACTION__SECTIONS,
 				 AppFactory.eINSTANCE.createThemedContentAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CATEGORY,
+				 AppFactory.eINSTANCE.createLabel()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CATEGORY,
+				 AppFactory.eINSTANCE.createAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CATEGORY,
+				 AppFactory.eINSTANCE.createThemedAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CATEGORY,
+				 AppFactory.eINSTANCE.createContentAction()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(AppPackage.Literals.ACTION__CATEGORY,
+				 AppFactory.eINSTANCE.createThemedContentAction()));
 	}
 
 	/**
@@ -535,7 +562,8 @@ public class ActionItemProvider
 		boolean qualify =
 			childFeature == AppPackage.Literals.ACTION__CHILDREN ||
 			childFeature == AppPackage.Literals.ACTION__CONTEXT_ACTIONS ||
-			childFeature == AppPackage.Literals.ACTION__SECTIONS;
+			childFeature == AppPackage.Literals.ACTION__SECTIONS ||
+			childFeature == AppPackage.Literals.ACTION__CATEGORY;
 
 		if (qualify) {
 			return getString

@@ -8,7 +8,7 @@ import org.nasdanika.html.InputType;
  * @author Pavel Vlasov
  *
  */
-public interface PropertyDescriptor extends Label, Property {
+public interface PropertyDescriptor extends Label, Property, Categorized {
 			
 	/**
 	 * Property input type. If property descriptor implements {@link ChoiceProvider} or {@link LookupChoiceProvider} then 
@@ -17,13 +17,6 @@ public interface PropertyDescriptor extends Label, Property {
 	 * @return
 	 */
 	InputType getInputType();
-	
-	/**
-	 * Property category. Properties in the same category may be rendered together in some container such as a card,
-	 * tab, fieldset. Label.getId() is used for grouping by.
-	 * @return
-	 */
-	Label getCategory();
 	
 	/**
 	 * If true, {@link MultiValuePropertySource} values may be sorted based on this descriptor value.

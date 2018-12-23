@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
+import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 
 public class ActionFilter<T extends Action> extends LabelFilter<T> implements Action {
@@ -61,6 +62,11 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	@Override
 	public ActionActivator getActivator() {
 		return target.getActivator();
+	}
+
+	@Override
+	public Label getCategory() {
+		return target.getCategory();
 	}
 		
 }

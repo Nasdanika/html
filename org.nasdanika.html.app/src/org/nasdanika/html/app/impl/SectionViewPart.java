@@ -44,6 +44,7 @@ public class SectionViewPart implements ViewPart {
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
 		Fragment ret = viewGenerator.getHTMLFactory().fragment();
+		// Process viewPart as in ViewGenerator ???
 		ret.content(section.execute(viewGenerator, input));
 
 		// Context actions
