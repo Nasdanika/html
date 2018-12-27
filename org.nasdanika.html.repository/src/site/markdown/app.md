@@ -144,7 +144,15 @@ Label is a base interface for [Action](apidocs/org.nasdanika.html.app/apidocs/in
 
 Actions define a vocabulary of human/system interaction. In such a vocabulary actions are "verbs". 
 E.g. "View transactions" or "Submit payment". 
-If actions are verbs, then property sources are nouns. They are explained in below.
+If actions are verbs, then property sources are nouns. They are explained below.
+
+Often a struggle in creating a new application is the fact that the users have a vague idea how it may look like. 
+With application-language metaphor we can say that "if they can articulate it, we can automate it" - take their descriptions and turn verbs into actions and nouns into entities or value objects.
+
+For example: "Jim uploads a feed from mainframe and then Bob validates it for inconsistencies". From this we may tell that:
+* There is a user/actor/role Jim with "upload mainframe feed" action.
+* There is a user/actor/role Bob with "verify mainframe feed" action.
+* There is a "mainframe feed" entity which gets uploaded and validated. 
 
 Thinking in terms of actions allows to stay focus on functionality and not get distracted by lower-level concerns such as button colors.
 One of my friends once told me a long time ago that "it is much easier to make a functional application fast than a fast application functional".
@@ -197,13 +205,12 @@ Anonymous categories have id but no text and icon.
 Categories are presented in the UI in following ways:
 
 * Dropdown - headers for named categories and separators for anonymous.
-* Action groups - different action groups for categories. Named categories are represented as action groups in cards with the category icon and text in the header.
+* [TODO: Action groups](../../../../mantis/view.php?id=207) - different action groups for categories. Named categories are represented as action groups in cards with the category icon and text in the header.
 * jsTree
-   * Nodes - a node for named categories, anonymous categories are not supported - treated as uncategorized.
-   * Context menu - dividers for anonymous categories, and sub-menus for named categories.
+   * [TODO: Nodes](../../../../mantis/view.php?id=208) - a node for named categories, anonymous categories are not supported - treated as uncategorized.
+   * [TODO: Context menu](../../../../mantis/view.php?id=209) - dividers for anonymous categories, and sub-menus for named categories.
 * Buttons - button groups, all categories are treated as anonymous.
-* Sections - named categories add an extra level. Anonymous categories are displayed as a horizontal lines (HR) in header sections and as separate action groups, not supported in navs.  
- 
+* [TODO: Sections](../../../../mantis/view.php?id=210) - named categories add an extra level. Anonymous categories are displayed as a horizontal lines (HR) in header sections and as separate action groups, not supported in navs.   
 
 ## View generator
 

@@ -42,7 +42,19 @@ A more advanced approach is to have an iterator class/function taking a token so
 
 This would allow people familiar with neither Bootstrap nor Java programming to create:
 * Static sites.
-* Web UI prototypes which could be templatized to become either web applications or generators of static sites.    
+* Web UI prototypes which could be templatized to become either web applications or generators of static sites.
+
+### User/actor model elements
+
+Inheritance. E.g. logged user has access to profile, all users/actors inherit from a logged user and as such have "view profile" action. 
+With support of user/actor model elements in the application model the story model can be retired.
+
+Several ways to model different user roles:
+
+* Actions contained by users - follows app/principal/action model.
+* Actions are granted to users - roles many reference.
+
+How to link entity (ecore) and application models?     
 
 ### Multi-resource models
 
@@ -78,3 +90,4 @@ Starts HTTP server (Jetty?) on a random port or fixed port, opens a web browser.
 ### Web UI
 
 It is possible to build a web application for editing application/action models with functionality similar to the application editor, but in a web browser.
+

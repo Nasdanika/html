@@ -62,7 +62,7 @@ public final class Util {
 			}
 		}		
 		if (!uncategorized.isEmpty()) {
-			ret.add(new AbstractMap.SimpleEntry<Label, List<T>>(null, uncategorized));
+			ret.add(0, new AbstractMap.SimpleEntry<Label, List<T>>(null, uncategorized));
 		}
 		return ret;
 	}
@@ -83,6 +83,10 @@ public final class Util {
 	 */
 	public static boolean equalOrInPath(Action activeAction, Action a) {
 		return equal(activeAction, a) || contains(activeAction.getPath(), a);
+	}
+	
+	public static boolean isBlank(String str) {
+		return str == null || str.trim().length() == 0;
 	}
 	
 	// TODO - sectionLevel(Action)

@@ -2,19 +2,22 @@ package org.nasdanika.html.app.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.NamedItemsContainer;
-import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.ButtonGroup;
+import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Navs;
 
 /**
@@ -31,29 +34,49 @@ public class SectionViewPart implements ViewPart {
 	protected Action activeAction;
 	protected int level;
 	private Map<String, Object> input;
+	private boolean showContextActions;
 	
 	// TODO - constructor taking level from Util.sectionLevel()
 
-	public SectionViewPart(Action section, Action activeAction, Map<String, Object> input, int level) {
+	public SectionViewPart(Action section, Action activeAction, Map<String, Object> input, boolean showContextActions, int level) {
 		this.section = section;
 		this.activeAction = activeAction;
 		this.input = input;
+		this.showContextActions = showContextActions;
 		this.level = level;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
 		Fragment ret = viewGenerator.getHTMLFactory().fragment();
 		// Process viewPart as in ViewGenerator ???
 		ret.content(section.execute(viewGenerator, input));
 
-		// Context actions
-		Tag buttonContainer = viewGenerator.getHTMLFactory().nonEmptyDiv();
-		ret.content(buttonContainer);
-		for (Action ca: section.getContextActions()) {
-			BootstrapElement<?, ?> button = viewGenerator.button(ca);
-			button.margin().right(1).top(1).bottom(1);
-			buttonContainer.content(button);
+		// Context actions		
+		if (showContextActions) {
+			List<? extends Action> contextActions = section.getContextActions();
+			if (!contextActions.isEmpty()) {			
+				ButtonToolbar buttonToolbar = viewGenerator.getBootstrapFactory().buttonToolbar();
+				buttonToolbar.margin().top(1).bottom(1);
+				ret.content(buttonToolbar);			
+				for (Entry<Label, List<Action>> cats: Util.groupByCategory((List<Action>) contextActions)) {
+					if (cats.getKey() == null) {
+						for (Action cac: cats.getValue()) {
+							BootstrapElement<?, ?> button = viewGenerator.button(cac);
+							button.margin().right(1);
+							buttonToolbar.add(button);
+						}					
+					} else {
+						ButtonGroup buttonGroup = viewGenerator.getBootstrapFactory().buttonGroup(false);
+						for (Action cac: cats.getValue()) {
+							buttonGroup.add(viewGenerator.button(cac));
+						}					
+						buttonGroup.margin().right(1);
+						buttonToolbar.add(buttonGroup);
+					}
+				}
+			}
 		}
 				
 		// Sections
@@ -71,7 +94,7 @@ public class SectionViewPart implements ViewPart {
 					activeSubSection = subSection; // First if null.
 				}
 				
-				Object subSectionContent = new SectionViewPart(subSection, activeAction, input, level + 1).generate(viewGenerator);
+				Object subSectionContent = new SectionViewPart(subSection, activeAction, input, true, level + 1).generate(viewGenerator);
 				
 				String contentId = subSection.getId() == null ? null : "nsd-action-content-"+subSection.getId();
 				Fragment labelFragment = viewGenerator.labelFragment(subSection);

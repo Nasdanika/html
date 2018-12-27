@@ -80,7 +80,7 @@ public class ActionApplicationBuilder extends ViewPartApplicationBuilder {
 
 	@Override
 	protected ViewPart getContentPanelViewPart() {
-		return new ContentPanelViewPart(activeAction, input);
+		return new ContentPanelViewPart(activeAction, input, Util.equal(activeAction, principalAction) || Util.equal(activeAction, rootAction));
 	}
 
 	@Override

@@ -35,14 +35,8 @@ public class ButtonGroupImpl extends DivWrappingBootstrapElementImpl<ButtonGroup
 	}
 
 	@Override
-	public ButtonGroup add(Button<?> button) {
-		htmlElement.content(button);
-		return this;
-	}
-
-	@Override
-	public ButtonGroup add(Dropdown dropdown) {
-		htmlElement.content(dropdown);
+	public ButtonGroup add(Object content) {
+		htmlElement.content(content);
 		return this;
 	}
 

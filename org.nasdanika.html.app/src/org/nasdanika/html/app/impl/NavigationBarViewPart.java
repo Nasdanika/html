@@ -1,11 +1,15 @@
 package org.nasdanika.html.app.impl;
 
+import java.util.List;
+import java.util.Map.Entry;
+
 import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
+import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
@@ -25,6 +29,7 @@ public class NavigationBarViewPart implements ViewPart {
 		this.activeAction = activeAction;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
 		if (principalAction == null) {
@@ -54,9 +59,18 @@ public class NavigationBarViewPart implements ViewPart {
 				// As text
 				navBar.navbarText(fragment);
 			} else {
-				Dropdown dropdown = navBar.dropdown(Util.equalOrInPath(activeAction, ca), fragment);
-				for (Action cac: ca.getChildren()) {
-					dropdown.item(viewGenerator.link(cac), Util.equalOrInPath(activeAction, cac), ca.isDisabled());
+				Dropdown dropdown = navBar.dropdown(Util.equalOrInPath(activeAction, ca), fragment);				
+				for (Entry<Label, List<Action>> cats: Util.groupByCategory((List<Action>) ca.getChildren())) {
+					if (cats.getKey() != null) {
+						if (Util.isBlank(cats.getKey().getIcon()) && Util.isBlank(cats.getKey().getText())) {
+							dropdown.divider();
+						} else {
+							dropdown.header(viewGenerator.labelFragment(cats.getKey()));
+						}
+					}
+					for (Action cac: cats.getValue()) {	
+						dropdown.item(viewGenerator.link(cac), Util.equalOrInPath(activeAction, cac), cac.isDisabled());
+					}
 				}
 			}
 		}

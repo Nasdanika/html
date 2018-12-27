@@ -4,6 +4,6 @@ import org.nasdanika.html.Tag;
 
 public interface ButtonToolbar extends BootstrapElement<Tag,ButtonToolbar> {
 	
-	ButtonToolbar add(ButtonGroup buttonGroup);
-
+	ButtonToolbar add(Object content);
+	
 }

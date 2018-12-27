@@ -1,7 +1,6 @@
 package org.nasdanika.html.bootstrap.impl;
 
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 
 public class ButtonToolbarImpl extends DivWrappingBootstrapElementImpl<ButtonToolbar> implements ButtonToolbar {
@@ -12,8 +11,8 @@ public class ButtonToolbarImpl extends DivWrappingBootstrapElementImpl<ButtonToo
 	}
 
 	@Override
-	public ButtonToolbar add(ButtonGroup buttonGroup) {
-		htmlElement.content(buttonGroup);
+	public ButtonToolbar add(Object content) {
+		htmlElement.content(content);
 		return this;
 	}
 

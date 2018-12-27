@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<org.nasdanika.html.app:ThemedContentAction xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.nasdanika.html.app="urn:org.nasdanika.html.app" color="PRIMARY" icon="fas fa-university" id="bank" text="Bank of Nasdanika" theme="Default">
+<org.nasdanika.html.app:ThemedContentAction xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.nasdanika.html.app="urn:org.nasdanika.html.app" color="PRIMARY" icon="fas fa-university" id="bank" text="Bank of Nasdanika" theme="Default" content="Bank of Nasdanika home page">
   <children xsi:type="org.nasdanika.html.app:ContentAction" icon="fas fa-user-circle" id="john-doe" text="John Doe" content="John Doe home page">
     <children icon="fas fa-money-check-alt" text="Checking-1234" tooltip="Balance $208.35">
       <activator xsi:type="org.nasdanika.html.app:NavigationActionActivator" url="checking-1234.html"/>
@@ -23,10 +23,25 @@
       <children text="Outside the bank">
         <activator xsi:type="org.nasdanika.html.app:NavigationActionActivator" url="transfer-external.html"/>
       </children>
+      <children xsi:type="org.nasdanika.html.app:ContentAction" text="Categorized action 1.1" content="Categorized action 1.1">
+        <category icon="fas fa-user" id="c1" text="Category 1" tooltip="Groups several actions..."/>
+      </children>
+      <children xsi:type="org.nasdanika.html.app:ContentAction" text="Categorized action 1.2" content="Categorized action 1.2 content">
+        <category icon="fas fa-user" id="c1" text="Category 1" tooltip="Groups several actions..."/>
+      </children>
+      <children xsi:type="org.nasdanika.html.app:ContentAction" text="Categorized action 2.1" content="Categorized action 2.1 content">
+        <category icon="" id="c2" text="" tooltip="Anonymous category c2"/>
+      </children>
+      <children xsi:type="org.nasdanika.html.app:ContentAction" text="Categorized action 2.2" content="Categorized action 2.2 content">
+        <category icon="" id="c2" text="" tooltip=""/>
+      </children>
+      <children xsi:type="org.nasdanika.html.app:ContentAction" text="Categorized action 1.3" content="Categorized action 1.3 content">
+        <category icon="fas fa-user" id="c1" text="Category 1" tooltip="Groups several actions..."/>
+      </children>
     </contextActions>
     <contextActions icon="fas fa-envelope-square" text="Message center" notification="2">
       <activator xsi:type="org.nasdanika.html.app:NavigationActionActivator" url="message-center.html"/>
-    </contextActions>        
+    </contextActions>
     <activator xsi:type="org.nasdanika.html.app:NavigationActionActivator" url="john-doe.html"/>
   </children>
   <contextActions icon="far fa-envelope" id="contact-us" text="Contact Us">

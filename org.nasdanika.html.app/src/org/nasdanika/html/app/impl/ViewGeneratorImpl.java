@@ -1,7 +1,9 @@
 package org.nasdanika.html.app.impl;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 import org.nasdanika.html.Event;
@@ -149,6 +151,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public BootstrapElement<?,?> button(Action action) {
 		Button<Tag> button = getBootstrapFactory().button(link(action), action.getColor() == null ? Color.PRIMARY : action.getColor(), action.getColor() == null ? true : action.isOutline());
@@ -160,8 +163,17 @@ public class ViewGeneratorImpl implements ViewGenerator {
 			return button;
 		}
 		Dropdown dd = getBootstrapFactory().dropdown(button, action.getActivator() != null, Direction.DOWN);
-		for (Action c: action.getChildren()) {
-			dd.item(link(c), false, action.isDisabled());
+		for (Entry<Label, List<Action>> cats: Util.groupByCategory((List<Action>) action.getChildren())) {
+			if (cats.getKey() != null) {
+				if (Util.isBlank(cats.getKey().getIcon()) && Util.isBlank(cats.getKey().getText())) {
+					dd.divider();
+				} else {
+					dd.header(labelFragment(cats.getKey()));
+				}
+			}
+			for (Action cac: cats.getValue()) {	
+				dd.item(link(cac), false, cac.isDisabled());
+			}
 		}
 		return dd;
 	}

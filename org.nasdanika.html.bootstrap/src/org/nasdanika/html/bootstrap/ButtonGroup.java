@@ -10,8 +10,6 @@ public interface ButtonGroup extends BootstrapElement<Tag,ButtonGroup> {
 	ButtonGroup small();
 	ButtonGroup small(boolean small);
 	
-	ButtonGroup add(Button<?> button); 
-
-	ButtonGroup add(Dropdown dropdown);
+	ButtonGroup add(Object content); 
 
 }

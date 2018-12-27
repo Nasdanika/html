@@ -21,10 +21,18 @@ public class ContentPanelViewPart implements ViewPart {
 
 	private Action activeAction;
 	private Map<String, Object> input;
+	private boolean showContextActions;
 
-	public ContentPanelViewPart(Action activeAction, Map<String, Object> input) {
+	/**
+	 * 
+	 * @param activeAction
+	 * @param input
+	 * @param showConextActions Set false for principal actions because their context actions are alredy shown in the navbar.
+	 */
+	public ContentPanelViewPart(Action activeAction, Map<String, Object> input, boolean showConextActions) {
 		this.activeAction = activeAction;
 		this.input = input;
+		this.showContextActions = false;
 	}
 		
 	/**
@@ -59,6 +67,7 @@ public class ContentPanelViewPart implements ViewPart {
 			breadcrumbs.item(true, viewGenerator.label(lastNonSection));
 		}
 		ret.content(viewGenerator.label(lastNonSection, viewGenerator.getHTMLFactory().tag(TagName.h2)));
-		return new SectionViewPart(lastNonSection, activeAction, input, 0);
+		ret.content(new SectionViewPart(lastNonSection, activeAction, input, showContextActions, 0).generate(viewGenerator));
+		return ret;
 	}	
 }
