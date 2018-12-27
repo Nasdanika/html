@@ -265,7 +265,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/site/jacoco-aggregate</outputDirectory>
+							<outputDirectory>${basedir}/target/site/test-coverage</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/../org.nasdanika.html.tests/target/site/jacoco-aggregate

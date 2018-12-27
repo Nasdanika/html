@@ -218,7 +218,8 @@ public class TestApp extends HTMLTestBase {
 									
 									footer.background(Color.SECONDARY).text().alignment(Alignment.CENTER);
 									
-									navigationPanel.widthAuto().border(Color.DEFAULT, Placement.RIGHT);
+									navigationPanel.widthAuto();
+									contentPanel.border(Color.DEFAULT, Placement.LEFT);
 									contentRow.toHTMLElement().style("min-height", "500px");
 									container.border(Color.DEFAULT).margin().top(1);
 	
