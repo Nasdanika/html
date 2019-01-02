@@ -99,7 +99,6 @@ public class DefaultHTMLFactory implements HTMLFactory {
 		};
 	}
 	
-	@SuppressWarnings("resource")
 	@Override
 	public Tag link(Object href, final Object... content) {
 		return new TagImpl(this, "a", false, content).attribute("href", href);

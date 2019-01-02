@@ -1,7 +1,7 @@
 # HTML
 
 Nasdanika HTML features several libraries providing [fluent API](https://en.wikipedia.org/wiki/Fluent_interface) for building HTML user interfaces. 
-The goal of the libraries is to allow Java developers being more productive by:
+The goal of the libraries is to make Java developers more productive by:
 * Working in Java instead of switching between Java for the server side development and HTML, JavaScript and CSS for the client side development.
 * Apply the power of Java such as inheritance, polymorphism, patterns, e.g. a strategy pattern, etc. to building HTML user interfaces.
 * Operate on a higher level of abstraction thinking in terms of, say, actions and view parts instead of individual HTML elements.
@@ -28,10 +28,10 @@ Nasdanika HTML libraries can be used to build both static Web sites, e.g. docume
 ## Resources
 
 * P2 Repository
-    * ``https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/repository``
-    * [Archived](https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/org.nasdanika.html.repository-2.0.0-SNAPSHOT.zip)
-* Maven Repository - ``https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/maven-repository``    
-* [Sources](html.zip)
+    * ``https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/repository``.
+    * [Archived](https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/org.nasdanika.html.repository-2.0.0-SNAPSHOT.zip).
+* Maven Repository - ``https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/maven-repository``.    
+* [Sources](html.zip).
 * [NasdanikaBank.app](NasdanikaBank.app) - a sample model with several actions for demo and testing purposes. It is also available as a resource in ``org.nasdanika.app.model`` bundle.
 * [Spring Boot demo](https://github.com/Nasdanika/html-spring-boot-demo) - A Spring Boot application which uses Nasdanika HTML libraries to build Web UI.    
 * [Test coverage](test-coverage/index.html).

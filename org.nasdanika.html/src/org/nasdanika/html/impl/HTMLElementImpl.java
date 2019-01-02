@@ -410,15 +410,21 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 				return indent(renderComment(indent), indent).append("<"+getTagName()+attributes()+"/>").toString();
 			}
 		}
-		StringBuilder sb = indent(renderComment(indent), indent).append("<").append(getTagName()).append(attributes()).append(">");
 		boolean hasNonUIElementContent = false;
+		
+		StringBuilder contentBuilder = new StringBuilder(); 
 		for (Object c: theContent) {
-			sb.append(stringify(c, indent+1));
+			contentBuilder.append(stringify(c, indent+1));
 			if (!(c instanceof Markup)) {
 				hasNonUIElementContent = true;
 			}
+		}		
+		String strContent = contentBuilder.toString();
+		if (nonEmpty && strContent.trim().length() == 0) {
+			return "";
 		}
-		if (!theContent.isEmpty() && !hasNonUIElementContent) {
+		StringBuilder sb = indent(renderComment(indent), indent).append("<").append(getTagName()).append(attributes()).append(">").append(strContent);		
+		if (strContent.length() > 0 && !hasNonUIElementContent) {
 			indent(sb, indent);
 		}
 		return sb.append("</").append(getTagName()).append(">").toString();

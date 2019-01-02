@@ -18,14 +18,14 @@ public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> i
 	class RowImpl extends DivWrappingBootstrapElementImpl<Row> implements Row {
 
 		protected RowImpl(BootstrapFactory factory) {
-			super(factory);
+			super(factory, true);
 			htmlElement.addClass("row");
 		}
 		
 		class ColImpl extends DivWrappingBootstrapElementImpl<Col> implements Col {
 
 			protected ColImpl(BootstrapFactory factory, Object... content) {
-				super(factory);
+				super(factory, true);
 				htmlElement.addClass("col").content(content);
 			}
 

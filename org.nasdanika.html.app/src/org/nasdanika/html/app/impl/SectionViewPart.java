@@ -81,7 +81,7 @@ public class SectionViewPart implements ViewPart {
 				
 		// Sections
 		List<? extends Action> subSections = level == 0 ? section.getSections() : section.getChildren();
-		if (!subSections.isEmpty()) {
+		if (subSections != null && !subSections.isEmpty()) {
 			NamedItemsContainer sectionsContainer = createSectionsContainer(viewGenerator, ret, level);
 			Action activeSubSection = null;
 			for (Action subSection: subSections) {

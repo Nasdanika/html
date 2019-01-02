@@ -65,27 +65,27 @@ public class ActionApplicationBuilder extends ViewPartApplicationBuilder {
 
 	@Override
 	protected ViewPart getHeaderViewPart() {
-		return viewGenerator -> viewGenerator.getBootstrapFactory().display(viewGenerator.link(rootAction), 4);
+		return rootAction == null ? vg -> null : viewGenerator -> viewGenerator.getBootstrapFactory().display(viewGenerator.link(rootAction), 4);
 	}
 
 	@Override
 	protected ViewPart getNavigationBarViewPart() {
-		return new NavigationBarViewPart(principalAction, activeAction);
+		return principalAction == null ? vg -> null : new NavigationBarViewPart(principalAction, activeAction);
 	}
 
 	@Override
 	protected ViewPart getNavigationPanelViewPart() {
-		return new ActionGroupNavigationPanelViewPart(navigationPanelActions, activeAction);
+		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? vg -> null : new ActionGroupNavigationPanelViewPart(navigationPanelActions, activeAction);
 	}
 
 	@Override
 	protected ViewPart getContentPanelViewPart() {
-		return new ContentPanelViewPart(activeAction, input, Util.equal(activeAction, principalAction) || Util.equal(activeAction, rootAction));
+		return activeAction == null ? vg -> null : new ContentPanelViewPart(activeAction, input, Util.equal(activeAction, principalAction) || Util.equal(activeAction, rootAction));
 	}
 
 	@Override
 	protected ViewPart getFooterViewPart() {
-		return new FooterViewPart(rootAction);
+		return rootAction == null ? vg -> null : new FooterViewPart(rootAction);
 	}
 	
 }

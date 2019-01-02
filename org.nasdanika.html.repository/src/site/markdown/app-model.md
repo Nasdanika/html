@@ -54,7 +54,12 @@ Several ways to model different user roles:
 * Actions contained by users - follows app/principal/action model.
 * Actions are granted to users - roles many reference.
 
-How to link entity (ecore) and application models?     
+How to link entity (ecore) and application models?
+
+### Property and data source model elements
+
+Property source contains properties and data source.
+Data source - use adapter if not set. REST data source - YAML, JSON, XML. Available operations. Headers. Use new HTTP Builder API's?      
 
 ### Multi-resource models
 

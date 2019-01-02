@@ -18,7 +18,7 @@ public interface PropertySource extends Label, DataSource {
 	/**
 	 * Actions which can be performed on this property source. Typically are rendered below
 	 * the property source view. For a single-value property source object/value actions and property source actions are typically rendered together in 
-	 * the same button group.
+	 * the same button toolbar.
 	 * @return
 	 */
 	List<Action> getActions();

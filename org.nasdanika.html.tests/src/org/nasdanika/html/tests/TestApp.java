@@ -23,8 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.nasdanika.bank.Bank;
-import org.nasdanika.bank.BankPackage;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
@@ -60,18 +58,12 @@ import org.nasdanika.html.model.app.NavigationActionActivator;
 
 public class TestApp extends HTMLTestBase {
 	
-	protected Bank bank;
 	protected Action appAction;
 	
 	@Before
 	public void loadModels() throws Exception {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-		
-		resourceSet.getPackageRegistry().put(BankPackage.eNS_URI, BankPackage.eINSTANCE);
-		URI bankUri = URI.createPlatformPluginURI("org.nasdanika.bank/Nasdanika.bank", false);
-		Resource bankResource = resourceSet.getResource(bankUri, true);
-		bank = (Bank) bankResource.getContents().iterator().next();
 		
 		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
 		URI appUri = URI.createPlatformPluginURI("org.nasdanika.html.app.model/NasdanikaBank.app", false);

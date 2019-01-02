@@ -222,7 +222,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	@Override
 	public void label(Label label, Consumer<Object> contentConsumer) {
 		String icon = label.getIcon();
-		if (icon != null) {
+		if (!Util.isBlank(icon)) {
 			Tag iconTag;
 			if (icon.contains("/")) {
 				// Image
@@ -237,11 +237,11 @@ public class ViewGeneratorImpl implements ViewGenerator {
 			contentConsumer.accept(iconTag);
 		}		
 			
-		if (label.getText() != null) {
+		if (!Util.isBlank(label.getText())) {
 			contentConsumer.accept(label.getText());
 		}	
 		
-		if (label.getNotification() != null) {
+		if (!Util.isBlank(label.getNotification())) {
 			Tag badge = getBootstrapFactory().badge(true, label.getColor() == Color.PRIMARY ? Color.SECONDARY : Color.PRIMARY, label.getNotification());
 			badge.style().margin().left("0.3em");
 			contentConsumer.accept(badge);

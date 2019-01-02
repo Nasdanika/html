@@ -11,8 +11,12 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
  */
 public class DivWrappingBootstrapElementImpl<B extends BootstrapElement<Tag,B>> extends WrappingBootstrapElementImpl<Tag,B> {
 
-	protected DivWrappingBootstrapElementImpl(BootstrapFactory factory) {
-		super(factory, factory.getHTMLFactory().div());
+	protected DivWrappingBootstrapElementImpl(BootstrapFactory factory, boolean nonEmpty) {
+		super(factory, nonEmpty ? factory.getHTMLFactory().nonEmptyDiv() : factory.getHTMLFactory().div());
 	}
 
+	protected DivWrappingBootstrapElementImpl(BootstrapFactory factory) {
+		this(factory, false);
+	}
+	
 }
