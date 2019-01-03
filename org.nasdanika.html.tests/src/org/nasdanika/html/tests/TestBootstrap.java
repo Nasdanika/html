@@ -245,6 +245,16 @@ public class TestBootstrap extends HTMLTestBase {
 						
 		writeThemedPage("bootstrap/list-group.html", "Bootstrap list group", listGroup); 
 	}	
+	
+	@Test
+	public void testBackgroundColors() throws Exception {		
+		ListGroup listGroup = BootstrapFactory.INSTANCE.listGroup(false);
+		
+		for (Color color: Color.values()) {
+			listGroup.item(false, false, color, color.name());
+		}						
+		writeThemedPage("bootstrap/background-colors.html", "Bootstrap background colors", listGroup); 
+	}	
 		
 	@Test
 	public void testActionGroupInNavs() throws Exception {
