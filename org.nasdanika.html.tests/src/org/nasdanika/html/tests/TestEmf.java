@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
+import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.PropertyDescriptor;
@@ -28,9 +29,9 @@ import org.nasdanika.html.emf.BootstrapContainerApplicationAdapterFactory;
 import org.nasdanika.html.emf.ComposedAdapterFactory;
 import org.nasdanika.html.emf.EClassPropertySource;
 import org.nasdanika.html.emf.ENamedElementLabel;
-import org.nasdanika.html.emf.EObjectActionAdapterFactory;
 import org.nasdanika.html.emf.EObjectActionApplicationBuilderAdapterFactory;
 import org.nasdanika.html.emf.EObjectSingleValuePropertySourceAdapter;
+import org.nasdanika.html.emf.EObjectViewActionAdapter;
 import org.nasdanika.html.emf.SupplierAdapterFactory;
 
 
@@ -51,8 +52,8 @@ public class TestEmf extends HTMLTestBase {
 		ComposedAdapterFactory caf = new ComposedAdapterFactory();
 		caf.registerAdapterFactory(new BootstrapContainerApplicationAdapterFactory());
 		caf.registerAdapterFactory(new EObjectActionApplicationBuilderAdapterFactory());
-		caf.registerAdapterFactory(new EObjectActionAdapterFactory());
-		caf.registerAdapterFactory(new SupplierAdapterFactory<PropertySource>(PropertySource.class, EObjectSingleValuePropertySourceAdapter::new));
+		caf.registerAdapterFactory(new SupplierAdapterFactory<Action>(Action.class, EObjectViewActionAdapter::new));
+		caf.registerAdapterFactory(new SupplierAdapterFactory<SingleValuePropertySource>(SingleValuePropertySource.class, EObjectSingleValuePropertySourceAdapter::new));
 		resourceSet.getAdapterFactories().add(caf);						
 	}
 	
@@ -83,8 +84,8 @@ public class TestEmf extends HTMLTestBase {
 		TreeIterator<EObject> tit = bank.eResource().getAllContents();
 		while (tit.hasNext()) {
 			EObject next = tit.next();
-			PropertySource ps = (PropertySource) EcoreUtil.getRegisteredAdapter(next, PropertySource.class);
-			assertTrue(ps instanceof SingleValuePropertySource);
+			SingleValuePropertySource ps = (SingleValuePropertySource) EcoreUtil.getRegisteredAdapter(next, SingleValuePropertySource.class);
+			assertNotNull(ps);
 			System.out.println("\t"+next.eClass().getName());
 			for (PropertyDescriptor pd: ps.getPropertyDescriptors()) {
 				System.out.println("\t\t"+pd.getText()+" = "+pd.getDisplayValue(((SingleValuePropertySource) ps).getValue()));
