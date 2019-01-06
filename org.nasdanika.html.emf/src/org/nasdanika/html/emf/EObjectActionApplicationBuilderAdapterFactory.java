@@ -28,7 +28,7 @@ public class EObjectActionApplicationBuilderAdapterFactory extends ComposeableAd
 		
 	@Override
 	protected Adapter createAdapter(Notifier target) {
-		Action action = (Action) EcoreUtil.getRegisteredAdapter((EObject) target, Action.class);
+		ViewAction action = (ViewAction) EcoreUtil.getRegisteredAdapter((EObject) target, ViewAction.class);
 		if (action == null) {
 			return null;
 		}

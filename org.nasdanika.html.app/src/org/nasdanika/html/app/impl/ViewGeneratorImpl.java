@@ -25,6 +25,8 @@ import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Button;
+import org.nasdanika.html.bootstrap.ButtonGroup;
+import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
@@ -176,6 +178,28 @@ public class ViewGeneratorImpl implements ViewGenerator {
 			}
 		}
 		return dd;
+	}
+	
+	@Override
+	public <T extends Action> ButtonToolbar buttonToolbar(Iterable<T> actions) {
+		ButtonToolbar buttonToolbar = getBootstrapFactory().buttonToolbar();
+		for (Entry<Label, List<T>> cats: Util.groupByCategory(actions)) {
+			if (cats.getKey() == null) {
+				for (Action cac: cats.getValue()) {
+					BootstrapElement<?, ?> button = button(cac);
+					button.margin().right(1);
+					buttonToolbar.add(button);
+				}					
+			} else {
+				ButtonGroup buttonGroup = getBootstrapFactory().buttonGroup(false);
+				for (Action cac: cats.getValue()) {
+					buttonGroup.add(button(cac));
+				}					
+				buttonGroup.margin().right(1);
+				buttonToolbar.add(buttonGroup);
+			}
+		}
+		return buttonToolbar;
 	}
 
 	@Override

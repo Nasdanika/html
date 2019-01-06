@@ -4,17 +4,16 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.nasdanika.html.Fragment;
-import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.app.SingleValuePropertySource;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
 import org.nasdanika.html.bootstrap.Table;
-import org.nasdanika.html.bootstrap.TagBootstrapElement;
 
 /**
  * Generates a two-column table with property names in one column and property values in the other.
@@ -37,17 +36,26 @@ public class ViewSingleValuePropertySourceViewPart implements ViewPart {
 		}
 		
 		Fragment ret = viewGenerator.getHTMLFactory().fragment();		
-		for(Entry<Label, List<PropertyDescriptor>> descriptorGroup: Util.groupByCategory(propertySource.getPropertyDescriptors())) {
-			
+		for(Entry<Label, List<PropertyDescriptor>> descriptorGroup: Util.groupByCategory(propertySource.getPropertyDescriptors())) {			
 			Table propertyTable = viewGenerator.getBootstrapFactory().table();
-			propertyTable.toHTMLElement().col().style("width", "10%").style().whiteSpace().nowrap();
-			propertyTable.toHTMLElement().col();
 			propertyTable.bordered();
+			boolean hasActions = false;
+			for (PropertyDescriptor pd: descriptorGroup.getValue()) {
+				if (!pd.getViewActions(propertySource).isEmpty()) {
+					hasActions = true;
+					break;
+				}
+			}			
 			for (PropertyDescriptor pd: descriptorGroup.getValue()) {
 				Row propertyRow = propertyTable.row();
 				Cell nameHeader = propertyRow.header(viewGenerator.labelFragment(pd));
 				nameHeader.toHTMLElement().style("width", "10%").style().whiteSpace().nowrap();
 				propertyRow.cell(pd.getDisplayValue(propertySource.getValue()));
+				if (hasActions) {
+					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(pd.getViewActions(propertySource.getValue()));
+					buttonToolbar.margin().top(1).bottom(1);
+					propertyRow.cell(buttonToolbar);
+				}
 			}
 			
 			Label category = descriptorGroup.getKey();

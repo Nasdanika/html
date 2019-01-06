@@ -2,7 +2,6 @@ package org.nasdanika.html.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -19,7 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
-import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.PropertyDescriptor;
@@ -33,6 +31,7 @@ import org.nasdanika.html.emf.EObjectActionApplicationBuilderAdapterFactory;
 import org.nasdanika.html.emf.EObjectSingleValuePropertySourceAdapter;
 import org.nasdanika.html.emf.EObjectViewActionAdapter;
 import org.nasdanika.html.emf.SupplierAdapterFactory;
+import org.nasdanika.html.emf.ViewAction;
 
 
 public class TestEmf extends HTMLTestBase {
@@ -52,7 +51,7 @@ public class TestEmf extends HTMLTestBase {
 		ComposedAdapterFactory caf = new ComposedAdapterFactory();
 		caf.registerAdapterFactory(new BootstrapContainerApplicationAdapterFactory());
 		caf.registerAdapterFactory(new EObjectActionApplicationBuilderAdapterFactory());
-		caf.registerAdapterFactory(new SupplierAdapterFactory<Action>(Action.class, EObjectViewActionAdapter::new));
+		caf.registerAdapterFactory(new SupplierAdapterFactory<ViewAction>(ViewAction.class, EObjectViewActionAdapter::new));
 		caf.registerAdapterFactory(new SupplierAdapterFactory<SingleValuePropertySource>(SingleValuePropertySource.class, EObjectSingleValuePropertySourceAdapter::new));
 		resourceSet.getAdapterFactories().add(caf);						
 	}

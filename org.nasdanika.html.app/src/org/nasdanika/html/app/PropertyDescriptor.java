@@ -33,9 +33,15 @@ public interface PropertyDescriptor extends Label, Property, Categorized {
 	boolean isFilterable();
 		
 	/**
-	 * Actions available for this property for this value.
+	 * Actions available for this property for this value when viewing. 
 	 * @return
 	 */
-	List<Action> getActions(Object obj);	
-		
+	List<Action> getViewActions(Object obj);	
+			
+	/**
+	 * Actions available for this property for this value when editing. 
+	 * @return
+	 */
+	List<Action> getEditActions(Object obj);
+	
 }

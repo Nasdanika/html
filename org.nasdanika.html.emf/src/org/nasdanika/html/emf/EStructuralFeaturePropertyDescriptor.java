@@ -80,8 +80,13 @@ public class EStructuralFeaturePropertyDescriptor extends EStructuralFeatureProp
 	}
 
 	@Override
-	public List<Action> getActions(Object obj) {
+	public List<Action> getViewActions(Object obj) {
 		return Collections.emptyList();
 	}
 
+	@Override
+	public List<Action> getEditActions(Object obj) {
+		return Collections.emptyList();
+	}
+	
 }

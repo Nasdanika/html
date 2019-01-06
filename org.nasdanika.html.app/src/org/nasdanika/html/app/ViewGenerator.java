@@ -10,6 +10,7 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.ListGroup;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
@@ -158,6 +159,8 @@ public interface ViewGenerator {
 	 * @return
 	 */
 	BootstrapElement<?,?> button(Action action);
+	
+	<T extends Action> ButtonToolbar buttonToolbar(Iterable<T> actions);
 	
 	JsTreeContextMenuItem jsTreeContextMenuItem(Action action);
 	

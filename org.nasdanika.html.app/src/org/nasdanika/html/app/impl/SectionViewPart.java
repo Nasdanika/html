@@ -2,21 +2,17 @@ package org.nasdanika.html.app.impl;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
-import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.ActionGroup;
-import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Navs;
 
@@ -46,7 +42,6 @@ public class SectionViewPart implements ViewPart {
 		this.level = level;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
 		Fragment ret = viewGenerator.getHTMLFactory().fragment();
@@ -57,25 +52,9 @@ public class SectionViewPart implements ViewPart {
 		if (showContextActions) {
 			List<? extends Action> contextActions = section.getContextActions();
 			if (!contextActions.isEmpty()) {			
-				ButtonToolbar buttonToolbar = viewGenerator.getBootstrapFactory().buttonToolbar();
+				ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(contextActions);
 				buttonToolbar.margin().top(1).bottom(1);
 				ret.content(buttonToolbar);			
-				for (Entry<Label, List<Action>> cats: Util.groupByCategory((List<Action>) contextActions)) {
-					if (cats.getKey() == null) {
-						for (Action cac: cats.getValue()) {
-							BootstrapElement<?, ?> button = viewGenerator.button(cac);
-							button.margin().right(1);
-							buttonToolbar.add(button);
-						}					
-					} else {
-						ButtonGroup buttonGroup = viewGenerator.getBootstrapFactory().buttonGroup(false);
-						for (Action cac: cats.getValue()) {
-							buttonGroup.add(viewGenerator.button(cac));
-						}					
-						buttonGroup.margin().right(1);
-						buttonToolbar.add(buttonGroup);
-					}
-				}
 			}
 		}
 				
