@@ -5,6 +5,9 @@ import static org.junit.Assert.assertNotNull;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -17,11 +20,14 @@ import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
-import org.nasdanika.html.emf.EObjectActionApplicationBuilderAdapterFactory;
+import org.nasdanika.html.app.PropertyDescriptor;
+import org.nasdanika.html.app.PropertySource;
 import org.nasdanika.html.emf.BootstrapContainerApplicationAdapterFactory;
 import org.nasdanika.html.emf.ComposedAdapterFactory;
+import org.nasdanika.html.emf.EClassPropertySource;
 import org.nasdanika.html.emf.ENamedElementLabel;
 import org.nasdanika.html.emf.EObjectActionAdapterFactory;
+import org.nasdanika.html.emf.EObjectActionApplicationBuilderAdapterFactory;
 
 
 public class TestEmf extends HTMLTestBase {
@@ -47,9 +53,25 @@ public class TestEmf extends HTMLTestBase {
 	
 	@Test
 	public void testENamedElementLabel() {
-		ENamedElementLabel label = new ENamedElementLabel(BankPackage.Literals.ACCOUNT__PERIOD_START);
+		ENamedElementLabel<EAttribute> label = new ENamedElementLabel<EAttribute>(BankPackage.Literals.ACCOUNT__PERIOD_START);
 		assertEquals("Period start", label.getText());
 	}
+	
+	@Test
+	public void testEClasPropertySource() {
+		System.out.println("--- Property descriptors ---");
+		for (EClassifier ec: BankPackage.eINSTANCE.getEClassifiers()) {			
+			if (ec instanceof EClass) {
+				System.out.println("\t"+ec.getName());
+				PropertySource ps = new EClassPropertySource((EClass) ec, null);
+				for (PropertyDescriptor pd: ps.getPropertyDescriptors()) {
+					System.out.println("\t\t"+pd.getText());
+				}				
+			}
+		}
+		System.out.println("---");
+	}
+	
 	
 	@Test
 	public void testBankApplication() throws Exception {

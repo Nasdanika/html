@@ -1,0 +1,81 @@
+package org.nasdanika.html.emf;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Delta;
+import org.nasdanika.html.app.Diagnostic;
+import org.nasdanika.html.app.PropertyDescriptor;
+import org.nasdanika.html.app.PropertySource;
+
+/**
+ * {@link EClass} {@link PropertySource} to delegate label methods and getPropertyDescriptors() to. 
+ * @author Pavel Vlasov
+ *
+ */
+public class EClassPropertySource extends ENamedElementLabel<EClass> implements PropertySource {
+
+	private AuthorizationProvider authorizationProvider;
+
+	public EClassPropertySource(EClass eClass, AuthorizationProvider authorizationProvider) {
+		super(eClass);
+		this.authorizationProvider = authorizationProvider;
+	}
+
+	@Override
+	public Object getVersion(Object obj) {
+		throw new UnsupportedOperationException("Wrong delegation - delegate to data source");
+	}
+
+	@Override
+	public Diagnostic update(Object obj, Object version, List<Delta> deltas) {
+		throw new UnsupportedOperationException("Wrong delegation - delegate to data source");
+	}
+
+	/**
+	 * Returns property descriptors for single-value {@link EStructuralFeature}s.
+	 */
+	@Override
+	public List<PropertyDescriptor> getPropertyDescriptors() {
+		return getPropertyDescriptorFeatures().stream().map(this::createFeaturePropertyDescriptor).collect(Collectors.toList());
+	}
+	
+	/**
+	 * Creates a property descriptor for a feature.
+	 * This implementation instantiates {@link EStructuralFeaturePropertyDescriptor}
+	 * @param feature
+	 * @return
+	 */
+	protected PropertyDescriptor createFeaturePropertyDescriptor(EStructuralFeature feature) {
+		return new EStructuralFeaturePropertyDescriptor(feature);
+	}
+	
+	/**
+	 * This implementation returns single value features sorted by name
+	 * Override to customize, e.g. sort.
+	 * @return features to wrap into property descriptors.
+	 */
+	protected List<EStructuralFeature> getPropertyDescriptorFeatures() {
+		return eNamedElement.getEAllStructuralFeatures()
+				.stream()
+				.filter(f -> !f.isMany() && (authorizationProvider == null || authorizationProvider.authorizeRead(f.getName())))
+				.sorted((fa, fb) -> fa.getName().compareTo(fb.getName()))
+				.collect(Collectors.toList());		
+	}
+
+	@Override
+	public List<Action> getActions() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<Action> getActions(Object obj) {
+		return Collections.emptyList();
+	}
+
+
+}
