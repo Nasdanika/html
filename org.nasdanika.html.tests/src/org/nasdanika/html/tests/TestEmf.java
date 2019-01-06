@@ -2,6 +2,7 @@ package org.nasdanika.html.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -22,12 +23,15 @@ import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.app.PropertySource;
+import org.nasdanika.html.app.SingleValuePropertySource;
 import org.nasdanika.html.emf.BootstrapContainerApplicationAdapterFactory;
 import org.nasdanika.html.emf.ComposedAdapterFactory;
 import org.nasdanika.html.emf.EClassPropertySource;
 import org.nasdanika.html.emf.ENamedElementLabel;
 import org.nasdanika.html.emf.EObjectActionAdapterFactory;
 import org.nasdanika.html.emf.EObjectActionApplicationBuilderAdapterFactory;
+import org.nasdanika.html.emf.EObjectSingleValuePropertySourceAdapter;
+import org.nasdanika.html.emf.SupplierAdapterFactory;
 
 
 public class TestEmf extends HTMLTestBase {
@@ -48,6 +52,7 @@ public class TestEmf extends HTMLTestBase {
 		caf.registerAdapterFactory(new BootstrapContainerApplicationAdapterFactory());
 		caf.registerAdapterFactory(new EObjectActionApplicationBuilderAdapterFactory());
 		caf.registerAdapterFactory(new EObjectActionAdapterFactory());
+		caf.registerAdapterFactory(new SupplierAdapterFactory<PropertySource>(PropertySource.class, EObjectSingleValuePropertySourceAdapter::new));
 		resourceSet.getAdapterFactories().add(caf);						
 	}
 	
@@ -59,7 +64,7 @@ public class TestEmf extends HTMLTestBase {
 	
 	@Test
 	public void testEClasPropertySource() {
-		System.out.println("--- Property descriptors ---");
+		System.out.println("--- EClass property descriptors ---");
 		for (EClassifier ec: BankPackage.eINSTANCE.getEClassifiers()) {			
 			if (ec instanceof EClass) {
 				System.out.println("\t"+ec.getName());
@@ -72,7 +77,22 @@ public class TestEmf extends HTMLTestBase {
 		System.out.println("---");
 	}
 	
-	
+	@Test
+	public void testEObjectPropertySource() {
+		System.out.println("--- EObject property sources ---");
+		TreeIterator<EObject> tit = bank.eResource().getAllContents();
+		while (tit.hasNext()) {
+			EObject next = tit.next();
+			PropertySource ps = (PropertySource) EcoreUtil.getRegisteredAdapter(next, PropertySource.class);
+			assertTrue(ps instanceof SingleValuePropertySource);
+			System.out.println("\t"+next.eClass().getName());
+			for (PropertyDescriptor pd: ps.getPropertyDescriptors()) {
+				System.out.println("\t\t"+pd.getText()+" = "+pd.getDisplayValue(((SingleValuePropertySource) ps).getValue()));
+			}				
+		}
+		System.out.println("---");
+	}	
+		
 	@Test
 	public void testBankApplication() throws Exception {
 		int counter = 0;

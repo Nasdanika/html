@@ -18,7 +18,7 @@ import org.nasdanika.html.bootstrap.Color;
  * @author Pavel Vlasov
  *
  */
-public class ENamedElementLabel implements Label {
+public class ENamedElementLabel<T extends ENamedElement> implements Label {
 		
 	public static final Pattern SENTENCE_PATTERN = Pattern.compile(".+?[\\.?!]+\\s+");		
 	public static final int MIN_FIRST_SENTENCE_LENGTH = 20;
@@ -30,9 +30,9 @@ public class ENamedElementLabel implements Label {
 	 */
 	public static final String ECORE_DOC_ANNOTATION_SOURCE = "http://www.eclipse.org/emf/2002/GenModel";	
 	
-	private ENamedElement eNamedElement;
+	protected T eNamedElement;
 
-	public ENamedElementLabel(ENamedElement eNamedElement) {
+	public ENamedElementLabel(T eNamedElement) {
 		this.eNamedElement = eNamedElement;
 	}
 

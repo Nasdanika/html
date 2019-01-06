@@ -20,15 +20,16 @@ public class EStructuralFeatureProperty implements Property {
 
 	@Override
 	public Object getDisplayValue(Object obj) {
+		Object value = getValue(obj);
 		// TODO - type-specific formatting.
-		if (obj == null) {
+		if (value == null) {
 			return "";
 		}
-		return StringEscapeUtils.escapeHtml4(obj.toString());
+		return StringEscapeUtils.escapeHtml4(value.toString());
 	}
 	
 	protected Object getValue(Object obj) {
-		return ((EObject) obj).eGet(feature);
+		return obj == null ? null : ((EObject) obj).eGet(feature);
 	}
 
 	@Override

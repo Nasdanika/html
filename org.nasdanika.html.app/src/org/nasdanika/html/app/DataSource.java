@@ -11,12 +11,6 @@ import java.util.List;
 public interface DataSource {
 	
 	/**
-	 * Actions which can be performed on value. 
-	 * @return
-	 */
-	List<Action> getActions(Object obj);
-	
-	/**
 	 * Version of the object or null if not supported. 
 	 * Versions can be used to detect concurrent modifications.
 	 * @param obj

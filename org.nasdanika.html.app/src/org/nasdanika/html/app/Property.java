@@ -16,12 +16,6 @@ public interface Property {
 	Object getDisplayValue(Object obj); 
 	
 	/**
-	 * Actions available for this property for this value.
-	 * @return
-	 */
-	List<Action> getActions(Object obj);
-	
-	/**
 	 * Property value to use in input "value" attribute.  
 	 * @param obj Value object for single value property sources and collection element for multi-value property sources.
 	 * @return

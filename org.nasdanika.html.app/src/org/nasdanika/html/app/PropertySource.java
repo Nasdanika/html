@@ -23,4 +23,10 @@ public interface PropertySource extends Label, DataSource {
 	 */
 	List<Action> getActions();
 	
+	/**
+	 * Actions which can be performed on value. 
+	 * @return
+	 */
+	List<Action> getActions(Object obj);	
+	
 }
