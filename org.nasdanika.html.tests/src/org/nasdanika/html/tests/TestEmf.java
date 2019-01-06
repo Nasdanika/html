@@ -1,5 +1,6 @@
 package org.nasdanika.html.tests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.eclipse.emf.common.util.TreeIterator;
@@ -19,6 +20,7 @@ import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.emf.EObjectActionApplicationBuilderAdapterFactory;
 import org.nasdanika.html.emf.BootstrapContainerApplicationAdapterFactory;
 import org.nasdanika.html.emf.ComposedAdapterFactory;
+import org.nasdanika.html.emf.ENamedElementLabel;
 import org.nasdanika.html.emf.EObjectActionAdapterFactory;
 
 
@@ -41,6 +43,12 @@ public class TestEmf extends HTMLTestBase {
 		caf.registerAdapterFactory(new EObjectActionApplicationBuilderAdapterFactory());
 		caf.registerAdapterFactory(new EObjectActionAdapterFactory());
 		resourceSet.getAdapterFactories().add(caf);						
+	}
+	
+	@Test
+	public void testENamedElementLabel() {
+		ENamedElementLabel label = new ENamedElementLabel(BankPackage.Literals.ACCOUNT__PERIOD_START);
+		assertEquals("Period start", label.getText());
 	}
 	
 	@Test
