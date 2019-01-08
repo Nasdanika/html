@@ -41,7 +41,7 @@ public class NavigationBarViewPart implements ViewPart {
 		
 		for (Entry<Label, ?> categoryGroup: Util.groupByCategory(principalAction.getContextActions())) {
 			Label category = categoryGroup.getKey();
-			if (category == null) {
+			if (category == null || (Util.isBlank(category.getText()) && Util.isBlank(category.getIcon()))) {
 				for (Action ca: (List<Action>) categoryGroup.getValue()) {
 					// Children are ignored if activator is not null.
 					Fragment fragment = viewGenerator.getHTMLFactory().fragment();

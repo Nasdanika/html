@@ -206,6 +206,7 @@ Anonymous categories have id but no text and icon.
 
 Categories are presented in the UI in following ways:
 
+* Navbar - uncategorized actions are at the top level, categorized are grouped into dropdowns. Headers and separators are not supported in category drop-downs. Anonymous categories are not supported.  
 * Dropdown - headers for named categories and separators for anonymous.
 * [TODO: Action groups](../../../../mantis/view.php?id=207) - different action groups for categories. Named categories are represented as action groups in cards with the category icon and text in the header.
 * jsTree
