@@ -57,13 +57,9 @@ public class TestEmf extends HTMLTestBase {
 		
 		ComposedAdapterFactory caf = new ComposedAdapterFactory();
 		caf.registerAdapterFactory(new SupplierAdapterFactory<Application>(Application.class, this.getClass().getClassLoader(), () -> {
-			return new BootstrapContainerApplication() {
-				
-				{
-					JsTreeFactory.INSTANCE.cdn(getHTMLPage());
-				}
-				
-			};
+			Application app =  new BootstrapContainerApplication();
+			JsTreeFactory.INSTANCE.cdn(app.getHTMLPage());
+			return app;
 		}));
 		caf.registerAdapterFactory(new EObjectActionApplicationBuilderAdapterFactory());
 		caf.registerAdapterFactory(new SupplierAdapterFactory<ViewAction>(ViewAction.class, this.getClass().getClassLoader(), EObjectViewActionAdapter::new));
