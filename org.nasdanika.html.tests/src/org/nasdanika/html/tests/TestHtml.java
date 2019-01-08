@@ -16,6 +16,5 @@ public class TestHtml extends HTMLTestBase {
 	public void testInterpolate() {
 		System.out.println(HTMLFactory.INSTANCE.interpolate(getClass().getResource("test-resource.txt"), "addressee", "world"));		
 	}
-	
-	
+		
 }

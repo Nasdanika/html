@@ -42,8 +42,6 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.InputGroup;
-import org.nasdanika.html.bootstrap.Placement;
-import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
@@ -205,15 +203,6 @@ public class TestApp extends HTMLTestBase {
 							Application app = new BootstrapContainerApplication(theme, true) {
 								
 								{
-									header.background(Color.PRIMARY);
-									navigationBar.background(Color.LIGHT).text().color(Color.DARK);
-									
-									footer.background(Color.SECONDARY).text().alignment(Alignment.CENTER);
-									
-									navigationPanel.widthAuto();
-									contentPanel.border(Color.DEFAULT, Placement.LEFT);
-									contentRow.toHTMLElement().style("min-height", "500px");
-									container.border(Color.DEFAULT).margin().top(1);
 	
 									// Theme select at the bottom for experimentation.
 									BootstrapFactory factory = BootstrapFactory.INSTANCE;

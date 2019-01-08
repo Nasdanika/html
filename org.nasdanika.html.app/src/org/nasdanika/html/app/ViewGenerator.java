@@ -38,6 +38,15 @@ public interface ViewGenerator {
 	
 	JsTreeFactory getJsTreeFactory();
 	
+	// --- View part unwrapping ---
+	
+	/**
+	 * If obj is {@link ViewPart} then its generate() method is invoked.
+	 * @param obj
+	 * @return
+	 */
+	Object processViewPart(Object obj);
+	
 	// --- Contribution to head and body
 	
 	/**

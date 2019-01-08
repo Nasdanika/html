@@ -3,9 +3,12 @@ package org.nasdanika.html.app.impl;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.Container.Row;
 import org.nasdanika.html.bootstrap.Container.Row.Col;
+import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.bootstrap.Theme;
 
 /**
@@ -73,8 +76,74 @@ public class BootstrapContainerApplication implements Application {
 		navigationPanel = contentRow.col();
 		contentPanel = contentRow.col();
 		footer = container.row().col();
+		
+		configureContainer(container);
+		configureHeader(header);
+		configureNavigationBar(navigationBar);
+		configureContentRow(contentRow);
+		configureNavigationPanel(navigationPanel);
+		configureConentPanel(contentPanel);
+		configureFooter(footer);
+	}
+		
+	/**
+	 * Override to configure container. This implementation sets border color to DEFAULt and top margin to 1.
+	 * @param container
+	 */
+	protected void configureContainer(Container container) {
+		container.border(Color.DEFAULT).margin().top(1);		
 	}
 	
+	/**
+	 * Override to configure header. This implementation sets background color to PRIMARY.
+	 * @param header
+	 */
+	protected void configureHeader(Col header) {
+		header.background(Color.PRIMARY);		
+	}
+	
+	/**
+	 * Override to configure navigation bar. This implementation sets background color to LIGHT,
+	 * text color to dark.
+	 * @param navigationBar
+	 */
+	protected void configureNavigationBar(Col navigationBar) {
+		navigationBar.background(Color.LIGHT).text().color(Color.DARK);		
+	}
+	
+	/**
+	 * Override to configure content row. This implementation sets min height to 30em.
+	 * @param contentRow
+	 */
+	protected void configureContentRow(Row contentRow) {
+		contentRow.toHTMLElement().style("min-height", "30em");		
+	}
+	
+	/**
+	 * Override to configure navigation panel.
+	 * This method sets auto-width.
+	 * @param navigationPanel
+	 */
+	protected void configureNavigationPanel(Col navigationPanel) {
+		navigationPanel.widthAuto();
+	}
+	
+	/**
+	 * Override to configure content panel. This implementation sets left border color to DEFAULT
+	 * @param contentPanel
+	 */
+	protected void configureConentPanel(Col contentPanel) {
+		contentPanel.border(Color.DEFAULT, Placement.LEFT);		
+	}
+	
+	/**
+	 * Override to configure footer. 
+	 * This implementation sets background color to SECONDARY and text alignment to CENTER.
+	 * @param footer
+	 */
+	protected void configureFooter(Col footer) {
+		footer.background(Color.SECONDARY).text().alignment(Alignment.CENTER);		
+	}	
 
 	@Override
 	public Application header(Object... content) {

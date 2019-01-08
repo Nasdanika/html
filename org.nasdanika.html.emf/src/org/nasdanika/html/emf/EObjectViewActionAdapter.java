@@ -19,6 +19,7 @@ import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.PropertySource;
 import org.nasdanika.html.app.SingleValuePropertySource;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.impl.ActionFilter;
 import org.nasdanika.html.app.impl.ViewSingleValuePropertySourceViewPart;
 import org.nasdanika.html.bootstrap.Color;
 
@@ -97,8 +98,41 @@ public class EObjectViewActionAdapter extends AdapterImpl implements ViewAction 
 
 	@Override
 	public List<? extends Action> getChildren() {
-		// TODO - get child features, if just one - direct children, if not - reference actions.
-		return Collections.emptyList();
+		List<EStructuralFeature> childFeatures = getChildFeatures();
+		if (childFeatures.isEmpty()) {
+			return Collections.emptyList();
+		}
+				
+		List<Action> ret = new ArrayList<>();
+		for (EStructuralFeature childFeature: childFeatures) {
+			if (childFeature.isMany() && childFeature instanceof EReference) {
+				EReferenceMultiValuePropertySource ps = new EReferenceMultiValuePropertySource((EObject) getTarget(), childFeature);				
+				for (Object child: ps.getValues()) {
+					if (child instanceof EObject) {
+						Action ca = (Action) EcoreUtil.getRegisteredAdapter((EObject) child, ViewAction.class);
+						if (ca != null) {
+							if (childFeatures.size() == 1) {
+								ret.add(ca);
+							} else {
+								ret.add(new ActionFilter<Action>(ca) {
+									
+									@Override
+									public Label getCategory() {
+										return ps;
+									}
+									
+								});
+							}
+							
+						}
+					}
+				}
+			} else {
+				throw new UnsupportedOperationException("Implement other flavors");
+			}
+		}
+		
+		return ret;
 	}
 	
 	/**
@@ -149,32 +183,28 @@ public class EObjectViewActionAdapter extends AdapterImpl implements ViewAction 
 		}
 		return ((EReference) feature).isContainment() ^ feature.isMany(); // Single containment features and many non-containment features.
 	}
-	
-	private Action parent;
-	
-	public void setParent(Action parent) {
-		this.parent = parent;
-	}
 
 	@Override
 	public Action getParent() {
-		return parent;
+		EObject eContainer = ((EObject) getTarget()).eContainer();		
+		return eContainer == null ? null : (Action) EcoreUtil.getRegisteredAdapter((EObject) eContainer, ViewAction.class);
 	}
 
 	@Override
 	public List<Action> getPath() {
-		if (getParent() == null) {
+		Action parent = getParent();
+		if (parent == null) {
 			return Collections.emptyList();
 		}
 		
-		List<Action> ret = new ArrayList<>(getParent().getPath());
-		ret.add(getParent());
+		List<Action> ret = new ArrayList<>(parent.getPath());
+		ret.add(parent);
 		return ret;
 	}
 
 	@Override
 	public ActionActivator getActivator() {
-		return null;
+		return (ActionActivator) EcoreUtil.getRegisteredAdapter((EObject) getTarget(), ViewActionActivator.class);
 	}
 
 	@Override

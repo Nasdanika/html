@@ -41,7 +41,9 @@ public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends Bo
 				htmlElement.addClass("border-"+p.name().toLowerCase());
 			}
 			htmlElement.addClassConditional(placement.length == 0, "border");
-			htmlElement.addClassConditional(color != null && color.code != null, "border-"+color.code);
+			if (color != null && color.code != null) {
+				htmlElement.addClass("border-"+color.code);
+			}
 		}		
 		return (B) this;
 	}

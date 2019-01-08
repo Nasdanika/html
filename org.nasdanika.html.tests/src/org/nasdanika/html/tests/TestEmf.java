@@ -3,6 +3,9 @@ package org.nasdanika.html.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
@@ -20,18 +23,21 @@ import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
+import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.app.PropertySource;
 import org.nasdanika.html.app.SingleValuePropertySource;
-import org.nasdanika.html.emf.BootstrapContainerApplicationAdapterFactory;
+import org.nasdanika.html.app.impl.BootstrapContainerApplication;
 import org.nasdanika.html.emf.ComposedAdapterFactory;
 import org.nasdanika.html.emf.EClassPropertySource;
 import org.nasdanika.html.emf.ENamedElementLabel;
 import org.nasdanika.html.emf.EObjectActionApplicationBuilderAdapterFactory;
 import org.nasdanika.html.emf.EObjectSingleValuePropertySourceAdapter;
 import org.nasdanika.html.emf.EObjectViewActionAdapter;
+import org.nasdanika.html.emf.NavigationViewActionActivatorAdapter;
 import org.nasdanika.html.emf.SupplierAdapterFactory;
 import org.nasdanika.html.emf.ViewAction;
+import org.nasdanika.html.emf.ViewActionActivator;
 
 
 public class TestEmf extends HTMLTestBase {
@@ -49,10 +55,24 @@ public class TestEmf extends HTMLTestBase {
 		bank = (Bank) bankResource.getContents().iterator().next();
 		
 		ComposedAdapterFactory caf = new ComposedAdapterFactory();
-		caf.registerAdapterFactory(new BootstrapContainerApplicationAdapterFactory());
+		caf.registerAdapterFactory(new SupplierAdapterFactory<Application>(Application.class, this.getClass().getClassLoader(), BootstrapContainerApplication::new));
+//		caf.registerAdapterFactory(new BootstrapContainerApplicationAdapterFactory());
 		caf.registerAdapterFactory(new EObjectActionApplicationBuilderAdapterFactory());
-		caf.registerAdapterFactory(new SupplierAdapterFactory<ViewAction>(ViewAction.class, EObjectViewActionAdapter::new));
-		caf.registerAdapterFactory(new SupplierAdapterFactory<SingleValuePropertySource>(SingleValuePropertySource.class, EObjectSingleValuePropertySourceAdapter::new));
+		caf.registerAdapterFactory(new SupplierAdapterFactory<ViewAction>(ViewAction.class, this.getClass().getClassLoader(), EObjectViewActionAdapter::new));
+		caf.registerAdapterFactory(new SupplierAdapterFactory<SingleValuePropertySource>(SingleValuePropertySource.class, this.getClass().getClassLoader(), EObjectSingleValuePropertySourceAdapter::new));
+		
+		// View action activator
+		Map<EObject, String> urlMap = new HashMap<>();
+		class MapNavigationViewActionActivatorAdapter extends NavigationViewActionActivatorAdapter {
+
+			@Override
+			public String getUrl() {
+				return urlMap.computeIfAbsent((EObject) getTarget(), eObj -> eObj.eClass().getName()+"-"+urlMap.size()+".html") ;
+			}
+			
+		}
+		caf.registerAdapterFactory(new SupplierAdapterFactory<ViewActionActivator>(ViewActionActivator.class, this.getClass().getClassLoader(), MapNavigationViewActionActivatorAdapter::new));
+		
 		resourceSet.getAdapterFactories().add(caf);						
 	}
 	
@@ -95,7 +115,6 @@ public class TestEmf extends HTMLTestBase {
 		
 	@Test
 	public void testBankApplication() throws Exception {
-		int counter = 0;
 		TreeIterator<EObject> tit = bank.eResource().getAllContents();
 		while (tit.hasNext()) {
 			EObject next = tit.next();
@@ -106,7 +125,8 @@ public class TestEmf extends HTMLTestBase {
 			assertNotNull(applicationBuilder);
 			applicationBuilder.build(application);
 			
-			writeFile("emf/"+next.eClass().getName()+"-"+(counter++)+".html", application.toString());
+			NavigationActionActivator activator = (NavigationActionActivator) EcoreUtil.getRegisteredAdapter(next, ViewActionActivator.class);
+			writeFile("emf/"+activator.getUrl(), application.toString());
 		}
 	}	
 

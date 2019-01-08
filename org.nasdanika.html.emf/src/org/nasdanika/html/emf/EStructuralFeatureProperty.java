@@ -6,9 +6,12 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Choice;
 import org.nasdanika.html.app.Diagnostic;
 import org.nasdanika.html.app.Property;
+import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.ViewPart;
 
 public class EStructuralFeatureProperty implements Property {
 
@@ -25,6 +28,23 @@ public class EStructuralFeatureProperty implements Property {
 		if (value == null) {
 			return "";
 		}
+		
+		// Render a link
+		if (value instanceof EObject) {
+			Action viewAction = (Action) EcoreUtil.getRegisteredAdapter((EObject) value, ViewAction.class);
+			if (viewAction != null) {
+				// Returning ViewPart to avoid dealing with obtaining of ViewGenerator
+				return new ViewPart() {
+
+					@Override
+					public Object generate(ViewGenerator viewGenerator) {
+						return viewGenerator.link(viewAction);
+					}
+					
+				};
+			}
+		}
+		
 		return StringEscapeUtils.escapeHtml4(value.toString());
 	}
 	

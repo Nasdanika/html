@@ -39,38 +39,48 @@ public class NavigationBarViewPart implements ViewPart {
 		Tag brand = principalAction.getActivator() == null ? viewGenerator.label(principalAction) : viewGenerator.link(principalAction);
 		Navbar navBar = createNavbar(viewGenerator, brand);
 		
-		for (Action ca: principalAction.getContextActions()) {
-			// Children are ignored if activator is not null.
-			Fragment fragment = viewGenerator.getHTMLFactory().fragment();
-			viewGenerator.label(ca, fragment::content);
-			ActionActivator activator = ca.getActivator();
-			if (activator instanceof NavigationActionActivator) {
-				Tag item = navBar.item(((NavigationActionActivator) activator).getUrl(), Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment);
-				if (ca.getConfirmation() != null) {
-					item.on(Event.click, "return confirm('"+ca.getConfirmation()+"');");
-				}
-			} else if (activator instanceof ScriptActionActivator) {
-				String code = ((ScriptActionActivator) activator).getCode();
-				if (ca.getConfirmation() != null) {
-					code = "if (confirm('"+ca.getConfirmation()+"')) { "+code+" }";
-				}
-				navBar.item("#", Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment).on(Event.click, code);				
-			} else if (ca.getChildren().isEmpty()) {
-				// As text
-				navBar.navbarText(fragment);
-			} else {
-				Dropdown dropdown = navBar.dropdown(Util.equalOrInPath(activeAction, ca), fragment);				
-				for (Entry<Label, List<Action>> cats: Util.groupByCategory((List<Action>) ca.getChildren())) {
-					if (cats.getKey() != null) {
-						if (Util.isBlank(cats.getKey().getIcon()) && Util.isBlank(cats.getKey().getText())) {
-							dropdown.divider();
-						} else {
-							dropdown.header(viewGenerator.labelFragment(cats.getKey()));
+		for (Entry<Label, ?> categoryGroup: Util.groupByCategory(principalAction.getContextActions())) {
+			Label category = categoryGroup.getKey();
+			if (category == null) {
+				for (Action ca: (List<Action>) categoryGroup.getValue()) {
+					// Children are ignored if activator is not null.
+					Fragment fragment = viewGenerator.getHTMLFactory().fragment();
+					viewGenerator.label(ca, fragment::content);
+					ActionActivator activator = ca.getActivator();
+					if (activator instanceof NavigationActionActivator) {
+						Tag item = navBar.item(((NavigationActionActivator) activator).getUrl(), Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment);
+						if (ca.getConfirmation() != null) {
+							item.on(Event.click, "return confirm('"+ca.getConfirmation()+"');");
+						}
+					} else if (activator instanceof ScriptActionActivator) {
+						String code = ((ScriptActionActivator) activator).getCode();
+						if (ca.getConfirmation() != null) {
+							code = "if (confirm('"+ca.getConfirmation()+"')) { "+code+" }";
+						}
+						navBar.item("#", Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment).on(Event.click, code);				
+					} else if (ca.getChildren().isEmpty()) {
+						// As text
+						navBar.navbarText(fragment);
+					} else {
+						Dropdown dropdown = navBar.dropdown(Util.equalOrInPath(activeAction, ca), fragment);				
+						for (Entry<Label, List<Action>> cats: Util.groupByCategory((List<Action>) ca.getChildren())) {
+							if (cats.getKey() != null) {
+								if (Util.isBlank(cats.getKey().getIcon()) && Util.isBlank(cats.getKey().getText())) {
+									dropdown.divider();
+								} else {
+									dropdown.header(viewGenerator.labelFragment(cats.getKey()));
+								}
+							}
+							for (Action cac: cats.getValue()) {	
+								dropdown.item(viewGenerator.link(cac), Util.equalOrInPath(activeAction, cac), cac.isDisabled());
+							}
 						}
 					}
-					for (Action cac: cats.getValue()) {	
-						dropdown.item(viewGenerator.link(cac), Util.equalOrInPath(activeAction, cac), cac.isDisabled());
-					}
+				}
+			} else {
+				Dropdown dropdown = navBar.dropdown(false, viewGenerator.labelFragment(category));
+				for (Action cac: (List<Action>) categoryGroup.getValue()) {	
+					dropdown.item(viewGenerator.link(cac), Util.equalOrInPath(activeAction, cac), cac.isDisabled());
 				}
 			}
 		}

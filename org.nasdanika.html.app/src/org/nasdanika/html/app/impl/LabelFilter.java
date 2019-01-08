@@ -7,7 +7,7 @@ public class LabelFilter<T extends Label> implements Label {
 	
 	protected T target;
 
-	protected LabelFilter(T target) {
+	public LabelFilter(T target) {
 		this.target = target;
 	}
 	

@@ -50,7 +50,7 @@ public class ViewSingleValuePropertySourceViewPart implements ViewPart {
 				Row propertyRow = propertyTable.row();
 				Cell nameHeader = propertyRow.header(viewGenerator.labelFragment(pd));
 				nameHeader.toHTMLElement().style("width", "10%").style().whiteSpace().nowrap();
-				propertyRow.cell(pd.getDisplayValue(propertySource.getValue()));
+				propertyRow.cell(viewGenerator.processViewPart(pd.getDisplayValue(propertySource.getValue())));
 				if (hasActions) {
 					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(pd.getViewActions(propertySource.getValue()));
 					buttonToolbar.margin().top(1).bottom(1);

@@ -2,7 +2,6 @@ package org.nasdanika.html.emf;
 
 import java.util.function.Supplier;
 
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
 /**
@@ -10,24 +9,18 @@ import org.eclipse.emf.common.notify.Notifier;
  * @author Pavel Vlasov
  *
  */
-public class SupplierAdapterFactory<T> extends ComposeableAdapterFactoryImpl {
+public class SupplierAdapterFactory<T> extends DelegatingAdapterFactory<T> {
 	
-	private Class<T> type;
 	private Supplier<T> supplier;
 
-	public SupplierAdapterFactory(Class<T> type, Supplier<T> supplier) {
-		this.type = type;
+	public SupplierAdapterFactory(Class<T> type, ClassLoader proxyClassLoader, Supplier<T> supplier) {
+		super(type, proxyClassLoader);
 		this.supplier = supplier;
 	}
-	
+
 	@Override
-	public boolean isFactoryForType(Object type) {
-		return this.type == type;
-	}
-		
-	@Override
-	protected Adapter createAdapter(Notifier target) {
-		return (Adapter) supplier.get();
-	}
+	protected T doCreateAdapter(Notifier target) {
+		return supplier.get();
+	}	
 
 }

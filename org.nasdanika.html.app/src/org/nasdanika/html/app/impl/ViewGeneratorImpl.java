@@ -347,9 +347,10 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		navs.item(labelFragment(action), active, action.isDisabled(), contentId, processViewPart(action.execute(this, input)));
 	}
 	
-	protected Object processViewPart(Object obj) {
+	@Override
+	public Object processViewPart(Object obj) {
 		if (obj instanceof ViewPart) {
-			return ((ViewPart) obj).generate(this);
+			return processViewPart(((ViewPart) obj).generate(this));
 		}
 		return obj;
 	}

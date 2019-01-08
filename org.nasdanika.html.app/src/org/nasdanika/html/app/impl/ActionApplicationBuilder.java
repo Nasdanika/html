@@ -3,8 +3,10 @@ package org.nasdanika.html.app.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.bootstrap.Color;
 
 /**
  * Builds an application from actions. Provides default implementations of protected "generateXXX" methods.
@@ -65,7 +67,11 @@ public class ActionApplicationBuilder extends ViewPartApplicationBuilder {
 
 	@Override
 	protected ViewPart getHeaderViewPart() {
-		return rootAction == null ? vg -> null : viewGenerator -> viewGenerator.getBootstrapFactory().display(viewGenerator.link(rootAction), 4);
+		return rootAction == null ? vg -> null : viewGenerator -> {
+			Tag link = viewGenerator.link(rootAction).style().text().decoration().none();
+			viewGenerator.getBootstrapFactory().wrap(link).text().color(Color.DARK);
+			return viewGenerator.getBootstrapFactory().display(link, 4);
+		};
 	}
 
 	@Override

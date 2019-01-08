@@ -1,7 +1,11 @@
 package org.nasdanika.html.emf;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.ecore.EObject;
@@ -41,16 +45,32 @@ public class EStructuralFeatureMultiValueDataSource implements MultiValueDataSou
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> getValues() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<Object>) eObject.eGet(feature);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> getValues(Map<Object, String> filter, Map<Object, Boolean> sort) {
-		return (List<Object>) eObject.eGet(feature);
+		Stream<Object> stream = ((List<Object>) eObject.eGet(feature)).stream().filter(createFilter(filter));
+		if (sort != null && !sort.isEmpty()) {
+			stream = stream.sorted(createComparator(sort));
+		}
+		return stream.collect(Collectors.toList());
+	}
+
+	protected Comparator<Object> createComparator(Map<Object, Boolean> sort) {
+		throw new UnsupportedOperationException("Implement");
+	}
+
+	protected Predicate<? super Object> createFilter(Map<Object, String> filter) {
+		if (filter == null || filter.isEmpty()) {
+			return obj -> true;
+		}
+
+		throw new UnsupportedOperationException("Implement");
 	}
 
 }

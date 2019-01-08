@@ -61,12 +61,31 @@ public class EObjectSingleValuePropertySourceAdapter extends EObjectSingleValueD
 
 	@Override
 	public String getText() {
+
+		// Using the first string property as label.
+		for (PropertyDescriptor pd: propertySourceDelegate.getPropertyDescriptors()) {
+			Object dv = pd.getDisplayValue(getValue());
+			if (dv instanceof String && !((String) dv).trim().isEmpty()) {
+				return (String) dv;
+			}
+		}
+
+		// Using the first non-null property as label.
+		for (PropertyDescriptor pd: propertySourceDelegate.getPropertyDescriptors()) {
+			Object dv = pd.getDisplayValue(getValue());
+			if (dv != null) {
+				String vStr = dv.toString();
+				if (!vStr.trim().isEmpty()) {
+					return vStr;
+				}
+			}
+		}
 		return propertySourceDelegate == null ? null : propertySourceDelegate.getText();
 	}
 
 	@Override
 	public String getTooltip() {
-		return propertySourceDelegate == null ? null : propertySourceDelegate.getTooltip();
+		return propertySourceDelegate == null ? null : propertySourceDelegate.getTooltip(); // Type, path???
 	}
 
 	@Override
