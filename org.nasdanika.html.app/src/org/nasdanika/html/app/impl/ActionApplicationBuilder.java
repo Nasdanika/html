@@ -81,7 +81,7 @@ public class ActionApplicationBuilder extends ViewPartApplicationBuilder {
 
 	@Override
 	protected ViewPart getNavigationPanelViewPart() {
-		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? vg -> null : new ActionGroupNavigationPanelViewPart(navigationPanelActions, activeAction);
+		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? vg -> null : new AdaptiveNavigationPanelViewPart(navigationPanelActions, activeAction);
 	}
 
 	@Override

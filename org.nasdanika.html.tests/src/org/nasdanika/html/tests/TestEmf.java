@@ -38,6 +38,7 @@ import org.nasdanika.html.emf.NavigationViewActionActivatorAdapter;
 import org.nasdanika.html.emf.SupplierAdapterFactory;
 import org.nasdanika.html.emf.ViewAction;
 import org.nasdanika.html.emf.ViewActionActivator;
+import org.nasdanika.html.jstree.JsTreeFactory;
 
 
 public class TestEmf extends HTMLTestBase {
@@ -55,8 +56,15 @@ public class TestEmf extends HTMLTestBase {
 		bank = (Bank) bankResource.getContents().iterator().next();
 		
 		ComposedAdapterFactory caf = new ComposedAdapterFactory();
-		caf.registerAdapterFactory(new SupplierAdapterFactory<Application>(Application.class, this.getClass().getClassLoader(), BootstrapContainerApplication::new));
-//		caf.registerAdapterFactory(new BootstrapContainerApplicationAdapterFactory());
+		caf.registerAdapterFactory(new SupplierAdapterFactory<Application>(Application.class, this.getClass().getClassLoader(), () -> {
+			return new BootstrapContainerApplication() {
+				
+				{
+					JsTreeFactory.INSTANCE.cdn(getHTMLPage());
+				}
+				
+			};
+		}));
 		caf.registerAdapterFactory(new EObjectActionApplicationBuilderAdapterFactory());
 		caf.registerAdapterFactory(new SupplierAdapterFactory<ViewAction>(ViewAction.class, this.getClass().getClassLoader(), EObjectViewActionAdapter::new));
 		caf.registerAdapterFactory(new SupplierAdapterFactory<SingleValuePropertySource>(SingleValuePropertySource.class, this.getClass().getClassLoader(), EObjectSingleValuePropertySourceAdapter::new));

@@ -13,8 +13,6 @@ import org.nasdanika.html.bootstrap.Card;
 
 /**
  * Uses {@link ActionGroup} in the navigation panel.
- * Configuration options - ajax tree, ajax context menus. Plugins, e.g. search, sort.
- * TODO - context menus.
  * @author Pavel Vlasov
  *
  */
