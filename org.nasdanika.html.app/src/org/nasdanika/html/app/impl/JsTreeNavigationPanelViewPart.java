@@ -36,9 +36,10 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 		Tag container = htmlFactory.div().id(treeId);
 		JsTreeFactory jsTreeFactory = viewGenerator.getJsTreeFactory();
 		List<JsTreeNode> roots = new ArrayList<>();
+		// TODO - group by category
 		for (Action ca: navigationPanelActions) {
 			JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false);
-			jsTreeNode.selected(Util.equalOrInPath(activeAction, ca) && ca.getChildren().isEmpty());
+			jsTreeNode.selected(Util.equalOrInPath(activeAction, ca) && ca.getNavigationChildren().isEmpty());
 			roots.add(jsTreeNode);
 		}
 		JSONObject jsTree = jsTreeFactory.buildJsTree(roots);

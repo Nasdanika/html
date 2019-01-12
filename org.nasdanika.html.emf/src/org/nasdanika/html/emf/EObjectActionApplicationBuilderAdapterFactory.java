@@ -35,16 +35,16 @@ public class EObjectActionApplicationBuilderAdapterFactory extends ComposeableAd
 		
 		if (action.getPath() == null || action.getPath().isEmpty()) {
 			// Just the root action, children as the navigation panel, no navigation bar.
-			return new ApplicationBuilderAdapter(createApplicationBuilder(target, action, null, action.getChildren(), action));
+			return new ApplicationBuilderAdapter(createApplicationBuilder(target, action, null, action.getNavigationChildren(), action));
 		}
 		
 		if (action.getPath().size() == 1) {
 			// Just the principal action is the active action.
-			return new ApplicationBuilderAdapter(createApplicationBuilder(target, action.getParent(), action, action.getChildren(), action));
+			return new ApplicationBuilderAdapter(createApplicationBuilder(target, action.getParent(), action, action.getNavigationChildren(), action));
 		}
 		
 		Action principalAction = action.getPath().get(1);
-		return new ApplicationBuilderAdapter(createApplicationBuilder(target, action.getPath().get(0), principalAction, principalAction.getChildren(), action));
+		return new ApplicationBuilderAdapter(createApplicationBuilder(target, action.getPath().get(0), principalAction, principalAction.getNavigationChildren(), action));
 	}
 
 	protected ActionApplicationBuilder createApplicationBuilder(

@@ -19,13 +19,12 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.Action#getChildren <em>Children</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getConfirmation <em>Confirmation</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getContextActions <em>Context Actions</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#isFloatRight <em>Float Right</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#isDisabled <em>Disabled</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getActivator <em>Activator</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getIterator <em>Iterator</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getSections <em>Sections</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getCategory <em>Category</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getRoles <em>Roles</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getAction()
@@ -74,22 +73,6 @@ public interface Action extends org.nasdanika.html.app.Action, Label {
 	 * @generated
 	 */
 	void setConfirmation(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Context Actions</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.app.Action}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Context Actions</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Context Actions</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_ContextActions()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<Action> getContextActions();
 
 	/**
 	 * Returns the value of the '<em><b>Float Right</b></em>' attribute.
@@ -198,22 +181,6 @@ public interface Action extends org.nasdanika.html.app.Action, Label {
 	void setIterator(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Sections</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.app.Action}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Sections</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Sections</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Sections()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<Action> getSections();
-
-	/**
 	 * Returns the value of the '<em><b>Category</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -238,5 +205,21 @@ public interface Action extends org.nasdanika.html.app.Action, Label {
 	 * @generated
 	 */
 	void setCategory(Label value);
+
+	/**
+	 * Returns the value of the '<em><b>Roles</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Roles</em>' attribute list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Roles</em>' attribute list.
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Roles()
+	 * @model
+	 * @generated
+	 */
+	EList<String> getRoles();
 
 } // Action

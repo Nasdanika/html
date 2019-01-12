@@ -39,7 +39,7 @@ public class NavigationBarViewPart implements ViewPart {
 		Tag brand = principalAction.getActivator() == null ? viewGenerator.label(principalAction) : viewGenerator.link(principalAction);
 		Navbar navBar = createNavbar(viewGenerator, brand);
 		
-		for (Entry<Label, ?> categoryGroup: Util.groupByCategory(principalAction.getContextActions())) {
+		for (Entry<Label, ?> categoryGroup: principalAction.getContextChildrenGroupedByCategory()) {
 			Label category = categoryGroup.getKey();
 			if (category == null || (Util.isBlank(category.getText()) && Util.isBlank(category.getIcon()))) {
 				for (Action ca: (List<Action>) categoryGroup.getValue()) {
@@ -63,7 +63,7 @@ public class NavigationBarViewPart implements ViewPart {
 						navBar.navbarText(fragment);
 					} else {
 						Dropdown dropdown = navBar.dropdown(Util.equalOrInPath(activeAction, ca), fragment);				
-						for (Entry<Label, List<Action>> cats: Util.groupByCategory((List<Action>) ca.getChildren())) {
+						for (Entry<Label, List<Action>> cats: ca.getChildrenGroupedByCategory()) {
 							if (cats.getKey() != null) {
 								if (Util.isBlank(cats.getKey().getIcon()) && Util.isBlank(cats.getKey().getText())) {
 									dropdown.divider();

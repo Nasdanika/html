@@ -17,7 +17,7 @@ public class FooterViewPart implements ViewPart {
 	public Object generate(ViewGenerator viewGenerator) {
 		// Single-level footer actions. 
 		Fragment ret = viewGenerator.getHTMLFactory().fragment();
-		for (Action ca: rootAction.getContextActions()) {
+		for (Action ca: rootAction.getContextChildren()) {
 			if (!ret.isEmpty()) {
 				ret.content("&nbsp;&bull;&nbsp;");
 			}

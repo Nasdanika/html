@@ -50,7 +50,7 @@ public class SectionViewPart implements ViewPart {
 
 		// Context actions		
 		if (showContextActions) {
-			List<? extends Action> contextActions = section.getContextActions();
+			List<? extends Action> contextActions = section.getContextChildren();
 			if (!contextActions.isEmpty()) {			
 				ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(contextActions);
 				buttonToolbar.margin().top(1).bottom(1);
@@ -59,7 +59,7 @@ public class SectionViewPart implements ViewPart {
 		}
 				
 		// Sections
-		List<? extends Action> subSections = level == 0 ? section.getSections() : section.getChildren();
+		List<? extends Action> subSections = section.getSectionChildren();
 		if (subSections != null && !subSections.isEmpty()) {
 			NamedItemsContainer sectionsContainer = createSectionsContainer(viewGenerator, ret, level);
 			Action activeSubSection = null;

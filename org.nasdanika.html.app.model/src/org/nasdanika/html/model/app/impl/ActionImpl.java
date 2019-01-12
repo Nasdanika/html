@@ -37,13 +37,12 @@ import org.nasdanika.html.model.app.AppPackage;
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getNotification <em>Notification</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getChildren <em>Children</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getConfirmation <em>Confirmation</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getContextActions <em>Context Actions</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isFloatRight <em>Float Right</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isDisabled <em>Disabled</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getActivator <em>Activator</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getIterator <em>Iterator</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getSections <em>Sections</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getCategory <em>Category</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getRoles <em>Roles</em>}</li>
  * </ul>
  *
  * @generated
@@ -83,6 +82,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Color getColor() {
 		return (Color)eGet(AppPackage.Literals.LABEL__COLOR, true);
 	}
@@ -92,6 +92,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setColor(Color newColor) {
 		eSet(AppPackage.Literals.LABEL__COLOR, newColor);
 	}
@@ -101,6 +102,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getDescription() {
 		return (String)eGet(AppPackage.Literals.LABEL__DESCRIPTION, true);
 	}
@@ -110,6 +112,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDescription(String newDescription) {
 		eSet(AppPackage.Literals.LABEL__DESCRIPTION, newDescription);
 	}
@@ -119,6 +122,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getIcon() {
 		return (String)eGet(AppPackage.Literals.LABEL__ICON, true);
 	}
@@ -128,6 +132,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setIcon(String newIcon) {
 		eSet(AppPackage.Literals.LABEL__ICON, newIcon);
 	}
@@ -137,6 +142,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getId() {
 		return (String)eGet(AppPackage.Literals.LABEL__ID, true);
 	}
@@ -146,6 +152,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setId(String newId) {
 		eSet(AppPackage.Literals.LABEL__ID, newId);
 	}
@@ -155,6 +162,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getText() {
 		return (String)eGet(AppPackage.Literals.LABEL__TEXT, true);
 	}
@@ -164,6 +172,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setText(String newText) {
 		eSet(AppPackage.Literals.LABEL__TEXT, newText);
 	}
@@ -173,6 +182,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getTooltip() {
 		return (String)eGet(AppPackage.Literals.LABEL__TOOLTIP, true);
 	}
@@ -182,6 +192,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setTooltip(String newTooltip) {
 		eSet(AppPackage.Literals.LABEL__TOOLTIP, newTooltip);
 	}
@@ -191,6 +202,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isOutline() {
 		return (Boolean)eGet(AppPackage.Literals.LABEL__OUTLINE, true);
 	}
@@ -200,6 +212,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setOutline(boolean newOutline) {
 		eSet(AppPackage.Literals.LABEL__OUTLINE, newOutline);
 	}
@@ -209,6 +222,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getNotification() {
 		return (String)eGet(AppPackage.Literals.LABEL__NOTIFICATION, true);
 	}
@@ -218,6 +232,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setNotification(String newNotification) {
 		eSet(AppPackage.Literals.LABEL__NOTIFICATION, newNotification);
 	}
@@ -228,6 +243,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
+	@Override
 	public EList<Action> getChildren() {
 		return (EList<Action>)eGet(AppPackage.Literals.ACTION__CHILDREN, true);
 	}
@@ -237,6 +253,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getConfirmation() {
 		return (String)eGet(AppPackage.Literals.ACTION__CONFIRMATION, true);
 	}
@@ -246,6 +263,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setConfirmation(String newConfirmation) {
 		eSet(AppPackage.Literals.ACTION__CONFIRMATION, newConfirmation);
 	}
@@ -255,16 +273,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
-	public EList<Action> getContextActions() {
-		return (EList<Action>)eGet(AppPackage.Literals.ACTION__CONTEXT_ACTIONS, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	@Override
 	public boolean isFloatRight() {
 		return (Boolean)eGet(AppPackage.Literals.ACTION__FLOAT_RIGHT, true);
 	}
@@ -274,6 +283,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setFloatRight(boolean newFloatRight) {
 		eSet(AppPackage.Literals.ACTION__FLOAT_RIGHT, newFloatRight);
 	}
@@ -283,6 +293,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDisabled() {
 		return (Boolean)eGet(AppPackage.Literals.ACTION__DISABLED, true);
 	}
@@ -292,6 +303,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDisabled(boolean newDisabled) {
 		eSet(AppPackage.Literals.ACTION__DISABLED, newDisabled);
 	}
@@ -301,6 +313,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ActionActivator getActivator() {
 		return (ActionActivator)eGet(AppPackage.Literals.ACTION__ACTIVATOR, true);
 	}
@@ -310,6 +323,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setActivator(ActionActivator newActivator) {
 		eSet(AppPackage.Literals.ACTION__ACTIVATOR, newActivator);
 	}
@@ -319,6 +333,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getIterator() {
 		return (String)eGet(AppPackage.Literals.ACTION__ITERATOR, true);
 	}
@@ -328,6 +343,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setIterator(String newIterator) {
 		eSet(AppPackage.Literals.ACTION__ITERATOR, newIterator);
 	}
@@ -337,16 +353,7 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
-	public EList<Action> getSections() {
-		return (EList<Action>)eGet(AppPackage.Literals.ACTION__SECTIONS, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	@Override
 	public org.nasdanika.html.model.app.Label getCategory() {
 		return (org.nasdanika.html.model.app.Label)eGet(AppPackage.Literals.ACTION__CATEGORY, true);
 	}
@@ -356,8 +363,20 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setCategory(org.nasdanika.html.model.app.Label newCategory) {
 		eSet(AppPackage.Literals.ACTION__CATEGORY, newCategory);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public EList<String> getRoles() {
+		return (EList<String>)eGet(AppPackage.Literals.ACTION__ROLES, true);
 	}
 
 	/**
@@ -440,6 +459,11 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 			throw new ApplicationException("No execution delegate", this);
 		}
 		return delegate.execute(viewGenerator, input);
+	}
+	
+	@Override
+	public boolean isInRole(String role) {
+		return getRoles().contains(role);
 	}
 
 } //ActionImpl

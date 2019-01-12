@@ -49,6 +49,7 @@ public class ContentActionImpl extends ActionImpl implements ContentAction {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getContent() {
 		return (String)eGet(AppPackage.Literals.CONTENT_ACTION__CONTENT, true);
 	}
@@ -58,6 +59,7 @@ public class ContentActionImpl extends ActionImpl implements ContentAction {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setContent(String newContent) {
 		eSet(AppPackage.Literals.CONTENT_ACTION__CONTENT, newContent);
 	}
@@ -67,6 +69,7 @@ public class ContentActionImpl extends ActionImpl implements ContentAction {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ContentType getContentType() {
 		return (ContentType)eGet(AppPackage.Literals.CONTENT_ACTION__CONTENT_TYPE, true);
 	}
@@ -76,6 +79,7 @@ public class ContentActionImpl extends ActionImpl implements ContentAction {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setContentType(ContentType newContentType) {
 		eSet(AppPackage.Literals.CONTENT_ACTION__CONTENT_TYPE, newContentType);
 	}

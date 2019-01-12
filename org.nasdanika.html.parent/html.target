@@ -7,9 +7,5 @@
 			<unit id="org.apache.commons.text" version="1.4.0"/>
 		</location>
 		<location path="${eclipse_home}" type="Profile"/>
-		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<unit id="org.nasdanika.presentation.feature.feature.group" version="0.1.0.201810170215"/>
-			<repository location="https://www.nasdanika.org/products/presentation/repository"/>
-		</location>
 	</locations>
 </target>

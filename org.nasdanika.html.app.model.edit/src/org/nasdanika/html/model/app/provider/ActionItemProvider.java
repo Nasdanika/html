@@ -75,6 +75,7 @@ public class ActionItemProvider
 			addFloatRightPropertyDescriptor(object);
 			addDisabledPropertyDescriptor(object);
 			addIteratorPropertyDescriptor(object);
+			addRolesPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -344,6 +345,28 @@ public class ActionItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Roles feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addRolesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Action_roles_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Action_roles_feature", "_UI_Action_type"),
+				 AppPackage.Literals.ACTION__ROLES,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
 	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -356,9 +379,7 @@ public class ActionItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(AppPackage.Literals.ACTION__CHILDREN);
-			childrenFeatures.add(AppPackage.Literals.ACTION__CONTEXT_ACTIONS);
 			childrenFeatures.add(AppPackage.Literals.ACTION__ACTIVATOR);
-			childrenFeatures.add(AppPackage.Literals.ACTION__SECTIONS);
 			childrenFeatures.add(AppPackage.Literals.ACTION__CATEGORY);
 		}
 		return childrenFeatures;
@@ -428,12 +449,11 @@ public class ActionItemProvider
 			case AppPackage.ACTION__FLOAT_RIGHT:
 			case AppPackage.ACTION__DISABLED:
 			case AppPackage.ACTION__ITERATOR:
+			case AppPackage.ACTION__ROLES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case AppPackage.ACTION__CHILDREN:
-			case AppPackage.ACTION__CONTEXT_ACTIONS:
 			case AppPackage.ACTION__ACTIVATOR:
-			case AppPackage.ACTION__SECTIONS:
 			case AppPackage.ACTION__CATEGORY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
@@ -474,26 +494,6 @@ public class ActionItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(AppPackage.Literals.ACTION__CONTEXT_ACTIONS,
-				 AppFactory.eINSTANCE.createAction()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(AppPackage.Literals.ACTION__CONTEXT_ACTIONS,
-				 AppFactory.eINSTANCE.createThemedAction()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(AppPackage.Literals.ACTION__CONTEXT_ACTIONS,
-				 AppFactory.eINSTANCE.createContentAction()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(AppPackage.Literals.ACTION__CONTEXT_ACTIONS,
-				 AppFactory.eINSTANCE.createThemedContentAction()));
-
-		newChildDescriptors.add
-			(createChildParameter
 				(AppPackage.Literals.ACTION__ACTIVATOR,
 				 AppFactory.eINSTANCE.createNavigationActionActivator()));
 
@@ -501,26 +501,6 @@ public class ActionItemProvider
 			(createChildParameter
 				(AppPackage.Literals.ACTION__ACTIVATOR,
 				 AppFactory.eINSTANCE.createScriptActionActivator()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(AppPackage.Literals.ACTION__SECTIONS,
-				 AppFactory.eINSTANCE.createAction()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(AppPackage.Literals.ACTION__SECTIONS,
-				 AppFactory.eINSTANCE.createThemedAction()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(AppPackage.Literals.ACTION__SECTIONS,
-				 AppFactory.eINSTANCE.createContentAction()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(AppPackage.Literals.ACTION__SECTIONS,
-				 AppFactory.eINSTANCE.createThemedContentAction()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -561,8 +541,6 @@ public class ActionItemProvider
 
 		boolean qualify =
 			childFeature == AppPackage.Literals.ACTION__CHILDREN ||
-			childFeature == AppPackage.Literals.ACTION__CONTEXT_ACTIONS ||
-			childFeature == AppPackage.Literals.ACTION__SECTIONS ||
 			childFeature == AppPackage.Literals.ACTION__CATEGORY;
 
 		if (qualify) {

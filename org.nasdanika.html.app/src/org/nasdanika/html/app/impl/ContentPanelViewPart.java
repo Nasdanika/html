@@ -44,7 +44,7 @@ public class ContentPanelViewPart implements ViewPart {
 		fullPath.add(activeAction);
 		for (int i = 0; i < fullPath.size() - 1; ++i) {
 			Action currentAction = fullPath.get(i);
-			if (Util.contains(currentAction.getSections(), fullPath.get(i + 1))) {
+			if (Util.contains(currentAction.getSectionChildren(), fullPath.get(i + 1))) {
 				return currentAction;
 			}
 		}

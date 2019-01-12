@@ -218,6 +218,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getLabel() {
 		return labelEClass;
 	}
@@ -227,6 +228,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLabel_Color() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(0);
 	}
@@ -236,6 +238,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLabel_Description() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(1);
 	}
@@ -245,6 +248,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLabel_Icon() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(2);
 	}
@@ -254,6 +258,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLabel_Id() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(3);
 	}
@@ -263,6 +268,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLabel_Text() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(4);
 	}
@@ -272,6 +278,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLabel_Tooltip() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(5);
 	}
@@ -281,6 +288,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLabel_Outline() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(6);
 	}
@@ -290,6 +298,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLabel_Notification() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(7);
 	}
@@ -299,6 +308,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getIThemed() {
 		return iThemedEClass;
 	}
@@ -308,6 +318,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getIAction() {
 		return iActionEClass;
 	}
@@ -317,6 +328,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getAction() {
 		return actionEClass;
 	}
@@ -326,6 +338,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getAction_Children() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(0);
 	}
@@ -335,6 +348,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getAction_Confirmation() {
 		return (EAttribute)actionEClass.getEStructuralFeatures().get(1);
 	}
@@ -344,8 +358,9 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getAction_ContextActions() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(2);
+	@Override
+	public EAttribute getAction_FloatRight() {
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -353,7 +368,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAction_FloatRight() {
+	@Override
+	public EAttribute getAction_Disabled() {
 		return (EAttribute)actionEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -362,17 +378,9 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAction_Disabled() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	@Override
 	public EReference getAction_Activator() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(5);
+		return (EReference)actionEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -380,8 +388,9 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getAction_Iterator() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -389,17 +398,9 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getAction_Sections() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(7);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	@Override
 	public EReference getAction_Category() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(8);
+		return (EReference)actionEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -407,6 +408,17 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public EAttribute getAction_Roles() {
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getThemedAction() {
 		return themedActionEClass;
 	}
@@ -416,6 +428,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getThemedAction_Theme() {
 		return (EAttribute)themedActionEClass.getEStructuralFeatures().get(0);
 	}
@@ -425,6 +438,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getContentAction() {
 		return contentActionEClass;
 	}
@@ -434,6 +448,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getContentAction_Content() {
 		return (EAttribute)contentActionEClass.getEStructuralFeatures().get(0);
 	}
@@ -443,6 +458,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getContentAction_ContentType() {
 		return (EAttribute)contentActionEClass.getEStructuralFeatures().get(1);
 	}
@@ -452,6 +468,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getThemedContentAction() {
 		return themedContentActionEClass;
 	}
@@ -461,6 +478,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getIActionActivator() {
 		return iActionActivatorEClass;
 	}
@@ -470,6 +488,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getINavigationActionActivator() {
 		return iNavigationActionActivatorEClass;
 	}
@@ -479,6 +498,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getIScriptActionActivator() {
 		return iScriptActionActivatorEClass;
 	}
@@ -488,6 +508,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getActionActivator() {
 		return actionActivatorEClass;
 	}
@@ -497,6 +518,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getNavigationActionActivator() {
 		return navigationActionActivatorEClass;
 	}
@@ -506,6 +528,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getNavigationActionActivator_Url() {
 		return (EAttribute)navigationActionActivatorEClass.getEStructuralFeatures().get(0);
 	}
@@ -515,6 +538,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScriptActionActivator() {
 		return scriptActionActivatorEClass;
 	}
@@ -524,6 +548,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScriptActionActivator_Code() {
 		return (EAttribute)scriptActionActivatorEClass.getEStructuralFeatures().get(0);
 	}
@@ -533,6 +558,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EEnum getContentType() {
 		return contentTypeEEnum;
 	}
@@ -542,6 +568,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getColor() {
 		return colorEDataType;
 	}
@@ -551,6 +578,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getTheme() {
 		return themeEDataType;
 	}
@@ -560,6 +588,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getILabel() {
 		return iLabelEClass;
 	}
@@ -569,6 +598,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public AppFactory getAppFactory() {
 		return (AppFactory)getEFactoryInstance();
 	}
@@ -611,13 +641,12 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		actionEClass = createEClass(ACTION);
 		createEReference(actionEClass, ACTION__CHILDREN);
 		createEAttribute(actionEClass, ACTION__CONFIRMATION);
-		createEReference(actionEClass, ACTION__CONTEXT_ACTIONS);
 		createEAttribute(actionEClass, ACTION__FLOAT_RIGHT);
 		createEAttribute(actionEClass, ACTION__DISABLED);
 		createEReference(actionEClass, ACTION__ACTIVATOR);
 		createEAttribute(actionEClass, ACTION__ITERATOR);
-		createEReference(actionEClass, ACTION__SECTIONS);
 		createEReference(actionEClass, ACTION__CATEGORY);
+		createEAttribute(actionEClass, ACTION__ROLES);
 
 		themedActionEClass = createEClass(THEMED_ACTION);
 		createEAttribute(themedActionEClass, THEMED_ACTION__THEME);
@@ -712,13 +741,12 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEClass(actionEClass, org.nasdanika.html.model.app.Action.class, "Action", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAction_Children(), this.getAction(), null, "children", null, 0, -1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Confirmation(), ecorePackage.getEString(), "confirmation", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_ContextActions(), this.getAction(), null, "contextActions", null, 0, -1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_FloatRight(), ecorePackage.getEBoolean(), "floatRight", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Disabled(), ecorePackage.getEBoolean(), "disabled", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_Activator(), this.getActionActivator(), null, "activator", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Iterator(), ecorePackage.getEString(), "iterator", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_Sections(), this.getAction(), null, "sections", null, 0, -1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_Category(), this.getLabel(), null, "category", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_Roles(), ecorePackage.getEString(), "roles", null, 0, -1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(themedActionEClass, ThemedAction.class, "ThemedAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getThemedAction_Theme(), this.getTheme(), "theme", null, 0, 1, ThemedAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

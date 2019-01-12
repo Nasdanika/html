@@ -57,6 +57,7 @@ public class NavigationActionActivatorImpl extends CDOObjectImpl implements Navi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getUrl() {
 		return (String)eGet(AppPackage.Literals.NAVIGATION_ACTION_ACTIVATOR__URL, true);
 	}
@@ -66,6 +67,7 @@ public class NavigationActionActivatorImpl extends CDOObjectImpl implements Navi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setUrl(String newUrl) {
 		eSet(AppPackage.Literals.NAVIGATION_ACTION_ACTIVATOR__URL, newUrl);
 	}

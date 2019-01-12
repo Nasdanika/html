@@ -35,11 +35,6 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	}
 
 	@Override
-	public List<? extends Action> getContextActions() {
-		return target.getContextActions();
-	}
-
-	@Override
 	public Action getParent() {
 		return target.getParent();
 	}
@@ -53,11 +48,6 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
 		return target.execute(viewGenerator, input);
 	}
-	
-	@Override
-	public List<? extends Action> getSections() {
-		return target.getSections();
-	}
 
 	@Override
 	public ActionActivator getActivator() {
@@ -67,6 +57,11 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	@Override
 	public Label getCategory() {
 		return target.getCategory();
+	}
+
+	@Override
+	public boolean isInRole(String role) {
+		return target.isInRole(role);
 	}
 		
 }

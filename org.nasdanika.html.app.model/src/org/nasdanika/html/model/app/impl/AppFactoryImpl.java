@@ -114,6 +114,7 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Label createLabel() {
 		LabelImpl label = new LabelImpl();
 		return label;
@@ -124,6 +125,7 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Action createAction() {
 		ActionImpl action = new ActionImpl();
 		return action;
@@ -134,6 +136,7 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ThemedAction createThemedAction() {
 		ThemedActionImpl themedAction = new ThemedActionImpl();
 		return themedAction;
@@ -144,6 +147,7 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ContentAction createContentAction() {
 		ContentActionImpl contentAction = new ContentActionImpl();
 		return contentAction;
@@ -154,6 +158,7 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ThemedContentAction createThemedContentAction() {
 		ThemedContentActionImpl themedContentAction = new ThemedContentActionImpl();
 		return themedContentAction;
@@ -164,6 +169,7 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public NavigationActionActivator createNavigationActionActivator() {
 		NavigationActionActivatorImpl navigationActionActivator = new NavigationActionActivatorImpl();
 		return navigationActionActivator;
@@ -174,6 +180,7 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScriptActionActivator createScriptActionActivator() {
 		ScriptActionActivatorImpl scriptActionActivator = new ScriptActionActivatorImpl();
 		return scriptActionActivator;
@@ -240,6 +247,7 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public AppPackage getAppPackage() {
 		return (AppPackage)getEPackage();
 	}

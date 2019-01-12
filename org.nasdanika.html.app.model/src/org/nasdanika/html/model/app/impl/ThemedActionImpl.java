@@ -47,6 +47,7 @@ public class ThemedActionImpl extends ActionImpl implements ThemedAction {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Theme getTheme() {
 		return (Theme)eGet(AppPackage.Literals.THEMED_ACTION__THEME, true);
 	}
@@ -56,6 +57,7 @@ public class ThemedActionImpl extends ActionImpl implements ThemedAction {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setTheme(Theme newTheme) {
 		eSet(AppPackage.Literals.THEMED_ACTION__THEME, newTheme);
 	}

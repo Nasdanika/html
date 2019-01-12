@@ -57,6 +57,7 @@ public class ScriptActionActivatorImpl extends CDOObjectImpl implements ScriptAc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getCode() {
 		return (String)eGet(AppPackage.Literals.SCRIPT_ACTION_ACTIVATOR__CODE, true);
 	}
@@ -66,6 +67,7 @@ public class ScriptActionActivatorImpl extends CDOObjectImpl implements ScriptAc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setCode(String newCode) {
 		eSet(AppPackage.Literals.SCRIPT_ACTION_ACTIVATOR__CODE, newCode);
 	}

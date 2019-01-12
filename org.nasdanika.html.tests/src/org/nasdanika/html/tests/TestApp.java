@@ -190,7 +190,7 @@ public class TestApp extends HTMLTestBase {
 					if (href != null) {
 						
 						Theme theme;
-						Action principalAction = appAction.getChildren().get(0);
+						Action principalAction = (Action) appAction.getNavigationChildren().get(0);
 						if (principalAction instanceof Themed) {
 							theme = ((Themed) principalAction).getTheme();
 						} else if (appAction instanceof Themed) {
@@ -236,7 +236,7 @@ public class TestApp extends HTMLTestBase {
 	
 	protected Map<String, ApplicationBuilder> createApplicationBuilders(Action principalAction, List<? extends Action> navigation, Action selected) {
 		Map<String, ApplicationBuilder> ret = new HashMap<>();
-		ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {
+		ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getNavigationChildren(), selected, Collections.emptyMap()) {
 			@Override
 			protected Object generateHeader(ViewGenerator viewGenerator) {
 				return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark").style().text().decoration().none();
@@ -244,7 +244,7 @@ public class TestApp extends HTMLTestBase {
 		};			
 		ret.put("link-group", appBuilder);
 		
-		ActionApplicationBuilder jsTreeAppBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {
+		ActionApplicationBuilder jsTreeAppBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getNavigationChildren(), selected, Collections.emptyMap()) {
 			@Override
 			protected Object generateHeader(ViewGenerator viewGenerator) {
 				return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark").style().text().decoration().none();

@@ -40,7 +40,7 @@ public class ActionApplicationBuilder extends ViewPartApplicationBuilder {
 	 * be selected/active. 
 	 */
 	public ActionApplicationBuilder(Action rootAction, Action principalAction, Action activeAction, Map<String,Object> input) {
-		this(rootAction, principalAction, principalAction.getChildren(), activeAction, input);
+		this(rootAction, principalAction, principalAction.getNavigationChildren(), activeAction, input);
 	}	
 	
 	/**

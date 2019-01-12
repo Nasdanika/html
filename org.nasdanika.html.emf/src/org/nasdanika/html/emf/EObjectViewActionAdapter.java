@@ -152,16 +152,6 @@ public class EObjectViewActionAdapter extends AdapterImpl implements ViewAction 
 	protected boolean isChildFeature(EStructuralFeature feature) {
 		return feature instanceof EReference && feature.isMany() && ((EReference) feature).isContainment();
 	}
-
-	@Override
-	public List<? extends Action> getContextActions() {
-		return getPropertySource() == null ? null : getPropertySource().getActions();		
-	}
-
-	@Override
-	public List<? extends Action> getSections() {
-		return Collections.emptyList();
-	}
 	
 	/**
 	 * This implementation returns multi-value non-containment references, single value containment references, and multi-value attributes.
@@ -245,6 +235,12 @@ public class EObjectViewActionAdapter extends AdapterImpl implements ViewAction 
 	@Override
 	public String getNotification() {
 		return getPropertySource() == null ? null : getPropertySource().getNotification();
+	}
+
+	@Override
+	public boolean isInRole(String role) {
+		// TODO Auto-generated method stub
+		return Action.Role.NAVIGATION.equals(role);
 	}
 
 }
