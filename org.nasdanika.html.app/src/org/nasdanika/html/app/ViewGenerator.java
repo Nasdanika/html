@@ -181,6 +181,14 @@ public interface ViewGenerator {
 	 */
 	JsTreeNode jsTreeNode(Action action, boolean ajax);
 	
+	/**
+	 * Label node
+	 * @param label
+	 * @return
+	 */
+	JsTreeNode jsTreeNode(Label label);
+	
+	
 	/*
 	 *  TODO:
 	 *  - Navs, Navbar - for principal actions.

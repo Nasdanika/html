@@ -207,17 +207,24 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public JsTreeNode jsTreeNode(Label label) {
+		JsTreeNode ret = getJsTreeFactory().jsTreeNode();
+		
+		ret.icon(label.getIcon());
+		ret.text(label.getText());
+		if (label.getTooltip() != null) {
+			ret.anchorAttribute("title", label.getTooltip());
+		}
+		ret.id(label.getId());
+		
+		return ret;
+	}
 
 	@Override
 	public JsTreeNode jsTreeNode(Action action, boolean ajax) {
-		JsTreeNode ret = getJsTreeFactory().jsTreeNode();
-		
-		ret.icon(action.getIcon());
-		ret.text(action.getText());
-		if (action.getTooltip() != null) {
-			ret.anchorAttribute("title", action.getTooltip());
-		}
-		ret.id(action.getId());
+		JsTreeNode ret = jsTreeNode(action);
 		ret.disabled(action.isDisabled());
 		List<? extends Action> navigationChildren = action.getNavigationChildren();
 		if (ajax) {
@@ -238,8 +245,6 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		} else if (activator instanceof BindingActionActivator) {
 			((BindingActionActivator) activator).bind(ret, this);
 		}				
-		
-		// TODO - title
 		
 		return ret;
 	}

@@ -2,11 +2,13 @@ package org.nasdanika.html.app.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.json.JSONObject;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.jstree.JsTreeFactory;
@@ -37,10 +39,26 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 		JsTreeFactory jsTreeFactory = viewGenerator.getJsTreeFactory();
 		List<JsTreeNode> roots = new ArrayList<>();
 		// TODO - group by category
-		for (Action ca: navigationPanelActions) {
-			JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false);
-			jsTreeNode.selected(Util.equalOrInPath(activeAction, ca) && ca.getNavigationChildren().isEmpty());
-			roots.add(jsTreeNode);
+		for (Entry<Label, ?> group: Util.groupByCategory(navigationPanelActions)) {			
+			Label category = group.getKey();
+			@SuppressWarnings("unchecked")
+			List<Action> categoryActions = (List<Action>) group.getValue();
+			if (category == null || Util.isBlank(category.getText())) {
+				for (Action ca: categoryActions) {
+					JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false);
+					jsTreeNode.selected(Util.equalOrInPath(activeAction, ca) && ca.getNavigationChildren().isEmpty());
+					roots.add(jsTreeNode);
+				}				
+			} else {
+				JsTreeNode categoryNode = viewGenerator.jsTreeNode(category);
+				roots.add(categoryNode);
+				for (Action ca: categoryActions) {
+					JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false);
+					jsTreeNode.selected(Util.equalOrInPath(activeAction, ca) && ca.getNavigationChildren().isEmpty());
+					categoryNode.children().add(jsTreeNode);
+				}				
+			}
+			
 		}
 		JSONObject jsTree = jsTreeFactory.buildJsTree(roots);
 		// TODO - context menus
