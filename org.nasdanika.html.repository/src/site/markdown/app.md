@@ -162,7 +162,7 @@ Thinking in actions helps to deliver functionality faster and take care of non-f
 
 While the framework allows to refine appearance of UI elements on a case-by-case basis having a consistent UI increases clarity of human-system interactions.  
  
-Where there's a vocabulary there's a dictionary. Building an application in terms of actions and property sources allows to create and publish such a dictionary as part of the build process.   
+Where there's a vocabulary there's a dictionary. Building an application in terms of actions and property sources allows to create and publish such a user-system dictionary as part of the build process.   
 
 In Java terms an action may be thought of as a method in a callback interface (Web UI) passed to a user. 
 The user interacts with the system by "invoking callback methods" - activating actions so they get executed by the system.
@@ -173,6 +173,7 @@ Action extends [Executable](apidocs/org.nasdanika.html.app/apidocs/index.html?or
 
 [ActionActivator](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/ActionActivator.html)s are used to trigger action execution on the server side. 
 There are three types of action activators:
+
 * [NavigationActionActivator](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/NavigationActionActivator.html) - when user clicks on the action UI element it triggers navigation to the specified URL.
 * [ScriptActionActivator](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/ScriptActionActivator.html) - when user clicks on the action UI element it triggers execution of the specified script.
 * [BindingActionActivator](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/BindingActionActivator.html) - the activator is responsible for configure the UI element to activate action execution. For example, such a binder may add KnockoutJS click binding.
@@ -182,18 +183,19 @@ In this case the navigation url would go to the action attribute of the form and
 
 ### Contained actions
 
-Actions have 3 collections of contained (sub) actions - children, context actions, and sections.
+Actions have ``getChildren()`` method returning a collection of contained (sub) actions.
+Actions may play different roles, there are 3 built-in roles - ``NAVIGATION``, ``CONTEXT``, and ``SECTION``. 
 
-Child actions correspond to contained objects and are typically rendered in the navigation panel. For example a bank customer has/owns accounts. 
+Navigation actions correspond to contained objects and are typically rendered in the navigation panel. For example a bank customer has/owns accounts. 
 Actions to view such accounts would be displayed in the navigation panel. 
-In entity-relationship terms child actions correspond to containment references and in Java terms they correspond to fields. 
+In entity-relationship terms navigation actions correspond to containment references and in Java terms they correspond to fields. 
 You may also think of them as "view (noun)" actions. E.g. "view account".  
 
 Context actions get their name from the fact that they are displayed as a JsTree context menu items. 
 They are also output as buttons in the content panel.
 Context actions correspond to methods/operations/verbs. E.g. "open account" context action of a "view customer" action.
 
-Section actions play the same role as child actions, but they are displayed in the content panel of the contained action. 
+Section actions play the same role as navigation actions, but they are displayed in the content panel of the contained action. 
 For example, "view transactions" section action of "view statement" action would display a list of transactions below statement details.
 Section actions may be executed along with the containing action. In this case they don't need an activator.
 Section actions with NavigationActionActivators may be executed by loading section content using AJAX.  

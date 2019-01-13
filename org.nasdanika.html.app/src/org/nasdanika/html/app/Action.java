@@ -71,8 +71,23 @@ public interface Action extends Label, Executable, Categorized {
 	 */
 	List<? extends Action> getChildren();
 	
-	boolean isInRole(String role);
-	
+	/**
+	 * Action role defines where its UI element is displayed. There are 3 built-in roles ({@link Role}):
+	 * 
+	 *  * NAVIGATION - navigation panel for the principal action.  
+	 *  * CONTEXT:
+	 *      * A button toolbar below the active action content, 
+	 *      * JsTree context menu, 
+	 *      * Navigation bar for the principal action.
+	 *      * Footer for the root action.  
+	 *  * SECTION - sections in the content panel below the active action content and context actions button toolbar.
+	 *  
+	 * Customizations may define additional roles.
+	 *  
+	 * @param role
+	 * @return
+	 */
+	boolean isInRole(String role);	
 	
 	/**
 	 * Parent action.
@@ -86,6 +101,11 @@ public interface Action extends Label, Executable, Categorized {
 	 */
 	List<Action> getPath();
 	
+	/**
+	 * @return An optional {@link ActionActivator} to activate this action. 
+	 * Some actions may have no activators. One case is section actions which are executed with the containing action, another possible case is when an action
+	 * is used for grouping its child actions, similar to a category.
+	 */
 	ActionActivator getActivator();
 	
 	/**
