@@ -2,7 +2,6 @@ package org.nasdanika.html.app.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -145,16 +144,6 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 	@Override
 	public Action getParent() {
 		return parent;
-	}
-
-	@Override
-	public List<Action> getPath() {		
-		if (getParent() == null) {
-			return Collections.emptyList();
-		}
-		ArrayList<Action> ret = new ArrayList<>(getParent().getPath());
-		ret.add(getParent());
-		return ret;
 	}
 
 	public void setConfirmation(String confirmation) {

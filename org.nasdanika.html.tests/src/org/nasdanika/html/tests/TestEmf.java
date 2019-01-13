@@ -26,14 +26,14 @@ import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.app.PropertySource;
-import org.nasdanika.html.app.SingleValuePropertySource;
 import org.nasdanika.html.app.impl.BootstrapContainerApplication;
 import org.nasdanika.html.emf.ComposedAdapterFactory;
 import org.nasdanika.html.emf.EClassPropertySource;
 import org.nasdanika.html.emf.ENamedElementLabel;
 import org.nasdanika.html.emf.EObjectActionApplicationBuilderAdapterFactory;
-import org.nasdanika.html.emf.EObjectSingleValuePropertySourceAdapter;
-import org.nasdanika.html.emf.EObjectViewActionAdapter;
+import org.nasdanika.html.emf.EObjectViewAction;
+import org.nasdanika.html.emf.EStructuralFeatureLabel;
+import org.nasdanika.html.emf.FunctionAdapterFactory;
 import org.nasdanika.html.emf.NavigationViewActionActivatorAdapter;
 import org.nasdanika.html.emf.SupplierAdapterFactory;
 import org.nasdanika.html.emf.ViewAction;
@@ -62,8 +62,7 @@ public class TestEmf extends HTMLTestBase {
 			return app;
 		}));
 		caf.registerAdapterFactory(new EObjectActionApplicationBuilderAdapterFactory());
-		caf.registerAdapterFactory(new SupplierAdapterFactory<ViewAction>(ViewAction.class, this.getClass().getClassLoader(), EObjectViewActionAdapter::new));
-		caf.registerAdapterFactory(new SupplierAdapterFactory<SingleValuePropertySource>(SingleValuePropertySource.class, this.getClass().getClassLoader(), EObjectSingleValuePropertySourceAdapter::new));
+		caf.registerAdapterFactory(new FunctionAdapterFactory<ViewAction, EObject>(ViewAction.class, this.getClass().getClassLoader(), EObjectViewAction::new));
 		
 		// View action activator
 		Map<EObject, String> urlMap = new HashMap<>();
@@ -82,8 +81,9 @@ public class TestEmf extends HTMLTestBase {
 	
 	@Test
 	public void testENamedElementLabel() {
-		ENamedElementLabel<EAttribute> label = new ENamedElementLabel<EAttribute>(BankPackage.Literals.ACCOUNT__PERIOD_START);
+		ENamedElementLabel<EAttribute> label = new EStructuralFeatureLabel<EAttribute>(BankPackage.Literals.ACCOUNT__PERIOD_START);
 		assertEquals("Period start", label.getText());
+		System.out.println("Account period start label id: "+label.getId());
 	}
 	
 	@Test
@@ -100,22 +100,6 @@ public class TestEmf extends HTMLTestBase {
 		}
 		System.out.println("---");
 	}
-	
-	@Test
-	public void testEObjectPropertySource() {
-		System.out.println("--- EObject property sources ---");
-		TreeIterator<EObject> tit = bank.eResource().getAllContents();
-		while (tit.hasNext()) {
-			EObject next = tit.next();
-			SingleValuePropertySource ps = (SingleValuePropertySource) EcoreUtil.getRegisteredAdapter(next, SingleValuePropertySource.class);
-			assertNotNull(ps);
-			System.out.println("\t"+next.eClass().getName());
-			for (PropertyDescriptor pd: ps.getPropertyDescriptors()) {
-				System.out.println("\t\t"+pd.getText()+" = "+pd.getDisplayValue(((SingleValuePropertySource) ps).getValue()));
-			}				
-		}
-		System.out.println("---");
-	}	
 		
 	@Test
 	public void testBankApplication() throws Exception {
@@ -134,5 +118,33 @@ public class TestEmf extends HTMLTestBase {
 		}
 	}	
 
+//	/**
+//	 * Testing navigation children hierarchy to resolve stack overflow error.
+//	 * @throws Exception
+//	 */
+//	@Test
+//	public void testNavigationChildren() throws Exception {
+//		TreeIterator<EObject> tit = bank.eResource().getAllContents();
+//		while (tit.hasNext()) {
+//			System.out.println("---");
+//			EObject next = tit.next();			
+//			Action action = (Action) EcoreUtil.getRegisteredAdapter(next, ViewAction.class);
+//			navigationTree(action, 0);
+//		}
+//	}	
+//	
+//	private void navigationTree(Action action, int indent) {
+//		for (int i = 0; i < indent; ++i) {
+//			System.out.print("  ");
+//		}
+//		System.out.print(action.getText());
+//		if (action.getActivator() instanceof NavigationActionActivator) {
+//			System.out.print(" "+ ((NavigationActionActivator) action.getActivator()).getUrl());
+//		}
+//		System.out.println();
+//		for (Action nc: action.getNavigationChildren()) {
+//			navigationTree(nc, indent+1);
+//		}		
+//	}
 	
 }

@@ -3,7 +3,6 @@
 package org.nasdanika.html.model.app.provider;
 
 import org.eclipse.emf.common.EMFPlugin;
-
 import org.eclipse.emf.common.util.ResourceLocator;
 
 /**

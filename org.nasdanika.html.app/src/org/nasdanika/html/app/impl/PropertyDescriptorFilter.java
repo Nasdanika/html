@@ -8,7 +8,6 @@ import org.nasdanika.html.app.Choice;
 import org.nasdanika.html.app.Diagnostic;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.PropertyDescriptor;
-import org.nasdanika.html.bootstrap.Color;
 
 public class PropertyDescriptorFilter<T extends PropertyDescriptor> extends LabelFilter<T> implements PropertyDescriptor {
 

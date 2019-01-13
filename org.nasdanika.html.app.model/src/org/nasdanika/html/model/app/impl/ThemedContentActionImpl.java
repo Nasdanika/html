@@ -3,7 +3,6 @@
 package org.nasdanika.html.model.app.impl;
 
 import org.eclipse.emf.ecore.EClass;
-
 import org.nasdanika.html.app.Themed;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.model.app.AppPackage;

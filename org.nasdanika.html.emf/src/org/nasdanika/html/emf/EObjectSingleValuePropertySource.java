@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.cdo.common.id.CDOID;
-import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.PropertyDescriptor;
@@ -14,30 +15,38 @@ import org.nasdanika.html.app.PropertySource;
 import org.nasdanika.html.app.SingleValuePropertySource;
 import org.nasdanika.html.bootstrap.Color;
 
-public class EObjectSingleValuePropertySourceAdapter extends EObjectSingleValueDataSourceAdapter implements SingleValuePropertySource {
+public class EObjectSingleValuePropertySource extends EObjectSingleValueDataSource implements SingleValuePropertySource {
 	
+	/**
+	 * Feature roles indicating that it shall be wrapped into a {@link PropertyDescriptor}.
+	 */
+	public static final String FEATURE_ROLE_PROPERTY_DESCRIPTOR = "propertyDescriptor";
+	
+	public EObjectSingleValuePropertySource(EObject value) {
+		super(value);
+		propertySourceDelegate = new EClassPropertySource(value.eClass(), (AuthorizationProvider) EcoreUtil.getRegisteredAdapter(value, AuthorizationProvider.class)) {
+			
+			@Override
+			protected boolean isPropertyDescriptorFeature(EStructuralFeature feature) {
+				return FEATURE_ROLE_PROPERTY_DESCRIPTOR.equals(EObjectSingleValuePropertySource.this.getFeatureRole(feature));
+			}
+			
+		};
+	}
+	
+	/**
+	 * Feature may play different roles, e.g. a property descriptor or a navigation child action. 
+	 * This implementation returns ``propertyDescriptor`` ({@link EObjectSingleValuePropertySource}.FEATURE_ROLE_PROPERTY_DESCRIPTOR) if
+	 * feature is single value and is not a containment {@link EReference}.
+	 * @param feature
+	 * @param role
+	 * @return
+	 */
+	protected String getFeatureRole(EStructuralFeature feature) {
+		return !feature.isMany() && !(feature instanceof EReference && ((EReference) feature).isContainment()) ? FEATURE_ROLE_PROPERTY_DESCRIPTOR : null;
+	}
+
 	protected PropertySource propertySourceDelegate;
-	
-	@Override
-	public void setTarget(Notifier newTarget) {
-		super.setTarget(newTarget);
-		if (newTarget instanceof EObject) {
-			EObject eObj = (EObject) newTarget;
-			setPropertySourceDelegate(new EClassPropertySource(eObj.eClass(), (AuthorizationProvider) EcoreUtil.getRegisteredAdapter(eObj, AuthorizationProvider.class)));
-		} else {
-			setPropertySourceDelegate(null);
-		}
-	}
-	
-	protected void setPropertySourceDelegate(PropertySource propertySourceDelegate) {
-		this.propertySourceDelegate = propertySourceDelegate;
-	}
-	
-	@Override
-	public void unsetTarget(Notifier oldTarget) {
-		super.unsetTarget(oldTarget);
-		setPropertySourceDelegate(null);
-	}
 
 	@Override
 	public List<PropertyDescriptor> getPropertyDescriptors() {
@@ -105,8 +114,8 @@ public class EObjectSingleValuePropertySourceAdapter extends EObjectSingleValueD
 
 	@Override
 	public Object getId() {
-		if (getTarget() instanceof CDOObject) {
-			CDOObject cdoObj = (CDOObject) getTarget();
+		if (getValue() instanceof CDOObject) {
+			CDOObject cdoObj = (CDOObject) getValue();
 			CDOID cdoId = cdoObj.cdoID();
 			if (cdoId != null && !cdoId.isTemporary()) {
 				return cdoId;

@@ -219,12 +219,13 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		}
 		ret.id(action.getId());
 		ret.disabled(action.isDisabled());
+		List<? extends Action> navigationChildren = action.getNavigationChildren();
 		if (ajax) {
-			if (!action.getNavigationChildren().isEmpty()) {
+			if (!navigationChildren.isEmpty()) {
 				ret.hasChildren();
 			}
 		} else {
-			for (Action child: action.getNavigationChildren()) {
+			for (Action child: navigationChildren) {
 				ret.children().add(jsTreeNode(child, ajax));
 			}
 		}

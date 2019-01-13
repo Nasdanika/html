@@ -18,7 +18,7 @@ import org.nasdanika.html.app.PropertySource;
  * @author Pavel Vlasov
  *
  */
-public class EClassPropertySource extends ENamedElementLabel<EClass> implements PropertySource {
+public class EClassPropertySource extends EClassLabel implements PropertySource {
 
 	private AuthorizationProvider authorizationProvider;
 

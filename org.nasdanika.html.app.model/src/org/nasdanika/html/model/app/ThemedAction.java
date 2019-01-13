@@ -3,7 +3,6 @@
 package org.nasdanika.html.model.app;
 
 import org.nasdanika.html.app.Themed;
-
 import org.nasdanika.html.bootstrap.Theme;
 
 /**

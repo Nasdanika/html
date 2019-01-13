@@ -4,18 +4,18 @@ package org.nasdanika.html.model.app.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
-
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.Themed;
-import org.nasdanika.html.model.app.*;
+import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.ContentAction;
+import org.nasdanika.html.model.app.ThemedAction;
+import org.nasdanika.html.model.app.ThemedContentAction;
 
 /**
  * <!-- begin-user-doc -->

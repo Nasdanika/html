@@ -2,9 +2,6 @@
  */
 package org.nasdanika.html.model.app.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -439,17 +436,6 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	public org.nasdanika.html.app.Action getParent() {
 		EObject container = eContainer();
 		return container instanceof org.nasdanika.html.app.Action ? (org.nasdanika.html.app.Action) container : null;
-	}
-
-	@Override
-	public List<org.nasdanika.html.app.Action> getPath() {
-		org.nasdanika.html.app.Action parent = getParent();
-		List<org.nasdanika.html.app.Action> ret = new ArrayList<>();
-		if (parent != null) {
-			ret.addAll(parent.getPath());
-			ret.add(parent);
-		}
-		return ret;
 	}
 
 	@Override

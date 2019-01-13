@@ -1,9 +1,7 @@
 package org.nasdanika.html.bootstrap.impl;
 
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
-import org.nasdanika.html.bootstrap.Dropdown;
 
 public class ButtonGroupImpl extends DivWrappingBootstrapElementImpl<ButtonGroup> implements ButtonGroup {
 	

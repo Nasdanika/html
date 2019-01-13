@@ -3,13 +3,23 @@ package org.nasdanika.html.emf;
 import java.util.List;
 
 import org.eclipse.emf.cdo.CDOObject;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.html.app.Delta;
 import org.nasdanika.html.app.Diagnostic;
 import org.nasdanika.html.app.SingleValueDataSource;
 
-public class EObjectSingleValueDataSourceAdapter extends AdapterImpl implements SingleValueDataSource {
+/**
+ * Wraps {@link EObject} into a {@link SingleValueDataSource}.
+ * @author Pavel
+ *
+ */
+public class EObjectSingleValueDataSource implements SingleValueDataSource {
+	
+	protected EObject value;
+
+	public EObjectSingleValueDataSource(EObject value) {
+		this.value = value;
+	}
 
 	@Override
 	public Object getVersion(Object obj) {
@@ -31,7 +41,7 @@ public class EObjectSingleValueDataSourceAdapter extends AdapterImpl implements 
 
 	@Override
 	public Object getValue() {
-		return getTarget();
+		return value;
 	}
 
 }

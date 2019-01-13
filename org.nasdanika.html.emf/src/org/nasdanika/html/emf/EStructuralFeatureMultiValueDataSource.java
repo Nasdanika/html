@@ -14,12 +14,12 @@ import org.nasdanika.html.app.Delta;
 import org.nasdanika.html.app.Diagnostic;
 import org.nasdanika.html.app.MultiValueDataSource;
 
-public class EStructuralFeatureMultiValueDataSource implements MultiValueDataSource {
+public class EStructuralFeatureMultiValueDataSource<T extends EStructuralFeature> implements MultiValueDataSource {
 	
-	private EStructuralFeature feature;
-	private EObject eObject;
+	protected T feature;
+	protected EObject eObject;
 
-	public EStructuralFeatureMultiValueDataSource(EObject eObject, EStructuralFeature feature) {
+	public EStructuralFeatureMultiValueDataSource(EObject eObject, T feature) {
 		if (!feature.isMany()) {
 			throw new IllegalArgumentException("Single feature");
 		}

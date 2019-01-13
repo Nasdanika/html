@@ -3,7 +3,6 @@
 package org.nasdanika.html.model.app.impl;
 
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.app.AppPackage;

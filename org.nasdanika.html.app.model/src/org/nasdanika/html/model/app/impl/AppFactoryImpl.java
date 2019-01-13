@@ -6,14 +6,20 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Theme;
-import org.nasdanika.html.model.app.*;
+import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.ContentAction;
+import org.nasdanika.html.model.app.ContentType;
+import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.NavigationActionActivator;
+import org.nasdanika.html.model.app.ScriptActionActivator;
+import org.nasdanika.html.model.app.ThemedAction;
+import org.nasdanika.html.model.app.ThemedContentAction;
 
 /**
  * <!-- begin-user-doc -->

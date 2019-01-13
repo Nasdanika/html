@@ -7,11 +7,11 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.html.app.PropertyDescriptor;
 
-public class EReferenceMultiValuePropertySource extends EStructuralFeatureMultiValuePropertySource<EReference> {
+public class EReferenceSingleValuePropertySource extends EStructuralFeatureSingleValuePropertySource<EReference> {
 
 	protected EClassPropertySource propertySourceDelegate;
 
-	public EReferenceMultiValuePropertySource(EObject eObject, EReference feature) {
+	public EReferenceSingleValuePropertySource(EObject eObject, EReference feature) {
 		super(eObject, feature);
 		propertySourceDelegate = new EClassPropertySource(eObject.eClass(), (AuthorizationProvider) EcoreUtil.getRegisteredAdapter(eObject, AuthorizationProvider.class));
 	}

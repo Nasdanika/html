@@ -4,16 +4,17 @@ package org.nasdanika.html.model.app.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
-
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.Themed;
-import org.nasdanika.html.model.app.*;
+import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.ContentAction;
+import org.nasdanika.html.model.app.ThemedAction;
+import org.nasdanika.html.model.app.ThemedContentAction;
 
 /**
  * <!-- begin-user-doc -->

@@ -5,22 +5,22 @@ import java.util.function.Function;
 import org.eclipse.emf.common.notify.Notifier;
 
 /**
- * @param <T> Notifier type.
- * @param <A> Adapter type.
+ * @param <T> Adapter type.
+ * @param <N> Notifier type.
  */
-public class FunctionAdapterFactory<T, A> extends DelegatingAdapterFactory<A> {
+public class FunctionAdapterFactory<T, N> extends DelegatingAdapterFactory<T> {
 	
-	private Function<T, A> function;
+	private Function<N, T> function;
 
-	public FunctionAdapterFactory(Class<A> type, ClassLoader proxyClassLoader, Function<T, A> function) {
+	public FunctionAdapterFactory(Class<T> type, ClassLoader proxyClassLoader, Function<N, T> function) {
 		super(type, proxyClassLoader);
 		this.function = function;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected A doCreateAdapter(Notifier target) {
-		return function.apply((T) target);
+	protected T doCreateAdapter(Notifier target) {
+		return function.apply((N) target);
 	}
 
 }

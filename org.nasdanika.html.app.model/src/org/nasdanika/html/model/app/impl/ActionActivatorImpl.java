@@ -3,9 +3,7 @@
 package org.nasdanika.html.model.app.impl;
 
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
-
 import org.nasdanika.html.model.app.ActionActivator;
 import org.nasdanika.html.model.app.AppPackage;
 

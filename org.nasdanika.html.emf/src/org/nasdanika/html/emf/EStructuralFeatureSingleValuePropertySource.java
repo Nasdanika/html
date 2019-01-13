@@ -6,14 +6,14 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.html.app.Action;
-import org.nasdanika.html.app.MultiValuePropertySource;
+import org.nasdanika.html.app.SingleValuePropertySource;
 import org.nasdanika.html.bootstrap.Color;
 
-public abstract class EStructuralFeatureMultiValuePropertySource<T extends EStructuralFeature> extends EStructuralFeatureMultiValueDataSource<T> implements MultiValuePropertySource {
+public abstract class EStructuralFeatureSingleValuePropertySource<T extends EStructuralFeature> extends EStructuralFeatureSingleValueDataSource<T> implements SingleValuePropertySource {
 
 	protected ENamedElementLabel<EStructuralFeature> labelDelegate;
 
-	public EStructuralFeatureMultiValuePropertySource(EObject eObject, T feature) {
+	public EStructuralFeatureSingleValuePropertySource(EObject eObject, T feature) {
 		super(eObject, feature);
 		labelDelegate = new EStructuralFeatureLabel<EStructuralFeature>(feature);
 	}

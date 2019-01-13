@@ -16,7 +16,7 @@ public class EStructuralFeaturePropertyDescriptor extends EStructuralFeatureProp
 
 	public EStructuralFeaturePropertyDescriptor(EStructuralFeature feature) {
 		super(feature);
-		label = new ENamedElementLabel<EStructuralFeature>(feature);
+		label = new EStructuralFeatureLabel<EStructuralFeature>(feature);
 	}
 
 	@Override

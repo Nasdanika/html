@@ -5,9 +5,9 @@ import org.nasdanika.html.app.Application;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
-import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.Container.Row;
 import org.nasdanika.html.bootstrap.Container.Row.Col;
+import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.bootstrap.Theme;
 

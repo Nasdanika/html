@@ -99,7 +99,15 @@ public interface Action extends Label, Executable, Categorized {
 	 * Action path in the hierarchy starting from the root action, not including the action itself.
 	 * @return
 	 */
-	List<Action> getPath();
+	default List<Action> getPath() {
+		Action parent = getParent();
+		if (parent == null) {
+			return Collections.emptyList();
+		}
+		List<Action> path = new ArrayList<>(parent.getPath());
+		path.add(parent);
+		return Collections.unmodifiableList(path);
+	}
 	
 	/**
 	 * @return An optional {@link ActionActivator} to activate this action. 

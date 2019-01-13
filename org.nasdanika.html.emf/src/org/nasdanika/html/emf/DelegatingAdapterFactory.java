@@ -40,7 +40,7 @@ public abstract class DelegatingAdapterFactory<T> extends ComposeableAdapterFact
 		
 		private T delegate;
 
-		public DelegatingAdapter(T adapter, Notifier target) {
+		public DelegatingAdapter(T adapter, Notifier target) {			
 			this.delegate = adapter;
 			this.target = target;
 		}
@@ -88,6 +88,7 @@ public abstract class DelegatingAdapterFactory<T> extends ComposeableAdapterFact
 				Object target = method.getDeclaringClass() == Adapter.class ? da : da.delegate;
 				return  method.invoke(target, args);
 			}
+			
 		});
 	}
 
