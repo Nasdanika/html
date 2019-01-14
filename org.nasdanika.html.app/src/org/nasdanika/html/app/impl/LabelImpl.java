@@ -10,7 +10,7 @@ import org.nasdanika.html.bootstrap.Color;
  * @author Pavel Vlasov
  *
  */
-public class LabelImpl implements Label {
+public class LabelImpl extends IdentityImpl implements Label {
 	
 	private String icon;
 	private String text;
@@ -18,7 +18,6 @@ public class LabelImpl implements Label {
 	private Color color;
 	private boolean outline;
 	private String description;
-	private Object id;
 	private String notification;
 	
 	public LabelImpl() {
@@ -26,6 +25,7 @@ public class LabelImpl implements Label {
 	}
 	
 	public LabelImpl(Map<String, Object> data) {
+		super(data);
 		icon = (String) data.get("icon");
 		text = (String) data.get("text");
 		tooltip = (String) data.get("tooltip");
@@ -33,7 +33,6 @@ public class LabelImpl implements Label {
 		color = cv instanceof String ? Color.valueOf((String) cv) : (Color) cv;
 		outline = Boolean.TRUE.equals(data.get("outline"));
 		description = (String) data.get("description");
-		id = data.get("id");
 		notification = (String) data.get("notification");
 	}
 
@@ -68,11 +67,6 @@ public class LabelImpl implements Label {
 	}
 
 	@Override
-	public Object getId() {
-		return id;
-	}
-
-	@Override
 	public String getNotification() {
 		return notification;
 	}
@@ -99,10 +93,6 @@ public class LabelImpl implements Label {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public void setId(Object id) {
-		this.id = id;
 	}
 
 	public void setNotification(String notification) {

@@ -3,12 +3,10 @@ package org.nasdanika.html.app.impl;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.bootstrap.Color;
 
-public class LabelFilter<T extends Label> implements Label {
+public class LabelFilter<T extends Label> extends IdentityFilter<T> implements Label {
 	
-	protected T target;
-
 	public LabelFilter(T target) {
-		this.target = target;
+		super(target);
 	}
 	
 	@Override
