@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
+import org.nasdanika.html.app.Identity;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.ActionFilter;
@@ -24,12 +25,19 @@ import org.nasdanika.html.app.impl.ViewSingleValuePropertySourceViewPart;
  */
 public class EObjectViewAction extends EObjectSingleValuePropertySource implements ViewAction {
 	
+	protected Identity identity;
+	protected AuthorizationProvider authorizationProvider;
+
 	public EObjectViewAction(EObject value) {
 		super(value);
 		authorizationProvider = (AuthorizationProvider) EcoreUtil.getRegisteredAdapter(value, AuthorizationProvider.class);
+		identity = (Identity) EcoreUtil.getRegisteredAdapter(value, Identity.class);
 	}
-
-	protected AuthorizationProvider authorizationProvider;
+	
+	@Override
+	public Object getId() {
+		return identity == null ? super.getId() : identity.getId();
+	}
 	
 	@Override
 	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
@@ -124,6 +132,11 @@ public class EObjectViewAction extends EObjectSingleValuePropertySource implemen
 			@Override
 			public Label getCategory() {
 				return category;
+			}
+			
+			@Override
+			public Action getParent() {
+				return EObjectViewAction.this;
 			}
 			
 		};

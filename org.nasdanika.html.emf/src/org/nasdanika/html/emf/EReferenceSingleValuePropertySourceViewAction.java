@@ -82,5 +82,10 @@ public class EReferenceSingleValuePropertySourceViewAction extends EReferenceSin
 	public ActionActivator getActivator() {
 		return null;
 	}
+	
+	@Override
+	public Object getId() {
+		return getParent().getId()+"-"+feature.getName();
+	}
 
 }

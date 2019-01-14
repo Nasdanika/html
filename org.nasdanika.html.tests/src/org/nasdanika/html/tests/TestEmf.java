@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -23,6 +24,7 @@ import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
+import org.nasdanika.html.app.Identity;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.app.PropertySource;
@@ -64,13 +66,25 @@ public class TestEmf extends HTMLTestBase {
 		caf.registerAdapterFactory(new EObjectActionApplicationBuilderAdapterFactory());
 		caf.registerAdapterFactory(new FunctionAdapterFactory<ViewAction, EObject>(ViewAction.class, this.getClass().getClassLoader(), EObjectViewAction::new));
 		
+		// Identity
+		Map<EObject, String> idMap = new HashMap<>();
+		Function<EObject, Identity> identityManager = new Function<EObject, Identity>() {
+
+			@Override
+			public Identity apply(EObject eObject) {
+				return () -> idMap.computeIfAbsent(eObject, eObj -> eObj.eClass().getName()+"-"+idMap.size()) ;
+			}
+			
+		};
+		caf.registerAdapterFactory(new FunctionAdapterFactory<Identity, EObject>(Identity.class, this.getClass().getClassLoader(), identityManager));
+		
 		// View action activator
-		Map<EObject, String> urlMap = new HashMap<>();
 		class MapNavigationViewActionActivatorAdapter extends NavigationViewActionActivatorAdapter {
 
 			@Override
 			public String getUrl() {
-				return urlMap.computeIfAbsent((EObject) getTarget(), eObj -> eObj.eClass().getName()+"-"+urlMap.size()+".html") ;
+				Identity identity = (Identity) EcoreUtil.getRegisteredAdapter((EObject) getTarget(), Identity.class);
+				return identity == null ? null : identity.getId()+".html";
 			}
 			
 		}

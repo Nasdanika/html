@@ -67,5 +67,10 @@ public class EReferenceMultiValuePropertySourceViewAction extends EReferenceMult
 	public ActionActivator getActivator() {
 		return null;
 	}
+	
+	@Override
+	public Object getId() {
+		return getParent().getId()+"-"+feature.getName();
+	}
 
 }
