@@ -75,7 +75,7 @@ public class EObjectViewAction extends EObjectSingleValuePropertySource implemen
 							if (child instanceof EObject) {
 								Action ca = (Action) EcoreUtil.getRegisteredAdapter((EObject) child, ViewAction.class);
 								if (ca != null) {
-									ret.add(filterChildNavigationAction(ca, childFeatureRole, childFeatures.size() == 1 ? null : ps));
+									ret.add(filterChildAction(ca, childFeatureRole, childFeatures.size() == 1 ? null : ps));
 								}
 							}
 						}
@@ -85,7 +85,7 @@ public class EObjectViewAction extends EObjectSingleValuePropertySource implemen
 						if (child instanceof EObject) {
 							Action ca = (Action) EcoreUtil.getRegisteredAdapter((EObject) child, ViewAction.class);
 							if (ca != null) {
-								ret.add(filterChildNavigationAction(ca, childFeatureRole, childFeatures.size() == 1 ? null : ps));
+								ret.add(filterChildAction(ca, childFeatureRole, childFeatures.size() == 1 ? null : ps));
 							}
 						}
 					}
@@ -95,7 +95,7 @@ public class EObjectViewAction extends EObjectSingleValuePropertySource implemen
 					if (childFeature.isMany()) {
 						ret.add(new EReferenceMultiValuePropertySourceViewAction(value, (EReference) childFeature, childFeatureRole, this));
 					} else {
-						// TODO - single value ... - EObject ps view
+						ret.add(new EReferenceSingleValuePropertySourceViewAction(value, (EReference) childFeature, childFeatureRole, this));
 					}
 				} else {
 					// TODO - single attribute, many attribute
@@ -113,7 +113,7 @@ public class EObjectViewAction extends EObjectSingleValuePropertySource implemen
 	 * @param eReference
 	 * @return
 	 */
-	protected Action filterChildNavigationAction(Action childAction, String featureRole, Label category) {
+	protected Action filterChildAction(Action childAction, String featureRole, Label category) {
 		return new ActionFilter<Action>(childAction) {
 			
 			@Override
