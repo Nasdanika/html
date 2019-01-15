@@ -42,7 +42,7 @@ public class EStructuralFeatureProperty implements Property {
 					}
 					
 				};
-			}
+			} 
 		}
 		
 		return StringEscapeUtils.escapeHtml4(value.toString());

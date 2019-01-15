@@ -13,7 +13,7 @@ public class EReferenceSingleValuePropertySource extends EStructuralFeatureSingl
 
 	public EReferenceSingleValuePropertySource(EObject eObject, EReference feature) {
 		super(eObject, feature);
-		propertySourceDelegate = new EClassPropertySource(eObject.eClass(), (AuthorizationProvider) EcoreUtil.getRegisteredAdapter(eObject, AuthorizationProvider.class));
+		propertySourceDelegate = new EClassPropertySource(feature.getEReferenceType(), (AuthorizationProvider) EcoreUtil.getRegisteredAdapter(eObject, AuthorizationProvider.class));
 	}
 
 	@Override
