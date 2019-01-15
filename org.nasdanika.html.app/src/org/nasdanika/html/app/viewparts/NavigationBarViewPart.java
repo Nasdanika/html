@@ -20,6 +20,12 @@ import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.Navbar;
 
+/**
+ * Builds a navigation bar from the principal action. 
+ * Uses the action as a brand and its context children to build a navigation menu.
+ * @author Pavel
+ *
+ */
 public class NavigationBarViewPart implements ViewPart {
 
 	protected Action principalAction;

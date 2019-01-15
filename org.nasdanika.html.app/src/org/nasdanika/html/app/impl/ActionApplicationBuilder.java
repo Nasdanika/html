@@ -95,7 +95,7 @@ public class ActionApplicationBuilder extends ViewPartApplicationBuilder {
 
 	@Override
 	protected ViewPart getFooterViewPart() {
-		return rootAction == null ? vg -> null : new FooterViewPart(rootAction);
+		return rootAction == null ? vg -> null : new FooterViewPart(rootAction.getContextChildren());
 	}
 	
 }
