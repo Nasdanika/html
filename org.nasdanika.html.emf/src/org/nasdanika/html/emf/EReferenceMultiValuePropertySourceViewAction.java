@@ -10,7 +10,7 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
-import org.nasdanika.html.app.impl.ViewMultiValuePropertySourceViewPart;
+import org.nasdanika.html.app.viewparts.ViewMultiValuePropertySourceViewPart;
 
 public class EReferenceMultiValuePropertySourceViewAction extends EReferenceMultiValuePropertySource implements Action {
 

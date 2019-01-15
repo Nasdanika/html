@@ -16,7 +16,7 @@ import org.nasdanika.html.app.Identity;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.ActionFilter;
-import org.nasdanika.html.app.impl.ViewSingleValuePropertySourceViewPart;
+import org.nasdanika.html.app.viewparts.ViewSingleValuePropertySourceViewPart;
 
 /**
  * Adapts {@link EObject} to {@link Action}.
@@ -179,14 +179,21 @@ public class EObjectViewAction extends EObjectSingleValuePropertySource implemen
 	
 	@Override
 	protected String getFeatureRole(EStructuralFeature feature) {
+		// Handling property descriptors.
+		String featureRole = super.getFeatureRole(feature);
+		if (featureRole != null) {
+			return featureRole;
+		}
+		
 		if (feature instanceof EReference) {
-			// Many containment are navigations			
-			if (feature.isMany() && ((EReference) feature).isContainment()) {
-				return Action.Role.NAVIGATION;
+			boolean containment = ((EReference) feature).isContainment();
+			if (feature.isMany()) {
+				// Many containment are navigations, many non-containment are sections			
+				return  containment ? Action.Role.NAVIGATION : Action.Role.SECTION;
 			}			
 			
-			// Single containment and non-containment are sections
-			return Action.Role.SECTION;			
+			// Single containment are sections, single non-containment are property descriptors (handled in super.getFeatureRole())
+			return containment ? Action.Role.SECTION : FEATURE_ROLE_PROPERTY_DESCRIPTOR;			
 		} 
 		
 		if (feature.isMany()) {
@@ -194,8 +201,7 @@ public class EObjectViewAction extends EObjectSingleValuePropertySource implemen
 			return Action.Role.SECTION;
 		}
 		
-		// The rest is property descriptors.
-		return super.getFeatureRole(feature);
+		return null;
 	}
 
 	@Override

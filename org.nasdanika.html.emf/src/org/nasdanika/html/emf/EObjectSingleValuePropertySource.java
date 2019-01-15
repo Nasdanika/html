@@ -43,7 +43,7 @@ public class EObjectSingleValuePropertySource extends EObjectSingleValueDataSour
 	 * @return
 	 */
 	protected String getFeatureRole(EStructuralFeature feature) {
-		return !feature.isMany() && !(feature instanceof EReference && ((EReference) feature).isContainment()) ? FEATURE_ROLE_PROPERTY_DESCRIPTOR : null;
+		return feature.isMany() || feature instanceof EReference && ((EReference) feature).isContainment() ? null : FEATURE_ROLE_PROPERTY_DESCRIPTOR;
 	}
 
 	protected PropertySource propertySourceDelegate;

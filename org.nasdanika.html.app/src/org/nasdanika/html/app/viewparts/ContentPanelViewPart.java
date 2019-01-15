@@ -1,4 +1,4 @@
-package org.nasdanika.html.app.impl;
+package org.nasdanika.html.app.viewparts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
 
 /**

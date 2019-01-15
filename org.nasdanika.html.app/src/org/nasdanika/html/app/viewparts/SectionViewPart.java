@@ -1,4 +1,4 @@
-package org.nasdanika.html.app.impl;
+package org.nasdanika.html.app.viewparts;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +11,7 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.ButtonToolbar;

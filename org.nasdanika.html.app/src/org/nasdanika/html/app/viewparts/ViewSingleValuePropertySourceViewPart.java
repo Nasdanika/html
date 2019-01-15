@@ -1,4 +1,4 @@
-package org.nasdanika.html.app.impl;
+package org.nasdanika.html.app.viewparts;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -9,6 +9,7 @@ import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.app.SingleValuePropertySource;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.RowContainer.Row;

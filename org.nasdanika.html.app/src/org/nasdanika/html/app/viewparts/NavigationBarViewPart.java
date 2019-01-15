@@ -1,4 +1,4 @@
-package org.nasdanika.html.app.impl;
+package org.nasdanika.html.app.viewparts;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -14,6 +14,7 @@ import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.Dropdown;

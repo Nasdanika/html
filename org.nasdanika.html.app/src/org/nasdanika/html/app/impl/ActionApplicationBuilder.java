@@ -6,6 +6,10 @@ import java.util.Map;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart;
+import org.nasdanika.html.app.viewparts.ContentPanelViewPart;
+import org.nasdanika.html.app.viewparts.FooterViewPart;
+import org.nasdanika.html.app.viewparts.NavigationBarViewPart;
 import org.nasdanika.html.bootstrap.Color;
 
 /**

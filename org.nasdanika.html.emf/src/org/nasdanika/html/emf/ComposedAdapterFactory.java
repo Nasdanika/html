@@ -162,6 +162,9 @@ public class ComposedAdapterFactory implements ComposeableAdapterFactory {
 			super();
 			this.eClass = eClass;
 			this.adapterFactory = adapterFactory;
+			if (adapterFactory instanceof ComposeableAdapterFactory) {
+				((ComposeableAdapterFactory) adapterFactory).setParentAdapterFactory(ComposedAdapterFactory.this);
+			}
 		}
 		
 		boolean match(Object obj) {

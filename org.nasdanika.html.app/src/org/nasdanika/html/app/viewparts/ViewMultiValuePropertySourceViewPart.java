@@ -1,4 +1,4 @@
-package org.nasdanika.html.app.impl;
+package org.nasdanika.html.app.viewparts;
 
 import org.nasdanika.html.app.MultiValuePropertySource;
 import org.nasdanika.html.app.ViewGenerator;

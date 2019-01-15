@@ -36,7 +36,7 @@ import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.BootstrapContainerApplication;
 import org.nasdanika.html.app.impl.HTMLTableApplication;
-import org.nasdanika.html.app.impl.JsTreeNavigationPanelViewPart;
+import org.nasdanika.html.app.viewparts.JsTreeNavigationPanelViewPart;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;

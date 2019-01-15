@@ -1,4 +1,4 @@
-package org.nasdanika.html.app.impl;
+package org.nasdanika.html.app.viewparts;
 
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.app.Action;
