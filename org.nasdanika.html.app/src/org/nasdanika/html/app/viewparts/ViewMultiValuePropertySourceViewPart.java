@@ -29,14 +29,7 @@ public class ViewMultiValuePropertySourceViewPart implements ViewPart {
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
-		List<Object> values = propertySource.getValues();
-		boolean hasActions = false;
-		for (Object value: values) {
-			if (!propertySource.getActions(value).isEmpty()) {
-				hasActions = true;
-				break;
-			}
-		}
+		boolean hasActions = propertySource.getValues().stream().mapToInt(v -> propertySource.getActions(v).size()).sum() > 0;
 		List<Entry<Label, List<PropertyDescriptor>>> categories = Util.groupByCategory(propertySource.getPropertyDescriptors());
 		boolean hasCategoryRow = categories.size() > 1 || categories.size() == 1 && categories.get(0).getKey() != null;
 		Table table = createTable(viewGenerator);
@@ -76,7 +69,7 @@ public class ViewMultiValuePropertySourceViewPart implements ViewPart {
 			}
 		}
 		
-		for (Object value: values) {
+		for (Object value: propertySource.getValues()) {
 			Row valueRow = table.row();
 			for (Entry<Label, List<PropertyDescriptor>> categoryEntry: categories) {
 				for (PropertyDescriptor pd: categoryEntry.getValue()) {
