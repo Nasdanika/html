@@ -22,8 +22,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
+import org.nasdanika.bank.Customer;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
+import org.nasdanika.html.app.ApplicationFactory;
 import org.nasdanika.html.app.Identity;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.PropertyDescriptor;
@@ -46,6 +48,7 @@ import org.nasdanika.html.jstree.JsTreeFactory;
 public class TestEmf extends HTMLTestBase {
 	
 	protected Bank bank;
+	private ComposedAdapterFactory composedAdapterFactory;
 	
 	@Before
 	public void loadModels() throws Exception {
@@ -57,14 +60,20 @@ public class TestEmf extends HTMLTestBase {
 		Resource bankResource = resourceSet.getResource(bankUri, true);
 		bank = (Bank) bankResource.getContents().iterator().next();
 		
-		ComposedAdapterFactory caf = new ComposedAdapterFactory();
-		caf.registerAdapterFactory(new SupplierAdapterFactory<Application>(Application.class, this.getClass().getClassLoader(), () -> {
-			Application app =  new BootstrapContainerApplication();
-			JsTreeFactory.INSTANCE.cdn(app.getHTMLPage());
-			return app;
-		}));
-		caf.registerAdapterFactory(new EObjectActionApplicationBuilderAdapterFactory());
-		caf.registerAdapterFactory(new FunctionAdapterFactory<ViewAction, EObject>(ViewAction.class, this.getClass().getClassLoader(), EObjectViewAction::new));
+		composedAdapterFactory = new ComposedAdapterFactory();
+		class BootstrapContainerApplicationFactory implements ApplicationFactory {
+
+			@Override
+			public Application createApplication() {
+				Application app =  new BootstrapContainerApplication();
+				JsTreeFactory.INSTANCE.cdn(app.getHTMLPage());
+				return app;
+			}
+			
+		}
+		composedAdapterFactory.registerAdapterFactory(new SupplierAdapterFactory<ApplicationFactory>(ApplicationFactory.class, this.getClass().getClassLoader(), BootstrapContainerApplicationFactory::new));
+		composedAdapterFactory.registerAdapterFactory(new EObjectActionApplicationBuilderAdapterFactory());
+		composedAdapterFactory.registerAdapterFactory(new FunctionAdapterFactory<ViewAction, EObject>(ViewAction.class, this.getClass().getClassLoader(), EObjectViewAction::new));
 		
 		// Identity
 		Map<EObject, String> idMap = new HashMap<>();
@@ -76,7 +85,7 @@ public class TestEmf extends HTMLTestBase {
 			}
 			
 		};
-		caf.registerAdapterFactory(new FunctionAdapterFactory<Identity, EObject>(Identity.class, this.getClass().getClassLoader(), identityManager));
+		composedAdapterFactory.registerAdapterFactory(new FunctionAdapterFactory<Identity, EObject>(Identity.class, this.getClass().getClassLoader(), identityManager));
 		
 		// View action activator
 		class MapNavigationViewActionActivatorAdapter extends NavigationViewActionActivatorAdapter {
@@ -88,9 +97,9 @@ public class TestEmf extends HTMLTestBase {
 			}
 			
 		}
-		caf.registerAdapterFactory(new SupplierAdapterFactory<ViewActionActivator>(ViewActionActivator.class, this.getClass().getClassLoader(), MapNavigationViewActionActivatorAdapter::new));
+		composedAdapterFactory.registerAdapterFactory(new SupplierAdapterFactory<ViewActionActivator>(ViewActionActivator.class, this.getClass().getClassLoader(), MapNavigationViewActionActivatorAdapter::new));
 		
-		resourceSet.getAdapterFactories().add(caf);						
+		resourceSet.getAdapterFactories().add(composedAdapterFactory);						
 	}
 	
 	@Test
@@ -120,7 +129,7 @@ public class TestEmf extends HTMLTestBase {
 		TreeIterator<EObject> tit = bank.eResource().getAllContents();
 		while (tit.hasNext()) {
 			EObject next = tit.next();
-			Application application = (Application) EcoreUtil.getRegisteredAdapter(next, Application.class);
+			Application application = ((ApplicationFactory) EcoreUtil.getRegisteredAdapter(next, ApplicationFactory.class)).createApplication();
 			assertNotNull(application);
 			
 			ApplicationBuilder applicationBuilder = (ApplicationBuilder) EcoreUtil.getRegisteredAdapter(next, ApplicationBuilder.class);
@@ -128,9 +137,38 @@ public class TestEmf extends HTMLTestBase {
 			applicationBuilder.build(application);
 			
 			NavigationActionActivator activator = (NavigationActionActivator) EcoreUtil.getRegisteredAdapter(next, ViewActionActivator.class);
-			writeFile("emf/"+activator.getUrl(), application.toString());
+			writeFile("emf/bank/"+activator.getUrl(), application.toString());
+		}
+	}
+	
+	/**
+	 * Generates a customer view of the bank.
+	 * @throws Exception
+	 */
+	@Test
+	public void testCustomerApplication() throws Exception {
+		for (Customer customer: bank.getCustomers()) {
+			// Registering customer-view specific adapters.
+			Function<EObject, Identity> identityManager = eObj -> () -> "index";
+			composedAdapterFactory.registerAdapterFactory(new FunctionAdapterFactory<Identity, EObject>(Identity.class, this.getClass().getClassLoader(), identityManager), BankPackage.Literals.CUSTOMER);
+			
+			
+			TreeIterator<EObject> tit = bank.eResource().getAllContents();
+			while (tit.hasNext()) {
+				EObject next = tit.next();
+				Application application = ((ApplicationFactory) EcoreUtil.getRegisteredAdapter(next, ApplicationFactory.class)).createApplication();
+				assertNotNull(application);
+				
+				ApplicationBuilder applicationBuilder = (ApplicationBuilder) EcoreUtil.getRegisteredAdapter(next, ApplicationBuilder.class);
+				assertNotNull(applicationBuilder);
+				applicationBuilder.build(application);
+				
+				NavigationActionActivator activator = (NavigationActionActivator) EcoreUtil.getRegisteredAdapter(next, ViewActionActivator.class);
+				writeFile("emf/customer/"+customer.getName().toLowerCase().replace(' ', '-')+"/"+activator.getUrl(), application.toString());
+			}
 		}
 	}	
+	
 
 //	/**
 //	 * Testing navigation children hierarchy to resolve stack overflow error.
