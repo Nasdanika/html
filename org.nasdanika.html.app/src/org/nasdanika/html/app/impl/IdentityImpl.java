@@ -3,7 +3,6 @@ package org.nasdanika.html.app.impl;
 import java.util.Map;
 
 import org.nasdanika.html.app.Identity;
-import org.nasdanika.html.bootstrap.Color;
 
 /**
  * Bean identity implementation
