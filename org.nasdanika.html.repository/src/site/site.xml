@@ -36,7 +36,8 @@
       	<item name="Edit" href="apidocs/org.nasdanika.html.app.model.edit/apidocs/index.html"/>
       	<item name="Editor" href="apidocs/org.nasdanika.html.app.model.editor/apidocs/index.html"/>      
       </item>
-      <item name="EMF" href="apidocs/org.nasdanika.html.emf/index.html" />      
+      <item name="EMF" href="apidocs/org.nasdanika.html.emf/apidocs/index.html" />      
+      <item name="Tests" href="apidocs/org.nasdanika.html.tests/apidocs/index.html" />      
    </menu>
 
    <menu name="Issues">

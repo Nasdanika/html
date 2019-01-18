@@ -242,6 +242,22 @@
 						</configuration>
 					</execution>
 					<execution>
+						<id>copy-tests-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.tests/apidocs</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../org.nasdanika.html.tests/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
 						<id>copy-test-dumps</id>
 						<phase>pre-site</phase>
 						<goals>
