@@ -9,11 +9,11 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.SingleValuePropertySource;
 import org.nasdanika.html.bootstrap.Color;
 
-public abstract class EStructuralFeatureSingleValuePropertySource<T extends EStructuralFeature> extends EStructuralFeatureSingleValueDataSource<T> implements SingleValuePropertySource {
+public abstract class EStructuralFeatureSingleValuePropertySource<T extends EObject, F extends EStructuralFeature> extends EStructuralFeatureSingleValueDataSource<T,F> implements SingleValuePropertySource {
 
 	protected ENamedElementLabel<EStructuralFeature> labelDelegate;
 
-	public EStructuralFeatureSingleValuePropertySource(EObject eObject, T feature) {
+	public EStructuralFeatureSingleValuePropertySource(T eObject, F feature) {
 		super(eObject, feature);
 		labelDelegate = new EStructuralFeatureLabel<EStructuralFeature>(feature);
 	}

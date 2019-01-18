@@ -12,12 +12,12 @@ import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.viewparts.ViewMultiValuePropertySourceViewPart;
 
-public class EReferenceMultiValuePropertySourceViewAction extends EReferenceMultiValuePropertySource implements Action {
+public class EReferenceMultiValuePropertySourceViewAction<T extends EObject> extends EReferenceMultiValuePropertySource<T> implements Action {
 
 	private String featureRole;
 	private Action parent;
 
-	public EReferenceMultiValuePropertySourceViewAction(EObject eObject, EReference feature, String featureRole, Action parent) {
+	public EReferenceMultiValuePropertySourceViewAction(T eObject, EReference feature, String featureRole, Action parent) {
 		super(eObject, feature);
 		this.featureRole = featureRole;
 		this.parent = parent;

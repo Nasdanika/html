@@ -17,12 +17,12 @@ import org.nasdanika.html.app.ViewGenerator;
  * @author Pavel
  *
  */
-public class EReferenceSingleValuePropertySourceViewAction extends EReferenceSingleValuePropertySource implements Action {
+public class EReferenceSingleValuePropertySourceViewAction<T extends EObject> extends EReferenceSingleValuePropertySource<T> implements Action {
 
 	private String featureRole;
 	private Action parent;
 
-	public EReferenceSingleValuePropertySourceViewAction(EObject eObject, EReference feature, String featureRole, Action parent) {
+	public EReferenceSingleValuePropertySourceViewAction(T eObject, EReference feature, String featureRole, Action parent) {
 		super(eObject, feature);
 		this.featureRole = featureRole;
 		this.parent = parent;

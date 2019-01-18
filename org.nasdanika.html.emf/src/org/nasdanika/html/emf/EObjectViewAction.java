@@ -23,12 +23,12 @@ import org.nasdanika.html.app.viewparts.ViewSingleValuePropertySourceViewPart;
  * @author Pavel Vlasov
  *
  */
-public class EObjectViewAction extends EObjectSingleValuePropertySource implements ViewAction {
+public class EObjectViewAction<T extends EObject> extends EObjectSingleValuePropertySource<T> implements ViewAction {
 	
 	protected Identity identity;
 	protected AuthorizationProvider authorizationProvider;
 
-	public EObjectViewAction(EObject value) {
+	public EObjectViewAction(T value) {
 		super(value);
 		authorizationProvider = (AuthorizationProvider) EcoreUtil.getRegisteredAdapter(value, AuthorizationProvider.class);
 		identity = (Identity) EcoreUtil.getRegisteredAdapter(value, Identity.class);
@@ -78,7 +78,7 @@ public class EObjectViewAction extends EObjectSingleValuePropertySource implemen
 			if (Action.Role.NAVIGATION.equals(childFeatureRole)) {
 				if (childFeature instanceof EReference) {
 					if (childFeature.isMany()) {
-						EReferenceMultiValuePropertySource ps = new EReferenceMultiValuePropertySource(value, (EReference) childFeature);				
+						EReferenceMultiValuePropertySource<EObject> ps = new EReferenceMultiValuePropertySource<EObject>(value, (EReference) childFeature);				
 						for (Object child: ps.getValues()) {
 							if (child instanceof EObject) {
 								Action ca = (Action) EcoreUtil.getRegisteredAdapter((EObject) child, ViewAction.class);
@@ -88,7 +88,7 @@ public class EObjectViewAction extends EObjectSingleValuePropertySource implemen
 							}
 						}
 					} else {
-						EReferenceSingleValuePropertySource ps = new EReferenceSingleValuePropertySource(value, (EReference) childFeature);
+						EReferenceSingleValuePropertySource<EObject> ps = new EReferenceSingleValuePropertySource<EObject>(value, (EReference) childFeature);
 						Object child = ps.getValue();
 						if (child instanceof EObject) {
 							Action ca = (Action) EcoreUtil.getRegisteredAdapter((EObject) child, ViewAction.class);
@@ -101,9 +101,9 @@ public class EObjectViewAction extends EObjectSingleValuePropertySource implemen
 			} else if (Action.Role.SECTION.equals(childFeatureRole)) {
 				if (childFeature instanceof EReference) {
 					if (childFeature.isMany()) {
-						ret.add(new EReferenceMultiValuePropertySourceViewAction(value, (EReference) childFeature, childFeatureRole, this));
+						ret.add(new EReferenceMultiValuePropertySourceViewAction<EObject>(value, (EReference) childFeature, childFeatureRole, this));
 					} else {
-						ret.add(new EReferenceSingleValuePropertySourceViewAction(value, (EReference) childFeature, childFeatureRole, this));
+						ret.add(new EReferenceSingleValuePropertySourceViewAction<EObject>(value, (EReference) childFeature, childFeatureRole, this));
 					}
 				} else {
 					// TODO - single attribute, many attribute

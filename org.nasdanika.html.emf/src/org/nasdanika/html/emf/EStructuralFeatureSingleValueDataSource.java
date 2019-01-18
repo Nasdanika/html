@@ -9,12 +9,12 @@ import org.nasdanika.html.app.Delta;
 import org.nasdanika.html.app.Diagnostic;
 import org.nasdanika.html.app.SingleValueDataSource;
 
-public class EStructuralFeatureSingleValueDataSource<T extends EStructuralFeature> implements SingleValueDataSource {
+public class EStructuralFeatureSingleValueDataSource<T extends EObject, F extends EStructuralFeature> implements SingleValueDataSource {
 	
-	protected T feature;
-	protected EObject eObj;
+	protected F feature;
+	protected T eObj;
 
-	public EStructuralFeatureSingleValueDataSource(EObject eObj, T feature) {
+	public EStructuralFeatureSingleValueDataSource(T eObj, F feature) {
 		if (feature.isMany()) {
 			throw new IllegalArgumentException("Many feature");
 		}

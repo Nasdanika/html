@@ -15,14 +15,14 @@ import org.nasdanika.html.app.PropertySource;
 import org.nasdanika.html.app.SingleValuePropertySource;
 import org.nasdanika.html.bootstrap.Color;
 
-public class EObjectSingleValuePropertySource extends EObjectSingleValueDataSource implements SingleValuePropertySource {
+public class EObjectSingleValuePropertySource<T extends EObject> extends EObjectSingleValueDataSource<T> implements SingleValuePropertySource {
 	
 	/**
 	 * Feature roles indicating that it shall be wrapped into a {@link PropertyDescriptor}.
 	 */
 	public static final String FEATURE_ROLE_PROPERTY_DESCRIPTOR = "propertyDescriptor";
 	
-	public EObjectSingleValuePropertySource(EObject value) {
+	public EObjectSingleValuePropertySource(T value) {
 		super(value);
 		propertySourceDelegate = new EClassPropertySource(value.eClass(), (AuthorizationProvider) EcoreUtil.getRegisteredAdapter(value, AuthorizationProvider.class)) {
 			

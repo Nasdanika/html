@@ -13,11 +13,11 @@ import org.nasdanika.html.app.SingleValueDataSource;
  * @author Pavel
  *
  */
-public class EObjectSingleValueDataSource implements SingleValueDataSource {
+public class EObjectSingleValueDataSource<T extends EObject> implements SingleValueDataSource {
 	
-	protected EObject value;
+	protected T value;
 
-	public EObjectSingleValueDataSource(EObject value) {
+	public EObjectSingleValueDataSource(T value) {
 		this.value = value;
 	}
 
