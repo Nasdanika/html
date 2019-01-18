@@ -6,7 +6,9 @@ import java.util.Map;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ApplicationBuilder;
@@ -20,6 +22,14 @@ import org.nasdanika.html.app.impl.ActionApplicationBuilder;
  *
  */
 public class EObjectActionApplicationBuilderAdapterFactory extends ComposeableAdapterFactoryImpl {
+	
+	public EObjectActionApplicationBuilderAdapterFactory() {
+		this(EcorePackage.Literals.EOBJECT);
+	}
+	
+	public EObjectActionApplicationBuilderAdapterFactory(EClass eClass) {
+		super(eClass);
+	}
 	
 	@Override
 	public boolean isFactoryForType(Object type) {

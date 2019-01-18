@@ -9,6 +9,9 @@ import java.util.function.Supplier;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
 
 /**
  * Base class for adapter factories delegating to {@link Supplier} or {@link Function} to create an adapter and 
@@ -20,13 +23,23 @@ public abstract class DelegatingAdapterFactory<T> extends ComposeableAdapterFact
 	
 	private Class<T> type;
 	private ClassLoader proxyClassLoader;
+	
+	/**
+	 * Uses {@link EObject}'s {@link EClass} as eClass argument
+	 * @param type
+	 * @param proxyClassLoader
+	 */
+	protected DelegatingAdapterFactory(Class<T> type, ClassLoader proxyClassLoader) {
+		this(EcorePackage.Literals.EOBJECT, type, proxyClassLoader);
+	}	
 
 	/**
 	 * 
 	 * @param type
 	 * @param proxyClassLoader Proxy class loader, can be null if created adapter implements {@link Adapter} and no proxy is required.
 	 */
-	protected DelegatingAdapterFactory(Class<T> type, ClassLoader proxyClassLoader) {
+	protected DelegatingAdapterFactory(EClass eClass, Class<T> type, ClassLoader proxyClassLoader) {
+		super(eClass);
 		this.type = type;
 		this.proxyClassLoader = proxyClassLoader;
 	}

@@ -1,16 +1,18 @@
 package org.nasdanika.html.emf;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 
 /**
  * Composed factory delegates to its child factories. It uses inheritance ordering to delegate -
@@ -83,19 +85,6 @@ public class ComposedAdapterFactory implements ComposeableAdapterFactory {
 		this.parentAdapterFactory = parentAdapterFactory;		
 	}
 	
-	/**
-	 * Registers a factory for all classes in the {@link EPackage}.
-	 * @param child
-	 * @param ePackage
-	 */
-	public void registerAdapterFactory(AdapterFactory child, EPackage ePackage) {
-		for (EClassifier ec: ePackage.getEClassifiers()) {
-			if (ec instanceof EClass) {
-				registerAdapterFactory(child, (EClass) ec);
-			}
-		}
-	}
-	
 	protected List<AdapterFactory> match(Object obj, Object type) {
 		return children
 			.stream()
@@ -108,12 +97,6 @@ public class ComposedAdapterFactory implements ComposeableAdapterFactory {
 	protected int cmpDistance(EObject obj, EClass a, EClass b) {
 		if (a == b) {
 			return 0;
-		}
-		if (a == null) {
-			return 1;
-		}			
-		if (b == null) {
-			return -1;
 		}
 		if (a.equals(b)) {
 			return 0;
@@ -159,8 +142,7 @@ public class ComposedAdapterFactory implements ComposeableAdapterFactory {
 		AdapterFactory adapterFactory;
 		
 		AdapterFactoryEntry(EClass eClass, AdapterFactory adapterFactory) {
-			super();
-			this.eClass = eClass;
+			this.eClass = eClass == null ? EcorePackage.Literals.EOBJECT : eClass;
 			this.adapterFactory = adapterFactory;
 			if (adapterFactory instanceof ComposeableAdapterFactory) {
 				((ComposeableAdapterFactory) adapterFactory).setParentAdapterFactory(ComposedAdapterFactory.this);
@@ -174,6 +156,12 @@ public class ComposedAdapterFactory implements ComposeableAdapterFactory {
 	}
 	
 	private List<AdapterFactoryEntry> children = new ArrayList<>();
+	
+	public void registerAdapterFactory(ComposeableAdapterFactory child) {
+		for (EClass eClass: child.getEClasses()) {
+			children.add(new AdapterFactoryEntry(eClass, child));			
+		}
+	}
 
 	/**
 	 * Registers a factory for specified {@link EClass}es in the package.
@@ -183,10 +171,22 @@ public class ComposedAdapterFactory implements ComposeableAdapterFactory {
 	 * @param eClasses
 	 */
 	public void registerAdapterFactory(AdapterFactory child, EClass... eClasses) {
+		if (child instanceof ComposedAdapterFactory) {
+			throw new IllegalArgumentException("Composeable adapter factories shall be registered with registerAdapterFactory(ComposeableAdapterFactory child) method to avoid ambiguity in eClasses");
+		}
 		if (eClasses.length == 0) {
 			children.add(new AdapterFactoryEntry(null, child));
 		} else for (EClass eClass: eClasses) {
 			children.add(new AdapterFactoryEntry(eClass, child));			
 		}
+	}
+
+	@Override
+	public Collection<EClass> getEClasses() {
+		Set<EClass> ret = new HashSet<>();
+		for (AdapterFactoryEntry child: children) {
+			ret.add(child.eClass);
+		}
+		return ret;
 	}
 }
