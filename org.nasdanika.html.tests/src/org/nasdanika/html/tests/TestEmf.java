@@ -47,6 +47,7 @@ import org.nasdanika.html.emf.ViewActionActivator;
 import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.tests.adapters.customer.BankViewAction;
 import org.nasdanika.html.tests.adapters.customer.CustomerViewAction;
+import org.nasdanika.html.tests.adapters.customer.CustomerViewAdapterFactory;
 
 
 public class TestEmf extends HTMLTestBase {
@@ -152,26 +153,12 @@ public class TestEmf extends HTMLTestBase {
 	@Test
 	public void testCustomerApplication() throws Exception {
 		// Registering customer-view specific adapters.
-		Function<EObject, Identity> identityManager = eObj -> () -> "index";
-		composedAdapterFactory.registerAdapterFactory(new FunctionAdapterFactory<Identity, EObject>(Identity.class, this.getClass().getClassLoader(), identityManager), BankPackage.Literals.CUSTOMER);
-		composedAdapterFactory.registerAdapterFactory(new FunctionAdapterFactory<ViewAction, Customer>(ViewAction.class, this.getClass().getClassLoader(), CustomerViewAction::new), BankPackage.Literals.CUSTOMER);
-		
-		// Bank view adapter factory is aware of the context customer
 		Customer[] contextCustomer = {null};
-		composedAdapterFactory.registerAdapterFactory(
-				new FunctionAdapterFactory<ViewAction, Bank>(
-						ViewAction.class, 
-						this.getClass().getClassLoader(), 
-						bank -> new BankViewAction(bank, contextCustomer[0])), 
-				BankPackage.Literals.BANK);	
-		
-		// Bank Navigation panel view part adapter - rendering nothing.
-		composedAdapterFactory.registerAdapterFactory(
-				new InstanceAdapterFactory<NavigationPanelViewPart>(
-						NavigationPanelViewPart.class, 
-						this.getClass().getClassLoader(), 
-						viewGenerator -> ""), 
-				BankPackage.Literals.BANK);
+		composedAdapterFactory.registerAdapterFactory(new CustomerViewAdapterFactory(() -> contextCustomer[0]));
+
+		// Registering test-specific customer identity adapter.
+		Function<EObject, Identity> identityManager = eObj -> () -> "index";
+		composedAdapterFactory.registerAdapterFactory(new FunctionAdapterFactory<Identity, EObject>(BankPackage.Literals.CUSTOMER, Identity.class, this.getClass().getClassLoader(), identityManager));
 		
 		for (Customer customer: bank.getCustomers()) {
 			contextCustomer[0] = customer;
