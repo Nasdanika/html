@@ -10,8 +10,9 @@ import java.util.List;
 public interface Property {
 		
 	/**
-	 * @param obj Value object for single value property sources and collection element for multi-value property sources.
-	 * @return Property value rendered to display in the UI.
+	 * @param obj Value object for single value property sources and values collection element for multi-value property sources.
+	 * @return Property value to be displayed in the UI or a {@link ViewPart}. For example, if value is a reference to another
+	 * object it might be wrapped into a view {@link Action} and the method may return a ViewPart which generates a link using one of {@link ViewGenerator}.link() methods.  
 	 */
 	Object getDisplayValue(Object obj); 
 	
