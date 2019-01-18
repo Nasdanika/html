@@ -13,13 +13,14 @@ import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
+import org.nasdanika.html.app.ViewGenerator;
 
 /**
  * Bean action implementation.
  * @author Pavel Vlasov
  *
  */
-public abstract class ActionImpl extends LabelImpl implements Action {
+public class ActionImpl extends LabelImpl implements Action {
 	
 	private List<Action> children = new ArrayList<>();
 	private String confirmation;
@@ -115,7 +116,9 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 		this.category = category;
 	}
 	
-	protected abstract Action createAction(Map<String, Object> cd);
+	protected Action createAction(Map<String, Object> cd) {
+		return new ActionImpl(cd);
+	}
 
 	public void setParent(Action parent) {
 		this.parent = parent;
@@ -163,6 +166,11 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 		Map<String, Object> map = Action.super.toMap();
 		map.put("roles", roles);
 		return map;
+	}
+
+	@Override
+	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+		return null;
 	}
 	
 }
