@@ -2,6 +2,8 @@ package org.nasdanika.html.tests.adapters.customer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -9,6 +11,7 @@ import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.Customer;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.NavigationActionActivator;
+import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.ActionImpl;
 import org.nasdanika.html.emf.EObjectViewAction;
 import org.nasdanika.html.emf.ViewAction;
@@ -21,16 +24,17 @@ import org.nasdanika.html.emf.ViewAction;
  */
 public class BankViewAction extends EObjectViewAction<Bank> {
 
-	private Customer customer;
+	private Supplier<Customer> customerSupplier;
 
-	public BankViewAction(Bank bank, Customer customer) {
+	public BankViewAction(Bank bank, Supplier<Customer> customerSupplier) {
 		super(bank);
-		this.customer = customer;
+		this.customerSupplier = customerSupplier;
 	}
 	
 	@Override
 	public List<? extends Action> getChildren() {
 		List<Action> ret = new ArrayList<>();
+		Customer customer = customerSupplier.get();
 		if (customer != null) {
 			Action customerViewAction = (Action) EcoreUtil.getRegisteredAdapter((EObject) customer, ViewAction.class);
 			if (customerViewAction != null) {
@@ -38,7 +42,7 @@ public class BankViewAction extends EObjectViewAction<Bank> {
 			}
 		}
 		
-		// TODO - context actions for the footer.
+		// Option - use a template for loading context actions.
 		ActionImpl contactUs = new ActionImpl();
 		contactUs.setText("Contact Us");
 		contactUs.setActivator(new NavigationActionActivator() {
@@ -49,10 +53,25 @@ public class BankViewAction extends EObjectViewAction<Bank> {
 			}
 			
 		});
+		contactUs.setIcon("far fa-envelope");
 		contactUs.getRoles().add(Action.Role.CONTEXT);
 		ret.add(contactUs);
 		
 		return ret;
 	}
-
+	
+	@Override
+	public String getIcon() {
+		// TODO - replace with something like FontAwesome.Literals.University.solid() once the fontawesome literals generator is available
+		return "fas fa-university"; 
+	}
+	
+	/**
+	 * Displaying static content which may be interpolated. This implementation uses empty token source for interpolation, i.e. does nothing.
+	 * Other options include instantiating app model template (once this functionality is available).
+	 */
+	@Override
+	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+		return viewGenerator.getHTMLFactory().mutableTokenSource().interpolate(getClass().getResource("BankHomePage.html"));
+	}
 }

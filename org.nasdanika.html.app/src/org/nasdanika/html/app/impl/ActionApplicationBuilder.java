@@ -3,23 +3,14 @@ package org.nasdanika.html.app.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
-import org.nasdanika.html.app.ViewPart;
-import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart;
-import org.nasdanika.html.app.viewparts.ContentPanelViewPart;
-import org.nasdanika.html.app.viewparts.FooterViewPart;
-import org.nasdanika.html.app.viewparts.NavigationBarViewPart;
-import org.nasdanika.html.bootstrap.Color;
 
 /**
- * Builds an application from actions. Provides default implementations of protected "generateXXX" methods.
- * Delegates generation to {@link ViewPart}'s created by createXXXViewPart methods. 
- * This class be customized by subclassing and overriding either generateXXX or createXXXViewPart methods.
+ * Builds an application from actions. 
  * @author Pavel Vlasov
  *
  */
-public class ActionApplicationBuilder extends ViewPartApplicationBuilder {
+public class ActionApplicationBuilder extends AbstractActionApplicationBuilder {
 	
 	protected Action rootAction;
 	protected Action principalAction;
@@ -70,32 +61,28 @@ public class ActionApplicationBuilder extends ViewPartApplicationBuilder {
 	}
 
 	@Override
-	protected ViewPart getHeaderViewPart() {
-		return rootAction == null ? vg -> null : viewGenerator -> {
-			Tag link = viewGenerator.link(rootAction).style().text().decoration().none();
-			viewGenerator.getBootstrapFactory().wrap(link).text().color(Color.DARK);
-			return viewGenerator.getBootstrapFactory().display(link, 4);
-		};
+	protected Action getRootAction() {
+		return rootAction;
 	}
 
 	@Override
-	protected ViewPart getNavigationBarViewPart() {
-		return principalAction == null ? vg -> null : new NavigationBarViewPart(principalAction, activeAction);
+	protected Action getPrincipalAction() {
+		return principalAction;
 	}
 
 	@Override
-	protected ViewPart getNavigationPanelViewPart() {
-		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? vg -> null : new AdaptiveNavigationPanelViewPart(navigationPanelActions, activeAction);
+	protected List<? extends Action> getNavigationPanelActions() {
+		return navigationPanelActions;
 	}
 
 	@Override
-	protected ViewPart getContentPanelViewPart() {
-		return activeAction == null ? vg -> null : new ContentPanelViewPart(activeAction, input, Util.equal(activeAction, principalAction) || Util.equal(activeAction, rootAction));
+	protected Action getActiveAction() {
+		return activeAction;
 	}
 
 	@Override
-	protected ViewPart getFooterViewPart() {
-		return rootAction == null ? vg -> null : new FooterViewPart(rootAction.getContextChildren());
+	protected Map<String, Object> getInput() {
+		return input;
 	}
 	
 }

@@ -56,8 +56,8 @@ public class ContentPanelViewPart implements ViewPart {
 	public Object generate(ViewGenerator viewGenerator) {
 		Fragment ret = viewGenerator.getHTMLFactory().fragment();
 		Action lastNonSection = lastNonSection();
-		// Breadcrumbs
 		if (lastNonSection.getPath().size() > 2) {
+			// Breadcrumbs
 			Breadcrumbs breadcrumbs = viewGenerator.getBootstrapFactory().breadcrums();
 			breadcrumbs.margin().top(1);
 			ret.content(breadcrumbs);
@@ -66,9 +66,12 @@ public class ContentPanelViewPart implements ViewPart {
 				breadcrumbs.item(false, viewGenerator.link(tit.next()));
 			}		
 			breadcrumbs.item(true, viewGenerator.label(lastNonSection));
+		
+			// Page title, doesn't make much sense to show it for the root or principal actions - it would duplicate the header or the nav bar. 
+			ret.content(viewGenerator.label(lastNonSection, viewGenerator.getHTMLFactory().tag(TagName.h2)));			
 		}
-		ret.content(viewGenerator.label(lastNonSection, viewGenerator.getHTMLFactory().tag(TagName.h2)));
-		ret.content(new SectionViewPart(lastNonSection, activeAction, input, showContextActions, 0).generate(viewGenerator));
+		
+		ret.content(new SectionViewPart(lastNonSection, activeAction, input, showContextActions, 0).generate(viewGenerator));		
 		return ret;
 	}	
 }

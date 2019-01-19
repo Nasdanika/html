@@ -34,19 +34,16 @@ import org.nasdanika.html.app.impl.BootstrapContainerApplication;
 import org.nasdanika.html.emf.ComposedAdapterFactory;
 import org.nasdanika.html.emf.EClassPropertySource;
 import org.nasdanika.html.emf.ENamedElementLabel;
-import org.nasdanika.html.emf.EObjectActionApplicationBuilderAdapterFactory;
 import org.nasdanika.html.emf.EObjectViewAction;
 import org.nasdanika.html.emf.EStructuralFeatureLabel;
 import org.nasdanika.html.emf.FunctionAdapterFactory;
-import org.nasdanika.html.emf.InstanceAdapterFactory;
-import org.nasdanika.html.emf.NavigationPanelViewPart;
 import org.nasdanika.html.emf.NavigationViewActionActivatorAdapter;
 import org.nasdanika.html.emf.SupplierAdapterFactory;
 import org.nasdanika.html.emf.ViewAction;
 import org.nasdanika.html.emf.ViewActionActivator;
+import org.nasdanika.html.emf.ViewActionApplicationBuilder;
+import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeFactory;
-import org.nasdanika.html.tests.adapters.customer.BankViewAction;
-import org.nasdanika.html.tests.adapters.customer.CustomerViewAction;
 import org.nasdanika.html.tests.adapters.customer.CustomerViewAdapterFactory;
 
 
@@ -72,12 +69,13 @@ public class TestEmf extends HTMLTestBase {
 			public Application createApplication() {
 				Application app =  new BootstrapContainerApplication();
 				JsTreeFactory.INSTANCE.cdn(app.getHTMLPage());
+				FontAwesomeFactory.INSTANCE.cdn(app.getHTMLPage());				
 				return app;
 			}
 			
 		}
 		composedAdapterFactory.registerAdapterFactory(new SupplierAdapterFactory<ApplicationFactory>(ApplicationFactory.class, this.getClass().getClassLoader(), BootstrapContainerApplicationFactory::new));
-		composedAdapterFactory.registerAdapterFactory(new EObjectActionApplicationBuilderAdapterFactory());
+		composedAdapterFactory.registerAdapterFactory(new FunctionAdapterFactory<ApplicationBuilder, EObject>(ApplicationBuilder.class, this.getClass().getClassLoader(), ViewActionApplicationBuilder::new));
 		composedAdapterFactory.registerAdapterFactory(new FunctionAdapterFactory<ViewAction, EObject>(ViewAction.class, this.getClass().getClassLoader(), EObjectViewAction::new));
 		
 		// Identity

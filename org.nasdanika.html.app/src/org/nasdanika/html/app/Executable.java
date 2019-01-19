@@ -1,6 +1,5 @@
 package org.nasdanika.html.app;
 
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -16,9 +15,5 @@ public interface Executable {
 	 * @return
 	 */
 	Object execute(ViewGenerator viewGenerator, Map<String,Object> input);
-
-	default Object execute(ViewGenerator viewGenerator) {
-		return execute(viewGenerator, Collections.emptyMap());
-	}
 
 }

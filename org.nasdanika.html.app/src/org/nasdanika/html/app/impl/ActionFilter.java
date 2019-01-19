@@ -63,5 +63,10 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	public boolean isInRole(String role) {
 		return target.isInRole(role);
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + " -> " + target;
+	}
 		
 }

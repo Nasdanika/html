@@ -297,8 +297,8 @@ public class TestApp extends HTMLTestBase {
 		Action action = AppFactory.eINSTANCE.createAction();
 		ViewGenerator viewGenerator = new ViewGeneratorImpl(null, null);
 		resource.getContents().add(action);
-		System.out.println(action.execute(viewGenerator));
-		System.out.println(action.execute(viewGenerator));
+		System.out.println(action.execute(viewGenerator, Collections.emptyMap()));
+		System.out.println(action.execute(viewGenerator, Collections.emptyMap()));
 		
 		System.out.println(action.getChildren());
 	}

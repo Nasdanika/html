@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
 import org.nasdanika.bank.Customer;
+import org.nasdanika.bank.CustomerAccount;
 import org.nasdanika.html.emf.ComposedAdapterFactory;
 import org.nasdanika.html.emf.FunctionAdapterFactory;
 import org.nasdanika.html.emf.InstanceAdapterFactory;
@@ -28,7 +29,7 @@ public class CustomerViewAdapterFactory extends ComposedAdapterFactory {
 						BankPackage.Literals.BANK,
 						ViewAction.class, 
 						this.getClass().getClassLoader(), 
-						bank -> new BankViewAction(bank, contextCustomerSupplier.get())));
+						bank -> new BankViewAction(bank, contextCustomerSupplier)));
 		
 		// Bank Navigation panel view part adapter - rendering nothing.
 		registerAdapterFactory(
@@ -37,6 +38,15 @@ public class CustomerViewAdapterFactory extends ComposedAdapterFactory {
 						NavigationPanelViewPart.class, 
 						this.getClass().getClassLoader(), 
 						viewGenerator -> ""));
+		
+		// Customer account view adapter factory is aware of the context customer
+		registerAdapterFactory(
+				new FunctionAdapterFactory<ViewAction, CustomerAccount>(
+						BankPackage.Literals.CUSTOMER_ACCOUNT,
+						ViewAction.class, 
+						this.getClass().getClassLoader(), 
+						customerAccount -> new CustomerAccountViewAction(customerAccount, contextCustomerSupplier)));
+		
 	}
 
 }

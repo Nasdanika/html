@@ -43,5 +43,10 @@ public class EObjectSingleValueDataSource<T extends EObject> implements SingleVa
 	public Object getValue() {
 		return value;
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + ", value="+value;
+	}
 
 }

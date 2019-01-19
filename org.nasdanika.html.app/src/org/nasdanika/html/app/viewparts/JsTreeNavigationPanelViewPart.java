@@ -39,7 +39,7 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 		Tag container = htmlFactory.div().id(treeId);
 		JsTreeFactory jsTreeFactory = viewGenerator.getJsTreeFactory();
 		List<JsTreeNode> roots = new ArrayList<>();
-		// TODO - group by category
+		// Group by category
 		for (Entry<Label, ?> group: Util.groupByCategory(navigationPanelActions)) {			
 			Label category = group.getKey();
 			@SuppressWarnings("unchecked")
