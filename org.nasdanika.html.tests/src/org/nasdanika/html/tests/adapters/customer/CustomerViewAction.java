@@ -2,10 +2,18 @@ package org.nasdanika.html.tests.adapters.customer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.bank.Customer;
+import org.nasdanika.bank.CustomerAccount;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.bootstrap.RowContainer.Row;
+import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.emf.EObjectViewAction;
 import org.nasdanika.html.emf.ViewAction;
 
@@ -40,11 +48,27 @@ public class CustomerViewAction extends EObjectViewAction<Customer> {
 			.filter(a -> a != null)
 			.forEach(ret::add);
 		
+		// Loading context actions from the application model for the demo purposes.
+		URI appUri = URI.createPlatformPluginURI("org.nasdanika.html.app.model/NasdanikaBank.app", false);
+		Resource appResource = value.eResource().getResourceSet().getResource(appUri, true);
+		ret.addAll(((Action) appResource.getContents().iterator().next()).getChildren().get(0).getContextChildren());				
+		
 		return ret;
 	}
 	
-	// TODO context children - bill pay, transfer funds.
-	
-	// TODO - content panel (execute) - a table of accounts with balances.
+	@Override
+	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+		Table accountsTable = viewGenerator.getBootstrapFactory().table().bordered();
+		accountsTable.headerRow("Account", "Balance");
+		for (CustomerAccount account: value.getAccounts()) {
+			Action accountViewAction = (Action) EcoreUtil.getRegisteredAdapter(account, ViewAction.class);
+			if (accountViewAction != null) {
+				Row ar = accountsTable.row();
+				ar.cell(viewGenerator.link(accountViewAction));
+				ar.cell(account.getBalance()).text().alignment(Alignment.RIGHT);
+			}
+		}
+		return accountsTable;
+	}
 
 }
