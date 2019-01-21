@@ -1,16 +1,20 @@
 package org.nasdanika.html.tests.adapters.customer;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.nasdanika.bank.Account;
 import org.nasdanika.bank.Customer;
+import org.nasdanika.bank.CustomerAccount;
+import org.nasdanika.bank.Transaction;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.bootstrap.RowContainer.Row;
+import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.emf.EObjectViewAction;
 import org.nasdanika.html.emf.ViewAction;
 
@@ -19,11 +23,11 @@ import org.nasdanika.html.emf.ViewAction;
  * @author Pavel
  *
  */
-public class CustomerAccountViewAction extends EObjectViewAction<Account> {
+public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount> {
 
 	private Supplier<Customer> customerSupplier;
 
-	public CustomerAccountViewAction(Account value, Supplier<Customer> customerSupplier) {
+	public CustomerAccountViewAction(CustomerAccount value, Supplier<Customer> customerSupplier) {
 		super(value);
 		this.customerSupplier = customerSupplier;
 	}
@@ -37,6 +41,11 @@ public class CustomerAccountViewAction extends EObjectViewAction<Account> {
 	@Override
 	public Action getParent() {
 		return (Action) EcoreUtil.getRegisteredAdapter(customerSupplier.get(), ViewAction.class);
+	}
+	
+	@Override
+	public String getText() {
+		return value.getProduct().getName() + " " + value.getNumber();
 	}
 	
 	/**
@@ -54,9 +63,34 @@ public class CustomerAccountViewAction extends EObjectViewAction<Account> {
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
-		// TODO Auto-generated method stub
-		return "BEBE: " + getParent().getText();
+	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {		
+		// Current transactions table ordered reverse chronological.
+		List<Transaction<?>> currentTransactions = new ArrayList<>();
+		value.getStatements().stream().filter(s -> s.getClosingDate() == null).forEach(s -> {
+			currentTransactions.addAll(s.getDebits());
+			currentTransactions.addAll(s.getCredits());
+		});
+		
+		// Reverse chronological order.
+		currentTransactions.sort((t1, t2) -> t2.getDate().compareTo(t1.getDate()));
+
+		Table currentTransactionsTable = viewGenerator.getBootstrapFactory().table().bordered();
+		currentTransactionsTable.headerRow("Date", "Comment", "Debit", "Credit");
+		
+		for (Transaction<?> transaction: currentTransactions) {
+			Row transactionRow = currentTransactionsTable.row();
+			transactionRow.cell(transaction.getDate());
+			transactionRow.cell(transaction.getComment());
+			if (transaction.getDebit().eContainer() == value) {
+				transactionRow.cell(transaction.getAmount());
+				transactionRow.cell("");
+			} else {
+				transactionRow.cell("");				
+				transactionRow.cell(transaction.getAmount());
+			}
+		}
+
+		return viewGenerator.getHTMLFactory().fragment("Balance: ", value.getBalance(), "<h4>Current transactions</h4>", currentTransactionsTable);
 	}
 	
 }
