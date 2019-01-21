@@ -66,7 +66,9 @@ public class ContentPanelViewPart implements ViewPart {
 				breadcrumbs.item(false, viewGenerator.link(tit.next()));
 			}		
 			breadcrumbs.item(true, viewGenerator.label(lastNonSection));
+		}
 		
+		if (lastNonSection.getPath().size() > 1) {
 			// Page title, doesn't make much sense to show it for the root or principal actions - it would duplicate the header or the nav bar. 
 			ret.content(viewGenerator.label(lastNonSection, viewGenerator.getHTMLFactory().tag(TagName.h2)));			
 		}
