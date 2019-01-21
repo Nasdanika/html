@@ -164,6 +164,12 @@ public class TestEmf extends HTMLTestBase {
 			TreeIterator<EObject> tit = bank.eResource().getAllContents();
 			while (tit.hasNext()) {
 				EObject next = tit.next();
+				
+				// All customers output index.html, process only the context customer.
+				if (next instanceof Customer && next != customer) {
+					continue;
+				}
+				
 				Application application = ((ApplicationFactory) EcoreUtil.getRegisteredAdapter(next, ApplicationFactory.class)).createApplication();
 				assertNotNull(application);
 				
