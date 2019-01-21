@@ -40,11 +40,6 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	}
 
 	@Override
-	public List<Action> getPath() {
-		return target.getPath();
-	}
-
-	@Override
 	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
 		return target.execute(viewGenerator, input);
 	}
