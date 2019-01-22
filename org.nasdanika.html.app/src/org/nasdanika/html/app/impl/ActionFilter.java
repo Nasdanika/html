@@ -54,8 +54,16 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 		return target.getCategory();
 	}
 
+	/**
+	 * Converts navigation role to section role if parent is in section role.
+	 */
 	@Override
 	public boolean isInRole(String role) {
+		Action parent = getParent();
+		// Navigations become sections if parent role is section.
+		if (parent != null && parent.isInRole(Role.SECTION) && target.isInRole(Role.NAVIGATION)) {
+			return Role.SECTION.equals(role);
+		}
 		return target.isInRole(role);
 	}
 	
