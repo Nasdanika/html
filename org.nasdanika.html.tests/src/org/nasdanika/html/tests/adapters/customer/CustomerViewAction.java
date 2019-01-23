@@ -2,7 +2,6 @@ package org.nasdanika.html.tests.adapters.customer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -57,7 +56,7 @@ public class CustomerViewAction extends EObjectViewAction<Customer> {
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+	public Object execute(ViewGenerator viewGenerator) {
 		Table accountsTable = viewGenerator.getBootstrapFactory().table().bordered();
 		accountsTable.headerRow("Account", "Balance");
 		for (CustomerAccount account: value.getAccounts()) {

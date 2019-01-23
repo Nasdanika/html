@@ -2,7 +2,6 @@ package org.nasdanika.html.emf;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -29,7 +28,7 @@ public class EReferenceSingleValuePropertySourceViewAction<T extends EObject> ex
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+	public Object execute(ViewGenerator viewGenerator) {
 		EObject value = (EObject) getValue();
 		if (value == null) {
 			// TODO - some action to create an object for containment references.
@@ -38,7 +37,7 @@ public class EReferenceSingleValuePropertySourceViewAction<T extends EObject> ex
 		
 		Action viewAction = (Action) EcoreUtil.getRegisteredAdapter(value, ViewAction.class);
 		if (viewAction != null) {
-			return viewAction.execute(viewGenerator, input);
+			return viewAction.execute(viewGenerator);
 		}
 		return null;
 	}

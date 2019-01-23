@@ -3,7 +3,6 @@ package org.nasdanika.html.tests.adapters.customer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -63,7 +62,7 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {		
+	public Object execute(ViewGenerator viewGenerator) {		
 		// Current transactions table ordered reverse chronological.
 		List<Transaction<?>> currentTransactions = new ArrayList<>();
 		value.getStatements().stream().filter(s -> s.getClosingDate() == null).forEach(s -> {

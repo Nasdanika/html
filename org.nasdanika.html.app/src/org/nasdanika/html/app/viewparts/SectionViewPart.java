@@ -1,7 +1,6 @@
 package org.nasdanika.html.app.viewparts;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import org.nasdanika.html.Fragment;
@@ -30,15 +29,13 @@ public class SectionViewPart implements ViewPart {
 	protected Action section;
 	protected Action activeAction;
 	protected int level;
-	private Map<String, Object> input;
 	private boolean showContextActions;
 	
 	// TODO - constructor taking level from Util.sectionLevel()
 
-	public SectionViewPart(Action section, Action activeAction, Map<String, Object> input, boolean showContextActions, int level) {
+	public SectionViewPart(Action section, Action activeAction, boolean showContextActions, int level) {
 		this.section = section;
 		this.activeAction = activeAction;
-		this.input = input;
 		this.showContextActions = showContextActions;
 		this.level = level;
 	}
@@ -47,7 +44,7 @@ public class SectionViewPart implements ViewPart {
 	public Object generate(ViewGenerator viewGenerator) {
 		Fragment ret = viewGenerator.getHTMLFactory().fragment();
 		// Process viewPart as in ViewGenerator ???
-		ret.content(section.execute(viewGenerator, input));
+		ret.content(section.execute(viewGenerator));
 
 		// Context actions		
 		if (showContextActions) {
@@ -74,7 +71,7 @@ public class SectionViewPart implements ViewPart {
 					activeSubSection = subSection; // First if null.
 				}
 				
-				Object subSectionContent = new SectionViewPart(subSection, activeAction, input, true, level + 1).generate(viewGenerator);
+				Object subSectionContent = new SectionViewPart(subSection, activeAction, true, level + 1).generate(viewGenerator);
 				
 				String contentId = subSection.getId() == null ? null : "nsd-action-content-"+subSection.getId();
 				Fragment labelFragment = viewGenerator.labelFragment(subSection);

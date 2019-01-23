@@ -3,7 +3,6 @@ package org.nasdanika.html.emf;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
@@ -40,7 +39,7 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+	public Object execute(ViewGenerator viewGenerator) {
 		return new ViewSingleValuePropertySourceViewPart(this).generate(viewGenerator);
 	}
 	

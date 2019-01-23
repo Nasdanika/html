@@ -43,6 +43,17 @@ public interface Action extends Label, Executable, Categorized {
 		 * the navigation. For example, customer address may be shown as a section of the customer page.
 		 */
 		String SECTION = "section";
+		
+		/**
+		 * {@link PropertySource} or {@link PropertyDescriptor} action to be displayed in view mode.
+		 */
+		String VIEW = "view";
+		
+		/**
+		 * {@link PropertySource} or {@link PropertyDescriptor} action to be displayed in edit mode.
+		 */
+		String EDIT = "edit";
+		
 	}
 	
 	/**

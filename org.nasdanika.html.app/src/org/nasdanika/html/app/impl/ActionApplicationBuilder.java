@@ -1,7 +1,6 @@
 package org.nasdanika.html.app.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import org.nasdanika.html.app.Action;
 
@@ -16,7 +15,6 @@ public class ActionApplicationBuilder extends AbstractActionApplicationBuilder {
 	protected Action principalAction;
 	protected List<? extends Action> navigationPanelActions;
 	protected Action activeAction;
-	protected Map<String,Object> input;
 	
 	/**
 	 * Creates an application builder with the active action's root action as the root and
@@ -24,8 +22,8 @@ public class ActionApplicationBuilder extends AbstractActionApplicationBuilder {
 	 * actions with path length greater or equal to 2.
 	 * @param activeAction
 	 */
-	public ActionApplicationBuilder(Action activeAction, Map<String,Object> input) {
-		this(activeAction.getPath().get(0), activeAction.getPath().get(1), activeAction, input);
+	public ActionApplicationBuilder(Action activeAction) {
+		this(activeAction.getPath().get(0), activeAction.getPath().get(1), activeAction);
 	}
 	
 	/**
@@ -34,8 +32,8 @@ public class ActionApplicationBuilder extends AbstractActionApplicationBuilder {
 	 * @param active Active action to be executed and execution result to be shown in the content container. If active action is shown in the navigation bar or panel is shall
 	 * be selected/active. 
 	 */
-	public ActionApplicationBuilder(Action rootAction, Action principalAction, Action activeAction, Map<String,Object> input) {
-		this(rootAction, principalAction, principalAction.getNavigationChildren(), activeAction, input);
+	public ActionApplicationBuilder(Action rootAction, Action principalAction, Action activeAction) {
+		this(rootAction, principalAction, principalAction.getNavigationChildren(), activeAction);
 	}	
 	
 	/**
@@ -50,14 +48,11 @@ public class ActionApplicationBuilder extends AbstractActionApplicationBuilder {
 			Action rootAction, 
 			Action principalAction, 
 			List<? extends Action> navigationPanelActions, 
-			Action activeAction,
-			Map<String,Object> input) {
+			Action activeAction) {
 		this.rootAction = rootAction;
 		this.principalAction = principalAction;
 		this.navigationPanelActions = navigationPanelActions;
 		this.activeAction = activeAction;
-		this.input = input;
-		
 	}
 
 	@Override
@@ -78,11 +73,6 @@ public class ActionApplicationBuilder extends AbstractActionApplicationBuilder {
 	@Override
 	protected Action getActiveAction() {
 		return activeAction;
-	}
-
-	@Override
-	protected Map<String, Object> getInput() {
-		return input;
 	}
 	
 }

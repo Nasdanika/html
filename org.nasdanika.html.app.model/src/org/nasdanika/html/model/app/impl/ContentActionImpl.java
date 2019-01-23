@@ -2,8 +2,6 @@
  */
 package org.nasdanika.html.model.app.impl;
 
-import java.util.Map;
-
 import org.eclipse.emf.ecore.EClass;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.model.app.AppPackage;
@@ -85,7 +83,7 @@ public class ContentActionImpl extends ActionImpl implements ContentAction {
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+	public Object execute(ViewGenerator viewGenerator) {
 		// TODO - handle content type - plain text and markdown.
 		return getContent();
 	}

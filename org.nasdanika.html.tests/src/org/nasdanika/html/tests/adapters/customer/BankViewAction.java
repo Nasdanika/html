@@ -2,7 +2,6 @@ package org.nasdanika.html.tests.adapters.customer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
@@ -71,7 +70,7 @@ public class BankViewAction extends EObjectViewAction<Bank> {
 	 * Other options include instantiating app model template (once this functionality is available).
 	 */
 	@Override
-	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+	public Object execute(ViewGenerator viewGenerator) {
 		return viewGenerator.getHTMLFactory().mutableTokenSource().interpolate(getClass().getResource("BankHomePage.html"));
 	}
 }

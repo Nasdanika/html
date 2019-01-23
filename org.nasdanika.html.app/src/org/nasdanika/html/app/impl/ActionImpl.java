@@ -169,7 +169,7 @@ public class ActionImpl extends LabelImpl implements Action {
 	}
 
 	@Override
-	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+	public Object execute(ViewGenerator viewGenerator) {
 		return null;
 	}
 	

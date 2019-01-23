@@ -1,6 +1,5 @@
 package org.nasdanika.html.app;
 
-import java.util.Map;
 import java.util.function.Consumer;
 
 import org.nasdanika.html.Fragment;
@@ -129,22 +128,6 @@ public interface ViewGenerator {
 	 * @return
 	 */
 	void add(Navs navs, Action action, boolean active);
-	
-	/**
-	 * Adds an action to an action group with execution result as content.
-	 * @param actionGroup
-	 * @param action
-	 * @return
-	 */
-	Tag addContent(ActionGroup actionGroup, Action action, boolean active, Map<String,Object> input);
-	
-	/**
-	 * Adds an action to navs with execution result as content.
-	 * @param actionGroup
-	 * @param action
-	 * @return
-	 */
-	void add(Navs navs, Action action, boolean active, Map<String,Object> input);
 		
 	/**
 	 * Adds an action to a named items container with label as name and execution result as content. 
@@ -152,13 +135,6 @@ public interface ViewGenerator {
 	 * @param action
 	 */
 	void add(NamedItemsContainer container, Action action);	
-	
-	/**
-	 * Adds an action to a named items container with label as name and execution result as content. 
-	 * @param container
-	 * @param action
-	 */
-	void add(NamedItemsContainer container, Action action, Map<String,Object> input);
 	
 	Tag badge(Label action, boolean isPill);
 	

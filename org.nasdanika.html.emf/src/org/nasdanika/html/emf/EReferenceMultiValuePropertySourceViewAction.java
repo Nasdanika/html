@@ -2,7 +2,6 @@ package org.nasdanika.html.emf;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -24,7 +23,7 @@ public class EReferenceMultiValuePropertySourceViewAction<T extends EObject> ext
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+	public Object execute(ViewGenerator viewGenerator) {
 		return new ViewMultiValuePropertySourceViewPart(this).generate(viewGenerator);
 	}
 

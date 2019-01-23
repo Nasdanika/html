@@ -1,8 +1,6 @@
 package org.nasdanika.html.app.impl;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
@@ -306,12 +304,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 
 	@Override
 	public void add(NamedItemsContainer container, Action action) {
-		add(container, action, Collections.emptyMap());	
-	}
-
-	@Override
-	public void add(NamedItemsContainer container, Action action, Map<String,Object> input) {
-		container.item(labelFragment(action), processViewPart(action.execute(this, input)));		
+		container.item(labelFragment(action), processViewPart(action.execute(this)));		
 	}
 
 	@Override
@@ -333,24 +326,14 @@ public class ViewGeneratorImpl implements ViewGenerator {
 
 	@Override
 	public Tag addContent(ActionGroup actionGroup, Action action, boolean active) {
-		return addContent(actionGroup, action, active, Collections.emptyMap());
+		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
+		return actionGroup.contentAction(labelFragment(action), active, action.isDisabled(), action.getColor(), contentId, processViewPart(action.execute(this)));
 	}
 
 	@Override
 	public void add(Navs navs, Action action, boolean active) {
-		add(navs, action, active, Collections.emptyMap());
-	}
-
-	@Override
-	public Tag addContent(ActionGroup actionGroup, Action action, boolean active, Map<String,Object> input) {
 		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
-		return actionGroup.contentAction(labelFragment(action), active, action.isDisabled(), action.getColor(), contentId, processViewPart(action.execute(this, input)));
-	}
-
-	@Override
-	public void add(Navs navs, Action action, boolean active, Map<String,Object> input) {
-		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
-		navs.item(labelFragment(action), active, action.isDisabled(), contentId, processViewPart(action.execute(this, input)));
+		navs.item(labelFragment(action), active, action.isDisabled(), contentId, processViewPart(action.execute(this)));
 	}
 	
 	@Override

@@ -1,6 +1,5 @@
 package org.nasdanika.html.tests;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -149,7 +148,7 @@ public class TestApp extends HTMLTestBase {
 		class ExecutableAdapter extends AdapterImpl implements Executable {
 			
 			@Override
-			public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+			public Object execute(ViewGenerator viewGenerator) {
 				return "Executing "+getTarget()+" "+this;
 			}
 			
@@ -236,7 +235,7 @@ public class TestApp extends HTMLTestBase {
 	
 	protected Map<String, ApplicationBuilder> createApplicationBuilders(Action principalAction, List<? extends Action> navigation, Action selected) {
 		Map<String, ApplicationBuilder> ret = new HashMap<>();
-		ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getNavigationChildren(), selected, Collections.emptyMap()) {
+		ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getNavigationChildren(), selected) {
 			@Override
 			protected Object generateHeader(ViewGenerator viewGenerator) {
 				return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark").style().text().decoration().none();
@@ -244,7 +243,7 @@ public class TestApp extends HTMLTestBase {
 		};			
 		ret.put("link-group", appBuilder);
 		
-		ActionApplicationBuilder jsTreeAppBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getNavigationChildren(), selected, Collections.emptyMap()) {
+		ActionApplicationBuilder jsTreeAppBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getNavigationChildren(), selected) {
 			@Override
 			protected Object generateHeader(ViewGenerator viewGenerator) {
 				return ((Tag) super.generateHeader(viewGenerator)).addClass("text-dark").style().text().decoration().none();
@@ -267,7 +266,7 @@ public class TestApp extends HTMLTestBase {
 		class ExecutableAdapter extends AdapterImpl implements Executable {
 						
 			@Override
-			public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
+			public Object execute(ViewGenerator viewGenerator) {
 				return "Executing "+getTarget()+" "+this;
 			}
 			
@@ -297,8 +296,8 @@ public class TestApp extends HTMLTestBase {
 		Action action = AppFactory.eINSTANCE.createAction();
 		ViewGenerator viewGenerator = new ViewGeneratorImpl(null, null);
 		resource.getContents().add(action);
-		System.out.println(action.execute(viewGenerator, Collections.emptyMap()));
-		System.out.println(action.execute(viewGenerator, Collections.emptyMap()));
+		System.out.println(action.execute(viewGenerator));
+		System.out.println(action.execute(viewGenerator));
 		
 		System.out.println(action.getChildren());
 	}

@@ -1,7 +1,6 @@
 package org.nasdanika.html.app.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
@@ -40,8 +39,8 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	}
 
 	@Override
-	public Object execute(ViewGenerator viewGenerator, Map<String, Object> input) {
-		return target.execute(viewGenerator, input);
+	public Object execute(ViewGenerator viewGenerator) {
+		return target.execute(viewGenerator);
 	}
 
 	@Override

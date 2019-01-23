@@ -439,12 +439,12 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	}
 
 	@Override
-	public Object execute(ViewGenerator viewGenerator, java.util.Map<String,Object> input) {
+	public Object execute(ViewGenerator viewGenerator) {
 		Executable delegate = (Executable) EcoreUtil.getRegisteredAdapter(this, Executable.class);
 		if (delegate == null) {
 			throw new ApplicationException("No execution delegate", this);
 		}
-		return delegate.execute(viewGenerator, input);
+		return delegate.execute(viewGenerator);
 	}
 	
 	@Override

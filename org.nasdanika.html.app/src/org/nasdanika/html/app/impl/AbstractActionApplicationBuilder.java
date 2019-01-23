@@ -2,7 +2,6 @@ package org.nasdanika.html.app.impl;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
@@ -21,10 +20,6 @@ import org.nasdanika.html.bootstrap.Color;
 public abstract class AbstractActionApplicationBuilder extends ViewPartApplicationBuilder {
 	
 	protected abstract Action getActiveAction();
-	
-	protected Map<String,Object> getInput() {
-		return Collections.emptyMap();
-	}
 	
 	protected Action getRootAction() {
 		Action activeAction = getActiveAction();
@@ -80,7 +75,7 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 	@Override
 	protected ViewPart getContentPanelViewPart() {
 		Action activeAction = getActiveAction();
-		return activeAction == null ? vg -> null : new ContentPanelViewPart(activeAction, getInput(), Util.equal(activeAction, getPrincipalAction()) || Util.equal(activeAction, getRootAction()));
+		return activeAction == null ? vg -> null : new ContentPanelViewPart(activeAction, Util.equal(activeAction, getPrincipalAction()) || Util.equal(activeAction, getRootAction()));
 	}
 
 	@Override
