@@ -7,7 +7,7 @@ import java.util.List;
  * @author Pavel Vlasov
  *
  */
-public interface PropertySource extends Label, DataSource {
+public interface PropertySource extends Label, DataSource, ActionProvider {
 	
 	/**
 	 * Property descriptors.
@@ -24,9 +24,11 @@ public interface PropertySource extends Label, DataSource {
 	List<Action> getActions();
 	
 	/**
-	 * Actions which can be performed on value. 
+	 * Returns a provider of actions which can be performed on value. 
 	 * @return
-	 */
-	List<Action> getActions(Object obj);	
+	 */	
+	default ActionProvider getActionProvider(Object obj) {
+		return ActionProvider.EMPTY_ACTION_PROVIDER;
+	}
 	
 }

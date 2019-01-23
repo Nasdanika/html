@@ -63,9 +63,4 @@ public abstract class EStructuralFeatureMultiValuePropertySource<T extends EObje
 		return Collections.emptyList();
 	}
 
-	@Override
-	public List<Action> getActions(Object obj) {
-		return Collections.emptyList();
-	}
-
 }

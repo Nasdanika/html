@@ -1,7 +1,5 @@
 package org.nasdanika.html.app;
 
-import java.util.List;
-
 import org.nasdanika.html.InputType;
 
 /**
@@ -33,15 +31,11 @@ public interface PropertyDescriptor extends Label, Property, Categorized {
 	boolean isFilterable();
 		
 	/**
-	 * Actions available for this property for this value when viewing. 
+	 * Provider of actions available for this property. 
 	 * @return
 	 */
-	List<Action> getViewActions(Object obj);	
-			
-	/**
-	 * Actions available for this property for this value when editing. 
-	 * @return
-	 */
-	List<Action> getEditActions(Object obj);
+	default ActionProvider getActionProvider(Object obj) {
+		return ActionProvider.EMPTY_ACTION_PROVIDER;
+	}
 	
 }

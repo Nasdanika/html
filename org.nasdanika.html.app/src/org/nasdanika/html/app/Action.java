@@ -185,7 +185,7 @@ public interface Action extends Label, Executable, Categorized {
 	}	
 		
 	/**
-	 * Returns children in a NAVIGATION role
+	 * Returns children in the NAVIGATION role
 	 * @param role
 	 * @return
 	 */
@@ -198,7 +198,7 @@ public interface Action extends Label, Executable, Categorized {
 	}
 	
 	/**
-	 * Returns children in a CONTEXT role
+	 * Returns children in the CONTEXT role
 	 * 
 	 * @param role
 	 * @return
@@ -212,7 +212,7 @@ public interface Action extends Label, Executable, Categorized {
 	}
 	
 	/**
-	 * Returns children in a CONTEXT role
+	 * Returns children in the SECTION role
 	 * 
 	 * @param role
 	 * @return

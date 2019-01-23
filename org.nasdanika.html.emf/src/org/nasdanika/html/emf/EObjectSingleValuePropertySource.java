@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ActionProvider;
 import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.app.PropertySource;
 import org.nasdanika.html.app.SingleValuePropertySource;
@@ -57,10 +58,10 @@ public class EObjectSingleValuePropertySource<T extends EObject> extends EObject
 	public List<Action> getActions() {
 		return propertySourceDelegate == null ? Collections.emptyList() : propertySourceDelegate.getActions();
 	}
-
+	
 	@Override
-	public List<Action> getActions(Object obj) {
-		return propertySourceDelegate == null ? Collections.emptyList() : propertySourceDelegate.getActions(obj);
+	public ActionProvider getActionProvider(Object obj) {
+		return propertySourceDelegate == null ? ActionProvider.EMPTY_ACTION_PROVIDER : propertySourceDelegate.getActionProvider(obj);
 	}
 
 	@Override

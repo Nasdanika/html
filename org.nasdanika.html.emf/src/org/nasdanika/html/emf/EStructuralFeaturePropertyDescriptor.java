@@ -1,11 +1,7 @@
 package org.nasdanika.html.emf;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.html.InputType;
-import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.bootstrap.Color;
@@ -77,16 +73,6 @@ public class EStructuralFeaturePropertyDescriptor extends EStructuralFeatureProp
 	@Override
 	public boolean isFilterable() {
 		return false;
-	}
-
-	@Override
-	public List<Action> getViewActions(Object obj) {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public List<Action> getEditActions(Object obj) {
-		return Collections.emptyList();
 	}
 	
 }

@@ -78,10 +78,4 @@ public class EClassPropertySource extends EClassLabel implements PropertySource 
 		return Collections.emptyList();
 	}
 
-	@Override
-	public List<Action> getActions(Object obj) {
-		return Collections.emptyList();
-	}
-
-
 }

@@ -3,7 +3,7 @@ package org.nasdanika.html.app.impl;
 import java.util.List;
 
 import org.nasdanika.html.InputType;
-import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ActionProvider;
 import org.nasdanika.html.app.Choice;
 import org.nasdanika.html.app.Diagnostic;
 import org.nasdanika.html.app.Label;
@@ -59,15 +59,10 @@ public class PropertyDescriptorFilter<T extends PropertyDescriptor> extends Labe
 	public boolean isFilterable() {
 		return target.isFilterable();
 	}
-
+	
 	@Override
-	public List<Action> getViewActions(Object obj) {
-		return target.getViewActions(obj);
-	}
-
-	@Override
-	public List<Action> getEditActions(Object obj) {
-		return target.getEditActions(obj);
+	public ActionProvider getActionProvider(Object obj) {
+		return target.getActionProvider(obj);
 	}
 	
 }

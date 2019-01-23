@@ -29,7 +29,7 @@ public class ViewMultiValuePropertySourceViewPart implements ViewPart {
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
-		boolean hasActions = propertySource.getValues().stream().mapToInt(v -> propertySource.getActions(v).size()).sum() > 0;
+		boolean hasActions = propertySource.getValues().stream().mapToInt(v -> propertySource.getActionProvider(v).getViewActions().size()).sum() > 0;
 		List<Entry<Label, List<PropertyDescriptor>>> categories = Util.groupByCategory(propertySource.getPropertyDescriptors());
 		boolean hasCategoryRow = categories.size() > 1 || categories.size() == 1 && categories.get(0).getKey() != null;
 		Table table = createTable(viewGenerator);
@@ -78,7 +78,7 @@ public class ViewMultiValuePropertySourceViewPart implements ViewPart {
 			}
 			if (hasActions) {
 				// TODO - filter actions - just an icon if there is an icon and label in the tooltip.
-				valueRow.cell(viewGenerator.buttonToolbar(propertySource.getActions(value)));
+				valueRow.cell(viewGenerator.buttonToolbar(propertySource.getActionProvider(value).getViewActions()));
 			}
 		}
 		// TODO - category color as cell border and category name background, property descriptor color as cell background.

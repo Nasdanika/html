@@ -3,6 +3,7 @@ package org.nasdanika.html.app.impl;
 import java.util.List;
 
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ActionProvider;
 import org.nasdanika.html.app.Delta;
 import org.nasdanika.html.app.Diagnostic;
 import org.nasdanika.html.app.PropertyDescriptor;
@@ -33,10 +34,10 @@ public abstract class PropertySourceFilter<T extends PropertySource> extends Lab
 	public List<Action> getActions() {
 		return target.getActions();
 	}
-
+	
 	@Override
-	public List<Action> getActions(Object obj) {
-		return target.getActions(obj);
+	public ActionProvider getActionProvider(Object obj) {
+		return target.getActionProvider(obj);
 	}
 	
 }

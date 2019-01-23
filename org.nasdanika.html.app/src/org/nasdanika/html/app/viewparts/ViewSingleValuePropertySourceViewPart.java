@@ -42,7 +42,7 @@ public class ViewSingleValuePropertySourceViewPart implements ViewPart {
 			propertyTable.bordered();
 			boolean hasActions = false;
 			for (PropertyDescriptor pd: descriptorGroup.getValue()) {
-				if (!pd.getViewActions(propertySource).isEmpty()) {
+				if (!pd.getActionProvider(propertySource.getValue()).getViewActions().isEmpty()) {
 					hasActions = true;
 					break;
 				}
@@ -53,7 +53,7 @@ public class ViewSingleValuePropertySourceViewPart implements ViewPart {
 				nameHeader.toHTMLElement().style("width", "10%").style().whiteSpace().nowrap();
 				propertyRow.cell(viewGenerator.processViewPart(pd.getDisplayValue(propertySource.getValue())));
 				if (hasActions) {
-					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(pd.getViewActions(propertySource.getValue()));
+					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(pd.getActionProvider(propertySource.getValue()).getViewActions());
 					buttonToolbar.margin().top(1).bottom(1);
 					propertyRow.cell(buttonToolbar);
 				}
