@@ -96,7 +96,7 @@ Add repository and dependency as shown below:
 		<repository>
 			<id>nasdanika-html-snapshots</id>
 			<name>nasdanika-html-snapshots</name>
-			<url>https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/maven-repository</url>
+			<url>https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/master/maven-repository</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
