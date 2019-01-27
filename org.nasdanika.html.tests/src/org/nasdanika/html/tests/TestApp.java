@@ -42,6 +42,7 @@ import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.InputGroup;
 import org.nasdanika.html.bootstrap.Theme;
+import org.nasdanika.html.bootstrap.Container.Row.Col;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
 import org.nasdanika.html.jstree.JsTreeFactory;
@@ -81,13 +82,30 @@ public class TestApp extends HTMLTestBase {
 	public void testBootstrapApp() throws Exception {
 		Application app = new BootstrapContainerApplication(Theme.Litera, false) {
 			
-			{
-				container.border(Color.DANGER);
+			protected void configureContainer(Container container) {
+				container.border(Color.DANGER);				
+			}
+			
+			@Override
+			protected void configureHeader(Col header) {
 				header.border(Color.DANGER).background(Color.PRIMARY);
+			}
+			
+			@Override
+			protected void configureNavigationBar(Col navigationBar) {
 				navigationBar.border(Color.DANGER);
-				navigationPanel.border(Color.DANGER).widthAuto();
-				footer.border(Color.DANGER);
-				contentPanel.border(Color.DANGER).toHTMLElement().style("min-height", "25em");
+			}
+			
+			protected void configureNavigationPanel(Col navigationPanel) {
+				navigationPanel.border(Color.DANGER).widthAuto();				
+			}
+			
+			protected void configureConentPanel(Col contentPanel) {
+				contentPanel.border(Color.DANGER).toHTMLElement().style("min-height", "25em");				
+			}
+			
+			protected void configureFooter(Col footer) {
+				footer.border(Color.DANGER);		
 			}
 			
 		};
@@ -200,9 +218,8 @@ public class TestApp extends HTMLTestBase {
 						
 						for (Entry<String, ApplicationBuilder> be: createApplicationBuilders(principalAction, principalAction.getChildren(), (Action) next).entrySet()) {
 							Application app = new BootstrapContainerApplication(theme, true) {
-								
-								{
-	
+																								
+								{	
 									// Theme select at the bottom for experimentation.
 									BootstrapFactory factory = BootstrapFactory.INSTANCE;
 									Select select = factory.themeSelect(theme);
