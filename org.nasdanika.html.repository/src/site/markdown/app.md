@@ -305,6 +305,26 @@ ActionApplicationBuilder jsTreeAppBuilder = new ActionApplicationBuilder(appActi
   
 <iframe src="test-dumps/app/action/js-tree/credit-card-9012.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
-## Property sources
+## Data sources and properties
 
-TODO - work in progress...
+[DataSource](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/DataSource.html) is something which can provide access to some data, 
+knows how to retrieve a version/revision of the data object, and also knows how to update that data using a map of property deltas.
+There are two flavors of DataSource - [SingleValueDataSource](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/SingleValueDataSource.html) and [MultiValueDataSource](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/MultiValueDataSource.html).
+
+[Property](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Property.html) is something which knows how to deal with properties/attributes of 
+objects returned by data sources. E.g. if a data source returns a ``Person`` object then ``FirstName`` property know how retrieve and set the person's first name.  
+
+## Property sources and descriptors
+
+[PropertySource](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/PropertySource.html) extends DataSource, Label, and [ActionProvider](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/ActionProvider.html). 
+I.e. it is a data source which can be displayed in the UI and have associated actions.
+
+As in the case of the DataSource, there are two flavors of PropertySource:
+
+* [MultiValuePropertySource](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/MultiValuePropertySource.html).
+* [SingleValueDataSource](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/SingleValueDataSource.html).
+
+Property source has ``getPropertyDescriptors()`` method returning a list of [PropertyDescriptor](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/PropertyDescriptor.html)s. 
+Property descriptor extends Label, Property, and Categorized. 
+
+Wile properties are concerned with value retrieval and update, property descriptors are concerned with displaying and editing property values.   
