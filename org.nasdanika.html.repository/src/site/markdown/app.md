@@ -42,6 +42,7 @@ Add repository and dependency as shown below:
 ## Application
 
 [Application](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Application.html) interface is an abstraction of a web application consisting of the following parts:
+
 * Header
 * Navigation bar
 * Navigation panel
@@ -55,21 +56,11 @@ There are two implementations of this interface:
 
 ### Bootstrap application
 
-The below code snippet shows how to build a bootstrap container application with Ajax jsTree navigation panel.
+The below code snippet shows how to build a bootstrap container application with Ajax jsTree navigation panel. 
+If desired, an application can be customized by overriding configureXXX() methods. 
 
 ```
-Application app = new BootstrapContainerApplication(Theme.Litera, false) {
-	
-	{
-		container.border(Color.DANGER);
-		header.border(Color.DANGER).background(Color.PRIMARY);
-		navigationBar.border(Color.DANGER);
-		navigationPanel.border(Color.DANGER).widthAuto();
-		footer.border(Color.DANGER);
-		contentPanel.border(Color.DANGER).toHTMLElement().style("min-height", "25em");
-	}
-	
-};
+Application app = new BootstrapContainerApplication(Theme.Litera, false);
 
 Tag treeContainer = app.getHTMLPage().getFactory().div();
 HTMLFactory htmlFactory = HTMLFactory.INSTANCE;
@@ -123,7 +114,7 @@ writeFile("app/bootstrap/context-menu-"+childNode.getId()+".json", menu.toString
 
 The application: 
 
-<iframe src="test-dumps/app/bootstrap/index.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
+<iframe src="test-dumps/app/bootstrap/index.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 20) + 'px'"></iframe>
 
 ## Label
 
@@ -156,7 +147,8 @@ For example: "Jim uploads a feed from mainframe and then Bob validates it for in
 * There is a user/actor/role Bob with "verify mainframe feed" action.
 * There is a "mainframe feed" entity which gets uploaded and validated. 
 
-Thinking in terms of actions allows to stay focused on functionality and not get distracted by lower-level concerns such as button colors.
+Thinking in terms of actions allows to stay focused on functionality and not get distracted by lower-level concerns such as button colors, borders, etc. 
+Such concerns are important once the core application functionality is solidified.  
 One of my friends once told me a long time ago that "it is much easier to make a functional application fast than a fast application functional".
 Thinking in actions helps to deliver functionality faster and take care of non-functional requirements later. 
 
@@ -183,36 +175,50 @@ In this case the navigation url would go to the action attribute of the form and
 
 ### Contained actions
 
-Actions have ``getChildren()`` method returning a collection of contained (sub) actions.
-Actions may play different roles, there are 3 built-in roles - ``NAVIGATION``, ``CONTEXT``, and ``SECTION``. 
+Actions have ``getChildren()`` method returning a collection of contained (sub) actions. 
+There are also several default ``getXXXChildrens()`` methods filtering and grouping child actions.
 
+An action may play different roles. Action role defines where it appears in the UI. 
+There are several built-in [roles](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Action.Role.html)
+
+#### Navigation
 Navigation actions correspond to contained objects and are typically rendered in the navigation panel. For example a bank customer has/owns accounts. 
 Actions to view such accounts would be displayed in the navigation panel. 
 In entity-relationship terms navigation actions correspond to containment references and in Java terms they correspond to fields. 
 You may also think of them as "view (noun)" actions. E.g. "view account".  
 
+#### Context
 Context actions get their name from the fact that they are displayed as a JsTree context menu items. 
 They are also output as buttons in the content panel.
 Context actions correspond to methods/operations/verbs. E.g. "open account" context action of a "view customer" action.
 
+#### Section
 Section actions play the same role as navigation actions, but they are displayed in the content panel of the contained action. 
 For example, "view transactions" section action of "view statement" action would display a list of transactions below statement details.
 Section actions may be executed along with the containing action. In this case they don't need an activator.
-Section actions with NavigationActionActivators may be executed by loading section content using AJAX.  
+Section actions with NavigationActionActivators may be executed by loading section content using AJAX.
+
+#### View
+
+PropertySource or PropertyDescriptor actions in this role are displayed in view mode.
+
+#### Edit  
+
+PropertySource or PropertyDescriptor actions in this role are displayed in edit mode.
 
 ### Action categories
 
 Action extends [Categorized](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Categorized.html).
 It allows to group actions into categories.
-Anonymous categories have id but no text and icon.
+Anonymous categories have id but no text or icon.
 
 Categories are presented in the UI in following ways:
 
 * Navbar - uncategorized actions are at the top level, categorized are grouped into dropdowns. Headers and separators are not supported in category drop-downs. Anonymous categories are not supported.  
 * Dropdown - headers for named categories and separators for anonymous.
-* [TODO: Action groups](../../../../mantis/view.php?id=207) - different action groups for categories. Named categories are represented as action groups in cards with the category icon and text in the header.
+* Action groups - different action groups for categories. Named categories are represented as action groups in cards with the category icon and text in the header.
 * jsTree
-    * [TODO: Nodes](../../../../mantis/view.php?id=208) - a node for named categories, anonymous categories are not supported - treated as uncategorized.
+    * Nodes - a node for named categories, anonymous categories are not supported - treated as uncategorized.
     * [TODO: Context menu](../../../../mantis/view.php?id=209) - dividers for anonymous categories, and sub-menus for named categories.
 * Buttons - button groups, all categories are treated as anonymous.
 * [TODO: Sections](../../../../mantis/view.php?id=210) - named categories add an extra level. Anonymous categories are displayed as a horizontal lines (HR) in header sections and as separate action groups, not supported in navs.   
@@ -226,39 +232,45 @@ UI elements from application abstractions such as actions.
 
 [ViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/ViewPart.html) generates Web UI leveraging ViewGenerator passed to its ``generate()`` method. 
 
+The library provides several [view part implementations](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/viewparts/package-summary.html) used by the action application builder (see below).
+View parts in the ``viewparts`` package may be customized via subclassing.
+
 ## Application builder
 
 [ApplicationBuilder](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/ApplicationBuilder.html) builds an application passed to its ``build()`` method.
 
-## ViewPartApplicationBuilder
+### ViewPartApplicationBuilder
 
 [ViewPartApplicationBuilder](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/ViewPartApplicationBuilder.html) is an abstract implementation of ApplicationBuilder.
 It creates a ViewGenerator, view parts for the header, navigation bar, navigation panel, content panel, and footer, and then delegates application building to the view parts.
 
-## ActionApplicationBuilder
+### AbstractActionApplicationBuilder
   
-[ActionApplicationBuilder](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/ActionApplicationBuilder.html) is a concrete subclass of ViewPartApplicationBuilder
+[AbstractActionApplicationBuilder](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/AbstractActionApplicationBuilder.html) is a subclass of ViewPartApplicationBuilder
 which builds application from an action hierarchy.
 It uses 3 actions to build the application:
 
 * Active action - action which has been executed and results of its execution are presented to the user in the content panel. This action or its parent in the path are selected in the navigation bar or the navigation panel.
-* Principal action - this action's link is displayed as the navigation bar brand. Context actions are displayed in the navigation bar, and child actions are displayed in the navigation panel. The action takes its name from the fact that it would typically represent the security principal. 
-* Root action - this action's link is displayed in the header and its context actions are displayed in the footer.
+* Principal action - this action's link is displayed as the navigation bar brand. Context actions are displayed in the navigation bar, and child actions are displayed in the navigation panel. The action takes its name from the fact that it would typically represent the security principal. The principal action is computed as the second element in the active action path if the path has two or more elements, or as the active action if the path has 1 element. Null otherwise. This behavior may be customize by overriding ``getPrincipalAction()`` method. 
+* Root action - this action's link is displayed in the header and its context actions are displayed in the footer. It is computed as the first element in the active action path, or as the active action if the path is empty. This behavior can be customized by overriding ``getRootAction()`` method.
 
-The builder has several constructors. One of them takes just the active action and derives principal and root actions from the active action as the first and the second elements of the action path.
+AbstractActionApplicationBuilder delegates building to the following view parts:
+
+* [NavigationBarViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/viewparts/NavigationBarViewPart.html) 
+* [AdaptiveNavigationPanelViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/viewparts/AdaptiveNavigationPanelViewPart.html) which delegates to the [ActionGroupNavigationPanelViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/viewparts/ActionGroupNavigationPanelViewPart.html) if navigation actions do not have children (one-level) or to [JsTreeNavigationPanelViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/viewparts/JsTreeNavigationPanelViewPart.html) if navigation actions form a multi-level hierarchy. 
+* [ContentPanelViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/viewparts/ContentPanelViewPart.html) which in turn delegates to [SectionViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/viewparts/SectionViewPart.html) 
+* [FooterViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/viewparts/FooterViewPart.html)
+
+The header view part is so simple that it is implemented as a lambda. 
+
+### ActionApplicationBuilder
+  
+[ActionApplicationBuilder](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/ActionApplicationBuilder.html) is a concrete subclass of AbstractActionApplicationBuilder
+which take active, principal, and root actions in constructors.
 
 In the examples below "view account" is an active action, "John Doe" is the principal action and the "Bank of Nasdanika" is the root action.
 
-ActionApplicationBuilder delegates building to the following view parts:
-
-* [NavigationBarViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/NavigationBarViewPart.html) 
-* [ActionGroupNavigationPanelViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/ActionGroupNavigationPanelViewPart.html) which can be replaced with * [JsTreeNavigationPanelViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/JsTreeNavigationPanelViewPart.html) 
-* [ContentPanelViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/ContentPanelViewPart.html) which in turn delegates to [SectionViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/SectionViewPart.html) 
-* [FooterViewPart](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/impl/FooterViewPart.html)
-
-The header view part is so simple that it is implemented as a lambda one-liner. 
-
-### Action group navigation panel
+#### Action group navigation panel
 
 The code snippet below shows how an application builder is constructed for the default action group navigation panel.
   
@@ -271,12 +283,12 @@ ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principa
 };			
 ```
 
-Full code is available in the [testActionApplication](https://github.com/Nasdanika/html/blob/master/org.nasdanika.html.tests/src/org/nasdanika/html/tests/TestApp.java#L157) method.
+Full code is available in the [testActionApplication](https://github.com/Nasdanika/html/blob/master/org.nasdanika.html.tests/src/org/nasdanika/html/tests/TestApp.java) class.
 
 <iframe src="test-dumps/app/action/link-group/credit-card-9012.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
    
-### jsTree navigation panel
+#### jsTree navigation panel
 
 ```		
 ActionApplicationBuilder jsTreeAppBuilder = new ActionApplicationBuilder(appAction, principalAction, principalAction.getChildren(), selected, Collections.emptyMap()) {

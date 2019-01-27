@@ -38,11 +38,9 @@ import org.nasdanika.html.app.impl.HTMLTableApplication;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 import org.nasdanika.html.app.viewparts.JsTreeNavigationPanelViewPart;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.InputGroup;
 import org.nasdanika.html.bootstrap.Theme;
-import org.nasdanika.html.bootstrap.Container.Row.Col;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
 import org.nasdanika.html.jstree.JsTreeFactory;
@@ -80,35 +78,7 @@ public class TestApp extends HTMLTestBase {
 	
 	@Test
 	public void testBootstrapApp() throws Exception {
-		Application app = new BootstrapContainerApplication(Theme.Litera, false) {
-			
-			protected void configureContainer(Container container) {
-				container.border(Color.DANGER);				
-			}
-			
-			@Override
-			protected void configureHeader(Col header) {
-				header.border(Color.DANGER).background(Color.PRIMARY);
-			}
-			
-			@Override
-			protected void configureNavigationBar(Col navigationBar) {
-				navigationBar.border(Color.DANGER);
-			}
-			
-			protected void configureNavigationPanel(Col navigationPanel) {
-				navigationPanel.border(Color.DANGER).widthAuto();				
-			}
-			
-			protected void configureConentPanel(Col contentPanel) {
-				contentPanel.border(Color.DANGER).toHTMLElement().style("min-height", "25em");				
-			}
-			
-			protected void configureFooter(Col footer) {
-				footer.border(Color.DANGER);		
-			}
-			
-		};
+		Application app = new BootstrapContainerApplication(Theme.Litera, false);
 		
 		Tag treeContainer = app.getHTMLPage().getFactory().div();
 		HTMLFactory htmlFactory = HTMLFactory.INSTANCE;
