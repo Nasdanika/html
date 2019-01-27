@@ -34,8 +34,8 @@ public interface Property {
 	// TODO - setting value, validation...
 	
 	/**
-	 * Updates property value. This method is typically invoked by the containing property source
-	 * and diagnostic is added as a child to the parent diagnostic.
+	 * Updates property value. This method is typically invoked by the containing property source update() method
+	 * and the returned diagnostic is added as a child to the parent diagnostic.
 	 * @param obj
 	 * @param originalValue
 	 * @param newValue
