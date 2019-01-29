@@ -108,12 +108,12 @@
 	</developers>
 	
 	<modules>
-		<module>../org.nasdanika.html/jar-pom.xml</module>
-		<module>../org.nasdanika.html.bootstrap/jar-pom.xml</module>
-		<module>../org.nasdanika.html.jstree/jar-pom.xml</module>
-		<module>../org.nasdanika.html.knockout/jar-pom.xml</module>
-		<module>../org.nasdanika.html.fontawesome/jar-pom.xml</module>
-		<module>../org.nasdanika.html.app/jar-pom.xml</module>
+		<module>html/jar-pom.xml</module>
+		<module>bootstrap/jar-pom.xml</module>
+		<module>jstree/jar-pom.xml</module>
+		<module>knockout/jar-pom.xml</module>
+		<module>fontawesome/jar-pom.xml</module>
+		<module>app/jar-pom.xml</module>
 	</modules>	
 	
 	<profiles>
