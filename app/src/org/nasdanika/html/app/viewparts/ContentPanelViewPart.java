@@ -53,7 +53,7 @@ public class ContentPanelViewPart implements ViewPart {
 	public Object generate(ViewGenerator viewGenerator) {
 		Fragment ret = viewGenerator.getHTMLFactory().fragment();
 		Action lastNonSection = lastNonSection();
-		if (lastNonSection.getPath().size() > 2) {
+		if (lastNonSection.getPath().size() > getMinBreadcrumbsDepth() - 2) {
 			// Breadcrumbs
 			Breadcrumbs breadcrumbs = viewGenerator.getBootstrapFactory().breadcrums();
 			breadcrumbs.margin().top(1);
@@ -65,7 +65,7 @@ public class ContentPanelViewPart implements ViewPart {
 			breadcrumbs.item(true, viewGenerator.label(lastNonSection));
 		}
 		
-		if (lastNonSection.getPath().size() > 1) {
+		if (lastNonSection.getPath().size() > getMinTitleDepth() - 2) {
 			// Page title, doesn't make much sense to show it for the root or principal actions - it would duplicate the header or the nav bar. 
 			ret.content(viewGenerator.label(lastNonSection, viewGenerator.getHTMLFactory().tag(TagName.h2)));			
 		}
@@ -73,4 +73,25 @@ public class ContentPanelViewPart implements ViewPart {
 		ret.content(new SectionViewPart(lastNonSection, activeAction, showContextActions, 0).generate(viewGenerator));		
 		return ret;
 	}	
+	
+	/**
+	 * Minimum action depth in the tree at which breadcrumbs are displayed. 
+	 * This implementation returns 4, which means that the root, principlal, and first level navigation
+	 * actions are displayed without breadcrumbs. 
+	 * @return
+	 */
+	protected int getMinBreadcrumbsDepth() {
+		return 4;
+	}
+	
+	/**
+	 * Minimum action depth in the tree at which content title is displayed. 
+	 * This implementation returns 3, which means that the root and principal actions content is
+	 * displayed without a title.
+	 * @return
+	 */
+	protected int getMinTitleDepth() {
+		return 3;
+	}
+	
 }
