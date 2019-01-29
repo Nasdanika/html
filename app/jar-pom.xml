@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	  <parent>
+	    <artifactId>org.nasdanika.html.parent</artifactId>
+	    <groupId>org.nasdanika.html</groupId>
+	    <version>2.0.0-SNAPSHOT</version>
+	    <relativePath>../jar-pom.xml</relativePath>
+	  </parent>
+	<artifactId>org.nasdanika.html.app</artifactId>
+	<packaging>jar</packaging>
+	<name>Nasdanika HTML Application</name>
+	<description>Classes for generating HTML Application UI.</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>org.nasdanika.html</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>org.nasdanika.html.bootstrap</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>org.nasdanika.html.jstree</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>org.nasdanika.html.knockout</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>org.nasdanika.html.fontawesome</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>
