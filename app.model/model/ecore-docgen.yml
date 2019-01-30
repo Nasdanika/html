@@ -2,7 +2,7 @@ models:
   - app.genmodel
   
 output:
-  site: /Nasdanika HTML Repository/src/site/resources/app-model-doc
+  site: /org.nasdanika.html.repository/src/site/resources/app-model-doc
 
 apidocs:
   - https://docs.oracle.com/javase/8/docs/api/
