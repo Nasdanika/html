@@ -14,16 +14,15 @@ import org.nasdanika.html.app.Delta;
 import org.nasdanika.html.app.Diagnostic;
 import org.nasdanika.html.app.MultiValueDataSource;
 
-public class EStructuralFeatureMultiValueDataSource<T extends EObject, F extends EStructuralFeature> implements MultiValueDataSource {
+public class EStructuralFeatureMultiValueDataSource<T extends EObject, F extends EStructuralFeature> extends EObjectAdaptable<T> implements MultiValueDataSource {
 	
 	protected F feature;
-	protected T eObject;
 
-	public EStructuralFeatureMultiValueDataSource(T eObject, F feature) {
+	public EStructuralFeatureMultiValueDataSource(T target, F feature) {
+		super(target);
 		if (!feature.isMany()) {
 			throw new IllegalArgumentException("Single feature");
 		}
-		this.eObject = eObject;
 		this.feature = feature;
 	}
 
@@ -48,13 +47,13 @@ public class EStructuralFeatureMultiValueDataSource<T extends EObject, F extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> getValues() {
-		return (List<Object>) eObject.eGet(feature);
+		return (List<Object>) target.eGet(feature);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> getValues(Map<Object, String> filter, Map<Object, Boolean> sort) {
-		Stream<Object> stream = ((List<Object>) eObject.eGet(feature)).stream().filter(createFilter(filter));
+		Stream<Object> stream = ((List<Object>) target.eGet(feature)).stream().filter(createFilter(filter));
 		if (sort != null && !sort.isEmpty()) {
 			stream = stream.sorted(createComparator(sort));
 		}

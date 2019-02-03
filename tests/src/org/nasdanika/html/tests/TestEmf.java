@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +33,7 @@ import org.nasdanika.html.app.impl.BootstrapContainerApplication;
 import org.nasdanika.html.emf.ComposedAdapterFactory;
 import org.nasdanika.html.emf.EClassPropertySource;
 import org.nasdanika.html.emf.ENamedElementLabel;
+import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.EObjectViewAction;
 import org.nasdanika.html.emf.EStructuralFeatureLabel;
 import org.nasdanika.html.emf.FunctionAdapterFactory;
@@ -95,7 +95,7 @@ public class TestEmf extends HTMLTestBase {
 
 			@Override
 			public String getUrl() {
-				Identity identity = (Identity) EcoreUtil.getRegisteredAdapter((EObject) getTarget(), Identity.class);
+				Identity identity = EObjectAdaptable.adaptTo((EObject) getTarget(), Identity.class);
 				return identity == null ? null : identity.getId()+".html";
 			}
 			
@@ -113,7 +113,7 @@ public class TestEmf extends HTMLTestBase {
 	}
 	
 	@Test
-	public void testEClasPropertySource() {
+	public void testEClassPropertySource() {
 		System.out.println("--- EClass property descriptors ---");
 		for (EClassifier ec: BankPackage.eINSTANCE.getEClassifiers()) {			
 			if (ec instanceof EClass) {
@@ -132,14 +132,14 @@ public class TestEmf extends HTMLTestBase {
 		TreeIterator<EObject> tit = bank.eResource().getAllContents();
 		while (tit.hasNext()) {
 			EObject next = tit.next();
-			Application application = ((ApplicationFactory) EcoreUtil.getRegisteredAdapter(next, ApplicationFactory.class)).createApplication();
+			Application application = EObjectAdaptable.adaptTo(next, ApplicationFactory.class).createApplication();
 			assertNotNull(application);
 			
-			ApplicationBuilder applicationBuilder = (ApplicationBuilder) EcoreUtil.getRegisteredAdapter(next, ApplicationBuilder.class);
+			ApplicationBuilder applicationBuilder = EObjectAdaptable.adaptTo(next, ApplicationBuilder.class);
 			assertNotNull(applicationBuilder);
 			applicationBuilder.build(application);
 			
-			NavigationActionActivator activator = (NavigationActionActivator) EcoreUtil.getRegisteredAdapter(next, ViewActionActivator.class);
+			NavigationActionActivator activator = (NavigationActionActivator) EObjectAdaptable.adaptTo(next, ViewActionActivator.class);
 			writeFile("emf/bank/"+activator.getUrl(), application.toString());
 		}
 	}
@@ -170,14 +170,14 @@ public class TestEmf extends HTMLTestBase {
 					continue;
 				}
 				
-				Application application = ((ApplicationFactory) EcoreUtil.getRegisteredAdapter(next, ApplicationFactory.class)).createApplication();
+				Application application = EObjectAdaptable.adaptTo(next, ApplicationFactory.class).createApplication();
 				assertNotNull(application);
 				
-				ApplicationBuilder applicationBuilder = (ApplicationBuilder) EcoreUtil.getRegisteredAdapter(next, ApplicationBuilder.class);
+				ApplicationBuilder applicationBuilder = EObjectAdaptable.adaptTo(next, ApplicationBuilder.class);
 				assertNotNull(applicationBuilder);
 				applicationBuilder.build(application);
 				
-				NavigationActionActivator activator = (NavigationActionActivator) EcoreUtil.getRegisteredAdapter(next, ViewActionActivator.class);
+				NavigationActionActivator activator = (NavigationActionActivator) EObjectAdaptable.adaptTo(next, ViewActionActivator.class);
 				writeFile("emf/customer/"+customer.getName().toLowerCase().replace(' ', '-')+"/"+activator.getUrl(), application.toString());
 			}
 		}
@@ -194,7 +194,7 @@ public class TestEmf extends HTMLTestBase {
 //		while (tit.hasNext()) {
 //			System.out.println("---");
 //			EObject next = tit.next();			
-//			Action action = (Action) EcoreUtil.getRegisteredAdapter(next, ViewAction.class);
+//			Action action = EObjectAdaptable.adaptTo(next, ViewAction.class);
 //			navigationTree(action, 0);
 //		}
 //	}	

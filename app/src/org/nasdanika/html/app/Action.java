@@ -1,6 +1,7 @@
 package org.nasdanika.html.app;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ import org.nasdanika.html.app.impl.Util;
  * @author Pavel Vlasov
  *
  */
-public interface Action extends Label, Executable, Categorized {
+public interface Action extends Label, Executable, Categorized, Adaptable {
 	
 	/**
 	 * "Build-in" roles.
@@ -121,6 +122,35 @@ public interface Action extends Label, Executable, Categorized {
 	}
 	
 	/**
+	 * @return Root of the action hierarchy.
+	 */
+	default Action getRoot() {
+		Action parent = getParent();
+		return parent == null ? this : parent.getRoot();
+	}
+	
+	/**
+	 * Returns a child action by its id path. 
+	 * @param path
+	 * @return
+	 */
+	default Action getChildById(Object... path) {
+		if (path.length == 0) {
+			return null;
+		}
+		for (Action child: getChildren()) {
+			Object id = child.getId();
+			if (id != null && id.equals(path[0])) {
+				if (path.length == 1) {
+					return child;
+				}
+				return child.getChildById(Arrays.copyOfRange(path, 1, path.length));
+			}
+		}		
+		return null;
+	}
+	
+	/**
 	 * @return An optional {@link ActionActivator} to activate this action. 
 	 * Some actions may have no activators. One case is section actions which are executed with the containing action, another possible case is when an action
 	 * is used for grouping its child actions, similar to a category.
@@ -223,6 +253,23 @@ public interface Action extends Label, Executable, Categorized {
 
 	default <T extends Action> List<Map.Entry<Label, List<T>>> getSectionChildrenGroupedByCategory() {
 		return getChildrenGroupedByCategory(Role.SECTION);
+	}
+	
+	/**
+	 * Adapts to the requested type. Delegates to the parent if the parent is not null
+	 * and Adaptable.super.adaptTo() returns null. Delegation to the parent simplifies access
+	 * to the context information common for multiple actions. 
+	 */
+	@Override
+	default <T> T adaptTo(Class<T> type) {
+		T adapter = Adaptable.super.adaptTo(type);
+		if (adapter == null) {
+			Action parent = getParent();
+			if (parent != null) {
+				adapter = parent.adaptTo(type);
+			}
+		}
+		return adapter;
 	}
 	
 }

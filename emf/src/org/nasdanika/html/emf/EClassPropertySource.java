@@ -2,6 +2,7 @@ package org.nasdanika.html.emf;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
@@ -20,12 +21,18 @@ import org.nasdanika.html.app.PropertySource;
  */
 public class EClassPropertySource extends EClassLabel implements PropertySource {
 
-	private AuthorizationProvider authorizationProvider;
+	private Supplier<AuthorizationProvider> authorizationProviderSupplier;
 
-	public EClassPropertySource(EClass eClass, AuthorizationProvider authorizationProvider) {
+//	public EClassPropertySource(EClass eClass, AuthorizationProvider authorizationProvider) {
+//		super(eClass);
+//		this.authorizationProviderSupplier = () -> authorizationProvider;
+//	}
+	
+	public EClassPropertySource(EClass eClass, Supplier<AuthorizationProvider> authorizationProviderSupplier) {
 		super(eClass);
-		this.authorizationProvider = authorizationProvider;
+		this.authorizationProviderSupplier = authorizationProviderSupplier == null ? () -> AuthorizationProvider.ALLOW_ALL : authorizationProviderSupplier;
 	}
+	
 
 	@Override
 	public Object getVersion(Object obj) {
@@ -61,6 +68,7 @@ public class EClassPropertySource extends EClassLabel implements PropertySource 
 	 * @return features to wrap into property descriptors.
 	 */
 	protected List<EStructuralFeature> getPropertyDescriptorFeatures() {
+		AuthorizationProvider authorizationProvider = authorizationProviderSupplier.get();
 		return eNamedElement.getEAllStructuralFeatures()
 				.stream()
 				.filter(f ->  authorizationProvider == null || authorizationProvider.authorizeRead(f.getName()))

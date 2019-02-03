@@ -13,12 +13,10 @@ import org.nasdanika.html.app.SingleValueDataSource;
  * @author Pavel
  *
  */
-public class EObjectSingleValueDataSource<T extends EObject> implements SingleValueDataSource {
+public class EObjectSingleValueDataSource<T extends EObject> extends EObjectAdaptable<T> implements SingleValueDataSource {
 	
-	protected T value;
-
-	public EObjectSingleValueDataSource(T value) {
-		this.value = value;
+	public EObjectSingleValueDataSource(T target) {
+		super(target);
 	}
 
 	@Override
@@ -41,12 +39,12 @@ public class EObjectSingleValueDataSource<T extends EObject> implements SingleVa
 
 	@Override
 	public Object getValue() {
-		return value;
+		return target;
 	}
 	
 	@Override
 	public String toString() {
-		return super.toString() + ", value="+value;
+		return super.toString() + ", value="+target;
 	}
 
 }

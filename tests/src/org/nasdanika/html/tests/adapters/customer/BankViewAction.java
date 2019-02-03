@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.Customer;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.ActionImpl;
+import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.EObjectViewAction;
 import org.nasdanika.html.emf.ViewAction;
 
@@ -35,7 +35,7 @@ public class BankViewAction extends EObjectViewAction<Bank> {
 		List<Action> ret = new ArrayList<>();
 		Customer customer = customerSupplier.get();
 		if (customer != null) {
-			Action customerViewAction = (Action) EcoreUtil.getRegisteredAdapter((EObject) customer, ViewAction.class);
+			Action customerViewAction = EObjectAdaptable.adaptTo((EObject) customer, ViewAction.class);
 			if (customerViewAction != null) {
 				ret.add(customerViewAction); // Shall have navigation role.
 			}

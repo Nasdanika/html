@@ -70,5 +70,14 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	public String toString() {
 		return super.toString() + " -> " + target;
 	}
+	
+	/**
+	 * Invokes target adaptTo. If it returns null then invokes Action.super.adaptTo().
+	 */
+	@Override
+	public <A> A adaptTo(Class<A> type) {
+		A adapter = target.adaptTo(type);
+		return adapter == null ? Action.super.adaptTo(type) : adapter;
+	}
 		
 }

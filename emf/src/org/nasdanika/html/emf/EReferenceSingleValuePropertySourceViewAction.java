@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Label;
@@ -35,7 +34,7 @@ public class EReferenceSingleValuePropertySourceViewAction<T extends EObject> ex
 			return null;
 		}
 		
-		Action viewAction = (Action) EcoreUtil.getRegisteredAdapter(value, ViewAction.class);
+		Action viewAction = EObjectAdaptable.adaptTo(value, ViewAction.class);
 		if (viewAction != null) {
 			return viewAction.execute(viewGenerator);
 		}

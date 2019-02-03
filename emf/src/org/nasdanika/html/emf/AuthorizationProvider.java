@@ -8,6 +8,30 @@ package org.nasdanika.html.emf;
 public interface AuthorizationProvider {
 	
 	/**
+	 * Authorization provider which allows all actions.
+	 */
+	AuthorizationProvider ALLOW_ALL = new AuthorizationProvider() {
+		
+		@Override
+		public boolean authorize(String action, String qualifier) {
+			return true;
+		}
+		
+	};
+	
+	/**
+	 * Authorization provider which denies all actions.
+	 */
+	AuthorizationProvider DENY_ALL = new AuthorizationProvider() {
+		
+		@Override
+		public boolean authorize(String action, String qualifier) {
+			return false;
+		}
+		
+	};	
+	
+	/**
 	 * Authorizes an action for a given qualifier.
 	 * @param action
 	 * @param qualifier

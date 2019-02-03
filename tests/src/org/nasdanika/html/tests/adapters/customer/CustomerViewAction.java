@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.bank.Customer;
 import org.nasdanika.bank.CustomerAccount;
 import org.nasdanika.html.app.Action;
@@ -13,6 +12,7 @@ import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.bootstrap.Text.Alignment;
+import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.EObjectViewAction;
 import org.nasdanika.html.emf.ViewAction;
 
@@ -42,14 +42,14 @@ public class CustomerViewAction extends EObjectViewAction<Customer> {
 	@Override
 	public List<? extends Action> getChildren() {
 		List<Action> ret = new ArrayList<>();
-		value.getAccounts().stream()
-			.map(account -> (Action) EcoreUtil.getRegisteredAdapter(account, ViewAction.class))
+		target.getAccounts().stream()
+			.map(account -> EObjectAdaptable.adaptTo(account, ViewAction.class))
 			.filter(a -> a != null)
 			.forEach(ret::add);
 		
 		// Loading context actions from the application model for the demo purposes.
 		URI appUri = URI.createPlatformPluginURI("org.nasdanika.html.app.model/NasdanikaBank.app", false);
-		Resource appResource = value.eResource().getResourceSet().getResource(appUri, true);
+		Resource appResource = target.eResource().getResourceSet().getResource(appUri, true);
 		ret.addAll(((Action) appResource.getContents().iterator().next()).getChildren().get(0).getContextChildren());				
 		
 		return ret;
@@ -59,8 +59,8 @@ public class CustomerViewAction extends EObjectViewAction<Customer> {
 	public Object execute(ViewGenerator viewGenerator) {
 		Table accountsTable = viewGenerator.getBootstrapFactory().table().bordered();
 		accountsTable.headerRow("Account", "Balance");
-		for (CustomerAccount account: value.getAccounts()) {
-			Action accountViewAction = (Action) EcoreUtil.getRegisteredAdapter(account, ViewAction.class);
+		for (CustomerAccount account: target.getAccounts()) {
+			Action accountViewAction = EObjectAdaptable.adaptTo(account, ViewAction.class);
 			if (accountViewAction != null) {
 				Row ar = accountsTable.row();
 				ar.cell(viewGenerator.link(accountViewAction));

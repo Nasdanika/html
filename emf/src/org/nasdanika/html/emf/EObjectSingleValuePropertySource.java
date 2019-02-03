@@ -8,7 +8,6 @@ import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionProvider;
 import org.nasdanika.html.app.PropertyDescriptor;
@@ -25,7 +24,7 @@ public class EObjectSingleValuePropertySource<T extends EObject> extends EObject
 	
 	public EObjectSingleValuePropertySource(T value) {
 		super(value);
-		propertySourceDelegate = new EClassPropertySource(value.eClass(), (AuthorizationProvider) EcoreUtil.getRegisteredAdapter(value, AuthorizationProvider.class)) {
+		propertySourceDelegate = new EClassPropertySource(value.eClass(), () -> adaptTo(AuthorizationProvider.class)) {
 			
 			@Override
 			protected boolean isPropertyDescriptorFeature(EStructuralFeature feature) {

@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Identity;
@@ -24,17 +23,13 @@ import org.nasdanika.html.app.viewparts.ViewSingleValuePropertySourceViewPart;
  */
 public class EObjectViewAction<T extends EObject> extends EObjectSingleValuePropertySource<T> implements ViewAction {
 	
-	protected Identity identity;
-	protected AuthorizationProvider authorizationProvider;
-
 	public EObjectViewAction(T value) {
 		super(value);
-		authorizationProvider = (AuthorizationProvider) EcoreUtil.getRegisteredAdapter(value, AuthorizationProvider.class);
-		identity = (Identity) EcoreUtil.getRegisteredAdapter(value, Identity.class);
 	}
 	
 	@Override
 	public Object getId() {
+		Identity identity = adaptTo(Identity.class);
 		return identity == null ? super.getId() : identity.getId();
 	}
 	
@@ -45,7 +40,7 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	
 	@Override
 	public Label getCategory() {
-		EReference containmentFeature = value.eContainmentFeature();
+		EReference containmentFeature = target.eContainmentFeature();
 		return containmentFeature == null ? null : new EStructuralFeatureLabel<EReference>(containmentFeature);
 	}
 
@@ -77,20 +72,20 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 			if (Action.Role.NAVIGATION.equals(childFeatureRole)) {
 				if (childFeature instanceof EReference) {
 					if (childFeature.isMany()) {
-						EReferenceMultiValuePropertySource<EObject> ps = new EReferenceMultiValuePropertySource<EObject>(value, (EReference) childFeature);				
+						EReferenceMultiValuePropertySource<EObject> ps = new EReferenceMultiValuePropertySource<EObject>(target, (EReference) childFeature);				
 						for (Object child: ps.getValues()) {
 							if (child instanceof EObject) {
-								Action ca = (Action) EcoreUtil.getRegisteredAdapter((EObject) child, ViewAction.class);
+								Action ca = adaptTo((EObject) child, ViewAction.class);
 								if (ca != null) {
 									ret.add(filterChildAction(ca, childFeatureRole, childFeatures.size() == 1 ? null : ps));
 								}
 							}
 						}
 					} else {
-						EReferenceSingleValuePropertySource<EObject> ps = new EReferenceSingleValuePropertySource<EObject>(value, (EReference) childFeature);
+						EReferenceSingleValuePropertySource<EObject> ps = new EReferenceSingleValuePropertySource<EObject>(target, (EReference) childFeature);
 						Object child = ps.getValue();
 						if (child instanceof EObject) {
-							Action ca = (Action) EcoreUtil.getRegisteredAdapter((EObject) child, ViewAction.class);
+							Action ca = adaptTo((EObject) child, ViewAction.class);
 							if (ca != null) {
 								ret.add(filterChildAction(ca, childFeatureRole, childFeatures.size() == 1 ? null : ps));
 							}
@@ -100,9 +95,9 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 			} else if (Action.Role.SECTION.equals(childFeatureRole)) {
 				if (childFeature instanceof EReference) {
 					if (childFeature.isMany()) {
-						ret.add(new EReferenceMultiValuePropertySourceViewAction<EObject>(value, (EReference) childFeature, childFeatureRole, this));
+						ret.add(new EReferenceMultiValuePropertySourceViewAction<EObject>(target, (EReference) childFeature, childFeatureRole, this));
 					} else {
-						ret.add(new EReferenceSingleValuePropertySourceViewAction<EObject>(value, (EReference) childFeature, childFeatureRole, this));
+						ret.add(new EReferenceSingleValuePropertySourceViewAction<EObject>(target, (EReference) childFeature, childFeatureRole, this));
 					}
 				} else {
 					// TODO - single attribute, many attribute
@@ -147,7 +142,8 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	 * @return features to wrap into child actions.
 	 */
 	protected List<EStructuralFeature> getChildFeatures() {
-		return value.eClass().getEAllStructuralFeatures()
+		AuthorizationProvider authorizationProvider = adaptTo(AuthorizationProvider.class);
+		return target.eClass().getEAllStructuralFeatures()
 				.stream()
 				.filter(f -> authorizationProvider == null || authorizationProvider.authorizeRead(f.getName()))
 				.filter(this::isChildFeature)
@@ -167,13 +163,13 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 
 	@Override
 	public Action getParent() {
-		EObject eContainer = value.eContainer();		
-		return eContainer == null ? null : (Action) EcoreUtil.getRegisteredAdapter((EObject) eContainer, ViewAction.class);
+		EObject eContainer = target.eContainer();		
+		return eContainer == null ? null : adaptTo((EObject) eContainer, ViewAction.class);
 	}
 
 	@Override
 	public ActionActivator getActivator() {
-		return (ActionActivator) EcoreUtil.getRegisteredAdapter(value, ViewActionActivator.class);
+		return adaptTo(target, ViewActionActivator.class);
 	}
 	
 	@Override
@@ -205,8 +201,17 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 
 	@Override
 	public boolean isInRole(String role) {
-		EReference containmentFeature = value.eContainmentFeature();	
+		EReference containmentFeature = target.eContainmentFeature();	
 		return role != null && containmentFeature != null && role.equals(getFeatureRole(containmentFeature));
+	}
+	
+	/**
+	 * Calls super.adaptTo() and returns adapter if not null and type is not {@link Identity}. Otherwise returns {@link Action}.adaptTo() - delegating to the parent.
+	 */
+	@Override
+	public <A> A adaptTo(Class<A> type) {
+		A adapter = super.adaptTo(type);
+		return adapter == null && type != Identity.class ? ViewAction.super.adaptTo(type) : adapter;
 	}
 
 }

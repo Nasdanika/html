@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.bank.Customer;
 import org.nasdanika.bank.CustomerAccount;
 import org.nasdanika.bank.Transaction;
@@ -14,6 +13,7 @@ import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.EObjectViewAction;
 import org.nasdanika.html.emf.ViewAction;
 
@@ -39,12 +39,16 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 
 	@Override
 	public Action getParent() {
-		return (Action) EcoreUtil.getRegisteredAdapter(customerSupplier.get(), ViewAction.class);
+		if (customerSupplier == null) {
+			return null;
+		}
+		Customer customer = customerSupplier.get();		
+		return customer == null ? null : EObjectAdaptable.adaptTo(customer, ViewAction.class);
 	}
 	
 	@Override
 	public String getText() {
-		return value.getProduct().getName() + " " + value.getNumber();
+		return target.getProduct().getName() + " " + target.getNumber();
 	}
 	
 	/**
@@ -65,7 +69,7 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 	public Object execute(ViewGenerator viewGenerator) {		
 		// Current transactions table ordered reverse chronological.
 		List<Transaction<?>> currentTransactions = new ArrayList<>();
-		value.getStatements().stream().filter(s -> s.getClosingDate() == null).forEach(s -> {
+		target.getStatements().stream().filter(s -> s.getClosingDate() == null).forEach(s -> {
 			currentTransactions.addAll(s.getDebits());
 			currentTransactions.addAll(s.getCredits());
 		});
@@ -80,7 +84,7 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 			Row transactionRow = currentTransactionsTable.row();
 			transactionRow.cell(transaction.getDate());
 			transactionRow.cell(transaction.getComment());
-			if (transaction.getDebit().eContainer() == value) {
+			if (transaction.getDebit().eContainer() == target) {
 				transactionRow.cell(transaction.getAmount());
 				transactionRow.cell("");
 			} else {
@@ -89,7 +93,7 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 			}
 		}
 
-		return viewGenerator.getHTMLFactory().fragment("Balance: ", value.getBalance(), "<h4>Current transactions</h4>", currentTransactionsTable);
+		return viewGenerator.getHTMLFactory().fragment("Balance: ", target.getBalance(), "<h4>Current transactions</h4>", currentTransactionsTable);
 	}
 	
 }

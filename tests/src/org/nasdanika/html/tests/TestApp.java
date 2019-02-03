@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,6 +40,7 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.InputGroup;
 import org.nasdanika.html.bootstrap.Theme;
+import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
 import org.nasdanika.html.jstree.JsTreeFactory;
@@ -170,7 +170,7 @@ public class TestApp extends HTMLTestBase {
 			if (next instanceof Action) {
 				ActionActivator actionActivator = ((Action) next).getActivator();
 				if (actionActivator == null && !"transfer".equals(((Action) next).getId())) {
-					actionActivator = (ActionActivator) EcoreUtil.getRegisteredAdapter(next, ActionActivator.class);
+					actionActivator = EObjectAdaptable.adaptTo(next, ActionActivator.class);
 				}
 				if (actionActivator instanceof NavigationActionActivator) {
 					String href = ((NavigationActionActivator) actionActivator).getUrl();

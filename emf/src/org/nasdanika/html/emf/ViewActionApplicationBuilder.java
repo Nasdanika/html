@@ -1,8 +1,8 @@
 package org.nasdanika.html.emf;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Adaptable;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.AbstractActionApplicationBuilder;
 
@@ -12,7 +12,7 @@ import org.nasdanika.html.app.impl.AbstractActionApplicationBuilder;
  * @author Pavel
  *
  */
-public class ViewActionApplicationBuilder<T extends EObject> extends AbstractActionApplicationBuilder {
+public class ViewActionApplicationBuilder<T extends EObject> extends AbstractActionApplicationBuilder implements Adaptable {
 				
 	protected T target;
 	
@@ -22,37 +22,42 @@ public class ViewActionApplicationBuilder<T extends EObject> extends AbstractAct
 	
 	@Override
 	protected Action getActiveAction() {
-		return (Action) EcoreUtil.getRegisteredAdapter(target, ViewAction.class);
+		return adaptTo(ViewAction.class);
 	}	
 		
 	@Override
 	protected ViewPart getHeaderViewPart() {
-		ViewPart headerViewPart = (ViewPart) EcoreUtil.getRegisteredAdapter((EObject) target, HeaderViewPart.class);
+		ViewPart headerViewPart = adaptTo(HeaderViewPart.class);
 		return headerViewPart != null ? headerViewPart : super.getHeaderViewPart();
 	}
 	
 	@Override
 	protected ViewPart getNavigationBarViewPart() {
-		ViewPart navigationBarViewPart = (ViewPart) EcoreUtil.getRegisteredAdapter((EObject) target, NavigationBarViewPart.class);
+		ViewPart navigationBarViewPart = adaptTo(NavigationBarViewPart.class);
 		return navigationBarViewPart != null ? navigationBarViewPart : super.getNavigationBarViewPart();
 	}
 	
 	@Override
 	protected ViewPart getNavigationPanelViewPart() {
-		ViewPart navigationPanelViewPart = (ViewPart) EcoreUtil.getRegisteredAdapter((EObject) target, NavigationPanelViewPart.class);
+		ViewPart navigationPanelViewPart = adaptTo(NavigationPanelViewPart.class);
 		return navigationPanelViewPart != null ? navigationPanelViewPart : super.getNavigationPanelViewPart();
 	}
 	
 	@Override
 	protected ViewPart getContentPanelViewPart() {
-		ViewPart contentPanelViewPart = (ViewPart) EcoreUtil.getRegisteredAdapter((EObject) target, ContentPanelViewPart.class);
+		ViewPart contentPanelViewPart = adaptTo(ContentPanelViewPart.class);
 		return contentPanelViewPart != null ? contentPanelViewPart : super.getContentPanelViewPart();
 	}
 	
 	@Override
 	protected ViewPart getFooterViewPart() {
-		ViewPart footerViewPart = (ViewPart) EcoreUtil.getRegisteredAdapter((EObject) target, FooterViewPart.class);
+		ViewPart footerViewPart = adaptTo(FooterViewPart.class);
 		return footerViewPart != null ? footerViewPart : super.getFooterViewPart();
+	}
+	
+	@Override
+	public <A> A adaptTo(Class<A> type) {
+		return EObjectAdaptable.adaptTo(target, type);
 	}
 		
 };

@@ -9,16 +9,15 @@ import org.nasdanika.html.app.Delta;
 import org.nasdanika.html.app.Diagnostic;
 import org.nasdanika.html.app.SingleValueDataSource;
 
-public class EStructuralFeatureSingleValueDataSource<T extends EObject, F extends EStructuralFeature> implements SingleValueDataSource {
+public class EStructuralFeatureSingleValueDataSource<T extends EObject, F extends EStructuralFeature> extends EObjectAdaptable<T> implements SingleValueDataSource {
 	
 	protected F feature;
-	protected T eObj;
 
-	public EStructuralFeatureSingleValueDataSource(T eObj, F feature) {
+	public EStructuralFeatureSingleValueDataSource(T target, F feature) {
+		super(target);
 		if (feature.isMany()) {
 			throw new IllegalArgumentException("Many feature");
 		}
-		this.eObj = eObj;
 		this.feature = feature;
 	}
 
@@ -42,7 +41,7 @@ public class EStructuralFeatureSingleValueDataSource<T extends EObject, F extend
 
 	@Override
 	public Object getValue() {
-		return eObj.eGet(feature);
+		return target.eGet(feature);
 	}
 
 }
