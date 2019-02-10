@@ -46,7 +46,11 @@
       <item name="Change Log" href="../../../../mantis/changelog_page.php?project_id=3" />
    </menu>
  
-   <footer><![CDATA[All rights reserved.]]></footer>
+   <footer>
+	Build ${env.CIRCLE_BUILD_NUM}.${env.CIRCLE_BRANCH}.${env.CIRCLE_SHA1} 
+	&nbsp;&bull;&nbsp;
+	All rights reserved
+   </footer>
  
   </body>    
  
