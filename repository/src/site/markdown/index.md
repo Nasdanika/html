@@ -2,6 +2,7 @@
 
 Nasdanika HTML features several libraries providing [fluent API](https://en.wikipedia.org/wiki/Fluent_interface) for building HTML user interfaces. 
 The goal of the libraries is to make Java developers more productive by:
+
 * Working in Java instead of switching between Java for the server side development and HTML, JavaScript and CSS for the client side development.
 * Apply the power of Java such as inheritance, polymorphism, patterns, e.g. a strategy pattern, etc. to building HTML user interfaces.
 * Operate on a higher level of abstraction thinking in terms of, say, actions and view parts instead of individual HTML elements.
