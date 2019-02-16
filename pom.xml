@@ -223,7 +223,7 @@
 		<module>repository</module>
 	</modules>
 	<!-- For resolution of JavaDoc between modules -->
-	<url>https://www.nasdanika.org/products/html/${project.version}/apidocs/</url>
+	<url>https://www.nasdanika.org/products/html/${project.version}/${env.CIRCLE_BRANCH}/apidocs/</url>
 	<organization>
 		<name>Nasdanika LLC</name>
 		<url>https://www.nasdanika.org</url>
