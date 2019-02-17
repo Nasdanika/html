@@ -21,7 +21,12 @@ public class CustomerViewAdapterFactory extends ComposedAdapterFactory {
 	
 	public CustomerViewAdapterFactory(Supplier<Customer> contextCustomerSupplier) {
 		// Registering customer-view specific adapters.
-		registerAdapterFactory(new FunctionAdapterFactory<ViewAction, Customer>(BankPackage.Literals.CUSTOMER, ViewAction.class, this.getClass().getClassLoader(), CustomerViewAction::new));
+		registerAdapterFactory(
+				new FunctionAdapterFactory<ViewAction, Customer>(
+						BankPackage.Literals.CUSTOMER, 
+						ViewAction.class, 
+						this.getClass().getClassLoader(), 
+						CustomerViewAction::new));
 		
 		// Bank view adapter factory is aware of the context customer
 		registerAdapterFactory(
