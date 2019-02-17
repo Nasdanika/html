@@ -3,6 +3,10 @@ package org.nasdanika.html.emf;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -84,17 +88,50 @@ public abstract class DelegatingAdapterFactory<T> extends ComposeableAdapterFact
 	 * @return
 	 */
 	protected abstract T doCreateAdapter(Notifier target);
+	
+	public static List<Class<?>> allInterfaces(Class<?> klass) {
+		if (klass==null) {
+			return Collections.emptyList();
+		}
+		List<Class<?>> ret = new ArrayList<>();
+		if (klass.isInterface()) {
+			ret.add(klass);
+		} else {
+			ret.addAll(Arrays.asList(klass.getInterfaces()));
+			Z: for (Class<?> i: allInterfaces(klass.getSuperclass())) {
+				for (Class<?> ei: ret) {
+					if (i.isAssignableFrom(ei)) {
+						continue Z;
+					}
+				}
+				ret.add(i);
+			}
+		}
+		return ret;
+	}	
 		
 	@Override
 	protected Adapter createAdapter(Notifier target) {
 		T adapter = doCreateAdapter(target);
+		
+		if (adapter == null) {
+			return null;
+		}
+		
 		if (adapter instanceof Adapter) {
 			return (Adapter) adapter;
-		}
+		}		
 		
 		DelegatingAdapter da = new DelegatingAdapter(adapter, target);
 		
-		return (Adapter) Proxy.newProxyInstance(proxyClassLoader, new Class[] { type,  Adapter.class}, new InvocationHandler() {
+		List<Class<?>> adapterInterfaces = allInterfaces(adapter.getClass());
+		Class<?>[] proxyInterfaces = new Class<?>[adapterInterfaces.size() + 1];
+		for (int i = 0; i < adapterInterfaces.size(); ++i) {
+			proxyInterfaces[i] = adapterInterfaces.get(i);
+		}
+		proxyInterfaces[proxyInterfaces.length -1] = Adapter.class;
+		
+		return (Adapter) Proxy.newProxyInstance(proxyClassLoader, proxyInterfaces, new InvocationHandler() {
 			
 			@Override
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
