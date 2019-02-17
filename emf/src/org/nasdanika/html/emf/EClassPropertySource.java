@@ -22,11 +22,6 @@ import org.nasdanika.html.app.PropertySource;
 public class EClassPropertySource extends EClassLabel implements PropertySource {
 
 	private Supplier<AuthorizationProvider> authorizationProviderSupplier;
-
-//	public EClassPropertySource(EClass eClass, AuthorizationProvider authorizationProvider) {
-//		super(eClass);
-//		this.authorizationProviderSupplier = () -> authorizationProvider;
-//	}
 	
 	public EClassPropertySource(EClass eClass, Supplier<AuthorizationProvider> authorizationProviderSupplier) {
 		super(eClass);

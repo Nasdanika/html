@@ -37,7 +37,6 @@ import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.EObjectViewAction;
 import org.nasdanika.html.emf.EStructuralFeatureLabel;
 import org.nasdanika.html.emf.FunctionAdapterFactory;
-import org.nasdanika.html.emf.NavigationViewActionActivatorAdapter;
 import org.nasdanika.html.emf.SupplierAdapterFactory;
 import org.nasdanika.html.emf.ViewAction;
 import org.nasdanika.html.emf.ViewActionActivator;
@@ -74,9 +73,23 @@ public class TestEmf extends HTMLTestBase {
 			}
 			
 		}
-		composedAdapterFactory.registerAdapterFactory(new SupplierAdapterFactory<ApplicationFactory>(ApplicationFactory.class, this.getClass().getClassLoader(), BootstrapContainerApplicationFactory::new));
-		composedAdapterFactory.registerAdapterFactory(new FunctionAdapterFactory<ApplicationBuilder, EObject>(ApplicationBuilder.class, this.getClass().getClassLoader(), ViewActionApplicationBuilder::new));
-		composedAdapterFactory.registerAdapterFactory(new FunctionAdapterFactory<ViewAction, EObject>(ViewAction.class, this.getClass().getClassLoader(), EObjectViewAction::new));
+		composedAdapterFactory.registerAdapterFactory(
+				new SupplierAdapterFactory<ApplicationFactory>(
+						ApplicationFactory.class, 
+						this.getClass().getClassLoader(), 
+						BootstrapContainerApplicationFactory::new));
+		
+		composedAdapterFactory.registerAdapterFactory(
+				new FunctionAdapterFactory<ApplicationBuilder, EObject>(
+						ApplicationBuilder.class, 
+						this.getClass().getClassLoader(), 
+						ViewActionApplicationBuilder::new));
+		
+		composedAdapterFactory.registerAdapterFactory(
+				new FunctionAdapterFactory<ViewAction, EObject>(
+						ViewAction.class, 
+						this.getClass().getClassLoader(), 
+						EObjectViewAction::new));
 		
 		// Identity
 		Map<EObject, String> idMap = new HashMap<>();
@@ -88,19 +101,33 @@ public class TestEmf extends HTMLTestBase {
 			}
 			
 		};
-		composedAdapterFactory.registerAdapterFactory(new FunctionAdapterFactory<Identity, EObject>(Identity.class, this.getClass().getClassLoader(), identityManager));
+		composedAdapterFactory.registerAdapterFactory(
+				new FunctionAdapterFactory<Identity, EObject>(
+						Identity.class, 
+						this.getClass().getClassLoader(), 
+						identityManager));
 		
 		// View action activator
-		class MapNavigationViewActionActivatorAdapter extends NavigationViewActionActivatorAdapter {
+		class IdentityNavigationViewActionActivatorAdapter implements ViewActionActivator, NavigationActionActivator {
+			
+			private EObject target;
+
+			public IdentityNavigationViewActionActivatorAdapter(EObject target) {
+				this.target = target;
+			}
 
 			@Override
 			public String getUrl() {
-				Identity identity = EObjectAdaptable.adaptTo((EObject) getTarget(), Identity.class);
+				Identity identity = EObjectAdaptable.adaptTo(target, Identity.class);
 				return identity == null ? null : identity.getId()+".html";
 			}
 			
 		}
-		composedAdapterFactory.registerAdapterFactory(new SupplierAdapterFactory<ViewActionActivator>(ViewActionActivator.class, this.getClass().getClassLoader(), MapNavigationViewActionActivatorAdapter::new));
+		composedAdapterFactory.registerAdapterFactory(
+				new FunctionAdapterFactory<ViewActionActivator,EObject>(
+						ViewActionActivator.class, 
+						this.getClass().getClassLoader(), 
+						IdentityNavigationViewActionActivatorAdapter::new));
 		
 		resourceSet.getAdapterFactories().add(composedAdapterFactory);						
 	}
