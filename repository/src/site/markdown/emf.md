@@ -179,11 +179,19 @@ Also, representation of transaction and other objects from the customer point of
 The default representation may possibly be used by a a bank clerk, but for a customer it would be hard to understand. 
 Also the default representation reveals internal bank information which shall not be visible by the bank customers.
 
-UI customization is achieved via custom adapters. Such adapters are typically created by sub-classing existing classes.
+UI customization is achieved via model annotations and custom adapters. Such adapters are typically created by sub-classing existing classes.
 This section describes an example of such customization:
   * [Sources](https://github.com/Nasdanika/html/tree/master/tests/src/org/nasdanika/html/tests/adapters/customer)
   * [API documentation](apidocs/org.nasdanika.html.tests/apidocs/index.html?org/nasdanika/html/tests/adapters/customer/package-summary.html)
   * [Results](test-dumps/emf/customer/john-doe/index.html).
+
+### Model annotations
+
+Element icon, color and outline flag may be customized by adding an annotation to the corresponding EMF model element with source ``org.nasdanika.html`` and the following detail keys:
+
+* ``icon`` - the value will be returned from getIcon() method. Value example: ``fas fa-university``.
+* ``color`` - [bootstrap color](apidocs/org.nasdanika.html.bootstrap/apidocs/index.html?org/nasdanika/html/bootstrap/Color.html) name, e.g. ``INFO``.
+* ``outline`` - ``true`` for outline, any other value or no other value otherwise. 
 
 ### BankViewAction
 
@@ -231,16 +239,7 @@ public class BankViewAction extends EObjectViewAction<Bank> {
 	}
 ```	
 
-This class also overrides ``getIcon()`` method to provide a bank icon to display in the header.
-
-```	
-	@Override
-	public String getIcon() {
-		// TODO - replace with something like FontAwesome.Literals.University.solid() once the fontawesome literals generator is available
-		return "fas fa-university"; 
-	}
-```
-
+The bank icon is loaded from the model annotation using the inherited implementation of the ``getIcon()`` method.
 Bank "home page" is implemented as static content loaded from ``BankHomePage.html`` classloader resource.
 
 ```	
@@ -260,7 +259,7 @@ Bank "home page" is implemented as static content loaded from ``BankHomePage.htm
 
 Although from the bank's point of view, which is reflected in the model, customer accounts are owned by the bank because there might be several account owners, from the customer point of view customer's accounts are owned by the customer. 
 This class customizes the default behavior by listing customer account view actions as navigation children, so they appear in the navigation panel.
-This class also customizes the icon and ``execute()`` method to show a table of accounts with their balances.  
+This class also customizes the icon, because there is no icon model annotation for the Customer EClass, and ``execute()`` method to show a table of accounts with their balances.  
 
 ```
 public class CustomerViewAction extends EObjectViewAction<Customer> {
