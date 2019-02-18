@@ -6,7 +6,7 @@
   <body>
  
     <breadcrumbs>
-      <item name="Nasdanika" href="../../../../"/>
+      <item name="Nasdanika" href="../../"/>
       <item name="HTML" href="index.html"/>
     </breadcrumbs>
  
@@ -41,9 +41,9 @@
    </menu>
 
    <menu name="Issues">
-      <item name="Roadmap" href="../../../../mantis/roadmap_page.php?project_id=3" />
-      <item name="All" href="../../../../mantis/view_all_bug_page.php?project_id=3" />
-      <item name="Change Log" href="../../../../mantis/changelog_page.php?project_id=3" />
+      <item name="Roadmap" href="../../../mantis/roadmap_page.php?project_id=3" />
+      <item name="All" href="../../../mantis/view_all_bug_page.php?project_id=3" />
+      <item name="Change Log" href="../../../mantis/changelog_page.php?project_id=3" />
    </menu>
  
    <footer>
