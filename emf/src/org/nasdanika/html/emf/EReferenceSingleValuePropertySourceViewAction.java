@@ -27,7 +27,7 @@ public class EReferenceSingleValuePropertySourceViewAction<T extends EObject> ex
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator) {
 		EObject value = (EObject) getValue();
 		if (value == null) {
 			// TODO - some action to create an object for containment references.
@@ -36,7 +36,7 @@ public class EReferenceSingleValuePropertySourceViewAction<T extends EObject> ex
 		
 		Action viewAction = EObjectAdaptable.adaptTo(value, ViewAction.class);
 		if (viewAction != null) {
-			return viewAction.execute(viewGenerator);
+			return viewAction.generate(viewGenerator);
 		}
 		return null;
 	}

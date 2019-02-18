@@ -64,7 +64,7 @@ public class BankViewAction extends EObjectViewAction<Bank> {
 	 * Other options include instantiating app model template (once this functionality is available).
 	 */
 	@Override
-	public Object execute(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator) {
 		return viewGenerator.getHTMLFactory().mutableTokenSource().interpolate(getClass().getResource("BankHomePage.html"));
 	}
 }

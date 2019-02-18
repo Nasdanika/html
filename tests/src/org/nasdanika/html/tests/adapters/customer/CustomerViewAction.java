@@ -56,7 +56,7 @@ public class CustomerViewAction extends EObjectViewAction<Customer> {
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator) {
 		Table accountsTable = viewGenerator.getBootstrapFactory().table().bordered();
 		accountsTable.headerRow("Account", "Balance");
 		for (CustomerAccount account: target.getAccounts()) {

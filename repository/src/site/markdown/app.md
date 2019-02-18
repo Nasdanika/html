@@ -157,9 +157,7 @@ While the framework allows to refine appearance of UI elements on a case-by-case
 Where there's a vocabulary there's a dictionary. Building an application in terms of actions and property sources allows to create and publish such a user-system dictionary as part of the build process.   
 
 In Java terms an action may be thought of as a method in a callback interface (Web UI) passed to a user. 
-The user interacts with the system by "invoking callback methods" - activating actions so they get executed by the system.
-
-Action extends [Executable](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Executable.html), it allows to separate processing (``execute()`` method) from  presentation (other action attributes) and have actions delegating to executable.
+The user interacts with the system by "invoking callback methods" - activating actions so they get executed by the system by invoking their ``generate()`` method.
 
 ### Action activator
 
@@ -195,7 +193,7 @@ Context actions correspond to methods/operations/verbs. E.g. "open account" cont
 #### Section
 Section actions play the same role as navigation actions, but they are displayed in the content panel of the contained action. 
 For example, "view transactions" section action of "view statement" action would display a list of transactions below statement details.
-Section actions may be executed along with the containing action. In this case they don't need an activator.
+Section actions may be executed/generated along with the containing action. In this case they don't need an activator.
 Section actions with NavigationActionActivators may be executed by loading section content using AJAX.
 
 #### View

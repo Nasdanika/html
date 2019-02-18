@@ -8,9 +8,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
 import org.nasdanika.html.app.ApplicationException;
-import org.nasdanika.html.app.Executable;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.ActionActivator;
@@ -439,12 +439,12 @@ public class ActionImpl extends CDOObjectImpl implements Action {
 	}
 
 	@Override
-	public Object execute(ViewGenerator viewGenerator) {
-		Executable delegate = (Executable) EcoreUtil.getRegisteredAdapter(this, Executable.class);
+	public Object generate(ViewGenerator viewGenerator) {
+		ViewPart delegate = (ViewPart) EcoreUtil.getRegisteredAdapter(this, ViewPart.class);
 		if (delegate == null) {
 			throw new ApplicationException("No execution delegate", this);
 		}
-		return delegate.execute(viewGenerator);
+		return delegate.generate(viewGenerator);
 	}
 	
 	@Override

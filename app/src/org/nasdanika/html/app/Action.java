@@ -15,7 +15,7 @@ import org.nasdanika.html.app.impl.Util;
  * @author Pavel Vlasov
  *
  */
-public interface Action extends Label, Executable, Categorized, Adaptable {
+public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	
 	/**
 	 * "Build-in" roles.

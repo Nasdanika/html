@@ -41,7 +41,7 @@ public class ContentAction extends ActionImpl {
 	}
 
 	@Override
-	public Object execute(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator) {
 		return getContent();
 	}
 

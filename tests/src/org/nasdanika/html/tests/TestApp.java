@@ -27,7 +27,6 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
-import org.nasdanika.html.app.Executable;
 import org.nasdanika.html.app.Themed;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
@@ -133,16 +132,16 @@ public class TestApp extends HTMLTestBase {
 	@Test
 	public void testActionApplication() throws Exception {
 		// Delegating action activator resolution and execution to adapters.
-		class ExecutableAdapter extends AdapterImpl implements Executable {
+		class ViewPartAdapter extends AdapterImpl implements ViewPart {
 			
 			@Override
-			public Object execute(ViewGenerator viewGenerator) {
+			public Object generate(ViewGenerator viewGenerator) {
 				return "Executing "+getTarget()+" "+this;
 			}
 			
 			@Override
 			public boolean isAdapterForType(Object type) {
-				return Executable.class == type;
+				return ViewPart.class == type;
 			}
 			
 		}
@@ -151,13 +150,13 @@ public class TestApp extends HTMLTestBase {
 			
 			@Override
 			public boolean isFactoryForType(Object type) {
-				return Executable.class == type;
+				return ViewPart.class == type;
 			}
 			
 			@Override
 			protected Adapter createAdapter(Notifier target, Object type) {
-				if (Executable.class == type) {
-					return new ExecutableAdapter();
+				if (ViewPart.class == type) {
+					return new ViewPartAdapter();
 				}
 				return null;
 			}
@@ -250,16 +249,16 @@ public class TestApp extends HTMLTestBase {
 	public void testAppModel() throws Exception {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-		class ExecutableAdapter extends AdapterImpl implements Executable {
+		class ViewPartAdapter extends AdapterImpl implements ViewPart {
 						
 			@Override
-			public Object execute(ViewGenerator viewGenerator) {
+			public Object generate(ViewGenerator viewGenerator) {
 				return "Executing "+getTarget()+" "+this;
 			}
 			
 			@Override
 			public boolean isAdapterForType(Object type) {
-				return Executable.class == type;
+				return ViewPart.class == type;
 			}
 			
 		}
@@ -267,13 +266,13 @@ public class TestApp extends HTMLTestBase {
 			
 			@Override
 			public boolean isFactoryForType(Object type) {
-				return Executable.class == type;
+				return ViewPart.class == type;
 			}
 			
 			@Override
 			protected Adapter createAdapter(Notifier target, Object type) {
-				if (Executable.class == type) {
-					return new ExecutableAdapter();
+				if (ViewPart.class == type) {
+					return new ViewPartAdapter();
 				}
 				return null;
 			}
@@ -283,8 +282,8 @@ public class TestApp extends HTMLTestBase {
 		Action action = AppFactory.eINSTANCE.createAction();
 		ViewGenerator viewGenerator = new ViewGeneratorImpl(null, null);
 		resource.getContents().add(action);
-		System.out.println(action.execute(viewGenerator));
-		System.out.println(action.execute(viewGenerator));
+		System.out.println(action.generate(viewGenerator));
+		System.out.println(action.generate(viewGenerator));
 		
 		System.out.println(action.getChildren());
 	}

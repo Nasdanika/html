@@ -304,7 +304,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 
 	@Override
 	public void add(NamedItemsContainer container, Action action) {
-		container.item(labelFragment(action), processViewPart(action.execute(this)));		
+		container.item(labelFragment(action), processViewPart(action.generate(this)));		
 	}
 
 	@Override
@@ -327,13 +327,13 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	@Override
 	public Tag addContent(ActionGroup actionGroup, Action action, boolean active) {
 		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
-		return actionGroup.contentAction(labelFragment(action), active, action.isDisabled(), action.getColor(), contentId, processViewPart(action.execute(this)));
+		return actionGroup.contentAction(labelFragment(action), active, action.isDisabled(), action.getColor(), contentId, processViewPart(action.generate(this)));
 	}
 
 	@Override
 	public void add(Navs navs, Action action, boolean active) {
 		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
-		navs.item(labelFragment(action), active, action.isDisabled(), contentId, processViewPart(action.execute(this)));
+		navs.item(labelFragment(action), active, action.isDisabled(), contentId, processViewPart(action.generate(this)));
 	}
 	
 	@Override

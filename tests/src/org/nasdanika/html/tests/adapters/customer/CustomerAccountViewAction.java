@@ -66,7 +66,7 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator) {		
+	public Object generate(ViewGenerator viewGenerator) {		
 		// Current transactions table ordered reverse chronological.
 		List<Transaction<?>> currentTransactions = new ArrayList<>();
 		target.getStatements().stream().filter(s -> s.getClosingDate() == null).forEach(s -> {

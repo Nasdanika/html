@@ -39,8 +39,8 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	}
 
 	@Override
-	public Object execute(ViewGenerator viewGenerator) {
-		return target.execute(viewGenerator);
+	public Object generate(ViewGenerator viewGenerator) {
+		return target.generate(viewGenerator);
 	}
 
 	@Override

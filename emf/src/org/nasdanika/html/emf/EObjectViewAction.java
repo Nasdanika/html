@@ -34,7 +34,7 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator) {
 		return new ViewSingleValuePropertySourceViewPart(this).generate(viewGenerator);
 	}
 	
@@ -205,13 +205,4 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 		return role != null && containmentFeature != null && role.equals(getFeatureRole(containmentFeature));
 	}
 	
-	/**
-	 * Calls super.adaptTo() and returns adapter if not null and type is not {@link Identity}. Otherwise returns {@link Action}.adaptTo() - delegating to the parent.
-	 */
-	@Override
-	public <A> A adaptTo(Class<A> type) {
-		A adapter = super.adaptTo(type);
-		return adapter == null && type != Identity.class ? ViewAction.super.adaptTo(type) : adapter;
-	}
-
 }

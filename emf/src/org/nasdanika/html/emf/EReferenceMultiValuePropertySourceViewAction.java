@@ -23,7 +23,7 @@ public class EReferenceMultiValuePropertySourceViewAction<T extends EObject> ext
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator) {
 		return new ViewMultiValuePropertySourceViewPart(this).generate(viewGenerator);
 	}
 

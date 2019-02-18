@@ -83,7 +83,7 @@ public class ContentActionImpl extends ActionImpl implements ContentAction {
 	}
 	
 	@Override
-	public Object execute(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator) {
 		// TODO - handle content type - plain text and markdown.
 		return getContent();
 	}

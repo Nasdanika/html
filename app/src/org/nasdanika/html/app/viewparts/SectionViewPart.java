@@ -44,7 +44,7 @@ public class SectionViewPart implements ViewPart {
 	public Object generate(ViewGenerator viewGenerator) {
 		Fragment ret = viewGenerator.getHTMLFactory().fragment();
 		// Process viewPart as in ViewGenerator ???
-		ret.content(section.execute(viewGenerator));
+		ret.content(section.generate(viewGenerator));
 
 		// Context actions		
 		if (showContextActions) {
