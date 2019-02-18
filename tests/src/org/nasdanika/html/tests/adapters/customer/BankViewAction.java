@@ -59,12 +59,6 @@ public class BankViewAction extends EObjectViewAction<Bank> {
 		return ret;
 	}
 	
-	@Override
-	public String getIcon() {
-		// TODO - replace with something like FontAwesome.Literals.University.solid() once the fontawesome literals generator is available
-		return "fas fa-university"; 
-	}
-	
 	/**
 	 * Displaying static content which may be interpolated. This implementation uses empty token source for interpolation, i.e. does nothing.
 	 * Other options include instantiating app model template (once this functionality is available).
