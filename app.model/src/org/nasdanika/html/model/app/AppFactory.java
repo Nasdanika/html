@@ -40,15 +40,6 @@ public interface AppFactory extends EFactory {
 	Action createAction();
 
 	/**
-	 * Returns a new object of class '<em>Themed Action</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Themed Action</em>'.
-	 * @generated
-	 */
-	ThemedAction createThemedAction();
-
-	/**
 	 * Returns a new object of class '<em>Content Action</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -56,15 +47,6 @@ public interface AppFactory extends EFactory {
 	 * @generated
 	 */
 	ContentAction createContentAction();
-
-	/**
-	 * Returns a new object of class '<em>Themed Content Action</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Themed Content Action</em>'.
-	 * @generated
-	 */
-	ThemedContentAction createThemedContentAction();
 
 	/**
 	 * Returns a new object of class '<em>Navigation Action Activator</em>'.

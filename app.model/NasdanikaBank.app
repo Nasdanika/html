@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<org.nasdanika.html.app:ThemedContentAction xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.nasdanika.html.app="urn:org.nasdanika.html.app" color="PRIMARY" icon="fas fa-university" id="bank" text="Bank of Nasdanika" theme="Default" content="Bank of Nasdanika home page">
+<org.nasdanika.html.app:ContentAction xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.nasdanika.html.app="urn:org.nasdanika.html.app" color="PRIMARY" icon="fas fa-university" id="bank" text="Bank of Nasdanika" content="Bank of Nasdanika home page">
   <children xsi:type="org.nasdanika.html.app:ContentAction" icon="fas fa-user-circle" id="john-doe" text="John Doe" content="John Doe home page">
   	<roles>navigation</roles>
   
@@ -62,4 +62,4 @@
     <activator xsi:type="org.nasdanika.html.app:NavigationActionActivator" url="bank-locations.html"/>
   </children>
   <activator xsi:type="org.nasdanika.html.app:NavigationActionActivator" url="bank-of-nasdanika.html"/>
-</org.nasdanika.html.app:ThemedContentAction>
+</org.nasdanika.html.app:ContentAction>

@@ -116,29 +116,6 @@ public class AppItemProviderAdapterFactory extends AppAdapterFactory implements 
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.app.ThemedAction} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ThemedActionItemProvider themedActionItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link org.nasdanika.html.model.app.ThemedAction}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createThemedActionAdapter() {
-		if (themedActionItemProvider == null) {
-			themedActionItemProvider = new ThemedActionItemProvider(this);
-		}
-
-		return themedActionItemProvider;
-	}
-
-	/**
 	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.app.ContentAction} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -159,29 +136,6 @@ public class AppItemProviderAdapterFactory extends AppAdapterFactory implements 
 		}
 
 		return contentActionItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.app.ThemedContentAction} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ThemedContentActionItemProvider themedContentActionItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link org.nasdanika.html.model.app.ThemedContentAction}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createThemedContentActionAdapter() {
-		if (themedContentActionItemProvider == null) {
-			themedContentActionItemProvider = new ThemedContentActionItemProvider(this);
-		}
-
-		return themedContentActionItemProvider;
 	}
 
 	/**
@@ -337,9 +291,7 @@ public class AppItemProviderAdapterFactory extends AppAdapterFactory implements 
 	public void dispose() {
 		if (labelItemProvider != null) labelItemProvider.dispose();
 		if (actionItemProvider != null) actionItemProvider.dispose();
-		if (themedActionItemProvider != null) themedActionItemProvider.dispose();
 		if (contentActionItemProvider != null) contentActionItemProvider.dispose();
-		if (themedContentActionItemProvider != null) themedContentActionItemProvider.dispose();
 		if (navigationActionActivatorItemProvider != null) navigationActionActivatorItemProvider.dispose();
 		if (scriptActionActivatorItemProvider != null) scriptActionActivatorItemProvider.dispose();
 	}

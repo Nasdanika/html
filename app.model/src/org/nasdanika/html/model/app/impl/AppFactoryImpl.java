@@ -10,16 +10,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Theme;
-import org.nasdanika.html.model.app.Action;
-import org.nasdanika.html.model.app.AppFactory;
-import org.nasdanika.html.model.app.AppPackage;
-import org.nasdanika.html.model.app.ContentAction;
-import org.nasdanika.html.model.app.ContentType;
-import org.nasdanika.html.model.app.Label;
-import org.nasdanika.html.model.app.NavigationActionActivator;
-import org.nasdanika.html.model.app.ScriptActionActivator;
-import org.nasdanika.html.model.app.ThemedAction;
-import org.nasdanika.html.model.app.ThemedContentAction;
+import org.nasdanika.html.model.app.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -67,9 +58,7 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 		switch (eClass.getClassifierID()) {
 			case AppPackage.LABEL: return (EObject)createLabel();
 			case AppPackage.ACTION: return (EObject)createAction();
-			case AppPackage.THEMED_ACTION: return (EObject)createThemedAction();
 			case AppPackage.CONTENT_ACTION: return (EObject)createContentAction();
-			case AppPackage.THEMED_CONTENT_ACTION: return (EObject)createThemedContentAction();
 			case AppPackage.NAVIGATION_ACTION_ACTIVATOR: return (EObject)createNavigationActionActivator();
 			case AppPackage.SCRIPT_ACTION_ACTIVATOR: return (EObject)createScriptActionActivator();
 			default:
@@ -143,31 +132,9 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * @generated
 	 */
 	@Override
-	public ThemedAction createThemedAction() {
-		ThemedActionImpl themedAction = new ThemedActionImpl();
-		return themedAction;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public ContentAction createContentAction() {
 		ContentActionImpl contentAction = new ContentActionImpl();
 		return contentAction;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public ThemedContentAction createThemedContentAction() {
-		ThemedContentActionImpl themedContentAction = new ThemedContentActionImpl();
-		return themedContentAction;
 	}
 
 	/**

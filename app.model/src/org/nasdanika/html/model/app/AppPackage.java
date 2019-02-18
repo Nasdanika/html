@@ -191,34 +191,6 @@ public interface AppPackage extends EPackage {
 
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.app.Themed <em>IThemed</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.app.Themed
-	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getIThemed()
-	 * @generated
-	 */
-	int ITHEMED = 2;
-
-	/**
-	 * The number of structural features of the '<em>IThemed</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ITHEMED_FEATURE_COUNT = 0;
-
-	/**
-	 * The number of operations of the '<em>IThemed</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ITHEMED_OPERATION_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link org.nasdanika.html.app.Action <em>IAction</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -226,7 +198,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getIAction()
 	 * @generated
 	 */
-	int IACTION = 3;
+	int IACTION = 2;
 
 	/**
 	 * The number of structural features of the '<em>IAction</em>' class.
@@ -254,7 +226,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getAction()
 	 * @generated
 	 */
-	int ACTION = 4;
+	int ACTION = 3;
 
 	/**
 	 * The feature id for the '<em><b>Color</b></em>' attribute.
@@ -419,187 +391,6 @@ public interface AppPackage extends EPackage {
 	int ACTION_OPERATION_COUNT = IACTION_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.ThemedActionImpl <em>Themed Action</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.app.impl.ThemedActionImpl
-	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getThemedAction()
-	 * @generated
-	 */
-	int THEMED_ACTION = 5;
-
-	/**
-	 * The feature id for the '<em><b>Color</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__COLOR = ACTION__COLOR;
-
-	/**
-	 * The feature id for the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__DESCRIPTION = ACTION__DESCRIPTION;
-
-	/**
-	 * The feature id for the '<em><b>Icon</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__ICON = ACTION__ICON;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__ID = ACTION__ID;
-
-	/**
-	 * The feature id for the '<em><b>Text</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__TEXT = ACTION__TEXT;
-
-	/**
-	 * The feature id for the '<em><b>Tooltip</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__TOOLTIP = ACTION__TOOLTIP;
-
-	/**
-	 * The feature id for the '<em><b>Outline</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__OUTLINE = ACTION__OUTLINE;
-
-	/**
-	 * The feature id for the '<em><b>Notification</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__NOTIFICATION = ACTION__NOTIFICATION;
-
-	/**
-	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__CHILDREN = ACTION__CHILDREN;
-
-	/**
-	 * The feature id for the '<em><b>Confirmation</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__CONFIRMATION = ACTION__CONFIRMATION;
-
-	/**
-	 * The feature id for the '<em><b>Float Right</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__FLOAT_RIGHT = ACTION__FLOAT_RIGHT;
-
-	/**
-	 * The feature id for the '<em><b>Disabled</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__DISABLED = ACTION__DISABLED;
-
-	/**
-	 * The feature id for the '<em><b>Activator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__ACTIVATOR = ACTION__ACTIVATOR;
-
-	/**
-	 * The feature id for the '<em><b>Iterator</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__ITERATOR = ACTION__ITERATOR;
-
-	/**
-	 * The feature id for the '<em><b>Category</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__CATEGORY = ACTION__CATEGORY;
-
-	/**
-	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__ROLES = ACTION__ROLES;
-
-	/**
-	 * The feature id for the '<em><b>Theme</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION__THEME = ACTION_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Themed Action</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION_FEATURE_COUNT = ACTION_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of operations of the '<em>Themed Action</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_ACTION_OPERATION_COUNT = ACTION_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.ContentActionImpl <em>Content Action</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -607,7 +398,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getContentAction()
 	 * @generated
 	 */
-	int CONTENT_ACTION = 6;
+	int CONTENT_ACTION = 4;
 
 	/**
 	 * The feature id for the '<em><b>Color</b></em>' attribute.
@@ -790,205 +581,6 @@ public interface AppPackage extends EPackage {
 	int CONTENT_ACTION_OPERATION_COUNT = ACTION_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.ThemedContentActionImpl <em>Themed Content Action</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.app.impl.ThemedContentActionImpl
-	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getThemedContentAction()
-	 * @generated
-	 */
-	int THEMED_CONTENT_ACTION = 7;
-
-	/**
-	 * The feature id for the '<em><b>Color</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__COLOR = CONTENT_ACTION__COLOR;
-
-	/**
-	 * The feature id for the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__DESCRIPTION = CONTENT_ACTION__DESCRIPTION;
-
-	/**
-	 * The feature id for the '<em><b>Icon</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__ICON = CONTENT_ACTION__ICON;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__ID = CONTENT_ACTION__ID;
-
-	/**
-	 * The feature id for the '<em><b>Text</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__TEXT = CONTENT_ACTION__TEXT;
-
-	/**
-	 * The feature id for the '<em><b>Tooltip</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__TOOLTIP = CONTENT_ACTION__TOOLTIP;
-
-	/**
-	 * The feature id for the '<em><b>Outline</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__OUTLINE = CONTENT_ACTION__OUTLINE;
-
-	/**
-	 * The feature id for the '<em><b>Notification</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__NOTIFICATION = CONTENT_ACTION__NOTIFICATION;
-
-	/**
-	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__CHILDREN = CONTENT_ACTION__CHILDREN;
-
-	/**
-	 * The feature id for the '<em><b>Confirmation</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__CONFIRMATION = CONTENT_ACTION__CONFIRMATION;
-
-	/**
-	 * The feature id for the '<em><b>Float Right</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__FLOAT_RIGHT = CONTENT_ACTION__FLOAT_RIGHT;
-
-	/**
-	 * The feature id for the '<em><b>Disabled</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__DISABLED = CONTENT_ACTION__DISABLED;
-
-	/**
-	 * The feature id for the '<em><b>Activator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__ACTIVATOR = CONTENT_ACTION__ACTIVATOR;
-
-	/**
-	 * The feature id for the '<em><b>Iterator</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__ITERATOR = CONTENT_ACTION__ITERATOR;
-
-	/**
-	 * The feature id for the '<em><b>Category</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__CATEGORY = CONTENT_ACTION__CATEGORY;
-
-	/**
-	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__ROLES = CONTENT_ACTION__ROLES;
-
-	/**
-	 * The feature id for the '<em><b>Content</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__CONTENT = CONTENT_ACTION__CONTENT;
-
-	/**
-	 * The feature id for the '<em><b>Content Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__CONTENT_TYPE = CONTENT_ACTION__CONTENT_TYPE;
-
-	/**
-	 * The feature id for the '<em><b>Theme</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION__THEME = CONTENT_ACTION_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Themed Content Action</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION_FEATURE_COUNT = CONTENT_ACTION_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of operations of the '<em>Themed Content Action</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int THEMED_CONTENT_ACTION_OPERATION_COUNT = CONTENT_ACTION_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link org.nasdanika.html.app.ActionActivator <em>IAction Activator</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -996,7 +588,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getIActionActivator()
 	 * @generated
 	 */
-	int IACTION_ACTIVATOR = 8;
+	int IACTION_ACTIVATOR = 5;
 
 	/**
 	 * The number of structural features of the '<em>IAction Activator</em>' class.
@@ -1024,7 +616,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getINavigationActionActivator()
 	 * @generated
 	 */
-	int INAVIGATION_ACTION_ACTIVATOR = 9;
+	int INAVIGATION_ACTION_ACTIVATOR = 6;
 
 	/**
 	 * The number of structural features of the '<em>INavigation Action Activator</em>' class.
@@ -1052,7 +644,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getIScriptActionActivator()
 	 * @generated
 	 */
-	int ISCRIPT_ACTION_ACTIVATOR = 10;
+	int ISCRIPT_ACTION_ACTIVATOR = 7;
 
 	/**
 	 * The number of structural features of the '<em>IScript Action Activator</em>' class.
@@ -1080,7 +672,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getActionActivator()
 	 * @generated
 	 */
-	int ACTION_ACTIVATOR = 11;
+	int ACTION_ACTIVATOR = 8;
 
 	/**
 	 * The number of structural features of the '<em>Action Activator</em>' class.
@@ -1108,7 +700,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getNavigationActionActivator()
 	 * @generated
 	 */
-	int NAVIGATION_ACTION_ACTIVATOR = 12;
+	int NAVIGATION_ACTION_ACTIVATOR = 9;
 
 	/**
 	 * The feature id for the '<em><b>Url</b></em>' attribute.
@@ -1145,7 +737,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getScriptActionActivator()
 	 * @generated
 	 */
-	int SCRIPT_ACTION_ACTIVATOR = 13;
+	int SCRIPT_ACTION_ACTIVATOR = 10;
 
 	/**
 	 * The feature id for the '<em><b>Code</b></em>' attribute.
@@ -1182,7 +774,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getContentType()
 	 * @generated
 	 */
-	int CONTENT_TYPE = 14;
+	int CONTENT_TYPE = 11;
 
 	/**
 	 * The meta object id for the '<em>Color</em>' data type.
@@ -1192,7 +784,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getColor()
 	 * @generated
 	 */
-	int COLOR = 15;
+	int COLOR = 12;
 
 
 	/**
@@ -1203,7 +795,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getTheme()
 	 * @generated
 	 */
-	int THEME = 16;
+	int THEME = 13;
 
 
 	/**
@@ -1303,17 +895,6 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getLabel_Notification();
-
-	/**
-	 * Returns the meta object for class '{@link org.nasdanika.html.app.Themed <em>IThemed</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>IThemed</em>'.
-	 * @see org.nasdanika.html.app.Themed
-	 * @model instanceClass="org.nasdanika.html.app.Themed"
-	 * @generated
-	 */
-	EClass getIThemed();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.app.Action <em>IAction</em>}'.
@@ -1425,27 +1006,6 @@ public interface AppPackage extends EPackage {
 	EAttribute getAction_Roles();
 
 	/**
-	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ThemedAction <em>Themed Action</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Themed Action</em>'.
-	 * @see org.nasdanika.html.model.app.ThemedAction
-	 * @generated
-	 */
-	EClass getThemedAction();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.ThemedAction#getTheme <em>Theme</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Theme</em>'.
-	 * @see org.nasdanika.html.model.app.ThemedAction#getTheme()
-	 * @see #getThemedAction()
-	 * @generated
-	 */
-	EAttribute getThemedAction_Theme();
-
-	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ContentAction <em>Content Action</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1476,16 +1036,6 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getContentAction_ContentType();
-
-	/**
-	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ThemedContentAction <em>Themed Content Action</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Themed Content Action</em>'.
-	 * @see org.nasdanika.html.model.app.ThemedContentAction
-	 * @generated
-	 */
-	EClass getThemedContentAction();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.app.ActionActivator <em>IAction Activator</em>}'.
@@ -1713,16 +1263,6 @@ public interface AppPackage extends EPackage {
 		EAttribute LABEL__NOTIFICATION = eINSTANCE.getLabel_Notification();
 
 		/**
-		 * The meta object literal for the '{@link org.nasdanika.html.app.Themed <em>IThemed</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.nasdanika.html.app.Themed
-		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getIThemed()
-		 * @generated
-		 */
-		EClass ITHEMED = eINSTANCE.getIThemed();
-
-		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.app.Action <em>IAction</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1807,24 +1347,6 @@ public interface AppPackage extends EPackage {
 		EAttribute ACTION__ROLES = eINSTANCE.getAction_Roles();
 
 		/**
-		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ThemedActionImpl <em>Themed Action</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.nasdanika.html.model.app.impl.ThemedActionImpl
-		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getThemedAction()
-		 * @generated
-		 */
-		EClass THEMED_ACTION = eINSTANCE.getThemedAction();
-
-		/**
-		 * The meta object literal for the '<em><b>Theme</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute THEMED_ACTION__THEME = eINSTANCE.getThemedAction_Theme();
-
-		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ContentActionImpl <em>Content Action</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1849,16 +1371,6 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CONTENT_ACTION__CONTENT_TYPE = eINSTANCE.getContentAction_ContentType();
-
-		/**
-		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ThemedContentActionImpl <em>Themed Content Action</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.nasdanika.html.model.app.impl.ThemedContentActionImpl
-		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getThemedContentAction()
-		 * @generated
-		 */
-		EClass THEMED_CONTENT_ACTION = eINSTANCE.getThemedContentAction();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.app.ActionActivator <em>IAction Activator</em>}' class.

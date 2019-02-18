@@ -27,7 +27,6 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
-import org.nasdanika.html.app.Themed;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
@@ -175,15 +174,8 @@ public class TestApp extends HTMLTestBase {
 					String href = ((NavigationActionActivator) actionActivator).getUrl();
 					if (href != null) {
 						
-						Theme theme;
+						Theme theme = Theme.Default;
 						Action principalAction = (Action) appAction.getNavigationChildren().get(0);
-						if (principalAction instanceof Themed) {
-							theme = ((Themed) principalAction).getTheme();
-						} else if (appAction instanceof Themed) {
-							theme = ((Themed) appAction).getTheme();
-						} else {
-							theme = Theme.Default;
-						}
 						
 						for (Entry<String, ApplicationBuilder> be: createApplicationBuilders(principalAction, principalAction.getChildren(), (Action) next).entrySet()) {
 							Application app = new BootstrapContainerApplication(theme, true) {

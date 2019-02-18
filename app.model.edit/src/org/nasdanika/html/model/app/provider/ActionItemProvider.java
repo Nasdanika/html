@@ -476,17 +476,7 @@ public class ActionItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(AppPackage.Literals.ACTION__CHILDREN,
-				 AppFactory.eINSTANCE.createThemedAction()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(AppPackage.Literals.ACTION__CHILDREN,
 				 AppFactory.eINSTANCE.createContentAction()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(AppPackage.Literals.ACTION__CHILDREN,
-				 AppFactory.eINSTANCE.createThemedContentAction()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -511,17 +501,7 @@ public class ActionItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(AppPackage.Literals.ACTION__CATEGORY,
-				 AppFactory.eINSTANCE.createThemedAction()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(AppPackage.Literals.ACTION__CATEGORY,
 				 AppFactory.eINSTANCE.createContentAction()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(AppPackage.Literals.ACTION__CATEGORY,
-				 AppFactory.eINSTANCE.createThemedContentAction()));
 	}
 
 	/**
