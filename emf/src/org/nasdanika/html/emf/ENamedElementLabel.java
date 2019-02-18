@@ -1,5 +1,7 @@
 package org.nasdanika.html.emf;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,17 +30,42 @@ public class ENamedElementLabel<T extends ENamedElement> implements Label {
 	/**
 	 * Source for Ecore GenModel documentation.
 	 */
-	public static final String ECORE_DOC_ANNOTATION_SOURCE = "http://www.eclipse.org/emf/2002/GenModel";	
+	public static final String ECORE_DOC_ANNOTATION_SOURCE = "http://www.eclipse.org/emf/2002/GenModel";
+
+	/**
+	 * Source for Nasdanika HTML annotations.
+	 */
+	public static final String NASDANIKA_HTML_ANNOTATION_SOURCE = "org.nasdanika.html";	
 	
 	protected T eNamedElement;
 
 	public ENamedElementLabel(T eNamedElement) {
 		this.eNamedElement = eNamedElement;
 	}
+	
+	/**
+	 * @return List of sources to use for loading annotations such as icon.
+	 */
+	protected List<String> getAnnotationSources() {
+		return Collections.singletonList(NASDANIKA_HTML_ANNOTATION_SOURCE);
+	}
+	
+	protected String getAnnotation(String key) {
+		for (String annotationSource: getAnnotationSources()) {
+			EAnnotation annotation = eNamedElement.getEAnnotation(annotationSource);
+			if (annotation != null) {
+				String details = annotation.getDetails().get(key);
+				if (details != null) {
+					return details;
+				}
+			}
+		}
+		return null;
+	}		
 
 	@Override
 	public String getIcon() {
-		return null;
+		return getAnnotation("icon");
 	}
 
 	@Override
@@ -64,12 +91,13 @@ public class ENamedElementLabel<T extends ENamedElement> implements Label {
 
 	@Override
 	public Color getColor() {
-		return null;
+		String ca = getAnnotation("color");
+		return ca == null ? null : Color.valueOf(ca);
 	}
 
 	@Override
 	public boolean isOutline() {
-		return false;
+		return "true".equals(getAnnotation("outline"));
 	}
 
 	@Override
