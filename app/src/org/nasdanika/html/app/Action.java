@@ -254,22 +254,5 @@ public interface Action extends Label, Executable, Categorized, Adaptable {
 	default <T extends Action> List<Map.Entry<Label, List<T>>> getSectionChildrenGroupedByCategory() {
 		return getChildrenGroupedByCategory(Role.SECTION);
 	}
-	
-	/**
-	 * Adapts to the requested type. Delegates to the parent if the parent is not null
-	 * and Adaptable.super.adaptTo() returns null. Delegation to the parent simplifies access
-	 * to the context information common for multiple actions. 
-	 */
-	@Override
-	default <T> T adaptTo(Class<T> type) {
-		T adapter = Adaptable.super.adaptTo(type);
-		if (adapter == null) {
-			Action parent = getParent();
-			if (parent != null) {
-				adapter = parent.adaptTo(type);
-			}
-		}
-		return adapter;
-	}
-	
+		
 }
