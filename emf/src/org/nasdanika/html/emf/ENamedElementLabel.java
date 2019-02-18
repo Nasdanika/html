@@ -92,12 +92,13 @@ public class ENamedElementLabel<T extends ENamedElement> implements Label {
 	@Override
 	public Color getColor() {
 		String ca = getAnnotation("color");
-		return ca == null ? null : Color.valueOf(ca);
+		return ca == null ? null : Color.valueOf(ca.trim());
 	}
 
 	@Override
 	public boolean isOutline() {
-		return "true".equals(getAnnotation("outline"));
+		String outlineAnnotation = getAnnotation("outline");
+		return outlineAnnotation != null && "true".equals(outlineAnnotation.trim());
 	}
 
 	@Override
