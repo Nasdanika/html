@@ -127,4 +127,9 @@ class IconImpl<T extends HTMLElement<?>> implements Icon<T> {
 		return target.toString();
 	}
 	
+	@Override
+	public Object produce(int indent) {
+		return target.produce(indent);
+	}
+	
 }

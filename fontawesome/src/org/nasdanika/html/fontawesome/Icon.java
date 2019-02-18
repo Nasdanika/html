@@ -1,13 +1,14 @@
 package org.nasdanika.html.fontawesome;
 
 import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.Producer;
 
 /**
  * Interface for creating Font Awesome (https://fontawesome.com/) styled UI elements.
  * @author Pavel Vlasov
  *
  */
-public interface Icon<T extends HTMLElement<?>> {
+public interface Icon<T extends HTMLElement<?>> extends Producer {
 	
 	enum Style {
 		SOLID,
