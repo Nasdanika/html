@@ -183,7 +183,12 @@ public class TestEmf extends HTMLTestBase {
 
 		// Registering test-specific customer identity adapter.
 		Function<EObject, Identity> identityManager = eObj -> () -> "index";
-		composedAdapterFactory.registerAdapterFactory(new FunctionAdapterFactory<Identity, EObject>(BankPackage.Literals.CUSTOMER, Identity.class, this.getClass().getClassLoader(), identityManager));
+		composedAdapterFactory.registerAdapterFactory(
+				new FunctionAdapterFactory<Identity, EObject>(
+						BankPackage.Literals.CUSTOMER, 
+						Identity.class, 
+						this.getClass().getClassLoader(), 
+						identityManager));
 		
 		for (Customer customer: bank.getCustomers()) {
 			contextCustomer[0] = customer;
@@ -208,36 +213,6 @@ public class TestEmf extends HTMLTestBase {
 				writeFile("emf/customer/"+customer.getName().toLowerCase().replace(' ', '-')+"/"+activator.getUrl(), application.toString());
 			}
 		}
-	}	
-	
-
-//	/**
-//	 * Testing navigation children hierarchy to resolve stack overflow error.
-//	 * @throws Exception
-//	 */
-//	@Test
-//	public void testNavigationChildren() throws Exception {
-//		TreeIterator<EObject> tit = bank.eResource().getAllContents();
-//		while (tit.hasNext()) {
-//			System.out.println("---");
-//			EObject next = tit.next();			
-//			Action action = EObjectAdaptable.adaptTo(next, ViewAction.class);
-//			navigationTree(action, 0);
-//		}
-//	}	
-//	
-//	private void navigationTree(Action action, int indent) {
-//		for (int i = 0; i < indent; ++i) {
-//			System.out.print("  ");
-//		}
-//		System.out.print(action.getText());
-//		if (action.getActivator() instanceof NavigationActionActivator) {
-//			System.out.print(" "+ ((NavigationActionActivator) action.getActivator()).getUrl());
-//		}
-//		System.out.println();
-//		for (Action nc: action.getNavigationChildren()) {
-//			navigationTree(nc, indent+1);
-//		}		
-//	}
+	}
 	
 }
