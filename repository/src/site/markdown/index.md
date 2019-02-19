@@ -39,11 +39,7 @@ Nasdanika HTML libraries can be used to build both static Web sites, e.g. docume
 
 ## Overview presentation
 
-<html>
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/kOyumb7uzLzlp2" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/PavelVlasov2/nasdanika-html-fluent-java-api-for-building-web-uis" title="Nasdanika HTML - Fluent Java API for building Web UI&#x27;s" target="_blank">Nasdanika HTML - Fluent Java API for building Web UI&#x27;s</a> </strong> from <strong><a href="https://www.slideshare.net/PavelVlasov2" target="_blank">Pavel Vlasov</a></strong> </div>
-</html>
-
-* [SlideShare](https://www.slideshare.net/PavelVlasov2/nasdanika-html-fluent-java-api-for-building-web-uis) (the above presentation).
+* [SlideShare](https://www.slideshare.net/PavelVlasov2/nasdanika-html-fluent-java-api-for-building-web-uis).
 * [PDF](Nasdanika-HTML.pdf).
  
 ## How to contribute
