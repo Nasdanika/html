@@ -14,8 +14,8 @@ public class EClassLabel extends ENamedElementLabel<EClass> {
 	@Override
 	public Object getId() {
 		List<String> modelPath = new ArrayList<>();
-		modelPath.add(eNamedElement.getEPackage().getNsURI());
-		modelPath.add(eNamedElement.getName());
+		modelPath.add(modelElement.getEPackage().getNsURI());
+		modelPath.add(modelElement.getName());
 		return modelPath;
 	}
 

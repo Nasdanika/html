@@ -24,7 +24,7 @@ public class EObjectSingleValuePropertySource<T extends EObject> extends EObject
 	
 	public EObjectSingleValuePropertySource(T value) {
 		super(value);
-		propertySourceDelegate = new EClassPropertySource(value.eClass(), () -> adaptTo(AuthorizationProvider.class)) {
+		propertySourceDelegate = new EClassPropertySource(value.eClass(), () -> adaptTo(AccessController.class)) {
 			
 			@Override
 			protected boolean isPropertyDescriptorFeature(EStructuralFeature feature) {
@@ -43,6 +43,8 @@ public class EObjectSingleValuePropertySource<T extends EObject> extends EObject
 	 * @return
 	 */
 	protected String getFeatureRole(EStructuralFeature feature) {
+		
+		
 		return feature.isMany() || feature instanceof EReference && ((EReference) feature).isContainment() ? null : FEATURE_ROLE_PROPERTY_DESCRIPTOR;
 	}
 

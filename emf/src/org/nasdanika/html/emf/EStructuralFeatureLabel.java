@@ -15,10 +15,10 @@ public class EStructuralFeatureLabel<T extends EStructuralFeature> extends EName
 	@Override
 	public Object getId() {
 		List<String> modelPath = new ArrayList<>();
-		EClass eClass = eNamedElement.getEContainingClass();
+		EClass eClass = modelElement.getEContainingClass();
 		modelPath.add(eClass.getEPackage().getNsURI());
 		modelPath.add(eClass.getName());
-		modelPath.add(eNamedElement.getName());
+		modelPath.add(modelElement.getName());
 		return modelPath;
 	}
 

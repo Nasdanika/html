@@ -20,7 +20,7 @@ Access to contextual information can be done by adapting EObjects to context-pro
 It functions in the following way:
 
 * ``getChildren()`` method creates children from EReferences. Child role depends on EReference containment and cardinality.
-* ``execute()`` method creates [ViewSingleValuePropertySourceViewPart](apidocs/org.nasdanika.html.emf/apidocs/index.html?org/nasdanika/html/app/viewparts/ViewSingleValuePropertySourceViewPart.html) from self. Property source properties are created from EObject's EClass structural features which are authorized to read and are single value and non-containment (for references).
+* ``execute()`` method creates [ViewSingleValuePropertySourceViewPart](apidocs/org.nasdanika.html.emf/apidocs/index.html?org/nasdanika/html/app/viewparts/ViewSingleValuePropertySourceViewPart.html) from self. Property source properties are created from EObject's EClass structural features which have read permission and are single value and non-containment (for references).
 
 An example of default UI generation behavior for a bank [customer](https://www.nasdanika.org/products/bank/1.0.0-SNAPSHOT/modeldoc/index.html#router/doc-content/75726e3a6f72672e6e617364616e696b612e62616e6b/Customer.html) can be found [here](test-dumps/emf/bank/Customer-36.html). Customization of the default generation is be explained in "Customizing UI Generation" section.
 
@@ -29,9 +29,9 @@ An example of default UI generation behavior for a bank [customer](https://www.n
 EObjects can be adapted to other types with [EObjectAdaptable](apidocs/parent/org.nasdanika.html.emf/apidocs/index.html?org/nasdanika/html/emf/EObjectAdaptable.html).adaptTo() method.
 This method delegates to ``EcoreUtil.getRegisteredAdapter()``. 
 
-It has a special handling of [AuthorizationProvider](apidocs/parent/org.nasdanika.html.emf/apidocs/index.html?org/nasdanika/html/emf/AuthorizationProvider.html) - if there is no AuthorizationProvider adapter for a given EObject, and that EObject is contained by another EObject, then the container object is adapted to AuthorizationProvider and, if  the adapter is not null, the method returns AuthorizationProvider which adds the containment as qualifier suffix. In other words, authorization "bubbles-up" by adding feature path as a qualifier. 
+It has a special handling of [AccessController](apidocs/parent/org.nasdanika.html.emf/apidocs/index.html?org/nasdanika/html/emf/AccessController.html) - if there is no AccessController adapter for a given EObject, and that EObject is contained by another EObject, then the container object is adapted to AccessController and, if  the adapter is not null, the method returns AccessController which adds the containment as qualifier suffix. In other words, permission checks "bubble-up" by adding feature path as a qualifier. 
 
-For example, ``Customer`` object has ``accounts`` reference containing ``Account`` objects. When one of such account objects is adapted to ``AuthorizationProvider`` and it doesn't have its own adapter defined it would receive an AuthorizationProvider adapter delegating to Customer's authorization provider adapter and adding ``accounts`` as a qualifier. E.g. in case of calling ``authorizeRead("balance")`` on the account object it will call ``authorizeRead("accounts/balance")`` on Customer's authorization provider, which in turn may delegate to its container. 
+For example, ``Customer`` object has ``accounts`` reference containing ``Account`` objects. When one of such account objects is adapted to ``AccessController`` and it doesn't have its own adapter defined it would receive an AccessController adapter delegating to Customer's access controller and adding ``accounts`` as a qualifier. E.g. in case of calling ``canRead("balance")`` on the account object it will call ``hasPermission("read", "accounts/balance")`` on Customer's access controller, which in turn may delegate to its container. 
 
 ### Adapter factories
 
@@ -126,8 +126,8 @@ Then you can register just the composed adapter factory with a resource set or a
 
 ## Access control
 
-``EObjectViewAction`` and other classes such as [EClassPropertySource](apidocs/org.nasdanika.html.emf/apidocs/index.html?org/nasdanika/html/emf/EClassPropertySource.html) adapt their target object to ``AuthorizationProvider`` to customize UI generation.
-For example, ``EClassPropertySource`` checks for ``read`` authorization for EStructuralFeature in order to include it as a property into the property set and
+``EObjectViewAction`` and other classes such as [EClassPropertySource](apidocs/org.nasdanika.html.emf/apidocs/index.html?org/nasdanika/html/emf/EClassPropertySource.html) adapt their target object to ``AccessController`` to customize UI generation.
+For example, ``EClassPropertySource`` checks for ``read`` permission for EStructuralFeature in order to include it as a property into the property set and
 ``EObjectViewAction`` does the same for child features.
 
 ## Object identity and action activators

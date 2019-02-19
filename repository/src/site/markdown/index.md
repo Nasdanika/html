@@ -28,6 +28,9 @@ Nasdanika HTML libraries can be used to build both static Web sites, e.g. docume
 
 ## Resources
 
+* Overview presentation
+    * [SlideShare](https://www.slideshare.net/PavelVlasov2/nasdanika-html-fluent-java-api-for-building-web-ui).
+    * [PDF](Nasdanika-HTML.pdf).
 * P2 Repository
     * ``https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/repository``.
     * [Archived](https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/org.nasdanika.html.repository-2.0.0-SNAPSHOT.zip).
@@ -36,11 +39,6 @@ Nasdanika HTML libraries can be used to build both static Web sites, e.g. docume
 * [NasdanikaBank.app](NasdanikaBank.app) - a sample model with several actions for demo and testing purposes. It is also available as a resource in ``org.nasdanika.app.model`` bundle.
 * [Spring Boot demo](https://github.com/Nasdanika/html-spring-boot-demo) - A Spring Boot application which uses Nasdanika HTML libraries to build Web UI.    
 * [Test coverage](test-coverage/index.html).
-
-## Overview presentation
-
-* [SlideShare](https://www.slideshare.net/PavelVlasov2/nasdanika-html-fluent-java-api-for-building-web-uis).
-* [PDF](Nasdanika-HTML.pdf).
  
 ## How to contribute
 

@@ -12,7 +12,7 @@ public class EReferenceMultiValuePropertySource<T extends EObject> extends EStru
 
 	public EReferenceMultiValuePropertySource(T target, EReference feature) {
 		super(target, feature);
-		propertySourceDelegate = new EClassPropertySource(feature.getEReferenceType(), () -> adaptTo(AuthorizationProvider.class));
+		propertySourceDelegate = new EClassPropertySource(feature.getEReferenceType(), () -> adaptTo(AccessController.class));
 	}
 
 	@Override

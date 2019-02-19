@@ -1,5 +1,7 @@
 package org.nasdanika.html.emf;
 
+import java.util.List;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -8,10 +10,10 @@ import org.nasdanika.html.app.Adaptable;
 
 /**
  * Bridges {@link Adaptable} and EObject adaptation framework - {@link Adapter}.
- * This class also adapts to {@link AuthorizationProvider} by delegating to the container and adding containment feature to the 
- * qualifier. E.g. if an object Account is contained by Customer under accounts reference and Account is not adaptable to AuthorizationProvider
- * then this adaptable would adapt Customer to AuthorizationProvider and if successful will append 'accounts' suffix to the qualifier. 
- * This behavior allows to bubble-up authorization checks. 
+ * This class also adapts to {@link AccessController} by delegating to the container and adding containment feature to the 
+ * qualifier. E.g. if an object Account is contained by Customer under accounts reference and Account is not adaptable to AccessController
+ * then this adaptable would adapt Customer to AccessController and if successful will append 'accounts' suffix to the qualifier. 
+ * This behavior allows to bubble-up permissions checks. 
  * @author Pavel
  *
  * @param <T>
@@ -36,27 +38,34 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 		}
 		A adapter = (A) EcoreUtil.getRegisteredAdapter(target, type);
 		
-		if (adapter == null && AuthorizationProvider.class == type) {
+		if (adapter == null && AccessController.class == type) {
 			// Delegating to the container with containment reference qualifier
 			EObject container = target.eContainer();
 			if (container != null) {
 				EReference containmentReference = target.eContainmentFeature();
 				if (containmentReference != null) {
-					AuthorizationProvider cap = adaptTo(container, AuthorizationProvider.class);
+					AccessController cap = adaptTo(container, AccessController.class);
 					if (cap != null) {
-						return (A) new AuthorizationProvider() {
+						return (A) new AccessController() {
 							
 							@Override
-							public boolean authorize(String action, String qualifier) {
+							public boolean hasPermission(String action, String qualifier) {
 								String cQualifier;
 								if (qualifier == null) {
 									cQualifier = qualifier;
-								} else if (qualifier.endsWith("/")) {
-									cQualifier = qualifier + containmentReference.getName();
 								} else {
-									cQualifier = qualifier + "/" + containmentReference.getName();
+									String suffix = containmentReference.getName();
+									if (containmentReference.isMany()) {
+										int pos = ((List<?>) container.eGet(containmentReference)).indexOf(target);
+										suffix += "[" + pos + "]";
+									}
+									if (qualifier.endsWith("/")) {
+										cQualifier = qualifier + suffix;
+									} else {
+										cQualifier = qualifier + "/" + suffix;
+									}
 								}
-								return cap.authorize(action, cQualifier);
+								return cap.hasPermission(action, cQualifier);
 							}
 						};
 					}

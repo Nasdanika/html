@@ -142,10 +142,10 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	 * @return features to wrap into child actions.
 	 */
 	protected List<EStructuralFeature> getChildFeatures() {
-		AuthorizationProvider authorizationProvider = adaptTo(AuthorizationProvider.class);
+		AccessController accessController = adaptTo(AccessController.class);
 		return target.eClass().getEAllStructuralFeatures()
 				.stream()
-				.filter(f -> authorizationProvider == null || authorizationProvider.authorizeRead(f.getName()))
+				.filter(f -> accessController == null || accessController.canRead(f.getName()))
 				.filter(this::isChildFeature)
 				.sorted((fa, fb) -> fa.getName().compareTo(fb.getName()))
 				.collect(Collectors.toList());		

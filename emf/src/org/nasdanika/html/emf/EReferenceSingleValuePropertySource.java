@@ -12,7 +12,7 @@ public class EReferenceSingleValuePropertySource<T extends EObject> extends EStr
 
 	public EReferenceSingleValuePropertySource(T eObject, EReference feature) {
 		super(eObject, feature);
-		propertySourceDelegate = new EClassPropertySource(feature.getEReferenceType(), () -> adaptTo(AuthorizationProvider.class));
+		propertySourceDelegate = new EClassPropertySource(feature.getEReferenceType(), () -> adaptTo(AccessController.class));
 	}
 
 	@Override

@@ -21,11 +21,11 @@ import org.nasdanika.html.app.PropertySource;
  */
 public class EClassPropertySource extends EClassLabel implements PropertySource {
 
-	private Supplier<AuthorizationProvider> authorizationProviderSupplier;
+	private Supplier<AccessController> accessControllerSupplier;
 	
-	public EClassPropertySource(EClass eClass, Supplier<AuthorizationProvider> authorizationProviderSupplier) {
+	public EClassPropertySource(EClass eClass, Supplier<AccessController> accessControllerSupplier) {
 		super(eClass);
-		this.authorizationProviderSupplier = authorizationProviderSupplier == null ? () -> AuthorizationProvider.ALLOW_ALL : authorizationProviderSupplier;
+		this.accessControllerSupplier = accessControllerSupplier == null ? () -> AccessController.ALLOW_ALL : accessControllerSupplier;
 	}
 	
 
@@ -63,10 +63,10 @@ public class EClassPropertySource extends EClassLabel implements PropertySource 
 	 * @return features to wrap into property descriptors.
 	 */
 	protected List<EStructuralFeature> getPropertyDescriptorFeatures() {
-		AuthorizationProvider authorizationProvider = authorizationProviderSupplier.get();
-		return eNamedElement.getEAllStructuralFeatures()
+		AccessController accessController = accessControllerSupplier.get();
+		return modelElement.getEAllStructuralFeatures()
 				.stream()
-				.filter(f ->  authorizationProvider == null || authorizationProvider.authorizeRead(f.getName()))
+				.filter(f ->  accessController == null || accessController.canRead(f.getName()))
 				.filter(this::isPropertyDescriptorFeature)
 				.sorted((fa, fb) -> fa.getName().compareTo(fb.getName()))
 				.collect(Collectors.toList());		

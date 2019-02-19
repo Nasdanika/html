@@ -66,8 +66,8 @@ public class EStructuralFeatureProperty implements Property {
 	@Override
 	public boolean isEditable(Object obj) {
 		if (obj instanceof EObject) {
-			AuthorizationProvider ap = EObjectAdaptable.adaptTo((EObject) obj, AuthorizationProvider.class);
-			if (ap != null && !ap.authorizeUpdate(feature.getName())) {
+			AccessController ap = EObjectAdaptable.adaptTo((EObject) obj, AccessController.class);
+			if (ap != null && !ap.canUpdate(feature.getName())) {
 				return false;
 			}
 		}

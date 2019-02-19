@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.ENamedElement;
-import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.jsoup.Jsoup;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.bootstrap.Color;
@@ -20,48 +20,16 @@ import org.nasdanika.html.bootstrap.Color;
  * @author Pavel Vlasov
  *
  */
-public class ENamedElementLabel<T extends ENamedElement> implements Label {
+public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSource<T> implements Label {
 		
 	public static final Pattern SENTENCE_PATTERN = Pattern.compile(".+?[\\.?!]+\\s+");		
 	public static final int MIN_FIRST_SENTENCE_LENGTH = 20;
 	public static final int MAX_FIRST_SENTENCE_LENGTH = 250;	
 	public static final String[] ABBREVIATIONS = { "e.g.", "i.e.", "etc." };
-
-	/**
-	 * Source for Ecore GenModel documentation.
-	 */
-	public static final String ECORE_DOC_ANNOTATION_SOURCE = "http://www.eclipse.org/emf/2002/GenModel";
-
-	/**
-	 * Source for Nasdanika HTML annotations.
-	 */
-	public static final String NASDANIKA_HTML_ANNOTATION_SOURCE = "org.nasdanika.html";	
 	
-	protected T eNamedElement;
-
 	public ENamedElementLabel(T eNamedElement) {
-		this.eNamedElement = eNamedElement;
-	}
-	
-	/**
-	 * @return List of sources to use for loading annotations such as icon.
-	 */
-	protected List<String> getAnnotationSources() {
-		return Collections.singletonList(NASDANIKA_HTML_ANNOTATION_SOURCE);
-	}
-	
-	protected String getAnnotation(String key) {
-		for (String annotationSource: getAnnotationSources()) {
-			EAnnotation annotation = eNamedElement.getEAnnotation(annotationSource);
-			if (annotation != null) {
-				String details = annotation.getDetails().get(key);
-				if (details != null) {
-					return details;
-				}
-			}
-		}
-		return null;
-	}		
+		super(eNamedElement);
+	}	
 
 	@Override
 	public String getIcon() {
@@ -70,7 +38,7 @@ public class ENamedElementLabel<T extends ENamedElement> implements Label {
 
 	@Override
 	public String getText() {
-		String[] cca = StringUtils.splitByCharacterTypeCamelCase(eNamedElement.getName());
+		String[] cca = StringUtils.splitByCharacterTypeCamelCase(modelElement.getName());
 		cca[0] = StringUtils.capitalize(cca[0]);
 		for (int i=1; i<cca.length; ++i) {
 			cca[i] = cca[i].toLowerCase();
@@ -103,15 +71,7 @@ public class ENamedElementLabel<T extends ENamedElement> implements Label {
 
 	@Override
 	public String getDescription() {
-		EAnnotation docAnn = eNamedElement.getEAnnotation(ECORE_DOC_ANNOTATION_SOURCE);
-		if (docAnn==null && eNamedElement instanceof EReference) {
-			docAnn = ((EReference) eNamedElement).getEReferenceType().getEAnnotation(ECORE_DOC_ANNOTATION_SOURCE);
-		}
-		if (docAnn == null) {
-			return null;
-		}
-		
-		String markdown = docAnn.getDetails().get("documentation");
+		String markdown = EcoreUtil.getDocumentation(modelElement);
 		if (markdown == null || markdown.trim().isEmpty()) {
 			return null;
 		}
