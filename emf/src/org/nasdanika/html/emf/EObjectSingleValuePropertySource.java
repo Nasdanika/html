@@ -74,7 +74,8 @@ public class EObjectSingleValuePropertySource<T extends EObject> extends EObject
 	public String getText() {
 
 		// Using the first string property as label.
-		for (PropertyDescriptor pd: propertySourceDelegate.getPropertyDescriptors()) {
+		List<PropertyDescriptor> propertyDescriptors = propertySourceDelegate.getPropertyDescriptors();
+		for (PropertyDescriptor pd: propertyDescriptors) {
 			Object dv = pd.getDisplayValue(getValue());
 			if (dv instanceof String && !((String) dv).trim().isEmpty()) {
 				return (String) dv;
@@ -82,7 +83,7 @@ public class EObjectSingleValuePropertySource<T extends EObject> extends EObject
 		}
 
 		// Using the first non-null property as label.
-		for (PropertyDescriptor pd: propertySourceDelegate.getPropertyDescriptors()) {
+		for (PropertyDescriptor pd: propertyDescriptors) {
 			Object dv = pd.getDisplayValue(getValue());
 			if (dv != null) {
 				String vStr = dv.toString();
