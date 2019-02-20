@@ -72,8 +72,133 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 				}
 			}
 		}
-		return adapter;
-		
+		return adapter;		
+	}
+	
+	// --- Convenience methods for checking access permissions ---
+	
+	public static AccessController adaptToAccessController(EObject target) {
+		AccessController ac = adaptTo(target, AccessController.class);
+		return ac == null ? AccessController.ALLOW_ALL : ac;
 	}
 
+	/**
+	 * Checks for a permission to perform an action for a given qualifier.
+	 * @param action
+	 * @param qualifier
+	 * @return
+	 */
+	public static boolean hasPermission(EObject obj, String action, String qualifier) {
+		return adaptToAccessController(obj).hasPermission(action, qualifier);
+	}
+	
+	/**
+	 * Checks "read" permissions
+	 * @param qualifier
+	 * @return
+	 */
+	public static boolean canRead(EObject obj, String qualifier) {
+		return adaptToAccessController(obj).canRead(qualifier);
+	}
+	
+	/**
+	 * Checks "create" permission
+	 * @param qualifier
+	 * @return
+	 */
+	public static boolean canCreate(EObject obj, String qualifier) {
+		return adaptToAccessController(obj).canCreate(qualifier);
+	}
+	
+	/**
+	 * Checks "delete" permission
+	 * @param qualifier
+	 * @return
+	 */
+	public static boolean canDelete(EObject obj, String qualifier) {
+		return adaptToAccessController(obj).canDelete(qualifier);
+	}
+	
+	/**
+	 * Checks "update" permission
+	 * @param qualifier
+	 * @return
+	 */
+	public static boolean canUpdate(EObject obj, String qualifier) {
+		return adaptToAccessController(obj).canUpdate(qualifier);
+	}
+	
+	/**
+	 * Checks "execute" permission
+	 * @param qualifier
+	 * @param context
+	 * @return
+	 */
+	public static boolean canExecute(EObject obj, String qualifier) {
+		return adaptToAccessController(obj).canExecute(qualifier);
+	}
+	
+	// --- Instance methods ---
+		
+	protected AccessController adaptToAccessController() {
+		AccessController ac = adaptToAccessController(target);
+		return ac == null ? AccessController.ALLOW_ALL : ac;
+	}
+
+	/**
+	 * Checks for a permission to perform an action for a given qualifier.
+	 * @param action
+	 * @param qualifier
+	 * @return
+	 */
+	protected boolean hasPermission(String action, String qualifier) {
+		return adaptToAccessController().hasPermission(action, qualifier);
+	}
+	
+	/**
+	 * Checks "read" permissions
+	 * @param qualifier
+	 * @return
+	 */
+	protected boolean canRead(String qualifier) {
+		return adaptToAccessController().canRead(qualifier);
+	}
+	
+	/**
+	 * Checks "create" permission
+	 * @param qualifier
+	 * @return
+	 */
+	protected boolean canCreate(String qualifier) {
+		return adaptToAccessController().canCreate(qualifier);
+	}
+	
+	/**
+	 * Checks "delete" permission
+	 * @param qualifier
+	 * @return
+	 */
+	protected boolean canDelete(String qualifier) {
+		return adaptToAccessController().canDelete(qualifier);
+	}
+	
+	/**
+	 * Checks "update" permission
+	 * @param qualifier
+	 * @return
+	 */
+	protected boolean canUpdate(String qualifier) {
+		return adaptToAccessController().canUpdate(qualifier);
+	}
+	
+	/**
+	 * Checks "execute" permission
+	 * @param qualifier
+	 * @param context
+	 * @return
+	 */
+	protected boolean canExecute(String qualifier) {
+		return adaptToAccessController().canExecute(qualifier);
+	}
+	
 }
