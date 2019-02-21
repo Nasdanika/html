@@ -244,6 +244,54 @@
 						</configuration>
 					</execution>
 					<execution>
+						<id>copy-cdo-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.cdo/apidocs</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../cdo/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>					
+					<execution>
+						<id>copy-cdo-h2-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.cdo.h2/apidocs</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../cdo.h2/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>					
+					<execution>
+						<id>copy-cdo-http-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.cdo.http/apidocs</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../cdo.http/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>					
+					<execution>
 						<id>copy-tests-javadoc</id>
 						<phase>pre-site</phase>
 						<goals>

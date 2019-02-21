@@ -142,10 +142,9 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	 * @return features to wrap into child actions.
 	 */
 	protected List<EStructuralFeature> getChildFeatures() {
-		AccessController accessController = adaptTo(AccessController.class);
 		return target.eClass().getEAllStructuralFeatures()
 				.stream()
-				.filter(f -> accessController == null || accessController.canRead(f.getName()))
+				.filter(f -> canRead(f.getName()))
 				.filter(this::isChildFeature)
 				.sorted((fa, fb) -> fa.getName().compareTo(fb.getName()))
 				.collect(Collectors.toList());		
@@ -164,7 +163,7 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	@Override
 	public Action getParent() {
 		EObject eContainer = target.eContainer();		
-		return eContainer == null ? null : adaptTo((EObject) eContainer, ViewAction.class);
+		return eContainer == null ? null : canRead(eContainer, null) ? adaptTo((EObject) eContainer, ViewAction.class) : null;
 	}
 
 	@Override

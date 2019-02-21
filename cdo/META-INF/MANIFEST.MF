@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Nasdanika CDO components
+Bundle-SymbolicName: org.nasdanika.cdo;singleton:=true
+Bundle-Version: 2.0.0.qualifier
+Bundle-Vendor: Nasdanika
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.emf.cdo.server;bundle-version="4.4.1",
+ org.eclipse.osgi.services;bundle-version="3.5.0";visibility:=reexport,
+ org.eclipse.emf.cdo.server.net4j;bundle-version="4.1.201",
+ org.eclipse.net4j.jvm;bundle-version="4.1.301",
+ org.eclipse.net4j.tcp;bundle-version="4.1.301",
+ org.eclipse.emf.cdo.net4j;bundle-version="4.1.301",
+ org.eclipse.emf.cdo;bundle-version="4.4.1";visibility:=reexport,
+ org.apache.commons.lang3;bundle-version="3.3.2",
+ org.eclipse.emf.cdo.server.db;bundle-version="4.3.1";visibility:=reexport,
+ org.apache.commons.jxpath;bundle-version="1.3.0"
+Export-Package: org.nasdanika.cdo
+Import-Package: javax.servlet;version="2.6.0",
+ javax.servlet.http;version="2.6.0"
+Automatic-Module-Name: org.nasdanika.cdo

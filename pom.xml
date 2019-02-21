@@ -211,6 +211,9 @@
 		<module>knockout</module>
 		<module>fontawesome</module>
 		<module>app</module>
+		<module>cdo</module>
+		<module>cdo.http</module>
+		<module>cdo.h2</module>
 
 		<module>app.model</module>
 		<module>app.model.edit</module>
@@ -221,6 +224,11 @@
 		<module>tests</module>
 		<module>feature</module>
 		<module>repository</module>
+
+		<module>cdo.feature</module>
+		<module>equinox.feature</module>
+		<module>jetty.feature</module>
+
 	</modules>
 	<!-- For resolution of JavaDoc between modules -->
 	<url>https://www.nasdanika.org/products/html/${project.version}/${env.CIRCLE_BRANCH}/apidocs/</url>

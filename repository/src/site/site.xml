@@ -22,6 +22,7 @@
 	      <item name="Model Documentation" href="app-model-doc"/>      
       </item>
       <item name="EMF" href="emf.html" />
+      <item name="Web applications" href="web-applications.html" />      
       <item name="Project information" href="project-info.html" />      
    </menu>
 
@@ -37,6 +38,9 @@
       	<item name="Editor" href="apidocs/org.nasdanika.html.app.model.editor/apidocs/index.html"/>      
       </item>
       <item name="EMF" href="apidocs/org.nasdanika.html.emf/apidocs/index.html" />      
+      <item name="CDO" href="apidocs/org.nasdanika.cdo/apidocs/index.html" />      
+      <item name="CDO H2" href="apidocs/org.nasdanika.cdo.h2/apidocs/index.html" />      
+      <item name="CDO HTTP" href="apidocs/org.nasdanika.cdo.http/apidocs/index.html" />      
       <item name="Tests" href="apidocs/org.nasdanika.html.tests/apidocs/index.html" />      
    </menu>
 
