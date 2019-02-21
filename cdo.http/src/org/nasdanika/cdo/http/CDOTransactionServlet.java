@@ -193,15 +193,14 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 	}
 	
 	protected void resultToResponse(Object result, HttpServletResponse resp) throws Exception {
-//		if (result instanceof ProcessingError) {
-//			ProcessingError processingError = (ProcessingError) result;
-//			if (processingError.getMessage()==null) {
-//				resp.sendError(processingError.getCode());
-//			} else {
-//				resp.sendError(processingError.getCode(), processingError.getMessage());
-//			}
-//		} else 
-		if (result instanceof Producer) {
+		if (result instanceof ProcessingError) {
+			ProcessingError processingError = (ProcessingError) result;
+			if (processingError.getMessage()==null) {
+				resp.sendError(processingError.getCode());
+			} else {
+				resp.sendError(processingError.getCode(), processingError.getMessage());
+			}
+		} else if (result instanceof Producer) {
 			resultToResponse(((Producer) result).produce(4), resp);
 		} else if (result instanceof JSONArray) {
 			resp.setContentType("application/json");
@@ -315,15 +314,26 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 		
 	}
 	
-	protected AccessController createAccessController(HttpServletRequest req, CDOTransaction transaction, EObject target, Map<Object,Object> context) {
+	/**
+	 * Creates access controller which calls authorize() and caches permission check results with empty contexts.
+	 * @param req
+	 * @param transaction
+	 * @param target
+	 * @param context
+	 * @return
+	 */
+	protected AccessController createAccessController(HttpServletRequest req, CDOTransaction transaction, EObject target) {
 		return new AccessController() {
 						
 			private Map<CacheKey, Boolean> cache = new ConcurrentHashMap<>();
 			
 			@Override
-			public boolean hasPermission(String action, String qualifier) {
-				Function<? super CacheKey, ? extends Boolean> cf = key -> authorize(req, transaction, target, key.action, key.qualifier, context);
-				return cache.computeIfAbsent(new CacheKey(action, qualifier), cf);
+			public boolean hasPermission(String action, String qualifier, Map<?,?> context) {
+				if (context.isEmpty()) {
+					Function<? super CacheKey, ? extends Boolean> cf = key -> authorize(req, transaction, target, key.action, key.qualifier, context);
+					return cache.computeIfAbsent(new CacheKey(action, qualifier), cf);
+				}
+				return authorize(req, transaction, target, action, qualifier, context);
 			}
 			
 		};
@@ -348,7 +358,7 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 			EObject target, 
 			String action, 
 			String qualifier, 
-			Map<Object, Object> context) {
+			Map<?,?> context) {
 		
 		return principal != null && target != null && EcoreUtil.isAncestor(principal, target) ? AccessDecision.ALLOW : AccessDecision.DENY;
 	}
@@ -369,7 +379,7 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 			EObject target, 
 			String action, 
 			String qualifier, 
-			Map<Object, Object> context) {
+			Map<?,?> context) {
 		
 		for (P principal: getSubject(req, transaction)) {
 			switch (authorize(req, transaction, principal, target, action, qualifier, context)) {
@@ -429,7 +439,7 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 		if (remoteUserHeader != null) {
 			String principalName = req.getHeader(remoteUserHeader);
 			if (principalName != null) {
-				return authorizeRemoteHost(req.getRemoteAddr()) ? Collections.singletonList(getPrincipalByName(req, transaction, principalName)) : Collections.emptyList();
+				return authorizeRemoteHost(req.getRemoteAddr()) ? buildSubject(req, transaction, getPrincipalByName(req, transaction, principalName)) : Collections.emptyList();
 			}
 		}		
 		
@@ -445,7 +455,7 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 				CDOID tokenId = decodeCDOID(req, tokenIdStr);
 				P tokenPrincipal = (P) transaction.getObject(tokenId);
 				if (authenticate(req, transaction, tokenPrincipal, dotIdx == -1 ? null : val.substring(dotIdx + 1))) {
-					return Collections.singletonList(tokenPrincipal);
+					return buildSubject(req, transaction, tokenPrincipal);
 				}
 				return Collections.emptyList();
 			} else if (authHeader.startsWith(AUTHORIZATION_BASIC)) {
@@ -456,7 +466,7 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 					return Collections.emptyList();
 				}
 				P principal = authenticate(req, transaction, decoded.substring(0, idx), decoded.substring(idx+1));
-				return principal == null ? Collections.emptyList() : Collections.singletonList(principal);
+				return principal == null ? Collections.emptyList() : buildSubject(req, transaction, principal);
 			}
 		}
 		
@@ -475,11 +485,26 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 		
 		// Unauthenticated principal		
 		P principal = getUnauthenticatedPrincipal(req, transaction);
-		return principal == null ? Collections.emptyList() : Collections.singletonList(principal);
+		return principal == null ? Collections.emptyList() : buildSubject(req, transaction, principal);
 	}
 	
 	/**
-	 * Stores subject to the session.
+	 * Builds a subject for the primary principal. For example, if user group membership is retrieved from
+	 * LDAP or active directory and permissions in the system are not granted to users, but to groups this method
+	 * shall lookup user's groups and add them as secondary principals in the subject. This implementation returns a singleton list
+	 * containing just the primary principal.
+	 * @param req
+	 * @param transaction
+	 * @param principal
+	 * @return
+	 */
+	protected List<P> buildSubject(HttpServletRequest req, CDOTransaction transaction, P principal) {
+		return Collections.singletonList(principal);
+	}
+	
+	/**
+	 * Stores subject to the session. This method can be invoked by authentication processing code.
+	 * It can be made available to the model via some authentication adapter. 
 	 * @param req
 	 * @param transaction
 	 * @param subject

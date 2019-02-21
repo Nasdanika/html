@@ -1,6 +1,7 @@
 package org.nasdanika.html.emf;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
@@ -49,7 +50,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 						return (A) new AccessController() {
 							
 							@Override
-							public boolean hasPermission(String action, String qualifier) {
+							public boolean hasPermission(String action, String qualifier, Map<?,?> context) {
 								String cQualifier;
 								if (qualifier == null) {
 									cQualifier = qualifier;
@@ -65,7 +66,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 										cQualifier = qualifier + "/" + suffix;
 									}
 								}
-								return cap.hasPermission(action, cQualifier);
+								return cap.hasPermission(action, cQualifier, context);
 							}
 						};
 					}
@@ -137,6 +138,62 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	public static boolean canExecute(EObject obj, String qualifier) {
 		return adaptToAccessController(obj).canExecute(qualifier);
 	}
+
+	/**
+	 * Checks for a permission to perform an action for a given qualifier.
+	 * @param action
+	 * @param qualifier
+	 * @return
+	 */
+	public static boolean hasPermission(EObject obj, String action, String qualifier, Map<?,?> context) {
+		return adaptToAccessController(obj).hasPermission(action, qualifier, context);
+	}
+	
+	/**
+	 * Checks "read" permissions
+	 * @param qualifier
+	 * @return
+	 */
+	public static boolean canRead(EObject obj, String qualifier, Map<?,?> context) {
+		return adaptToAccessController(obj).canRead(qualifier, context);
+	}
+	
+	/**
+	 * Checks "create" permission
+	 * @param qualifier
+	 * @return
+	 */
+	public static boolean canCreate(EObject obj, String qualifier, Map<?,?> context) {
+		return adaptToAccessController(obj).canCreate(qualifier, context);
+	}
+	
+	/**
+	 * Checks "delete" permission
+	 * @param qualifier
+	 * @return
+	 */
+	public static boolean canDelete(EObject obj, String qualifier, Map<?,?> context) {
+		return adaptToAccessController(obj).canDelete(qualifier, context);
+	}
+	
+	/**
+	 * Checks "update" permission
+	 * @param qualifier
+	 * @return
+	 */
+	public static boolean canUpdate(EObject obj, String qualifier, Map<?,?> context) {
+		return adaptToAccessController(obj).canUpdate(qualifier, context);
+	}
+	
+	/**
+	 * Checks "execute" permission
+	 * @param qualifier
+	 * @param context
+	 * @return
+	 */
+	public static boolean canExecute(EObject obj, String qualifier, Map<?,?> context) {
+		return adaptToAccessController(obj).canExecute(qualifier, context);
+	}
 	
 	// --- Instance methods ---
 		
@@ -201,4 +258,60 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 		return adaptToAccessController().canExecute(qualifier);
 	}
 	
+	/**
+	 * Checks for a permission to perform an action for a given qualifier.
+	 * @param action
+	 * @param qualifier
+	 * @return
+	 */
+	protected boolean hasPermission(String action, String qualifier, Map<?,?> context) {
+		return adaptToAccessController().hasPermission(action, qualifier, context);
+	}
+	
+	/**
+	 * Checks "read" permissions
+	 * @param qualifier
+	 * @return
+	 */
+	protected boolean canRead(String qualifier, Map<?,?> context) {
+		return adaptToAccessController().canRead(qualifier, context);
+	}
+	
+	/**
+	 * Checks "create" permission
+	 * @param qualifier
+	 * @return
+	 */
+	protected boolean canCreate(String qualifier, Map<?,?> context) {
+		return adaptToAccessController().canCreate(qualifier, context);
+	}
+	
+	/**
+	 * Checks "delete" permission
+	 * @param qualifier
+	 * @return
+	 */
+	protected boolean canDelete(String qualifier, Map<?,?> context) {
+		return adaptToAccessController().canDelete(qualifier, context);
+	}
+	
+	/**
+	 * Checks "update" permission
+	 * @param qualifier
+	 * @return
+	 */
+	protected boolean canUpdate(String qualifier, Map<?,?> context) {
+		return adaptToAccessController().canUpdate(qualifier, context);
+	}
+	
+	/**
+	 * Checks "execute" permission
+	 * @param qualifier
+	 * @param context
+	 * @return
+	 */
+	protected boolean canExecute(String qualifier, Map<?,?> context) {
+		return adaptToAccessController().canExecute(qualifier, context);
+	}
+
 }

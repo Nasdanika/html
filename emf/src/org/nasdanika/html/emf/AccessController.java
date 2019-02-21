@@ -1,5 +1,10 @@
 package org.nasdanika.html.emf;
 
+import java.util.Collections;
+import java.util.Map;
+
+import org.eclipse.emf.ecore.EOperation;
+
 /**
  * Interface to adapt to for access decisions.
  * @author Pavel Vlasov
@@ -13,7 +18,7 @@ public interface AccessController {
 	AccessController ALLOW_ALL = new AccessController() {
 		
 		@Override
-		public boolean hasPermission(String action, String qualifier) {
+		public boolean hasPermission(String action, String qualifier, Map<?,?> context) {
 			return true;
 		}
 		
@@ -25,19 +30,40 @@ public interface AccessController {
 	AccessController DENY_ALL = new AccessController() {
 		
 		@Override
-		public boolean hasPermission(String action, String qualifier) {
+		public boolean hasPermission(String action, String qualifier, Map<?,?> context) {
 			return false;
 		}
 		
 	};	
 	
 	/**
-	 * Checks for a permission to perform an action for a given qualifier.
+	 * Checks for a permission to perform an action for a given qualifier with a given context.
+	 * @param action Action to perform. E.g. "read" or "execute", "transfer-funds".
+	 * @param qualifier Qualifier, e.g. "firstName" for read or "transferFunds" for execute.
+	 * @param context Context for context-conditional permissions, e.g. for execute transferFunds it may contain "amount" key with transfer amount as a value, or more generally a map of parameter names to argument 
+	 * values for {@link EOperation}. 
+	 * @return
+	 */
+	boolean hasPermission(String action, String qualifier, Map<?,?> context);
+	
+	/**
+	 * Checks for a permission to perform an action for a given qualifier with empty context.
 	 * @param action
 	 * @param qualifier
 	 * @return
 	 */
-	boolean hasPermission(String action, String qualifier);
+	default boolean hasPermission(String action, String qualifier) {
+		return hasPermission(action, qualifier, Collections.emptyMap());
+	}
+	
+	/**
+	 * Checks "read" permissions
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canRead(String qualifier, Map<?,?> context) {
+		return hasPermission("read", qualifier, context);
+	}	
 	
 	/**
 	 * Checks "read" permissions
@@ -45,36 +71,62 @@ public interface AccessController {
 	 * @return
 	 */
 	default boolean canRead(String qualifier) {
-		return hasPermission("read", qualifier);
-	}
-	
+		return canRead(qualifier, Collections.emptyMap());
+	}	
 	
 	/**
 	 * Checks "create" permission
 	 * @param qualifier
 	 * @return
 	 */
-	default boolean canCreate(String qualifier) {
-		return hasPermission("create", qualifier);
+	default boolean canCreate(String qualifier, Map<?,?> context) {
+		return hasPermission("create", qualifier, context);
 	}
+	
+	/**
+	 * Checks "create" permissions
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canCreate(String qualifier) {
+		return canCreate(qualifier, Collections.emptyMap());
+	}	
 	
 	/**
 	 * Checks "delete" permission
 	 * @param qualifier
 	 * @return
 	 */
-	default boolean canDelete(String qualifier) {
-		return hasPermission("delete", qualifier);
+	default boolean canDelete(String qualifier, Map<?,?> context) {
+		return hasPermission("delete", qualifier, context);
 	}
+	
+	/**
+	 * Checks "delete" permissions
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canDelete(String qualifier) {
+		return canDelete(qualifier, Collections.emptyMap());
+	}	
 	
 	/**
 	 * Checks "update" permission
 	 * @param qualifier
 	 * @return
 	 */
-	default boolean canUpdate(String qualifier) {
-		return hasPermission("update", qualifier);
+	default boolean canUpdate(String qualifier, Map<?,?> context) {
+		return hasPermission("update", qualifier, context);
 	}
+	
+	/**
+	 * Checks "update" permissions
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canUpdate(String qualifier) {
+		return canUpdate(qualifier, Collections.emptyMap());
+	}	
 	
 	/**
 	 * Checks "execute" permission
@@ -82,8 +134,17 @@ public interface AccessController {
 	 * @param context
 	 * @return
 	 */
-	default boolean canExecute(String qualifier) {
-		return hasPermission("execute", qualifier);
+	default boolean canExecute(String qualifier, Map<?,?> context) {
+		return hasPermission("execute", qualifier, context);
 	}
 
+	/**
+	 * Checks "execute" permissions
+	 * @param qualifier
+	 * @return
+	 */
+	default boolean canExecute(String qualifier) {
+		return canExecute(qualifier, Collections.emptyMap());
+	}	
+	
 }
