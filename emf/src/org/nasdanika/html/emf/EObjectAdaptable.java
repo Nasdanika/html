@@ -34,6 +34,9 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	
 	@SuppressWarnings("unchecked")
 	public static <A> A adaptTo(EObject target, Class<A> type) {
+		if (target == null) {
+			return null;
+		}
 		if (type.isInstance(target)) {
 			return (A) target;
 		}

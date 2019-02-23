@@ -11,11 +11,13 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
+//import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -61,6 +63,8 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 	}	
 	
 	protected ServiceTracker<CDOSessionProvider, CDOSessionProvider> cdoSessionProviderServiceTracker;
+	
+//	public static final MimetypesFileTypeMap MIME_TYPES_MAP = new MimetypesFileTypeMap(CDOTransactionServlet.class.getResourceAsStream("mime.types"));	
 		
 	protected static final String SUBJECT_KEY = "org.nasdanika.cdo.web:subject";
 	
@@ -72,6 +76,9 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 	public static final String AUTHORIZATION_TOKEN_TYPE = "NSD-CDO";
 	
 	private static final String AUTHORIZATION_BASIC = "Basic ";
+		
+    private static final String HEADER_IFMODSINCE = "If-Modified-Since";
+    private static final String HEADER_LASTMOD = "Last-Modified";		
 		
 	protected boolean jsonPrettyPrint = true;
 
@@ -107,6 +114,20 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 		}
 		super.destroy();
 	}
+	
+//    long lastModified = getLastModified(context, target, arguments);
+//    long ifModifiedSince = context.getRequest().getDateHeader(HEADER_IFMODSINCE);
+//    if (lastModified != -1) {
+//        if (lastModified - ifModifiedSince < 1000) { // Seconds precision.
+//        	context.getResponse().setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+//        	return null;
+//        }
+//
+//        if (lastModified != -1 && !context.getResponse().containsHeader(HEADER_LASTMOD)) {
+//            context.getResponse().setDateHeader(HEADER_LASTMOD, lastModified);        	
+//        }
+//    }
+	
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -119,6 +140,17 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 		CDOTransaction transaction = session.openTransaction();
 		Result result = null;
 		try {
+			long lastModified = getLastModified(req, transaction);
+			if (RequestMethod.valueOf(req.getMethod()) == RequestMethod.GET && lastModified != -1) {
+			    long ifModifiedSince = req.getDateHeader(HEADER_IFMODSINCE);
+			    if (lastModified != -1) {
+			        if (lastModified - ifModifiedSince < 1000) { // Seconds precision.
+			        	resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+			        	return;
+			        }
+			    }
+			}
+			
 			String pathInfo = req.getPathInfo();
 			if (pathInfo == null || "/".equals(pathInfo)) {
 				processHome(req, resp, transaction);
@@ -132,7 +164,7 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 
 				configureTransaction(req, transaction);
 				
-				HttpRequestProcessor processor = EObjectAdaptable.adaptTo(target, HttpRequestProcessor.class);
+				Processor processor = EObjectAdaptable.adaptTo(target, Processor.class);
 				if (processor == null) {
 					resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 				} else {
@@ -140,7 +172,6 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 						
 						@Override
 						public String getPathInfo() {
-							// TODO Auto-generated method stub
 							return super.getPathInfo().substring(dotIdx+1);
 						}
 						
@@ -150,7 +181,13 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 						}
 						
 					};
-					result = processor.process(wReq, resp);
+					
+					Map<String,String> pathVariables = new HashMap<>();
+					pathVariables.put("pathInfo", wReq.getPathInfo());
+					pathVariables.put("routePath", wReq.getContextPath()+wReq.getServletPath());
+					pathVariables.put("routeURL", wReq.getContextPath()+wReq.getServletPath()); // TODO - protocol, server, port.
+					
+					result = processor.process(wReq, resp, pathVariables::get);
 					if (result instanceof CDOTransactionHandlerBase) {
 						transaction.addTransactionHandler((CDOTransactionHandlerBase) result);
 					}
@@ -181,10 +218,15 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 			}
 			throw new ServletException(e);
 		} finally {
+			long lastModified = getLastModified(req, transaction);
+			if (RequestMethod.valueOf(req.getMethod()) == RequestMethod.GET && lastModified != -1 && !resp.containsHeader(HEADER_LASTMOD)) {
+		            resp.setDateHeader(HEADER_LASTMOD, lastModified);        	
+			}
+
 			transaction.close();
-			if (result instanceof AutoCloseable) {
+			if (result != null) {
 				try {
-					((AutoCloseable) result).close();
+					result.close();
 				} catch (Exception e) {
 					log("Result closing failed: "+e.toString(), e);
 				}
@@ -246,6 +288,10 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 		} else if (result!=null) {
 			resp.getWriter().write(result.toString());
 		}
+	}	
+	
+	protected long getLastModified(HttpServletRequest req, CDOTransaction transaction) {
+		return transaction.getTimeStamp();
 	}	
 
 	/**

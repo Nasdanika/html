@@ -1,5 +1,7 @@
 package org.nasdanika.cdo.http;
 
+import java.util.function.Function;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,16 +18,17 @@ import org.nasdanika.html.emf.EObjectAdaptable;
  *
  * @param <T>
  */
-public class EObjectViewActionHttpRequestProcessor<T extends EObject> implements HttpRequestProcessor {
+public class EObjectViewActionProcessor<T extends EObject> implements Processor {
 	
 	private T target;
 
-	public EObjectViewActionHttpRequestProcessor(T target) {
+	public EObjectViewActionProcessor(T target) {
 		this.target = target;
 	}
 
 	@Override
-	public Result process(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public Result process(HttpServletRequest request, HttpServletResponse response, Function<String,String> pathVariables) throws Exception {
+		// TODO - check request method (GET) and access (read)
 		if (".html".equals(request.getPathInfo())) {
 			AccessController accessController = EObjectAdaptable.adaptTo(target, AccessController.class);
 			if (accessController == null || accessController.canRead(null)) {
@@ -51,8 +54,7 @@ public class EObjectViewActionHttpRequestProcessor<T extends EObject> implements
 			}
 		}
 
-		response.sendError(HttpServletResponse.SC_NOT_FOUND);
-		return null;
+		return Result.NOT_FOUND;
 	}
 
 }
