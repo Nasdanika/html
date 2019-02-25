@@ -19,8 +19,8 @@ public abstract class ReflectiveRouter extends Router {
 
 	protected Object target;
 
-	private BundleContext bundleContext;
-	private CDOObject entity;
+	protected BundleContext bundleContext;
+	protected CDOObject entity;
 
 
 	public ReflectiveRouter(BundleContext bundleContext, CDOObject entity, Object target) {
@@ -84,7 +84,7 @@ public abstract class ReflectiveRouter extends Router {
 	@SuppressWarnings("unchecked")
 	protected <T> T convert(Object obj, Class<T> type) throws Exception {
 		if (obj == null || type.isInstance(obj)) {
-			return null;
+			return (T) obj;
 		}
 		if (CDOObject.class.isAssignableFrom(type)) {
 			if (obj instanceof CDOID) {

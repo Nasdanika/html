@@ -95,7 +95,14 @@ public abstract class MethodCommand {
 	protected ArgumentResolver createArgumentResolver(final Class<?> parameterType, final Annotation[] parameterAnnotations) throws Exception {
 		for (Annotation a: parameterAnnotations) {
 			if (EntityParameter.class.isInstance(a)) {
-				return () -> EObjectAdaptable.adaptTo(entity, parameterType);
+				return new ArgumentResolver() {
+
+					@Override
+					public Object getValue() throws Exception {
+						return EObjectAdaptable.adaptTo(entity, parameterType);
+					}
+					
+				};
 			}
 			if (RequestParameter.class.isInstance(a)) {
 				return () -> request;

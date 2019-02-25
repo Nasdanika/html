@@ -170,6 +170,10 @@ public abstract class Router implements Processor {
 					}							
 					String matchedPath = String.join("/", Arrays.copyOfRange(path, 0, splitRoutePath.length));
 					String pathInfo = String.join("/", Arrays.copyOfRange(path, splitRoutePath.length, path.length));
+					
+					pathParameters.put(Util.PATH_VARIABLE_PATH_INFO, pathInfo);
+					pathParameters.put(Util.PATH_VARIABLE_ROUTE_PATH, pathVariables.apply(Util.PATH_VARIABLE_ROUTE_PATH) + matchedPath);
+					pathParameters.put(Util.PATH_VARIABLE_ROUTE_URL, pathVariables.apply(Util.PATH_VARIABLE_ROUTE_URL) + matchedPath);
 
 					HttpServletRequestWrapper wReq = new HttpServletRequestWrapper(request) {
 						

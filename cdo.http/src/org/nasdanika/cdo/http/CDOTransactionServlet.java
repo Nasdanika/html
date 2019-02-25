@@ -82,11 +82,13 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 		
 	protected boolean jsonPrettyPrint = true;
 
+	private BundleContext bundleContext;
+
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 
-		BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+		bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
 		if (bundleContext == null) {
 			throw new IllegalStateException("Bundle context is not available, make sure that bundle "
 					+ FrameworkUtil.getBundle(getClass()).getSymbolicName() + " is activated");
@@ -106,6 +108,10 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 		}
 		cdoSessionProviderServiceTracker.open();
 	}	
+	
+	protected BundleContext getBundleContext() {
+		return bundleContext;
+	}
 
 	@Override
 	public void destroy() {
@@ -143,7 +149,7 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 			long lastModified = getLastModified(req, transaction);
 			if (RequestMethod.valueOf(req.getMethod()) == RequestMethod.GET && lastModified != -1) {
 			    long ifModifiedSince = req.getDateHeader(HEADER_IFMODSINCE);
-			    if (lastModified != -1) {
+			    if (ifModifiedSince > 0 && lastModified > 0) {
 			        if (lastModified - ifModifiedSince < 1000) { // Seconds precision.
 			        	resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
 			        	return;
@@ -183,9 +189,20 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 					};
 					
 					Map<String,String> pathVariables = new HashMap<>();
-					pathVariables.put("pathInfo", wReq.getPathInfo());
-					pathVariables.put("routePath", wReq.getContextPath()+wReq.getServletPath());
-					pathVariables.put("routeURL", wReq.getContextPath()+wReq.getServletPath()); // TODO - protocol, server, port.
+					pathVariables.put(Util.PATH_VARIABLE_PATH_INFO, wReq.getPathInfo());
+					pathVariables.put(Util.PATH_VARIABLE_ROUTE_PATH, wReq.getContextPath()+wReq.getServletPath());
+					
+					StringBuilder urlBuilder = new StringBuilder(req.getScheme())
+					        .append("://")
+					        .append(req.getServerName());
+
+					int port = req.getServerPort();
+					if ((req.getScheme().equals("http") && port != 80) || (req.getScheme().equals("https") && port != 443)) {
+						urlBuilder.append(':').append(port);
+					}
+					urlBuilder.append(wReq.getContextPath()).append(wReq.getServletPath());
+					
+					pathVariables.put(Util.PATH_VARIABLE_ROUTE_URL, urlBuilder.toString()); 
 					
 					result = processor.process(wReq, resp, pathVariables::get);
 					if (result instanceof CDOTransactionHandlerBase) {
@@ -291,7 +308,7 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 	}	
 	
 	protected long getLastModified(HttpServletRequest req, CDOTransaction transaction) {
-		return transaction.getTimeStamp();
+		return transaction.getLastUpdateTime();
 	}	
 
 	/**
@@ -618,6 +635,24 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 	protected CDOID decodeCDOID(HttpServletRequest req, String idStr) {
 		return CDOIDUtil.read(idStr);
 	}
-	
+		
+	protected Converter getConverter(HttpServletRequest req) {
+		return new Converter() {
 
+			@SuppressWarnings("unchecked")
+			@Override
+			public <T> T convert(Object source, Class<T> type) throws Exception {
+				if (source instanceof String && CDOID.class.equals(type)) {
+					return (T) decodeCDOID(req, (String) source);
+				}
+				
+				if (source instanceof CDOID && String.class.equals(type)) {
+					return (T) encodeCDOID(req, (CDOID) source);
+				}
+				
+				return ReflectiveConverter.INSTANCE.convert(source, type);
+			}
+			
+		};
+	}
 }
