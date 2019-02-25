@@ -2,17 +2,14 @@ package org.nasdanika.cdo.http;
 
 import java.util.concurrent.locks.ReadWriteLock;
 
+import org.eclipse.emf.ecore.EObject;
+
 /**
  * Implementations of this interface manage locks.
+ * An instance of a lock manager is typically obtained by adapting {@link EObject}.
  * @author Pavel
  *
  */
-public interface LockManager {
+public interface LockManager extends ReadWriteLock {
 			
-	/**
-	 * @param scope
-	 * @return A lock for a given scope. Scopes are application-specific.
-	 */
-	ReadWriteLock getLock(String scope);
-
 }

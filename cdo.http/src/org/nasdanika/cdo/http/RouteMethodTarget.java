@@ -3,7 +3,6 @@ package org.nasdanika.cdo.http;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -233,31 +232,27 @@ public abstract class RouteMethodTarget implements Target, Comparable<RouteMetho
 	 * @param arguments
 	 * @return
 	 */
-	protected java.util.concurrent.locks.Lock getTargetLock(HttpServletRequest request) throws Exception {
+	protected java.util.concurrent.locks.Lock getEntityLock(HttpServletRequest request) throws Exception {
 		LockManager lockManager = EObjectAdaptable.adaptTo(entity,LockManager.class);
 		Lock lockAnnotation = getLock();
 		if (lockManager == null || lockAnnotation == null) {
 			return null;
 		}
 		
-		ReadWriteLock rwLock = lockManager.getLock(lockAnnotation.scope());
-		if (rwLock == null) {
-			return null;
-		}
 		switch (lockAnnotation.type()) {
 		case READ:
-			return rwLock.readLock();
+			return lockManager.readLock();
 		case WRITE:
-			return rwLock.writeLock();
+			return lockManager.writeLock();
 		case IMPLY_FROM_HTTP_METHOD:
 			switch (RequestMethod.valueOf(request.getMethod())) {
 			case DELETE:
 			case PATCH:
 			case POST:
 			case PUT:
-				return rwLock.writeLock();
+				return lockManager.writeLock();
 			default:
-				return rwLock.readLock();							
+				return lockManager.readLock();							
 			}
 		default:
 			return null;					
@@ -285,7 +280,7 @@ public abstract class RouteMethodTarget implements Target, Comparable<RouteMetho
 			
 		};
 		
-		java.util.concurrent.locks.Lock lock = getTargetLock(request);
+		java.util.concurrent.locks.Lock lock = getEntityLock(request);
 		if (lock == null) {
 			return Result.wrap(methodCommand.execute(target));
 		} else {

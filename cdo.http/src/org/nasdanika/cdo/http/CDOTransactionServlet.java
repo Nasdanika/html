@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
 
 //import javax.activation.MimetypesFileTypeMap;
@@ -70,6 +71,8 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 	
 	protected static final String AUTH_CACHE_KEY = "org.nasdanika.cdo.web:auth-cache";
 		
+	public static final String APP_LOCK_KEY = "org.nasdanika.cdo.web:application-lock";
+	
 	/**
 	 * Special token type to avoid clash with other authorization types.
 	 */
@@ -107,6 +110,12 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 			}
 		}
 		cdoSessionProviderServiceTracker.open();
+		
+		ReentrantReadWriteLock ret = (ReentrantReadWriteLock) getServletContext().getAttribute(APP_LOCK_KEY);
+		if (ret == null) {
+			ret = new ReentrantReadWriteLock(true);
+			getServletContext().setAttribute(APP_LOCK_KEY, ret);
+		}		
 	}	
 	
 	protected BundleContext getBundleContext() {
@@ -654,5 +663,13 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 			}
 			
 		};
+	}
+		
+	/**
+	 * Returns application wide read-write lock.
+	 * @return
+	 */
+	public ReentrantReadWriteLock getApplicationLock() {
+		return (ReentrantReadWriteLock) getServletContext().getAttribute(APP_LOCK_KEY);
 	}
 }
