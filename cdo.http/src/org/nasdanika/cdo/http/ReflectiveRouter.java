@@ -12,10 +12,11 @@ import org.eclipse.emf.cdo.common.id.CDOID;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.nasdanika.html.emf.AccessController;
 import org.nasdanika.html.emf.EObjectAdaptable;
 import org.osgi.framework.BundleContext;
 
-public abstract class ReflectiveRouter extends Router {
+public class ReflectiveRouter extends Router {
 
 	protected Object target;
 
@@ -100,6 +101,12 @@ public abstract class ReflectiveRouter extends Router {
 			converter = ReflectiveConverter.INSTANCE;
 		}
 		return converter.convert(obj, type);
+	}
+
+	@Override
+	protected boolean authorize(HttpServletRequest request, String action, String qualifier) {
+		AccessController accessController = EObjectAdaptable.adaptToAccessController(entity);
+		return accessController == null ? true : accessController.hasPermission(action, qualifier);
 	}
 	
 	
