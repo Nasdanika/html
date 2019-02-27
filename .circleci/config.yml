@@ -22,7 +22,9 @@ jobs:
     
     steps:
       - checkout
-      - run: mvn -s .circleci/settings.xml clean javadoc:javadoc verify jacoco:report-aggregate site-deploy
+      - run: 
+            command: mvn -s .circleci/settings.xml clean javadoc:javadoc verify jacoco:report-aggregate site-deploy
+            no_output_timeout: 30m
       - run: 
             command: mvn -s .circleci/settings.xml -f jar-pom.xml clean deploy
             no_output_timeout: 30m
