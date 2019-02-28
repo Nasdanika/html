@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.dynamichelpers.ExtensionTracker;
 import org.eclipse.core.runtime.dynamichelpers.IExtensionChangeHandler;
 import org.eclipse.core.runtime.dynamichelpers.IExtensionTracker;
 import org.eclipse.emf.cdo.CDOObject;
-import org.nasdanika.html.emf.EObjectAdaptable;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.Filter;
@@ -99,7 +98,7 @@ public abstract class MethodCommand {
 
 					@Override
 					public Object getValue() throws Exception {
-						return EObjectAdaptable.adaptTo(entity, parameterType);
+						return convert(entity, parameterType);
 					}
 					
 				};
