@@ -103,21 +103,7 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-<!--
-   <plugin
-         id="org.nasdanika.html.app.model.edit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
-   <plugin
-         id="org.nasdanika.html.app.model.editor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
--->
    <plugin
          id="org.nasdanika.html.bootstrap.source"
          download-size="0"
@@ -166,21 +152,7 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-<!--
-   <plugin
-         id="org.nasdanika.html.app.model.edit.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
-   <plugin
-         id="org.nasdanika.html.app.model.editor.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
--->
    <plugin
          id="org.nasdanika.cdo"
          download-size="0"
@@ -222,5 +194,11 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="org.nasdanika.jwt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>

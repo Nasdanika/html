@@ -214,6 +214,7 @@
 		<module>cdo</module>
 		<module>cdo.http</module>
 		<module>cdo.h2</module>
+		<module>jwt</module>
 
 		<module>app.model</module>
 		<module>app.model.edit</module>
