@@ -14,8 +14,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 //import javax.activation.MimetypesFileTypeMap;
@@ -39,6 +41,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.nasdanika.cdo.http.Principal.AccessDecision;
 import org.nasdanika.html.Producer;
 import org.nasdanika.html.emf.AccessController;
 import org.nasdanika.html.emf.EObjectAdaptable;
@@ -55,13 +58,8 @@ import org.osgi.util.tracker.ServiceTracker;
  *
  * @param <P> Principal type.
  */
-public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
+public class CDOTransactionServlet extends HttpServlet {
 	
-	enum AccessDecision {
-		DENY,
-		ALLOW,
-		ABSTAIN
-	}	
 	
 	protected ServiceTracker<CDOSessionProvider, CDOSessionProvider> cdoSessionProviderServiceTracker;
 	
@@ -69,14 +67,16 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 		
 	protected static final String SUBJECT_KEY = "org.nasdanika.cdo.web:subject";
 	
+	/**
+	 * Used for token subject caching. A key for a map in the application context mapping token strings to subjects.
+	 */
+	protected static final String TOKEN_SUBJECTS_KEY = "org.nasdanika.cdo.web:token-subjects";
+	
 	protected static final String AUTH_CACHE_KEY = "org.nasdanika.cdo.web:auth-cache";
 		
 	public static final String APP_LOCK_KEY = "org.nasdanika.cdo.web:application-lock";
 	
-	/**
-	 * Special token type to avoid clash with other authorization types.
-	 */
-	public static final String AUTHORIZATION_TOKEN_TYPE = "NSD-CDO";
+	public static final String AUTHORIZATION_BEARER = "Bearer ";
 	
 	private static final String AUTHORIZATION_BASIC = "Basic ";
 		
@@ -111,12 +111,28 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 		}
 		cdoSessionProviderServiceTracker.open();
 		
-		ReentrantReadWriteLock ret = (ReentrantReadWriteLock) getServletContext().getAttribute(APP_LOCK_KEY);
-		if (ret == null) {
-			ret = new ReentrantReadWriteLock(true);
-			getServletContext().setAttribute(APP_LOCK_KEY, ret);
-		}		
+		ReentrantReadWriteLock applicationLock = (ReentrantReadWriteLock) getServletContext().getAttribute(APP_LOCK_KEY);
+		if (applicationLock == null) {
+			applicationLock = new ReentrantReadWriteLock(true);
+			getServletContext().setAttribute(APP_LOCK_KEY, applicationLock);
+		}	
+		
+		// Token cache
+		if (getServletContext().getAttribute(TOKEN_SUBJECTS_KEY) == null) {
+			getServletContext().setAttribute(TOKEN_SUBJECTS_KEY, createTokenCache());
+		}					
 	}	
+	
+	/**
+	 * Creates a token cache. This implementation creates a cache backed by a synchronized {@link WeakHashMap}.
+	 * Override to customize as needed. If you don't want caching you may return a NOP cache as <code>(token, fallback) -> fallback.apply(token);</code>
+	 * @return
+	 */
+	protected BiFunction<String, Function<String, Subject>, Subject> createTokenCache() {
+		Map<String, Subject> tokenCache = Collections.synchronizedMap(new WeakHashMap<>());
+		return (token,fallback) -> tokenCache.computeIfAbsent(token, fallback);
+	}
+
 	
 	protected BundleContext getBundleContext() {
 		return bundleContext;
@@ -468,19 +484,19 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 	} 	
 	
 	/**
-	 * Request header containing remote user name.
+	 * Request header containing forwarded user name.
 	 * @return
 	 */
-	protected String getRemoteUserHeader() {
+	protected String getForwardedUserHeader() {
 		return "X-Forwarded-User";
 	}
 	
 	/**
-	 * Authorizes address for providing remote user. This method authorizes only the localhost.
+	 * Authorizes address for forwarding user name. This method authorizes only the localhost.
 	 * @param remoteAddress
 	 * @return
 	 */
-	protected boolean authorizeRemoteHost(String remoteAddress) {
+	protected boolean authorizeForwardingHost(String remoteAddress) {
 		try {
 			return InetAddress.getLocalHost().equals(InetAddress.getByName(remoteAddress));
 		} catch (UnknownHostException e) {
@@ -490,14 +506,21 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 	}
 	
 	/**
+	 * Caches return value of doGetSubject in the request for optimization.
 	 * @param req
-	 * @param transaction
-	 * @return Auth token type to use for token authentication.
+	 * @return
 	 */
-	protected String getAuthTokenType(HttpServletRequest req, CDOTransaction transaction) {
-		return AUTHORIZATION_TOKEN_TYPE;
+	protected Subject getSubject(HttpServletRequest req) {
+		// Caching in the request for optimization.
+		Subject ret = (Subject) req.getAttribute(SUBJECT_KEY);
+		if (ret == null) {
+			ret = doGetSubject(req);
+			req.setAttribute(SUBJECT_KEY, ret);
+		}
+		
+		return ret;
 	}
-
+	
 	/**
 	 * Subject is a list of principals associated with a request.
 	 * @param req
@@ -505,39 +528,38 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	protected List<P> getSubject(HttpServletRequest req, CDOTransaction transaction) {
+	protected Subject doGetSubject(HttpServletRequest req) {				
 		// Remote user
-		String remoteUserHeader = getRemoteUserHeader();
+		String remoteUserHeader = getForwardedUserHeader();
 		if (remoteUserHeader != null) {
 			String principalName = req.getHeader(remoteUserHeader);
 			if (principalName != null) {
-				return authorizeRemoteHost(req.getRemoteAddr()) ? buildSubject(req, transaction, getPrincipalByName(req, transaction, principalName)) : Collections.emptyList();
+				if (authorizeForwardingHost(req.getRemoteAddr())) {
+					return createForwardedUserSubject(principalName);
+				}
+				
+				return Subject.UNAUTHORIZED_SUBJECT;
 			}
 		}		
 		
 		// Auth header is present
 		String authHeader = req.getHeader("Authorization");
 		if (authHeader != null) {
-			String authTokenType = getAuthTokenType(req, transaction);
-			if (authHeader.startsWith(authTokenType+" ")) {				
-				// Token authorization
-				String val = authHeader.substring(AUTHORIZATION_TOKEN_TYPE.length()+1);
-				int dotIdx = val.indexOf('.');
-				String tokenIdStr = dotIdx == -1 ? val : val.substring(0, dotIdx);
-				CDOID tokenId = decodeCDOID(req, tokenIdStr);
-				P tokenPrincipal = (P) transaction.getObject(tokenId);
-				if (authenticate(req, transaction, tokenPrincipal, dotIdx == -1 ? null : val.substring(dotIdx + 1))) {
-					return buildSubject(req, transaction, tokenPrincipal);
-				}
-				return Collections.emptyList();
-			} else if (authHeader.startsWith(AUTHORIZATION_BASIC)) {
+			if (authHeader.startsWith(AUTHORIZATION_BEARER)) {		
+				String token = authHeader.substring(AUTHORIZATION_BEARER.length());
+				BiFunction<String, Function<String, Subject>, Subject> tokenSubjectCache = (BiFunction<String, Function<String, Subject>, Subject>) req.getAttribute(TOKEN_SUBJECTS_KEY);
+				return tokenSubjectCache.apply(token, this::createTokenSubject);				
+			} 
+			
+			if (authHeader.startsWith(AUTHORIZATION_BASIC)) {
 				// Basic authorization
 				String decoded = new String(Base64.getDecoder().decode(authHeader.substring(AUTHORIZATION_BASIC.length())));
 				int idx = decoded.indexOf(":");
 				if (idx == -1) {
-					return Collections.emptyList();
+					return Subject.UNAUTHORIZED_SUBJECT; // Bad basic auth format.
 				}
-				P principal = authenticate(req, transaction, decoded.substring(0, idx), decoded.substring(idx+1));
+				return createUserPasswordSubject(decoded.substring(0, idx), decoded.substring(idx+1));
+				P principal = authenticate(req, transaction, );
 				return principal == null ? Collections.emptyList() : buildSubject(req, transaction, principal);
 			}
 		}
@@ -559,6 +581,28 @@ public class CDOTransactionServlet<P extends CDOObject> extends HttpServlet {
 		P principal = getUnauthenticatedPrincipal(req, transaction);
 		return principal == null ? Collections.emptyList() : buildSubject(req, transaction, principal);
 	}
+	
+	/**
+	 * Builds subject for a forwarded user. This implementation returns UNAUTHORIZED_SUBJECT. 
+	 * Override to provide support of user forwarding. 
+	 * @param forwardedUser
+	 * @return
+	 */
+	protected Subject createForwardedUserSubject(String forwardedUser) {
+		return Subject.UNAUTHORIZED_SUBJECT;
+	};
+	
+	/**
+	 * Builds subject for a forwarded user. This implementation returns UNAUTHORIZED_SUBJECT. 
+	 * Override to provide support of user forwarding. 
+	 * @param forwardedUser
+	 * @return
+	 */
+	protected Subject createTokenSubject(String token) {
+		return Subject.UNAUTHORIZED_SUBJECT;
+	};
+	
+	
 	
 	/**
 	 * Builds a subject for the primary principal. For example, if user group membership is retrieved from

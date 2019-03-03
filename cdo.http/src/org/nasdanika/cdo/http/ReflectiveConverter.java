@@ -66,7 +66,10 @@ public class ReflectiveConverter implements Converter {
 	public <T> T convert(Object source, Class<T> type) throws Exception {
 		// Converter methods conversion
 		Optional<Method> cm = Arrays.stream(getClass().getMethods())
-				.filter(m -> m.getAnnotation(ConverterMethod.class) != null && m.getParameterCount() == 1 && m.getParameterTypes()[0].isInstance(source))
+				.filter(m -> m.getAnnotation(ConverterMethod.class) != null 
+					&& m.getParameterCount() == 1 
+					&& m.getParameterTypes()[0].isInstance(source)
+					&& type.isAssignableFrom(m.getReturnType()))
 				.sorted((m1, m2) -> compare(m1.getParameterTypes()[0], m2.getParameterTypes()[0]))
 				.findFirst();
 		
