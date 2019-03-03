@@ -30,8 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.eclipse.emf.cdo.CDOObject;
-import org.eclipse.emf.cdo.common.id.CDOID;
-import org.eclipse.emf.cdo.common.id.CDOIDUtil;
 import org.eclipse.emf.cdo.session.CDOSession;
 import org.eclipse.emf.cdo.session.CDOSessionProvider;
 import org.eclipse.emf.cdo.transaction.CDOTransaction;
@@ -166,13 +164,8 @@ public class CDOTransactionServlet extends HttpServlet {
 		CDOTransaction transaction = session.openTransaction();
 		Result result = null;
 		try {
-			// No subject - it means that authentication information was presented, but was not accepted.			
 			Principal principal = getPrincipal(req, transaction);
-			if (principal == null) {
-				resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-			}
-			
-			long lastModified = getLastModified(req, transaction);
+			long lastModified = Math.max(getLastModified(req, transaction), principal.timestamp());
 			if (RequestMethod.valueOf(req.getMethod()) == RequestMethod.GET && lastModified != -1) {
 			    long ifModifiedSince = req.getDateHeader(HEADER_IFMODSINCE);
 			    if (ifModifiedSince > 0 && lastModified > 0) {
@@ -196,41 +189,36 @@ public class CDOTransactionServlet extends HttpServlet {
 				String firstSegment = path[1];
 				int dotIdx = firstSegment.lastIndexOf('.');
 				String idStr = dotIdx == -1 ? firstSegment : firstSegment.substring(0, dotIdx);
-				CDOObject target = getRepository(req, transaction).find(idStr);
+				CDOObject target = principal.find(idStr);
+				configureTransaction(req, transaction);
 				
-				if (target == null) {
-					resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				Processor processor = EObjectAdaptable.adaptTo(target, Processor.class);
+				if (processor == null) {
+					resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 				} else {
-					configureTransaction(req, transaction);
-					
-					Processor processor = EObjectAdaptable.adaptTo(target, Processor.class);
-					if (processor == null) {
-						resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-					} else {
-						HttpServletRequestWrapper wReq = new HttpServletRequestWrapper(req) {
-							
-							@Override
-							public String getPathInfo() {
-								return super.getPathInfo().substring(dotIdx+1);
-							}
-							
-							@Override
-							public String getServletPath() {
-								return super.getServletPath()+super.getPathInfo().substring(0, dotIdx +1);
-							}
-							
-						};
+					HttpServletRequestWrapper wReq = new HttpServletRequestWrapper(req) {
 						
-						Map<String,String> pathVariables = new HashMap<>();
-						pathVariables.put(Util.PATH_VARIABLE_PATH_INFO, wReq.getPathInfo());
-						pathVariables.put(Util.PATH_VARIABLE_ROUTE_PATH, wReq.getContextPath()+wReq.getServletPath());
-						
-						pathVariables.put(Util.PATH_VARIABLE_ROUTE_URL, buildUrl(wReq).toString()); 
-						
-						result = processor.process(wReq, resp, pathVariables::get);
-						if (result instanceof CDOTransactionHandlerBase) {
-							transaction.addTransactionHandler((CDOTransactionHandlerBase) result);
+						@Override
+						public String getPathInfo() {
+							return super.getPathInfo().substring(dotIdx+1);
 						}
+						
+						@Override
+						public String getServletPath() {
+							return super.getServletPath()+super.getPathInfo().substring(0, dotIdx +1);
+						}
+						
+					};
+					
+					Map<String,String> pathVariables = new HashMap<>();
+					pathVariables.put(Util.PATH_VARIABLE_PATH_INFO, wReq.getPathInfo());
+					pathVariables.put(Util.PATH_VARIABLE_ROUTE_PATH, wReq.getContextPath()+wReq.getServletPath());
+					
+					pathVariables.put(Util.PATH_VARIABLE_ROUTE_URL, buildUrl(wReq).toString()); 
+					
+					result = processor.process(wReq, resp, pathVariables::get);
+					if (result instanceof CDOTransactionHandlerBase) {
+						transaction.addTransactionHandler((CDOTransactionHandlerBase) result);
 					}
 				}
 			}
@@ -238,6 +226,17 @@ public class CDOTransactionServlet extends HttpServlet {
 				transaction.rollback();
 			} else {
 				transaction.commit();
+			}
+			
+			// Unauthenticated principal - return authorized or redirect to auth url
+			if (result == Result.FORBIDDEN && !principal.isAuthenticated()) {
+				String au = principal.getAuthenticationUrl();
+				if (Util.isBlank(au)) {
+					resp.sendRedirect(au);
+					result = null;
+				} else {
+					result = Result.UNAUTHORIZED;
+				}
 			}
 			if (result != null) {
 				String contentType = result.getContentType();
@@ -247,7 +246,10 @@ public class CDOTransactionServlet extends HttpServlet {
 				resultToResponse(result.getValue(), resp);
 			}
 		} catch (ObjectNotFoundException e) {
-			resp.sendError(HttpServletResponse.SC_NOT_FOUND);			
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND);	
+		} catch (AuthenticationException e) {
+			log("Authentication exception: " + e, e);
+			resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.toString());			
 		} catch (Exception e) {
 			log(e.toString(), e);
 			transaction.rollback();
@@ -391,15 +393,16 @@ public class CDOTransactionServlet extends HttpServlet {
 	 */
 	protected Principal doGetPrincipal(HttpServletRequest req, CDOTransaction transaction) {				
 		// Remote user
-		String remoteUserHeader = getForwardedUserHeader();
-		if (remoteUserHeader != null) {
-			String principalName = req.getHeader(remoteUserHeader);
+		String forwardedUserHeader = getForwardedUserHeader();
+		if (forwardedUserHeader != null) {
+			String principalName = req.getHeader(forwardedUserHeader);
 			if (principalName != null) {
-				if (authorizeForwardingHost(req.getRemoteAddr())) {
+				String remoteAddr = req.getRemoteAddr();
+				if (authorizeForwardingHost(remoteAddr)) {
 					return createForwardedUserPrincipal(req, transaction, principalName);
 				}
 				
-				return null;
+				throw new AuthenticationException("Unauthorized forwarding host: "+remoteAddr);
 			}
 		}		
 		
@@ -416,7 +419,7 @@ public class CDOTransactionServlet extends HttpServlet {
 				String decoded = new String(Base64.getDecoder().decode(authHeader.substring(AUTHORIZATION_BASIC.length())));
 				int idx = decoded.indexOf(":");
 				if (idx == -1) {
-					return null; // Bad basic auth format.
+					throw new AuthenticationException("Invalid credentials format: "+decoded);
 				}
 				return createUserPasswordPrincipal(req, transaction, decoded.substring(0, idx), decoded.substring(idx+1));
 			}
@@ -426,64 +429,72 @@ public class CDOTransactionServlet extends HttpServlet {
 		HttpSession session = req.getSession(false);
 		if (session != null) {
 			List<BiFunction<HttpServletRequest, CDOTransaction, Principal>> principalProviders = getSessionSubject(req, transaction);
-			if (principalProviders == null) {
-				return null;
-			}			
-			List<Principal> principals = new ArrayList<>();
-			for (BiFunction<HttpServletRequest, CDOTransaction, Principal> pp: principalProviders) {
-				principals.add(pp.apply(req, transaction));
+			if (principalProviders != null) {
+				List<Principal> principals = new ArrayList<>();
+				for (BiFunction<HttpServletRequest, CDOTransaction, Principal> pp: principalProviders) {
+					principals.add(pp.apply(req, transaction));
+				}
+				if (principals.size() == 1) {
+					return principals.get(0);
+				}
+				return new Principal() {
+	
+					@Override
+					public AccessDecision authorize(Object target, String action, String qualifier, Map<?, ?> context) {
+						for (Principal principal: principals) {
+							AccessDecision ad = principal.authorize(target, action, qualifier, context);
+							if (ad != AccessDecision.ABSTAIN) {
+								return ad;
+							}
+						}
+						return AccessDecision.ABSTAIN;
+					}
+	
+					@Override
+					public boolean isAuthenticated() {
+						return true;
+					}
+					
+					@Override
+					public String getHomeUrl() {
+						for (Principal principal: principals) {
+							String hu = principal.getHomeUrl();
+							if (!Util.isBlank(hu)) {
+								return hu;
+							}
+						}
+						return null;
+					}
+					
+					@Override
+					public String getAuthenticationUrl() {
+						for (Principal principal: principals) {
+							String au = principal.getAuthenticationUrl();
+							if (!Util.isBlank(au)) {
+								return au;
+							}
+						}
+						return Principal.super.getAuthenticationUrl();
+					}
+	
+					// Delegates to the first principal
+					@Override
+					public CDOObject find(String id) {
+						return principals.get(0).find(id);
+					}
+	
+					@Override
+					public long timestamp() {
+						return principals.stream().mapToLong(p -> p.timestamp()).max().getAsLong();
+					}
+					
+				};
 			}
-			if (principals.size() == 1) {
-				return principals.get(0);
-			}
-			return new Principal() {
-
-				@Override
-				public AccessDecision authorize(Object target, String action, String qualifier, Map<?, ?> context) {
-					for (Principal principal: principals) {
-						AccessDecision ad = principal.authorize(target, action, qualifier, context);
-						if (ad != AccessDecision.ABSTAIN) {
-							return ad;
-						}
-					}
-					return AccessDecision.ABSTAIN;
-				}
-
-				@Override
-				public boolean isAuthenticated() {
-					return true;
-				}
-				
-				@Override
-				public String getHomeUrl() {
-					for (Principal principal: principals) {
-						String hu = principal.getHomeUrl();
-						if (!Util.isBlank(hu)) {
-							return hu;
-						}
-					}
-					return null;
-				}
-				
-				@Override
-				public String getAuthenticationUrl() {
-					for (Principal principal: principals) {
-						String au = principal.getAuthenticationUrl();
-						if (!Util.isBlank(au)) {
-							return au;
-						}
-					}
-					return Principal.super.getAuthenticationUrl();
-				}
-				
-			};
 		}
 		
 		// Unauthenticated subject		
 		return createUnauthenticatedPrincipal(req, transaction);
 	}
-	
-	// HttpServletRequest request, CDOTransaction transaction, 
 
 	/**
 	 * Retrieves a subject (a list of principal providers) from the session. 
@@ -508,7 +519,7 @@ public class CDOTransactionServlet extends HttpServlet {
 	}
 
 	/**
-	 * Creates a prinicipal for user name and password. Override as needed. This method returns null.
+	 * Creates a principal for user name and password. Override as needed. This method returns null.
 	 * @param req
 	 * @param transaction
 	 * @param user
@@ -520,7 +531,7 @@ public class CDOTransactionServlet extends HttpServlet {
 			CDOTransaction transaction, 
 			String user,
 			String password) {
-		return null;
+		throw new AuthenticationException("Invalid credentials");
 	}
 
 	/**
@@ -561,7 +572,7 @@ public class CDOTransactionServlet extends HttpServlet {
 	protected Principal createTokenPrincipal(HttpServletRequest req, CDOTransaction transaction, String token) {
 		SigningKeyResolver signingKeyResolver = getJwtTokenSignatureKeyResolver(req, transaction);
 		if (signingKeyResolver == null) {
-			return null;
+			throw new AuthenticationException("No signing key resolver");
 		}
 		try {
 			JwtParser parser = Jwts.parser()
@@ -572,8 +583,7 @@ public class CDOTransactionServlet extends HttpServlet {
 			Jws<Claims> jws = parser.parseClaimsJws(token);			
 			return createJwtPrincipal(req, transaction, jws);
 		} catch (JwtException jwtException) {
-			log("JWT Token authentication failed: "+ jwtException + " " + token, jwtException);
-			return null;
+			throw new AuthenticationException(jwtException);
 		}
 	};
 	
@@ -607,26 +617,7 @@ public class CDOTransactionServlet extends HttpServlet {
 	 * @return
 	 */
 	protected Principal createUnauthenticatedPrincipal(HttpServletRequest req, CDOTransaction transaction) {
-		return null;
-	}
-	
-	/**
-	 * Returns repository for finding objects by their id's. 
-	 * This implementation returns a repository which treats id as a string representation of {@link CDOID}.
-	 * @param req
-	 * @param transaction
-	 * @param idStr
-	 * @return
-	 */
-	protected Repository getRepository(HttpServletRequest req, CDOTransaction transaction) {
-		return idStr -> {
-			CDOID id = CDOIDUtil.read(idStr);
-			try {
-				return transaction.getObject(id);
-			} catch (ObjectNotFoundException e) {
-				return null;
-			}
-		};
+		throw new AuthenticationException("Unauthenticated principal is not defined");
 	}
 		
 	/**

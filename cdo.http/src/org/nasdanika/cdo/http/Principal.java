@@ -8,10 +8,12 @@ import org.eclipse.emf.cdo.transaction.CDOTransaction;
 
 /**
  * Principal participates in authorization decisions in a context of {@link HttpServletRequest} and {@link CDOTransaction}.
+ * This interface extends {@link Repository} to allow principal-specific resolution of object ID's to objects. For example, 
+ * a customer principal may use "index" ID for the customer object instead of its CDOID.
  * @author Pavel
  *
  */
-public interface Principal {
+public interface Principal extends Repository {
 //	
 //	Principal DENY_ALL = new Principal() {
 //
@@ -89,5 +91,10 @@ public interface Principal {
 		return getHomeUrl();
 	}
 	
+	/**
+	 * Principal timestamp is used in if-modified-since processing.
+	 * @return
+	 */
+	long timestamp();
 				
 }
