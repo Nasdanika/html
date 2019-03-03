@@ -11,13 +11,13 @@ import java.net.UnknownHostException;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 //import javax.activation.MimetypesFileTypeMap;
@@ -38,7 +38,6 @@ import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.transaction.CDOTransactionHandlerBase;
 import org.eclipse.emf.cdo.util.ObjectNotFoundException;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.nasdanika.cdo.http.Principal.AccessDecision;
@@ -168,8 +167,8 @@ public class CDOTransactionServlet extends HttpServlet {
 		Result result = null;
 		try {
 			// No subject - it means that authentication information was presented, but was not accepted.			
-			Subject subject = getSubject(req, transaction);
-			if (subject == null) {
+			Principal principal = getPrincipal(req, transaction);
+			if (principal == null) {
 				resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 			}
 			
@@ -186,7 +185,7 @@ public class CDOTransactionServlet extends HttpServlet {
 			
 			String pathInfo = req.getPathInfo();
 			if (pathInfo == null || "/".equals(pathInfo)) {
-				String homeUrl = subject.getHomeUrl();
+				String homeUrl = principal.getHomeUrl();
 				if (Util.isBlank(homeUrl)) { 
 					resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 				} else {
@@ -197,40 +196,43 @@ public class CDOTransactionServlet extends HttpServlet {
 				String firstSegment = path[1];
 				int dotIdx = firstSegment.lastIndexOf('.');
 				String idStr = dotIdx == -1 ? firstSegment : firstSegment.substring(0, dotIdx);
-				CDOID cdoId = decodeCDOID(req, idStr);				
-				CDOObject target = transaction.getObject(cdoId);
-
-				configureTransaction(req, transaction);
+				CDOObject target = getRepository(req, transaction).find(idStr);
 				
-				Processor processor = EObjectAdaptable.adaptTo(target, Processor.class);
-				if (processor == null) {
-					resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+				if (target == null) {
+					resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				} else {
-					HttpServletRequestWrapper wReq = new HttpServletRequestWrapper(req) {
+					configureTransaction(req, transaction);
+					
+					Processor processor = EObjectAdaptable.adaptTo(target, Processor.class);
+					if (processor == null) {
+						resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+					} else {
+						HttpServletRequestWrapper wReq = new HttpServletRequestWrapper(req) {
+							
+							@Override
+							public String getPathInfo() {
+								return super.getPathInfo().substring(dotIdx+1);
+							}
+							
+							@Override
+							public String getServletPath() {
+								return super.getServletPath()+super.getPathInfo().substring(0, dotIdx +1);
+							}
+							
+						};
 						
-						@Override
-						public String getPathInfo() {
-							return super.getPathInfo().substring(dotIdx+1);
+						Map<String,String> pathVariables = new HashMap<>();
+						pathVariables.put(Util.PATH_VARIABLE_PATH_INFO, wReq.getPathInfo());
+						pathVariables.put(Util.PATH_VARIABLE_ROUTE_PATH, wReq.getContextPath()+wReq.getServletPath());
+						
+						pathVariables.put(Util.PATH_VARIABLE_ROUTE_URL, buildUrl(wReq).toString()); 
+						
+						result = processor.process(wReq, resp, pathVariables::get);
+						if (result instanceof CDOTransactionHandlerBase) {
+							transaction.addTransactionHandler((CDOTransactionHandlerBase) result);
 						}
-						
-						@Override
-						public String getServletPath() {
-							return super.getServletPath()+super.getPathInfo().substring(0, dotIdx +1);
-						}
-						
-					};
-					
-					Map<String,String> pathVariables = new HashMap<>();
-					pathVariables.put(Util.PATH_VARIABLE_PATH_INFO, wReq.getPathInfo());
-					pathVariables.put(Util.PATH_VARIABLE_ROUTE_PATH, wReq.getContextPath()+wReq.getServletPath());
-					
-					pathVariables.put(Util.PATH_VARIABLE_ROUTE_URL, buildUrl(wReq).toString()); 
-					
-					result = processor.process(wReq, resp, pathVariables::get);
-					if (result instanceof CDOTransactionHandlerBase) {
-						transaction.addTransactionHandler((CDOTransactionHandlerBase) result);
 					}
-				}				
+				}
 			}
 			if (result != null && result.isRollback()) {
 				transaction.rollback();
@@ -272,7 +274,7 @@ public class CDOTransactionServlet extends HttpServlet {
 			}
 		}
 	}
-	
+
 	protected void resultToResponse(Object result, HttpServletResponse resp) throws Exception {
 		if (result instanceof ProcessingError) {
 			ProcessingError processingError = (ProcessingError) result;
@@ -370,11 +372,11 @@ public class CDOTransactionServlet extends HttpServlet {
 	 * @param req
 	 * @return
 	 */
-	protected Subject getSubject(HttpServletRequest req, CDOTransaction transaction) {
+	protected Principal getPrincipal(HttpServletRequest req, CDOTransaction transaction) {
 		// Caching in the request for optimization.
-		Subject ret = (Subject) req.getAttribute(SUBJECT_KEY);
+		Principal ret = (Principal) req.getAttribute(SUBJECT_KEY);
 		if (ret == null) {
-			ret = doGetSubject(req, transaction);
+			ret = doGetPrincipal(req, transaction);
 			req.setAttribute(SUBJECT_KEY, ret);
 		}
 		
@@ -387,15 +389,14 @@ public class CDOTransactionServlet extends HttpServlet {
 	 * @param transaction
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	protected Subject doGetSubject(HttpServletRequest req, CDOTransaction transaction) {				
+	protected Principal doGetPrincipal(HttpServletRequest req, CDOTransaction transaction) {				
 		// Remote user
 		String remoteUserHeader = getForwardedUserHeader();
 		if (remoteUserHeader != null) {
 			String principalName = req.getHeader(remoteUserHeader);
 			if (principalName != null) {
 				if (authorizeForwardingHost(req.getRemoteAddr())) {
-					return createForwardedUserSubject(req, transaction, principalName);
+					return createForwardedUserPrincipal(req, transaction, principalName);
 				}
 				
 				return null;
@@ -407,7 +408,7 @@ public class CDOTransactionServlet extends HttpServlet {
 		if (authHeader != null) {
 			if (authHeader.startsWith(AUTHORIZATION_BEARER)) {		
 				String token = authHeader.substring(AUTHORIZATION_BEARER.length());
-				return createTokenSubject(req, transaction, token);				
+				return createTokenPrincipal(req, transaction, token);				
 			} 
 			
 			if (authHeader.startsWith(AUTHORIZATION_BASIC)) {
@@ -417,39 +418,104 @@ public class CDOTransactionServlet extends HttpServlet {
 				if (idx == -1) {
 					return null; // Bad basic auth format.
 				}
-				return createUserPasswordSubject(req, transaction, decoded.substring(0, idx), decoded.substring(idx+1));
+				return createUserPasswordPrincipal(req, transaction, decoded.substring(0, idx), decoded.substring(idx+1));
 			}
 		}
 		
 		// Principals are present in the session.
 		HttpSession session = req.getSession(false);
 		if (session != null) {
-			List<Principal> principals = (List<Principal>) session.getAttribute(SUBJECT_KEY);
-			if (principals != null) {
-				return 
-				List<P> subject = new ArrayList<>();
-				for (CDOID subjectId: subjectIds) {
-					subject.add((P) transaction.getObject(subjectId));
-				}
-				return Collections.unmodifiableList(subject);
+			List<BiFunction<HttpServletRequest, CDOTransaction, Principal>> principalProviders = getSessionSubject(req, transaction);
+			if (principalProviders == null) {
+				return null;
+			}			
+			List<Principal> principals = new ArrayList<>();
+			for (BiFunction<HttpServletRequest, CDOTransaction, Principal> pp: principalProviders) {
+				principals.add(pp.apply(req, transaction));
 			}
+			if (principals.size() == 1) {
+				return principals.get(0);
+			}
+			return new Principal() {
+
+				@Override
+				public AccessDecision authorize(Object target, String action, String qualifier, Map<?, ?> context) {
+					for (Principal principal: principals) {
+						AccessDecision ad = principal.authorize(target, action, qualifier, context);
+						if (ad != AccessDecision.ABSTAIN) {
+							return ad;
+						}
+					}
+					return AccessDecision.ABSTAIN;
+				}
+
+				@Override
+				public boolean isAuthenticated() {
+					return true;
+				}
+				
+				@Override
+				public String getHomeUrl() {
+					for (Principal principal: principals) {
+						String hu = principal.getHomeUrl();
+						if (!Util.isBlank(hu)) {
+							return hu;
+						}
+					}
+					return null;
+				}
+				
+				@Override
+				public String getAuthenticationUrl() {
+					for (Principal principal: principals) {
+						String au = principal.getAuthenticationUrl();
+						if (!Util.isBlank(au)) {
+							return au;
+						}
+					}
+					return Principal.super.getAuthenticationUrl();
+				}
+				
+			};
 		}
 		
 		// Unauthenticated subject		
-		return createUnauthenticatedSubject(req, transaction);
+		return createUnauthenticatedPrincipal(req, transaction);
 	}
 	
-	protected Subject 
+	// HttpServletRequest request, CDOTransaction transaction, 
 
 	/**
-	 * Creates a subject for user name and password. Override as needed. This method returns null.
+	 * Retrieves a subject (a list of principal providers) from the session. 
+	 * @param req
+	 * @param transaction
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	protected List<BiFunction<HttpServletRequest, CDOTransaction, Principal>> getSessionSubject(HttpServletRequest req, CDOTransaction transaction) {
+		HttpSession session = req.getSession(false);
+		return session == null ? null : (List<BiFunction<HttpServletRequest, CDOTransaction, Principal>>) session.getAttribute(SUBJECT_KEY);
+	}
+	
+	/**
+	 * Retrieves a subject (a list of functions creating principals) from the session. 
+	 * @param req
+	 * @param transaction
+	 * @return
+	 */
+	protected void setSessionSubject(HttpServletRequest req, CDOTransaction transaction, List<BiFunction<HttpServletRequest, CDOTransaction, Principal>> principalProviders) {
+		req.getSession().setAttribute(SUBJECT_KEY, principalProviders);
+	}
+
+	/**
+	 * Creates a prinicipal for user name and password. Override as needed. This method returns null.
 	 * @param req
 	 * @param transaction
 	 * @param user
 	 * @param password
 	 * @return
 	 */
-	protected Subject createUserPasswordSubject(
+	protected Principal createUserPasswordPrincipal(
 			HttpServletRequest req, 
 			CDOTransaction transaction, 
 			String user,
@@ -458,12 +524,12 @@ public class CDOTransactionServlet extends HttpServlet {
 	}
 
 	/**
-	 * Builds subject for a forwarded user. This implementation returns null. 
+	 * Creates a principal for a forwarded user. This implementation returns null. 
 	 * Override to provide support of user forwarding. 
 	 * @param forwardedUser
 	 * @return
 	 */
-	protected Subject createForwardedUserSubject(HttpServletRequest req, CDOTransaction transaction, String forwardedUser) {
+	protected Principal createForwardedUserPrincipal(HttpServletRequest req, CDOTransaction transaction, String forwardedUser) {
 		return null;
 	};
 	
@@ -492,7 +558,7 @@ public class CDOTransactionServlet extends HttpServlet {
 	 * @param forwardedUser
 	 * @return
 	 */
-	protected Subject createTokenSubject(HttpServletRequest req, CDOTransaction transaction, String token) {
+	protected Principal createTokenPrincipal(HttpServletRequest req, CDOTransaction transaction, String token) {
 		SigningKeyResolver signingKeyResolver = getJwtTokenSignatureKeyResolver(req, transaction);
 		if (signingKeyResolver == null) {
 			return null;
@@ -504,7 +570,7 @@ public class CDOTransactionServlet extends HttpServlet {
 			validateTokenRequirements(parser);
 			
 			Jws<Claims> jws = parser.parseClaimsJws(token);			
-			return createJwtSubject(req, transaction, jws);
+			return createJwtPrincipal(req, transaction, jws);
 		} catch (JwtException jwtException) {
 			log("JWT Token authentication failed: "+ jwtException + " " + token, jwtException);
 			return null;
@@ -512,14 +578,15 @@ public class CDOTransactionServlet extends HttpServlet {
 	};
 	
 	/**
-	 * Creates JWT subject. This implementation returns null;
+	 * Creates JWT subject. This implementation uses subject field as forwarded user field to create a principal.
 	 * @param req
 	 * @param transaction
 	 * @param jws
 	 * @return
 	 */
-	protected Subject createJwtSubject(HttpServletRequest req, CDOTransaction transaction, Jws<Claims> jws) {
-		return null;
+	protected Principal createJwtPrincipal(HttpServletRequest req, CDOTransaction transaction, Jws<Claims> jws) {
+		String subject = jws.getBody().getSubject();
+		return Util.isBlank(subject) ? null : createForwardedUserPrincipal(req, transaction, subject);
 	}
 	
 	/**
@@ -534,107 +601,31 @@ public class CDOTransactionServlet extends HttpServlet {
 		
 	
 	/**
-	 * Builds a subject for the primary principal. For example, if user group membership is retrieved from
-	 * LDAP or active directory and permissions in the system are not granted to users, but to groups this method
-	 * shall lookup user's groups and add them as secondary principals in the subject. This implementation returns a singleton list
-	 * containing just the primary principal.
+	 * Creates unauthenticated principal (guest).
 	 * @param req
 	 * @param transaction
-	 * @param principal
 	 * @return
 	 */
-	protected List<P> buildSubject(HttpServletRequest req, CDOTransaction transaction, P principal) {
-		return Collections.singletonList(principal);
-	}
-	
-	/**
-	 * Stores subject to the session. This method can be invoked by authentication processing code.
-	 * It can be made available to the model via some authentication adapter. 
-	 * @param req
-	 * @param transaction
-	 * @param subject
-	 */
-	protected void setSubject(HttpServletRequest req, CDOTransaction transaction, List<P> subject) {
-		HttpSession session = req.getSession();
-		List<CDOID> subjectIds = new ArrayList<CDOID>(); ;
-		for (P principal: subject) {
-			subjectIds.add(principal.cdoID());
-		}
-		session.setAttribute(SUBJECT_KEY, subjectIds);
-	}
-	
-	/**
-	 * Looks up principal by name. Used for remote/forwarded users.
-	 * @param req
-	 * @param transaction
-	 * @param name
-	 * @return
-	 */
-	protected P getPrincipalByName(HttpServletRequest req, CDOTransaction transaction, String name) {
-		return null;
-	}
-
-	/**
-	 * For basic authentication
-	 * @param req
-	 * @param transaction
-	 * @param user
-	 * @param password
-	 * @return
-	 */
-	protected P authenticate(HttpServletRequest req, CDOTransaction transaction, String user, String password) {
+	protected Principal createUnauthenticatedPrincipal(HttpServletRequest req, CDOTransaction transaction) {
 		return null;
 	}
 	
 	/**
-	 * For token authentication - part after ".".
+	 * Returns repository for finding objects by their id's. 
+	 * This implementation returns a repository which treats id as a string representation of {@link CDOID}.
 	 * @param req
 	 * @param transaction
-	 * @param user
-	 * @param password
+	 * @param idStr
 	 * @return
 	 */
-	protected boolean authenticate(HttpServletRequest req, CDOTransaction transaction, P principal, String token) {
-		return false;
-	}
-	
-	/**
-	 * Unauthenticated subject (guest).
-	 * @param req
-	 * @param transaction
-	 * @return
-	 */
-	protected Subject createUnauthenticatedSubject(HttpServletRequest req, CDOTransaction transaction) {
-		return null;
-	}
-	
-	protected String encodeCDOID(HttpServletRequest req, CDOID cdoID) {
-		StringBuilder builder = new StringBuilder();
-		CDOIDUtil.write(builder, cdoID);
-		return builder.toString();
-	}
-	
-	protected CDOID decodeCDOID(HttpServletRequest req, String idStr) {
-		return CDOIDUtil.read(idStr);
-	}
-		
-	protected Converter getConverter(HttpServletRequest req) {
-		return new Converter() {
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public <T> T convert(Object source, Class<T> type) throws Exception {
-				if (source instanceof String && CDOID.class.equals(type)) {
-					return (T) decodeCDOID(req, (String) source);
-				}
-				
-				if (source instanceof CDOID && String.class.equals(type)) {
-					return (T) encodeCDOID(req, (CDOID) source);
-				}
-				
-				return ReflectiveConverter.INSTANCE.convert(source, type);
+	protected Repository getRepository(HttpServletRequest req, CDOTransaction transaction) {
+		return idStr -> {
+			CDOID id = CDOIDUtil.read(idStr);
+			try {
+				return transaction.getObject(id);
+			} catch (ObjectNotFoundException e) {
+				return null;
 			}
-			
 		};
 	}
 		
@@ -645,9 +636,6 @@ public class CDOTransactionServlet extends HttpServlet {
 	public ReentrantReadWriteLock getApplicationLock() {
 		return (ReentrantReadWriteLock) getServletContext().getAttribute(APP_LOCK_KEY);
 	}
-	
-// ---------------
-	
 	
 	protected static class CacheKey {
 		String action;
@@ -712,63 +700,28 @@ public class CDOTransactionServlet extends HttpServlet {
 				return authorize(req, transaction, target, action, qualifier, context);
 			}
 			
+			/**
+			 * Checks request authorization cache first, calls doAuthorize if there is no entry in the cache.
+			 * @param req
+			 * @param transaction
+			 * @param target
+			 * @param action
+			 * @param qualifier
+			 * @param context
+			 * @return
+			 */
+			private boolean authorize(
+					HttpServletRequest req, 
+					CDOTransaction transaction, 
+					EObject target, 
+					String action, 
+					String qualifier, 
+					Map<?,?> context) {
+				
+				return getPrincipal(req, transaction).authorize(target, action, qualifier, context) == AccessDecision.ALLOW;
+			} 	
+			
 		};
 	}
-	
-	/**
-	 * Authorizes a principal. This implementation uses object containment for authorization - principal is authorized
-	 * for any action on targets it contains.
-	 * @param req
-	 * @param transaction
-	 * @param principal
-	 * @param target
-	 * @param action
-	 * @param qualifier
-	 * @param context
-	 * @return
-	 */
-	protected AccessDecision authorize(
-			HttpServletRequest req, 
-			CDOTransaction transaction, 
-			P principal, 
-			EObject target, 
-			String action, 
-			String qualifier, 
-			Map<?,?> context) {
 		
-		return principal != null && target != null && EcoreUtil.isAncestor(principal, target) ? AccessDecision.ALLOW : AccessDecision.DENY;
-	}
-	
-	/**
-	 * Checks request authorization cache first, calls doAuthorize if there is no entry in the cache.
-	 * @param req
-	 * @param transaction
-	 * @param target
-	 * @param action
-	 * @param qualifier
-	 * @param context
-	 * @return
-	 */
-	protected boolean authorize(
-			HttpServletRequest req, 
-			CDOTransaction transaction, 
-			EObject target, 
-			String action, 
-			String qualifier, 
-			Map<?,?> context) {
-		
-		for (P principal: getSubject(req, transaction)) {
-			switch (authorize(req, transaction, principal, target, action, qualifier, context)) {
-			case ABSTAIN:
-				continue;
-			case ALLOW:
-				return true;
-			case DENY:
-				return false;
-			}
-		}
-		
-		return false;
-	} 	
-	
 }

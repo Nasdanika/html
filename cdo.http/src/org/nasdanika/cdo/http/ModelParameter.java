@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * * The factory is used to instantiate the type.
  * * Request parameters are injected into features with names matching request parameters names.
  *  
- * If a feature is a non-containing reference, then values shall be strings representing encoded CDOID's. 
+ * If a feature is a non-containing reference, then values shall be strings representing object id's. 
  * For containing references parameter values shall be in dotted notation hierarchy form, e.g. accounts.number.
  * 
  * @author Pavel

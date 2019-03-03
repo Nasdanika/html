@@ -52,7 +52,7 @@ public class ReflectiveConverter implements Converter {
 	}
 	
 	@ConverterMethod
-	protected CDOID decodeCDOID(String idStr) {
+	public CDOID decodeCDOID(String idStr) {
 		return CDOIDUtil.read(idStr);
 	}	
 
