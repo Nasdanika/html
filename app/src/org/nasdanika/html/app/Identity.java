@@ -30,6 +30,5 @@ public interface Identity {
 		}
 		return ret;
 	}
-
-
+	
 }
