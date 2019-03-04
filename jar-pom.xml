@@ -126,7 +126,7 @@
 			<distributionManagement>
 				<snapshotRepository>
 					<id>nasdanika-org</id>
-					<url>sftp://${env.FTP_SERVER}/html/${project.version}/maven-repository</url>
+					<url>sftp://${env.FTP_SERVER}/html/${project.version}/${env.CIRCLE_BRANCH}/maven-repository</url>
 				</snapshotRepository>
 			</distributionManagement>
 		</profile>
