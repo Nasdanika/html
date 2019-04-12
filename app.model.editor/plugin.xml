@@ -32,6 +32,14 @@
             class="org.nasdanika.html.model.app.presentation.AppEditor"
             contributorClass="org.nasdanika.html.model.app.presentation.AppActionBarContributor">
       </editor>
+      
+      <editor 
+      		class="org.eclipse.emfforms.spi.editor.GenericEditor" 
+      		default="true" 
+      		extensions="app" 
+      		icon="icons/full/obj16/AppModelFile.gif" 
+      		id="org.nasdanika.html.model.app.presentation.EmfFormsAppEditorID" 
+      		name="Nasdanika Application EMF Forms Editor"/>
    </extension>
 
 </plugin>
