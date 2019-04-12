@@ -37,6 +37,22 @@ The tracker is closed in ``destroy()``.
 
 ## Deployment options
 
+### Behind Apache with NTLM authentication
+
+http://us.mirrors.quenda.co/apache//httpd/binaries/win32/, Bitnami, apache haus - https://www.apachehaus.com/cgi-bin/download.plx, example of configuration - forwarded user, ...
+
   
 
-TODO - 3 bundles, runtime features, product configuration.
+TODO - 3 bundles, runtime features, product configuration. Security - forwarded users, basic auth, tokens, session subject
+
+routing annotations, routing, conversion, locking
+
+development process
+* create projects
+* model
+* web - servlet, adapter factories.
+
+## Summary
+
+build both rest and web ui apps
+solid foundation and default behavior with fine grained polymorphic customizations
