@@ -1,0 +1,11 @@
+models:
+  - bootstrap.genmodel
+  
+output:
+  site: /org.nasdanika.html.repository/src/site/resources/bootstrap-model-doc
+
+apidocs:
+  - https://docs.oracle.com/javase/8/docs/api/
+  - https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/apidocs/bootstrap-model/
+  - https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/apidocs/bootstrap/
+    

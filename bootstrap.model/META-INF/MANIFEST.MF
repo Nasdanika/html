@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.nasdanika.html.bootstrap.model;singleton:=true
+Automatic-Module-Name: org.nasdanika.html.bootstrap.model
+Bundle-Version: 2.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: Nasdanika LLC
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.nasdanika.html.bootstrap.model,
+ org.nasdanika.html.bootstrap.model.impl,
+ org.nasdanika.html.bootstrap.model.util
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.cdo;visibility:=reexport
+Bundle-ActivationPolicy: lazy

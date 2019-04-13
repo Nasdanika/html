@@ -216,6 +216,12 @@
 		<module>cdo.h2</module>
 		<module>jwt</module>
 
+		<module>html.model</module>
+		<module>html.model.edit</module>
+
+		<module>bootstrap.model</module>
+		<module>bootstrap.model.edit</module>
+
 		<module>app.model</module>
 		<module>app.model.edit</module>
 		<module>app.model.editor</module>
