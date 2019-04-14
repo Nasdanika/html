@@ -659,6 +659,16 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 	 * @generated
 	 */
 	@Override
+	public EReference getCase_Content() {
+		return (EReference)caseEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getResourceReference() {
 		return resourceReferenceEClass;
 	}
@@ -895,6 +905,7 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 
 		caseEClass = createEClass(CASE);
 		createEAttribute(caseEClass, CASE__VALUE);
+		createEReference(caseEClass, CASE__CONTENT);
 
 		resourceReferenceEClass = createEClass(RESOURCE_REFERENCE);
 		createEAttribute(resourceReferenceEClass, RESOURCE_REFERENCE__LOCATION);
@@ -964,7 +975,6 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 		resourceIteratorEClass.getESuperTypes().add(this.getIterator());
 		resourceIteratorEClass.getESuperTypes().add(this.getResourceReference());
 		switchEClass.getESuperTypes().add(this.getModelElement());
-		caseEClass.getESuperTypes().add(this.getContainer());
 		htmlElementEClass.getESuperTypes().add(this.getContent());
 		scriptEClass.getESuperTypes().add(this.getEventHandler());
 		scriptReferenceEClass.getESuperTypes().add(this.getEventHandler());
@@ -1033,6 +1043,7 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 
 		initEClass(caseEClass, Case.class, "Case", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getCase_Value(), ecorePackage.getEString(), "value", null, 0, 1, Case.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCase_Content(), this.getContent(), null, "content", null, 0, -1, Case.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(resourceReferenceEClass, ResourceReference.class, "ResourceReference", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getResourceReference_Location(), ecorePackage.getEString(), "location", null, 1, 1, ResourceReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

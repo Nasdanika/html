@@ -74,6 +74,7 @@
     </genClasses>
     <genClasses ecoreClass="html.ecore#//Case">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Case/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Case/content"/>
     </genClasses>
     <genClasses image="false" ecoreClass="html.ecore#//ResourceReference">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//ResourceReference/location"/>

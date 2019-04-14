@@ -23,16 +23,7 @@ import org.eclipse.emf.ecore.EReference;
  * </ul>
  * <!-- end-user-doc -->
  * <!-- begin-model-doc -->
- * Model of HTML elements. It also contains base classes which are not specific to HTML:
- * 
- * * ModelElement - base class for all model elements
- * * Content
- * * Container - content containg other content.
- * * Facet - content customization.
- * * Iterator and its sub-classes:
- *     * DataBindingIterator
- *     * ResourceIterator
- * * Property
+ * Model of HTML elements. It also contains base classes which are not specific to HTML such as ModelElement, Content, Facet, Iterator, ...
  * 
  * ## Generation context
  * 
@@ -1026,49 +1017,13 @@ public interface HtmlPackage extends EPackage {
 	int CASE = 13;
 
 	/**
-	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CASE__DESCRIPTION = CONTAINER__DESCRIPTION;
-
-	/**
-	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CASE__ANNOTATIONS = CONTAINER__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CASE__ITERATOR = CONTAINER__ITERATOR;
-
-	/**
-	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CASE__FACETS = CONTAINER__FACETS;
-
-	/**
-	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CASE__DATA_BINDING = CONTAINER__DATA_BINDING;
+	int CASE__VALUE = 0;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
@@ -1077,16 +1032,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CASE__CONTENT = CONTAINER__CONTENT;
-
-	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CASE__VALUE = CONTAINER_FEATURE_COUNT + 0;
+	int CASE__CONTENT = 1;
 
 	/**
 	 * The number of structural features of the '<em>Case</em>' class.
@@ -1095,7 +1041,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CASE_FEATURE_COUNT = CONTAINER_FEATURE_COUNT + 1;
+	int CASE_FEATURE_COUNT = 2;
 
 	/**
 	 * The number of operations of the '<em>Case</em>' class.
@@ -1104,7 +1050,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CASE_OPERATION_COUNT = CONTAINER_OPERATION_COUNT + 0;
+	int CASE_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.html.ResourceReference <em>Resource Reference</em>}' class.
@@ -1855,6 +1801,17 @@ public interface HtmlPackage extends EPackage {
 	EAttribute getCase_Value();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.html.Case#getContent <em>Content</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Content</em>'.
+	 * @see org.nasdanika.html.model.html.Case#getContent()
+	 * @see #getCase()
+	 * @generated
+	 */
+	EReference getCase_Content();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.html.ResourceReference <em>Resource Reference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2397,6 +2354,14 @@ public interface HtmlPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CASE__VALUE = eINSTANCE.getCase_Value();
+
+		/**
+		 * The meta object literal for the '<em><b>Content</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CASE__CONTENT = eINSTANCE.getCase_Content();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.html.ResourceReference <em>Resource Reference</em>}' class.
