@@ -11,5 +11,87 @@
   <modelPluginVariables>CDO=org.eclipse.emf.cdo</modelPluginVariables>
   <genPackages prefix="Model" basePackage="org.nasdanika.html" disposableProviderFactory="true"
       ecorePackage="html.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="html.ecore#//ContentType">
+      <genEnumLiterals ecoreEnumLiteral="html.ecore#//ContentType/AUTO"/>
+      <genEnumLiterals ecoreEnumLiteral="html.ecore#//ContentType/CSV"/>
+      <genEnumLiterals ecoreEnumLiteral="html.ecore#//ContentType/JSON"/>
+      <genEnumLiterals ecoreEnumLiteral="html.ecore#//ContentType/XML"/>
+      <genEnumLiterals ecoreEnumLiteral="html.ecore#//ContentType/YAML"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="html.ecore#//Event"/>
+    <genClasses image="false" ecoreClass="html.ecore#//ModelElement">
+      <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute html.ecore#//ModelElement/description"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//ModelElement/annotations"/>
+    </genClasses>
+    <genClasses ecoreClass="html.ecore#//Page">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/lang"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/stylesheets"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/scripts"/>
+      <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute html.ecore#//Page/head"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Page/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Page/facets"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="html.ecore#//Content">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Content/iterator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Content/facets"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Content/dataBinding"/>
+    </genClasses>
+    <genClasses ecoreClass="html.ecore#//ContentReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference html.ecore#//ContentReference/target"/>
+    </genClasses>
+    <genClasses ecoreClass="html.ecore#//ResourceContent">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//ResourceContent/model"/>
+    </genClasses>
+    <genClasses ecoreClass="html.ecore#//Text">
+      <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute html.ecore#//Text/text"/>
+    </genClasses>
+    <genClasses ecoreClass="html.ecore#//Container">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Container/content"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="html.ecore#//Facet">
+      <genTypeParameters ecoreTypeParameter="html.ecore#//Facet/T"/>
+      <genOperations ecoreOperation="html.ecore#//Facet/isFacetFor">
+        <genParameters ecoreParameter="html.ecore#//Facet/isFacetFor/target"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="html.ecore#//Iterator"/>
+    <genClasses ecoreClass="html.ecore#//Property">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Property/name"/>
+      <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute html.ecore#//Property/value"/>
+      <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute html.ecore#//Property/description"/>
+    </genClasses>
+    <genClasses ecoreClass="html.ecore#//DataBindingIterator">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//DataBindingIterator/dataBinding"/>
+    </genClasses>
+    <genClasses ecoreClass="html.ecore#//ResourceIterator">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//ResourceIterator/contentType"/>
+    </genClasses>
+    <genClasses ecoreClass="html.ecore#//Switch">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Switch/cases"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Switch/otherwise"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Switch/selector"/>
+    </genClasses>
+    <genClasses ecoreClass="html.ecore#//Case">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Case/value"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="html.ecore#//ResourceReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//ResourceReference/location"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//ResourceReference/requestProperties"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="html.ecore#//HTMLElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//HTMLElement/attributes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//HTMLElement/styles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//HTMLElement/classes"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//HTMLElement/id"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//HTMLElement/eventHandlers"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="html.ecore#//EventHandler">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//EventHandler/event"/>
+    </genClasses>
+    <genClasses ecoreClass="html.ecore#//Script">
+      <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute html.ecore#//Script/code"/>
+    </genClasses>
+    <genClasses ecoreClass="html.ecore#//ScriptReference"/>
   </genPackages>
 </genmodel:GenModel>
