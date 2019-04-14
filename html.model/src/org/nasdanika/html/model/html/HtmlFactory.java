@@ -58,6 +58,15 @@ public interface HtmlFactory extends EFactory {
 	Text createText();
 
 	/**
+	 * Returns a new object of class '<em>Content Generator</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Content Generator</em>'.
+	 * @generated
+	 */
+	ContentGenerator createContentGenerator();
+
+	/**
 	 * Returns a new object of class '<em>Container</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

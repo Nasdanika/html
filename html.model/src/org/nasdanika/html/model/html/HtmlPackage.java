@@ -568,6 +568,88 @@ public interface HtmlPackage extends EPackage {
 	int TEXT_OPERATION_COUNT = CONTENT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.html.impl.ContentGeneratorImpl <em>Content Generator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.html.impl.ContentGeneratorImpl
+	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getContentGenerator()
+	 * @generated
+	 */
+	int CONTENT_GENERATOR = 6;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_GENERATOR__DESCRIPTION = CONTENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_GENERATOR__ANNOTATIONS = CONTENT__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_GENERATOR__ITERATOR = CONTENT__ITERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_GENERATOR__FACETS = CONTENT__FACETS;
+
+	/**
+	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_GENERATOR__DATA_BINDING = CONTENT__DATA_BINDING;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_GENERATOR__NAME = CONTENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Content Generator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_GENERATOR_FEATURE_COUNT = CONTENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Content Generator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_GENERATOR_OPERATION_COUNT = CONTENT_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.html.impl.ContainerImpl <em>Container</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -575,7 +657,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getContainer()
 	 * @generated
 	 */
-	int CONTAINER = 6;
+	int CONTAINER = 7;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -657,7 +739,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getFacet()
 	 * @generated
 	 */
-	int FACET = 7;
+	int FACET = 8;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -712,7 +794,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getIterator()
 	 * @generated
 	 */
-	int ITERATOR = 8;
+	int ITERATOR = 9;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -758,7 +840,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getProperty()
 	 * @generated
 	 */
-	int PROPERTY = 9;
+	int PROPERTY = 10;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -813,7 +895,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getDataBindingIterator()
 	 * @generated
 	 */
-	int DATA_BINDING_ITERATOR = 10;
+	int DATA_BINDING_ITERATOR = 11;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -868,7 +950,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getResourceIterator()
 	 * @generated
 	 */
-	int RESOURCE_ITERATOR = 11;
+	int RESOURCE_ITERATOR = 12;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -941,7 +1023,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getSwitch()
 	 * @generated
 	 */
-	int SWITCH = 12;
+	int SWITCH = 13;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1014,7 +1096,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getCase()
 	 * @generated
 	 */
-	int CASE = 13;
+	int CASE = 14;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1060,7 +1142,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getResourceReference()
 	 * @generated
 	 */
-	int RESOURCE_REFERENCE = 14;
+	int RESOURCE_REFERENCE = 15;
 
 	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
@@ -1106,7 +1188,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getHTMLElement()
 	 * @generated
 	 */
-	int HTML_ELEMENT = 15;
+	int HTML_ELEMENT = 16;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1224,7 +1306,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getEventHandler()
 	 * @generated
 	 */
-	int EVENT_HANDLER = 16;
+	int EVENT_HANDLER = 17;
 
 	/**
 	 * The feature id for the '<em><b>Event</b></em>' attribute.
@@ -1261,7 +1343,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getScript()
 	 * @generated
 	 */
-	int SCRIPT = 17;
+	int SCRIPT = 18;
 
 	/**
 	 * The feature id for the '<em><b>Event</b></em>' attribute.
@@ -1307,7 +1389,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getScriptReference()
 	 * @generated
 	 */
-	int SCRIPT_REFERENCE = 18;
+	int SCRIPT_REFERENCE = 19;
 
 	/**
 	 * The feature id for the '<em><b>Event</b></em>' attribute.
@@ -1362,7 +1444,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getContentType()
 	 * @generated
 	 */
-	int CONTENT_TYPE = 19;
+	int CONTENT_TYPE = 20;
 
 	/**
 	 * The meta object id for the '<em>Event</em>' data type.
@@ -1372,7 +1454,7 @@ public interface HtmlPackage extends EPackage {
 	 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getEvent()
 	 * @generated
 	 */
-	int EVENT = 20;
+	int EVENT = 21;
 
 
 	/**
@@ -1599,6 +1681,27 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getText_Text();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.model.html.ContentGenerator <em>Content Generator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Content Generator</em>'.
+	 * @see org.nasdanika.html.model.html.ContentGenerator
+	 * @generated
+	 */
+	EClass getContentGenerator();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.html.ContentGenerator#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.nasdanika.html.model.html.ContentGenerator#getName()
+	 * @see #getContentGenerator()
+	 * @generated
+	 */
+	EAttribute getContentGenerator_Name();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.html.Container <em>Container</em>}'.
@@ -2186,6 +2289,24 @@ public interface HtmlPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TEXT__TEXT = eINSTANCE.getText_Text();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.html.impl.ContentGeneratorImpl <em>Content Generator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.html.impl.ContentGeneratorImpl
+		 * @see org.nasdanika.html.model.html.impl.HtmlPackageImpl#getContentGenerator()
+		 * @generated
+		 */
+		EClass CONTENT_GENERATOR = eINSTANCE.getContentGenerator();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONTENT_GENERATOR__NAME = eINSTANCE.getContentGenerator_Name();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.html.impl.ContainerImpl <em>Container</em>}' class.

@@ -120,6 +120,16 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContentGenerator" eSuperTypes="#//Content">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Content generator a placeholder for content which shall be generated. Content generator description serves as a specification for implementing content generator. &#xA;&#xA;Sample scenario - when a model is generated into Java code content generator is generated as a method which throws UnsupportedOperationException and has content generator description as its javadoc.&#xA;Developers implement the method following the specification and remove or &quot;dirty&quot; ``@generated`` JavaDoc tag to prevent the generator overwriting it going forward."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Content generator name may be used by a code generator as a basis for generator class/method name. For example, if generator name is ``mainframeFeed`` then it may result in generating a method called ``generateMainframeFeed``."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Container" eSuperTypes="#//Content">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Container of other content."/>

@@ -154,6 +154,11 @@ public class ContainerItemProvider extends ContentItemProvider {
 		newChildDescriptors.add
 			(createChildParameter
 				(HtmlPackage.Literals.CONTAINER__CONTENT,
+				 HtmlFactory.eINSTANCE.createContentGenerator()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(HtmlPackage.Literals.CONTAINER__CONTENT,
 				 HtmlFactory.eINSTANCE.createContainer()));
 	}
 

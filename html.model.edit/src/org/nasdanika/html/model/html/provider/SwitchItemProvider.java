@@ -189,6 +189,11 @@ public class SwitchItemProvider extends ModelElementItemProvider {
 		newChildDescriptors.add
 			(createChildParameter
 				(HtmlPackage.Literals.SWITCH__OTHERWISE,
+				 HtmlFactory.eINSTANCE.createContentGenerator()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(HtmlPackage.Literals.SWITCH__OTHERWISE,
 				 HtmlFactory.eINSTANCE.createContainer()));
 	}
 

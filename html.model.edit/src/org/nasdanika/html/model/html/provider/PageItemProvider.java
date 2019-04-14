@@ -280,6 +280,11 @@ public class PageItemProvider extends ModelElementItemProvider {
 		newChildDescriptors.add
 			(createChildParameter
 				(HtmlPackage.Literals.PAGE__BODY,
+				 HtmlFactory.eINSTANCE.createContentGenerator()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(HtmlPackage.Literals.PAGE__BODY,
 				 HtmlFactory.eINSTANCE.createContainer()));
 	}
 

@@ -92,6 +92,10 @@ public class HtmlAdapterFactory extends AdapterFactoryImpl {
 				return createTextAdapter();
 			}
 			@Override
+			public Adapter caseContentGenerator(ContentGenerator object) {
+				return createContentGeneratorAdapter();
+			}
+			@Override
 			public Adapter caseContainer(Container object) {
 				return createContainerAdapter();
 			}
@@ -244,6 +248,20 @@ public class HtmlAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createTextAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.html.ContentGenerator <em>Content Generator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.html.ContentGenerator
+	 * @generated
+	 */
+	public Adapter createContentGeneratorAdapter() {
 		return null;
 	}
 

@@ -63,6 +63,7 @@ public class HtmlFactoryImpl extends EFactoryImpl implements HtmlFactory {
 			case HtmlPackage.CONTENT_REFERENCE: return (EObject)createContentReference();
 			case HtmlPackage.RESOURCE_CONTENT: return (EObject)createResourceContent();
 			case HtmlPackage.TEXT: return (EObject)createText();
+			case HtmlPackage.CONTENT_GENERATOR: return (EObject)createContentGenerator();
 			case HtmlPackage.CONTAINER: return (EObject)createContainer();
 			case HtmlPackage.PROPERTY: return (EObject)createProperty();
 			case HtmlPackage.DATA_BINDING_ITERATOR: return (EObject)createDataBindingIterator();
@@ -152,6 +153,17 @@ public class HtmlFactoryImpl extends EFactoryImpl implements HtmlFactory {
 	public Text createText() {
 		TextImpl text = new TextImpl();
 		return text;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public ContentGenerator createContentGenerator() {
+		ContentGeneratorImpl contentGenerator = new ContentGeneratorImpl();
+		return contentGenerator;
 	}
 
 	/**

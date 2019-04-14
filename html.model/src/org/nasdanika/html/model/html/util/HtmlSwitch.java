@@ -111,6 +111,14 @@ public class HtmlSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case HtmlPackage.CONTENT_GENERATOR: {
+				ContentGenerator contentGenerator = (ContentGenerator)theEObject;
+				T1 result = caseContentGenerator(contentGenerator);
+				if (result == null) result = caseContent(contentGenerator);
+				if (result == null) result = caseModelElement(contentGenerator);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case HtmlPackage.CONTAINER: {
 				Container container = (Container)theEObject;
 				T1 result = caseContainer(container);
@@ -295,6 +303,21 @@ public class HtmlSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseText(Text object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Content Generator</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Content Generator</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseContentGenerator(ContentGenerator object) {
 		return null;
 	}
 

@@ -164,6 +164,29 @@ public class HtmlItemProviderAdapterFactory extends HtmlAdapterFactory implement
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.html.ContentGenerator} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ContentGeneratorItemProvider contentGeneratorItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.html.ContentGenerator}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createContentGeneratorAdapter() {
+		if (contentGeneratorItemProvider == null) {
+			contentGeneratorItemProvider = new ContentGeneratorItemProvider(this);
+		}
+
+		return contentGeneratorItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.html.Container} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -456,6 +479,7 @@ public class HtmlItemProviderAdapterFactory extends HtmlAdapterFactory implement
 		if (contentReferenceItemProvider != null) contentReferenceItemProvider.dispose();
 		if (resourceContentItemProvider != null) resourceContentItemProvider.dispose();
 		if (textItemProvider != null) textItemProvider.dispose();
+		if (contentGeneratorItemProvider != null) contentGeneratorItemProvider.dispose();
 		if (containerItemProvider != null) containerItemProvider.dispose();
 		if (propertyItemProvider != null) propertyItemProvider.dispose();
 		if (dataBindingIteratorItemProvider != null) dataBindingIteratorItemProvider.dispose();

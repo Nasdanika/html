@@ -46,6 +46,9 @@
     <genClasses ecoreClass="html.ecore#//Text">
       <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute html.ecore#//Text/text"/>
     </genClasses>
+    <genClasses ecoreClass="html.ecore#//ContentGenerator">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//ContentGenerator/name"/>
+    </genClasses>
     <genClasses ecoreClass="html.ecore#//Container">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Container/content"/>
     </genClasses>
