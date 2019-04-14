@@ -12,4 +12,12 @@
             class="org.nasdanika.html.bootstrap.model.ModelPackage"
             genModel="model/bootstrap.genmodel"/>
    </extension>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated bootstrap -->
+      <package
+            uri="urn:org.nasdanika.html.bootstrap"
+            class="org.nasdanika.html.model.bootstrap.BootstrapPackage"
+            genModel="model/bootstrap.genmodel"/>
+   </extension>
+
 </plugin>

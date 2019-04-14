@@ -14,5 +14,5 @@ Export-Package: org.nasdanika.html.model.html,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.cdo;visibility:=reexport,
- org.nasdanika.html;bundle-version="2.0.0"
+ org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy

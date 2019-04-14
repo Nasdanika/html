@@ -1,5 +1,6 @@
 models:
   - ../org.nasdanika.html.model/model/html.genmodel
+  - ../org.nasdanika.html.bootstrap.model/model/bootstrap.genmodel
   - ../org.nasdanika.html.app.model/model/app.genmodel
   
 output:
