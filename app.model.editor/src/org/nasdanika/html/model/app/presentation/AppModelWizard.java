@@ -58,6 +58,8 @@ import org.eclipse.ui.part.ISetSelectionTarget;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.provider.AppEditPlugin;
+import org.nasdanika.html.model.html.HtmlFactory;
+import org.nasdanika.html.model.html.HtmlPackage;
 
 
 /**
@@ -92,6 +94,13 @@ public class AppModelWizard extends Wizard implements INewWizard {
 	 * @generated
 	 */
 	protected AppPackage appPackage = AppPackage.eINSTANCE;
+	
+	/**
+	 * This caches an instance of the model package.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 */
+	protected HtmlPackage htmlPackage = HtmlPackage.eINSTANCE;
 
 	/**
 	 * This caches an instance of the model factory.
@@ -100,6 +109,14 @@ public class AppModelWizard extends Wizard implements INewWizard {
 	 * @generated
 	 */
 	protected AppFactory appFactory = appPackage.getAppFactory();
+
+	/**
+	 * This caches an instance of the model factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected HtmlFactory htmlFactory = htmlPackage.getHtmlFactory();
 
 	/**
 	 * This is the file creation page.
@@ -159,16 +176,24 @@ public class AppModelWizard extends Wizard implements INewWizard {
 	 * Returns the names of the types that can be created as the root object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	protected Collection<String> getInitialObjectNames() {
 		if (initialObjectNames == null) {
 			initialObjectNames = new ArrayList<String>();
+			for (EClassifier eClassifier : htmlPackage.getEClassifiers()) {
+				if (eClassifier instanceof EClass) {
+					EClass eClass = (EClass)eClassifier;
+					if (!eClass.isAbstract()) {
+						initialObjectNames.add("HTML."+eClass.getName());
+					}
+				}
+			}
 			for (EClassifier eClassifier : appPackage.getEClassifiers()) {
 				if (eClassifier instanceof EClass) {
 					EClass eClass = (EClass)eClassifier;
 					if (!eClass.isAbstract()) {
-						initialObjectNames.add(eClass.getName());
+						initialObjectNames.add("App."+eClass.getName());
 					}
 				}
 			}
@@ -181,12 +206,24 @@ public class AppModelWizard extends Wizard implements INewWizard {
 	 * Create a new model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
-	protected EObject createInitialModel() {
-		EClass eClass = (EClass)appPackage.getEClassifier(initialObjectCreationPage.getInitialObjectName());
-		EObject rootObject = appFactory.create(eClass);
-		return rootObject;
+	protected EObject createInitialModel() {		
+		String[] initialObjectName = initialObjectCreationPage.getInitialObjectName().split("\\.");
+		switch (initialObjectName[0]) {
+		case "App": {
+			EClass eClass = (EClass)appPackage.getEClassifier(initialObjectName[1]);
+			EObject rootObject = appFactory.create(eClass);
+			return rootObject;
+		}
+		case "HTML": {
+			EClass eClass = (EClass)htmlPackage.getEClassifier(initialObjectName[1]);
+			EObject rootObject = htmlFactory.create(eClass);
+			return rootObject;
+		}
+		default:
+			throw new IllegalArgumentException("Unsupported prefix: " + initialObjectName[0]);
+		}
 	}
 
 	/**
