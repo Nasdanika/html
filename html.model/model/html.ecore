@@ -93,6 +93,27 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContentReference" eSuperTypes="#//Content">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Refernces content in the same or different model. Content references may be used to organize UI model into several model files owned by different people/teams and to reuse model elements in multiple places. Such elements may contain data binding and interpolations and be used as templates."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//Content">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Content references"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ResourceContent" eSuperTypes="#//Content #//ResourceReference">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Content loaded from a URL. "/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="model" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="If this attribute is set to true then resource is loaded as a model and then the model content is evaluated to produce HTML. &#xA;This option can be used when the target model is not available at the modeling time so ``ContentReference`` can be used or when the location URL contains interpolation tokens. &#xA;&#xA;If this attribute is set to false then the resource is loaded as text."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Text" eSuperTypes="#//Content">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Text content. May contain interpolation tokens in the format ``{{key[|default]}}``. E.g. ``{{greeting}}`` or ``{{greeting|Hello}}``."/>
@@ -128,7 +149,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Iterator" abstract="true" eSuperTypes="#//ModelElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Iterator produces zero or more values. For each value returned by the iterator a new context is created and generation of the iterator's containing element is performed in the value context."/>
+      <details key="documentation" value="Iterator produces zero or more values. For each value returned by the iterator a new context is created and generation of the iterator's containing element is performed in the value context.&#xA;Iterators can also be used for conditional logic as an alternative to ``switch`` - if iterator value is ``null`` or ``false`` the content is not evaluated. &#xA;If it is ``true`` it is executed once in the parent context.&#xA;If the value is not iterable the content is evaluated once with a new context constructed from the value."/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Property">
@@ -175,20 +196,114 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ResourceIterator" eSuperTypes="#//Iterator">
+  <eClassifiers xsi:type="ecore:EClass" name="ResourceIterator" eSuperTypes="#//Iterator #//ResourceReference">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Resource iterator loads values from a resource identified by a URL."/>
+      <details key="documentation" value="Resource iterator loads values from a resource identified by a URL.&#xA;&#xA;For hierarchical data formats - Json, XML, Yaml - the location URL may contain a fragment. For XML fragment is evaluated as XPath, for Json and YAML as a key path with ``[&lt;number>]`` for selection of a list element. &#xA;E.g. ``cars/makes[3]`` selects the key ``cars`` and then the key ``makes`` which is expected to be a list. If it is a list then its 4th element is returned. "/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="contentType" eType="#//ContentType">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Resource content type."/>
       </eAnnotations>
     </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Switch" eSuperTypes="#//ModelElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cases" upperBound="-1"
+        eType="#//Case" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Switch cases for matching the switch value."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="otherwise" upperBound="-1"
+        eType="#//Content" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Content to be used if no cases matched."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="selector" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Data binding key to retrieve a value to be used to select a case."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Case" eSuperTypes="#//Container">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Case value. A case is matched in the switch selector and the value are equal."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ResourceReference" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Resource location URL. Relative URL's are resolved with the model URL as the base. &#xA;Location may contain interpolation tokens - it allows to implement master-details relationships.&#xA;For hierarchical data formats - Json, XML, Yaml - the location URL may contain a fragment. For XML fragment is evaluated as XPath, for Json and YAML as a key path with ``[&lt;number>]`` for selection of a list element. &#xA;E.g. ``cars/makes[3]`` selects the key ``cars`` and then the key ``makes`` which is expected to be a list. If it is a list then its 4th element is returned. "/>
+        <details key="documentation" value="Resource location URL. Relative URL's are resolved with the model URL as the base. &#xA;Location may contain interpolation tokens - it allows to implement master-details relationships.&#xA;"/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requestProperties" upperBound="-1"
+        eType="#//Property" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="HTMLElement" abstract="true" eSuperTypes="#//Content">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Base class for HTML elements"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
+        eType="#//Property" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Element attributes. Style and class attributes can be specified using attribute properties or using styles and classes attributes."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="styles" upperBound="-1"
+        eType="#//Property" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Element styles. When HTML element is generated styles are generated into ``style`` attribute. If such attribute is already present the styles are combined."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="classes" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Element classes. When HTML element is generated classes are generated into ``class`` attribute. If such attribute is already present the classes are combined."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional element id. It is generated to ``id`` attribute. If such attribute is already specified this value takes precedence."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eventHandlers" upperBound="-1"
+        containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Event handlers."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Event" instanceClassName="org.nasdanika.html.Event">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Enumeration of HTML events."/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EventHandler" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Base class for event handlers."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="event" lowerBound="1" eType="#//Event">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Event to be handled."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Script" eSuperTypes="#//EventHandler">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Event handler with inline code."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="code" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Handler code"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScriptReference" eSuperTypes="#//EventHandler #//ResourceReference">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value=""/>
+    </eAnnotations>
   </eClassifiers>
 </ecore:EPackage>
