@@ -9,7 +9,7 @@
     operationReflection="true" importOrganizing="true">
   <foreignModel>html.ecore</foreignModel>
   <modelPluginVariables>CDO=org.eclipse.emf.cdo</modelPluginVariables>
-  <genPackages prefix="Model" basePackage="org.nasdanika.html" disposableProviderFactory="true"
+  <genPackages prefix="Html" basePackage="org.nasdanika.html.model" disposableProviderFactory="true"
       ecorePackage="html.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="html.ecore#//ContentType">
       <genEnumLiterals ecoreEnumLiteral="html.ecore#//ContentType/AUTO"/>
