@@ -12,18 +12,28 @@
  
    <menu name="Main">
       <item name="Overview" href="index.html" />
+      <item name="Project information" href="project-info.html" />      
+   </menu>
+   
+   <menu name="Runtime bundles">
       <item name="HTML" href="html.html" />
       <item name="Bootstrap" href="bootstrap.html" />
       <item name="Fontawesome" href="fontawesome.html" />
       <item name="JsTree" href="jstree.html" />
       <item name="Knockout" href="knockout.html" />
       <item name="Application" href="app.html" />
-      <item name="Application Model" href="app-model.html">
-	      <item name="Model Documentation" href="app-model-doc"/>      
-      </item>
       <item name="EMF" href="emf.html" />
       <item name="Web applications" href="web-applications.html" />      
-      <item name="Project information" href="project-info.html" />      
+   </menu>
+   
+   <menu name="Models">
+      <item name="HTML" href="html-model.html">
+	      <item name="Model Documentation" href="html-model-doc"/>      
+      </item>
+      <item name="Application" href="app-model.html">
+	      <item name="Model Documentation" href="app-model-doc"/>      
+      </item>
+   
    </menu>
 
    <menu name="Java API Documentation">
