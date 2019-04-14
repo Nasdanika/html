@@ -1,0 +1,14 @@
+models:
+  - ../org.nasdanika.html.model/model/html.genmodel
+  - ../org.nasdanika.html.app.model/model/app.genmodel
+  
+output:
+  site: /org.nasdanika.html.repository/src/site/resources/model-doc
+
+apidocs:
+  - https://docs.oracle.com/javase/8/docs/api/
+  - https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/apidocs/app-model/
+  - https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/apidocs/app/
+  - https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/apidocs/html-model/
+  - https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/apidocs/core/
+        

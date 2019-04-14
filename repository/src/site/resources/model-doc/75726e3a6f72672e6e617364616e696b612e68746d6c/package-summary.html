@@ -1,0 +1,194 @@
+
+<script>document.title="EPackage html";</script>
+<h2>
+  <img src="resources/images/EPackage.gif" style="margin-right:5px"/>html</h2>
+<div><B>Namespace URI:</B> urn:org.nasdanika.html</div>
+<div>
+  <ul class="nav nav-tabs">
+    <li class="active">
+      <a href="#nsd_f6_tab_0" data-toggle="tab">Documentation</a>
+    </li>
+    <li>
+      <a href="#nsd_f6_tab_1" data-toggle="tab">
+<img src="resources/images/EClass.gif" style="margin-right:5px"/> Classes</a>
+    </li>
+    <li>
+      <a href="#nsd_f6_tab_2" data-toggle="tab">
+<img src="resources/images/EDataType.gif" style="margin-right:5px"/> Data types</a>
+    </li>
+    <li>
+      <a href="#nsd_f6_tab_3" data-toggle="tab">
+<img src="resources/images/EEnum.gif" style="margin-right:5px"/> Enumerations</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div id="nsd_f6_tab_0" class="tab-pane active">
+      <div style="margin-top:10px;margin-bottom:10px" class="markdown-body"><p>Model of HTML elements. It also contains base classes which are not specific to HTML such as ModelElement, Content, Facet, Iterator, &hellip;</p>
+<h2><a href="#generation-context" name="generation-context">Generation context</a></h2>
+<p>When data bindings, data binding iterators and interpolations are used tt is assumed that a data context is available during model -&gt; HTML generation.</p>
+<p>Such data context is a function taking a single string argument and returning object value (<code>java.util.Function&lt;String,Object&gt;</code>). </p>
+<h2><a href="#interpolation" name="interpolation">Interpolation</a></h2>
+<p>Text content and attributes may contain <code>{{key[|default value]}}</code> tokens which are evaluated to values by retrieving <code>key</code> from the context. If there is no context or no key then an optional default value is used. If there is no default value then the token remains uninterpolated.</p>
+<p>For text interpolation and data binding can be used interchangeably. If both are present, data binding takes precedence. </p></div>
+      <img src="75726e3a6f72672e6e617364616e696b612e68746d6c/package-summary.png" usemap="#plantuml_map"/><map id="plantuml_map" name="plantuml_map">
+<area shape="rect" id="id1" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Iterator.html" title="Iterator produces zero or more values. " alt="" coords="276,727,347,775"/>
+<area shape="rect" id="id2" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Text.html" title="Text content. May contain interpolation tokens in the format {{key[|default]}}. " alt="" coords="727,720,788,781"/>
+<area shape="rect" id="id3" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Container.html" title="Container of other content." alt="" coords="1026,727,1112,775"/>
+<area shape="rect" id="id4" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Script.html" title="Event handler with inline code." alt="" coords="945,1018,1012,1079"/>
+<area shape="rect" id="id5" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Case.html" title="Switch case." alt="" coords="709,405,778,467"/>
+<area shape="rect" id="id6" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Switch.html" title="Switch allows to select content of one of its cases of the default (otherwise) content based on a selector value matching on of the case values or not matching any value in which case the otherwise content will be selected, if it is present." alt="" coords="576,238,658,299"/>
+<area shape="rect" id="id7" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ScriptReference.html" title="Event handler with code loaded from a resource." alt="" coords="686,1025,806,1073"/>
+<area shape="rect" id="id8" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Content.html" title="Base class for content." alt="" coords="700,573,799,634"/>
+<area shape="rect" id="id9" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ContentReference.html" title="Refernces content in the same or different model. " alt="" coords="560,727,692,775"/>
+<area shape="rect" id="id10" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/EventHandler.html" title="Base class for event handlers." alt="" coords="925,881,1032,942"/>
+<area shape="rect" id="id11" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ModelElement.html" title="Base class for other model elements featuring description and properties." alt="" coords="517,87,628,149"/>
+<area shape="rect" id="id12" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceContent.html" title="Content loaded from a URL." alt="" coords="718,881,847,942"/>
+<area shape="rect" id="id13" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ContentGenerator.html" title="Content generator a placeholder for content which shall be generated. " alt="" coords="861,720,991,781"/>
+<area shape="rect" id="id14" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Event.html" title="Enumeration of HTML events." alt="" coords="39,87,171,149"/>
+<area shape="rect" id="id15" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/HTMLElement.html" title="Base class for HTML elements" alt="" coords="1147,713,1257,788"/>
+<area shape="rect" id="id16" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceIterator.html" title="Resource iterator loads values from a resource identified by a URL. " alt="" coords="386,881,522,942"/>
+<area shape="rect" id="id17" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/DataBindingIterator.html" title="Iterator which retrieves values from the data context." alt="" coords="213,881,351,942"/>
+<area shape="rect" id="id18" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Property.html" title="A generic name-value pair." alt="" coords="1141,867,1237,956"/>
+<area shape="rect" id="id19" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceReference.html" title="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceReference.html" alt="" coords="383,720,525,781"/>
+<area shape="rect" id="id20" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ContentType.html" title="Resource content type." alt="" coords="323,60,424,177"/>
+<area shape="rect" id="id21" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Page.html" title="HTML page containing other content." alt="" coords="441,378,546,495"/>
+<area shape="rect" id="id22" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Facet.html" title="Model element facets customize elements for a specific purpose. " alt="" coords="38,720,241,781"/>
+</map>
+</div>
+    <div id="nsd_f6_tab_1" class="tab-pane">
+      <table class="table table-bordered">
+        <tr class="info">
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Case.html">Case</a></td>
+          <td>Switch case.</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Container.html">Container</a></td>
+          <td>Container of other content.</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Content.html">Content</a></td>
+          <td>Base class for content.</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ContentGenerator.html">ContentGenerator</a></td>
+          <td>Content generator a placeholder for content which shall be generated. </td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ContentReference.html">ContentReference</a></td>
+          <td>Refernces content in the same or different model. </td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/DataBindingIterator.html">DataBindingIterator</a></td>
+          <td>Iterator which retrieves values from the data context.</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/EventHandler.html">EventHandler</a></td>
+          <td>Base class for event handlers.</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Facet.html">Facet</a></td>
+          <td>Model element facets customize elements for a specific purpose. </td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/HTMLElement.html">HTMLElement</a></td>
+          <td>Base class for HTML elements</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Iterator.html">Iterator</a></td>
+          <td>Iterator produces zero or more values. </td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ModelElement.html">ModelElement</a></td>
+          <td>Base class for other model elements featuring description and properties.</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Page.html">Page</a></td>
+          <td>HTML page containing other content.</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Property.html">Property</a></td>
+          <td>A generic name-value pair.</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceContent.html">ResourceContent</a></td>
+          <td>Content loaded from a URL.</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceIterator.html">ResourceIterator</a></td>
+          <td>Resource iterator loads values from a resource identified by a URL. </td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceReference.html">ResourceReference</a></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Script.html">Script</a></td>
+          <td>Event handler with inline code.</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ScriptReference.html">ScriptReference</a></td>
+          <td>Event handler with code loaded from a resource.</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Switch.html">Switch</a></td>
+          <td>Switch allows to select content of one of its cases of the default (otherwise) content based on a selector value matching on of the case values or not matching any value in which case the otherwise content will be selected, if it is present.</td>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Text.html">Text</a></td>
+          <td>Text content. May contain interpolation tokens in the format {{key[|default]}}. </td>
+        </tr>
+      </table>
+    </div>
+    <div id="nsd_f6_tab_2" class="tab-pane">
+      <table class="table table-bordered">
+        <tr class="info">
+          <th>Name</th>
+          <th>Instance Type Name</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Event.html">Event</a></td>
+          <td>org.nasdanika.html.Event</td>
+          <td>Enumeration of HTML events.</td>
+        </tr>
+      </table>
+    </div>
+    <div id="nsd_f6_tab_3" class="tab-pane">
+      <table class="table table-bordered">
+        <tr class="info">
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>
+<a href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ContentType.html">ContentType</a></td>
+          <td>Resource content type.</td>
+        </tr>
+      </table>
+    </div></div>
+</div>

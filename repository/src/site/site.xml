@@ -27,13 +27,8 @@
    </menu>
    
    <menu name="Models">
-      <item name="HTML" href="html-model.html">
-	      <item name="Model Documentation" href="html-model-doc/index.html#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/package-summary.html"/>      
-      </item>
-      <item name="Application" href="app-model.html">
-	      <item name="Model Documentation" href="app-model-doc/index.html#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c2e617070/package-summary.html"/>      
-      </item>
-   
+      <item name="Overview" href="models.html"/>
+      <item name="Model Documentation" href="model-doc/index.html"/>      
    </menu>
 
    <menu name="Java API Documentation">
