@@ -6,40 +6,40 @@
 <div>
   <ul class="nav nav-tabs">
     <li class="active">
-      <a href="#nsd_e2_tab_0" data-toggle="tab">Documentation</a>
+      <a href="#nsd_tg_tab_0" data-toggle="tab">Documentation</a>
     </li>
     <li>
-      <a href="#nsd_e2_tab_1" data-toggle="tab">
+      <a href="#nsd_tg_tab_1" data-toggle="tab">
 <img src="resources/images/EAttribute.gif" style="margin-right:5px"/> Attributes</a>
     </li>
     <li>
-      <a href="#nsd_e2_tab_2" data-toggle="tab">
+      <a href="#nsd_tg_tab_2" data-toggle="tab">
 <img src="resources/images/EReference.gif" style="margin-right:5px"/> References</a>
     </li>
     <li>
-      <a href="#nsd_e2_tab_3" data-toggle="tab">Supertypes</a>
+      <a href="#nsd_tg_tab_3" data-toggle="tab">Supertypes</a>
     </li>
   </ul>
   <div class="tab-content">
-    <div id="nsd_e2_tab_0" class="tab-pane active">
+    <div id="nsd_tg_tab_0" class="tab-pane active">
       <div style="margin-top:10px;margin-bottom:10px" class="markdown-body"><p>Resource iterator loads values from a resource identified by a URL.</p>
 <p>For hierarchical data formats - Json, XML, Yaml - the location URL may contain a fragment. For XML fragment is evaluated as XPath, for Json and YAML as a key path with <code>[&lt;number&gt;]</code> for selection of a list element. E.g. <code>cars/makes[3]</code> selects the key <code>cars</code> and then the key <code>makes</code> which is expected to be a list. If it is a list then its 4th element is returned. </p></div>
       <img src="75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceIterator.png" usemap="#plantuml_map"/><map id="plantuml_map" name="plantuml_map">
-<area shape="rect" id="id1" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Iterator.html" title="Iterator produces zero or more values. " alt="" coords="215,67,286,115"/>
-<area shape="rect" id="id2" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceIterator.html" title="Resource iterator loads values from a resource identified by a URL. " alt="" coords="96,182,232,243"/>
-<area shape="rect" id="id3" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceReference.html" title="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceReference.html" alt="" coords="38,60,180,121"/>
+<area shape="rect" id="id1" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/Iterator.html" title="Iterator produces zero or more values. " alt="" coords="38,67,109,115"/>
+<area shape="rect" id="id2" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceIterator.html" title="Resource iterator loads values from a resource identified by a URL. " alt="" coords="93,182,229,243"/>
+<area shape="rect" id="id3" href="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceReference.html" title="#router/doc-content/75726e3a6f72672e6e617364616e696b612e68746d6c/ResourceReference.html" alt="" coords="145,60,287,121"/>
 </map>
 </div>
-    <div id="nsd_e2_tab_1" class="tab-pane">
-      <div id="nsd_e3_accordion" role="tablist" class="panel-group">
+    <div id="nsd_tg_tab_1" class="tab-pane">
+      <div id="nsd_th_accordion" role="tablist" class="panel-group">
         <div class="panel panel-default">
-          <div role="tab" id="nsd_e4_collapse_heading" class="panel-heading">
+          <div role="tab" id="nsd_ti_collapse_heading" class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#nsd_e3_accordion" href="#nsd_e4_collapse_collapse" aria-expanded="false" aria-controls="nsd_e4_collapse_collapse"><b>contentType</b> : ContentType - <I>Resource content type.</I></a>
+              <a data-toggle="collapse" data-parent="#nsd_th_accordion" href="#nsd_ti_collapse_collapse" aria-expanded="false" aria-controls="nsd_ti_collapse_collapse"><b>contentType</b> : ContentType - <I>Resource content type.</I></a>
             </h4>
           </div>
-          <div id="nsd_e4_collapse_collapse" class="panel-collapse collapse">
-            <div id="nsd_e4_collapse_panel_body" class="panel-body"><p>Resource content type.</p>
+          <div id="nsd_ti_collapse_collapse" class="panel-collapse collapse">
+            <div id="nsd_ti_collapse_panel_body" class="panel-body"><p>Resource content type.</p>
               <table class="table table-bordered">
                 <tr>
                   <th style="align:left">Type</th>
@@ -99,13 +99,13 @@
           </div>
         </div>
         <div class="panel panel-default">
-          <div role="tab" id="nsd_e5_collapse_heading" class="panel-heading">
+          <div role="tab" id="nsd_tj_collapse_heading" class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#nsd_e3_accordion" href="#nsd_e5_collapse_collapse" aria-expanded="false" aria-controls="nsd_e5_collapse_collapse"><b>description</b> : EString (ModelElement)  - <I>Model element description. </I></a>
+              <a data-toggle="collapse" data-parent="#nsd_th_accordion" href="#nsd_tj_collapse_collapse" aria-expanded="false" aria-controls="nsd_tj_collapse_collapse"><b>description</b> : EString (ModelElement)  - <I>Model element description. </I></a>
             </h4>
           </div>
-          <div id="nsd_e5_collapse_collapse" class="panel-collapse collapse">
-            <div id="nsd_e5_collapse_panel_body" class="panel-body"><p>Model element description. Descriptions become part of generated model documentation and serve as a specification for their elements.</p>
+          <div id="nsd_tj_collapse_collapse" class="panel-collapse collapse">
+            <div id="nsd_tj_collapse_panel_body" class="panel-body"><p>Model element description. Descriptions become part of generated model documentation and serve as a specification for their elements.</p>
               <table class="table table-bordered">
                 <tr>
                   <th style="align:left">Declaring Type</th>
@@ -171,13 +171,13 @@
           </div>
         </div>
         <div class="panel panel-default">
-          <div role="tab" id="nsd_e6_collapse_heading" class="panel-heading">
+          <div role="tab" id="nsd_tk_collapse_heading" class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#nsd_e3_accordion" href="#nsd_e6_collapse_collapse" aria-expanded="false" aria-controls="nsd_e6_collapse_collapse"><b>location</b> : EString (ResourceReference)  - <I>Resource location URL. </I></a>
+              <a data-toggle="collapse" data-parent="#nsd_th_accordion" href="#nsd_tk_collapse_collapse" aria-expanded="false" aria-controls="nsd_tk_collapse_collapse"><b>location</b> : EString (ResourceReference)  - <I>Resource location URL. </I></a>
             </h4>
           </div>
-          <div id="nsd_e6_collapse_collapse" class="panel-collapse collapse">
-            <div id="nsd_e6_collapse_panel_body" class="panel-body"><p>Resource location URL. Relative URL&rsquo;s are resolved with the model URL as the base. Location may contain interpolation tokens - it allows to implement master-details relationships.</p>
+          <div id="nsd_tk_collapse_collapse" class="panel-collapse collapse">
+            <div id="nsd_tk_collapse_panel_body" class="panel-body"><p>Resource location URL. Relative URL&rsquo;s are resolved with the model URL as the base. Location may contain interpolation tokens - it allows to implement master-details relationships.</p>
               <table class="table table-bordered">
                 <tr>
                   <th style="align:left">Declaring Type</th>
@@ -244,16 +244,16 @@
         </div>
       </div>
     </div>
-    <div id="nsd_e2_tab_2" class="tab-pane">
-      <div id="nsd_e7_accordion" role="tablist" class="panel-group">
+    <div id="nsd_tg_tab_2" class="tab-pane">
+      <div id="nsd_tl_accordion" role="tablist" class="panel-group">
         <div class="panel panel-default">
-          <div role="tab" id="nsd_e8_collapse_heading" class="panel-heading">
+          <div role="tab" id="nsd_tm_collapse_heading" class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#nsd_e7_accordion" href="#nsd_e8_collapse_collapse" aria-expanded="false" aria-controls="nsd_e8_collapse_collapse"><b>annotations</b> : Property (ModelElement)  - <I>Element annotation can be used to provide extra information about the containng element not supported by its features. </I></a>
+              <a data-toggle="collapse" data-parent="#nsd_tl_accordion" href="#nsd_tm_collapse_collapse" aria-expanded="false" aria-controls="nsd_tm_collapse_collapse"><b>annotations</b> : Property (ModelElement)  - <I>Element annotation can be used to provide extra information about the containng element not supported by its features. </I></a>
             </h4>
           </div>
-          <div id="nsd_e8_collapse_collapse" class="panel-collapse collapse">
-            <div id="nsd_e8_collapse_panel_body" class="panel-body"><p>Element annotation can be used to provide extra information about the containng element not supported by its features. For example, if an element was generated from Ecore model its annotations may contain namespace URI of the package, EClass name, and structural feature name.</p>
+          <div id="nsd_tm_collapse_collapse" class="panel-collapse collapse">
+            <div id="nsd_tm_collapse_panel_body" class="panel-body"><p>Element annotation can be used to provide extra information about the containng element not supported by its features. For example, if an element was generated from Ecore model its annotations may contain namespace URI of the package, EClass name, and structural feature name.</p>
               <table class="table table-bordered">
                 <tr>
                   <th style="align:left">Declaring Type</th>
@@ -341,13 +341,13 @@
           </div>
         </div>
         <div class="panel panel-default">
-          <div role="tab" id="nsd_e9_collapse_heading" class="panel-heading">
+          <div role="tab" id="nsd_tn_collapse_heading" class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#nsd_e7_accordion" href="#nsd_e9_collapse_collapse" aria-expanded="false" aria-controls="nsd_e9_collapse_collapse"><b>requestProperties</b> : Property (ResourceReference)  - <I>A generic name-value pair.</I></a>
+              <a data-toggle="collapse" data-parent="#nsd_tl_accordion" href="#nsd_tn_collapse_collapse" aria-expanded="false" aria-controls="nsd_tn_collapse_collapse"><b>requestProperties</b> : Property (ResourceReference)  - <I>A generic name-value pair.</I></a>
             </h4>
           </div>
-          <div id="nsd_e9_collapse_collapse" class="panel-collapse collapse">
-            <div id="nsd_e9_collapse_panel_body" class="panel-body">
+          <div id="nsd_tn_collapse_collapse" class="panel-collapse collapse">
+            <div id="nsd_tn_collapse_panel_body" class="panel-body">
               <table class="table table-bordered">
                 <tr>
                   <th style="align:left">Declaring Type</th>
@@ -437,7 +437,7 @@
         </div>
       </div>
     </div>
-    <div id="nsd_e2_tab_3" class="tab-pane">
+    <div id="nsd_tg_tab_3" class="tab-pane">
       <table class="table table-bordered">
         <tr class="info">
           <th>Name</th>
