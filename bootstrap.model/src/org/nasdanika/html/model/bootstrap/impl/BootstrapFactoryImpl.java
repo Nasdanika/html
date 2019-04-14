@@ -11,6 +11,10 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
+import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Direction;
+import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.Theme;
 
 import org.nasdanika.html.model.bootstrap.*;
@@ -60,6 +64,8 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case BootstrapPackage.BOOTSTRAP_CDN_FACET: return (EObject)createBootstrapCDNFacet();
+			case BootstrapPackage.WRAP: return (EObject)createWrap();
+			case BootstrapPackage.ALERT: return (EObject)createAlert();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -75,6 +81,14 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 		switch (eDataType.getClassifierID()) {
 			case BootstrapPackage.THEME:
 				return createThemeFromString(eDataType, initialValue);
+			case BootstrapPackage.COLOR:
+				return createColorFromString(eDataType, initialValue);
+			case BootstrapPackage.DEVICE_SIZE:
+				return createDeviceSizeFromString(eDataType, initialValue);
+			case BootstrapPackage.DIRECTION:
+				return createDirectionFromString(eDataType, initialValue);
+			case BootstrapPackage.PLACEMENT:
+				return createPlacementFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -90,6 +104,14 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 		switch (eDataType.getClassifierID()) {
 			case BootstrapPackage.THEME:
 				return convertThemeToString(eDataType, instanceValue);
+			case BootstrapPackage.COLOR:
+				return convertColorToString(eDataType, instanceValue);
+			case BootstrapPackage.DEVICE_SIZE:
+				return convertDeviceSizeToString(eDataType, instanceValue);
+			case BootstrapPackage.DIRECTION:
+				return convertDirectionToString(eDataType, instanceValue);
+			case BootstrapPackage.PLACEMENT:
+				return convertPlacementToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -111,6 +133,28 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public Wrap createWrap() {
+		WrapImpl wrap = new WrapImpl();
+		return wrap;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Alert createAlert() {
+		AlertImpl alert = new AlertImpl();
+		return alert;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Theme createThemeFromString(EDataType eDataType, String initialValue) {
 		return (Theme)super.createFromString(eDataType, initialValue);
 	}
@@ -121,6 +165,78 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 	 * @generated
 	 */
 	public String convertThemeToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Color createColorFromString(EDataType eDataType, String initialValue) {
+		return (Color)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertColorToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public DeviceSize createDeviceSizeFromString(EDataType eDataType, String initialValue) {
+		return (DeviceSize)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertDeviceSizeToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Direction createDirectionFromString(EDataType eDataType, String initialValue) {
+		return (Direction)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertDirectionToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Placement createPlacementFromString(EDataType eDataType, String initialValue) {
+		return (Placement)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertPlacementToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

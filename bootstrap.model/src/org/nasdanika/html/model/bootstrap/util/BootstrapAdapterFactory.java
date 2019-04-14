@@ -11,7 +11,10 @@ import org.eclipse.emf.ecore.EObject;
 
 import org.nasdanika.html.model.bootstrap.*;
 
+import org.nasdanika.html.model.html.Container;
+import org.nasdanika.html.model.html.Content;
 import org.nasdanika.html.model.html.Facet;
+import org.nasdanika.html.model.html.HTMLElement;
 import org.nasdanika.html.model.html.ModelElement;
 
 /**
@@ -75,12 +78,36 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 				return createBootstrapCDNFacetAdapter();
 			}
 			@Override
+			public Adapter caseBootstrapElement(BootstrapElement object) {
+				return createBootstrapElementAdapter();
+			}
+			@Override
+			public Adapter caseWrap(Wrap object) {
+				return createWrapAdapter();
+			}
+			@Override
+			public Adapter caseAlert(Alert object) {
+				return createAlertAdapter();
+			}
+			@Override
 			public Adapter caseModelElement(ModelElement object) {
 				return createModelElementAdapter();
 			}
 			@Override
 			public <T> Adapter caseFacet(Facet<T> object) {
 				return createFacetAdapter();
+			}
+			@Override
+			public Adapter caseContent(Content object) {
+				return createContentAdapter();
+			}
+			@Override
+			public Adapter caseHTMLElement(HTMLElement object) {
+				return createHTMLElementAdapter();
+			}
+			@Override
+			public Adapter caseContainer(Container object) {
+				return createContainerAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -117,6 +144,48 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.BootstrapElement <em>Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.bootstrap.BootstrapElement
+	 * @generated
+	 */
+	public Adapter createBootstrapElementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.Wrap <em>Wrap</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.bootstrap.Wrap
+	 * @generated
+	 */
+	public Adapter createWrapAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.Alert <em>Alert</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.bootstrap.Alert
+	 * @generated
+	 */
+	public Adapter createAlertAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.html.ModelElement <em>Model Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -141,6 +210,48 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createFacetAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.html.Content <em>Content</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.html.Content
+	 * @generated
+	 */
+	public Adapter createContentAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.html.HTMLElement <em>HTML Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.html.HTMLElement
+	 * @generated
+	 */
+	public Adapter createHTMLElementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.html.Container <em>Container</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.html.Container
+	 * @generated
+	 */
+	public Adapter createContainerAdapter() {
 		return null;
 	}
 

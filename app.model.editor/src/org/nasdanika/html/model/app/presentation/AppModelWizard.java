@@ -58,6 +58,8 @@ import org.eclipse.ui.part.ISetSelectionTarget;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.provider.AppEditPlugin;
+import org.nasdanika.html.model.bootstrap.BootstrapFactory;
+import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlFactory;
 import org.nasdanika.html.model.html.HtmlPackage;
 
@@ -102,6 +104,8 @@ public class AppModelWizard extends Wizard implements INewWizard {
 	 */
 	protected HtmlPackage htmlPackage = HtmlPackage.eINSTANCE;
 
+	protected BootstrapPackage bootstrapPackage = BootstrapPackage.eINSTANCE;
+
 	/**
 	 * This caches an instance of the model factory.
 	 * <!-- begin-user-doc -->
@@ -118,6 +122,8 @@ public class AppModelWizard extends Wizard implements INewWizard {
 	 */
 	protected HtmlFactory htmlFactory = htmlPackage.getHtmlFactory();
 
+	protected BootstrapFactory bootstrapFactory = bootstrapPackage.getBootstrapFactory();
+	
 	/**
 	 * This is the file creation page.
 	 * <!-- begin-user-doc -->
@@ -189,6 +195,14 @@ public class AppModelWizard extends Wizard implements INewWizard {
 					}
 				}
 			}
+			for (EClassifier eClassifier : bootstrapPackage.getEClassifiers()) {
+				if (eClassifier instanceof EClass) {
+					EClass eClass = (EClass)eClassifier;
+					if (!eClass.isAbstract()) {
+						initialObjectNames.add("Bootstrap."+eClass.getName());
+					}
+				}
+			}
 			for (EClassifier eClassifier : appPackage.getEClassifiers()) {
 				if (eClassifier instanceof EClass) {
 					EClass eClass = (EClass)eClassifier;
@@ -214,6 +228,11 @@ public class AppModelWizard extends Wizard implements INewWizard {
 		case "App": {
 			EClass eClass = (EClass)appPackage.getEClassifier(initialObjectName[1]);
 			EObject rootObject = appFactory.create(eClass);
+			return rootObject;
+		}
+		case "Bootstrap": {
+			EClass eClass = (EClass)bootstrapPackage.getEClassifier(initialObjectName[1]);
+			EObject rootObject = bootstrapFactory.create(eClass);
 			return rootObject;
 		}
 		case "HTML": {

@@ -2,19 +2,28 @@
  */
 package org.nasdanika.html.model.bootstrap.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
 
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Direction;
+import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.Theme;
 
+import org.nasdanika.html.model.bootstrap.Alert;
 import org.nasdanika.html.model.bootstrap.BootstrapCDNFacet;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 
+import org.nasdanika.html.model.bootstrap.Wrap;
 import org.nasdanika.html.model.html.HtmlPackage;
 
 /**
@@ -36,7 +45,56 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass bootstrapElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass wrapEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass alertEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EDataType themeEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType colorEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType deviceSizeEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType directionEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType placementEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -118,8 +176,108 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	@Override
+	public EAttribute getBootstrapCDNFacet_Theme() {
+		return (EAttribute)bootstrapCDNFacetEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getBootstrapElement() {
+		return bootstrapElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getWrap() {
+		return wrapEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getWrap_HtmlElement() {
+		return (EReference)wrapEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getAlert() {
+		return alertEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getAlert_Color() {
+		return (EAttribute)alertEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EDataType getTheme() {
 		return themeEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EDataType getColor() {
+		return colorEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EDataType getDeviceSize() {
+		return deviceSizeEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EDataType getDirection() {
+		return directionEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EDataType getPlacement() {
+		return placementEDataType;
 	}
 
 	/**
@@ -152,9 +310,22 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		// Create classes and their features
 		bootstrapCDNFacetEClass = createEClass(BOOTSTRAP_CDN_FACET);
+		createEAttribute(bootstrapCDNFacetEClass, BOOTSTRAP_CDN_FACET__THEME);
+
+		bootstrapElementEClass = createEClass(BOOTSTRAP_ELEMENT);
+
+		wrapEClass = createEClass(WRAP);
+		createEReference(wrapEClass, WRAP__HTML_ELEMENT);
+
+		alertEClass = createEClass(ALERT);
+		createEAttribute(alertEClass, ALERT__COLOR);
 
 		// Create data types
 		themeEDataType = createEDataType(THEME);
+		colorEDataType = createEDataType(COLOR);
+		deviceSizeEDataType = createEDataType(DEVICE_SIZE);
+		directionEDataType = createEDataType(DIRECTION);
+		placementEDataType = createEDataType(PLACEMENT);
 	}
 
 	/**
@@ -192,12 +363,29 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		EGenericType g2 = createEGenericType(theHtmlPackage.getPage());
 		g1.getETypeArguments().add(g2);
 		bootstrapCDNFacetEClass.getEGenericSuperTypes().add(g1);
+		bootstrapElementEClass.getESuperTypes().add(theHtmlPackage.getHTMLElement());
+		wrapEClass.getESuperTypes().add(this.getBootstrapElement());
+		alertEClass.getESuperTypes().add(this.getBootstrapElement());
+		alertEClass.getESuperTypes().add(theHtmlPackage.getContainer());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(bootstrapCDNFacetEClass, BootstrapCDNFacet.class, "BootstrapCDNFacet", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getBootstrapCDNFacet_Theme(), this.getTheme(), "theme", null, 0, 1, BootstrapCDNFacet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(bootstrapElementEClass, BootstrapElement.class, "BootstrapElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(wrapEClass, Wrap.class, "Wrap", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getWrap_HtmlElement(), theHtmlPackage.getHTMLElement(), null, "htmlElement", null, 0, 1, Wrap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(alertEClass, Alert.class, "Alert", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getAlert_Color(), this.getColor(), "color", null, 0, 1, Alert.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(themeEDataType, Theme.class, "Theme", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(colorEDataType, Color.class, "Color", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(deviceSizeEDataType, DeviceSize.class, "DeviceSize", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(directionEDataType, Direction.class, "Direction", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(placementEDataType, Placement.class, "Placement", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
@@ -17,6 +17,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.nasdanika.html.model.html.Container;
 import org.nasdanika.html.model.html.HtmlFactory;
 import org.nasdanika.html.model.html.HtmlPackage;
+import org.nasdanika.html.model.html.util.HtmlModelUtil;
 
 /**
  * This is the item provider adapter for a {@link org.nasdanika.html.model.html.Container} object.
@@ -130,36 +131,16 @@ public class ContainerItemProvider extends ContentItemProvider {
 	 * that can be created under this object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(HtmlPackage.Literals.CONTAINER__CONTENT,
-				 HtmlFactory.eINSTANCE.createContentReference()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(HtmlPackage.Literals.CONTAINER__CONTENT,
-				 HtmlFactory.eINSTANCE.createResourceContent()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(HtmlPackage.Literals.CONTAINER__CONTENT,
-				 HtmlFactory.eINSTANCE.createText()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(HtmlPackage.Literals.CONTAINER__CONTENT,
-				 HtmlFactory.eINSTANCE.createContentGenerator()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(HtmlPackage.Literals.CONTAINER__CONTENT,
-				 HtmlFactory.eINSTANCE.createContainer()));
+		
+		for (EObject content: HtmlModelUtil.collect(HtmlPackage.Literals.CONTENT)) {
+			newChildDescriptors.add(createChildParameter(HtmlPackage.Literals.CONTAINER__CONTENT, content));
+		}
+		
 	}
 
 }

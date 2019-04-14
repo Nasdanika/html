@@ -95,6 +95,52 @@ public class BootstrapItemProviderAdapterFactory extends BootstrapAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.bootstrap.Wrap} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected WrapItemProvider wrapItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.bootstrap.Wrap}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createWrapAdapter() {
+		if (wrapItemProvider == null) {
+			wrapItemProvider = new WrapItemProvider(this);
+		}
+
+		return wrapItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.bootstrap.Alert} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected AlertItemProvider alertItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.bootstrap.Alert}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createAlertAdapter() {
+		if (alertItemProvider == null) {
+			alertItemProvider = new AlertItemProvider(this);
+		}
+
+		return alertItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -200,6 +246,8 @@ public class BootstrapItemProviderAdapterFactory extends BootstrapAdapterFactory
 	@Override
 	public void dispose() {
 		if (bootstrapCDNFacetItemProvider != null) bootstrapCDNFacetItemProvider.dispose();
+		if (wrapItemProvider != null) wrapItemProvider.dispose();
+		if (alertItemProvider != null) alertItemProvider.dispose();
 	}
 
 }

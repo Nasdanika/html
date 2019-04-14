@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <units size='2'>
-  <unit id='org.nasdanika.html.model.edit' version='2.0.0.201904141621' generation='2'>
-    <update id='org.nasdanika.html.model.edit' range='[0.0.0,2.0.0.201904141621)' severity='0'/>
+  <unit id='org.nasdanika.html.model.edit' version='2.0.0.201904142031' generation='2'>
+    <update id='org.nasdanika.html.model.edit' range='[0.0.0,2.0.0.201904142031)' severity='0'/>
     <properties size='8'>
       <property name='df_LT.pluginName' value='org.nasdanika.html.model Edit Support'/>
       <property name='df_LT.providerName' value='Nasdanika LLC'/>
@@ -13,10 +13,10 @@
       <property name='maven-version' value='2.0.0-SNAPSHOT'/>
     </properties>
     <provides size='6'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='org.nasdanika.html.model.edit' version='2.0.0.201904141621'/>
-      <provided namespace='osgi.bundle' name='org.nasdanika.html.model.edit' version='2.0.0.201904141621'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.nasdanika.html.model.edit' version='2.0.0.201904142031'/>
+      <provided namespace='osgi.bundle' name='org.nasdanika.html.model.edit' version='2.0.0.201904142031'/>
       <provided namespace='java.package' name='org.nasdanika.html.model.html.provider' version='0.0.0'/>
-      <provided namespace='osgi.identity' name='org.nasdanika.html.model.edit' version='2.0.0.201904141621'>
+      <provided namespace='osgi.identity' name='org.nasdanika.html.model.edit' version='2.0.0.201904142031'>
         <properties size='1'>
           <property name='type' value='osgi.bundle'/>
         </properties>
@@ -33,19 +33,19 @@
       <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=1.8))'/>
     </requires>
     <artifacts size='1'>
-      <artifact classifier='osgi.bundle' id='org.nasdanika.html.model.edit' version='2.0.0.201904141621'/>
+      <artifact classifier='osgi.bundle' id='org.nasdanika.html.model.edit' version='2.0.0.201904142031'/>
     </artifacts>
     <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
     <touchpointData size='1'>
       <instructions size='1'>
         <instruction key='manifest'>
-          Bundle-SymbolicName: org.nasdanika.html.model.edit;singleton:=true&#xA;Bundle-Version: 2.0.0.201904141621&#xA;
+          Bundle-SymbolicName: org.nasdanika.html.model.edit;singleton:=true&#xA;Bundle-Version: 2.0.0.201904142031&#xA;
         </instruction>
       </instructions>
     </touchpointData>
   </unit>
-  <unit id='org.nasdanika.html.model.edit.source' version='2.0.0.201904141621' singleton='false'>
-    <update id='org.nasdanika.html.model.edit.source' range='[0.0.0,2.0.0.201904141621)' severity='0'/>
+  <unit id='org.nasdanika.html.model.edit.source' version='2.0.0.201904142031' singleton='false'>
+    <update id='org.nasdanika.html.model.edit.source' range='[0.0.0,2.0.0.201904142031)' severity='0'/>
     <properties size='9'>
       <property name='df_LT.bundleVendor' value='Nasdanika LLC'/>
       <property name='df_LT.bundleName' value='org.nasdanika.html.model Edit Support Source'/>
@@ -58,9 +58,9 @@
       <property name='maven-classifier' value='sources'/>
     </properties>
     <provides size='5'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='org.nasdanika.html.model.edit.source' version='2.0.0.201904141621'/>
-      <provided namespace='osgi.bundle' name='org.nasdanika.html.model.edit.source' version='2.0.0.201904141621'/>
-      <provided namespace='osgi.identity' name='org.nasdanika.html.model.edit.source' version='2.0.0.201904141621'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.nasdanika.html.model.edit.source' version='2.0.0.201904142031'/>
+      <provided namespace='osgi.bundle' name='org.nasdanika.html.model.edit.source' version='2.0.0.201904142031'/>
+      <provided namespace='osgi.identity' name='org.nasdanika.html.model.edit.source' version='2.0.0.201904142031'>
         <properties size='1'>
           <property name='type' value='osgi.bundle'/>
         </properties>
@@ -69,13 +69,13 @@
       <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
     </provides>
     <artifacts size='1'>
-      <artifact classifier='osgi.bundle' id='org.nasdanika.html.model.edit.source' version='2.0.0.201904141621'/>
+      <artifact classifier='osgi.bundle' id='org.nasdanika.html.model.edit.source' version='2.0.0.201904142031'/>
     </artifacts>
     <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
     <touchpointData size='1'>
       <instructions size='1'>
         <instruction key='manifest'>
-          Bundle-SymbolicName: org.nasdanika.html.model.edit.source&#xA;Bundle-Version: 2.0.0.201904141621&#xA;
+          Bundle-SymbolicName: org.nasdanika.html.model.edit.source&#xA;Bundle-Version: 2.0.0.201904142031&#xA;
         </instruction>
       </instructions>
     </touchpointData>

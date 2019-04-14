@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.nasdanika.html.model.edit;singleton:=true
 Automatic-Module-Name: org.nasdanika.html.model.edit
-Bundle-Version: 2.0.0.201904141621
+Bundle-Version: 2.0.0.201904142031
 Bundle-ClassPath: .
 Bundle-Activator: org.nasdanika.html.model.html.provider.HtmlEditPlugin$
  Implementation

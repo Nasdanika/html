@@ -8,17 +8,16 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-
-import org.nasdanika.html.model.html.HtmlFactory;
+import org.nasdanika.html.model.html.Facet;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.html.model.html.Page;
+import org.nasdanika.html.model.html.util.HtmlModelUtil;
 
 /**
  * This is the item provider adapter for a {@link org.nasdanika.html.model.html.Page} object.
@@ -256,36 +255,22 @@ public class PageItemProvider extends ModelElementItemProvider {
 	 * that can be created under this object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(HtmlPackage.Literals.PAGE__BODY,
-				 HtmlFactory.eINSTANCE.createContentReference()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(HtmlPackage.Literals.PAGE__BODY,
-				 HtmlFactory.eINSTANCE.createResourceContent()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(HtmlPackage.Literals.PAGE__BODY,
-				 HtmlFactory.eINSTANCE.createText()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(HtmlPackage.Literals.PAGE__BODY,
-				 HtmlFactory.eINSTANCE.createContentGenerator()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(HtmlPackage.Literals.PAGE__BODY,
-				 HtmlFactory.eINSTANCE.createContainer()));
+		
+		for (EObject content: HtmlModelUtil.collect(HtmlPackage.Literals.CONTENT)) {
+			newChildDescriptors.add(createChildParameter(HtmlPackage.Literals.PAGE__BODY, content));
+		}
+		
+		for (EObject facet: HtmlModelUtil.collect(HtmlPackage.Literals.FACET)) {
+			if (facet instanceof Facet && ((Facet<Object>) facet).isFacetFor(object)) {
+				newChildDescriptors.add(createChildParameter(HtmlPackage.Literals.PAGE__FACETS, facet));
+			}
+		}
 	}
 
 }

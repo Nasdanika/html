@@ -31,6 +31,24 @@ public interface BootstrapFactory extends EFactory {
 	BootstrapCDNFacet createBootstrapCDNFacet();
 
 	/**
+	 * Returns a new object of class '<em>Wrap</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Wrap</em>'.
+	 * @generated
+	 */
+	Wrap createWrap();
+
+	/**
+	 * Returns a new object of class '<em>Alert</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Alert</em>'.
+	 * @generated
+	 */
+	Alert createAlert();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
