@@ -9,6 +9,10 @@ import org.eclipse.emf.common.util.EList;
  * A representation of the model object '<em><b>Switch</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Switch allows to select content of one of its cases of the default (otherwise) content based on a selector value matching on of the case values or not matching any value in which case the otherwise content will be selected, if it is present. 
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

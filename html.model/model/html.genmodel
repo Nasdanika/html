@@ -5,7 +5,7 @@
     modelPluginID="org.nasdanika.html.model" modelName="Html" rootExtendsInterface="org.eclipse.emf.cdo.CDOObject"
     rootExtendsClass="org.eclipse.emf.internal.cdo.CDOObjectImpl" reflectiveDelegation="true"
     importerID="org.eclipse.emf.importer.cdo" featureDelegation="Reflective" complianceLevel="8.0"
-    copyrightFields="false" providerRootExtendsClass="org.nasdanika.html.model.provider.CDOItemProviderAdapterEx"
+    copyrightFields="false" providerRootExtendsClass="org.nasdanika.html.model.html.provider.CDOItemProviderAdapterEx"
     operationReflection="true" importOrganizing="true">
   <foreignModel>html.ecore</foreignModel>
   <modelPluginVariables>CDO=org.eclipse.emf.cdo</modelPluginVariables>

@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="html" nsURI="urn:org.nasdanika.html" nsPrefix="org.nasdanika.html">
   <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-    <details key="documentation" value="Model of HTML elements. It also contains base classes which are not specific to HTML:&#xA;&#xA;* ModelElement - base class for all model elements&#xA;* Content&#xA;* Container - content containg other content.&#xA;* Facet - content customization.&#xA;* Iterator and its sub-classes:&#xA;    * DataBindingIterator&#xA;    * ResourceIterator&#xA;* Property&#xA;&#xA;## Generation context&#xA;&#xA;When data bindings, data binding iterators and interpolations are used tt is assumed that a data context is available during model -> HTML generation.&#xA;&#xA;Such data context is a function taking a single string argument and returning object value (``java.util.Function&lt;String,Object>``). &#xA;&#xA;## Interpolation&#xA;&#xA;Text content and attributes may contain ``{{key[|default value]}}`` tokens which are evaluated to values by retrieving ``key`` from the context. &#xA;If there is no context or no key then an optional default value is used. If there is no default value then the token remains uninterpolated.&#xA;&#xA;For text interpolation and data binding can be used interchangeably. If both are present, data binding takes precedence. "/>
+    <details key="documentation" value="Model of HTML elements. It also contains base classes which are not specific to HTML such as ModelElement, Content, Facet, Iterator, ...&#xA;&#xA;## Generation context&#xA;&#xA;When data bindings, data binding iterators and interpolations are used tt is assumed that a data context is available during model -> HTML generation.&#xA;&#xA;Such data context is a function taking a single string argument and returning object value (``java.util.Function&lt;String,Object>``). &#xA;&#xA;## Interpolation&#xA;&#xA;Text content and attributes may contain ``{{key[|default value]}}`` tokens which are evaluated to values by retrieving ``key`` from the context. &#xA;If there is no context or no key then an optional default value is used. If there is no default value then the token remains uninterpolated.&#xA;&#xA;For text interpolation and data binding can be used interchangeably. If both are present, data binding takes precedence. "/>
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="ModelElement" abstract="true">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -205,6 +205,9 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Switch" eSuperTypes="#//ModelElement">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Switch allows to select content of one of its cases of the default (otherwise) content based on a selector value matching on of the case values or not matching any value in which case the otherwise content will be selected, if it is present. "/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="cases" upperBound="-1"
         eType="#//Case" containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -224,6 +227,9 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Case" eSuperTypes="#//Container">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Switch case."/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Case value. A case is matched in the switch selector and the value are equal."/>

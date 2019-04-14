@@ -8,6 +8,10 @@ package org.nasdanika.html.model.html;
  * A representation of the model object '<em><b>Case</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Switch case.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
