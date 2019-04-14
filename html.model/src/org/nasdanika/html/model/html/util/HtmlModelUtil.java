@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EPackage;
 public class HtmlModelUtil {
 	
 	public static boolean isBlank(String str) {
-		return str == null || str.isBlank(); 
+		return str == null || str.trim().isEmpty(); 
 	}
 	
 	/**
