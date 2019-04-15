@@ -18,6 +18,7 @@ import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.Theme;
 
 import org.nasdanika.html.model.bootstrap.Alert;
+import org.nasdanika.html.model.bootstrap.Badge;
 import org.nasdanika.html.model.bootstrap.BootstrapCDNFacet;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
@@ -60,6 +61,13 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	private EClass alertEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass badgeEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -236,6 +244,36 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	@Override
+	public EClass getBadge() {
+		return badgeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getBadge_Pill() {
+		return (EAttribute)badgeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getBadge_Color() {
+		return (EAttribute)badgeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EDataType getTheme() {
 		return themeEDataType;
 	}
@@ -320,6 +358,10 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		alertEClass = createEClass(ALERT);
 		createEAttribute(alertEClass, ALERT__COLOR);
 
+		badgeEClass = createEClass(BADGE);
+		createEAttribute(badgeEClass, BADGE__PILL);
+		createEAttribute(badgeEClass, BADGE__COLOR);
+
 		// Create data types
 		themeEDataType = createEDataType(THEME);
 		colorEDataType = createEDataType(COLOR);
@@ -367,6 +409,8 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		wrapEClass.getESuperTypes().add(this.getBootstrapElement());
 		alertEClass.getESuperTypes().add(this.getBootstrapElement());
 		alertEClass.getESuperTypes().add(theHtmlPackage.getContainer());
+		badgeEClass.getESuperTypes().add(this.getBootstrapElement());
+		badgeEClass.getESuperTypes().add(theHtmlPackage.getContainer());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(bootstrapCDNFacetEClass, BootstrapCDNFacet.class, "BootstrapCDNFacet", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -379,6 +423,10 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		initEClass(alertEClass, Alert.class, "Alert", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAlert_Color(), this.getColor(), "color", null, 0, 1, Alert.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(badgeEClass, Badge.class, "Badge", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getBadge_Pill(), ecorePackage.getEBoolean(), "pill", null, 0, 1, Badge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBadge_Color(), this.getColor(), "color", null, 0, 1, Badge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(themeEDataType, Theme.class, "Theme", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

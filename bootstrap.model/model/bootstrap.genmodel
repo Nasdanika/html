@@ -28,5 +28,9 @@
     <genClasses ecoreClass="bootstrap.ecore#//Alert">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Alert/color"/>
     </genClasses>
+    <genClasses ecoreClass="bootstrap.ecore#//Badge">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Badge/pill"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Badge/color"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

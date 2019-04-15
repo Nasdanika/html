@@ -66,6 +66,7 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 			case BootstrapPackage.BOOTSTRAP_CDN_FACET: return (EObject)createBootstrapCDNFacet();
 			case BootstrapPackage.WRAP: return (EObject)createWrap();
 			case BootstrapPackage.ALERT: return (EObject)createAlert();
+			case BootstrapPackage.BADGE: return (EObject)createBadge();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -148,6 +149,17 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 	public Alert createAlert() {
 		AlertImpl alert = new AlertImpl();
 		return alert;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Badge createBadge() {
+		BadgeImpl badge = new BadgeImpl();
+		return badge;
 	}
 
 	/**

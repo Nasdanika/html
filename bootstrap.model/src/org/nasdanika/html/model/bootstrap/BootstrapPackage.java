@@ -508,6 +508,151 @@ public interface BootstrapPackage extends EPackage {
 	int ALERT_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.BadgeImpl <em>Badge</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.BadgeImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getBadge()
+	 * @generated
+	 */
+	int BADGE = 4;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__ITERATOR = BOOTSTRAP_ELEMENT__ITERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__FACETS = BOOTSTRAP_ELEMENT__FACETS;
+
+	/**
+	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__DATA_BINDING = BOOTSTRAP_ELEMENT__DATA_BINDING;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Styles</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__STYLES = BOOTSTRAP_ELEMENT__STYLES;
+
+	/**
+	 * The feature id for the '<em><b>Classes</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__CLASSES = BOOTSTRAP_ELEMENT__CLASSES;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__ID = BOOTSTRAP_ELEMENT__ID;
+
+	/**
+	 * The feature id for the '<em><b>Event Handlers</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__EVENT_HANDLERS = BOOTSTRAP_ELEMENT__EVENT_HANDLERS;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__CONTENT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Pill</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__PILL = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Color</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__COLOR = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Badge</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE_FEATURE_COUNT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '<em>Badge</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '<em>Theme</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -515,7 +660,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTheme()
 	 * @generated
 	 */
-	int THEME = 4;
+	int THEME = 5;
 
 
 	/**
@@ -526,7 +671,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getColor()
 	 * @generated
 	 */
-	int COLOR = 5;
+	int COLOR = 6;
 
 	/**
 	 * The meta object id for the '<em>Device Size</em>' data type.
@@ -536,7 +681,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getDeviceSize()
 	 * @generated
 	 */
-	int DEVICE_SIZE = 6;
+	int DEVICE_SIZE = 7;
 
 	/**
 	 * The meta object id for the '<em>Direction</em>' data type.
@@ -546,7 +691,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getDirection()
 	 * @generated
 	 */
-	int DIRECTION = 7;
+	int DIRECTION = 8;
 
 	/**
 	 * The meta object id for the '<em>Placement</em>' data type.
@@ -556,7 +701,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getPlacement()
 	 * @generated
 	 */
-	int PLACEMENT = 8;
+	int PLACEMENT = 9;
 
 
 	/**
@@ -631,6 +776,38 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getAlert_Color();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.model.bootstrap.Badge <em>Badge</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Badge</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Badge
+	 * @generated
+	 */
+	EClass getBadge();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.Badge#isPill <em>Pill</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Pill</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Badge#isPill()
+	 * @see #getBadge()
+	 * @generated
+	 */
+	EAttribute getBadge_Pill();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.Badge#getColor <em>Color</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Color</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Badge#getColor()
+	 * @see #getBadge()
+	 * @generated
+	 */
+	EAttribute getBadge_Color();
 
 	/**
 	 * Returns the meta object for data type '{@link org.nasdanika.html.bootstrap.Theme <em>Theme</em>}'.
@@ -773,6 +950,32 @@ public interface BootstrapPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ALERT__COLOR = eINSTANCE.getAlert_Color();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.bootstrap.impl.BadgeImpl <em>Badge</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.bootstrap.impl.BadgeImpl
+		 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getBadge()
+		 * @generated
+		 */
+		EClass BADGE = eINSTANCE.getBadge();
+
+		/**
+		 * The meta object literal for the '<em><b>Pill</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BADGE__PILL = eINSTANCE.getBadge_Pill();
+
+		/**
+		 * The meta object literal for the '<em><b>Color</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BADGE__COLOR = eINSTANCE.getBadge_Color();
 
 		/**
 		 * The meta object literal for the '<em>Theme</em>' data type.

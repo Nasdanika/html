@@ -141,6 +141,29 @@ public class BootstrapItemProviderAdapterFactory extends BootstrapAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.bootstrap.Badge} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected BadgeItemProvider badgeItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.bootstrap.Badge}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createBadgeAdapter() {
+		if (badgeItemProvider == null) {
+			badgeItemProvider = new BadgeItemProvider(this);
+		}
+
+		return badgeItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -248,6 +271,7 @@ public class BootstrapItemProviderAdapterFactory extends BootstrapAdapterFactory
 		if (bootstrapCDNFacetItemProvider != null) bootstrapCDNFacetItemProvider.dispose();
 		if (wrapItemProvider != null) wrapItemProvider.dispose();
 		if (alertItemProvider != null) alertItemProvider.dispose();
+		if (badgeItemProvider != null) badgeItemProvider.dispose();
 	}
 
 }

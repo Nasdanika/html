@@ -49,6 +49,15 @@ public interface BootstrapFactory extends EFactory {
 	Alert createAlert();
 
 	/**
+	 * Returns a new object of class '<em>Badge</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Badge</em>'.
+	 * @generated
+	 */
+	Badge createBadge();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

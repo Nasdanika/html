@@ -90,6 +90,10 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 				return createAlertAdapter();
 			}
 			@Override
+			public Adapter caseBadge(Badge object) {
+				return createBadgeAdapter();
+			}
+			@Override
 			public Adapter caseModelElement(ModelElement object) {
 				return createModelElementAdapter();
 			}
@@ -182,6 +186,20 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createAlertAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.Badge <em>Badge</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.bootstrap.Badge
+	 * @generated
+	 */
+	public Adapter createBadgeAdapter() {
 		return null;
 	}
 

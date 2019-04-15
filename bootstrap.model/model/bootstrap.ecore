@@ -33,4 +33,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="Alert" eSuperTypes="#//BootstrapElement ../../org.nasdanika.html.model/model/html.ecore#//Container">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Badge" eSuperTypes="#//BootstrapElement ../../org.nasdanika.html.model/model/html.ecore#//Container">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pill" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Pill doc..."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
+  </eClassifiers>
 </ecore:EPackage>

@@ -110,6 +110,17 @@ public class BootstrapSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case BootstrapPackage.BADGE: {
+				Badge badge = (Badge)theEObject;
+				T1 result = caseBadge(badge);
+				if (result == null) result = caseBootstrapElement(badge);
+				if (result == null) result = caseContainer(badge);
+				if (result == null) result = caseHTMLElement(badge);
+				if (result == null) result = caseContent(badge);
+				if (result == null) result = caseModelElement(badge);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -171,6 +182,21 @@ public class BootstrapSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseAlert(Alert object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Badge</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Badge</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseBadge(Badge object) {
 		return null;
 	}
 
