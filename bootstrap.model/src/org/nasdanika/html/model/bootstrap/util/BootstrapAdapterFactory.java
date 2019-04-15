@@ -90,6 +90,14 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 				return createAlertAdapter();
 			}
 			@Override
+			public Adapter caseListGroup(ListGroup object) {
+				return createListGroupAdapter();
+			}
+			@Override
+			public Adapter caseListGroupItem(ListGroupItem object) {
+				return createListGroupItemAdapter();
+			}
+			@Override
 			public Adapter caseBadge(Badge object) {
 				return createBadgeAdapter();
 			}
@@ -186,6 +194,34 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createAlertAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.ListGroup <em>List Group</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.bootstrap.ListGroup
+	 * @generated
+	 */
+	public Adapter createListGroupAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.ListGroupItem <em>List Group Item</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.bootstrap.ListGroupItem
+	 * @generated
+	 */
+	public Adapter createListGroupItemAdapter() {
 		return null;
 	}
 

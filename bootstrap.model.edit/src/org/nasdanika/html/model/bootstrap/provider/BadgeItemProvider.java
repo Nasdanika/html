@@ -204,6 +204,11 @@ public class BadgeItemProvider extends BootstrapElementItemProvider {
 		newChildDescriptors.add
 			(createChildParameter
 				(HtmlPackage.Literals.CONTAINER__CONTENT,
+				 BootstrapFactory.eINSTANCE.createListGroup()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(HtmlPackage.Literals.CONTAINER__CONTENT,
 				 BootstrapFactory.eINSTANCE.createBadge()));
 
 		newChildDescriptors.add

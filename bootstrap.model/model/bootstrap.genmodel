@@ -28,6 +28,15 @@
     <genClasses ecoreClass="bootstrap.ecore#//Alert">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Alert/color"/>
     </genClasses>
+    <genClasses ecoreClass="bootstrap.ecore#//ListGroup">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//ListGroup/items"/>
+    </genClasses>
+    <genClasses ecoreClass="bootstrap.ecore#//ListGroupItem">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//ListGroupItem/disabled"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//ListGroupItem/active"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//ListGroupItem/color"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//ListGroupItem/content"/>
+    </genClasses>
     <genClasses ecoreClass="bootstrap.ecore#//Badge">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Badge/pill"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Badge/color"/>

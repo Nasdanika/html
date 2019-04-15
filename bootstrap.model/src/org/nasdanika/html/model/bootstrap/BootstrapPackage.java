@@ -508,6 +508,215 @@ public interface BootstrapPackage extends EPackage {
 	int ALERT_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ListGroupImpl <em>List Group</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ListGroupImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getListGroup()
+	 * @generated
+	 */
+	int LIST_GROUP = 4;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__ITERATOR = BOOTSTRAP_ELEMENT__ITERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__FACETS = BOOTSTRAP_ELEMENT__FACETS;
+
+	/**
+	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__DATA_BINDING = BOOTSTRAP_ELEMENT__DATA_BINDING;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Styles</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__STYLES = BOOTSTRAP_ELEMENT__STYLES;
+
+	/**
+	 * The feature id for the '<em><b>Classes</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__CLASSES = BOOTSTRAP_ELEMENT__CLASSES;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__ID = BOOTSTRAP_ELEMENT__ID;
+
+	/**
+	 * The feature id for the '<em><b>Event Handlers</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__EVENT_HANDLERS = BOOTSTRAP_ELEMENT__EVENT_HANDLERS;
+
+	/**
+	 * The feature id for the '<em><b>Items</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__ITEMS = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>List Group</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP_FEATURE_COUNT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>List Group</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ListGroupItemImpl <em>List Group Item</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ListGroupItemImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getListGroupItem()
+	 * @generated
+	 */
+	int LIST_GROUP_ITEM = 5;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP_ITEM__DESCRIPTION = HtmlPackage.MODEL_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP_ITEM__ANNOTATIONS = HtmlPackage.MODEL_ELEMENT__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Disabled</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP_ITEM__DISABLED = HtmlPackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Active</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP_ITEM__ACTIVE = HtmlPackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Color</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP_ITEM__COLOR = HtmlPackage.MODEL_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP_ITEM__CONTENT = HtmlPackage.MODEL_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of structural features of the '<em>List Group Item</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP_ITEM_FEATURE_COUNT = HtmlPackage.MODEL_ELEMENT_FEATURE_COUNT + 4;
+
+	/**
+	 * The number of operations of the '<em>List Group Item</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP_ITEM_OPERATION_COUNT = HtmlPackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.BadgeImpl <em>Badge</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -515,7 +724,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getBadge()
 	 * @generated
 	 */
-	int BADGE = 4;
+	int BADGE = 6;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -660,7 +869,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTheme()
 	 * @generated
 	 */
-	int THEME = 5;
+	int THEME = 7;
 
 
 	/**
@@ -671,7 +880,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getColor()
 	 * @generated
 	 */
-	int COLOR = 6;
+	int COLOR = 8;
 
 	/**
 	 * The meta object id for the '<em>Device Size</em>' data type.
@@ -681,7 +890,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getDeviceSize()
 	 * @generated
 	 */
-	int DEVICE_SIZE = 7;
+	int DEVICE_SIZE = 9;
 
 	/**
 	 * The meta object id for the '<em>Direction</em>' data type.
@@ -691,7 +900,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getDirection()
 	 * @generated
 	 */
-	int DIRECTION = 8;
+	int DIRECTION = 10;
 
 	/**
 	 * The meta object id for the '<em>Placement</em>' data type.
@@ -701,7 +910,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getPlacement()
 	 * @generated
 	 */
-	int PLACEMENT = 9;
+	int PLACEMENT = 11;
 
 
 	/**
@@ -776,6 +985,81 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getAlert_Color();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.model.bootstrap.ListGroup <em>List Group</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>List Group</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.ListGroup
+	 * @generated
+	 */
+	EClass getListGroup();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.bootstrap.ListGroup#getItems <em>Items</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Items</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.ListGroup#getItems()
+	 * @see #getListGroup()
+	 * @generated
+	 */
+	EReference getListGroup_Items();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.model.bootstrap.ListGroupItem <em>List Group Item</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>List Group Item</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.ListGroupItem
+	 * @generated
+	 */
+	EClass getListGroupItem();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.ListGroupItem#isDisabled <em>Disabled</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Disabled</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.ListGroupItem#isDisabled()
+	 * @see #getListGroupItem()
+	 * @generated
+	 */
+	EAttribute getListGroupItem_Disabled();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.ListGroupItem#isActive <em>Active</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Active</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.ListGroupItem#isActive()
+	 * @see #getListGroupItem()
+	 * @generated
+	 */
+	EAttribute getListGroupItem_Active();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.ListGroupItem#getColor <em>Color</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Color</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.ListGroupItem#getColor()
+	 * @see #getListGroupItem()
+	 * @generated
+	 */
+	EAttribute getListGroupItem_Color();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.bootstrap.ListGroupItem#getContent <em>Content</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Content</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.ListGroupItem#getContent()
+	 * @see #getListGroupItem()
+	 * @generated
+	 */
+	EReference getListGroupItem_Content();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.bootstrap.Badge <em>Badge</em>}'.
@@ -950,6 +1234,66 @@ public interface BootstrapPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ALERT__COLOR = eINSTANCE.getAlert_Color();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.bootstrap.impl.ListGroupImpl <em>List Group</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.bootstrap.impl.ListGroupImpl
+		 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getListGroup()
+		 * @generated
+		 */
+		EClass LIST_GROUP = eINSTANCE.getListGroup();
+
+		/**
+		 * The meta object literal for the '<em><b>Items</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LIST_GROUP__ITEMS = eINSTANCE.getListGroup_Items();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.bootstrap.impl.ListGroupItemImpl <em>List Group Item</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.bootstrap.impl.ListGroupItemImpl
+		 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getListGroupItem()
+		 * @generated
+		 */
+		EClass LIST_GROUP_ITEM = eINSTANCE.getListGroupItem();
+
+		/**
+		 * The meta object literal for the '<em><b>Disabled</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LIST_GROUP_ITEM__DISABLED = eINSTANCE.getListGroupItem_Disabled();
+
+		/**
+		 * The meta object literal for the '<em><b>Active</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LIST_GROUP_ITEM__ACTIVE = eINSTANCE.getListGroupItem_Active();
+
+		/**
+		 * The meta object literal for the '<em><b>Color</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LIST_GROUP_ITEM__COLOR = eINSTANCE.getListGroupItem_Color();
+
+		/**
+		 * The meta object literal for the '<em><b>Content</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LIST_GROUP_ITEM__CONTENT = eINSTANCE.getListGroupItem_Content();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.bootstrap.impl.BadgeImpl <em>Badge</em>}' class.

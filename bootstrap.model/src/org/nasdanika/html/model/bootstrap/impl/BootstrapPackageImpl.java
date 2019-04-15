@@ -24,6 +24,8 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 
+import org.nasdanika.html.model.bootstrap.ListGroup;
+import org.nasdanika.html.model.bootstrap.ListGroupItem;
 import org.nasdanika.html.model.bootstrap.Wrap;
 import org.nasdanika.html.model.html.HtmlPackage;
 
@@ -61,6 +63,20 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	private EClass alertEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass listGroupEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass listGroupItemEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -244,6 +260,76 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	@Override
+	public EClass getListGroup() {
+		return listGroupEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getListGroup_Items() {
+		return (EReference)listGroupEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getListGroupItem() {
+		return listGroupItemEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getListGroupItem_Disabled() {
+		return (EAttribute)listGroupItemEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getListGroupItem_Active() {
+		return (EAttribute)listGroupItemEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getListGroupItem_Color() {
+		return (EAttribute)listGroupItemEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getListGroupItem_Content() {
+		return (EReference)listGroupItemEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getBadge() {
 		return badgeEClass;
 	}
@@ -358,6 +444,15 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		alertEClass = createEClass(ALERT);
 		createEAttribute(alertEClass, ALERT__COLOR);
 
+		listGroupEClass = createEClass(LIST_GROUP);
+		createEReference(listGroupEClass, LIST_GROUP__ITEMS);
+
+		listGroupItemEClass = createEClass(LIST_GROUP_ITEM);
+		createEAttribute(listGroupItemEClass, LIST_GROUP_ITEM__DISABLED);
+		createEAttribute(listGroupItemEClass, LIST_GROUP_ITEM__ACTIVE);
+		createEAttribute(listGroupItemEClass, LIST_GROUP_ITEM__COLOR);
+		createEReference(listGroupItemEClass, LIST_GROUP_ITEM__CONTENT);
+
 		badgeEClass = createEClass(BADGE);
 		createEAttribute(badgeEClass, BADGE__PILL);
 		createEAttribute(badgeEClass, BADGE__COLOR);
@@ -409,6 +504,8 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		wrapEClass.getESuperTypes().add(this.getBootstrapElement());
 		alertEClass.getESuperTypes().add(this.getBootstrapElement());
 		alertEClass.getESuperTypes().add(theHtmlPackage.getContainer());
+		listGroupEClass.getESuperTypes().add(this.getBootstrapElement());
+		listGroupItemEClass.getESuperTypes().add(theHtmlPackage.getModelElement());
 		badgeEClass.getESuperTypes().add(this.getBootstrapElement());
 		badgeEClass.getESuperTypes().add(theHtmlPackage.getContainer());
 
@@ -423,6 +520,15 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		initEClass(alertEClass, Alert.class, "Alert", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAlert_Color(), this.getColor(), "color", null, 0, 1, Alert.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(listGroupEClass, ListGroup.class, "ListGroup", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getListGroup_Items(), this.getListGroupItem(), null, "items", null, 0, -1, ListGroup.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(listGroupItemEClass, ListGroupItem.class, "ListGroupItem", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getListGroupItem_Disabled(), ecorePackage.getEBoolean(), "disabled", null, 0, 1, ListGroupItem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getListGroupItem_Active(), ecorePackage.getEBoolean(), "active", null, 0, 1, ListGroupItem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getListGroupItem_Color(), this.getColor(), "color", null, 0, 1, ListGroupItem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getListGroupItem_Content(), theHtmlPackage.getContent(), null, "content", null, 0, -1, ListGroupItem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(badgeEClass, Badge.class, "Badge", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBadge_Pill(), ecorePackage.getEBoolean(), "pill", null, 0, 1, Badge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

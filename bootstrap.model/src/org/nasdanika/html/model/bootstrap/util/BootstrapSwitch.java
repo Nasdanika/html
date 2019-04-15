@@ -110,6 +110,23 @@ public class BootstrapSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case BootstrapPackage.LIST_GROUP: {
+				ListGroup listGroup = (ListGroup)theEObject;
+				T1 result = caseListGroup(listGroup);
+				if (result == null) result = caseBootstrapElement(listGroup);
+				if (result == null) result = caseHTMLElement(listGroup);
+				if (result == null) result = caseContent(listGroup);
+				if (result == null) result = caseModelElement(listGroup);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BootstrapPackage.LIST_GROUP_ITEM: {
+				ListGroupItem listGroupItem = (ListGroupItem)theEObject;
+				T1 result = caseListGroupItem(listGroupItem);
+				if (result == null) result = caseModelElement(listGroupItem);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case BootstrapPackage.BADGE: {
 				Badge badge = (Badge)theEObject;
 				T1 result = caseBadge(badge);
@@ -182,6 +199,36 @@ public class BootstrapSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseAlert(Alert object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>List Group</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>List Group</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseListGroup(ListGroup object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>List Group Item</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>List Group Item</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseListGroupItem(ListGroupItem object) {
 		return null;
 	}
 

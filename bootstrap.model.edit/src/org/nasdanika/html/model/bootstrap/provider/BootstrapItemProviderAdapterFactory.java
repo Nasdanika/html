@@ -141,6 +141,52 @@ public class BootstrapItemProviderAdapterFactory extends BootstrapAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.bootstrap.ListGroup} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ListGroupItemProvider listGroupItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.bootstrap.ListGroup}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createListGroupAdapter() {
+		if (listGroupItemProvider == null) {
+			listGroupItemProvider = new ListGroupItemProvider(this);
+		}
+
+		return listGroupItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.bootstrap.ListGroupItem} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ListGroupItemItemProvider listGroupItemItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.bootstrap.ListGroupItem}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createListGroupItemAdapter() {
+		if (listGroupItemItemProvider == null) {
+			listGroupItemItemProvider = new ListGroupItemItemProvider(this);
+		}
+
+		return listGroupItemItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.bootstrap.Badge} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -271,6 +317,8 @@ public class BootstrapItemProviderAdapterFactory extends BootstrapAdapterFactory
 		if (bootstrapCDNFacetItemProvider != null) bootstrapCDNFacetItemProvider.dispose();
 		if (wrapItemProvider != null) wrapItemProvider.dispose();
 		if (alertItemProvider != null) alertItemProvider.dispose();
+		if (listGroupItemProvider != null) listGroupItemProvider.dispose();
+		if (listGroupItemItemProvider != null) listGroupItemItemProvider.dispose();
 		if (badgeItemProvider != null) badgeItemProvider.dispose();
 	}
 

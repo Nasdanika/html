@@ -49,6 +49,24 @@ public interface BootstrapFactory extends EFactory {
 	Alert createAlert();
 
 	/**
+	 * Returns a new object of class '<em>List Group</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>List Group</em>'.
+	 * @generated
+	 */
+	ListGroup createListGroup();
+
+	/**
+	 * Returns a new object of class '<em>List Group Item</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>List Group Item</em>'.
+	 * @generated
+	 */
+	ListGroupItem createListGroupItem();
+
+	/**
 	 * Returns a new object of class '<em>Badge</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
