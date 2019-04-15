@@ -155,33 +155,6 @@ public interface BootstrapPackage extends EPackage {
 	int BOOTSTRAP_ELEMENT__ANNOTATIONS = HtmlPackage.HTML_ELEMENT__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOTSTRAP_ELEMENT__ITERATOR = HtmlPackage.HTML_ELEMENT__ITERATOR;
-
-	/**
-	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOTSTRAP_ELEMENT__FACETS = HtmlPackage.HTML_ELEMENT__FACETS;
-
-	/**
-	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOTSTRAP_ELEMENT__DATA_BINDING = HtmlPackage.HTML_ELEMENT__DATA_BINDING;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -233,7 +206,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BOOTSTRAP_ELEMENT_FEATURE_COUNT = HtmlPackage.HTML_ELEMENT_FEATURE_COUNT + 0;
+	int BOOTSTRAP_ELEMENT_FEATURE_COUNT = HtmlPackage.HTML_ELEMENT_FEATURE_COUNT + -3;
 
 	/**
 	 * The number of operations of the '<em>Element</em>' class.
@@ -245,14 +218,14 @@ public interface BootstrapPackage extends EPackage {
 	int BOOTSTRAP_ELEMENT_OPERATION_COUNT = HtmlPackage.HTML_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.WrapImpl <em>Wrap</em>}' class.
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ContentBootstrapElementImpl <em>Content Bootstrap Element</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.WrapImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getWrap()
+	 * @see org.nasdanika.html.model.bootstrap.impl.ContentBootstrapElementImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getContentBootstrapElement()
 	 * @generated
 	 */
-	int WRAP = 2;
+	int CONTENT_BOOTSTRAP_ELEMENT = 2;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -261,7 +234,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WRAP__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
+	int CONTENT_BOOTSTRAP_ELEMENT__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -270,34 +243,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WRAP__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int WRAP__ITERATOR = BOOTSTRAP_ELEMENT__ITERATOR;
-
-	/**
-	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int WRAP__FACETS = BOOTSTRAP_ELEMENT__FACETS;
-
-	/**
-	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int WRAP__DATA_BINDING = BOOTSTRAP_ELEMENT__DATA_BINDING;
+	int CONTENT_BOOTSTRAP_ELEMENT__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
@@ -306,7 +252,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WRAP__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
+	int CONTENT_BOOTSTRAP_ELEMENT__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
 
 	/**
 	 * The feature id for the '<em><b>Styles</b></em>' containment reference list.
@@ -315,7 +261,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WRAP__STYLES = BOOTSTRAP_ELEMENT__STYLES;
+	int CONTENT_BOOTSTRAP_ELEMENT__STYLES = BOOTSTRAP_ELEMENT__STYLES;
 
 	/**
 	 * The feature id for the '<em><b>Classes</b></em>' attribute list.
@@ -324,7 +270,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WRAP__CLASSES = BOOTSTRAP_ELEMENT__CLASSES;
+	int CONTENT_BOOTSTRAP_ELEMENT__CLASSES = BOOTSTRAP_ELEMENT__CLASSES;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -333,7 +279,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WRAP__ID = BOOTSTRAP_ELEMENT__ID;
+	int CONTENT_BOOTSTRAP_ELEMENT__ID = BOOTSTRAP_ELEMENT__ID;
 
 	/**
 	 * The feature id for the '<em><b>Event Handlers</b></em>' containment reference list.
@@ -342,7 +288,279 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WRAP__EVENT_HANDLERS = BOOTSTRAP_ELEMENT__EVENT_HANDLERS;
+	int CONTENT_BOOTSTRAP_ELEMENT__EVENT_HANDLERS = BOOTSTRAP_ELEMENT__EVENT_HANDLERS;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_BOOTSTRAP_ELEMENT__ITERATOR = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_BOOTSTRAP_ELEMENT__FACETS = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_BOOTSTRAP_ELEMENT__DATA_BINDING = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Content Bootstrap Element</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_BOOTSTRAP_ELEMENT_FEATURE_COUNT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '<em>Content Bootstrap Element</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_BOOTSTRAP_ELEMENT_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ContainerBootstrapElementImpl <em>Container Bootstrap Element</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ContainerBootstrapElementImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getContainerBootstrapElement()
+	 * @generated
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT = 3;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT__DESCRIPTION = CONTENT_BOOTSTRAP_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT__ANNOTATIONS = CONTENT_BOOTSTRAP_ELEMENT__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT__ATTRIBUTES = CONTENT_BOOTSTRAP_ELEMENT__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Styles</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT__STYLES = CONTENT_BOOTSTRAP_ELEMENT__STYLES;
+
+	/**
+	 * The feature id for the '<em><b>Classes</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT__CLASSES = CONTENT_BOOTSTRAP_ELEMENT__CLASSES;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT__ID = CONTENT_BOOTSTRAP_ELEMENT__ID;
+
+	/**
+	 * The feature id for the '<em><b>Event Handlers</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT__EVENT_HANDLERS = CONTENT_BOOTSTRAP_ELEMENT__EVENT_HANDLERS;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT__ITERATOR = CONTENT_BOOTSTRAP_ELEMENT__ITERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT__FACETS = CONTENT_BOOTSTRAP_ELEMENT__FACETS;
+
+	/**
+	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT__DATA_BINDING = CONTENT_BOOTSTRAP_ELEMENT__DATA_BINDING;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT__CONTENT = CONTENT_BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Container Bootstrap Element</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT_FEATURE_COUNT = CONTENT_BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Container Bootstrap Element</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER_BOOTSTRAP_ELEMENT_OPERATION_COUNT = CONTENT_BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.WrapImpl <em>Wrap</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.WrapImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getWrap()
+	 * @generated
+	 */
+	int WRAP = 4;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WRAP__DESCRIPTION = CONTENT_BOOTSTRAP_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WRAP__ANNOTATIONS = CONTENT_BOOTSTRAP_ELEMENT__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WRAP__ATTRIBUTES = CONTENT_BOOTSTRAP_ELEMENT__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Styles</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WRAP__STYLES = CONTENT_BOOTSTRAP_ELEMENT__STYLES;
+
+	/**
+	 * The feature id for the '<em><b>Classes</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WRAP__CLASSES = CONTENT_BOOTSTRAP_ELEMENT__CLASSES;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WRAP__ID = CONTENT_BOOTSTRAP_ELEMENT__ID;
+
+	/**
+	 * The feature id for the '<em><b>Event Handlers</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WRAP__EVENT_HANDLERS = CONTENT_BOOTSTRAP_ELEMENT__EVENT_HANDLERS;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WRAP__ITERATOR = CONTENT_BOOTSTRAP_ELEMENT__ITERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WRAP__FACETS = CONTENT_BOOTSTRAP_ELEMENT__FACETS;
+
+	/**
+	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WRAP__DATA_BINDING = CONTENT_BOOTSTRAP_ELEMENT__DATA_BINDING;
 
 	/**
 	 * The feature id for the '<em><b>Html Element</b></em>' containment reference.
@@ -351,7 +569,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WRAP__HTML_ELEMENT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+	int WRAP__HTML_ELEMENT = CONTENT_BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Wrap</em>' class.
@@ -360,7 +578,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WRAP_FEATURE_COUNT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+	int WRAP_FEATURE_COUNT = CONTENT_BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Wrap</em>' class.
@@ -369,7 +587,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WRAP_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
+	int WRAP_OPERATION_COUNT = CONTENT_BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.AlertImpl <em>Alert</em>}' class.
@@ -379,7 +597,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getAlert()
 	 * @generated
 	 */
-	int ALERT = 3;
+	int ALERT = 5;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -388,7 +606,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
+	int ALERT__DESCRIPTION = CONTAINER_BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -397,34 +615,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ALERT__ITERATOR = BOOTSTRAP_ELEMENT__ITERATOR;
-
-	/**
-	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ALERT__FACETS = BOOTSTRAP_ELEMENT__FACETS;
-
-	/**
-	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ALERT__DATA_BINDING = BOOTSTRAP_ELEMENT__DATA_BINDING;
+	int ALERT__ANNOTATIONS = CONTAINER_BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
@@ -433,7 +624,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
+	int ALERT__ATTRIBUTES = CONTAINER_BOOTSTRAP_ELEMENT__ATTRIBUTES;
 
 	/**
 	 * The feature id for the '<em><b>Styles</b></em>' containment reference list.
@@ -442,7 +633,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT__STYLES = BOOTSTRAP_ELEMENT__STYLES;
+	int ALERT__STYLES = CONTAINER_BOOTSTRAP_ELEMENT__STYLES;
 
 	/**
 	 * The feature id for the '<em><b>Classes</b></em>' attribute list.
@@ -451,7 +642,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT__CLASSES = BOOTSTRAP_ELEMENT__CLASSES;
+	int ALERT__CLASSES = CONTAINER_BOOTSTRAP_ELEMENT__CLASSES;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -460,7 +651,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT__ID = BOOTSTRAP_ELEMENT__ID;
+	int ALERT__ID = CONTAINER_BOOTSTRAP_ELEMENT__ID;
 
 	/**
 	 * The feature id for the '<em><b>Event Handlers</b></em>' containment reference list.
@@ -469,7 +660,34 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT__EVENT_HANDLERS = BOOTSTRAP_ELEMENT__EVENT_HANDLERS;
+	int ALERT__EVENT_HANDLERS = CONTAINER_BOOTSTRAP_ELEMENT__EVENT_HANDLERS;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ALERT__ITERATOR = CONTAINER_BOOTSTRAP_ELEMENT__ITERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ALERT__FACETS = CONTAINER_BOOTSTRAP_ELEMENT__FACETS;
+
+	/**
+	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ALERT__DATA_BINDING = CONTAINER_BOOTSTRAP_ELEMENT__DATA_BINDING;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
@@ -478,7 +696,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT__CONTENT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+	int ALERT__CONTENT = CONTAINER_BOOTSTRAP_ELEMENT__CONTENT;
 
 	/**
 	 * The feature id for the '<em><b>Color</b></em>' attribute.
@@ -487,7 +705,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT__COLOR = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+	int ALERT__COLOR = CONTAINER_BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Alert</em>' class.
@@ -496,7 +714,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT_FEATURE_COUNT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
+	int ALERT_FEATURE_COUNT = CONTAINER_BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Alert</em>' class.
@@ -505,7 +723,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
+	int ALERT_OPERATION_COUNT = CONTAINER_BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ListGroupImpl <em>List Group</em>}' class.
@@ -515,7 +733,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getListGroup()
 	 * @generated
 	 */
-	int LIST_GROUP = 4;
+	int LIST_GROUP = 6;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -524,7 +742,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LIST_GROUP__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
+	int LIST_GROUP__DESCRIPTION = CONTENT_BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -533,34 +751,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LIST_GROUP__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LIST_GROUP__ITERATOR = BOOTSTRAP_ELEMENT__ITERATOR;
-
-	/**
-	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LIST_GROUP__FACETS = BOOTSTRAP_ELEMENT__FACETS;
-
-	/**
-	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LIST_GROUP__DATA_BINDING = BOOTSTRAP_ELEMENT__DATA_BINDING;
+	int LIST_GROUP__ANNOTATIONS = CONTENT_BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
@@ -569,7 +760,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LIST_GROUP__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
+	int LIST_GROUP__ATTRIBUTES = CONTENT_BOOTSTRAP_ELEMENT__ATTRIBUTES;
 
 	/**
 	 * The feature id for the '<em><b>Styles</b></em>' containment reference list.
@@ -578,7 +769,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LIST_GROUP__STYLES = BOOTSTRAP_ELEMENT__STYLES;
+	int LIST_GROUP__STYLES = CONTENT_BOOTSTRAP_ELEMENT__STYLES;
 
 	/**
 	 * The feature id for the '<em><b>Classes</b></em>' attribute list.
@@ -587,7 +778,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LIST_GROUP__CLASSES = BOOTSTRAP_ELEMENT__CLASSES;
+	int LIST_GROUP__CLASSES = CONTENT_BOOTSTRAP_ELEMENT__CLASSES;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -596,7 +787,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LIST_GROUP__ID = BOOTSTRAP_ELEMENT__ID;
+	int LIST_GROUP__ID = CONTENT_BOOTSTRAP_ELEMENT__ID;
 
 	/**
 	 * The feature id for the '<em><b>Event Handlers</b></em>' containment reference list.
@@ -605,7 +796,34 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LIST_GROUP__EVENT_HANDLERS = BOOTSTRAP_ELEMENT__EVENT_HANDLERS;
+	int LIST_GROUP__EVENT_HANDLERS = CONTENT_BOOTSTRAP_ELEMENT__EVENT_HANDLERS;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__ITERATOR = CONTENT_BOOTSTRAP_ELEMENT__ITERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__FACETS = CONTENT_BOOTSTRAP_ELEMENT__FACETS;
+
+	/**
+	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LIST_GROUP__DATA_BINDING = CONTENT_BOOTSTRAP_ELEMENT__DATA_BINDING;
 
 	/**
 	 * The feature id for the '<em><b>Items</b></em>' containment reference list.
@@ -614,7 +832,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LIST_GROUP__ITEMS = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+	int LIST_GROUP__ITEMS = CONTENT_BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>List Group</em>' class.
@@ -623,7 +841,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LIST_GROUP_FEATURE_COUNT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+	int LIST_GROUP_FEATURE_COUNT = CONTENT_BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>List Group</em>' class.
@@ -632,7 +850,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LIST_GROUP_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
+	int LIST_GROUP_OPERATION_COUNT = CONTENT_BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ListGroupItemImpl <em>List Group Item</em>}' class.
@@ -642,7 +860,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getListGroupItem()
 	 * @generated
 	 */
-	int LIST_GROUP_ITEM = 5;
+	int LIST_GROUP_ITEM = 7;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -724,7 +942,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getBadge()
 	 * @generated
 	 */
-	int BADGE = 6;
+	int BADGE = 8;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -733,7 +951,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
+	int BADGE__DESCRIPTION = CONTAINER_BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -742,34 +960,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BADGE__ITERATOR = BOOTSTRAP_ELEMENT__ITERATOR;
-
-	/**
-	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BADGE__FACETS = BOOTSTRAP_ELEMENT__FACETS;
-
-	/**
-	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BADGE__DATA_BINDING = BOOTSTRAP_ELEMENT__DATA_BINDING;
+	int BADGE__ANNOTATIONS = CONTAINER_BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
@@ -778,7 +969,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
+	int BADGE__ATTRIBUTES = CONTAINER_BOOTSTRAP_ELEMENT__ATTRIBUTES;
 
 	/**
 	 * The feature id for the '<em><b>Styles</b></em>' containment reference list.
@@ -787,7 +978,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE__STYLES = BOOTSTRAP_ELEMENT__STYLES;
+	int BADGE__STYLES = CONTAINER_BOOTSTRAP_ELEMENT__STYLES;
 
 	/**
 	 * The feature id for the '<em><b>Classes</b></em>' attribute list.
@@ -796,7 +987,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE__CLASSES = BOOTSTRAP_ELEMENT__CLASSES;
+	int BADGE__CLASSES = CONTAINER_BOOTSTRAP_ELEMENT__CLASSES;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -805,7 +996,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE__ID = BOOTSTRAP_ELEMENT__ID;
+	int BADGE__ID = CONTAINER_BOOTSTRAP_ELEMENT__ID;
 
 	/**
 	 * The feature id for the '<em><b>Event Handlers</b></em>' containment reference list.
@@ -814,7 +1005,34 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE__EVENT_HANDLERS = BOOTSTRAP_ELEMENT__EVENT_HANDLERS;
+	int BADGE__EVENT_HANDLERS = CONTAINER_BOOTSTRAP_ELEMENT__EVENT_HANDLERS;
+
+	/**
+	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__ITERATOR = CONTAINER_BOOTSTRAP_ELEMENT__ITERATOR;
+
+	/**
+	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__FACETS = CONTAINER_BOOTSTRAP_ELEMENT__FACETS;
+
+	/**
+	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__DATA_BINDING = CONTAINER_BOOTSTRAP_ELEMENT__DATA_BINDING;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
@@ -823,7 +1041,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE__CONTENT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+	int BADGE__CONTENT = CONTAINER_BOOTSTRAP_ELEMENT__CONTENT;
 
 	/**
 	 * The feature id for the '<em><b>Pill</b></em>' attribute.
@@ -832,7 +1050,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE__PILL = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+	int BADGE__PILL = CONTAINER_BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Color</b></em>' attribute.
@@ -841,7 +1059,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE__COLOR = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
+	int BADGE__COLOR = CONTAINER_BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Badge</em>' class.
@@ -850,7 +1068,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE_FEATURE_COUNT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
+	int BADGE_FEATURE_COUNT = CONTAINER_BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Badge</em>' class.
@@ -859,7 +1077,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
+	int BADGE_OPERATION_COUNT = CONTAINER_BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '<em>Theme</em>' data type.
@@ -869,7 +1087,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTheme()
 	 * @generated
 	 */
-	int THEME = 7;
+	int THEME = 9;
 
 
 	/**
@@ -880,7 +1098,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getColor()
 	 * @generated
 	 */
-	int COLOR = 8;
+	int COLOR = 10;
 
 	/**
 	 * The meta object id for the '<em>Device Size</em>' data type.
@@ -890,7 +1108,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getDeviceSize()
 	 * @generated
 	 */
-	int DEVICE_SIZE = 9;
+	int DEVICE_SIZE = 11;
 
 	/**
 	 * The meta object id for the '<em>Direction</em>' data type.
@@ -900,7 +1118,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getDirection()
 	 * @generated
 	 */
-	int DIRECTION = 10;
+	int DIRECTION = 12;
 
 	/**
 	 * The meta object id for the '<em>Placement</em>' data type.
@@ -910,7 +1128,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getPlacement()
 	 * @generated
 	 */
-	int PLACEMENT = 11;
+	int PLACEMENT = 13;
 
 
 	/**
@@ -943,6 +1161,26 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getBootstrapElement();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.model.bootstrap.ContentBootstrapElement <em>Content Bootstrap Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Content Bootstrap Element</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.ContentBootstrapElement
+	 * @generated
+	 */
+	EClass getContentBootstrapElement();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.model.bootstrap.ContainerBootstrapElement <em>Container Bootstrap Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Container Bootstrap Element</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.ContainerBootstrapElement
+	 * @generated
+	 */
+	EClass getContainerBootstrapElement();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.bootstrap.Wrap <em>Wrap</em>}'.
@@ -1198,6 +1436,26 @@ public interface BootstrapPackage extends EPackage {
 		 * @generated
 		 */
 		EClass BOOTSTRAP_ELEMENT = eINSTANCE.getBootstrapElement();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.bootstrap.impl.ContentBootstrapElementImpl <em>Content Bootstrap Element</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.bootstrap.impl.ContentBootstrapElementImpl
+		 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getContentBootstrapElement()
+		 * @generated
+		 */
+		EClass CONTENT_BOOTSTRAP_ELEMENT = eINSTANCE.getContentBootstrapElement();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.bootstrap.impl.ContainerBootstrapElementImpl <em>Container Bootstrap Element</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.bootstrap.impl.ContainerBootstrapElementImpl
+		 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getContainerBootstrapElement()
+		 * @generated
+		 */
+		EClass CONTAINER_BOOTSTRAP_ELEMENT = eINSTANCE.getContainerBootstrapElement();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.bootstrap.impl.WrapImpl <em>Wrap</em>}' class.

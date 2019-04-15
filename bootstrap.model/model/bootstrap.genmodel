@@ -22,6 +22,8 @@
           ecoreFeature="ecore:EAttribute bootstrap.ecore#//BootstrapCDNFacet/theme"/>
     </genClasses>
     <genClasses image="false" ecoreClass="bootstrap.ecore#//BootstrapElement"/>
+    <genClasses image="false" ecoreClass="bootstrap.ecore#//ContentBootstrapElement"/>
+    <genClasses ecoreClass="bootstrap.ecore#//ContainerBootstrapElement"/>
     <genClasses ecoreClass="bootstrap.ecore#//Wrap">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Wrap/htmlElement"/>
     </genClasses>

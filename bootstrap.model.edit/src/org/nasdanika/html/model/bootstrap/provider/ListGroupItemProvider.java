@@ -26,7 +26,7 @@ import org.nasdanika.html.model.html.HtmlPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ListGroupItemProvider extends BootstrapElementItemProvider {
+public class ListGroupItemProvider extends ContentBootstrapElementItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->

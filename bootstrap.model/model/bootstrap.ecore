@@ -19,21 +19,33 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Theme" instanceClassName="org.nasdanika.html.bootstrap.Theme"/>
   <eClassifiers xsi:type="ecore:EClass" name="BootstrapElement" abstract="true" eSuperTypes="../../org.nasdanika.html.model/model/html.ecore#//HTMLElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ContentBootstrapElement" abstract="true"
+      eSuperTypes="#//BootstrapElement ../../org.nasdanika.html.model/model/html.ecore#//Content">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Bootstrap element which can be used as content. For example a table is a content bootstrap element as it can be added to any container, but table row or cell are not as they can contained only in a table and a row respectively."/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContainerBootstrapElement" abstract="true"
+      eSuperTypes="#//ContentBootstrapElement ../../org.nasdanika.html.model/model/html.ecore#//Container">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Content bootstrap element which can contain other conent, e.g. an alert."/>
+    </eAnnotations>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Color" instanceClassName="org.nasdanika.html.bootstrap.Color"/>
   <eClassifiers xsi:type="ecore:EDataType" name="DeviceSize" instanceClassName="org.nasdanika.html.bootstrap.DeviceSize"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Direction" instanceClassName="org.nasdanika.html.bootstrap.Direction"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Placement" instanceClassName="org.nasdanika.html.bootstrap.Placement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Wrap" eSuperTypes="#//BootstrapElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Wrap" eSuperTypes="#//ContentBootstrapElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Wraps an HTML element into a Bootstrap element for applying Bootstrap styles."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="htmlElement" eType="ecore:EClass ../../org.nasdanika.html.model/model/html.ecore#//HTMLElement"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Alert" eSuperTypes="#//BootstrapElement ../../org.nasdanika.html.model/model/html.ecore#//Container">
+  <eClassifiers xsi:type="ecore:EClass" name="Alert" eSuperTypes="#//ContainerBootstrapElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ListGroup" eSuperTypes="#//BootstrapElement">
+  <eClassifiers xsi:type="ecore:EClass" name="ListGroup" eSuperTypes="#//ContentBootstrapElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="items" upperBound="-1"
         eType="#//ListGroupItem" containment="true"/>
   </eClassifiers>
@@ -45,7 +57,7 @@
         eType="ecore:EClass ../../org.nasdanika.html.model/model/html.ecore#//Content"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Badge" eSuperTypes="#//BootstrapElement ../../org.nasdanika.html.model/model/html.ecore#//Container">
+  <eClassifiers xsi:type="ecore:EClass" name="Badge" eSuperTypes="#//ContainerBootstrapElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pill" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Pill doc..."/>

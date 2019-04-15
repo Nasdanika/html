@@ -4,8 +4,6 @@ package org.nasdanika.html.model.bootstrap;
 
 import org.nasdanika.html.bootstrap.Color;
 
-import org.nasdanika.html.model.html.Container;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Badge</b></em>'.
@@ -23,7 +21,7 @@ import org.nasdanika.html.model.html.Container;
  * @model
  * @generated
  */
-public interface Badge extends BootstrapElement, Container {
+public interface Badge extends ContainerBootstrapElement {
 	/**
 	 * Returns the value of the '<em><b>Pill</b></em>' attribute.
 	 * <!-- begin-user-doc -->

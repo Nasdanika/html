@@ -15,7 +15,6 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 import org.nasdanika.html.model.html.Container;
-import org.nasdanika.html.model.html.HtmlFactory;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.html.model.html.util.HtmlModelUtil;
 

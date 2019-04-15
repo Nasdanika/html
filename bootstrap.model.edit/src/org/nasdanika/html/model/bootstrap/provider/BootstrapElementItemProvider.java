@@ -14,8 +14,6 @@ import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
-import org.nasdanika.html.model.bootstrap.BootstrapFactory;
-
 import org.nasdanika.html.model.html.HtmlPackage;
 
 import org.nasdanika.html.model.html.provider.HTMLElementItemProvider;
@@ -90,11 +88,6 @@ public class BootstrapElementItemProvider extends HTMLElementItemProvider {
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(HtmlPackage.Literals.CONTENT__FACETS,
-				 BootstrapFactory.eINSTANCE.createBootstrapCDNFacet()));
 	}
 
 	/**

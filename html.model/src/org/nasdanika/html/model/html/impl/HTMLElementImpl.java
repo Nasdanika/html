@@ -28,7 +28,7 @@ import org.nasdanika.html.model.html.Property;
  *
  * @generated
  */
-public abstract class HTMLElementImpl extends ContentImpl implements HTMLElement {
+public abstract class HTMLElementImpl extends ModelElementImpl implements HTMLElement {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

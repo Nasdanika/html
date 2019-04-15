@@ -1197,7 +1197,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__DESCRIPTION = CONTENT__DESCRIPTION;
+	int HTML_ELEMENT__DESCRIPTION = MODEL_ELEMENT__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1206,34 +1206,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__ANNOTATIONS = CONTENT__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Iterator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int HTML_ELEMENT__ITERATOR = CONTENT__ITERATOR;
-
-	/**
-	 * The feature id for the '<em><b>Facets</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int HTML_ELEMENT__FACETS = CONTENT__FACETS;
-
-	/**
-	 * The feature id for the '<em><b>Data Binding</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int HTML_ELEMENT__DATA_BINDING = CONTENT__DATA_BINDING;
+	int HTML_ELEMENT__ANNOTATIONS = MODEL_ELEMENT__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
@@ -1242,7 +1215,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__ATTRIBUTES = CONTENT_FEATURE_COUNT + 0;
+	int HTML_ELEMENT__ATTRIBUTES = MODEL_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Styles</b></em>' containment reference list.
@@ -1251,7 +1224,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__STYLES = CONTENT_FEATURE_COUNT + 1;
+	int HTML_ELEMENT__STYLES = MODEL_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Classes</b></em>' attribute list.
@@ -1260,7 +1233,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__CLASSES = CONTENT_FEATURE_COUNT + 2;
+	int HTML_ELEMENT__CLASSES = MODEL_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -1269,7 +1242,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__ID = CONTENT_FEATURE_COUNT + 3;
+	int HTML_ELEMENT__ID = MODEL_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Event Handlers</b></em>' containment reference list.
@@ -1278,7 +1251,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__EVENT_HANDLERS = CONTENT_FEATURE_COUNT + 4;
+	int HTML_ELEMENT__EVENT_HANDLERS = MODEL_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>HTML Element</em>' class.
@@ -1287,7 +1260,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT_FEATURE_COUNT = CONTENT_FEATURE_COUNT + 5;
+	int HTML_ELEMENT_FEATURE_COUNT = MODEL_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>HTML Element</em>' class.
@@ -1296,7 +1269,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT_OPERATION_COUNT = CONTENT_OPERATION_COUNT + 0;
+	int HTML_ELEMENT_OPERATION_COUNT = MODEL_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.html.impl.EventHandlerImpl <em>Event Handler</em>}' class.

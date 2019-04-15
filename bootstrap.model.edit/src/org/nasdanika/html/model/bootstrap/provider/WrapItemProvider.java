@@ -24,7 +24,7 @@ import org.nasdanika.html.model.html.util.HtmlModelUtil;
  * <!-- end-user-doc -->
  * @generated
  */
-public class WrapItemProvider extends BootstrapElementItemProvider {
+public class WrapItemProvider extends ContentBootstrapElementItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->

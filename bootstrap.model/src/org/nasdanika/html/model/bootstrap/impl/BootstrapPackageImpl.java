@@ -24,6 +24,8 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 
+import org.nasdanika.html.model.bootstrap.ContainerBootstrapElement;
+import org.nasdanika.html.model.bootstrap.ContentBootstrapElement;
 import org.nasdanika.html.model.bootstrap.ListGroup;
 import org.nasdanika.html.model.bootstrap.ListGroupItem;
 import org.nasdanika.html.model.bootstrap.Wrap;
@@ -49,6 +51,20 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	private EClass bootstrapElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass contentBootstrapElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass containerBootstrapElementEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -212,6 +228,26 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	@Override
 	public EClass getBootstrapElement() {
 		return bootstrapElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getContentBootstrapElement() {
+		return contentBootstrapElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getContainerBootstrapElement() {
+		return containerBootstrapElementEClass;
 	}
 
 	/**
@@ -438,6 +474,10 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		bootstrapElementEClass = createEClass(BOOTSTRAP_ELEMENT);
 
+		contentBootstrapElementEClass = createEClass(CONTENT_BOOTSTRAP_ELEMENT);
+
+		containerBootstrapElementEClass = createEClass(CONTAINER_BOOTSTRAP_ELEMENT);
+
 		wrapEClass = createEClass(WRAP);
 		createEReference(wrapEClass, WRAP__HTML_ELEMENT);
 
@@ -501,19 +541,25 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		g1.getETypeArguments().add(g2);
 		bootstrapCDNFacetEClass.getEGenericSuperTypes().add(g1);
 		bootstrapElementEClass.getESuperTypes().add(theHtmlPackage.getHTMLElement());
-		wrapEClass.getESuperTypes().add(this.getBootstrapElement());
-		alertEClass.getESuperTypes().add(this.getBootstrapElement());
-		alertEClass.getESuperTypes().add(theHtmlPackage.getContainer());
-		listGroupEClass.getESuperTypes().add(this.getBootstrapElement());
+		contentBootstrapElementEClass.getESuperTypes().add(this.getBootstrapElement());
+		contentBootstrapElementEClass.getESuperTypes().add(theHtmlPackage.getContent());
+		containerBootstrapElementEClass.getESuperTypes().add(this.getContentBootstrapElement());
+		containerBootstrapElementEClass.getESuperTypes().add(theHtmlPackage.getContainer());
+		wrapEClass.getESuperTypes().add(this.getContentBootstrapElement());
+		alertEClass.getESuperTypes().add(this.getContainerBootstrapElement());
+		listGroupEClass.getESuperTypes().add(this.getContentBootstrapElement());
 		listGroupItemEClass.getESuperTypes().add(theHtmlPackage.getModelElement());
-		badgeEClass.getESuperTypes().add(this.getBootstrapElement());
-		badgeEClass.getESuperTypes().add(theHtmlPackage.getContainer());
+		badgeEClass.getESuperTypes().add(this.getContainerBootstrapElement());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(bootstrapCDNFacetEClass, BootstrapCDNFacet.class, "BootstrapCDNFacet", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBootstrapCDNFacet_Theme(), this.getTheme(), "theme", null, 0, 1, BootstrapCDNFacet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(bootstrapElementEClass, BootstrapElement.class, "BootstrapElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(contentBootstrapElementEClass, ContentBootstrapElement.class, "ContentBootstrapElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(containerBootstrapElementEClass, ContainerBootstrapElement.class, "ContainerBootstrapElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(wrapEClass, Wrap.class, "Wrap", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getWrap_HtmlElement(), theHtmlPackage.getHTMLElement(), null, "htmlElement", null, 0, 1, Wrap.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

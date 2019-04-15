@@ -20,7 +20,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface ListGroup extends BootstrapElement {
+public interface ListGroup extends ContentBootstrapElement {
 	/**
 	 * Returns the value of the '<em><b>Items</b></em>' containment reference list.
 	 * The list contents are of type {@link org.nasdanika.html.model.bootstrap.ListGroupItem}.

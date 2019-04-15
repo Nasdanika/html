@@ -26,7 +26,7 @@ import org.nasdanika.html.model.html.HtmlPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class HTMLElementItemProvider extends ContentItemProvider {
+public class HTMLElementItemProvider extends ModelElementItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->

@@ -1007,7 +1007,7 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 		resourceIteratorEClass.getESuperTypes().add(this.getIterator());
 		resourceIteratorEClass.getESuperTypes().add(this.getResourceReference());
 		switchEClass.getESuperTypes().add(this.getModelElement());
-		htmlElementEClass.getESuperTypes().add(this.getContent());
+		htmlElementEClass.getESuperTypes().add(this.getModelElement());
 		scriptEClass.getESuperTypes().add(this.getEventHandler());
 		scriptReferenceEClass.getESuperTypes().add(this.getEventHandler());
 		scriptReferenceEClass.getESuperTypes().add(this.getResourceReference());

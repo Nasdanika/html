@@ -23,7 +23,7 @@ import org.nasdanika.html.model.bootstrap.ListGroupItem;
  *
  * @generated
  */
-public class ListGroupImpl extends BootstrapElementImpl implements ListGroup {
+public class ListGroupImpl extends ContentBootstrapElementImpl implements ListGroup {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

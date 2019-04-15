@@ -82,6 +82,14 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 				return createBootstrapElementAdapter();
 			}
 			@Override
+			public Adapter caseContentBootstrapElement(ContentBootstrapElement object) {
+				return createContentBootstrapElementAdapter();
+			}
+			@Override
+			public Adapter caseContainerBootstrapElement(ContainerBootstrapElement object) {
+				return createContainerBootstrapElementAdapter();
+			}
+			@Override
 			public Adapter caseWrap(Wrap object) {
 				return createWrapAdapter();
 			}
@@ -110,12 +118,12 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 				return createFacetAdapter();
 			}
 			@Override
-			public Adapter caseContent(Content object) {
-				return createContentAdapter();
-			}
-			@Override
 			public Adapter caseHTMLElement(HTMLElement object) {
 				return createHTMLElementAdapter();
+			}
+			@Override
+			public Adapter caseContent(Content object) {
+				return createContentAdapter();
 			}
 			@Override
 			public Adapter caseContainer(Container object) {
@@ -166,6 +174,34 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createBootstrapElementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.ContentBootstrapElement <em>Content Bootstrap Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.bootstrap.ContentBootstrapElement
+	 * @generated
+	 */
+	public Adapter createContentBootstrapElementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.ContainerBootstrapElement <em>Container Bootstrap Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.bootstrap.ContainerBootstrapElement
+	 * @generated
+	 */
+	public Adapter createContainerBootstrapElementAdapter() {
 		return null;
 	}
 

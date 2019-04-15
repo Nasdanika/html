@@ -24,7 +24,7 @@ import org.nasdanika.html.model.html.HTMLElement;
  * @model
  * @generated
  */
-public interface Wrap extends BootstrapElement {
+public interface Wrap extends ContentBootstrapElement {
 	/**
 	 * Returns the value of the '<em><b>Html Element</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

@@ -4,8 +4,6 @@ package org.nasdanika.html.model.bootstrap;
 
 import org.nasdanika.html.bootstrap.Color;
 
-import org.nasdanika.html.model.html.Container;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Alert</b></em>'.
@@ -22,7 +20,7 @@ import org.nasdanika.html.model.html.Container;
  * @model
  * @generated
  */
-public interface Alert extends BootstrapElement, Container {
+public interface Alert extends ContainerBootstrapElement {
 	/**
 	 * Returns the value of the '<em><b>Color</b></em>' attribute.
 	 * <!-- begin-user-doc -->

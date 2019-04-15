@@ -84,17 +84,39 @@ public class BootstrapSwitch<T1> extends Switch<T1> {
 				BootstrapElement bootstrapElement = (BootstrapElement)theEObject;
 				T1 result = caseBootstrapElement(bootstrapElement);
 				if (result == null) result = caseHTMLElement(bootstrapElement);
-				if (result == null) result = caseContent(bootstrapElement);
 				if (result == null) result = caseModelElement(bootstrapElement);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BootstrapPackage.CONTENT_BOOTSTRAP_ELEMENT: {
+				ContentBootstrapElement contentBootstrapElement = (ContentBootstrapElement)theEObject;
+				T1 result = caseContentBootstrapElement(contentBootstrapElement);
+				if (result == null) result = caseBootstrapElement(contentBootstrapElement);
+				if (result == null) result = caseContent(contentBootstrapElement);
+				if (result == null) result = caseHTMLElement(contentBootstrapElement);
+				if (result == null) result = caseModelElement(contentBootstrapElement);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BootstrapPackage.CONTAINER_BOOTSTRAP_ELEMENT: {
+				ContainerBootstrapElement containerBootstrapElement = (ContainerBootstrapElement)theEObject;
+				T1 result = caseContainerBootstrapElement(containerBootstrapElement);
+				if (result == null) result = caseContentBootstrapElement(containerBootstrapElement);
+				if (result == null) result = caseContainer(containerBootstrapElement);
+				if (result == null) result = caseBootstrapElement(containerBootstrapElement);
+				if (result == null) result = caseContent(containerBootstrapElement);
+				if (result == null) result = caseHTMLElement(containerBootstrapElement);
+				if (result == null) result = caseModelElement(containerBootstrapElement);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case BootstrapPackage.WRAP: {
 				Wrap wrap = (Wrap)theEObject;
 				T1 result = caseWrap(wrap);
+				if (result == null) result = caseContentBootstrapElement(wrap);
 				if (result == null) result = caseBootstrapElement(wrap);
-				if (result == null) result = caseHTMLElement(wrap);
 				if (result == null) result = caseContent(wrap);
+				if (result == null) result = caseHTMLElement(wrap);
 				if (result == null) result = caseModelElement(wrap);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -102,10 +124,12 @@ public class BootstrapSwitch<T1> extends Switch<T1> {
 			case BootstrapPackage.ALERT: {
 				Alert alert = (Alert)theEObject;
 				T1 result = caseAlert(alert);
-				if (result == null) result = caseBootstrapElement(alert);
+				if (result == null) result = caseContainerBootstrapElement(alert);
+				if (result == null) result = caseContentBootstrapElement(alert);
 				if (result == null) result = caseContainer(alert);
-				if (result == null) result = caseHTMLElement(alert);
+				if (result == null) result = caseBootstrapElement(alert);
 				if (result == null) result = caseContent(alert);
+				if (result == null) result = caseHTMLElement(alert);
 				if (result == null) result = caseModelElement(alert);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -113,9 +137,10 @@ public class BootstrapSwitch<T1> extends Switch<T1> {
 			case BootstrapPackage.LIST_GROUP: {
 				ListGroup listGroup = (ListGroup)theEObject;
 				T1 result = caseListGroup(listGroup);
+				if (result == null) result = caseContentBootstrapElement(listGroup);
 				if (result == null) result = caseBootstrapElement(listGroup);
-				if (result == null) result = caseHTMLElement(listGroup);
 				if (result == null) result = caseContent(listGroup);
+				if (result == null) result = caseHTMLElement(listGroup);
 				if (result == null) result = caseModelElement(listGroup);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -130,10 +155,12 @@ public class BootstrapSwitch<T1> extends Switch<T1> {
 			case BootstrapPackage.BADGE: {
 				Badge badge = (Badge)theEObject;
 				T1 result = caseBadge(badge);
-				if (result == null) result = caseBootstrapElement(badge);
+				if (result == null) result = caseContainerBootstrapElement(badge);
+				if (result == null) result = caseContentBootstrapElement(badge);
 				if (result == null) result = caseContainer(badge);
-				if (result == null) result = caseHTMLElement(badge);
+				if (result == null) result = caseBootstrapElement(badge);
 				if (result == null) result = caseContent(badge);
+				if (result == null) result = caseHTMLElement(badge);
 				if (result == null) result = caseModelElement(badge);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -169,6 +196,36 @@ public class BootstrapSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseBootstrapElement(BootstrapElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Content Bootstrap Element</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Content Bootstrap Element</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseContentBootstrapElement(ContentBootstrapElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Container Bootstrap Element</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Container Bootstrap Element</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseContainerBootstrapElement(ContainerBootstrapElement object) {
 		return null;
 	}
 

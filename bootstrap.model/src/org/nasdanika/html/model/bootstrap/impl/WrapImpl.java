@@ -22,7 +22,7 @@ import org.nasdanika.html.model.html.HTMLElement;
  *
  * @generated
  */
-public class WrapImpl extends BootstrapElementImpl implements Wrap {
+public class WrapImpl extends ContentBootstrapElementImpl implements Wrap {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
