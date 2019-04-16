@@ -21,6 +21,7 @@ import org.nasdanika.html.model.html.Content;
 import org.nasdanika.html.model.html.ContentGenerator;
 import org.nasdanika.html.model.html.ContentReference;
 import org.nasdanika.html.model.html.ContentType;
+import org.nasdanika.html.model.html.Data;
 import org.nasdanika.html.model.html.DataBindingIterator;
 import org.nasdanika.html.model.html.EventHandler;
 import org.nasdanika.html.model.html.Facet;
@@ -94,6 +95,13 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 	 * @generated
 	 */
 	private EClass contentGeneratorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass dataEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -489,6 +497,16 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 	@Override
 	public EAttribute getContentGenerator_Name() {
 		return (EAttribute)contentGeneratorEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getData() {
+		return dataEClass;
 	}
 
 	/**
@@ -910,6 +928,8 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 		contentGeneratorEClass = createEClass(CONTENT_GENERATOR);
 		createEAttribute(contentGeneratorEClass, CONTENT_GENERATOR__NAME);
 
+		dataEClass = createEClass(DATA);
+
 		containerEClass = createEClass(CONTAINER);
 		createEReference(containerEClass, CONTAINER__CONTENT);
 
@@ -1000,6 +1020,7 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 		resourceContentEClass.getESuperTypes().add(this.getResourceReference());
 		textEClass.getESuperTypes().add(this.getContent());
 		contentGeneratorEClass.getESuperTypes().add(this.getContent());
+		dataEClass.getESuperTypes().add(this.getContent());
 		containerEClass.getESuperTypes().add(this.getContent());
 		facetEClass.getESuperTypes().add(this.getModelElement());
 		iteratorEClass.getESuperTypes().add(this.getModelElement());
@@ -1048,6 +1069,8 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 
 		initEClass(contentGeneratorEClass, ContentGenerator.class, "ContentGenerator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getContentGenerator_Name(), ecorePackage.getEString(), "name", null, 1, 1, ContentGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(dataEClass, Data.class, "Data", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(containerEClass, org.nasdanika.html.model.html.Container.class, "Container", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getContainer_Content(), this.getContent(), null, "content", null, 0, -1, org.nasdanika.html.model.html.Container.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

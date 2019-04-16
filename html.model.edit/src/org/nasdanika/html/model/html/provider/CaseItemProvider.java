@@ -192,6 +192,11 @@ public class CaseItemProvider extends CDOItemProviderAdapterEx implements IEditi
 		newChildDescriptors.add
 			(createChildParameter
 				(HtmlPackage.Literals.CASE__CONTENT,
+				 HtmlFactory.eINSTANCE.createData()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(HtmlPackage.Literals.CASE__CONTENT,
 				 HtmlFactory.eINSTANCE.createContainer()));
 	}
 

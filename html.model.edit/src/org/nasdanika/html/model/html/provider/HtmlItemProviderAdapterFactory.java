@@ -187,6 +187,29 @@ public class HtmlItemProviderAdapterFactory extends HtmlAdapterFactory implement
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.html.Data} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected DataItemProvider dataItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.nasdanika.html.model.html.Data}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createDataAdapter() {
+		if (dataItemProvider == null) {
+			dataItemProvider = new DataItemProvider(this);
+		}
+
+		return dataItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link org.nasdanika.html.model.html.Container} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -480,6 +503,7 @@ public class HtmlItemProviderAdapterFactory extends HtmlAdapterFactory implement
 		if (resourceContentItemProvider != null) resourceContentItemProvider.dispose();
 		if (textItemProvider != null) textItemProvider.dispose();
 		if (contentGeneratorItemProvider != null) contentGeneratorItemProvider.dispose();
+		if (dataItemProvider != null) dataItemProvider.dispose();
 		if (containerItemProvider != null) containerItemProvider.dispose();
 		if (propertyItemProvider != null) propertyItemProvider.dispose();
 		if (dataBindingIteratorItemProvider != null) dataBindingIteratorItemProvider.dispose();

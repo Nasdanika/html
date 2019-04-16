@@ -9,10 +9,12 @@ package org.nasdanika.html.model.html;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * Content generator a placeholder for content which shall be generated. Content generator description serves as a specification for implementing content generator. 
+ * Content generator is a placeholder for content which shall be generated. Content generator description serves as a specification for implementing content generator. 
  * 
  * A sample scenario - when a model is generated into Java code content generator is generated as a method which throws UnsupportedOperationException and has content generator description as its javadoc.
  * Developers implement the method following the specification and remove or "dirty" ``@generated`` JavaDoc tag to prevent the generator overwriting it going forward.
+ * 
+ * Code generation may also create generation methods with pre-defined names, e.g. labels, view values and edit values for data source properties. In this case generators will reference those names.
  * <!-- end-model-doc -->
  *
  * <p>
