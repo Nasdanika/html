@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.nasdanika.html.bootstrap.Color;
@@ -29,6 +30,7 @@ import org.nasdanika.html.model.bootstrap.ContentBootstrapElement;
 import org.nasdanika.html.model.bootstrap.ListGroup;
 import org.nasdanika.html.model.bootstrap.ListGroupItem;
 import org.nasdanika.html.model.bootstrap.Wrap;
+import org.nasdanika.html.model.bootstrap.util.BootstrapValidator;
 import org.nasdanika.html.model.html.HtmlPackage;
 
 /**
@@ -191,6 +193,16 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		// Initialize created meta-data
 		theBootstrapPackage.initializePackageContents();
+
+		// Register package validator
+		EValidator.Registry.INSTANCE.put
+			(theBootstrapPackage,
+			 new EValidator.Descriptor() {
+				 @Override
+				 public EValidator getEValidator() {
+					 return BootstrapValidator.INSTANCE;
+				 }
+			 });
 
 		// Mark meta-data to indicate it can't be changed
 		theBootstrapPackage.freeze();
@@ -589,6 +601,26 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		// Create resource
 		createResource(eNS_URI);
+
+		// Create annotations
+		// http://www.eclipse.org/emf/2002/Ecore
+		createEcoreAnnotations();
+	}
+
+	/**
+	 * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/Ecore</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createEcoreAnnotations() {
+		String source = "http://www.eclipse.org/emf/2002/Ecore";
+		addAnnotation
+		  (listGroupItemEClass,
+		   source,
+		   new String[] {
+			   "constraints", "activeDisabled"
+		   });
 	}
 
 } //BootstrapPackageImpl

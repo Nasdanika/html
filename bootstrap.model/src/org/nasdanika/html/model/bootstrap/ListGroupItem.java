@@ -25,7 +25,7 @@ import org.nasdanika.html.model.html.ModelElement;
  * </ul>
  *
  * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getListGroupItem()
- * @model
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='activeDisabled'"
  * @generated
  */
 public interface ListGroupItem extends ModelElement {
