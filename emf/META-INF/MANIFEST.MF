@@ -13,7 +13,6 @@ Require-Bundle: org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport,
  org.nasdanika.html.jstree;bundle-version="2.0.0";visibility:=reexport,
  org.nasdanika.html.knockout;bundle-version="2.0.0";visibility:=reexport,
  org.nasdanika.html.app;bundle-version="2.0.0";visibility:=reexport,
- org.eclipse.emf.cdo;bundle-version="4.6.100",
  org.apache.commons.text;bundle-version="1.4.0",
  org.apache.commons.lang3,
  org.jsoup

@@ -26,5 +26,5 @@ public class TestHtml extends HTMLTestBase {
 				.on(Event.click, getClass().getResource("ClickHandler.js"));
 		System.out.println(div);
 	}
-		
+			
 }

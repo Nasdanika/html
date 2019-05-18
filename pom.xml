@@ -32,7 +32,7 @@
 		</repository>
 		<repository>
 			<id>third-party</id>
-			<url>http://www.nasdanika.org/products/third-party/repository</url>
+			<url>http://www.nasdanika.org/home/products/third-party/repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
@@ -42,19 +42,16 @@
 		</repository>
 		<repository>
 			<id>maven-osgi</id>
-			<url>http://www.nasdanika.org/products/maven-osgi/repository</url>
+			<url>http://www.nasdanika.org/home/products/maven-osgi/repository</url>
 			<layout>p2</layout>
 		</repository>
+		<!--
 		<repository>
 			<id>slf4j</id>
 			<url>http://www.nasdanika.org/slf4j</url>
 			<layout>p2</layout>
 		</repository>	
-		<repository>
-			<id>nasdanika-presentation</id>
-			<url>https://www.nasdanika.org/products/presentation/repository</url>
-			<layout>p2</layout>
-		</repository>								
+		-->
 	</repositories>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -211,30 +208,12 @@
 		<module>knockout</module>
 		<module>fontawesome</module>
 		<module>app</module>
-		<module>cdo</module>
-		<module>cdo.http</module>
-		<module>cdo.h2</module>
-		<module>jwt</module>
-
-		<module>html.model</module>
-		<module>html.model.edit</module>
-
-		<module>bootstrap.model</module>
-		<module>bootstrap.model.edit</module>
-
-		<module>app.model</module>
-		<module>app.model.edit</module>
-		<module>app.model.editor</module>
 		
 		<module>emf</module>		
 
 		<module>tests</module>
 		<module>feature</module>
 		<module>repository</module>
-
-		<module>cdo.feature</module>
-		<module>equinox.feature</module>
-		<module>jetty.feature</module>
 
 	</modules>
 	<!-- For resolution of JavaDoc between modules -->

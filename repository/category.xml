@@ -3,18 +3,5 @@
    <feature url="features/org.nasdanika.html.feature_2.0.0.qualifier.jar" id="org.nasdanika.html.feature" version="2.0.0.qualifier">
       <category name="org.nasdanika.runtime"/>
    </feature>
-   <feature url="features/org.nasdanika.cdo.feature_2.0.0.qualifier.jar" id="org.nasdanika.cdo.feature" version="2.0.0.qualifier">
-      <category name="org.nasdanika.runtime"/>
-   </feature>
-   <feature url="features/org.nasdanika.equinox.feature_2.0.0.qualifier.jar" id="org.nasdanika.equinox.feature" version="2.0.0.qualifier">
-      <category name="org.nasdanika.runtime"/>
-   </feature>
-   <feature url="features/org.nasdanika.jetty.feature_2.0.0.qualifier.jar" id="org.nasdanika.jetty.feature" version="2.0.0.qualifier">
-      <category name="org.nasdanika.runtime"/>
-   </feature>
-   <category-def name="org.nasdanika.runtime" label="Runtime bundles">
-      <description>
-         Eclipse IDE plug-ins.
-      </description>
-   </category-def>
+   <category-def name="org.nasdanika.runtime" label="Runtime bundles"/>
 </site>
