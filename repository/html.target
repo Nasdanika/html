@@ -20,5 +20,6 @@
 			<unit id="org.junit" version="4.12.0.v201504281640"/>
 			<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20181128170323/repository"/>
 		</location>
+		<location path="${eclipse_home}" type="Profile"/>
 	</locations>
 </target>

@@ -48,9 +48,9 @@ public class CustomerViewAction extends EObjectViewAction<Customer> {
 			.forEach(ret::add);
 		
 		// Loading context actions from the application model for the demo purposes.
-		URI appUri = URI.createPlatformPluginURI("org.nasdanika.html.app.model/NasdanikaBank.app", false);
-		Resource appResource = target.eResource().getResourceSet().getResource(appUri, true);
-		ret.addAll(((Action) appResource.getContents().iterator().next()).getChildren().get(0).getContextChildren());				
+//		URI appUri = URI.createPlatformPluginURI("org.nasdanika.html.app.model/NasdanikaBank.app", false);
+//		Resource appResource = target.eResource().getResourceSet().getResource(appUri, true);
+//		ret.addAll(((Action) appResource.getContents().iterator().next()).getChildren().get(0).getContextChildren());				
 		
 		return ret;
 	}
