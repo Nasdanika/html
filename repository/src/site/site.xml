@@ -25,11 +25,6 @@
       <item name="EMF" href="emf.html" />
       <item name="Web applications" href="web-applications.html" />      
    </menu>
-   
-   <menu name="Models">
-      <item name="Overview" href="models.html"/>
-      <item name="Model Documentation" href="model-doc/index.html"/>      
-   </menu>
 
    <menu name="Java API Documentation">
       <item name="HTML" href="apidocs/org.nasdanika.html/apidocs/index.html" />
@@ -37,15 +32,8 @@
       <item name="Knockout" href="apidocs/org.nasdanika.html.knockout/apidocs/index.html" />
       <item name="Fontawesome" href="apidocs/org.nasdanika.html.fontawesome/apidocs/index.html" />
       <item name="JsTree" href="apidocs/org.nasdanika.html.jstree/apidocs/index.html" />
-      <item name="Application" href="apidocs/org.nasdanika.html.app/apidocs/index.html">
-      	<item name="Model" href="apidocs/org.nasdanika.html.app.model/apidocs/index.html"/>
-      	<item name="Edit" href="apidocs/org.nasdanika.html.app.model.edit/apidocs/index.html"/>
-      	<item name="Editor" href="apidocs/org.nasdanika.html.app.model.editor/apidocs/index.html"/>      
-      </item>
+      <item name="Application" href="apidocs/org.nasdanika.html.app/apidocs/index.html"/>
       <item name="EMF" href="apidocs/org.nasdanika.html.emf/apidocs/index.html" />      
-      <item name="CDO" href="apidocs/org.nasdanika.cdo/apidocs/index.html" />      
-      <item name="CDO H2" href="apidocs/org.nasdanika.cdo.h2/apidocs/index.html" />      
-      <item name="CDO HTTP" href="apidocs/org.nasdanika.cdo.http/apidocs/index.html" />      
       <item name="Tests" href="apidocs/org.nasdanika.html.tests/apidocs/index.html" />      
    </menu>
 

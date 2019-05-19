@@ -180,54 +180,6 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>copy-app-model-javadoc</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.app.model/apidocs</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/../app.model/target/site/apidocs</directory>
-									<filtering>false</filtering>
-								</resource>								
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-app-model-edit-javadoc</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.app.model.edit/apidocs</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/../app.model.edit/target/site/apidocs</directory>
-									<filtering>false</filtering>
-								</resource>								
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-app-model-editor-javadoc</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.app.model.editor/apidocs</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/../app.model.editor/target/site/apidocs</directory>
-									<filtering>false</filtering>
-								</resource>								
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
 						<id>copy-emf-javadoc</id>
 						<phase>pre-site</phase>
 						<goals>
@@ -243,54 +195,6 @@
 							</resources>
 						</configuration>
 					</execution>
-					<execution>
-						<id>copy-cdo-javadoc</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.cdo/apidocs</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/../cdo/target/site/apidocs</directory>
-									<filtering>false</filtering>
-								</resource>								
-							</resources>
-						</configuration>
-					</execution>					
-					<execution>
-						<id>copy-cdo-h2-javadoc</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.cdo.h2/apidocs</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/../cdo.h2/target/site/apidocs</directory>
-									<filtering>false</filtering>
-								</resource>								
-							</resources>
-						</configuration>
-					</execution>					
-					<execution>
-						<id>copy-cdo-http-javadoc</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.cdo.http/apidocs</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/../cdo.http/target/site/apidocs</directory>
-									<filtering>false</filtering>
-								</resource>								
-							</resources>
-						</configuration>
-					</execution>					
 					<execution>
 						<id>copy-tests-javadoc</id>
 						<phase>pre-site</phase>
@@ -341,23 +245,6 @@
 							</resources>
 						</configuration>
 					</execution>
-					<execution>
-						<id>copy-sample-model</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/site</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/../app.model</directory>
-									<include>NasdanikaBank.app</include>
-									<filtering>false</filtering>
-								</resource>								
-							</resources>
-						</configuration>
-					</execution>					
 				</executions>
 			</plugin>
 			<plugin>
