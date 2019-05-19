@@ -32,23 +32,28 @@
 		</repository>
 		<repository>
 			<id>third-party</id>
-			<url>http://www.nasdanika.org/home/products/third-party/repository</url>
+			<url>https://www.nasdanika.org/home/products/third-party/repository</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>core</id>
+			<url>https://www.nasdanika.org/home/products/core/repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>bank</id>
-			<url>http://www.nasdanika.org/products/bank/1.0.0-SNAPSHOT/repository</url>
+			<url>https://www.nasdanika.org/home/products/bank/repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>maven-osgi</id>
-			<url>http://www.nasdanika.org/home/products/maven-osgi/repository</url>
+			<url>https://www.nasdanika.org/home/products/maven-osgi/repository</url>
 			<layout>p2</layout>
 		</repository>
 		<!--
 		<repository>
 			<id>slf4j</id>
-			<url>http://www.nasdanika.org/slf4j</url>
+			<url>https://www.nasdanika.org/slf4j</url>
 			<layout>p2</layout>
 		</repository>	
 		-->

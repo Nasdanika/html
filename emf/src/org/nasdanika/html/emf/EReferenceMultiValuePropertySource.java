@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.nasdanika.emf.AccessController;
 import org.nasdanika.html.app.PropertyDescriptor;
 
 public class EReferenceMultiValuePropertySource<T extends EObject> extends EStructuralFeatureMultiValuePropertySource<T, EReference> {

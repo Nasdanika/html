@@ -6,9 +6,9 @@ import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
 import org.nasdanika.bank.Customer;
 import org.nasdanika.bank.CustomerAccount;
-import org.nasdanika.html.emf.ComposedAdapterFactory;
-import org.nasdanika.html.emf.FunctionAdapterFactory;
-import org.nasdanika.html.emf.InstanceAdapterFactory;
+import org.nasdanika.emf.ComposedAdapterFactory;
+import org.nasdanika.emf.FunctionAdapterFactory;
+import org.nasdanika.emf.InstanceAdapterFactory;
 import org.nasdanika.html.emf.NavigationPanelViewPart;
 import org.nasdanika.html.emf.ViewAction;
 

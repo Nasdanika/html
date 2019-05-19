@@ -7,6 +7,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.nasdanika.emf.AccessController;
 import org.nasdanika.html.app.Adaptable;
 
 /**

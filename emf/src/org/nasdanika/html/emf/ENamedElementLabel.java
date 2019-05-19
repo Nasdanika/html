@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.jsoup.Jsoup;
+import org.nasdanika.emf.AnnotationSource;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.bootstrap.Color;
 

@@ -7,7 +7,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.html.app.Delta;
@@ -28,9 +27,6 @@ public class EStructuralFeatureMultiValueDataSource<T extends EObject, F extends
 
 	@Override
 	public Object getVersion(Object obj) {
-		if (obj instanceof CDOObject) {
-			return ((CDOObject) obj).cdoRevision();			
-		}
 		
 		if (obj instanceof EObject) {
 			return ((EObject) obj).eResource().getTimeStamp();

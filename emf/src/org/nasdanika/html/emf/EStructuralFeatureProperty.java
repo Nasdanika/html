@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.nasdanika.emf.AccessController;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Choice;
 import org.nasdanika.html.app.Diagnostic;

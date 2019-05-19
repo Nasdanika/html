@@ -3,11 +3,10 @@ package org.nasdanika.html.emf;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.emf.cdo.CDOObject;
-import org.eclipse.emf.cdo.common.id.CDOID;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.nasdanika.emf.AccessController;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionProvider;
 import org.nasdanika.html.app.PropertyDescriptor;
@@ -117,13 +116,6 @@ public class EObjectSingleValuePropertySource<T extends EObject> extends EObject
 
 	@Override
 	public Object getId() {
-		if (getValue() instanceof CDOObject) {
-			CDOObject cdoObj = (CDOObject) getValue();
-			CDOID cdoId = cdoObj.cdoID();
-			if (cdoId != null && !cdoId.isTemporary()) {
-				return cdoId;
-			}
-		}
 		return null;
 	}
 

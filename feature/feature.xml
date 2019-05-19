@@ -16,10 +16,6 @@
       Eclipse Public License.
    </license>
 
-   <requires>
-      <import feature="org.nasdanika.presentation.feature" version="0.1.0"/>
-   </requires>
-
    <plugin
          id="org.nasdanika.html"
          download-size="0"

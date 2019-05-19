@@ -2,7 +2,6 @@ package org.nasdanika.html.emf;
 
 import java.util.List;
 
-import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.html.app.Delta;
@@ -23,10 +22,6 @@ public class EStructuralFeatureSingleValueDataSource<T extends EObject, F extend
 
 	@Override
 	public Object getVersion(Object obj) {
-		if (obj instanceof CDOObject) {
-			return ((CDOObject) obj).cdoRevision();			
-		}
-		
 		if (obj instanceof EObject) {
 			return ((EObject) obj).eResource().getTimeStamp();
 		}
