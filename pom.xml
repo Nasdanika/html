@@ -164,6 +164,15 @@
 					</environments>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<compilerArgument>-err:-forbidden</compilerArgument>
+					<useProjectSettings>false</useProjectSettings>
+				</configuration>
+			</plugin>
 			<!-- enable source bundle generation -->
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
