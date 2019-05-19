@@ -163,7 +163,7 @@
 						</environment>
 					</environments>
 				</configuration>
-			</plugin>
+			</plugin>			
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-compiler-plugin</artifactId>
