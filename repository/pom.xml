@@ -196,56 +196,6 @@
 							</resources>
 						</configuration>
 					</execution>
-					<execution>
-						<id>copy-tests-javadoc</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.tests/apidocs</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/../tests/target/site/apidocs</directory>
-									<filtering>false</filtering>
-								</resource>								
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-test-dumps</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/site/test-dumps</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/../tests/target/test-dumps
-									</directory>
-									<filtering>false</filtering>
-								</resource>								
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-test-coverage</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/site/test-coverage</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/../tests/target/site/jacoco-aggregate
-									</directory>
-									<filtering>false</filtering>
-								</resource>								
-							</resources>
-						</configuration>
-					</execution>
 				</executions>
 			</plugin>
 			<plugin>

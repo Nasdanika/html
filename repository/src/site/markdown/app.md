@@ -114,7 +114,7 @@ writeFile("app/bootstrap/context-menu-"+childNode.getId()+".json", menu.toString
 
 The application: 
 
-<iframe src="test-dumps/app/bootstrap/index.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 20) + 'px'"></iframe>
+<iframe src="tests/dumps/app/bootstrap/index.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 20) + 'px'"></iframe>
 
 ## Label
 
@@ -283,7 +283,7 @@ ApplicationBuilder appBuilder = new ActionApplicationBuilder(appAction, principa
 
 Full code is available in the [testActionApplication](https://github.com/Nasdanika/html/blob/master/org.nasdanika.html.tests/src/org/nasdanika/html/tests/TestApp.java) class.
 
-<iframe src="test-dumps/app/action/link-group/credit-card-9012.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/app/action/link-group/credit-card-9012.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
    
 #### jsTree navigation panel
@@ -301,7 +301,7 @@ ActionApplicationBuilder jsTreeAppBuilder = new ActionApplicationBuilder(appActi
 	};		
 ```
   
-<iframe src="test-dumps/app/action/js-tree/credit-card-9012.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/app/action/js-tree/credit-card-9012.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ## Data sources and properties
 

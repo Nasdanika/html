@@ -63,7 +63,7 @@ actionGroup.action(true, false, Color.DEFAULT, "#", "Two - active");
 actionGroup.action(false, true, Color.DEFAULT, "#", "Three - disabled");
 actionGroup.action(false, false, Color.WARNING, "#", "Four - warning");
 ```
-<iframe src="test-dumps/bootstrap/action-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/action-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
 #### With content
 
@@ -76,7 +76,7 @@ actionGroup.contentAction("Three - disabled", false, true, Color.DEFAULT, null, 
 actionGroup.contentAction("Four - warning", false, false, Color.WARNING, null, BootstrapFactory.INSTANCE.alert(Color.WARNING, "Be careful!"));
 ```						
 
-<iframe src="test-dumps/bootstrap/action-group-content.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/action-group-content.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
 #### Adapt to navs 
 
@@ -85,7 +85,7 @@ ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
 navsItems(actionGroup.asNavs()); // See "Navs" section for navsItems method code.
 ```
 
-<iframe src="test-dumps/bootstrap/action-group-navs-adapter.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/action-group-navs-adapter.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
 ### Alert
 
@@ -94,7 +94,7 @@ BootstrapFactory factory = BootstrapFactory.INSTANCE;
 Tag alert = factory.alert(Color.INFO, "Alert");
 ```
 
-<iframe src="test-dumps/bootstrap/alert.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/alert.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
 ### Badge 
 
@@ -104,7 +104,7 @@ Tag badge = factory.badge(true, Color.INFO, "Badge");
 Tag badgeLink = factory.badgeLink("#", false, Color.WARNING, "Badge link");
 ```
 
-<iframe src="test-dumps/bootstrap/badge.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/badge.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ### Breadcrumbs
 
@@ -114,7 +114,7 @@ breadcrumbs.item(false, breadcrumbs.getFactory().getHTMLFactory().link("#", "Fir
 breadcrumbs.item(true, "Last");
 ```
 
-<iframe src="test-dumps/bootstrap/breadcrumbs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/breadcrumbs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ### Bootstrap CDN HTML Page
 
@@ -132,7 +132,7 @@ org.nasdanika.html.Button hButton = htmlFactory.button("Button");
 Button<org.nasdanika.html.Button> button = factory.button(hButton, Color.PRIMARY, false);
 ```
 
-<iframe src="test-dumps/bootstrap/button.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/button.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ### Button group
 
@@ -142,7 +142,7 @@ buttonGroup.add(button);
 buttonGroup.add(button);
 ```
 
-<iframe src="test-dumps/bootstrap/button-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/button-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ### Button toolbar
 
@@ -151,7 +151,7 @@ ButtonToolbar toolbar = factory.buttonToolbar();
 toolbar.add(buttonGroup);
 ```
 
-<iframe src="test-dumps/bootstrap/button-toolbar.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/button-toolbar.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 	
 ### Card
 
@@ -162,7 +162,7 @@ card.getBody().toHTMLElement().content("Body");
 card.getFooter().toHTMLElement().content("Footer");		
 ```
 
-<iframe src="test-dumps/bootstrap/card.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/card.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 	
 ### Dropdown
 
@@ -180,7 +180,7 @@ dropdown.divider();
 dropdown.item(htmlFactory.link("#", "Item 3"), false, true);
 ```
 
-<iframe src="test-dumps/bootstrap/dropdown.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 150) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/dropdown.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 150) + 'px'"></iframe>
 
 ### Input group
 		
@@ -192,7 +192,7 @@ inputGroup.prepend("@");
 inputGroup.append("Something").large();
 ```
 
-<iframe src="test-dumps/bootstrap/input-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/input-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ### Form		
 
@@ -211,7 +211,7 @@ form.content(factory.formGroup("City", htmlFactory.input(InputType.text), "City"
 form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "State").invalid("No such state"));
 ```
 
-<iframe src="test-dumps/bootstrap/form.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/form.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ### Grid, background and text style
 
@@ -223,7 +223,7 @@ row.col("Col 2").border(Color.PRIMARY).text().weight(Weight.BOLD).alignment(Alig
 row.col("Col 3").border(Color.WARNING, Placement.RIGHT).background(Color.SECONDARY).text().monospace();		
 ```
 
-<iframe src="test-dumps/bootstrap/misc.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/misc.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ### List Group
 
@@ -236,7 +236,7 @@ listGroup.item(false, true, Color.DEFAULT, "Three - disabled");
 listGroup.item(false, false, Color.WARNING, "Four - warning");
 ```
 	
-<iframe src="test-dumps/bootstrap/list-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/list-group.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 		
 #### Flush
 
@@ -249,7 +249,7 @@ listGroup.item(false, true, Color.DEFAULT, "Three - disabled");
 listGroup.item(false, false, Color.WARNING, "Four - warning");
 ```
 
-<iframe src="test-dumps/bootstrap/list-group-flush.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/list-group-flush.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 
 ### Navs
@@ -266,7 +266,7 @@ simpleTabs.item("Third", "Third content");
 simpleTabs.item("Fourth", "Fourth content");
 ```
 
-<iframe src="test-dumps/bootstrap/simple-tabs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/simple-tabs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 #### Active and disabled tabs
 
@@ -288,7 +288,7 @@ Tabs:
 navsItems(BootstrapFactory.INSTANCE.tabs());
 ```
 
-<iframe src="test-dumps/bootstrap/tabs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/tabs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 #### Pills
 
@@ -296,7 +296,7 @@ navsItems(BootstrapFactory.INSTANCE.tabs());
 navsItems(BootstrapFactory.INSTANCE.pills());
 ```
 
-<iframe src="test-dumps/bootstrap/pills.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/pills.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 #### Vertical pills
 
@@ -312,7 +312,7 @@ row.col(verticalPills.toHTMLElement()).widthAuto();
 row.col(verticalPills.getContentDiv());
 ```
 
-<iframe src="test-dumps/bootstrap/vertical-pills.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/vertical-pills.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 
 ### Navbar
@@ -334,7 +334,7 @@ dropdown.item(HTMLFactory.INSTANCE.link("#", "Item 3"), false, true);
 navbar.navbarText("Some text");
 ```
 
-<iframe src="test-dumps/bootstrap/navbar.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 150) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/navbar.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 150) + 'px'"></iframe>
 	
 ### Table
 
@@ -347,7 +347,7 @@ TableBody body = table.body();
 body.row("One", "Two", "Three");		
 ```
 
-<iframe src="test-dumps/bootstrap/table.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/table.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
 
 ### Tooltip
 
@@ -358,4 +358,4 @@ factory.tooltip(button, "I am a <I>tooltip</I>." , true, Placement.BOTTOM);
 Tag initScript = factory.initTooltipScript();
 ```
 
-<iframe src="test-dumps/bootstrap/tooltip.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+<iframe src="tests/dumps/bootstrap/tooltip.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>

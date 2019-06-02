@@ -22,14 +22,23 @@ jobs:
     
     steps:
       - checkout
-#      - run: 
-#            command: mvn -s .circleci/settings.xml clean javadoc:javadoc package site-deploy
-#            no_output_timeout: 120m
-#      - run: 
-#            command: mvn -s .circleci/settings.xml -f jar-pom.xml clean deploy
-#            no_output_timeout: 120m
+      # OSGi build
+      - run: 
+            command: mvn -s .circleci/settings.xml clean javadoc:javadoc package site-deploy
+            no_output_timeout: 120m
+
+      # Maven repository build
+      - run: 
+            command: mvn -s .circleci/settings.xml -f jar-pom.xml clean deploy
+            no_output_timeout: 120m
+
+      # Building tests
       - run: cd tests;mvn -s ../.circleci/settings.xml clean package
+
+      # Executing tests
       - run: cd tests/repository/target/products/org.nasdanika.html.tests.product/linux/gtk/x86_64;./eclipse > results.txt
+
+      # Deploying test results and dumps to the site
       - run: cd tests/site; mvn -s ../../.circleci/settings.xml site-deploy
             
 

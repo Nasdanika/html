@@ -39,7 +39,6 @@ Nasdanika HTML libraries can be used to build both static Web sites, e.g. docume
 * [Sources](html.zip).
 * [NasdanikaBank.app](NasdanikaBank.app) - a sample model with several actions for demo and testing purposes. It is also available as a resource in ``org.nasdanika.app.model`` bundle.
 * [Spring Boot demo](https://github.com/Nasdanika/html-spring-boot-demo) - A Spring Boot application which uses Nasdanika HTML libraries to build Web UI.    
-* [Test coverage](test-coverage/index.html).
  
 ## How to contribute
 
