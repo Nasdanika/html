@@ -44,7 +44,7 @@
 							<outputDirectory>${basedir}/target/site/dumps</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${basedir}/../repository/target/products/org.nasdanika.html.tests.product/linux/gtk/x86_64/target/site/test-dumps</directory>
+									<directory>${basedir}/../repository/target/products/org.nasdanika.html.tests.product/linux/gtk/x86_64/target/test-dumps</directory>
 									<filtering>false</filtering>
 								</resource>
 							</resources>
