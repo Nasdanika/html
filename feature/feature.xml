@@ -16,22 +16,14 @@
       Eclipse Public License.
    </license>
 
+   <requires>
+      <import feature="org.eclipse.emf.common" version="2.15.0.v20181220-0846"/>
+      <import feature="org.eclipse.emf.ecore" version="2.17.0.v20190116-0940"/>
+      <import feature="org.nasdanika.core.feature" version="1.0.0.qualifier"/>
+   </requires>
+
    <plugin
          id="org.nasdanika.html"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.nasdanika.html.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.json"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -94,42 +86,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.nasdanika.html.bootstrap.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.nasdanika.html.emf.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.nasdanika.html.fontawesome.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.nasdanika.html.jstree.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.nasdanika.html.knockout.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.nasdanika.html.app.source"
+         id="json"
          download-size="0"
          install-size="0"
          version="0.0.0"
