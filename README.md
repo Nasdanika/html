@@ -1,1 +1,1 @@
-See [Nasdanika HTML Site](https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/master).
+See [Nasdanika HTML Site](https://www.nasdanika.org/home/products/html/).
