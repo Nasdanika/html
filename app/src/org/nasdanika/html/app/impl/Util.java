@@ -82,7 +82,7 @@ public final class Util {
 	 * @return
 	 */
 	public static boolean equalOrInPath(Action activeAction, Action a) {
-		return equal(activeAction, a) || contains(activeAction.getPath(), a);
+		return activeAction != null && (equal(activeAction, a) || contains(activeAction.getPath(), a));
 	}
 	
 	public static boolean isBlank(String str) {

@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Nasdanika HTML generation adapters for Ecore classes - EPackage, EClass, ...
+Bundle-SymbolicName: org.nasdanika.html.ecore
+Bundle-Version: 2.0.0.qualifier
+Bundle-Vendor: Nasdanika
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.nasdanika.html.emf;visibility:=reexport,
+ org.eclipse.emf.ecore,
+ net.sourceforge.plantuml,
+ org.apache.commons.codec;bundle-version="1.11.0",
+ org.eclipse.emf.codegen;bundle-version="2.15.0";visibility:=reexport,
+ org.eclipse.emf.codegen.ecore;bundle-version="2.17.0";visibility:=reexport,
+ org.eclipse.core.runtime,
+ org.eclipse.emf.ecore.xmi;bundle-version="2.15.0"
+Export-Package: org.nasdanika.html.ecore
+Automatic-Module-Name: org.nasdanika.html.ecore

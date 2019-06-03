@@ -1,6 +1,7 @@
 package org.nasdanika.html.emf;
 
 import java.util.regex.Matcher;
+
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +11,14 @@ import org.jsoup.Jsoup;
 import org.nasdanika.emf.AnnotationSource;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.bootstrap.Color;
+
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.profiles.pegdown.Extensions;
+import com.vladsch.flexmark.profiles.pegdown.PegdownOptionsAdapter;
+import com.vladsch.flexmark.util.ast.Document;
+import com.vladsch.flexmark.util.options.DataHolder;
+
 
 /**
  * Base class for labels and actions representing {@link ENamedElement}s. 
@@ -76,6 +85,27 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 	
 		return null; // markdownToHtml(markdown); - TODO				
 	}
+	
+	protected String preProcessMarkdown(String markdown) {
+		return markdown;
+	}
+		
+	protected DataHolder getFlexmarkOptions() {
+	    return PegdownOptionsAdapter.flexmarkOptions(Extensions.ALL ^ Extensions.HARDWRAPS ^ Extensions.SUPPRESS_HTML_BLOCKS ^ Extensions.SUPPRESS_ALL_HTML);
+	}	
+	
+	protected Parser createMarkdownParser() {
+		return Parser.builder(getFlexmarkOptions()).build();
+	}
+		
+	protected HtmlRenderer createMarkdownHtmlRenderer() {
+		return HtmlRenderer.builder(getFlexmarkOptions()).build();
+	}	
+	
+	protected String markdownToHtml(String markdown) {
+		Document document = createMarkdownParser().parse(markdown);
+		return createMarkdownHtmlRenderer().render(document);
+	}	
 
 	@Override
 	public Object getId() {

@@ -16,6 +16,7 @@ Require-Bundle: org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport,
  org.nasdanika.emf;bundle-version="1.0.0";visibility:=reexport,
  org.jsoup;bundle-version="1.11.3",
  org.apache.commons.lang3;bundle-version="3.7.0",
- org.apache.commons.text;bundle-version="1.4.0"
+ org.apache.commons.text;bundle-version="1.4.0",
+ com.vladsch.flexmark;bundle-version="0.42.6";visibility:=reexport
 Automatic-Module-Name: org.nasdanika.html.emf
 

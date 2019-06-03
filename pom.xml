@@ -41,11 +41,6 @@
 			<layout>p2</layout>
 		</repository>
 		<repository>
-			<id>bank</id>
-			<url>https://www.nasdanika.org/home/products/bank/repository</url>
-			<layout>p2</layout>
-		</repository>
-		<repository>
 			<id>maven-osgi</id>
 			<url>https://www.nasdanika.org/home/products/maven-osgi/repository</url>
 			<layout>p2</layout>
@@ -236,7 +231,7 @@
 		<!--<module>echarts</module>-->		
 		
 		<module>emf</module>		
-		<!--<module>ecore</module>-->		
+		<module>ecore</module>
 
 		<module>feature</module>
 		<module>repository</module>
