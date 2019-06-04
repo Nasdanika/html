@@ -44,8 +44,8 @@ public class DefaultJsTreeFactory implements JsTreeFactory {
 
 	@Override
 	public <P extends HTMLPage> P cdn(P page) {
-		page.stylesheet("https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css");
-		page.script("https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js");
+		page.stylesheet("https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.8/themes/default/style.min.css");
+		page.script("https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.8/jstree.min.js");
 		return page;
 	}
 
