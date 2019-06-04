@@ -1,8 +1,12 @@
 package org.nasdanika.html.tests;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 
 import org.junit.Assert;
@@ -78,4 +82,28 @@ public class HTMLTestBase {
 		
 	}
 
+	/**
+	 * Writes binary file.
+	 * @param path
+	 * @param content
+	 */
+	protected void writeFile(String path, InputStream content) throws IOException {
+		File target = new File(("target/test-dumps/"+path).replace("/", File.separator));
+		File parent = target.getParentFile();
+		if (!parent.exists()) {
+			if (!parent.mkdirs()) {
+				Assert.fail("Cannot create "+parent.getAbsolutePath());
+			}
+		}
+		
+		System.out.println("Writing to "+target.getAbsolutePath());
+		try (BufferedInputStream cin = new BufferedInputStream(content); BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(target))) {
+			int b;
+			while ((b = cin.read()) != -1) {
+				out.write(b);
+			}
+		}		
+		
+	}
+	
 }
