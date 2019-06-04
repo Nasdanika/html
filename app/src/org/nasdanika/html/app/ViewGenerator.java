@@ -1,10 +1,16 @@
 package org.nasdanika.html.app;
 
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URL;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.NamedItemsContainer;
+import org.nasdanika.html.Producer;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
@@ -61,6 +67,17 @@ public interface ViewGenerator {
 	 * @return
 	 */
 	Consumer<?> getHeadContentConsumer();
+	
+	/**
+	 * Resource consumer is used to create resources used by the view, e.g. images or script files.
+	 * @return {@link BiConsumer} taking resource path as its first argument and resource content as its second.
+	 * Treatment of the resource content is up to the implementation. Typically supported content types shall include
+	 * {@link Reader}, {@link CharSequence}, byte[], {@link InputStream}, {@link URL}, {@link Producer}. For other types their toString() 
+	 * method is invoked to produce resource content.
+	 * The consumer returns the path of a new resource or null if the resource could not be created. The returned value may be different from the value passed to the consumer if
+	 * the consumer chooses to create a new resource under a different name, e.g. if a resource at the given path already exists.  
+	 */
+	BiFunction<String, Object, String> getResourceConsumer();
 	
 	/**
 	 * Outputs icon, text, help tooltip icon to the content consumer.

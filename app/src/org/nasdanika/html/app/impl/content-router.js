@@ -54,13 +54,10 @@ $(document).ready(
 				workspace = new Workspace();
 				Backbone.history.start();
 				
-				// Initial route
-				var initialRoute = {{initial-route}};
-				if (typeof initialRoute !== 'undefined' && !document.location.hash) {
-					workspace.navigate('router/'+initialRoute, {
-						trigger : true
-					});
-				}
+				// Example of initial routing with the initial route taken from 'inital-route' token.
+				//workspace.navigate('router/{{initial-route}}', {
+				//	trigger : true
+				//});
 				
 			}
 ); 

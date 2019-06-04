@@ -14,19 +14,31 @@ public class ApplicationException extends RuntimeException {
 	}
 
 	public ApplicationException(String message, Object source) {
-		super(message);
+		this(message);
 		this.source = source;
 	}
 
 	public ApplicationException(Throwable cause, Object source) {
-		super(cause);
+		this(cause);
 		this.source = source;
 	}
 
 	public ApplicationException(String message, Throwable cause, Object source) {
-		super(message, cause);
+		this(message, cause);
 		this.source = source;
 	}
+	
+	public ApplicationException(String message) {
+		super(message);
+	}
+
+	public ApplicationException(Throwable cause) {
+		super(cause);
+	}
+
+	public ApplicationException(String message, Throwable cause) {
+		super(message, cause);
+	}	
 	
 	@Override
 	public String toString() {

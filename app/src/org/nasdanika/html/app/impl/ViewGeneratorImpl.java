@@ -2,6 +2,7 @@ package org.nasdanika.html.app.impl;
 
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import org.nasdanika.html.Event;
@@ -47,10 +48,16 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	 * Content passed to this consumer is added to the body of the HTML page. E.g. modal dialogs definitions.
 	 */
 	protected Consumer<?> bodyContentConsumer;
+
+	private BiFunction<String, Object, String> resourceConsumer;
 	
-	public ViewGeneratorImpl(Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
+	public ViewGeneratorImpl(
+			Consumer<?> headContentConsumer, 
+			Consumer<?> bodyContentConsumer,
+			BiFunction<String, Object, String> resourceConsumer) {
 		this.headContentConsumer = headContentConsumer;
 		this.bodyContentConsumer = bodyContentConsumer;
+		this.resourceConsumer = resourceConsumer;
 	}
 	
 	@Override
@@ -61,6 +68,11 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	@Override
 	public Consumer<?> getHeadContentConsumer() {
 		return headContentConsumer;
+	}
+	
+	@Override
+	public BiFunction<String, Object, String> getResourceConsumer() {
+		return resourceConsumer;
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package org.nasdanika.html.app.impl;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import org.nasdanika.html.Fragment;
@@ -29,8 +30,11 @@ public abstract class ViewPartApplicationBuilder implements ApplicationBuilder {
 	 * @param bodyContentConsumer
 	 * @return
 	 */
-	protected ViewGenerator createViewGenerator(Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
-		return new ViewGeneratorImpl(headContentConsumer, bodyContentConsumer);
+	protected ViewGenerator createViewGenerator(
+			Consumer<?> headContentConsumer, 
+			Consumer<?> bodyContentConsumer,
+			BiFunction<String, Object, String> resourceConsumer) {
+		return new ViewGeneratorImpl(headContentConsumer, bodyContentConsumer, resourceConsumer);
 	}	
 	
 	/**
@@ -40,7 +44,7 @@ public abstract class ViewPartApplicationBuilder implements ApplicationBuilder {
 	public void build(Application application) {
 		// A little trick to solve the chicken and egg problem of needing a view generator to create fragments to pass to the view generator.
 		Fragment[] cf = { null, null };
-		ViewGenerator viewGenerator = createViewGenerator(content-> cf[0].accept(content), content-> cf[1].accept(content));
+		ViewGenerator viewGenerator = createViewGenerator(content-> cf[0].accept(content), content-> cf[1].accept(content), getResourceConsumer());
 				
 		Fragment headContentFragment = viewGenerator.getHTMLFactory().fragment();
 		cf[0] = headContentFragment;
@@ -72,4 +76,12 @@ public abstract class ViewPartApplicationBuilder implements ApplicationBuilder {
 		return getHeaderViewPart().generate(viewGenerator);
 	}
 
+	/**
+	 * Override to add support for resource consumption.
+	 * This implementation returns a consumer which does nothing and returns null.
+	 * @return
+	 */
+	protected BiFunction<String, Object, String> getResourceConsumer() {
+		return (path, content) -> null;
+	}
 }
