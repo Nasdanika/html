@@ -42,8 +42,6 @@ public class EObjectSingleValuePropertySource<T extends EObject> extends EObject
 	 * @return
 	 */
 	protected String getFeatureRole(EStructuralFeature feature) {
-		
-		
 		return feature.isMany() || feature instanceof EReference && ((EReference) feature).isContainment() ? null : FEATURE_ROLE_PROPERTY_DESCRIPTOR;
 	}
 
