@@ -10,7 +10,7 @@ import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.ActionImpl;
-import org.nasdanika.html.app.impl.BootstrapContainerApplication;
+import org.nasdanika.html.app.impl.BootstrapContainerRouterApplication;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.ecore.EcoreViewActionAdapterFactory;
 import org.nasdanika.html.ecore.GenModelResourceSet;
@@ -29,11 +29,14 @@ public class TestEcore extends HTMLTestBase {
 	@Test
 	public void testEcoreDocumentation() throws Exception {
 		GenModelResourceSet resourceSet = new GenModelResourceSet();
-		resourceSet.getAdapterFactories().add(new EcoreViewActionAdapterFactory());
+		
+		EcoreViewActionAdapterFactory adapterFactory = new EcoreViewActionAdapterFactory();
+		
+		resourceSet.getAdapterFactories().add(adapterFactory);
 		
 		resourceSet.loadGenModel("urn:org.nasdanika.bank");
 				
-		Application app = new BootstrapContainerApplication(Theme.Litera, true);
+		Application app = new BootstrapContainerRouterApplication(Theme.Litera, true);
 
 		JsTreeFactory.INSTANCE.cdn(app.getHTMLPage());
 		FontAwesomeFactory.INSTANCE.cdn(app.getHTMLPage());
