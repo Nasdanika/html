@@ -18,7 +18,7 @@ import org.nasdanika.html.bootstrap.Theme;
  */
 public class BootstrapContainerApplication implements Application {
 
-	private HTMLPage page;
+	protected HTMLPage page;
 	protected Container container;
 	protected Col header;
 	protected Col navigationBar;
