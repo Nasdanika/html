@@ -122,10 +122,10 @@ public interface HTMLFactory {
 	 * Expands tokens in the form of <code>{{token name}}</code> to their values.
 	 * If a token is not found expansion is not processed.
 	 * @param input String, Reader, InputStream or URL.
-	 * @param tokenSource
+	 * @param tokenSource Source of tokens.
 	 * @return
 	 */
-	String interpolate(Object input, TokenSource tokenSource);
+	String interpolate(Object input, java.util.function.Function<String, Object> tokenSource);
 	
 	/**
 	 * Expands tokens in the form of <code>{{token name}}</code> to their values.
@@ -165,11 +165,11 @@ public interface HTMLFactory {
 	 * @param value
 	 * @return
 	 */
-	MutableTokenSource mutableTokenSource(String token, Object value);
+	TokenSource mutableTokenSource(String token, Object value);
 	
 	/**
 	 * Creates a new mutable token source.
 	 * @return
 	 */
-	MutableTokenSource mutableTokenSource();	
+	TokenSource mutableTokenSource();	
 }

@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
-import org.nasdanika.html.MutableTokenSource;
+import org.nasdanika.html.TokenSource;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
@@ -69,7 +69,7 @@ public class DefaultJsTreeFactory implements JsTreeFactory {
 
 	@Override
 	public String buildAjaxJsTree(String nodesUrl, String contextMenuUrl) {
-		MutableTokenSource tokens = getHTMLFactory().mutableTokenSource("nodesUrl", nodesUrl).put("contextMenuUrl", contextMenuUrl);
+		TokenSource tokens = getHTMLFactory().mutableTokenSource("nodesUrl", nodesUrl).put("contextMenuUrl", contextMenuUrl);
 		return getHTMLFactory().interpolate(getClass().getResource(contextMenuUrl == null ? "ajaxTree.js" : "ajaxTreeWithContextMenu.js"), tokens);
 	}
 

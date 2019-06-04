@@ -22,7 +22,7 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Input;
 import org.nasdanika.html.InputType;
-import org.nasdanika.html.MutableTokenSource;
+import org.nasdanika.html.TokenSource;
 import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Producer;
 import org.nasdanika.html.Select;
@@ -30,7 +30,6 @@ import org.nasdanika.html.Table;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.TextArea;
-import org.nasdanika.html.TokenSource;
 
 /**
  * HTML factory which relies on Bootstrap styles and scripts.
@@ -221,7 +220,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	 * @param env
 	 * @return
 	 */
-	public static String interpolate(String input, TokenSource tokenSource) {
+	public static String interpolate(String input, java.util.function.Function<String, Object> tokenSource) {
 		if (tokenSource==null) {
 			return input;
 		}
@@ -230,7 +229,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 		int i = 0;
 		while (matcher.find()) {
 		    String token = matcher.group();
-			Object replacement = tokenSource.get(token.substring(2, token.length()-2));
+			Object replacement = tokenSource.apply(token.substring(2, token.length()-2));
 		    if (replacement != null) {
 			    output.append(input.substring(i, matcher.start())).append(replacement);			    
 			    i = matcher.end();
@@ -241,14 +240,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	}
 	
 	public static String interpolate(String input, final Map<String, Object> env) {
-		return interpolate(input, new TokenSource() {
-	
-			@Override
-			public Object get(String token) {
-				return env==null ? null : env.get(token);
-			}
-			
-		});
+		return interpolate(input, token -> env==null ? null : env.get(token));
 	}
 	
 	/**
@@ -259,7 +251,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	 * @throws IOException
 	 */
 	@Override
-	public String interpolate(Object input, TokenSource tokenSource) {
+	public String interpolate(Object input, java.util.function.Function<String, Object> tokenSource) {
 		return interpolate(HTMLElementImpl.stringify(input), tokenSource);
 	}
 	
@@ -367,18 +359,18 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	}
 	
 	@Override
-	public MutableTokenSource mutableTokenSource() {
-		return new MutableTokenSource() {
+	public TokenSource mutableTokenSource() {
+		return new TokenSource() {
 			
 			private Map<String, Object> tokens = new HashMap<>();
 			
 			@Override
-			public Object get(String token) {
+			public Object apply(String token) {
 				return tokens.get(token);
 			}
 			
 			@Override
-			public MutableTokenSource put(String token, Object value) {
+			public TokenSource put(String token, Object value) {
 				if (value != null) {
 					tokens.put(token, value);
 				}
@@ -393,7 +385,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	}
 	
 	@Override
-	public MutableTokenSource mutableTokenSource(String token, Object value) {
+	public TokenSource mutableTokenSource(String token, Object value) {
 		return mutableTokenSource().put(token, value);
 	}
 	
