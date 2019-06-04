@@ -83,7 +83,7 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 			return null;
 		}
 	
-		return null; // markdownToHtml(markdown); - TODO				
+		return markdownToHtml(markdown);				
 	}
 	
 	protected String preProcessMarkdown(String markdown) {
