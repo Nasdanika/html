@@ -206,7 +206,7 @@
 							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.ecore/apidocs</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${basedir}/../emf/target/site/apidocs</directory>
+									<directory>${basedir}/../ecore/target/site/apidocs</directory>
 									<filtering>false</filtering>
 								</resource>								
 							</resources>

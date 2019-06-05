@@ -25,6 +25,7 @@ Nasdanika HTML libraries can be used to build both static Web sites, e.g. docume
 * [Application Model](app-model.html) - EMF model implementing the action API and a model editor.
     * [Model documentation](app-model-doc).
 * [EMF](emf.html) - Uses [Ecore](https://www.eclipse.org/modeling/emf/) metadata and annotations to build actions and property sources backed by [EObject](http://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/index.html?org/eclipse/emf/ecore/EObject.html)'s.
+* [Ecore](ecore.html) - Classes to generate HTML documentation for Ecore models.
 * [Web applications](web-applications.html) - bundles for building web applications backed by a [CDO](https://wiki.eclipse.org/CDO) server.
 
 ## Resources
