@@ -1,16 +1,12 @@
 package org.nasdanika.html.tests;
 
-import java.io.File;
-
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
-import org.junit.Test;
 import org.junit.internal.TextListener;
 import org.junit.runner.Computer;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.RunListener;
-import org.nasdanika.html.ecore.EcoreDocumentationGenerator;
 
 public class TestRunner implements IApplication {
 
