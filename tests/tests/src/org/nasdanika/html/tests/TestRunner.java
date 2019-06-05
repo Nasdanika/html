@@ -34,18 +34,6 @@ public class TestRunner implements IApplication {
         return result.getFailureCount()==0 ? 0 : 1;
 	}
 	
-	/**
-	 * JUnit reflective invocation fails. Trying non-reflective way.
-	 * @throws Exception
-	 */
-	@Test
-	public void testEcoreDocumentation() {		
-		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Nasdanika Bank Model", null);
-		generator.loadGenModel("urn:org.nasdanika.bank");
-		generator.generate(new File("target/test-dumps/ecore"));		
-	}
-	
-
 	@Override
 	public void stop() {
 		// NOP

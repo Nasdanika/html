@@ -11,7 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	TestBootstrap.class,
 	TestFontAwesome.class,	
 	TestEmf.class,
-//	TestEcore.class Reflective call fails.
+	TestEcore.class
 })
 public class HtmlTests {
 	
