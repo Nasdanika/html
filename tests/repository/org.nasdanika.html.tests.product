@@ -3,7 +3,6 @@
 
 <product name="Nasdanika HTML Tests" uid="org.nasdanika.html.tests.product" application="org.nasdanika.html.tests.TestRunner" version="2.0.0.qualifier" useFeatures="true" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -16,18 +15,15 @@
 
    <windowImages/>
 
-
    <launcher>
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
 
-
    <vm>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
    </vm>
-
 
    <plugins>
    </plugins>
@@ -39,6 +35,8 @@
       <feature id="org.nasdanika.equinox.feature" installMode="root"/>
       <feature id="org.eclipse.emf.common" installMode="root"/>
       <feature id="org.nasdanika.core.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen.ecore" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen" installMode="root"/>
    </features>
 
    <configurations>
