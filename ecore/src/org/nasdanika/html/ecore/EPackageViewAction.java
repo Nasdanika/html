@@ -6,15 +6,31 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
+import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.impl.Util;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.Navs;
+import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.bootstrap.Table.TableBody;
+import org.nasdanika.html.bootstrap.Table.TableHeader;
+import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.ecore.PlantUmlTextGenerator.RelationshipDirection;
 import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.ViewAction;
@@ -25,8 +41,11 @@ import net.sourceforge.plantuml.SourceStringReader;
 
 public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 
-	public EPackageViewAction(EPackage value) {
+	private Action topLevelPackageParent;
+
+	public EPackageViewAction(EPackage value, Action topLevelPackageParent) {
 		super(value);
+		this.topLevelPackageParent = topLevelPackageParent;
 	}
 	
 	/**
@@ -34,22 +53,73 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 	 */
 	@Override
 	public Object getId() {
-		return Hex.encodeHexString(((EPackage) getValue()).getNsURI().getBytes(StandardCharsets.UTF_8));
+		return Hex.encodeHexString(target.getNsURI().getBytes(StandardCharsets.UTF_8));
 	}
+
+	/**
+	 * Descriptions shorter than this value are put on the top of the tabs, longer
+	 * ones end up in their own tab. 
+	 */
+	protected int descriptionTabLengthThreshold = 2500; 
 	
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
+		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
+		Container contentContainer = bootstrapFactory.fluidContainer();
+		contentContainer.text().alignment(Alignment.LEFT);
+		contentContainer.row().col("<B>Namespace URI:</B> "+target.getNsURI()).padding().bottom(3);
+		String description = getDescription();
+		if (!Util.isBlank(description) && description.length() < descriptionTabLengthThreshold) {
+			contentContainer.row().col(description);
+		}
+		
+		Navs tabs = bootstrapFactory.tabs();
+		contentContainer.row().col(tabs);
+		
+		if (!Util.isBlank(description) && description.length() >= descriptionTabLengthThreshold) {
+			tabs.item("Description", description);
+		}		
+
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
-			String imageMap = generateDiagram(false, null, 0, RelationshipDirection.both, true, true, baos);
+			String diagramCMap = generateDiagram(false, null, 0, RelationshipDirection.both, true, true, baos);
 			baos.close();
-			viewGenerator.getResourceConsumer().apply(getId()+".png", baos.toByteArray());
-			System.out.println(imageMap);
+			String imagePath = viewGenerator.getResourceConsumer().apply(getId()+".png", baos.toByteArray());
+			if (imagePath != null) {
+				HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
+				Tag diagramImage = htmlFactory.tag(TagName.img).attribute("src", imagePath).attribute("usemap", "#plantuml_map");
+				tabs.item("Diagram", htmlFactory.fragment(diagramImage, diagramCMap));				
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			tabs.item("Diagram", bootstrapFactory.alert(Color.DANGER, "Error generating package diagram: "+e));
 			e.printStackTrace();
 		}
-		return super.generate(viewGenerator);
+		
+		Table table = bootstrapFactory.table().bordered();
+		TableHeader header = table.header();
+		header.headerRow("Name", "Summary");
+		TableBody body = table.body();
+		getChildren().forEach(child -> body.row(viewGenerator.link(child), child.getTooltip()));
+		tabs.item("Contents", table);				
+		return contentContainer;
+	}
+	
+	@Override
+	public List<Action> getChildren() {
+		// Sub-packages before classifiers.
+		Comparator<? super Action> comparator = (a,b) -> {
+			int nameCmp = a.getText().compareTo(b.getText());
+			if (a instanceof EPackageViewAction) {
+				return b instanceof EPackageViewAction ? nameCmp : -1;
+			} 
+			
+			if (b instanceof EPackageViewAction) {
+				return a instanceof EPackageViewAction ? nameCmp : 1;
+			}
+			
+			return nameCmp;			
+		};
+		return super.getChildren().stream().sorted(comparator).collect(Collectors.toList());
 	}
 	
 	/**
@@ -102,10 +172,7 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 			sb.append("scale ").append(width).append(" width").append(System.lineSeparator());
 		}
 										
-		gen.appendWithRelationships(
-				((EPackage) getValue()).getEClassifiers(),
-				relationshipDirection,						
-				depth);		
+		gen.appendWithRelationships(target.getEClassifiers(), relationshipDirection, depth);		
 		
 		gen.appendEndUml();
 
@@ -125,12 +192,25 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 	 */
 	protected Collection<EClass> getSubTypes(EClass eClass) {
 		Collection<EClass> ret = new ArrayList<>();
-		for (EClassifier ec: ((EPackage) getValue()).getEClassifiers()) {
+		for (EClassifier ec: target.getEClassifiers()) {
 			if (eClass != ec && ec instanceof EClass && eClass.isSuperTypeOf((EClass) ec)) {
 				ret.add((EClass) ec);
 			}
 		}
 		return ret;		
 	}	
+	
+	@Override
+	public Action getParent() {
+		if (target.eContainer() instanceof EPackage) {
+			return super.getParent();
+		}
+		return topLevelPackageParent;
+	}
+	
+	@Override
+	public boolean isInRole(String role) {
+		return Action.Role.NAVIGATION.equals(role);
+	}
 
 }
