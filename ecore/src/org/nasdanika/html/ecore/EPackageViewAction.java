@@ -8,19 +8,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
-import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -32,8 +29,6 @@ import org.nasdanika.html.bootstrap.Table.TableBody;
 import org.nasdanika.html.bootstrap.Table.TableHeader;
 import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.ecore.PlantUmlTextGenerator.RelationshipDirection;
-import org.nasdanika.html.emf.EObjectAdaptable;
-import org.nasdanika.html.emf.ViewAction;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
@@ -41,6 +36,7 @@ import net.sourceforge.plantuml.SourceStringReader;
 
 public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 
+	static final String PACKAGE_SUMMARY_SUFFIX = "/package-summary";
 	private Action topLevelPackageParent;
 
 	public EPackageViewAction(EPackage value, Action topLevelPackageParent) {
@@ -53,15 +49,9 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 	 */
 	@Override
 	public Object getId() {
-		return Hex.encodeHexString(target.getNsURI().getBytes(StandardCharsets.UTF_8));
+		return Hex.encodeHexString(target.getNsURI().getBytes(StandardCharsets.UTF_8))+PACKAGE_SUMMARY_SUFFIX;
 	}
 
-	/**
-	 * Descriptions shorter than this value are put on the top of the tabs, longer
-	 * ones end up in their own tab. 
-	 */
-	protected int descriptionTabLengthThreshold = 2500; 
-	
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
 		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
@@ -127,7 +117,7 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 	 * @return Image map for the diagram
 	 * @throws IOException 
 	 */
-	public String generateDiagram(
+	protected String generateDiagram(
 			boolean leftToRightDirection, 
 			String width, 
 			int depth, 
@@ -137,9 +127,7 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 			OutputStream out) throws IOException {
 		
 		StringBuilder sb = new StringBuilder();
-		Function<EClassifier, String> locator = eClassifier -> ((NavigationActionActivator) EObjectAdaptable.adaptTo(eClassifier, ViewAction.class).getActivator()).getUrl();
-		Function<EModelElement, String> tooltipProvider = eModelElement -> EObjectAdaptable.adaptTo(eModelElement, ViewAction.class).getTooltip();
-		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, locator, tooltipProvider) {
+		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, eClassifierLinkResolver, eModelElementFirstDocSentenceProvider) {
 			
 			@Override
 			protected Collection<EClass> getSubTypes(EClass eClass) {

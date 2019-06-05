@@ -112,7 +112,7 @@ public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends Bo
 
 			@Override
 			public Text<B> italic(boolean italic) {
-				toHTMLElement().addClassConditional(italic, "text-italic");
+				toHTMLElement().addClassConditional(italic, "font-italic");
 				return this;
 			}
 			

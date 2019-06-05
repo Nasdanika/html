@@ -1,6 +1,8 @@
 package org.nasdanika.html.tests;
 
 import java.io.IOException;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.junit.Test;
@@ -15,10 +17,10 @@ import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.ActionImpl;
 import org.nasdanika.html.app.impl.ResourceConsumerStreamAdapter;
-import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 import org.nasdanika.html.app.viewparts.ContentPanelViewPart;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.ecore.EcoreDocumentationApplication;
+import org.nasdanika.html.ecore.EcoreDocumentationViewGenerator;
 import org.nasdanika.html.ecore.EcoreViewActionAdapterFactory;
 import org.nasdanika.html.ecore.GenModelResourceSet;
 import org.nasdanika.html.emf.EObjectAdaptable;
@@ -66,7 +68,18 @@ public class TestEcore extends HTMLTestBase {
 			principalAction.getChildren().add(EObjectAdaptable.adaptTo(ePackage, ViewAction.class));			
 		}
 		
-		ApplicationBuilder  applicationBuilder = new ActionApplicationBuilder(principalAction.getChildren().get(0));		
+		ApplicationBuilder  applicationBuilder = new ActionApplicationBuilder(principalAction.getChildren().get(0)) {
+			
+			@Override
+			protected ViewGenerator createViewGenerator(
+					Consumer<?> headContentConsumer,
+					Consumer<?> bodyContentConsumer, 
+					BiFunction<String, Object, String> resourceConsumer) {
+				
+				return new EcoreDocumentationViewGenerator(headContentConsumer, bodyContentConsumer, resourceConsumer);
+			}
+			
+		};		
 		
 		applicationBuilder.build(app);
 		
@@ -90,8 +103,8 @@ public class TestEcore extends HTMLTestBase {
 				throw new ApplicationException(e);
 			}
 		});
-		ViewGenerator viewGenerator = new ViewGeneratorImpl(contentBuilder::append, contentBuilder::append, resourceConsumer);
 		ViewPart contentPanelViewPart = new ContentPanelViewPart(action, false); // Use adapter?
+		ViewGenerator viewGenerator = new EcoreDocumentationViewGenerator(contentBuilder::append, contentBuilder::append, resourceConsumer);
 		contentBuilder.append(contentPanelViewPart.generate(viewGenerator));
 		writeFile("ecore/doc/"+action.getId()+".html", contentBuilder.toString());		
 		for (Action child: action.getChildren()) {

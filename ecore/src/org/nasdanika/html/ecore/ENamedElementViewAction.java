@@ -5,10 +5,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -19,13 +22,25 @@ import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.emf.ENamedElementLabel;
+import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.EObjectViewAction;
+import org.nasdanika.html.emf.ViewAction;
 
 public class ENamedElementViewAction<T extends ENamedElement> extends EObjectViewAction<T> {
 	
 	public static final String iconsBase = "https://www.nasdanika.org/resources/images/ecore/";
 	private Label label;
-
+	
+	/**
+	 * Descriptions shorter than this value are put on the top of the tabs, longer
+	 * ones end up in their own tab. 
+	 */
+	protected int descriptionTabLengthThreshold = 2500; 
+	
+	
+	protected Function<EClassifier, String> eClassifierLinkResolver = eClassifier -> ((NavigationActionActivator) EObjectAdaptable.adaptTo(eClassifier, ViewAction.class).getActivator()).getUrl();
+	protected Function<EModelElement, String> eModelElementFirstDocSentenceProvider = eModelElement -> EObjectAdaptable.adaptTo(eModelElement, ViewAction.class).getTooltip();	
+		
 	public ENamedElementViewAction(T value) {
 		super(value);
 		label = new ENamedElementLabel<>(value);
@@ -48,7 +63,7 @@ public class ENamedElementViewAction<T extends ENamedElement> extends EObjectVie
 	
 	@Override
 	public String getIcon() {
-		return iconsBase+((ENamedElement) getValue()).eClass().getName()+".gif";
+		return iconsBase+target.eClass().getName()+".gif";
 	}
 	
 	/**
@@ -56,7 +71,7 @@ public class ENamedElementViewAction<T extends ENamedElement> extends EObjectVie
 	 */
 	@Override
 	public Object getId() {
-		return getParent().getId()+"/"+((ENamedElement) getValue()).getName();
+		return getParent().getId()+"/"+target.getName();
 	}
 	
 	@Override

@@ -10,7 +10,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	TestApp.class,
 	TestBootstrap.class,
 	TestFontAwesome.class,	
-//	TestEmf.class,
+	TestEmf.class,
+	TestEcore.class
 })
 public class HtmlTests {
 	
