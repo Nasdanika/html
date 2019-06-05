@@ -22,6 +22,10 @@ jobs:
     
     steps:
       - checkout
+
+      # Install Graphviz for diagram generation
+      - run: sudo apt-get install graphviz
+
       # OSGi build
       - run: 
             command: mvn -s .circleci/settings.xml clean javadoc:javadoc package site-deploy
