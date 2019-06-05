@@ -1,0 +1,3 @@
+# Core
+
+[Java API](apidocs/org.nasdanika.html.ecore/apidocs/index.html) for generating documentation...

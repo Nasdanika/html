@@ -196,6 +196,22 @@
 							</resources>
 						</configuration>
 					</execution>
+					<execution>
+						<id>copy-ecore-javadoc</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.ecore/apidocs</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../emf/target/site/apidocs</directory>
+									<filtering>false</filtering>
+								</resource>								
+							</resources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>

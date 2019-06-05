@@ -23,6 +23,7 @@
       <item name="Knockout" href="knockout.html" />
       <item name="Application" href="app.html" />
       <item name="EMF" href="emf.html" />
+      <item name="Ecore" href="ecore.html" />
       <item name="Web applications" href="web-applications.html" />      
    </menu>
 
@@ -34,6 +35,7 @@
       <item name="JsTree" href="apidocs/org.nasdanika.html.jstree/apidocs/index.html" />
       <item name="Application" href="apidocs/org.nasdanika.html.app/apidocs/index.html"/>
       <item name="EMF" href="apidocs/org.nasdanika.html.emf/apidocs/index.html" />      
+      <item name="Ecore" href="apidocs/org.nasdanika.html.ecore/apidocs/index.html" />      
       <item name="Tests" href="apidocs/org.nasdanika.html.tests/apidocs/index.html" />      
    </menu>
 
