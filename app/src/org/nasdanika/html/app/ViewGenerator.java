@@ -75,7 +75,8 @@ public interface ViewGenerator {
 	 * {@link Reader}, {@link CharSequence}, byte[], {@link InputStream}, {@link URL}, {@link Producer}. For other types their toString() 
 	 * method is invoked to produce resource content.
 	 * The consumer returns the path of a new resource or null if the resource could not be created. The returned value may be different from the value passed to the consumer if
-	 * the consumer chooses to create a new resource under a different name, e.g. if a resource at the given path already exists.  
+	 * the consumer chooses to create a new resource under a different name, e.g. if a resource at the given path already exists or resources are created under a specific resource path. 
+	 * For example, if the implementation stores all resources under "resources/" then a request to create resource with path "myimage.png" would return "resources/myimage.png".  
 	 */
 	BiFunction<String, Object, String> getResourceConsumer();
 	

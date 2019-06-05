@@ -19,7 +19,7 @@ import org.nasdanika.html.bootstrap.Navs;
 /**
  * Generates section.
  * 
- * TODO - Use Ajax if section action has {@link NavigationActionActivator}. 
+ * TODO - Use Ajax (jQuery) if a section action has {@link NavigationActionActivator}. 
  * 
  * @author Pavel Vlasov
  *

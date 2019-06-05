@@ -163,7 +163,6 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public BootstrapElement<?,?> button(Action action) {
 		Button<Tag> button = getBootstrapFactory().button(link(action), action.getColor() == null ? Color.PRIMARY : action.getColor(), action.getColor() == null ? true : action.isOutline());
@@ -261,6 +260,14 @@ public class ViewGeneratorImpl implements ViewGenerator {
 
 	@Override
 	public void label(Label label, Consumer<Object> contentConsumer) {
+		String tooltip = label.getTooltip();
+		if (!Util.isBlank(tooltip)) {
+			Tag span = getHTMLFactory().span();
+			span.attribute("title", tooltip);
+			contentConsumer.accept(span);
+			contentConsumer = span;
+		}
+		
 		String icon = label.getIcon();
 		if (!Util.isBlank(icon)) {
 			Tag iconTag;
