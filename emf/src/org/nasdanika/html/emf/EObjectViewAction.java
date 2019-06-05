@@ -60,7 +60,7 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	}
 
 	@Override
-	public List<? extends Action> getChildren() {
+	public List<Action> getChildren() {
 		List<EStructuralFeature> childFeatures = getChildFeatures();
 		if (childFeatures.isEmpty()) {
 			return Collections.emptyList();

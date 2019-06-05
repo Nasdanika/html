@@ -3,8 +3,6 @@ package org.nasdanika.html.tests.adapters.customer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.nasdanika.bank.Customer;
 import org.nasdanika.bank.CustomerAccount;
 import org.nasdanika.html.app.Action;
@@ -40,7 +38,7 @@ public class CustomerViewAction extends EObjectViewAction<Customer> {
 	}
 	
 	@Override
-	public List<? extends Action> getChildren() {
+	public List<Action> getChildren() {
 		List<Action> ret = new ArrayList<>();
 		target.getAccounts().stream()
 			.map(account -> EObjectAdaptable.adaptTo(account, ViewAction.class))

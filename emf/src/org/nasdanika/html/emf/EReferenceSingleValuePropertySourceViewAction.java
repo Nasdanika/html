@@ -62,7 +62,7 @@ public class EReferenceSingleValuePropertySourceViewAction<T extends EObject> ex
 	}
 
 	@Override
-	public List<? extends Action> getChildren() {
+	public List<Action> getChildren() {
 		return Collections.emptyList();
 	}
 

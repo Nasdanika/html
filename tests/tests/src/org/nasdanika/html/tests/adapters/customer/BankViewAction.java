@@ -31,7 +31,7 @@ public class BankViewAction extends EObjectViewAction<Bank> {
 	}
 	
 	@Override
-	public List<? extends Action> getChildren() {
+	public List<Action> getChildren() {
 		List<Action> ret = new ArrayList<>();
 		Customer customer = customerSupplier.get();
 		if (customer != null) {

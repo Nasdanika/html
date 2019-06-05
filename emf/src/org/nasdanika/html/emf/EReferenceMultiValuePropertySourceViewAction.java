@@ -48,7 +48,7 @@ public class EReferenceMultiValuePropertySourceViewAction<T extends EObject> ext
 	}
 
 	@Override
-	public List<? extends Action> getChildren() {
+	public List<Action> getChildren() {
 		return Collections.emptyList();
 	}
 

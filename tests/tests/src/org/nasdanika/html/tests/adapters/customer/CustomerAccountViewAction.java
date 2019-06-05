@@ -60,7 +60,7 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 	}
 	
 	@Override
-	public List<? extends Action> getChildren() {
+	public List<Action> getChildren() {
 		// No navigation children, add context and section children as needed.
 		return Collections.emptyList();
 	}
