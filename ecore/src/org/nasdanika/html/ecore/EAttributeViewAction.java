@@ -7,5 +7,6 @@ public class EAttributeViewAction extends EStructuralFeatureViewAction<EAttribut
 	public EAttributeViewAction(EAttribute value) {
 		super(value);
 	}
+		
 
 }

@@ -7,5 +7,9 @@ public class EOperationViewAction extends ETypedElementViewAction<EOperation> {
 	public EOperationViewAction(EOperation value) {
 		super(value);
 	}
+	
+	// TODO - parameters.
+	
+	// TODO - id - signature.
 
 }

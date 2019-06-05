@@ -36,7 +36,7 @@ jobs:
       - run: cd tests;mvn -s ../.circleci/settings.xml clean package
 
       # Executing tests
-      - run: cd tests/repository/target/products/org.nasdanika.html.tests.product/linux/gtk/x86_64;./eclipse > results.txt
+      - run: cd tests/repository/target/products/org.nasdanika.html.tests.product/linux/gtk/x86_64;./eclipse
 
       # Deploying test results and dumps to the site
       - run: cd tests/site; mvn -s ../../.circleci/settings.xml site-deploy

@@ -16,7 +16,6 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -95,19 +94,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 				ETypedElement typedElement = child.adaptTo(ETypedElement.class);
 				EClassifier type = typedElement.getEType();
 				ViewAction typeViewAction = EObjectAdaptable.adaptTo(type, ViewAction.class);
-				int lowerBound = typedElement.getLowerBound();
-				int upperBound = typedElement.getUpperBound();
-				String cardinality;
-				if (lowerBound == upperBound) {
-					cardinality = String.valueOf(lowerBound);
-				} else {
-					cardinality = lowerBound + ".." + (upperBound == -1 ? "*" : String.valueOf(upperBound));
-				}
-				if (typedElement instanceof EReference && ((EReference) typedElement).isContainment()) {
-					cardinality = "<B>"+cardinality+"</B>";
-				}
-				
-				body.row(viewGenerator.link(child), typeViewAction == null ?  type.getName() : viewGenerator.link(typeViewAction), cardinality, child.getTooltip());			
+				body.row(viewGenerator.link(child), typeViewAction == null ?  type.getName() : viewGenerator.link(typeViewAction), cardinality(typedElement), child.getTooltip());			
 			});
 			tabs.item("Contents", table);
 		}
@@ -123,8 +110,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 					superTypesTableBody.row(viewGenerator.link(viewAction), viewAction.getTooltip());
 				}
 			});
-			tabs.item("Supertypes", superTypesTable);				
-			
+			tabs.item("Supertypes", superTypesTable);							
 		}
 		
 		List<EClass> sbt = getSubTypes(target).stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());

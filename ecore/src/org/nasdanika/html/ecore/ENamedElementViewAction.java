@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.html.app.Action;
@@ -120,5 +121,19 @@ public class ENamedElementViewAction<T extends ENamedElement> extends EObjectVie
 		return ret;
 	}
 	
+	protected static String cardinality(ETypedElement typedElement) {
+		int lowerBound = typedElement.getLowerBound();
+		int upperBound = typedElement.getUpperBound();
+		String cardinality;
+		if (lowerBound == upperBound) {
+			cardinality = String.valueOf(lowerBound);
+		} else {
+			cardinality = lowerBound + ".." + (upperBound == -1 ? "*" : String.valueOf(upperBound));
+		}
+		if (typedElement instanceof EReference && ((EReference) typedElement).isContainment()) {
+			cardinality = "<B>"+cardinality+"</B>";
+		}
+		return cardinality;
+	}
 
 }
