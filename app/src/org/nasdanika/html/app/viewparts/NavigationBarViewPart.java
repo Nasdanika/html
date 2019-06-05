@@ -45,11 +45,13 @@ public class NavigationBarViewPart implements ViewPart {
 		
 		Tag brand = principalAction.getActivator() == null ? viewGenerator.label(principalAction) : viewGenerator.link(principalAction);
 		Navbar navBar = createNavbar(viewGenerator, brand);
+		boolean hasContent = !brand.isEmpty();
 		
 		for (Entry<Label, ?> categoryGroup: principalAction.getContextChildrenGroupedByCategory()) {
 			Label category = categoryGroup.getKey();
 			if (category == null || (Util.isBlank(category.getText()) && Util.isBlank(category.getIcon()))) {
 				for (Action ca: (List<Action>) categoryGroup.getValue()) {
+					hasContent = true;
 					// Children are ignored if activator is not null.
 					Fragment fragment = viewGenerator.getHTMLFactory().fragment();
 					viewGenerator.label(ca, fragment::content);
@@ -92,7 +94,7 @@ public class NavigationBarViewPart implements ViewPart {
 			}
 		}
 		
-		return navBar;
+		return hasContent ? navBar : null;
 	}
 	
 	/**
