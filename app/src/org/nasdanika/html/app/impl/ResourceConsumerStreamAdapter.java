@@ -52,6 +52,12 @@ public class ResourceConsumerStreamAdapter implements BiFunction<String, Object,
 			} catch (IOException e) {
 				throw new ApplicationException(e);
 			}
+			try {
+				baos.close();				
+				return apply(path, baos.toByteArray());
+			} catch (IOException e) {
+				throw new ApplicationException(e);
+			}
 		}
 					
 		if (content instanceof Producer) {

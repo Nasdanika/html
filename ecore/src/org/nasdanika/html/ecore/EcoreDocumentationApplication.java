@@ -51,7 +51,7 @@ public class EcoreDocumentationApplication extends BootstrapContainerRouterAppli
 	 * @return
 	 */
 	protected Object getContentRouterCode(BootstrapFactory factory) {
-		return factory.getHTMLFactory().interpolate(EcoreDocumentationApplication.class.getResource("content-router.js"), "initial-route", "summary");
+		return factory.getHTMLFactory().interpolate(EcoreDocumentationApplication.class.getResource("content-router.js"), "initial-route", "doc-summary");
 	}
 
 }
