@@ -26,7 +26,7 @@ public class ContentPanelViewPart implements ViewPart {
 	 * 
 	 * @param activeAction
 	 * @param input
-	 * @param showConextActions Set false for principal actions because their context actions are alredy shown in the navbar.
+	 * @param showConextActions Set false for principal actions because their context actions are already shown in the navbar.
 	 */
 	public ContentPanelViewPart(Action activeAction, boolean showConextActions) {
 		this.activeAction = activeAction;
@@ -53,19 +53,20 @@ public class ContentPanelViewPart implements ViewPart {
 	public Object generate(ViewGenerator viewGenerator) {
 		Fragment ret = viewGenerator.getHTMLFactory().fragment();
 		Action lastNonSection = lastNonSection();
-		if (lastNonSection.getPath().size() > getMinBreadcrumbsDepth() - 2) {
+		List<Action> lastNonSectionPath = lastNonSection.getPath();
+		if (lastNonSectionPath.size() > getMinBreadcrumbsDepth() - getBreadcrumbsOffset()) {
 			// Breadcrumbs
 			Breadcrumbs breadcrumbs = viewGenerator.getBootstrapFactory().breadcrums();
 			breadcrumbs.margin().top(1);
 			ret.content(breadcrumbs);
-			ListIterator<Action> tit = lastNonSection.getPath().listIterator(2);
+			ListIterator<Action> tit = lastNonSectionPath.listIterator(Math.min(lastNonSectionPath.size(), getBreadcrumbsOffset()));
 			while (tit.hasNext()) {
 				breadcrumbs.item(false, viewGenerator.link(tit.next()));
 			}		
 			breadcrumbs.item(true, viewGenerator.label(lastNonSection));
 		}
 		
-		if (lastNonSection.getPath().size() > getMinTitleDepth() - 2) {
+		if (lastNonSectionPath.size() > getMinTitleDepth() - getBreadcrumbsOffset()) {
 			// Page title, doesn't make much sense to show it for the root or principal actions - it would duplicate the header or the nav bar. 
 			ret.content(viewGenerator.label(lastNonSection, viewGenerator.getHTMLFactory().tag(TagName.h2)));			
 		}
@@ -76,12 +77,21 @@ public class ContentPanelViewPart implements ViewPart {
 	
 	/**
 	 * Minimum action depth in the tree at which breadcrumbs are displayed. 
-	 * This implementation returns 4, which means that the root, principlal, and first level navigation
+	 * This implementation returns 4, which means that the root, principal, and first level navigation
 	 * actions are displayed without breadcrumbs. 
 	 * @return
 	 */
 	protected int getMinBreadcrumbsDepth() {
 		return 4;
+	}
+	
+	/**
+	 * Offset in breadcrumbs. This method returns 2 meaning that the root and principal action are not displayed in the breadcrumbs.
+	 * Override for situations when navigation actions are not children of the principal action.
+	 * @return
+	 */
+	protected int getBreadcrumbsOffset() {
+		return 2;
 	}
 	
 	/**
