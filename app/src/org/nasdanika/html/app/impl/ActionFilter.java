@@ -29,7 +29,7 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	}
 
 	@Override
-	public List<? extends Action> getChildren() {
+	public List<Action> getChildren() {
 		return target.getChildren();
 	}
 

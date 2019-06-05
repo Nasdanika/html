@@ -81,7 +81,7 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 * Implementations may create child actions list on access to optimize processing in cases of, say on-demand ajax loading.
 	 * @return
 	 */
-	List<? extends Action> getChildren();
+	List<Action> getChildren();
 	
 	/**
 	 * Action role defines where its UI element is displayed. There are 3 built-in roles ({@link Role}):

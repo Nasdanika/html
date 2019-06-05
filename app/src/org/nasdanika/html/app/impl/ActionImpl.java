@@ -140,7 +140,7 @@ public class ActionImpl extends LabelImpl implements Action {
 	}
 
 	@Override
-	public List<? extends Action> getChildren() {
+	public List<Action> getChildren() {
 		return children;
 	}
 
