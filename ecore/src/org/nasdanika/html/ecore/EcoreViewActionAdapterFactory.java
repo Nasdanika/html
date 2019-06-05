@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.emf.ComposedAdapterFactory;
 import org.nasdanika.emf.FunctionAdapterFactory;
+import org.nasdanika.html.app.Action;
 import org.nasdanika.html.emf.ViewAction;
 
 /**
@@ -22,14 +23,14 @@ import org.nasdanika.html.emf.ViewAction;
  */
 public class EcoreViewActionAdapterFactory extends ComposedAdapterFactory {
 	
-	public EcoreViewActionAdapterFactory() {
+	public EcoreViewActionAdapterFactory(Action topLevelPackageParentAction) {
 		// Registering adapter factories.
 		registerAdapterFactory(
 			new FunctionAdapterFactory<ViewAction, EPackage>(
 				EcorePackage.Literals.EPACKAGE, 
 				ViewAction.class, 
 				this.getClass().getClassLoader(), 
-				EPackageViewAction::new));		
+				ePackage -> new EPackageViewAction(ePackage, topLevelPackageParentAction)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<ViewAction, EClass>(
