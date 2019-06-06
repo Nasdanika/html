@@ -37,5 +37,10 @@
 			<artifactId>org.nasdanika.html.fontawesome</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>org.nasdanika.html.echarts</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>
