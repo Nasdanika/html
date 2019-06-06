@@ -15,8 +15,7 @@ public class TestEcore extends HTMLTestBase {
 	public void testEcoreDocumentation() {		
 		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Nasdanika Bank Model", null);
 		generator.loadGenModel("urn:org.nasdanika.bank");
-		generator.generate(new File("target/test-dumps/ecore"));
-		
+		generator.generate(new File("target/test-dumps/ecore"));		
 	}
 	
 }
