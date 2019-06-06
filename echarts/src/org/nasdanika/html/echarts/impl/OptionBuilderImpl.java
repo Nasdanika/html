@@ -9,35 +9,14 @@ import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.echarts.EChartsFactory;
 import org.nasdanika.html.echarts.OptionBuilder;
 
-public class OptionBuilderImpl implements OptionBuilder {
+public class OptionBuilderImpl extends JSONObjectBuilder implements OptionBuilder {
 
 	private EChartsFactory factory;
-
-	private JSONObject option = new JSONObject();
 
 	public OptionBuilderImpl(EChartsFactory factory) {
 		this.factory = factory;
 	}
 	
-	private JSONObject getJSONObject(String key) {
-		if (!option.has(key)) {
-			option.put(key, new JSONObject());
-		}
-		return option.getJSONObject(key);
-	}
-
-	private JSONArray getJSONArray(String key) {
-		if (!option.has(key)) {
-			option.put(key, new JSONArray());
-		}
-		return option.getJSONArray(key);
-	}
-	
-	@Override
-	public JSONObject get() {
-		return option;
-	}
-
 	@Override
 	public JSONObject title() {
 		return getJSONObject("title");
