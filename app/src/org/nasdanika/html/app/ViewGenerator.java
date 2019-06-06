@@ -18,6 +18,7 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.ListGroup;
 import org.nasdanika.html.bootstrap.Navs;
+import org.nasdanika.html.echarts.EChartsFactory;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
 import org.nasdanika.html.jstree.JsTreeFactory;
@@ -42,6 +43,8 @@ public interface ViewGenerator {
 	KnockoutFactory getKnockoutFactory();
 	
 	JsTreeFactory getJsTreeFactory();
+	
+	EChartsFactory getEChartsFactory();
 	
 	// --- View part unwrapping ---
 	

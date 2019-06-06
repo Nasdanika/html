@@ -8,5 +8,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.nasdanika.html.bootstrap,
  org.nasdanika.html.bootstrap.impl
 Bundle-ClassPath: .
-Require-Bundle: org.nasdanika.html;bundle-version="2.0.0"
+Require-Bundle: org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport
 Automatic-Module-Name: org.nasdanika.html.bootstrap

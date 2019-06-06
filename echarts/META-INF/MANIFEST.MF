@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: HTML JS Tree Bundle
-Bundle-SymbolicName: org.nasdanika.html.jstree
+Bundle-Name: Echarts Java Bindings
+Bundle-SymbolicName: org.nasdanika.html.echarts
 Bundle-Version: 2.0.0.qualifier
 Bundle-Vendor: Nasdanika LLC
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: org.nasdanika.html.jstree,
- org.nasdanika.html.jstree.impl
+Export-Package: org.nasdanika.html.echarts,
+ org.nasdanika.html.echarts.impl
 Bundle-ClassPath: .
+Automatic-Module-Name: org.nasdanika.html.echarts
 Require-Bundle: org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport
-Automatic-Module-Name: org.nasdanika.html.jstree

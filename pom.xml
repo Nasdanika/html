@@ -228,7 +228,7 @@
 		<module>knockout</module>
 		<module>fontawesome</module>
 		<module>app</module>
-		<!--<module>echarts</module>-->		
+		<module>echarts</module>
 		
 		<module>emf</module>		
 		<module>ecore</module>

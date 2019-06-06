@@ -11,7 +11,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	TestBootstrap.class,
 	TestFontAwesome.class,	
 	TestEmf.class,
-	TestEcore.class
+	TestEcore.class,
+	TestECharts.class
 })
 public class HtmlTests {
 	

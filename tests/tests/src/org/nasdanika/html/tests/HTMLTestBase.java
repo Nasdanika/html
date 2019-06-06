@@ -16,6 +16,7 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.InputGroup;
 import org.nasdanika.html.bootstrap.Theme;
+import org.nasdanika.html.echarts.EChartsFactory;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.knockout.KnockoutFactory;
@@ -34,6 +35,7 @@ public class HTMLTestBase {
 		FontAwesomeFactory.INSTANCE.cdn(bootstrapPage);
 		JsTreeFactory.INSTANCE.cdn(bootstrapPage);
 		KnockoutFactory.INSTANCE.cdn(bootstrapPage);
+		EChartsFactory.INSTANCE.cdn(bootstrapPage);
 		// More declarations as needed.		
 		bootstrapPage.title(title);
 		bootstrapPage.body(content);

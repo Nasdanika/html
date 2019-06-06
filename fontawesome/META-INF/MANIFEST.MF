@@ -9,4 +9,4 @@ Export-Package: org.nasdanika.html.fontawesome,
  org.nasdanika.html.fontawesome.impl
 Bundle-ClassPath: .
 Automatic-Module-Name: org.nasdanika.html.fontawesome
-Require-Bundle: org.nasdanika.html;bundle-version="2.0.0"
+Require-Bundle: org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport
