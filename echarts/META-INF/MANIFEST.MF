@@ -9,4 +9,5 @@ Export-Package: org.nasdanika.html.echarts,
  org.nasdanika.html.echarts.impl
 Bundle-ClassPath: .
 Automatic-Module-Name: org.nasdanika.html.echarts
-Require-Bundle: org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport
+Require-Bundle: org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport,
+ json;bundle-version="20180813.0.0";visibility:=reexport
