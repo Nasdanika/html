@@ -13,42 +13,6 @@ BootstrapElement delegates its ``toString()`` and ``produce()`` to the underlyin
 ``org.nasdanika.html.bootstrap`` bundle has ``resources`` folder containing Bootstrap CSS and JavaScript, [Bootswatch](https://bootswatch.com/) themes, and [jQuery](https://jquery.com/). 
 These resources can be used to generate self-sufficient Web UI without dependency on CDN's. 
 
-## Use in Maven projects
-
-Add repository and dependency as shown below:
-
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	...	
-	<repositories>
-		...
-		<repository>
-			<id>nasdanika-html-snapshots</id>
-			<name>nasdanika-html-snapshots</name>
-			<url>https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/master/maven-repository</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<layout>default</layout>
-		</repository>
-		...
-	</repositories>	
-	...		
-	<dependencies>
-		...		
-		<dependency>
-			<groupId>org.nasdanika.html</groupId>
-			<artifactId>org.nasdanika.html.bootstrap</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
-		</dependency>
-		...
-	</dependencies>
-	...
-</project>
-```
-
 ## Examples
 
 The below sections provide examples of how to use Bootstrap API's.
@@ -359,3 +323,39 @@ Tag initScript = factory.initTooltipScript();
 ```
 
 <iframe src="tests/dumps/bootstrap/tooltip.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
+## Use in Maven projects
+
+Add repository and dependency as shown below:
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	...	
+	<repositories>
+		...
+		<repository>
+			<id>nasdanika-html-snapshots</id>
+			<name>nasdanika-html-snapshots</name>
+			<url>https://www.nasdanika.org/home/products/html/maven-repository</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<layout>default</layout>
+		</repository>
+		...
+	</repositories>	
+	...		
+	<dependencies>
+		...		
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>org.nasdanika.html.bootstrap</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		...
+	</dependencies>
+	...
+</project>
+```

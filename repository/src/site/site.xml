@@ -20,6 +20,7 @@
       <item name="Bootstrap" href="bootstrap.html" />
       <item name="Fontawesome" href="fontawesome.html" />
       <item name="JsTree" href="jstree.html" />
+      <item name="ECharts" href="echarts.html" />
       <item name="Knockout" href="knockout.html" />
       <item name="Application" href="app.html" />
       <item name="EMF" href="emf.html" />
@@ -30,9 +31,10 @@
    <menu name="Java API Documentation">
       <item name="HTML" href="apidocs/org.nasdanika.html/apidocs/index.html" />
       <item name="Bootstrap" href="apidocs/org.nasdanika.html.bootstrap/apidocs/index.html" />
-      <item name="Knockout" href="apidocs/org.nasdanika.html.knockout/apidocs/index.html" />
       <item name="Fontawesome" href="apidocs/org.nasdanika.html.fontawesome/apidocs/index.html" />
       <item name="JsTree" href="apidocs/org.nasdanika.html.jstree/apidocs/index.html" />
+      <item name="ECharts" href="apidocs/org.nasdanika.html.echarts/apidocs/index.html" />      
+      <item name="Knockout" href="apidocs/org.nasdanika.html.knockout/apidocs/index.html" />
       <item name="Application" href="apidocs/org.nasdanika.html.app/apidocs/index.html"/>
       <item name="EMF" href="apidocs/org.nasdanika.html.emf/apidocs/index.html" />      
       <item name="Ecore" href="apidocs/org.nasdanika.html.ecore/apidocs/index.html" />      

@@ -3,42 +3,6 @@
 ``org.nasdanika.html.app`` bundle/library provides a level of abstraction on top of [HTML](html.html), [Bootstrap](bootstrap.html), [JsTree](jstree.html), [Font Awesome](fontawesome.html), and [KnockoutJS](knockout.html) bundles.
 This page outlines core concepts and shows usage examples. See [Java API](apidocs/org.nasdanika.html.app/apidocs/index.html) for additional details.
 
-## Use in Maven projects
-
-Add repository and dependency as shown below:
-
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	...	
-	<repositories>
-		...
-		<repository>
-			<id>nasdanika-html-snapshots</id>
-			<name>nasdanika-html-snapshots</name>
-			<url>https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/master/maven-repository</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<layout>default</layout>
-		</repository>
-		...
-	</repositories>	
-	...		
-	<dependencies>
-		...		
-		<dependency>
-			<groupId>org.nasdanika.html</groupId>
-			<artifactId>org.nasdanika.html.app</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
-		</dependency>
-		...
-	</dependencies>
-	...
-</project>
-```
-
 ## Application
 
 [Application](apidocs/org.nasdanika.html.app/apidocs/index.html?org/nasdanika/html/app/Application.html) interface is an abstraction of a web application consisting of the following parts:
@@ -326,3 +290,39 @@ Property source has ``getPropertyDescriptors()`` method returning a list of [Pro
 Property descriptor extends Label, Property, and Categorized. 
 
 Wile properties are concerned with value retrieval and update, property descriptors are concerned with displaying and editing property values.   
+
+## Use in Maven projects
+
+Add repository and dependency as shown below:
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	...	
+	<repositories>
+		...
+		<repository>
+			<id>nasdanika-html-snapshots</id>
+			<name>nasdanika-html-snapshots</name>
+			<url>https://www.nasdanika.org/home/products/html/maven-repository</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<layout>default</layout>
+		</repository>
+		...
+	</repositories>	
+	...		
+	<dependencies>
+		...		
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>org.nasdanika.html.app</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		...
+	</dependencies>
+	...
+</project>
+```

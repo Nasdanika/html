@@ -19,14 +19,12 @@ Nasdanika HTML libraries can be used to build both static Web sites, e.g. docume
 * [HTML](html.html) - Low-level API's to build HTML 5 code. 
 * [Bootstrap](bootstrap.html) - [Bootstrap 4.x](https://getbootstrap.com/) Java bindings, including [Bootswatch](https://bootswatch.com/) themes. 
 * [Font Awesome](fontawesome.html) - [Font Awesome 5.x](https://fontawesome.com/) Java bindings. 
-* [KnockoutJS](knockout.html) - [Knockout JS 3.4.x](https://knockoutjs.com/) Java bindings. 
 * [jsTree](jstree.html) - [jsTree 3.3.7](https://www.jstree.com/) Java bindings,
+* [ECharts](echarts.html) - [ECharts 4.2.1](https://ecomfe.github.io/echarts-doc/public/en/index.html) Java bindings. 
+* [KnockoutJS](knockout.html) - [Knockout JS 3.4.x](https://knockoutjs.com/) Java bindings. 
 * [Application](app.html) - Java API's for building HTML applications using higher level abstractions of actions and property sources.
-* [Application Model](app-model.html) - EMF model implementing the action API and a model editor.
-    * [Model documentation](app-model-doc).
 * [EMF](emf.html) - Uses [Ecore](https://www.eclipse.org/modeling/emf/) metadata and annotations to build actions and property sources backed by [EObject](http://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/index.html?org/eclipse/emf/ecore/EObject.html)'s.
 * [Ecore](ecore.html) - Classes to generate HTML documentation for Ecore models.
-* [Web applications](web-applications.html) - bundles for building web applications backed by a [CDO](https://wiki.eclipse.org/CDO) server.
 
 ## Resources
 
@@ -38,8 +36,6 @@ Nasdanika HTML libraries can be used to build both static Web sites, e.g. docume
     * [Archived](https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/org.nasdanika.html.repository-2.0.0-SNAPSHOT.zip).
 * Maven Repository - ``https://www.nasdanika.org/products/html/2.0.0-SNAPSHOT/maven-repository``.    
 * [Sources](html.zip).
-* [NasdanikaBank.app](NasdanikaBank.app) - a sample model with several actions for demo and testing purposes. It is also available as a resource in ``org.nasdanika.app.model`` bundle.
-* [Spring Boot demo](https://github.com/Nasdanika/html-spring-boot-demo) - A Spring Boot application which uses Nasdanika HTML libraries to build Web UI.    
  
 ## How to contribute
 
