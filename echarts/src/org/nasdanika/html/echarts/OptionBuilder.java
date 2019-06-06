@@ -18,7 +18,8 @@ public interface OptionBuilder extends Supplier<JSONObject> {
 	EChartsFactory getFactory();
 	
 	JSONObject title();
-	// TODO TitleBuilder titleBuilder();
+	TitleBuilder titleBuilder();
+	
 	JSONObject legend();
 	JSONObject grid();
 	JSONObject xAxis();

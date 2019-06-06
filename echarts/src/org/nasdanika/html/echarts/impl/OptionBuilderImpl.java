@@ -8,9 +8,17 @@ import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.echarts.EChartsFactory;
 import org.nasdanika.html.echarts.OptionBuilder;
+import org.nasdanika.html.echarts.TitleBuilder;
 
 public class OptionBuilderImpl extends JSONObjectBuilder implements OptionBuilder {
 
+	private JSONObject option = new JSONObject();
+
+	@Override
+	public JSONObject get() {
+		return option;
+	}
+	
 	private EChartsFactory factory;
 
 	public OptionBuilderImpl(EChartsFactory factory) {
@@ -225,6 +233,18 @@ public class OptionBuilderImpl extends JSONObjectBuilder implements OptionBuilde
 	@Override
 	public void create(Object width, Object height, Consumer<Object> consumer) {
 		getFactory().create(this, width, height);		
+	}
+
+	@Override
+	public TitleBuilder titleBuilder() {
+		return new TitleBuilderImpl() {
+			
+			@Override
+			public JSONObject get() {
+				return OptionBuilderImpl.this.getJSONObject("title");
+			}
+			
+		};
 	}
 
 }

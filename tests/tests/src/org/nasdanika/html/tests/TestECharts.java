@@ -18,7 +18,7 @@ public class TestECharts extends HTMLTestBase {
 		card.getTitle().toHTMLElement().content("ECharts demo");
 		OptionBuilder optionBuilder = EChartsFactory.INSTANCE.createOptionBuilder();
 		
-		optionBuilder.title().put("text", "Nasdanika ECharts example");
+		optionBuilder.titleBuilder().text("Nasdanika ECharts example");
 		
 		JSONArray legendData = new JSONArray();
 		legendData.put("Sales");
