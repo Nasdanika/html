@@ -13,7 +13,7 @@ These resources can be used to generate self-sufficient Web UI without dependenc
 
 ## Example
 
-The below example creates a bar chart in a Bootstrap card. Chart title is built using TitleBuilder, the rest of the option is creates with low-level JSON API's.
+The below example creates a bar chart in a Bootstrap card. Chart title is built using TitleBuilder, the rest of the option is created with low-level JSON API's.
 
 ```
 Card card = BootstrapFactory.INSTANCE.card().border(Color.SUCCESS);		
