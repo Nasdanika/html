@@ -33,7 +33,9 @@ public class TestECharts extends HTMLTestBase {
 		xAxisData.put("socks");
 		optionBuilder.xAxis().put("data", xAxisData);
 		
-		optionBuilder.yAxis(); // yAxis object must be present, so we call this method to create an empty object.
+		// yAxis object must be present, 
+		// so we call this method to create an empty object.
+		optionBuilder.yAxis(); 
 		
 		JSONObject salesSeries = new JSONObject();
 		salesSeries.put("name", "Sales");
