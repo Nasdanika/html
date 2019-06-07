@@ -28,9 +28,7 @@ Nasdanika HTML libraries can be used to build both static Web sites, e.g. docume
 
 ## Resources
 
-* Overview presentation
-    * [SlideShare](https://www.slideshare.net/PavelVlasov2/nasdanika-html-fluent-java-api-for-building-web-ui-149052587).
-    * [PDF](Nasdanika-HTML.pdf).
+* [Overview presentation](Nasdanika-HTML.pdf).
 * P2 Repository
     * ``https://www.nasdanika.org/home/products/html/repository``.
     * [Archived](https://www.nasdanika.org/home/products/html/org.nasdanika.html.repository-2.0.0-SNAPSHOT.zip).
