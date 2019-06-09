@@ -10,7 +10,7 @@ In order for the generator to be able to read the annotations "Suppress GenModel
 
 ## Example
 
-The below code generates [documentation](tests/dumps/ecore/index.html) for the (Nasdanika bank)[../bank/index.html] model.
+The below code generates [documentation](tests/dumps/ecore/index.html) for the [Nasdanika bank](../bank/index.html) model.
 
 ```
 EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Nasdanika Bank Model", null);
