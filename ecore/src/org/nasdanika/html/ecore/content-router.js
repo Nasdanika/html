@@ -47,9 +47,10 @@ $(document).ready(
 				workspace = new Workspace();
 				Backbone.history.start();
 				
-				workspace.navigate('content/{{initial-route}}', {
-					trigger : true
-				});
-				
+				if (!document.location.hash) {
+					workspace.navigate('content/{{initial-route}}', {
+						trigger : true
+					});
+				}				
 			}
 ); 

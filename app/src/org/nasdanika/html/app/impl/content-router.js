@@ -55,9 +55,11 @@ $(document).ready(
 				Backbone.history.start();
 				
 				// Example of initial routing with the initial route taken from 'inital-route' token.
-				//workspace.navigate('router/{{initial-route}}', {
-				//	trigger : true
-				//});
+				//if (!document.location.hash) {
+				//	workspace.navigate('router/{{initial-route}}', {
+				//		trigger : true
+				//	});
+				//}
 				
 			}
 ); 
