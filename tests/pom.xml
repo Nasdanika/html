@@ -21,6 +21,12 @@
 	<repositories>
 		<!-- configure p2 repository to resolve against -->
 		<repository>
+			<id>html</id>
+			<url>https://www.nasdanika.org/home/products/html/repository</url>
+			<layout>p2</layout>
+		</repository>
+		<!-- Will references from HTML repo work?
+		<repository>
 			<id>eclipse</id>
 			<url>http://download.eclipse.org/releases/2019-03</url>
 			<layout>p2</layout>
@@ -46,21 +52,10 @@
 			<layout>p2</layout>
 		</repository>
 		<repository>
-			<id>html</id>
-			<url>https://www.nasdanika.org/home/products/html/repository</url>
-			<layout>p2</layout>
-		</repository>
-		<repository>
 			<id>maven-osgi</id>
 			<url>https://www.nasdanika.org/home/products/maven-osgi/repository</url>
 			<layout>p2</layout>
 		</repository>
-		<!--
-		<repository>
-			<id>slf4j</id>
-			<url>https://www.nasdanika.org/slf4j</url>
-			<layout>p2</layout>
-		</repository>	
 		-->
 	</repositories>
 	<build>

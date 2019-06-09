@@ -4,4 +4,9 @@
       <category name="org.nasdanika.runtime"/>
    </feature>
    <category-def name="org.nasdanika.runtime" label="Runtime bundles"/>
+   <repository-reference location="http://download.eclipse.org/releases/2019-03" enabled="true" />
+   <repository-reference location="http://download.eclipse.org/tools/orbit/downloads/drops/R20181128170323/repository" enabled="true" />
+   <repository-reference location="http://https://www.nasdanika.org/home/products/third-party/repository" enabled="true" />
+   <repository-reference location="http://https://www.nasdanika.org/home/products/core/repository" enabled="true" />
+   <repository-reference location="http://https://www.nasdanika.org/home/products/maven-osgi/repository" enabled="true" />
 </site>
