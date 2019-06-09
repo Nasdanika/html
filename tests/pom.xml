@@ -25,7 +25,6 @@
 			<url>https://www.nasdanika.org/home/products/html/repository</url>
 			<layout>p2</layout>
 		</repository>
-		<!-- Will references from HTML repo work?
 		<repository>
 			<id>eclipse</id>
 			<url>http://download.eclipse.org/releases/2019-03</url>
@@ -56,7 +55,6 @@
 			<url>https://www.nasdanika.org/home/products/maven-osgi/repository</url>
 			<layout>p2</layout>
 		</repository>
-		-->
 	</repositories>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
