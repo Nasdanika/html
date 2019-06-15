@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -335,7 +336,7 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 			}
 			
 			if (content instanceof InputStream) {
-				return stringify(new InputStreamReader((InputStream) content), indent);
+				return stringify(new InputStreamReader((InputStream) content, StandardCharsets.UTF_8), indent);
 			}
 			if (content instanceof Reader) {
 				StringWriter sw = new StringWriter();
