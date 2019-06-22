@@ -3,6 +3,7 @@ package org.nasdanika.html.app.viewparts;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.MultiValuePropertySource;
@@ -10,6 +11,7 @@ import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.Util;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Table;
 
@@ -86,7 +88,7 @@ public class ViewMultiValuePropertySourceViewPart implements ViewPart {
 		if (propertySourceActions.isEmpty()) {
 			return table;
 		}
-		return viewGenerator.getHTMLFactory().fragment(table, viewGenerator.buttonToolbar(propertySourceActions));
+		return viewGenerator.get(HTMLFactory.class).fragment(table, viewGenerator.buttonToolbar(propertySourceActions));
 	}
 
 	/**
@@ -102,7 +104,7 @@ public class ViewMultiValuePropertySourceViewPart implements ViewPart {
 	 * @return
 	 */
 	protected Table createTable(ViewGenerator viewGenerator) {
-		return viewGenerator.getBootstrapFactory().table().bordered();
+		return viewGenerator.get(BootstrapFactory.class).table().bordered();
 	}
 
 }

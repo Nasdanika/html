@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.nasdanika.html.Fragment;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
@@ -42,7 +43,7 @@ public class SectionViewPart implements ViewPart {
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
-		Fragment ret = viewGenerator.getHTMLFactory().fragment();
+		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
 		// Process viewPart as in ViewGenerator ???
 		ret.content(section.generate(viewGenerator));
 
@@ -99,7 +100,7 @@ public class SectionViewPart implements ViewPart {
 	protected NamedItemsContainer createSectionsContainer(ViewGenerator viewGenerator, Consumer<Object> contentConsumer, int level) {
 		switch (level) {
 		case 0:
-			Navs tabs = viewGenerator.getBootstrapFactory().tabs();
+			Navs tabs = viewGenerator.get(BootstrapFactory.class).tabs();
 			contentConsumer.accept(tabs);
 			return tabs;
 		case 1:
@@ -107,19 +108,19 @@ public class SectionViewPart implements ViewPart {
 			contentConsumer.accept(actionGroup.asContainer().margin().top(1).toBootstrapElement());
 			return actionGroup;
 		case 2:
-			NamedItemsContainer ret = viewGenerator.getHTMLFactory().tagNamedItemsContainer(TagName.h3);
+			NamedItemsContainer ret = viewGenerator.get(HTMLFactory.class).tagNamedItemsContainer(TagName.h3);
 			contentConsumer.accept(ret);
 			return ret;
 		case 3:
-			ret = viewGenerator.getHTMLFactory().tagNamedItemsContainer(TagName.h4);
+			ret = viewGenerator.get(HTMLFactory.class).tagNamedItemsContainer(TagName.h4);
 			contentConsumer.accept(ret);
 			return ret;
 		case 4:
-			ret = viewGenerator.getHTMLFactory().tagNamedItemsContainer(TagName.h5);
+			ret = viewGenerator.get(HTMLFactory.class).tagNamedItemsContainer(TagName.h5);
 			contentConsumer.accept(ret);
 			return ret;
 		default:
-			ret = viewGenerator.getHTMLFactory().tagNamedItemsContainer(TagName.h6);
+			ret = viewGenerator.get(HTMLFactory.class).tagNamedItemsContainer(TagName.h6);
 			contentConsumer.accept(ret);
 			return ret;
 		}

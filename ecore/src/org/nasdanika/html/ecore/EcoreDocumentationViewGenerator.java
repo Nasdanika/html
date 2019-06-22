@@ -4,11 +4,13 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.ecore.EClass;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
 
 /**
@@ -33,8 +35,8 @@ public class EcoreDocumentationViewGenerator extends ViewGeneratorImpl {
 			if (label instanceof Action) {
 				 EClass eClass = ((Action) label).adaptTo(EClass.class);
 				 if (eClass != null && eClass.isAbstract()) {
-					 Tag span = getHTMLFactory().span();
-					 getBootstrapFactory().wrap(span).text().italic();
+					 Tag span = get(HTMLFactory.class).span();
+					 get(BootstrapFactory.class).wrap(span).text().italic();
 					 contentConsumer.accept(span);
 					 contentConsumer = span;
 				 }

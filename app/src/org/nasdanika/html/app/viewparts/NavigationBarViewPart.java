@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
@@ -15,6 +16,7 @@ import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.Util;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.Dropdown;
@@ -53,7 +55,7 @@ public class NavigationBarViewPart implements ViewPart {
 				for (Action ca: (List<Action>) categoryGroup.getValue()) {
 					hasContent = true;
 					// Children are ignored if activator is not null.
-					Fragment fragment = viewGenerator.getHTMLFactory().fragment();
+					Fragment fragment = viewGenerator.get(HTMLFactory.class).fragment();
 					viewGenerator.label(ca, fragment::content);
 					ActionActivator activator = ca.getActivator();
 					if (activator instanceof NavigationActionActivator) {
@@ -103,7 +105,7 @@ public class NavigationBarViewPart implements ViewPart {
 	 * @return
 	 */
 	protected Navbar createNavbar(ViewGenerator viewGenerator, HTMLElement<?> brand) {
-		return viewGenerator.getBootstrapFactory().navbar(DeviceSize.LARGE, false, Color.LIGHT, brand);
+		return viewGenerator.get(BootstrapFactory.class).navbar(DeviceSize.LARGE, false, Color.LIGHT, brand);
 	}
 	
 

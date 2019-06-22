@@ -8,9 +8,11 @@ import java.util.function.Supplier;
 import org.nasdanika.bank.Customer;
 import org.nasdanika.bank.CustomerAccount;
 import org.nasdanika.bank.Transaction;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.emf.EObjectAdaptable;
@@ -77,7 +79,7 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 		// Reverse chronological order.
 		currentTransactions.sort((t1, t2) -> t2.getDate().compareTo(t1.getDate()));
 
-		Table currentTransactionsTable = viewGenerator.getBootstrapFactory().table().bordered();
+		Table currentTransactionsTable = viewGenerator.get(BootstrapFactory.class).table().bordered();
 		currentTransactionsTable.headerRow("Date", "Comment", "Debit", "Credit");
 		
 		for (Transaction<?> transaction: currentTransactions) {
@@ -93,7 +95,7 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 			}
 		}
 
-		return viewGenerator.getHTMLFactory().fragment("Balance: ", target.getBalance(), "<h4>Current transactions</h4>", currentTransactionsTable);
+		return viewGenerator.get(HTMLFactory.class).fragment("Balance: ", target.getBalance(), "<h4>Current transactions</h4>", currentTransactionsTable);
 	}
 	
 }

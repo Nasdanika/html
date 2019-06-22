@@ -165,11 +165,11 @@ public interface HTMLFactory {
 	 * @param value
 	 * @return
 	 */
-	TokenSource mutableTokenSource(String token, Object value);
+	TokenSource tokenSource(String token, Object value);
 	
 	/**
 	 * Creates a new mutable token source.
 	 * @return
 	 */
-	TokenSource mutableTokenSource();	
+	TokenSource tokenSource();	
 }

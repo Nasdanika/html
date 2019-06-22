@@ -359,7 +359,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	}
 	
 	@Override
-	public TokenSource mutableTokenSource() {
+	public TokenSource tokenSource() {
 		return new TokenSource() {
 			
 			private Map<String, Object> tokens = new HashMap<>();
@@ -385,8 +385,8 @@ public class DefaultHTMLFactory implements HTMLFactory {
 	}
 	
 	@Override
-	public TokenSource mutableTokenSource(String token, Object value) {
-		return mutableTokenSource().put(token, value);
+	public TokenSource tokenSource(String token, Object value) {
+		return tokenSource().put(token, value);
 	}
 	
 }

@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.Customer;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
@@ -65,6 +66,6 @@ public class BankViewAction extends EObjectViewAction<Bank> {
 	 */
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
-		return viewGenerator.getHTMLFactory().mutableTokenSource().interpolate(getClass().getResource("BankHomePage.html"));
+		return viewGenerator.get(HTMLFactory.class).tokenSource().interpolate(getClass().getResource("BankHomePage.html"));
 	}
 }

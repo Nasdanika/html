@@ -35,9 +35,9 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
 		String treeId = "nsd-navigation-tree";
-		HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
+		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
 		Tag container = htmlFactory.div().id(treeId);
-		JsTreeFactory jsTreeFactory = viewGenerator.getJsTreeFactory();
+		JsTreeFactory jsTreeFactory = viewGenerator.get(JsTreeFactory.class);
 		List<JsTreeNode> roots = new ArrayList<>();
 		// Group by category
 		for (Entry<Label, ?> group: Util.groupByCategory(navigationPanelActions)) {			

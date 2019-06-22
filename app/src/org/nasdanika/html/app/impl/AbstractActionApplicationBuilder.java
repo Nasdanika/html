@@ -10,6 +10,7 @@ import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart;
 import org.nasdanika.html.app.viewparts.ContentPanelViewPart;
 import org.nasdanika.html.app.viewparts.FooterViewPart;
 import org.nasdanika.html.app.viewparts.NavigationBarViewPart;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 
 /**
@@ -55,8 +56,8 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 		Action rootAction = getRootAction();
 		return rootAction == null ? vg -> null : viewGenerator -> {
 			Tag link = viewGenerator.link(rootAction).style().text().decoration().none();
-			viewGenerator.getBootstrapFactory().wrap(link).text().color(Color.DARK);
-			return viewGenerator.getBootstrapFactory().display(link, 4);
+			viewGenerator.get(BootstrapFactory.class).wrap(link).text().color(Color.DARK);
+			return viewGenerator.get(BootstrapFactory.class).display(link, 4);
 		};
 	}
 

@@ -1,13 +1,13 @@
 package org.nasdanika.html.emf;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.nasdanika.emf.AccessController;
+import org.nasdanika.common.AccessController;
+import org.nasdanika.common.Context;
 import org.nasdanika.html.app.Adaptable;
 
 /**
@@ -54,7 +54,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 						return (A) new AccessController() {
 							
 							@Override
-							public boolean hasPermission(String action, String qualifier, Map<?,?> context) {
+							public boolean hasPermission(String action, String qualifier, Context context) {
 								String cQualifier;
 								if (qualifier == null) {
 									cQualifier = qualifier;
@@ -149,7 +149,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	 * @param qualifier
 	 * @return
 	 */
-	public static boolean hasPermission(EObject obj, String action, String qualifier, Map<?,?> context) {
+	public static boolean hasPermission(EObject obj, String action, String qualifier, Context context) {
 		return adaptToAccessController(obj).hasPermission(action, qualifier, context);
 	}
 	
@@ -158,7 +158,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	 * @param qualifier
 	 * @return
 	 */
-	public static boolean canRead(EObject obj, String qualifier, Map<?,?> context) {
+	public static boolean canRead(EObject obj, String qualifier, Context context) {
 		return adaptToAccessController(obj).canRead(qualifier, context);
 	}
 	
@@ -167,7 +167,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	 * @param qualifier
 	 * @return
 	 */
-	public static boolean canCreate(EObject obj, String qualifier, Map<?,?> context) {
+	public static boolean canCreate(EObject obj, String qualifier, Context context) {
 		return adaptToAccessController(obj).canCreate(qualifier, context);
 	}
 	
@@ -176,7 +176,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	 * @param qualifier
 	 * @return
 	 */
-	public static boolean canDelete(EObject obj, String qualifier, Map<?,?> context) {
+	public static boolean canDelete(EObject obj, String qualifier, Context context) {
 		return adaptToAccessController(obj).canDelete(qualifier, context);
 	}
 	
@@ -185,7 +185,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	 * @param qualifier
 	 * @return
 	 */
-	public static boolean canUpdate(EObject obj, String qualifier, Map<?,?> context) {
+	public static boolean canUpdate(EObject obj, String qualifier, Context context) {
 		return adaptToAccessController(obj).canUpdate(qualifier, context);
 	}
 	
@@ -195,7 +195,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	 * @param context
 	 * @return
 	 */
-	public static boolean canExecute(EObject obj, String qualifier, Map<?,?> context) {
+	public static boolean canExecute(EObject obj, String qualifier, Context context) {
 		return adaptToAccessController(obj).canExecute(qualifier, context);
 	}
 	
@@ -268,7 +268,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	 * @param qualifier
 	 * @return
 	 */
-	protected boolean hasPermission(String action, String qualifier, Map<?,?> context) {
+	protected boolean hasPermission(String action, String qualifier, Context context) {
 		return adaptToAccessController().hasPermission(action, qualifier, context);
 	}
 	
@@ -277,7 +277,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	 * @param qualifier
 	 * @return
 	 */
-	protected boolean canRead(String qualifier, Map<?,?> context) {
+	protected boolean canRead(String qualifier, Context context) {
 		return adaptToAccessController().canRead(qualifier, context);
 	}
 	
@@ -286,7 +286,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	 * @param qualifier
 	 * @return
 	 */
-	protected boolean canCreate(String qualifier, Map<?,?> context) {
+	protected boolean canCreate(String qualifier, Context context) {
 		return adaptToAccessController().canCreate(qualifier, context);
 	}
 	
@@ -295,7 +295,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	 * @param qualifier
 	 * @return
 	 */
-	protected boolean canDelete(String qualifier, Map<?,?> context) {
+	protected boolean canDelete(String qualifier, Context context) {
 		return adaptToAccessController().canDelete(qualifier, context);
 	}
 	
@@ -304,7 +304,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	 * @param qualifier
 	 * @return
 	 */
-	protected boolean canUpdate(String qualifier, Map<?,?> context) {
+	protected boolean canUpdate(String qualifier, Context context) {
 		return adaptToAccessController().canUpdate(qualifier, context);
 	}
 	
@@ -314,7 +314,7 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	 * @param context
 	 * @return
 	 */
-	protected boolean canExecute(String qualifier, Map<?,?> context) {
+	protected boolean canExecute(String qualifier, Context context) {
 		return adaptToAccessController().canExecute(qualifier, context);
 	}
 

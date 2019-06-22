@@ -147,7 +147,7 @@ public class EcoreDocumentationGenerator {
 		StringBuilder contentBuilder = new StringBuilder();
 		ViewGenerator viewGenerator = new EcoreDocumentationViewGenerator(contentBuilder::append, contentBuilder::append, null);
 		
-		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();		
+		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);		
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);
 		contentContainer.row().col("<H2>"+rootAction.getText()+"</H2>");

@@ -4,6 +4,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import org.nasdanika.html.Fragment;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.ViewGenerator;
@@ -46,11 +47,11 @@ public abstract class ViewPartApplicationBuilder implements ApplicationBuilder {
 		Fragment[] cf = { null, null };
 		ViewGenerator viewGenerator = createViewGenerator(content-> cf[0].accept(content), content-> cf[1].accept(content), getResourceConsumer());
 				
-		Fragment headContentFragment = viewGenerator.getHTMLFactory().fragment();
+		Fragment headContentFragment = viewGenerator.get(HTMLFactory.class).fragment();
 		cf[0] = headContentFragment;
 		application.getHTMLPage().head(headContentFragment);
 		
-		Fragment bodyContentFragment = viewGenerator.getHTMLFactory().fragment();
+		Fragment bodyContentFragment = viewGenerator.get(HTMLFactory.class).fragment();
 		cf[1] = bodyContentFragment;
 		application.getHTMLPage().body(bodyContentFragment);
 		

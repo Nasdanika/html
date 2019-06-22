@@ -20,7 +20,7 @@ public class ETypedElementViewAction<T extends ETypedElement> extends ENamedElem
 	
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
-		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
+		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);
 		Table propertiesTable = propertiesTable(viewGenerator);
@@ -36,7 +36,7 @@ public class ETypedElementViewAction<T extends ETypedElement> extends ENamedElem
 	}
 	
 	protected Table propertiesTable(ViewGenerator viewGenerator) {
-		Table table = viewGenerator.getBootstrapFactory().table();
+		Table table = viewGenerator.get(BootstrapFactory.class).table();
 		table.toHTMLElement().style().width("auto");
 		
 		EClassifier type = target.getEType();

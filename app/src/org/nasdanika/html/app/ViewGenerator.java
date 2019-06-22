@@ -7,45 +7,26 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
+import org.nasdanika.common.Context;
 import org.nasdanika.html.Fragment;
-import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Producer;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
-import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.ListGroup;
 import org.nasdanika.html.bootstrap.Navs;
-import org.nasdanika.html.echarts.EChartsFactory;
-import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
-import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
-import org.nasdanika.html.knockout.KnockoutFactory;
 
 /**
  * Provides access to factories and generates UI elements from application interfaces.
  * @author Pavel Vlasov
  *
  */
-public interface ViewGenerator {
-	
-	// --- Access to factories ---
-	
-	HTMLFactory getHTMLFactory();
-	
-	BootstrapFactory getBootstrapFactory();
-	
-	FontAwesomeFactory getFontAwesomeFactory();
-	
-	KnockoutFactory getKnockoutFactory();
-	
-	JsTreeFactory getJsTreeFactory();
-	
-	EChartsFactory getEChartsFactory();
-	
+public interface ViewGenerator extends Context {
+		
 	// --- View part unwrapping ---
 	
 	/**

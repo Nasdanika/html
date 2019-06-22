@@ -69,7 +69,7 @@ public class DefaultJsTreeFactory implements JsTreeFactory {
 
 	@Override
 	public String buildAjaxJsTree(String nodesUrl, String contextMenuUrl) {
-		TokenSource tokens = getHTMLFactory().mutableTokenSource("nodesUrl", nodesUrl).put("contextMenuUrl", contextMenuUrl);
+		TokenSource tokens = getHTMLFactory().tokenSource("nodesUrl", nodesUrl).put("contextMenuUrl", contextMenuUrl);
 		return getHTMLFactory().interpolate(getClass().getResource(contextMenuUrl == null ? "ajaxTree.js" : "ajaxTreeWithContextMenu.js"), tokens);
 	}
 

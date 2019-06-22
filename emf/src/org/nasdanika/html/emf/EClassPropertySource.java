@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.nasdanika.emf.AccessController;
+import org.nasdanika.common.AccessController;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Delta;
 import org.nasdanika.html.app.Diagnostic;

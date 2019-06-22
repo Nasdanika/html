@@ -51,7 +51,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 	
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
-		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
+		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);
 		if (target.isAbstract()) {
@@ -75,7 +75,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 			baos.close();
 			String imagePath = viewGenerator.getResourceConsumer().apply(getId()+".png", baos.toByteArray());
 			if (imagePath != null) {
-				HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
+				HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
 				Tag diagramImage = htmlFactory.tag(TagName.img).attribute("src", imagePath).attribute("usemap", "#plantuml_map");
 				tabs.item("Diagram", htmlFactory.fragment(diagramImage, diagramCMap));				
 			}

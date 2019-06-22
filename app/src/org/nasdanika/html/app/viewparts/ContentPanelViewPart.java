@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.nasdanika.html.Fragment;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.Util;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
 
 /**
@@ -51,12 +53,12 @@ public class ContentPanelViewPart implements ViewPart {
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
-		Fragment ret = viewGenerator.getHTMLFactory().fragment();
+		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
 		Action lastNonSection = lastNonSection();
 		List<Action> lastNonSectionPath = lastNonSection.getPath();
 		if (lastNonSectionPath.size() > getMinBreadcrumbsDepth() - getBreadcrumbsOffset()) {
 			// Breadcrumbs
-			Breadcrumbs breadcrumbs = viewGenerator.getBootstrapFactory().breadcrums();
+			Breadcrumbs breadcrumbs = viewGenerator.get(BootstrapFactory.class).breadcrums();
 			breadcrumbs.margin().top(1);
 			ret.content(breadcrumbs);
 			ListIterator<Action> tit = lastNonSectionPath.listIterator(Math.min(lastNonSectionPath.size(), getBreadcrumbsOffset()));
@@ -68,7 +70,7 @@ public class ContentPanelViewPart implements ViewPart {
 		
 		if (lastNonSectionPath.size() > getMinTitleDepth() - getBreadcrumbsOffset()) {
 			// Page title, doesn't make much sense to show it for the root or principal actions - it would duplicate the header or the nav bar. 
-			ret.content(viewGenerator.label(lastNonSection, viewGenerator.getHTMLFactory().tag(TagName.h2)));			
+			ret.content(viewGenerator.label(lastNonSection, viewGenerator.get(HTMLFactory.class).tag(TagName.h2)));			
 		}
 		
 		ret.content(new SectionViewPart(lastNonSection, activeAction, showContextActions, 0).generate(viewGenerator));		

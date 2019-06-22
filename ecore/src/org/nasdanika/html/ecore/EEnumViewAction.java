@@ -15,7 +15,7 @@ public class EEnumViewAction extends EClassifierViewAction<EEnum> {
 	
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
-		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
+		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);
 		String description = getDescription();

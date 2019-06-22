@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
+import org.nasdanika.common.SimpleMutableContext;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
@@ -31,14 +32,19 @@ import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.ListGroup;
 import org.nasdanika.html.bootstrap.Navs;
+import org.nasdanika.html.bootstrap.impl.DefaultBootstrapFactory;
 import org.nasdanika.html.echarts.EChartsFactory;
+import org.nasdanika.html.echarts.impl.DefaultEChartsFactory;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
+import org.nasdanika.html.fontawesome.impl.DefaultFontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
 import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
+import org.nasdanika.html.jstree.impl.DefaultJsTreeFactory;
 import org.nasdanika.html.knockout.KnockoutFactory;
+import org.nasdanika.html.knockout.impl.DefaultKnockoutFactory;
 
-public class ViewGeneratorImpl implements ViewGenerator {
+public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGenerator {
 	
 	/**
 	 * Content passed to this consumer is added to the head of the HTML page. E.g. stylesheets or scripts.
@@ -76,39 +82,40 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		return resourceConsumer;
 	}
 	
+	/**
+	 * Creating factories on demand.
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public HTMLFactory getHTMLFactory() {
-		return HTMLFactory.INSTANCE;
-	}
-	
-	@Override
-	public BootstrapFactory getBootstrapFactory() {
-		return BootstrapFactory.INSTANCE;
-	}
-	
-	@Override
-	public KnockoutFactory getKnockoutFactory() {
-		return KnockoutFactory.INSTANCE;
-	}
-		
-	@Override
-	public FontAwesomeFactory getFontAwesomeFactory() {
-		return FontAwesomeFactory.INSTANCE;
-	}	
-	
-	@Override
-	public JsTreeFactory getJsTreeFactory() {
-		return JsTreeFactory.INSTANCE;
-	}
-	
-	@Override
-	public EChartsFactory getEChartsFactory() {
-		return EChartsFactory.INSTANCE;
+	public <T> T get(Class<T> type) {
+		T ret = super.get(type);
+		if (ret != null) {
+			return ret;
+		}
+		if (type == HTMLFactory.class) {
+			ret = (T) HTMLFactory.INSTANCE;
+		} else if (type == BootstrapFactory.class) {
+			ret = (T) new DefaultBootstrapFactory(get(HTMLFactory.class));
+		} else if (type == KnockoutFactory.class) {
+			ret = (T) new DefaultKnockoutFactory(get(HTMLFactory.class));
+		} else if (type == FontAwesomeFactory.class) {
+			ret = (T) new DefaultFontAwesomeFactory(get(HTMLFactory.class));
+		} else if (type == JsTreeFactory.class) {
+			ret = (T) new DefaultJsTreeFactory(get(HTMLFactory.class));
+		} else if (type == EChartsFactory.class) {
+			ret = (T) new DefaultEChartsFactory(get(HTMLFactory.class));
+		}
+
+		if (ret != null) {
+			register(type, ret);
+		}
+
+		return ret;
 	}
 
 	@Override
 	public Tag link(Action action) {
-		Tag ret = label(action, getHTMLFactory().tag(TagName.a));
+		Tag ret = label(action, get(HTMLFactory.class).tag(TagName.a));
 		bindLink(action, ret);
 		return ret;
 	}
@@ -171,7 +178,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 
 	@Override
 	public BootstrapElement<?,?> button(Action action) {
-		Button<Tag> button = getBootstrapFactory().button(link(action), action.getColor() == null ? Color.PRIMARY : action.getColor(), action.getColor() == null ? true : action.isOutline());
+		Button<Tag> button = get(BootstrapFactory.class).button(link(action), action.getColor() == null ? Color.PRIMARY : action.getColor(), action.getColor() == null ? true : action.isOutline());
 		button.disabled(action.isDisabled());
 		if (action.isFloatRight()) {
 			button._float().right();
@@ -179,7 +186,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		if (action.getChildren().isEmpty()) {
 			return button;
 		}
-		Dropdown dd = getBootstrapFactory().dropdown(button, action.getActivator() != null, Direction.DOWN);
+		Dropdown dd = get(BootstrapFactory.class).dropdown(button, action.getActivator() != null, Direction.DOWN);
 		for (Entry<Label, List<Action>> cats: Util.groupByCategory((List<Action>) action.getChildren())) {
 			if (cats.getKey() != null) {
 				if (Util.isBlank(cats.getKey().getIcon()) && Util.isBlank(cats.getKey().getText())) {
@@ -197,7 +204,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	
 	@Override
 	public <T extends Action> ButtonToolbar buttonToolbar(Iterable<T> actions) {
-		ButtonToolbar buttonToolbar = getBootstrapFactory().buttonToolbar();
+		ButtonToolbar buttonToolbar = get(BootstrapFactory.class).buttonToolbar();
 		for (Entry<Label, List<T>> cats: Util.groupByCategory(actions)) {
 			if (cats.getKey() == null) {
 				for (Action cac: cats.getValue()) {
@@ -206,7 +213,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 					buttonToolbar.add(button);
 				}					
 			} else {
-				ButtonGroup buttonGroup = getBootstrapFactory().buttonGroup(false);
+				ButtonGroup buttonGroup = get(BootstrapFactory.class).buttonGroup(false);
 				for (Action cac: cats.getValue()) {
 					buttonGroup.add(button(cac));
 				}					
@@ -225,7 +232,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	
 	@Override
 	public JsTreeNode jsTreeNode(Label label) {
-		JsTreeNode ret = getJsTreeFactory().jsTreeNode();
+		JsTreeNode ret = get(JsTreeFactory.class).jsTreeNode();
 		
 		ret.icon(label.getIcon());
 		ret.text(label.getText());
@@ -268,7 +275,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	public void label(Label label, Consumer<Object> contentConsumer) {
 		String tooltip = label.getTooltip();
 		if (!Util.isBlank(tooltip)) {
-			Tag span = getHTMLFactory().span();
+			Tag span = get(HTMLFactory.class).span();
 			span.attribute("title", tooltip);
 			contentConsumer.accept(span);
 			contentConsumer = span;
@@ -279,10 +286,10 @@ public class ViewGeneratorImpl implements ViewGenerator {
 			Tag iconTag;
 			if (icon.contains("/")) {
 				// Image
-				iconTag = getHTMLFactory().tag(TagName.img).attribute("src", icon).style().height("1em");
+				iconTag = get(HTMLFactory.class).tag(TagName.img).attribute("src", icon).style().height("1em");
 			} else {
 				// Class
-				iconTag = getHTMLFactory().span().addClass(icon);
+				iconTag = get(HTMLFactory.class).span().addClass(icon);
 			}
 			if (label.getText() != null) {
 				iconTag.style().margin().right("0.3em");
@@ -295,7 +302,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
 		}	
 		
 		if (!Util.isBlank(label.getNotification())) {
-			Tag badge = getBootstrapFactory().badge(true, label.getColor() == Color.PRIMARY ? Color.SECONDARY : Color.PRIMARY, label.getNotification());
+			Tag badge = get(BootstrapFactory.class).badge(true, label.getColor() == Color.PRIMARY ? Color.SECONDARY : Color.PRIMARY, label.getNotification());
 			badge.style().margin().left("0.3em");
 			contentConsumer.accept(badge);
 //			getBootstrapFactory().wrap(badge)._float().right();
@@ -317,12 +324,12 @@ public class ViewGeneratorImpl implements ViewGenerator {
 	
 	@Override
 	public Tag label(Label label) {
-		return label(label, getHTMLFactory().span());
+		return label(label, get(HTMLFactory.class).span());
 	}
 	
 	@Override
 	public Fragment labelFragment(Label label) {
-		Fragment ret = getHTMLFactory().fragment();
+		Fragment ret = get(HTMLFactory.class).fragment();
 		label(label, ret::content);
 		return ret;
 	}

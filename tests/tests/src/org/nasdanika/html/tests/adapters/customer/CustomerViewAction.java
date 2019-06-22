@@ -7,6 +7,7 @@ import org.nasdanika.bank.Customer;
 import org.nasdanika.bank.CustomerAccount;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.bootstrap.Text.Alignment;
@@ -55,7 +56,7 @@ public class CustomerViewAction extends EObjectViewAction<Customer> {
 	
 	@Override
 	public Object generate(ViewGenerator viewGenerator) {
-		Table accountsTable = viewGenerator.getBootstrapFactory().table().bordered();
+		Table accountsTable = viewGenerator.get(BootstrapFactory.class).table().bordered();
 		accountsTable.headerRow("Account", "Balance");
 		for (CustomerAccount account: target.getAccounts()) {
 			Action accountViewAction = EObjectAdaptable.adaptTo(account, ViewAction.class);
