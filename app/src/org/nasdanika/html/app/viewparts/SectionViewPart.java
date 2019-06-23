@@ -46,7 +46,7 @@ public class SectionViewPart implements ViewPart {
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
 		// Process viewPart as in ViewGenerator ???
-		ret.content(section.generate(viewGenerator, null));
+		ret.content(section.generate(viewGenerator, progressMonitor)); // TODO - split?
 
 		// Context actions		
 		if (showContextActions) {

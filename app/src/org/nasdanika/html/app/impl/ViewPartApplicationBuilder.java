@@ -1,8 +1,8 @@
 package org.nasdanika.html.app.impl;
 
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Application;
@@ -31,21 +31,18 @@ public abstract class ViewPartApplicationBuilder implements ApplicationBuilder {
 	 * @param bodyContentConsumer
 	 * @return
 	 */
-	protected ViewGenerator createViewGenerator(
-			Consumer<?> headContentConsumer, 
-			Consumer<?> bodyContentConsumer,
-			BiFunction<String, Object, String> resourceConsumer) {
-		return new ViewGeneratorImpl(headContentConsumer, bodyContentConsumer, resourceConsumer);
+	protected ViewGenerator createViewGenerator(Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
+		return new ViewGeneratorImpl(headContentConsumer, bodyContentConsumer);
 	}	
 	
 	/**
 	 * Creates a view generator, wires it to the page's head and body and then passes to view parts. 
 	 */
 	@Override
-	public void build(Application application) {
+	public void build(Application application, ProgressMonitor progressMonitor) {
 		// A little trick to solve the chicken and egg problem of needing a view generator to create fragments to pass to the view generator.
 		Fragment[] cf = { null, null };
-		ViewGenerator viewGenerator = createViewGenerator(content-> cf[0].accept(content), content-> cf[1].accept(content), getResourceConsumer());
+		ViewGenerator viewGenerator = createViewGenerator(content-> cf[0].accept(content), content-> cf[1].accept(content));
 				
 		Fragment headContentFragment = viewGenerator.get(HTMLFactory.class).fragment();
 		cf[0] = headContentFragment;
@@ -55,34 +52,25 @@ public abstract class ViewPartApplicationBuilder implements ApplicationBuilder {
 		cf[1] = bodyContentFragment;
 		application.getHTMLPage().body(bodyContentFragment);
 		
-		application.header(generateHeader(viewGenerator));
-		application.navigationBar(generateNavigationBar(viewGenerator));
-		application.navigationPanel(generateNavigationPanel(viewGenerator));
-		application.contentPanel(generateContentPanel(viewGenerator));
-		application.footer(generateFooter(viewGenerator));
+		application.header(generateHeader(viewGenerator, progressMonitor));
+		application.navigationBar(generateNavigationBar(viewGenerator, progressMonitor));
+		application.navigationPanel(generateNavigationPanel(viewGenerator, progressMonitor));
+		application.contentPanel(generateContentPanel(viewGenerator, progressMonitor));
+		application.footer(generateFooter(viewGenerator, progressMonitor));
 	}
-	protected Object generateFooter(ViewGenerator viewGenerator) {
-		return getFooterViewPart().generate(viewGenerator, null);
+	protected Object generateFooter(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		return getFooterViewPart().generate(viewGenerator, progressMonitor);
 	}
-	protected Object generateContentPanel(ViewGenerator viewGenerator) {
-		return getContentPanelViewPart().generate(viewGenerator, null);
+	protected Object generateContentPanel(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		return getContentPanelViewPart().generate(viewGenerator, progressMonitor);
 	}
-	protected Object generateNavigationPanel(ViewGenerator viewGenerator) {
-		return getNavigationPanelViewPart().generate(viewGenerator, null);
+	protected Object generateNavigationPanel(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		return getNavigationPanelViewPart().generate(viewGenerator, progressMonitor);
 	}
-	protected Object generateNavigationBar(ViewGenerator viewGenerator) {
-		return getNavigationBarViewPart().generate(viewGenerator, null);
+	protected Object generateNavigationBar(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		return getNavigationBarViewPart().generate(viewGenerator, progressMonitor);
 	}
-	protected Object generateHeader(ViewGenerator viewGenerator) {
-		return getHeaderViewPart().generate(viewGenerator, null);
-	}
-
-	/**
-	 * Override to add support for resource consumption.
-	 * This implementation returns a consumer which does nothing and returns null.
-	 * @return
-	 */
-	protected BiFunction<String, Object, String> getResourceConsumer() {
-		return (path, content) -> null;
+	protected Object generateHeader(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		return getHeaderViewPart().generate(viewGenerator, progressMonitor);
 	}
 }

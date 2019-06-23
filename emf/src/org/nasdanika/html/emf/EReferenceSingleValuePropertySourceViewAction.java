@@ -37,7 +37,7 @@ public class EReferenceSingleValuePropertySourceViewAction<T extends EObject> ex
 		
 		Action viewAction = EObjectAdaptable.adaptTo(value, ViewAction.class);
 		if (viewAction != null) {
-			return viewAction.generate(viewGenerator, null);
+			return viewAction.generate(viewGenerator, progressMonitor);
 		}
 		return null;
 	}

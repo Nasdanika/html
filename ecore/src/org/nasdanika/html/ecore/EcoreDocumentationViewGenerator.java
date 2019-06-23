@@ -1,9 +1,9 @@
 package org.nasdanika.html.ecore;
 
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.ecore.EClass;
+import org.nasdanika.common.Context;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
@@ -20,11 +20,8 @@ import org.nasdanika.html.jstree.JsTreeNode;
  */
 public class EcoreDocumentationViewGenerator extends ViewGeneratorImpl {
 		
-		public EcoreDocumentationViewGenerator(
-				Consumer<?> headContentConsumer, 
-				Consumer<?> bodyContentConsumer,
-				BiFunction<String, Object, String> resourceConsumer) {
-		super(headContentConsumer, bodyContentConsumer, resourceConsumer);
+		public EcoreDocumentationViewGenerator(Context context, Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
+		super(context, headContentConsumer, bodyContentConsumer);
 	}
 
 		/**

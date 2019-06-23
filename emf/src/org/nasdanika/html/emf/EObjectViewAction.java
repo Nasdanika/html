@@ -36,7 +36,7 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		return new ViewSingleValuePropertySourceViewPart(this).generate(viewGenerator, null);
+		return new ViewSingleValuePropertySourceViewPart(this).generate(viewGenerator, progressMonitor);
 	}
 	
 	@Override

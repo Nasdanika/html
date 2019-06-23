@@ -2,9 +2,10 @@ package org.nasdanika.html.app.impl;
 
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
+import org.nasdanika.common.Context;
+import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.SimpleMutableContext;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
@@ -56,15 +57,26 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	 */
 	protected Consumer<?> bodyContentConsumer;
 
-	private BiFunction<String, Object, String> resourceConsumer;
-	
-	public ViewGeneratorImpl(
-			Consumer<?> headContentConsumer, 
-			Consumer<?> bodyContentConsumer,
-			BiFunction<String, Object, String> resourceConsumer) {
+	/**
+	 * Create a new view generator implementation with a given context, head content consumer and body content consumer.
+	 * @param context
+	 * @param headContentConsumer
+	 * @param bodyContentConsumer
+	 */
+	public ViewGeneratorImpl(Context context, Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
+		super(context);
 		this.headContentConsumer = headContentConsumer;
 		this.bodyContentConsumer = bodyContentConsumer;
-		this.resourceConsumer = resourceConsumer;
+	}
+	
+	/**
+	 * Create a new view generator implementation with an empty context, head content consumer and body content consumer.
+	 * @param context
+	 * @param headContentConsumer
+	 * @param bodyContentConsumer
+	 */
+	public ViewGeneratorImpl(Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
+		this(Context.EMPTY_CONTEXT, headContentConsumer, bodyContentConsumer);
 	}
 	
 	@Override
@@ -75,11 +87,6 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	@Override
 	public Consumer<?> getHeadContentConsumer() {
 		return headContentConsumer;
-	}
-	
-	@Override
-	public BiFunction<String, Object, String> getResourceConsumer() {
-		return resourceConsumer;
 	}
 	
 	/**
@@ -374,6 +381,11 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 			return processViewPart(((ViewPart) obj).generate(this, null));
 		}
 		return obj;
+	}
+	
+	@Override
+	public ViewGenerator fork() {
+		return new ViewGeneratorImpl(this, headContentConsumer, bodyContentConsumer);
 	}
 	
 }

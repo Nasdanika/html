@@ -74,7 +74,7 @@ public class ContentPanelViewPart implements ViewPart {
 			ret.content(viewGenerator.label(lastNonSection, viewGenerator.get(HTMLFactory.class).tag(TagName.h2)));			
 		}
 		
-		ret.content(new SectionViewPart(lastNonSection, activeAction, showContextActions, 0).generate(viewGenerator, null));		
+		ret.content(new SectionViewPart(lastNonSection, activeAction, showContextActions, 0).generate(viewGenerator, progressMonitor));		
 		return ret;
 	}	
 	

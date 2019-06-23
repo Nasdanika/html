@@ -40,7 +40,7 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		return delegate.generate(viewGenerator, null);
+		return delegate.generate(viewGenerator, progressMonitor);
 	}
 
 }

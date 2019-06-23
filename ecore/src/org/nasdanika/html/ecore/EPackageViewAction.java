@@ -13,8 +13,11 @@ import java.util.stream.Collectors;
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.ResourceLocator;
+import org.nasdanika.common.resources.File;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
@@ -30,6 +33,7 @@ import org.nasdanika.html.bootstrap.Table.TableBody;
 import org.nasdanika.html.bootstrap.Table.TableHeader;
 import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.ecore.PlantUmlTextGenerator.RelationshipDirection;
+import org.nasdanika.html.emf.EObjectAdaptable;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
@@ -53,6 +57,7 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 		return Hex.encodeHexString(target.getNsURI().getBytes(StandardCharsets.UTF_8))+PACKAGE_SUMMARY_SUFFIX;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
@@ -72,13 +77,18 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 		}		
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try {
+		try (ProgressMonitor imageMonitor = progressMonitor.split("Writing package diagram for "+target.getName(), 100, target)) {
 			String diagramCMap = generateDiagram(false, null, 0, RelationshipDirection.both, true, true, baos);
 			baos.close();
-			String imagePath = viewGenerator.getResourceConsumer().apply(getId()+".png", baos.toByteArray());
-			if (imagePath != null) {
+			String imagePath = getId()+".png";
+			org.nasdanika.common.resources.Container<Object> resourceContainer = viewGenerator.get(org.nasdanika.common.resources.Container.class);
+			File<Object> imageFile = resourceContainer.getFile(imagePath);			
+			if (imageFile == null) {
+				imageMonitor.worked(100, "Could not create image file");
+			} else {
+				imageFile.setContents(baos.toByteArray(), imageMonitor);				
 				HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
-				Tag diagramImage = htmlFactory.tag(TagName.img).attribute("src", imagePath).attribute("usemap", "#plantuml_map");
+				Tag diagramImage = htmlFactory.tag(TagName.img).attribute("src", viewGenerator.get("image-path", "")+imagePath).attribute("usemap", "#plantuml_map");
 				tabs.item("Diagram", htmlFactory.fragment(diagramImage, diagramCMap));				
 			}
 		} catch (IOException e) {
@@ -128,7 +138,9 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 			OutputStream out) throws IOException {
 		
 		StringBuilder sb = new StringBuilder();
-		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, eClassifierLinkResolver, eModelElementFirstDocSentenceProvider) {
+		@SuppressWarnings("unchecked")
+		ResourceLocator<EModelElement> rl = EObjectAdaptable.adaptTo(target, ResourceLocator.class);
+		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, eClassifierLinkResolver, eModelElementFirstDocSentenceProvider, rl) {
 			
 			@Override
 			protected Collection<EClass> getSubTypes(EClass eClass) {

@@ -25,7 +25,7 @@ public class EReferenceMultiValuePropertySourceViewAction<T extends EObject> ext
 	
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		return new ViewMultiValuePropertySourceViewPart(this).generate(viewGenerator, null);
+		return new ViewMultiValuePropertySourceViewPart(this).generate(viewGenerator, progressMonitor);
 	}
 
 	@Override

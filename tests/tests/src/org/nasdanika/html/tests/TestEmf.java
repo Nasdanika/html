@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.BankPackage;
 import org.nasdanika.bank.Customer;
+import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.ApplicationFactory;
@@ -164,7 +165,7 @@ public class TestEmf extends HTMLTestBase {
 			
 			ApplicationBuilder applicationBuilder = EObjectAdaptable.adaptTo(next, ApplicationBuilder.class);
 			assertNotNull(applicationBuilder);
-			applicationBuilder.build(application);
+			applicationBuilder.build(application, new PrintStreamProgressMonitor());
 			
 			NavigationActionActivator activator = (NavigationActionActivator) EObjectAdaptable.adaptTo(next, ViewActionActivator.class);
 			writeFile("emf/bank/"+activator.getUrl(), application.toString());
@@ -207,7 +208,7 @@ public class TestEmf extends HTMLTestBase {
 				
 				ApplicationBuilder applicationBuilder = EObjectAdaptable.adaptTo(next, ApplicationBuilder.class);
 				assertNotNull(applicationBuilder);
-				applicationBuilder.build(application);
+				applicationBuilder.build(application, new PrintStreamProgressMonitor());
 				
 				NavigationActionActivator activator = (NavigationActionActivator) EObjectAdaptable.adaptTo(next, ViewActionActivator.class);
 				writeFile("emf/customer/"+customer.getName().toLowerCase().replace(' ', '-')+"/"+activator.getUrl(), application.toString());

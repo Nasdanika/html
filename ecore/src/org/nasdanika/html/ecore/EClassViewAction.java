@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypedElement;
@@ -22,6 +23,8 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.ResourceLocator;
+import org.nasdanika.common.resources.File;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
@@ -50,6 +53,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 		super(value);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
@@ -71,13 +75,18 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 		}		
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try {
+		try (ProgressMonitor imageMonitor = progressMonitor.split("Writing class diagram for "+target.getName(), 100, target)) {
 			String diagramCMap = generateDiagram(false, null, 1, RelationshipDirection.both, true, true, baos);
 			baos.close();
-			String imagePath = viewGenerator.getResourceConsumer().apply(getId()+".png", baos.toByteArray());
-			if (imagePath != null) {
+			org.nasdanika.common.resources.Container<Object> resourceContainer = viewGenerator.get(org.nasdanika.common.resources.Container.class);
+			String imagePath = getId()+".png";
+			File<Object> imageFile = resourceContainer.getFile(imagePath);			
+			if (imageFile == null) {
+				imageMonitor.worked(100, "Could not create image file");
+			} else {
+				imageFile.setContents(baos.toByteArray(), imageMonitor);				
 				HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
-				Tag diagramImage = htmlFactory.tag(TagName.img).attribute("src", imagePath).attribute("usemap", "#plantuml_map");
+				Tag diagramImage = htmlFactory.tag(TagName.img).attribute("src", viewGenerator.get("image-path", "")+imagePath).attribute("usemap", "#plantuml_map");
 				tabs.item("Diagram", htmlFactory.fragment(diagramImage, diagramCMap));				
 			}
 		} catch (IOException e) {
@@ -156,7 +165,9 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 			OutputStream out) throws IOException {
 		
 		StringBuilder sb = new StringBuilder();
-		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, eClassifierLinkResolver, eModelElementFirstDocSentenceProvider) {
+		@SuppressWarnings("unchecked")
+		ResourceLocator<EModelElement> rl = EObjectAdaptable.adaptTo(target, ResourceLocator.class);
+		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, eClassifierLinkResolver, eModelElementFirstDocSentenceProvider, rl) {
 			
 			@Override
 			protected Collection<EClass> getSubTypes(EClass eClass) {

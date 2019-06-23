@@ -40,7 +40,7 @@ public class ENamedElementViewAction<T extends ENamedElement> extends EObjectVie
 	
 	
 	protected Function<EClassifier, String> eClassifierLinkResolver = eClassifier -> ((NavigationActionActivator) EObjectAdaptable.adaptTo(eClassifier, ViewAction.class).getActivator()).getUrl();
-	protected Function<EModelElement, String> eModelElementFirstDocSentenceProvider = eModelElement -> EObjectAdaptable.adaptTo(eModelElement, ViewAction.class).getTooltip();	
+	protected Function<EModelElement, String> eModelElementFirstDocSentenceProvider = eModelElement -> EObjectAdaptable.adaptTo(eModelElement, ViewAction.class).getTooltip();
 		
 	public ENamedElementViewAction(T value) {
 		super(value);

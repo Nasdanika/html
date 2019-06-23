@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
@@ -24,6 +25,8 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ResourceLocator;
 import org.nasdanika.html.app.impl.Util;
 
 /**
@@ -43,14 +46,17 @@ public class PlantUmlTextGenerator {
 	private Appendable collector;
 	private Function<EClassifier, String> eClassifierLinkResolver;
 	private Function<EModelElement, String> eModelElementFirstDocSentenceProvider;
+	private ResourceLocator<EModelElement> resourceLocator;
 
 	public PlantUmlTextGenerator(
 			Appendable collector, 
 			Function<EClassifier, String> eClassifierLinkResolver, 
-			Function<EModelElement, String> eModelElementFirstDocSentenceProvider) {
+			Function<EModelElement, String> eModelElementFirstDocSentenceProvider,
+			ResourceLocator<EModelElement> resourceLocator) {
 		this.collector = collector;
 		this.eClassifierLinkResolver = eClassifierLinkResolver;
 		this.eModelElementFirstDocSentenceProvider = eModelElementFirstDocSentenceProvider;
+		this.resourceLocator = resourceLocator;
 	}
 	
 	private static final String RELATION_LINE = "--";
@@ -69,6 +75,19 @@ public class PlantUmlTextGenerator {
 			.append(link == null ? "" : " [[" + link + "]]")
 			.append(background == null ? "" : " " + background)
 			.append(" {\n");
+	}
+	
+	protected String getLocalizedName(ENamedElement namedElement) {
+		if (resourceLocator != null) {
+			Context ctx = resourceLocator.get(namedElement);
+			if (ctx != null) {
+				String text = ctx.get("label", String.class);
+				if (text != null) {
+					return text;
+				}
+			}
+		}
+		return namedElement.getName();
 	}
 
 	protected void appendClassEnd() throws IOException {
@@ -271,7 +290,7 @@ public class PlantUmlTextGenerator {
 			collector.append("*");
 		} else if (opposite!=null) {
 			collector.append("\"");
-			collector.append(opposite.getName());			
+			collector.append(getLocalizedName(opposite));			
 			String multiplicity = getMultiplicity(opposite);
 			if (!multiplicity.isEmpty()) {
 				collector.append("["+multiplicity+"]");
@@ -299,7 +318,7 @@ public class PlantUmlTextGenerator {
 			}
 		} else {
 			collector.append("\"");
-			collector.append(ref.getName());			
+			collector.append(getLocalizedName(ref));			
 			if (!multiplicity.isEmpty()) {
 				collector.append("["+multiplicity+"]");
 			}
@@ -311,7 +330,7 @@ public class PlantUmlTextGenerator {
 		if (opposite == null) {
 			collector
 				.append(" : ")
-				.append(ref.getName());
+				.append(getLocalizedName(ref));
 		}
 		
 		collector.append(System.lineSeparator());
@@ -383,12 +402,12 @@ public class PlantUmlTextGenerator {
 		}
 	}
 	
-	protected static String qualifiedName(EClassifier eClassifier) {
+	protected String qualifiedName(EClassifier eClassifier) {
 		EPackage ePackage = eClassifier.getEPackage();
 		if (ePackage == null) {
-			return eClassifier.getName();				
+			return getLocalizedName(eClassifier);				
 		}
-		return "\""+ePackage.getName()+" ("+ePackage.getNsURI()+")."+eClassifier.getName()+"\"";
+		return "\""+getLocalizedName(ePackage)+" ("+ePackage.getNsURI()+")."+getLocalizedName(eClassifier)+"\"";
 	}
 	
 	public void append(EClass eClass) throws IOException {
@@ -403,7 +422,7 @@ public class PlantUmlTextGenerator {
 			for (EAttribute attribute: eClass.getEAttributes()) {			
 				EClassifier eType = attribute.getEType();
 				if (eType != null) {
-					appendAttribute(null, null, getTypeName(eType) + (attribute.isMany() ? "[]" : ""), attribute.getName());
+					appendAttribute(null, null, getTypeName(eType) + (attribute.isMany() ? "[]" : ""), getLocalizedName(attribute));
 				}						
 			}
 		}
@@ -411,13 +430,13 @@ public class PlantUmlTextGenerator {
 			for (EOperation op : eClass.getEOperations()) {
 				Collection<String> parameters = new ArrayList<String>();
 				for (EParameter parameter : op.getEParameters()) {
-					String paramString = parameter.getName();
+					String paramString = getLocalizedName(parameter);
 					if (parameter.getEType() != null) {
-						paramString = parameter.getEType().getName() + " " + paramString;
+						paramString = getLocalizedName(parameter.getEType()) + " " + paramString;
 					}
 					parameters.add(paramString);
 				}
-				appendOperation(null, null, getTypeName(op.getEType()), op.getName(), parameters);
+				appendOperation(null, null, getTypeName(op.getEType()), getLocalizedName(op), parameters);
 			}
 		}
 		appendClassEnd();
@@ -469,7 +488,7 @@ public class PlantUmlTextGenerator {
 	public void append(EEnum eEnum, String background) throws IOException {
 		appendClassStart(null, "enum", qualifiedName(eEnum), getEClassifierLink(eEnum), background);
 		for (EEnumLiteral literal : eEnum.getELiterals()) {
-			appendAttribute(String.valueOf(literal.getValue()), null, literal.getName(), literal.getName().equals(literal.getLiteral()) ? "" : literal.getLiteral());
+			appendAttribute(String.valueOf(literal.getValue()), null, getLocalizedName(literal), literal.getName().equals(literal.getLiteral()) ? "" : literal.getLiteral());
 		}
 		appendClassEnd();
 	}
@@ -481,7 +500,7 @@ public class PlantUmlTextGenerator {
 				typeName = type.getInstanceClassName();
 			}
 			if (typeName == null) {
-				typeName = type.getName();
+				typeName = getLocalizedName(type);
 			}
 		}
 		return getSimpleName(typeName);

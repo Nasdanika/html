@@ -8,6 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.jsoup.Jsoup;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ResourceLocator;
 import org.nasdanika.emf.AnnotationSource;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.bootstrap.Color;
@@ -45,6 +47,18 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 
 	@Override
 	public String getText() {
+		@SuppressWarnings("unchecked")
+		ResourceLocator<ENamedElement> resourceLocator = EObjectAdaptable.adaptTo(modelElement, ResourceLocator.class);
+		if (resourceLocator != null) {
+			Context ctx = resourceLocator.get(modelElement);
+			if (ctx != null) {
+				String text = ctx.get("label", String.class);
+				if (text != null) {
+					return text;
+				}
+			}
+		}
+				
 		String[] cca = StringUtils.splitByCharacterTypeCamelCase(modelElement.getName());
 		cca[0] = StringUtils.capitalize(cca[0]);
 		for (int i=1; i<cca.length; ++i) {
@@ -78,7 +92,20 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 
 	@Override
 	public String getDescription() {
-		String markdown = EcoreUtil.getDocumentation(modelElement);
+		String markdown = null;
+
+		@SuppressWarnings("unchecked")
+		ResourceLocator<ENamedElement> resourceLocator = EObjectAdaptable.adaptTo(modelElement, ResourceLocator.class);
+		if (resourceLocator != null) {
+			Context ctx = resourceLocator.get(modelElement);
+			if (ctx != null) {
+				markdown = ctx.get("description", String.class);
+			}
+		}
+		
+		if (markdown == null) {
+			markdown = EcoreUtil.getDocumentation(modelElement);
+		}
 		if (markdown == null || markdown.trim().isEmpty()) {
 			return null;
 		}
