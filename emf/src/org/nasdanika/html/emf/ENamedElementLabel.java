@@ -99,7 +99,7 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 		if (resourceLocator != null) {
 			Context ctx = resourceLocator.get(modelElement);
 			if (ctx != null) {
-				markdown = ctx.get("description", String.class);
+				markdown = ctx.get("documentation", String.class);
 			}
 		}
 		
