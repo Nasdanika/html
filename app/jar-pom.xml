@@ -11,6 +11,17 @@
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML Application</name>
 	<description>Classes for generating HTML Application UI.</description>
+	<repositories>
+		<repository>
+			<id>nasdanika-core-snapshots</id>
+			<name>nasdanika-core-snapshots</name>
+			<url>https://www.nasdanika.org/home/products/core/maven-repository</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<layout>default</layout>
+		</repository>
+	</repositories>	
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
@@ -42,5 +53,11 @@
 			<artifactId>org.nasdanika.html.echarts</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.core</groupId>
+			<artifactId>org.nasdanika.common</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>
+
