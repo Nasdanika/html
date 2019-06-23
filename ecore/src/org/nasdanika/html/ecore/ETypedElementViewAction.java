@@ -3,6 +3,7 @@ package org.nasdanika.html.ecore;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -19,7 +20,7 @@ public class ETypedElementViewAction<T extends ETypedElement> extends ENamedElem
 	}
 	
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.nasdanika.bank.Customer;
 import org.nasdanika.bank.CustomerAccount;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -55,7 +56,7 @@ public class CustomerViewAction extends EObjectViewAction<Customer> {
 	}
 	
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		Table accountsTable = viewGenerator.get(BootstrapFactory.class).table().bordered();
 		accountsTable.headerRow("Account", "Balance");
 		for (CustomerAccount account: target.getAccounts()) {

@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import org.nasdanika.bank.Customer;
 import org.nasdanika.bank.CustomerAccount;
 import org.nasdanika.bank.Transaction;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
@@ -68,7 +69,7 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 	}
 	
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {		
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {		
 		// Current transactions table ordered reverse chronological.
 		List<Transaction<?>> currentTransactions = new ArrayList<>();
 		target.getStatements().stream().filter(s -> s.getClosingDate() == null).forEach(s -> {

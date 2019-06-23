@@ -3,6 +3,7 @@ package org.nasdanika.html.app.viewparts;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Label;
@@ -33,7 +34,7 @@ public class ViewSingleValuePropertySourceViewPart implements ViewPart {
 	}
 
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		if (propertySource == null) {
 			return "";
 		}

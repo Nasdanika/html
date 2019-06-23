@@ -3,6 +3,7 @@ package org.nasdanika.html.app.viewparts;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
@@ -40,7 +41,7 @@ public class NavigationBarViewPart implements ViewPart {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		if (principalAction == null) {
 			return null;
 		}

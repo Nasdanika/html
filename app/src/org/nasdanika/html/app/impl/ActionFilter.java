@@ -2,6 +2,7 @@ package org.nasdanika.html.app.impl;
 
 import java.util.List;
 
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Label;
@@ -39,8 +40,8 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	}
 
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
-		return target.generate(viewGenerator);
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		return target.generate(viewGenerator, null);
 	}
 
 	@Override

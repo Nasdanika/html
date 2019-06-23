@@ -2,6 +2,7 @@ package org.nasdanika.html.app.viewparts;
 
 import java.util.List;
 
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
@@ -38,8 +39,8 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 	}
 
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
-		return delegate.generate(viewGenerator);
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		return delegate.generate(viewGenerator, null);
 	}
 
 }

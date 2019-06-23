@@ -3,6 +3,7 @@ package org.nasdanika.html.app.viewparts;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
@@ -31,7 +32,7 @@ public class ActionGroupNavigationPanelViewPart implements ViewPart {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
 		for (Entry<Label, ?> categoryGroup: Util.groupByCategory(navigationPanelActions)) {
 			ActionGroup actionGroup = viewGenerator.get(BootstrapFactory.class).actionGroup(true);			

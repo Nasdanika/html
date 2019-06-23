@@ -2,6 +2,7 @@ package org.nasdanika.html.app.viewparts;
 
 import java.util.List;
 
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
@@ -22,7 +23,7 @@ public class FooterViewPart implements ViewPart {
 	}
 
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		// Single-level footer actions. 
 		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
 		for (Action ca: footerActions) {

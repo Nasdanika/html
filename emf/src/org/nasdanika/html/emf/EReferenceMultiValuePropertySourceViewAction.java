@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Label;
@@ -23,8 +24,8 @@ public class EReferenceMultiValuePropertySourceViewAction<T extends EObject> ext
 	}
 	
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
-		return new ViewMultiValuePropertySourceViewPart(this).generate(viewGenerator);
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		return new ViewMultiValuePropertySourceViewPart(this).generate(viewGenerator, null);
 	}
 
 	@Override

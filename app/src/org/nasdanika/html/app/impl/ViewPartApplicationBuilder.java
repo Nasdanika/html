@@ -62,19 +62,19 @@ public abstract class ViewPartApplicationBuilder implements ApplicationBuilder {
 		application.footer(generateFooter(viewGenerator));
 	}
 	protected Object generateFooter(ViewGenerator viewGenerator) {
-		return getFooterViewPart().generate(viewGenerator);
+		return getFooterViewPart().generate(viewGenerator, null);
 	}
 	protected Object generateContentPanel(ViewGenerator viewGenerator) {
-		return getContentPanelViewPart().generate(viewGenerator);
+		return getContentPanelViewPart().generate(viewGenerator, null);
 	}
 	protected Object generateNavigationPanel(ViewGenerator viewGenerator) {
-		return getNavigationPanelViewPart().generate(viewGenerator);
+		return getNavigationPanelViewPart().generate(viewGenerator, null);
 	}
 	protected Object generateNavigationBar(ViewGenerator viewGenerator) {
-		return getNavigationBarViewPart().generate(viewGenerator);
+		return getNavigationBarViewPart().generate(viewGenerator, null);
 	}
 	protected Object generateHeader(ViewGenerator viewGenerator) {
-		return getHeaderViewPart().generate(viewGenerator);
+		return getHeaderViewPart().generate(viewGenerator, null);
 	}
 
 	/**

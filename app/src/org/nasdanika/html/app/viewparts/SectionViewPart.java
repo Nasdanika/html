@@ -3,6 +3,7 @@ package org.nasdanika.html.app.viewparts;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.NamedItemsContainer;
@@ -42,10 +43,10 @@ public class SectionViewPart implements ViewPart {
 	}
 
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
 		// Process viewPart as in ViewGenerator ???
-		ret.content(section.generate(viewGenerator));
+		ret.content(section.generate(viewGenerator, null));
 
 		// Context actions		
 		if (showContextActions) {
@@ -72,7 +73,7 @@ public class SectionViewPart implements ViewPart {
 					activeSubSection = subSection; // First if null.
 				}
 				
-				Object subSectionContent = new SectionViewPart(subSection, activeAction, true, level + 1).generate(viewGenerator);
+				Object subSectionContent = new SectionViewPart(subSection, activeAction, true, level + 1).generate(viewGenerator, progressMonitor);
 				
 				String contentId = subSection.getId() == null ? null : "nsd-action-content-"+subSection.getId();
 				Fragment labelFragment = viewGenerator.labelFragment(subSection);

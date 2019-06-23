@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.TagName;
@@ -52,7 +53,7 @@ public class ContentPanelViewPart implements ViewPart {
 	}	
 
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
 		Action lastNonSection = lastNonSection();
 		List<Action> lastNonSectionPath = lastNonSection.getPath();
@@ -73,7 +74,7 @@ public class ContentPanelViewPart implements ViewPart {
 			ret.content(viewGenerator.label(lastNonSection, viewGenerator.get(HTMLFactory.class).tag(TagName.h2)));			
 		}
 		
-		ret.content(new SectionViewPart(lastNonSection, activeAction, showContextActions, 0).generate(viewGenerator));		
+		ret.content(new SectionViewPart(lastNonSection, activeAction, showContextActions, 0).generate(viewGenerator, null));		
 		return ret;
 	}	
 	

@@ -336,7 +336,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 
 	@Override
 	public void add(NamedItemsContainer container, Action action) {
-		container.item(labelFragment(action), processViewPart(action.generate(this)));		
+		container.item(labelFragment(action), processViewPart(action.generate(this, null)));		
 	}
 
 	@Override
@@ -359,19 +359,19 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	@Override
 	public Tag addContent(ActionGroup actionGroup, Action action, boolean active) {
 		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
-		return actionGroup.contentAction(labelFragment(action), active, action.isDisabled(), action.getColor(), contentId, processViewPart(action.generate(this)));
+		return actionGroup.contentAction(labelFragment(action), active, action.isDisabled(), action.getColor(), contentId, processViewPart(action.generate(this, null)));
 	}
 
 	@Override
 	public void add(Navs navs, Action action, boolean active) {
 		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
-		navs.item(labelFragment(action), active, action.isDisabled(), contentId, processViewPart(action.generate(this)));
+		navs.item(labelFragment(action), active, action.isDisabled(), contentId, processViewPart(action.generate(this, null)));
 	}
 	
 	@Override
 	public Object processViewPart(Object obj) {
 		if (obj instanceof ViewPart) {
-			return processViewPart(((ViewPart) obj).generate(this));
+			return processViewPart(((ViewPart) obj).generate(this, null));
 		}
 		return obj;
 	}

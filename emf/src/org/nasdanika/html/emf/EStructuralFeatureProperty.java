@@ -6,6 +6,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.AccessController;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Choice;
 import org.nasdanika.html.app.Diagnostic;
@@ -37,7 +38,7 @@ public class EStructuralFeatureProperty implements Property {
 				return new ViewPart() {
 
 					@Override
-					public Object generate(ViewGenerator viewGenerator) {
+					public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 						return viewGenerator.link(viewAction);
 					}
 					

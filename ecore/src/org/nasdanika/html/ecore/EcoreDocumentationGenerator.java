@@ -171,7 +171,7 @@ public class EcoreDocumentationGenerator {
 		StringBuilder contentBuilder = new StringBuilder();
 		ViewPart contentPanelViewPart = new ContentPanelViewPart(action, false); // Use adapter?
 		ViewGenerator viewGenerator = new EcoreDocumentationViewGenerator(contentBuilder::append, contentBuilder::append, (path, content) -> resourceConsumer.apply("doc/" + path, content));
-		contentBuilder.append(contentPanelViewPart.generate(viewGenerator));
+		contentBuilder.append(contentPanelViewPart.generate(viewGenerator, null));
 		resourceConsumer.apply("doc/"+action.getId()+".html", contentBuilder.toString());		
 		for (Action child: action.getChildren()) {
 			if (child.isInRole(Role.NAVIGATION)) {

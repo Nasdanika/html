@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.json.JSONObject;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
@@ -33,7 +34,7 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 	}
 	
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		String treeId = "nsd-navigation-tree";
 		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
 		Tag container = htmlFactory.div().id(treeId);

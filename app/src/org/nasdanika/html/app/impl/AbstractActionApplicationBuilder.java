@@ -54,7 +54,7 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 	@Override
 	protected ViewPart getHeaderViewPart() {
 		Action rootAction = getRootAction();
-		return rootAction == null ? vg -> null : viewGenerator -> {
+		return rootAction == null ? (vg, progressMonitor) -> null : (viewGenerator, progressMonitor) -> {
 			Tag link = viewGenerator.link(rootAction).style().text().decoration().none();
 			viewGenerator.get(BootstrapFactory.class).wrap(link).text().color(Color.DARK);
 			return viewGenerator.get(BootstrapFactory.class).display(link, 4);
@@ -64,25 +64,25 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 	@Override
 	protected ViewPart getNavigationBarViewPart() {
 		Action principalAction = getPrincipalAction();
-		return principalAction == null ? vg -> null : new NavigationBarViewPart(principalAction, getActiveAction());
+		return principalAction == null ? (vg, progressMonitor) -> null : new NavigationBarViewPart(principalAction, getActiveAction());
 	}
 
 	@Override
 	protected ViewPart getNavigationPanelViewPart() {		
 		List<? extends Action> navigationPanelActions = getNavigationPanelActions();
-		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? vg -> null : new AdaptiveNavigationPanelViewPart(navigationPanelActions, getActiveAction());
+		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? (vg, progressMonitor) -> null : new AdaptiveNavigationPanelViewPart(navigationPanelActions, getActiveAction());
 	}
 
 	@Override
 	protected ViewPart getContentPanelViewPart() {
 		Action activeAction = getActiveAction();
-		return activeAction == null ? vg -> null : new ContentPanelViewPart(activeAction, Util.equal(activeAction, getPrincipalAction()) || Util.equal(activeAction, getRootAction()));
+		return activeAction == null ? (vg, progressMonitor) -> null : new ContentPanelViewPart(activeAction, Util.equal(activeAction, getPrincipalAction()) || Util.equal(activeAction, getRootAction()));
 	}
 
 	@Override
 	protected ViewPart getFooterViewPart() {
 		Action rootAction = getRootAction();
-		return rootAction == null ? vg -> null : new FooterViewPart(rootAction.getContextChildren());
+		return rootAction == null ? (vg, progressMonitor) -> null : new FooterViewPart(rootAction.getContextChildren());
 	}
 	
 }

@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.bank.Bank;
 import org.nasdanika.bank.Customer;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.NavigationActionActivator;
@@ -65,7 +66,7 @@ public class BankViewAction extends EObjectViewAction<Bank> {
 	 * Other options include instantiating app model template (once this functionality is available).
 	 */
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		return viewGenerator.get(HTMLFactory.class).tokenSource().interpolate(getClass().getResource("BankHomePage.html"));
 	}
 }

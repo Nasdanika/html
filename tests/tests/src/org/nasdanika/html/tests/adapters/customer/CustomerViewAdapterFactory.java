@@ -42,7 +42,7 @@ public class CustomerViewAdapterFactory extends ComposedAdapterFactory {
 						BankPackage.Literals.BANK,
 						NavigationPanelViewPart.class, 
 						this.getClass().getClassLoader(), 
-						viewGenerator -> ""));
+						(viewGenerator, progressMonitor) -> ""));
 		
 		// Customer account view adapter factory is aware of the context customer
 		registerAdapterFactory(

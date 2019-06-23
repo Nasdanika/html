@@ -1,6 +1,7 @@
 package org.nasdanika.html.ecore;
 
 import org.eclipse.emf.ecore.EEnum;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -14,7 +15,7 @@ public class EEnumViewAction extends EClassifierViewAction<EEnum> {
 	}
 	
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);

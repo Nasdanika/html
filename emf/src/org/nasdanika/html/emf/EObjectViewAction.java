@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Identity;
@@ -34,8 +35,8 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	}
 	
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
-		return new ViewSingleValuePropertySourceViewPart(this).generate(viewGenerator);
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		return new ViewSingleValuePropertySourceViewPart(this).generate(viewGenerator, null);
 	}
 	
 	@Override

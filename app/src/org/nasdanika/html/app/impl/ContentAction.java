@@ -2,6 +2,7 @@ package org.nasdanika.html.app.impl;
 
 import java.util.Map;
 
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 
@@ -41,7 +42,7 @@ public class ContentAction extends ActionImpl {
 	}
 
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		return getContent();
 	}
 

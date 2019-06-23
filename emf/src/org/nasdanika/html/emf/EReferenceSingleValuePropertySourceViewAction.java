@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Label;
@@ -27,7 +28,7 @@ public class EReferenceSingleValuePropertySourceViewAction<T extends EObject> ex
 	}
 	
 	@Override
-	public Object generate(ViewGenerator viewGenerator) {
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		EObject value = (EObject) getValue();
 		if (value == null) {
 			// TODO - some action to create an object for containment references.
@@ -36,7 +37,7 @@ public class EReferenceSingleValuePropertySourceViewAction<T extends EObject> ex
 		
 		Action viewAction = EObjectAdaptable.adaptTo(value, ViewAction.class);
 		if (viewAction != null) {
-			return viewAction.generate(viewGenerator);
+			return viewAction.generate(viewGenerator, null);
 		}
 		return null;
 	}
