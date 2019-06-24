@@ -22,7 +22,6 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Input;
 import org.nasdanika.html.InputType;
-import org.nasdanika.html.TokenSource;
 import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Producer;
 import org.nasdanika.html.Select;
@@ -30,6 +29,7 @@ import org.nasdanika.html.Table;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.TextArea;
+import org.nasdanika.html.TokenSource;
 
 /**
  * HTML factory which relies on Bootstrap styles and scripts.

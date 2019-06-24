@@ -4,13 +4,11 @@ import java.util.function.Consumer;
 
 import org.eclipse.emf.codegen.ecore.genmodel.GenModel;
 import org.eclipse.emf.codegen.ecore.genmodel.GenPackage;
-import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.ResourceLocator;
 import org.nasdanika.common.SimpleMutableContext;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Action.Role;
@@ -47,7 +45,7 @@ public class EcoreDocumentationGenerator {
 	 * @param description
 	 * @param resourceLocator Locator of localized resources.
 	 */
-	public EcoreDocumentationGenerator(String title, String description, ResourceLocator<EModelElement> resourceLocator) {
+	public EcoreDocumentationGenerator(String title, String description) {
 		rootAction = new ActionImpl();
 		rootAction.setText(title);
 		rootAction.setDescription(description);
@@ -64,8 +62,15 @@ public class EcoreDocumentationGenerator {
 		rootAction.getChildren().add(principalAction);
 		
 		resourceSet = new GenModelResourceSet();		
-		EcoreViewActionAdapterFactory adapterFactory = new EcoreViewActionAdapterFactory(principalAction, resourceLocator);		
-		resourceSet.getAdapterFactories().add(adapterFactory);
+		resourceSet.getAdapterFactories().add(createAdapterFactory());
+	}
+
+	/**
+	 * Override to customize the adapter factory.
+	 * @return
+	 */
+	protected EcoreViewActionAdapterFactory createAdapterFactory() {
+		return new EcoreViewActionAdapterFactory(principalAction);
 	}
 	
 	public void loadGenModel(String nsURI) {
@@ -137,6 +142,7 @@ public class EcoreDocumentationGenerator {
 				
 		Table table = bootstrapFactory.table().bordered();
 		TableHeader header = table.header();
+		// TODO - localization.
 		header.headerRow("Package", "Summary");
 		TableBody body = table.body();
 		principalAction.getChildren().forEach(child -> body.row(viewGenerator.link(child), child.getTooltip()));

@@ -24,7 +24,7 @@ public class EReferenceViewAction extends EStructuralFeatureViewAction<EReferenc
 			EObject oppositeContainer = opposite.eContainer();
 			ViewAction oppositeContainerViewAction = EObjectAdaptable.adaptTo(oppositeContainer, ViewAction.class);
 			Row typeRow = ret.row();
-			typeRow.header("Opposite");
+			typeRow.header(getResourceContext().getString("ui/opposite", "Opposite"));
 			Cell refCell = typeRow.cell();
 			if (oppositeContainerViewAction != null) {
 				refCell.toHTMLElement().content(viewGenerator.link(oppositeContainerViewAction), "/");				

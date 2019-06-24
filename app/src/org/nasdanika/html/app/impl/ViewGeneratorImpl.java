@@ -5,7 +5,6 @@ import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 import org.nasdanika.common.Context;
-import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.SimpleMutableContext;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;

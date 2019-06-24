@@ -25,9 +25,8 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.nasdanika.common.Context;
-import org.nasdanika.common.ResourceLocator;
 import org.nasdanika.html.app.impl.Util;
+import org.nasdanika.html.emf.EObjectAdaptable;
 
 /**
  * This code is based on net.sourceforge.plantuml.text.AbstractDiagramTextProvider and 
@@ -46,17 +45,14 @@ public class PlantUmlTextGenerator {
 	private Appendable collector;
 	private Function<EClassifier, String> eClassifierLinkResolver;
 	private Function<EModelElement, String> eModelElementFirstDocSentenceProvider;
-	private ResourceLocator<EModelElement> resourceLocator;
 
 	public PlantUmlTextGenerator(
 			Appendable collector, 
 			Function<EClassifier, String> eClassifierLinkResolver, 
-			Function<EModelElement, String> eModelElementFirstDocSentenceProvider,
-			ResourceLocator<EModelElement> resourceLocator) {
+			Function<EModelElement, String> eModelElementFirstDocSentenceProvider) {
 		this.collector = collector;
 		this.eClassifierLinkResolver = eClassifierLinkResolver;
 		this.eModelElementFirstDocSentenceProvider = eModelElementFirstDocSentenceProvider;
-		this.resourceLocator = resourceLocator;
 	}
 	
 	private static final String RELATION_LINE = "--";
@@ -78,16 +74,7 @@ public class PlantUmlTextGenerator {
 	}
 	
 	protected String getLocalizedName(ENamedElement namedElement) {
-		if (resourceLocator != null) {
-			Context ctx = resourceLocator.get(namedElement);
-			if (ctx != null) {
-				String text = ctx.get("label", String.class);
-				if (text != null) {
-					return text;
-				}
-			}
-		}
-		return namedElement.getName();
+		return EObjectAdaptable.getResourceContext(namedElement).getString("label", namedElement.getName());
 	}
 
 	protected void appendClassEnd() throws IOException {

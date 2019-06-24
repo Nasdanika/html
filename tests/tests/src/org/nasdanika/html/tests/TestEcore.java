@@ -4,14 +4,20 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.function.BiFunction;
 
+import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.ResourceLocator;
 import org.nasdanika.common.resources.Container;
 import org.nasdanika.common.resources.FileSystemContainer;
 import org.nasdanika.emf.EModelElementAnnotationResourceLocator;
+import org.nasdanika.emf.FunctionAdapterFactory;
 import org.nasdanika.html.ecore.EcoreDocumentationGenerator;
+import org.nasdanika.html.ecore.EcoreViewActionAdapterFactory;
+import org.nasdanika.html.ecore.localizations.RussianResourceLocator;
 
 public class TestEcore extends HTMLTestBase {
 	
@@ -21,7 +27,7 @@ public class TestEcore extends HTMLTestBase {
 	 */
 	@Test
 	public void testEcoreDocumentation() {		
-		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Nasdanika Bank Model", null, null);
+		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Nasdanika Bank Model", null);
 		generator.loadGenModel("urn:org.nasdanika.bank");
 		Container<InputStream> fsc = new FileSystemContainer(new File("target/test-dumps/ecore"));
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
@@ -42,8 +48,24 @@ public class TestEcore extends HTMLTestBase {
 	 */
 	@Test
 	public void testRussianEcoreDocumentation() {		
-		EModelElementAnnotationResourceLocator rl = new EModelElementAnnotationResourceLocator("urn:org.nasdanika", key -> key+"_ru");
-		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Модель Банка Насданики", "Общее описание модели - обычно в случае если документации пакетов недостаточно", rl);
+		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Модель Банка Насданики", "Общее описание модели - обычно в случае если документации пакетов недостаточно") {
+			
+			
+			@Override
+			protected EcoreViewActionAdapterFactory createAdapterFactory() {
+				EcoreViewActionAdapterFactory adapterFactory = super.createAdapterFactory();
+				
+				adapterFactory.registerAdapterFactory(
+						new FunctionAdapterFactory<ResourceLocator, EModelElement>(
+								EcorePackage.Literals.EMODEL_ELEMENT, 
+								ResourceLocator.class, 
+								this.getClass().getClassLoader(), 
+								RussianResourceLocator::new));
+				
+				return adapterFactory;
+			}
+			
+		};
 		generator.loadGenModel("urn:org.nasdanika.bank");
 		Container<InputStream> fsc = new FileSystemContainer(new File("target/test-dumps/ecore/ru"));
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();

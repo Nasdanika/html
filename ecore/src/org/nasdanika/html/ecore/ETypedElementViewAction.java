@@ -44,12 +44,12 @@ public class ETypedElementViewAction<T extends ETypedElement> extends ENamedElem
 		if (type != null) {
 			ViewAction typeViewAction = EObjectAdaptable.adaptTo(type, ViewAction.class);
 			Row typeRow = table.row();
-			typeRow.header("Type");
+			typeRow.header(getResourceContext().getString("ui/type", "Type"));
 			typeRow.cell(typeViewAction == null ?  type.getName() : viewGenerator.link(typeViewAction));
 		}
 		
 		Row cardinalityRow = table.row();
-		cardinalityRow.header("Cardinality");
+		cardinalityRow.header(getResourceContext().getString("ui/cardinality", "Cardinality"));
 		cardinalityRow.cell(cardinality(target));
 		
 		return table;

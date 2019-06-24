@@ -15,7 +15,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypedElement;
@@ -23,7 +22,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.ResourceLocator;
 import org.nasdanika.common.resources.File;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
@@ -60,7 +58,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);
 		if (target.isAbstract()) {
-			contentContainer.row().col(target.isInterface() ? "Interface" : "Abstract").padding().bottom(3);
+			contentContainer.row().col(target.isInterface() ? getResourceContext().getString("ui/interface", "Interface") : getResourceContext().getString("ui/abstract", "Abstract")).padding().bottom(3);
 		}
 		String description = getDescription();
 		if (!Util.isBlank(description) && description.length() < descriptionTabLengthThreshold) {
@@ -71,7 +69,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 		contentContainer.row().col(tabs);
 		
 		if (!Util.isBlank(description) && description.length() >= descriptionTabLengthThreshold) {
-			tabs.item("Description", description);
+			tabs.item(getResourceContext().getString("ui/description", "Description"), description);
 		}		
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -87,10 +85,10 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 				imageFile.setContents(baos.toByteArray(), imageMonitor);				
 				HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
 				Tag diagramImage = htmlFactory.tag(TagName.img).attribute("src", viewGenerator.get("image-path", "")+imagePath).attribute("usemap", "#plantuml_map");
-				tabs.item("Diagram", htmlFactory.fragment(diagramImage, diagramCMap));				
+				tabs.item(getResourceContext().getString("ui/diagram", "Diagram"), htmlFactory.fragment(diagramImage, diagramCMap));				
 			}
 		} catch (IOException e) {
-			tabs.item("Diagram", bootstrapFactory.alert(Color.DANGER, "Error generating class diagram: "+e));
+			tabs.item(getResourceContext().getString("ui/diagram", "Diagram"), bootstrapFactory.alert(Color.DANGER, "Error generating class diagram: "+e));
 			e.printStackTrace();
 		}
 		
@@ -98,7 +96,11 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 		if (!children.isEmpty()) {
 			Table table = bootstrapFactory.table().bordered();
 			TableHeader header = table.header();
-			header.headerRow("Name", "Type", "Cardinality", "Summary");
+			header.headerRow(
+					getResourceContext().getString("ui/name", "Name"), 
+					getResourceContext().getString("ui/type", "Type"), 
+					getResourceContext().getString("ui/cardinality", "Cardinality"), 
+					getResourceContext().getString("ui/summary", "Summary"));
 			TableBody body = table.body();
 			children.forEach(child -> {
 				ETypedElement typedElement = child.adaptTo(ETypedElement.class);
@@ -106,13 +108,15 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 				ViewAction typeViewAction = EObjectAdaptable.adaptTo(type, ViewAction.class);
 				body.row(viewGenerator.link(child), typeViewAction == null ?  type.getName() : viewGenerator.link(typeViewAction), cardinality(typedElement), child.getTooltip());			
 			});
-			tabs.item("Contents", table);
+			tabs.item(getResourceContext().getString("ui/contents", "Contents"), table);
 		}
 		
 		EList<EClass> st = target.getESuperTypes();
 		if (!st.isEmpty()) {
 			Table superTypesTable = bootstrapFactory.table().bordered();
-			superTypesTable.header().headerRow("Name", "Summary");
+			superTypesTable.header().headerRow(
+					getResourceContext().getString("ui/name", "Name"), 
+					getResourceContext().getString("ui/summary", "Summary"));
 			TableBody superTypesTableBody = superTypesTable.body();
 			st.forEach(superType -> {
 				Action viewAction = EObjectAdaptable.adaptTo(superType, ViewAction.class);
@@ -120,13 +124,15 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 					superTypesTableBody.row(viewGenerator.link(viewAction), viewAction.getTooltip());
 				}
 			});
-			tabs.item("Supertypes", superTypesTable);							
+			tabs.item(getResourceContext().getString("ui/supertypes", "Supertypes"), superTypesTable);							
 		}
 		
 		List<EClass> sbt = getSubTypes(target).stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (!sbt.isEmpty()) {
 			Table subTypesTable = bootstrapFactory.table().bordered();
-			subTypesTable.header().headerRow("Name", "Summary");
+			subTypesTable.header().headerRow(
+					getResourceContext().getString("ui/name", "Name"), 
+					getResourceContext().getString("ui/summary", "Summary"));
 			TableBody subTypesTableBody = subTypesTable.body();
 			sbt.forEach(subType -> {
 				Action viewAction = EObjectAdaptable.adaptTo(subType, ViewAction.class);
@@ -134,7 +140,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 					subTypesTableBody.row(viewGenerator.link(viewAction), viewAction.getTooltip());
 				}
 			});
-			tabs.item("Subtypes", subTypesTable);				
+			tabs.item(getResourceContext().getString("ui/subtypes", "Subtypes"), subTypesTable);				
 			
 		}
 		
@@ -165,9 +171,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 			OutputStream out) throws IOException {
 		
 		StringBuilder sb = new StringBuilder();
-		@SuppressWarnings("unchecked")
-		ResourceLocator<EModelElement> rl = EObjectAdaptable.adaptTo(target, ResourceLocator.class);
-		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, eClassifierLinkResolver, eModelElementFirstDocSentenceProvider, rl) {
+		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, eClassifierLinkResolver, eModelElementFirstDocSentenceProvider) {
 			
 			@Override
 			protected Collection<EClass> getSubTypes(EClass eClass) {

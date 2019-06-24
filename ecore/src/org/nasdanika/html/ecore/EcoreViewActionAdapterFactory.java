@@ -5,17 +5,14 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
-import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.nasdanika.common.ResourceLocator;
 import org.nasdanika.emf.ComposedAdapterFactory;
 import org.nasdanika.emf.FunctionAdapterFactory;
-import org.nasdanika.emf.InstanceAdapterFactory;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.emf.ViewAction;
 
@@ -26,8 +23,7 @@ import org.nasdanika.html.emf.ViewAction;
  */
 public class EcoreViewActionAdapterFactory extends ComposedAdapterFactory {
 	
-	@SuppressWarnings("rawtypes")
-	public EcoreViewActionAdapterFactory(Action topLevelPackageParentAction, ResourceLocator<EModelElement> resourceLocator) {
+	public EcoreViewActionAdapterFactory(Action topLevelPackageParentAction) {
 		// Registering adapter factories.
 		registerAdapterFactory(
 			new FunctionAdapterFactory<ViewAction, EPackage>(
@@ -91,10 +87,6 @@ public class EcoreViewActionAdapterFactory extends ComposedAdapterFactory {
 				ViewAction.class, 
 				this.getClass().getClassLoader(), 
 				EParameterViewAction::new));	
-		
-		if (resourceLocator != null) {
-			registerAdapterFactory(new InstanceAdapterFactory<ResourceLocator>(ResourceLocator.class, this.getClass().getClassLoader(), resourceLocator));
-		}
 		
 	}
 

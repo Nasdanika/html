@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.AccessController;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.ResourceLocator;
 import org.nasdanika.html.app.Adaptable;
 
 /**
@@ -32,7 +33,26 @@ public class EObjectAdaptable<T extends EObject> implements Adaptable {
 	public <A> A adaptTo(Class<A> type) {
 		return adaptTo(target, type);
 	}
+
+	/**
+	 * Adapts target to ResourceLocator and returns context or empty context if there is no context, i.e. the context is never null.
+	 * @param target
+	 * @return
+	 */
+	public static Context getResourceContext(EObject target) {
+		return Context.EMPTY_CONTEXT.compose(EObjectAdaptable.adaptTo(target, ResourceLocator.class));
+	}
 	
+	/**
+	 * Adapts target to ResourceLocator and returns context or empty context if there is no context, i.e. the context is never null.
+	 * @param target
+	 * @return
+	 */
+	protected Context getResourceContext() {
+		return getResourceContext(target);
+	}
+	
+		
 	@SuppressWarnings("unchecked")
 	public static <A> A adaptTo(EObject target, Class<A> type) {
 		if (target == null) {
