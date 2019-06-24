@@ -10,6 +10,7 @@ import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.bootstrap.Text.Alignment;
+import org.nasdanika.html.ecore.localization.PropertyKeys;
 import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.ViewAction;
 
@@ -44,12 +45,12 @@ public class ETypedElementViewAction<T extends ETypedElement> extends ENamedElem
 		if (type != null) {
 			ViewAction typeViewAction = EObjectAdaptable.adaptTo(type, ViewAction.class);
 			Row typeRow = table.row();
-			typeRow.header(getResourceContext().getString("ui/type", "Type"));
+			typeRow.header(getResourceContext().getString(PropertyKeys.UI_TYPE, "Type"));
 			typeRow.cell(typeViewAction == null ?  type.getName() : viewGenerator.link(typeViewAction));
 		}
 		
 		Row cardinalityRow = table.row();
-		cardinalityRow.header(getResourceContext().getString("ui/cardinality", "Cardinality"));
+		cardinalityRow.header(getResourceContext().getString(PropertyKeys.UI_CARDINALITY, "Cardinality"));
 		cardinalityRow.cell(cardinality(target));
 		
 		return table;

@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.ResourceLocator;
 import org.nasdanika.common.SimpleMutableContext;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Action.Role;
@@ -28,6 +29,7 @@ import org.nasdanika.html.bootstrap.Table.TableBody;
 import org.nasdanika.html.bootstrap.Table.TableHeader;
 import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.bootstrap.Theme;
+import org.nasdanika.html.ecore.localization.PropertyKeys;
 import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.ViewAction;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
@@ -38,14 +40,15 @@ public class EcoreDocumentationGenerator {
 	private ActionImpl principalAction;
 	private GenModelResourceSet resourceSet;
 	private ActionImpl rootAction;
+	private ResourceLocator resourceLocator;
 
 	/**
 	 * Generates documentation
 	 * @param title
 	 * @param description
-	 * @param resourceLocator Locator of localized resources.
+	 * @param resourceLocator Locator of localized resources for "Package" and "Summary" strings.
 	 */
-	public EcoreDocumentationGenerator(String title, String description) {
+	public EcoreDocumentationGenerator(String title, String description, ResourceLocator resourceLocator) {
 		rootAction = new ActionImpl();
 		rootAction.setText(title);
 		rootAction.setDescription(description);
@@ -63,6 +66,8 @@ public class EcoreDocumentationGenerator {
 		
 		resourceSet = new GenModelResourceSet();		
 		resourceSet.getAdapterFactories().add(createAdapterFactory());
+		
+		this.resourceLocator = resourceLocator;
 	}
 
 	/**
@@ -143,7 +148,11 @@ public class EcoreDocumentationGenerator {
 		Table table = bootstrapFactory.table().bordered();
 		TableHeader header = table.header();
 		// TODO - localization.
-		header.headerRow("Package", "Summary");
+		String pkg = "Package";
+		String summary = "Summary";
+		header.headerRow(
+				resourceLocator == null ? pkg : resourceLocator.getString(PropertyKeys.UI_PACKAGE, pkg), 
+				resourceLocator == null ? summary : resourceLocator.getString(PropertyKeys.UI_SUMMARY, summary));
 		TableBody body = table.body();
 		principalAction.getChildren().forEach(child -> body.row(viewGenerator.link(child), child.getTooltip()));
 		contentContainer.row().col(table);				

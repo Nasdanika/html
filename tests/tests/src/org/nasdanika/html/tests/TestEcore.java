@@ -17,7 +17,8 @@ import org.nasdanika.emf.EModelElementAnnotationResourceLocator;
 import org.nasdanika.emf.FunctionAdapterFactory;
 import org.nasdanika.html.ecore.EcoreDocumentationGenerator;
 import org.nasdanika.html.ecore.EcoreViewActionAdapterFactory;
-import org.nasdanika.html.ecore.localizations.RussianResourceLocator;
+import org.nasdanika.html.ecore.localization.RussianResourceLocator;
+import org.nasdanika.html.ecore.localization.UI;
 
 public class TestEcore extends HTMLTestBase {
 	
@@ -27,7 +28,7 @@ public class TestEcore extends HTMLTestBase {
 	 */
 	@Test
 	public void testEcoreDocumentation() {		
-		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Nasdanika Bank Model", null);
+		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Nasdanika Bank Model", null, null);
 		generator.loadGenModel("urn:org.nasdanika.bank");
 		Container<InputStream> fsc = new FileSystemContainer(new File("target/test-dumps/ecore"));
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
@@ -48,9 +49,11 @@ public class TestEcore extends HTMLTestBase {
 	 */
 	@Test
 	public void testRussianEcoreDocumentation() {		
-		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Модель Банка Насданики", "Общее описание модели - обычно в случае если документации пакетов недостаточно") {
-			
-			
+		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator(
+				"Модель Банка Насданики", 
+				"Общее описание модели - обычно в случае если документации пакетов недостаточно",
+				UI.RU) {
+						
 			@Override
 			protected EcoreViewActionAdapterFactory createAdapterFactory() {
 				EcoreViewActionAdapterFactory adapterFactory = super.createAdapterFactory();

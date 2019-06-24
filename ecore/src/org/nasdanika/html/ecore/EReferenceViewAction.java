@@ -6,6 +6,7 @@ import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
 import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.ecore.localization.PropertyKeys;
 import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.ViewAction;
 
@@ -24,7 +25,7 @@ public class EReferenceViewAction extends EStructuralFeatureViewAction<EReferenc
 			EObject oppositeContainer = opposite.eContainer();
 			ViewAction oppositeContainerViewAction = EObjectAdaptable.adaptTo(oppositeContainer, ViewAction.class);
 			Row typeRow = ret.row();
-			typeRow.header(getResourceContext().getString("ui/opposite", "Opposite"));
+			typeRow.header(getResourceContext().getString(PropertyKeys.UI_OPPOSITE, "Opposite"));
 			Cell refCell = typeRow.cell();
 			if (oppositeContainerViewAction != null) {
 				refCell.toHTMLElement().content(viewGenerator.link(oppositeContainerViewAction), "/");				

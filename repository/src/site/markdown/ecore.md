@@ -34,13 +34,33 @@ Once the Eclipse product is built, the build process launches it.
 
 ## Localization
 
-Model documentation can be localized by providing ``ResourceLocator`` to the generator. 
-In the below example the locator uses model annotations with source ``urn:org.nasdanika``.
+Model documentation can be localized by:
+
+* Providing ``ResourceLocator`` to the generator to localize "Package" and "Summary" strings - the last argument of the constructor.
+* Adding an adapter factory for ``ResourceLocator`` to the generator adapter factory - below it is done by overriding ``createAdapterFactory()`` method to use a resource locator which uses model annotations with source ``urn:org.nasdanika``.
 It reads ``label`` and ``documentation`` keys from the annotation and the mapper function adds ``_ru`` to the keys to retrieve localized values.
 
 ```
-EModelElementAnnotationResourceLocator rl = new EModelElementAnnotationResourceLocator("urn:org.nasdanika", key -> key+"_ru");
-EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Модель Банка Насданики", null, rl);
+EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator(
+		"Модель Банка Насданики", 
+		"Общее описание модели - обычно в случае если документации пакетов недостаточно",
+		UI.RU) {
+				
+	@Override
+	protected EcoreViewActionAdapterFactory createAdapterFactory() {
+		EcoreViewActionAdapterFactory adapterFactory = super.createAdapterFactory();
+		
+		adapterFactory.registerAdapterFactory(
+				new FunctionAdapterFactory<ResourceLocator, EModelElement>(
+						EcorePackage.Literals.EMODEL_ELEMENT, 
+						ResourceLocator.class, 
+						this.getClass().getClassLoader(), 
+						RussianResourceLocator::new));
+		
+		return adapterFactory;
+	}
+	
+};
 generator.loadGenModel("urn:org.nasdanika.bank");
 Container<InputStream> fsc = new FileSystemContainer(new File("target/test-dumps/ecore/ru"));
 ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();

@@ -14,5 +14,5 @@ Require-Bundle: org.nasdanika.html.emf;visibility:=reexport,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi;bundle-version="2.15.0"
 Export-Package: org.nasdanika.html.ecore,
- org.nasdanika.html.ecore.localizations
+ org.nasdanika.html.ecore.localization
 Automatic-Module-Name: org.nasdanika.html.ecore

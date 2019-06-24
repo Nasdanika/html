@@ -31,6 +31,7 @@ import org.nasdanika.html.bootstrap.Table.TableBody;
 import org.nasdanika.html.bootstrap.Table.TableHeader;
 import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.ecore.PlantUmlTextGenerator.RelationshipDirection;
+import org.nasdanika.html.ecore.localization.PropertyKeys;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
@@ -60,7 +61,7 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);
-		contentContainer.row().col("<B>"+getResourceContext().getString("ui/namespace-uri", "NameNamespace URI")+":</B> "+target.getNsURI()).padding().bottom(3);
+		contentContainer.row().col("<B>"+getResourceContext().getString(PropertyKeys.UI_NAMESPACE_URI, "NameNamespace URI")+":</B> "+target.getNsURI()).padding().bottom(3);
 		String description = getDescription();
 		if (!Util.isBlank(description) && description.length() < descriptionTabLengthThreshold) {
 			contentContainer.row().col(description);
@@ -70,7 +71,7 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 		contentContainer.row().col(tabs);
 		
 		if (!Util.isBlank(description) && description.length() >= descriptionTabLengthThreshold) {
-			tabs.item(getResourceContext().getString("ui/description", "Description"), description);
+			tabs.item(getResourceContext().getString(PropertyKeys.UI_DESCRIPTION, "Description"), description);
 		}		
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -86,21 +87,21 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 				imageFile.setContents(baos.toByteArray(), imageMonitor);				
 				HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
 				Tag diagramImage = htmlFactory.tag(TagName.img).attribute("src", viewGenerator.get("image-path", "")+imagePath).attribute("usemap", "#plantuml_map");
-				tabs.item(getResourceContext().getString("ui/diagram", "Diagram"), htmlFactory.fragment(diagramImage, diagramCMap));				
+				tabs.item(getResourceContext().getString(PropertyKeys.UI_DIAGRAM, "Diagram"), htmlFactory.fragment(diagramImage, diagramCMap));				
 			}
 		} catch (IOException e) {
-			tabs.item(getResourceContext().getString("ui/diagram", "Diagram"), bootstrapFactory.alert(Color.DANGER, "Error generating package diagram: "+e));
+			tabs.item(getResourceContext().getString(PropertyKeys.UI_DIAGRAM, "Diagram"), bootstrapFactory.alert(Color.DANGER, "Error generating package diagram: "+e));
 			e.printStackTrace();
 		}
 		
 		Table table = bootstrapFactory.table().bordered();
 		TableHeader header = table.header();
 		header.headerRow(
-				getResourceContext().getString("ui/name", "Name"), 
-				getResourceContext().getString("ui/summary", "Summary"));
+				getResourceContext().getString(PropertyKeys.UI_NAME, "Name"), 
+				getResourceContext().getString(PropertyKeys.UI_SUMMARY, "Summary"));
 		TableBody body = table.body();
 		getChildren().forEach(child -> body.row(viewGenerator.link(child), child.getTooltip()));
-		tabs.item(getResourceContext().getString("ui/contents", "Contents"), table);				
+		tabs.item(getResourceContext().getString(PropertyKeys.UI_CONTENTS, "Contents"), table);				
 		return contentContainer;
 	}
 	

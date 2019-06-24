@@ -1,4 +1,4 @@
-package org.nasdanika.html.ecore.localizations;
+package org.nasdanika.html.ecore.localization;
 
 import org.eclipse.emf.ecore.EModelElement;
 import org.nasdanika.emf.EModelElementAnnotationResourceLocator;

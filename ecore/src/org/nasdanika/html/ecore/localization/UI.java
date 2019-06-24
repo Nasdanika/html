@@ -1,4 +1,4 @@
-package org.nasdanika.html.ecore.localizations;
+package org.nasdanika.html.ecore.localization;
 
 import org.nasdanika.common.ResourceLocator;
 
@@ -7,38 +7,40 @@ import org.nasdanika.common.ResourceLocator;
  * @author Pavel
  *
  */
-public enum UI implements ResourceLocator {
+public enum UI implements ResourceLocator, PropertyKeys {
 	
 	RU() {
 
 		@Override
 		public Object get(String key) {
 			switch (key) {
-			case "ui/summary":
+			case UI_DESCRIPTION:
+				return "Описание";
+			case UI_SUMMARY:
 				return "Краткое описание";
-			case "ui/name":
+			case UI_NAME:
 				return "Наименование";
-			case "ui/type":
+			case UI_TYPE:
 				return "Тип";
-			case "ui/cardinality":
+			case UI_CARDINALITY:
 				return "Мощность";
-			case "ui/package":
+			case UI_PACKAGE:
 				return "Пакет";
-			case "ui/supertypes":
+			case UI_SUPERTYPES:
 				return "Супертипы";
-			case "ui/subtypes":
+			case UI_SUBTYPES:
 				return "Подтипы";						
-			case "ui/diagram":
+			case UI_DIAGRAM:
 				return "Диаграмма";						
-			case "ui/contents":
+			case UI_CONTENTS:
 				return "Содержание";						
-			case "ui/namespace-uri":
+			case UI_NAMESPACE_URI:
 				return "URI пространства имён";						
-			case "ui/opposite":
+			case UI_OPPOSITE:
 				return "Противоположная сссылка";						
-			case "ui/abstract":
+			case UI_ABSTRACT:
 				return "Абстрактный";						
-			case "ui/interface":
+			case UI_INTERFACE:
 				return "Интерфейс";						
 			default:
 				return null;
@@ -47,7 +49,6 @@ public enum UI implements ResourceLocator {
 		
 	};
 	
-
 	@Override
 	public <T> T get(Class<T> type) {
 		return null;
