@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.ResourceLocator;
 import org.nasdanika.common.resources.Container;
 import org.nasdanika.common.resources.FileSystemContainer;
 import org.nasdanika.emf.EModelElementAnnotationResourceLocator;
@@ -44,7 +43,7 @@ public class TestEcore extends HTMLTestBase {
 	@Test
 	public void testRussianEcoreDocumentation() {		
 		EModelElementAnnotationResourceLocator rl = new EModelElementAnnotationResourceLocator("urn:org.nasdanika", key -> key+"_ru");
-		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Nasdanika Bank Model", null, rl);
+		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Модель Банка Насданики", "Общее описание модели - обычно в случае если документации пакетов недостаточно", rl);
 		generator.loadGenModel("urn:org.nasdanika.bank");
 		Container<InputStream> fsc = new FileSystemContainer(new File("target/test-dumps/ecore/ru"));
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
