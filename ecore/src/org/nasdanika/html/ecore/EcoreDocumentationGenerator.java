@@ -102,9 +102,6 @@ public class EcoreDocumentationGenerator {
 		MutableContext context = new SimpleMutableContext();
 		context.register(org.nasdanika.common.resources.Container.class, resourceConsumer);
 		
-		int totalWork = (principalAction.getChildren().size() + 2) * 100;
-		progressMonitor.setWorkRemained(totalWork);
-	
 		MutableContext docContext = new SimpleMutableContext();
 		docContext.register(org.nasdanika.common.resources.Container.class, resourceConsumer.getContainer("doc"));
 		docContext.put("image-path", "doc/");
@@ -163,7 +160,6 @@ public class EcoreDocumentationGenerator {
 	
 	protected void generateActionContent(Action action, Context context, ProgressMonitor progressMonitor) {
 		try (ProgressMonitor am = progressMonitor.split("Generating action content for "+action.getText(), 100)) {
-			am.setWorkRemained(100 + action.getChildren().size() * 100);
 			StringBuilder contentBuilder = new StringBuilder();
 			ViewPart contentPanelViewPart = new ContentPanelViewPart(action, false); // Use adapter?
 			ViewGenerator viewGenerator = new EcoreDocumentationViewGenerator(context, contentBuilder::append, contentBuilder::append);
