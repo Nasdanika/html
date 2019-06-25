@@ -40,7 +40,7 @@ public class TestEcore extends HTMLTestBase {
 			}
 			return ret;
 		};
-		generator.generate(fsc.adapt(null, encoder), progressMonitor);		
+		generator.generate(fsc.adapt(null, encoder, null), progressMonitor);		
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class TestEcore extends HTMLTestBase {
 			}
 			return ret;
 		};
-		generator.generate(fsc.adapt(null, encoder), progressMonitor);		
+		generator.generate(fsc.adapt(null, encoder, null), progressMonitor);		
 	}
 	
 }
