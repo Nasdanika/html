@@ -44,7 +44,18 @@ public class ENamedElementViewAction<T extends ENamedElement> extends EObjectVie
 		
 	public ENamedElementViewAction(T value) {
 		super(value);
-		label = new ENamedElementLabel<>(value);
+		
+		/**
+		 * Element name as-is.
+		 */
+		label = new ENamedElementLabel<T>(value) {
+			
+			@Override
+			protected String nameToLabel() {
+				return modelElement.getName();
+			}
+			
+		};
 	}
 	
 	@Override

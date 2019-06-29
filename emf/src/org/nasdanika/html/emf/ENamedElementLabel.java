@@ -41,7 +41,7 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 	public String getIcon() {
 		return getAnnotation("icon");
 	}
-
+	
 	@Override
 	public String getText() {
 		String text = EObjectAdaptable.getResourceContext(modelElement).getString("label");
@@ -49,6 +49,15 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 			return text;
 		}
 				
+		return nameToLabel();
+	}
+
+	/**
+	 * Converts model element name to label text. This implementation breaks the name by camel case,
+	 * capitalizes the first word and lowsercases the rest.
+	 * @return
+	 */
+	protected String nameToLabel() {
 		String[] cca = StringUtils.splitByCharacterTypeCamelCase(modelElement.getName());
 		cca[0] = StringUtils.capitalize(cca[0]);
 		for (int i=1; i<cca.length; ++i) {
