@@ -7,7 +7,7 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 
 /**
- * Action with navigation activator and execute() which returns content value. 
+ * Action with navigation activator and generate() which returns content value. 
  * @author Pavel Vlasov
  *
  */
