@@ -9,12 +9,14 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.PrintStreamProgressMonitor;
+import org.nasdanika.common.ProgressEntry;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.ResourceLocator;
 import org.nasdanika.common.resources.Container;
 import org.nasdanika.common.resources.FileSystemContainer;
 import org.nasdanika.emf.EModelElementAnnotationResourceLocator;
 import org.nasdanika.emf.FunctionAdapterFactory;
+import org.nasdanika.html.app.impl.ProgressReportGenerator;
 import org.nasdanika.html.ecore.EcoreDocumentationGenerator;
 import org.nasdanika.html.ecore.EcoreViewActionAdapterFactory;
 import org.nasdanika.html.ecore.localization.RussianResourceLocator;
@@ -32,6 +34,7 @@ public class TestEcore extends HTMLTestBase {
 		generator.loadGenModel("urn:org.nasdanika.bank");
 		Container<InputStream> fsc = new FileSystemContainer(new File("target/test-dumps/ecore"));
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+		ProgressEntry pe = new ProgressEntry("Generating Bank Model Documentation", 0);
 		BiFunction<org.nasdanika.common.resources.File<InputStream>, Object, InputStream> encoder = (file, contents) -> {
 			InputStream ret = DefaultConverter.INSTANCE.convert(contents, InputStream.class);
 			if (ret == null) {
@@ -40,7 +43,13 @@ public class TestEcore extends HTMLTestBase {
 			}
 			return ret;
 		};
-		generator.generate(fsc.adapt(null, encoder, null), progressMonitor);		
+		Container<Object> objectContainer = fsc.adapt(null, encoder, null);
+		generator.generate(objectContainer, progressMonitor.compose(pe));
+		
+		// HTML report
+		ProgressReportGenerator prg = new ProgressReportGenerator("Documentation generation", pe);
+		prg.generate(objectContainer.getContainer("progress-report"), progressMonitor);		
+		
 	}
 
 	/**
