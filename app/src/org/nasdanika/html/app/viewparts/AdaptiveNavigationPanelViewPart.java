@@ -26,13 +26,13 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 		delegate = navigationPanelActions.stream().mapToInt(a -> a.getNavigationChildren().size()).sum() == 0 ? createFlatNavigationPanelViewPart(navigationPanelActions, activeAction) : createHierarchicalNavigationPanelViewPart(navigationPanelActions, activeAction);
 	}
 
-	private ViewPart createHierarchicalNavigationPanelViewPart(
+	protected ViewPart createHierarchicalNavigationPanelViewPart(
 			List<? extends Action> navigationPanelActions,
 			Action activeAction) {
 		return new JsTreeNavigationPanelViewPart(navigationPanelActions, activeAction);
 	}
 
-	private ViewPart createFlatNavigationPanelViewPart(
+	protected ViewPart createFlatNavigationPanelViewPart(
 			List<? extends Action> navigationPanelActions,
 			Action activeAction) {
 		return new ActionGroupNavigationPanelViewPart(navigationPanelActions, activeAction);

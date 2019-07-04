@@ -63,9 +63,18 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 			
 		}
 		JSONObject jsTree = jsTreeFactory.buildJsTree(roots);
+		configureJsTree(jsTree);
 		// TODO - context menus
 		Tag script = jsTreeFactory.bind(container, jsTree);
 		return htmlFactory.fragment(container, script);
+	}
+	
+	/**
+	 * Override to configure jsTree, e.g. add search or state plug-ins.
+	 * @param jsTree
+	 */
+	protected void configureJsTree(JSONObject jsTree) {
+		
 	}
 
 }
