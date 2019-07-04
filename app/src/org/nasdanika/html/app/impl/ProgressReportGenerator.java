@@ -3,11 +3,15 @@ package org.nasdanika.html.app.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.nasdanika.common.ProgressEntry;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
+import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.app.viewparts.JsTreeNavigationPanelViewPart;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeFactory;
@@ -64,7 +68,21 @@ public class ProgressReportGenerator {
 			JsTreeFactory.INSTANCE.cdn(app.getHTMLPage());
 			FontAwesomeFactory.INSTANCE.cdn(app.getHTMLPage());
 			
-			ApplicationBuilder  applicationBuilder = new ActionApplicationBuilder(action);
+			ApplicationBuilder  applicationBuilder = new ActionApplicationBuilder(action) {
+				
+				@Override
+				protected ViewPart getNavigationPanelViewPart() {
+					return new JsTreeNavigationPanelViewPart(getNavigationPanelActions(), getActiveAction()) {
+						@Override
+						protected void configureJsTree(JSONObject jsTree) {
+							JSONArray plugins = new JSONArray();
+							plugins.put("state");
+							jsTree.put("plugins", plugins);
+						}
+					};
+				}
+				
+			};
 			
 			applicationBuilder.build(app, progressMonitor);
 			
