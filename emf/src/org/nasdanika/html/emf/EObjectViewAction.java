@@ -5,9 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
@@ -163,8 +166,18 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 
 	@Override
 	public Action getParent() {
-		EObject eContainer = target.eContainer();		
-		return eContainer == null ? null : canRead(eContainer, null) ? adaptTo((EObject) eContainer, ViewAction.class) : null;
+		EObject eContainer = target.eContainer();
+		if (eContainer != null) {
+			return canRead(eContainer, null) ? adaptTo((EObject) eContainer, ViewAction.class) : null;
+		}
+		Resource resource = target.eResource();
+		if (resource != null) {
+			Adapter adapter = EcoreUtil.getRegisteredAdapter(resource, ViewAction.class);
+			if (adapter instanceof ViewAction) {
+				return (Action) adapter;
+			}
+		}
+		return null;
 	}
 
 	@Override
