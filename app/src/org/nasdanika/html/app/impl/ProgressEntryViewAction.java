@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.nasdanika.common.ProgressEntry;
-import org.nasdanika.common.ProgressEntry.Step;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.ProgressRecorder.Step;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.TagName;
