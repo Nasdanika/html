@@ -37,9 +37,17 @@ public class ENamedElementViewAction<T extends ENamedElement> extends EObjectVie
 	 * ones end up in their own tab. 
 	 */
 	protected int descriptionTabLengthThreshold = 2500; 
+		
+	protected Function<EClassifier, String> eClassifierLinkResolver = eClassifier -> {
+		ViewAction viewAction = EObjectAdaptable.adaptTo(eClassifier, ViewAction.class);
+		if (viewAction == null) {
+			return null;
+		}
+		
+		ActionActivator activator = viewAction.getActivator();
+		return activator instanceof NavigationActionActivator  ? ((NavigationActionActivator) activator).getUrl() : null;
+	};
 	
-	
-	protected Function<EClassifier, String> eClassifierLinkResolver = eClassifier -> ((NavigationActionActivator) EObjectAdaptable.adaptTo(eClassifier, ViewAction.class).getActivator()).getUrl();
 	protected Function<EModelElement, String> eModelElementFirstDocSentenceProvider = eModelElement -> EObjectAdaptable.adaptTo(eModelElement, ViewAction.class).getTooltip();
 		
 	public ENamedElementViewAction(T value) {
