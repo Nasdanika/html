@@ -77,7 +77,7 @@ public class ProgressEntryViewAction extends ActionImpl {
 		HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
 		Fragment fragment = htmlFactory.fragment(infoTable);
 		
-		if (progressEntry.getDetails().length > 0) {
+		if (progressEntry.getDetails() != null && progressEntry.getDetails().length > 0) {
 			fragment.content(TagName.h2.create("Details"));
 			Table detailsTable = bootstrapFactory.table().bordered();
 			detailsTable.headerRow("Type", "Value");

@@ -3,6 +3,7 @@ package org.nasdanika.html.ecore;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.emf.localization.PropertyKeys;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -10,7 +11,6 @@ import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.bootstrap.Text.Alignment;
-import org.nasdanika.html.ecore.localization.PropertyKeys;
 import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.ViewAction;
 

@@ -16,11 +16,11 @@ import org.nasdanika.common.resources.Container;
 import org.nasdanika.common.resources.FileSystemContainer;
 import org.nasdanika.emf.EModelElementAnnotationResourceLocator;
 import org.nasdanika.emf.FunctionAdapterFactory;
+import org.nasdanika.emf.localization.RussianResourceLocator;
+import org.nasdanika.emf.localization.UI;
 import org.nasdanika.html.app.impl.ProgressReportGenerator;
 import org.nasdanika.html.ecore.EcoreDocumentationGenerator;
 import org.nasdanika.html.ecore.EcoreViewActionAdapterFactory;
-import org.nasdanika.html.ecore.localization.RussianResourceLocator;
-import org.nasdanika.html.ecore.localization.UI;
 
 public class TestEcore extends HTMLTestBase {
 	

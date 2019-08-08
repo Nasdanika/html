@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.resources.File;
+import org.nasdanika.emf.localization.PropertyKeys;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
@@ -31,7 +32,6 @@ import org.nasdanika.html.bootstrap.Table.TableBody;
 import org.nasdanika.html.bootstrap.Table.TableHeader;
 import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.ecore.PlantUmlTextGenerator.RelationshipDirection;
-import org.nasdanika.html.ecore.localization.PropertyKeys;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;

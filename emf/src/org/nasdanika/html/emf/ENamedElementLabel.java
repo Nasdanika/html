@@ -27,11 +27,6 @@ import com.vladsch.flexmark.util.options.DataHolder;
  *
  */
 public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSource<T> implements Label {
-		
-	public static final Pattern SENTENCE_PATTERN = Pattern.compile(".+?[\\.?!]+\\s+");		
-	public static final int MIN_FIRST_SENTENCE_LENGTH = 20;
-	public static final int MAX_FIRST_SENTENCE_LENGTH = 250;	
-	public static final String[] ABBREVIATIONS = { "e.g.", "i.e.", "etc." };
 	
 	public ENamedElementLabel(T eNamedElement) {
 		super(eNamedElement);
@@ -68,7 +63,6 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 
 	@Override
 	public String getTooltip() {
-		// TODO get description, textify it with Jsoup, extract first x characters.
 		String description = getDescription();
 		if (description == null || description.trim().isEmpty()) {
 			return null;
@@ -99,27 +93,6 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 	
 		return markdownToHtml(markdown);				
 	}
-	
-	protected String preProcessMarkdown(String markdown) {
-		return markdown;
-	}
-		
-	protected DataHolder getFlexmarkOptions() {
-	    return PegdownOptionsAdapter.flexmarkOptions(Extensions.ALL ^ Extensions.HARDWRAPS ^ Extensions.SUPPRESS_HTML_BLOCKS ^ Extensions.SUPPRESS_ALL_HTML);
-	}	
-	
-	protected Parser createMarkdownParser() {
-		return Parser.builder(getFlexmarkOptions()).build();
-	}
-		
-	protected HtmlRenderer createMarkdownHtmlRenderer() {
-		return HtmlRenderer.builder(getFlexmarkOptions()).build();
-	}	
-	
-	protected String markdownToHtml(String markdown) {
-		Document document = createMarkdownParser().parse(markdown);
-		return createMarkdownHtmlRenderer().render(document);
-	}	
 
 	@Override
 	public Object getId() {
@@ -130,45 +103,5 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 	public String getNotification() {
 		return null;
 	}
-	
-	protected String[] getAbbreviations() {
-		return ABBREVIATIONS;
-	}
-	
-	/**
-	 * Extracts first sentence from text
-	 * @param context
-	 * @param text
-	 * @return
-	 * @throws Exception
-	 */
-	protected String firstSentence(String text) {
-		if (text == null || text.length() < getMinFirstSentenceLength()) {
-			return text;
-		}
-		Matcher matcher = SENTENCE_PATTERN.matcher(text);		
-		Z: while (matcher.find()) {
-			String group = matcher.group();
-			String[] abbreviations = getAbbreviations();
-			for (String abbr: abbreviations) {
-				if (group.trim().endsWith(abbr)) {
-					continue Z;
-				}
-			}
-			if (matcher.end() > getMinFirstSentenceLength() && matcher.end() < getMaxFirstSentenceLength()) {
-				return text.substring(0, matcher.end());
-			}
-		}
 		
-		return text.length() < getMaxFirstSentenceLength() ? text : text.substring(0, getMaxFirstSentenceLength())+"...";
-	}
-	
-	protected int getMinFirstSentenceLength() {
-		return MIN_FIRST_SENTENCE_LENGTH;
-	}
-	
-	protected int getMaxFirstSentenceLength() {
-		return MAX_FIRST_SENTENCE_LENGTH;
-	}
-	
 }
