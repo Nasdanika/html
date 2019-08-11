@@ -35,39 +35,51 @@ import org.nasdanika.html.emf.ViewAction;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeFactory;
 
+/**
+ * Generates HTML Single-Page application with model documentation.
+ * @author Pavel
+ *
+ */
 public class EcoreDocumentationGenerator {
 
-	private ActionImpl principalAction;
-	private GenModelResourceSet resourceSet;
-	private ActionImpl rootAction;
-	private ResourceLocator resourceLocator;
+	protected ActionImpl principalAction;
+	protected GenModelResourceSet resourceSet;
+	protected ActionImpl rootAction;
+	protected ResourceLocator resourceLocator;
+	private boolean bare;
 
 	/**
 	 * Generates documentation
 	 * @param title
 	 * @param description
 	 * @param resourceLocator Locator of localized resources for "Package" and "Summary" strings.
+	 * @param bare If true the generated application will contain only the content panel. This is used for generating the Eclipse help where model navigation is performed using toc.xml
 	 */
-	public EcoreDocumentationGenerator(String title, String description, ResourceLocator resourceLocator) {
+	public EcoreDocumentationGenerator(String title, String description, ResourceLocator resourceLocator, boolean bare) {
 		rootAction = new ActionImpl();
 		rootAction.setText(title);
 		rootAction.setDescription(description);
-		rootAction.setActivator(new NavigationActionActivator() {
+		NavigationActionActivator summaryActivator = new NavigationActionActivator() {
 			
 			@Override
 			public String getUrl() {
 				return "#content/doc-summary";
 			}
-		});
+		};
+		rootAction.setActivator(summaryActivator);
 		
 		principalAction = new ActionImpl();
 		principalAction.setParent(rootAction);
+		principalAction.setActivator(summaryActivator);
+		principalAction.setText(title);
+		principalAction.setDescription(description);
 		rootAction.getChildren().add(principalAction);
 		
 		resourceSet = new GenModelResourceSet();		
 		resourceSet.getAdapterFactories().add(createAdapterFactory());
 		
 		this.resourceLocator = resourceLocator;
+		this.bare = bare;
 	}
 
 	/**
@@ -93,7 +105,7 @@ public class EcoreDocumentationGenerator {
 		return new EcoreDocumentationViewGenerator(context, headContentConsumer, bodyContentConsumer);
 	}	
 		
-	public void generate(org.nasdanika.common.resources.Container<Object> resourceConsumer, ProgressMonitor progressMonitor) {		
+	public void generate(org.nasdanika.common.resources.Container<Object> resourceConsumer, ProgressMonitor progressMonitor) throws Exception {		
 		Application app = new EcoreDocumentationApplication(Theme.Litera, true);
 
 		JsTreeFactory.INSTANCE.cdn(app.getHTMLPage());
@@ -111,6 +123,26 @@ public class EcoreDocumentationGenerator {
 			@Override
 			protected ViewGenerator createViewGenerator(Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {				
 				return EcoreDocumentationGenerator.this.createViewGenerator(docContext, headContentConsumer, bodyContentConsumer);
+			}
+			
+			@Override
+			protected Object generateFooter(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+				return bare ? null : super.generateFooter(viewGenerator, progressMonitor);
+			}
+			
+			@Override
+			protected Object generateHeader(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+				return bare ? null : super.generateHeader(viewGenerator, progressMonitor);
+			}
+			
+			@Override
+			protected Object generateNavigationBar(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+				return bare ? null : super.generateNavigationBar(viewGenerator, progressMonitor);
+			}
+			
+			@Override
+			protected Object generateNavigationPanel(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+				return bare ? null : super.generateNavigationPanel(viewGenerator, progressMonitor);
 			}
 			
 		};
