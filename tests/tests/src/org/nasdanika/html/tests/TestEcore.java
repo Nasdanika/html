@@ -29,8 +29,8 @@ public class TestEcore extends HTMLTestBase {
 	 * @throws Exception
 	 */
 	@Test
-	public void testEcoreDocumentation() {		
-		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Nasdanika Bank Model", null, null);
+	public void testEcoreDocumentation() throws Exception {		
+		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Nasdanika Bank Model", null, null, false);
 		generator.loadGenModel("urn:org.nasdanika.bank");
 		Container<InputStream> fsc = new FileSystemContainer(new File("target/test-dumps/ecore"));
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
@@ -57,11 +57,12 @@ public class TestEcore extends HTMLTestBase {
 	 * @throws Exception
 	 */
 	@Test
-	public void testRussianEcoreDocumentation() {		
+	public void testRussianEcoreDocumentation() throws Exception {		
 		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator(
 				"Модель Банка Насданики", 
 				"Общее описание модели - обычно в случае если документации пакетов недостаточно",
-				UI.RU) {
+				UI.RU, 
+				false) {
 						
 			@Override
 			protected EcoreViewActionAdapterFactory createAdapterFactory() {
