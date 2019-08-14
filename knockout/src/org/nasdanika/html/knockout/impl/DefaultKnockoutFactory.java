@@ -33,7 +33,7 @@ public class DefaultKnockoutFactory implements KnockoutFactory {
 
 	@Override
 	public <P extends HTMLPage> P cdn(P page) {
-		page.script("https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js");
+		page.script("https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js");
 		return page;
 	}	
 
