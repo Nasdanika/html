@@ -198,7 +198,7 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 * @param role
 	 * @return
 	 */
-	default List<? extends Action> getChildren(String role) {
+	default List<Action> getChildren(String role) {
 		return getChildren().stream().filter(c -> c.isInRole(role)).collect(Collectors.toList());
 	}
 	
@@ -219,7 +219,7 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 * @param role
 	 * @return
 	 */
-	default List<? extends Action> getNavigationChildren() {
+	default List<Action> getNavigationChildren() {
 		return getChildren(Role.NAVIGATION);
 	}
 	
@@ -233,7 +233,7 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 * @param role
 	 * @return
 	 */
-	default List<? extends Action> getContextChildren() {
+	default List<Action> getContextChildren() {
 		return getChildren(Role.CONTEXT);
 	}
 
@@ -247,7 +247,7 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 * @param role
 	 * @return
 	 */
-	default List<? extends Action> getSectionChildren() {
+	default List<Action> getSectionChildren() {
 		return getChildren(Role.SECTION);
 	}
 

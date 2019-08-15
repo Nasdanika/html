@@ -3,6 +3,7 @@ package org.nasdanika.html.app.impl;
 import java.util.Collections;
 import java.util.List;
 
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewPart;
@@ -57,7 +58,17 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 		return rootAction == null ? (vg, progressMonitor) -> null : (viewGenerator, progressMonitor) -> {
 			Tag link = viewGenerator.link(rootAction).style().text().decoration().none();
 			viewGenerator.get(BootstrapFactory.class).wrap(link).text().color(Color.DARK);
-			return viewGenerator.get(BootstrapFactory.class).display(link, 4);
+
+			Tag linkDisplay = viewGenerator.get(BootstrapFactory.class).display(link, 4);
+			List<Action> navigationChildren = rootAction.getNavigationChildren();
+			if (navigationChildren.size() < 2) {
+				return linkDisplay;
+			}
+
+			NavigationBarViewPart nbvp = new NavigationBarViewPart(navigationChildren.subList(1, navigationChildren.size()), getActiveAction());
+			
+			// TODO nbvp float right, do not take all the space, ...
+			return viewGenerator.get(HTMLFactory.class).fragment(linkDisplay, nbvp.generate(viewGenerator, progressMonitor));
 		};
 	}
 

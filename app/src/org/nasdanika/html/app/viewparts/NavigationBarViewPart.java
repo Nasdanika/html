@@ -31,26 +31,40 @@ import org.nasdanika.html.bootstrap.Navbar;
  */
 public class NavigationBarViewPart implements ViewPart {
 
-	protected Action principalAction;
+	protected List<Entry<Label, List<Action>>> categoryGroups;
 	protected Action activeAction;
+	protected ViewPart brandPart;
 
-	public NavigationBarViewPart(Action principalAction, Action activeAction) {
-		this.principalAction = principalAction;
+	/**
+	 * Builds a navigation bar view part from a list of actions and an active action.
+	 * The actions are grouped into categories to build the navbar. 
+	 * This constructor creates a navBar without brand.
+	 * @param actions
+	 * @param activeAction
+	 */
+	public NavigationBarViewPart(List<Action> actions, Action activeAction) {
+		this.categoryGroups = Util.groupByCategory(actions);
 		this.activeAction = activeAction;
 	}
+	
+	/**
+	 * Builds a navigation bar with a brand for a principal action. 
+	 * @param principalAction
+	 * @param activeAction
+	 */
+	public NavigationBarViewPart(Action principalAction, Action activeAction) {
+		this(principalAction.getContextChildren(), activeAction);
+		brandPart = (viewGenerator, progressMonitor) -> principalAction.getActivator() == null ? viewGenerator.label(principalAction) : viewGenerator.link(principalAction);
+	}	
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		if (principalAction == null) {
-			return null;
-		}
-		
-		Tag brand = principalAction.getActivator() == null ? viewGenerator.label(principalAction) : viewGenerator.link(principalAction);
+		Tag brand = brandPart == null ? null : (Tag) brandPart.generate(viewGenerator, progressMonitor);
 		Navbar navBar = createNavbar(viewGenerator, brand);
-		boolean hasContent = !brand.isEmpty();
+		boolean hasContent = brand != null && !brand.isEmpty();
 		
-		for (Entry<Label, ?> categoryGroup: principalAction.getContextChildrenGroupedByCategory()) {
+		for (Entry<Label, ?> categoryGroup: categoryGroups) {
 			Label category = categoryGroup.getKey();
 			if (category == null || (Util.isBlank(category.getText()) && Util.isBlank(category.getIcon()))) {
 				for (Action ca: (List<Action>) categoryGroup.getValue()) {
@@ -102,6 +116,7 @@ public class NavigationBarViewPart implements ViewPart {
 	
 	/**
 	 * Creates navbar. Override to customize Navbar parameters such as background.
+	 * @param brand 
 	 * @param brand
 	 * @return
 	 */
