@@ -83,7 +83,7 @@ public interface BootstrapFactory {
 	 */
 	Table table();
 	
-	FormGroup formGroup(Object label, InputBase<?> input, Object hint);
+	FormGroup formGroup(Object label, Object control, Object hint);
 	
 	<H extends HTMLElement<?>> H tooltip(H htmlElement, Object tooltip, boolean html, Placement placement);
 	
