@@ -37,7 +37,7 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 			}
 		}
 		if (hint != null) {
-			htmlElement.content(factory.getHTMLFactory().nonEmptyTag(TagName.small, label).addClass("form-text", "text-muted"));			
+			htmlElement.content(factory.getHTMLFactory().nonEmptyTag(TagName.small, hint).addClass("form-text", "text-muted"));			
 		}
 	}
 	
