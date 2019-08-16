@@ -4,6 +4,7 @@ import org.nasdanika.html.Event;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
+import org.nasdanika.html.InputBase;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
@@ -135,8 +136,8 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	}
 	
 	@Override
-	public FormGroup formGroup(Object label, Object control, Object hint) {
-		return new FormGroupImpl(this, label, control, hint);
+	public FormGroup formGroup(Object label, InputBase<?> input, Object hint) {
+		return new FormGroupImpl(this, label, input, hint);
 	}
 	
 	@Override
