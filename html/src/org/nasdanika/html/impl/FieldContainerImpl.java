@@ -35,7 +35,7 @@ class FieldContainerImpl<T extends FieldContainer<T>> implements FieldContainer<
 		
 	@Override
 	public Button button(Object... content) {
-		Button ret = new ButtonImpl(factory, false, content);
+		Button ret = new ButtonImpl(factory, content);
 		this.content.add(ret);
 		return ret;
 	}
