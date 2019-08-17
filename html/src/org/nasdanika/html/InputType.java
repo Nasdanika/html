@@ -22,7 +22,28 @@ public enum InputType {
 	text,
 	time, 
 	url,
-	week;
+	week,
+	/**
+	 * Pseudo input type, not to be used in input tag, but to indicate that the control shall be a select. 
+	 */
+	select() {
+		
+		@Override
+		public InputBase<?> create(HTMLFactory htmlFactory) {
+			return htmlFactory.select();
+		}
+	},
+	/**
+	 * Pseudo input type, not to be used in input tag, but to indicate that the control shall be a text area. 
+	 */
+	text_area() {
+		
+		@Override
+		public InputBase<?> create(HTMLFactory htmlFactory) {
+			return htmlFactory.textArea();
+		}
+		
+	};
 
 	public String code() {
 		return name().replace('_', '-');
@@ -32,7 +53,15 @@ public enum InputType {
 	 * Creates input with {@link HTMLFactory}.INSTANCE.
 	 * @return
 	 */
-	public Input create() {
-		return HTMLFactory.INSTANCE.input(this);
+	public InputBase<?> create(HTMLFactory htmlFactory) {
+		return htmlFactory.input(this);
+	}
+	
+	/**
+	 * Creates input with {@link HTMLFactory}.INSTANCE.
+	 * @return
+	 */
+	public InputBase<?> create() {
+		return create(HTMLFactory.INSTANCE);
 	}
 }
