@@ -202,11 +202,11 @@ public class TestBootstrap extends HTMLTestBase {
 				"We'll never share", 
 				horizontalLabelWidths).large().plainText());
 		form.content(factory.formGroup("Password", htmlFactory.input(InputType.password).disabled(), null, horizontalLabelWidths).small());
-		form.content(factory.formGroup("Check me out", htmlFactory.input(InputType.checkbox), null, horizontalLabelWidths).invalid("Oh, no"));
+		form.content(factory.formGroup("Check me out", htmlFactory.input(InputType.checkbox), "Do not click if not sure", horizontalLabelWidths));
 
-		form.content(factory.formGroup("1", htmlFactory.input(InputType.radio), null, horizontalLabelWidths).inline());
-		form.content(factory.formGroup("2", htmlFactory.input(InputType.radio), null, horizontalLabelWidths).inline());
-		form.content(factory.formGroup("3", htmlFactory.input(InputType.radio), null, horizontalLabelWidths).inline());
+		form.content(factory.formGroup("1", htmlFactory.input(InputType.radio), null, horizontalLabelWidths));
+		form.content(factory.formGroup("2", htmlFactory.input(InputType.radio), null, horizontalLabelWidths));
+		form.content(factory.formGroup("3", htmlFactory.input(InputType.radio), null, horizontalLabelWidths));
 
 		form.content(factory.formGroup("City", htmlFactory.input(InputType.text), "City", horizontalLabelWidths).valid());
 		form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "State", horizontalLabelWidths).invalid("No such state"));

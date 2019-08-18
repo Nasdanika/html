@@ -2,6 +2,7 @@ package org.nasdanika.html.bootstrap.impl;
 
 import java.util.Map;
 
+import org.nasdanika.html.Container;
 import org.nasdanika.html.Input;
 import org.nasdanika.html.InputBase;
 import org.nasdanika.html.InputType;
@@ -14,6 +15,7 @@ import org.nasdanika.html.bootstrap.FormGroup;
 public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> implements FormGroup {
 
 	private InputBase<?> input;
+	private Container<?> inputContainer;
 
 	public FormGroupImpl(BootstrapFactory factory, Object label, InputBase<?> input, Object hint, Map<DeviceSize, Integer> horizontalLabelWidths) {
 		super(factory);
@@ -29,6 +31,9 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 		}
 		
 		if (isHorizontal) {
+			if (label != null) {
+				htmlElement.content(labelTag);
+			}				
 			Tag controlDiv = getFactory().getHTMLFactory().div();
 			horizontalLabelWidths.entrySet().forEach(horizontalLabelWidth -> {
 				controlDiv.addClass("col-"+horizontalLabelWidth.getKey().code+"-"+(12 - horizontalLabelWidth.getValue()));
@@ -41,23 +46,24 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 				controlDiv.content(formCheckDiv);
 				formCheckDiv.addClass("form-check");
 				formCheckDiv.content(input);
+				inputContainer = formCheckDiv;
 				if (label == null) {
 					input.addClass("position-static");
-				} else {
-					formCheckDiv.content(labelTag.addClass("form-check-label"));
+				} 				
+				if (hint != null) {
+					formCheckDiv.content(factory.getHTMLFactory().nonEmptyTag(TagName.label, hint).addClass("form-check-label"));			
 				}
 			} else {
-				if (label != null) {
-					htmlElement.content(labelTag);
-				}				
+				inputContainer = controlDiv;
 				input.addClass("form-control");
 				controlDiv.content(input);				
+				
+				if (hint != null) {
+					controlDiv.content(factory.getHTMLFactory().nonEmptyTag(TagName.small, hint).addClass("form-text", "text-muted"));			
+				}
 			}
-			
-			if (hint != null) {
-				controlDiv.content(factory.getHTMLFactory().nonEmptyTag(TagName.small, hint).addClass("form-text", "text-muted"));			
-			}
-		} else {		
+		} else {	
+			inputContainer = htmlElement;
 			if (input instanceof Input && (((Input) input).getType() == InputType.checkbox || ((Input) input).getType() == InputType.radio)) {
 				input.addClass("form-check-input");			
 				htmlElement.addClass("form-check");
@@ -127,14 +133,14 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 	@Override
 	public FormGroup valid(Object... feedback) {
 		input.addClass("is-valid");
-		htmlElement.content(getFactory().getHTMLFactory().nonEmptyDiv(feedback).addClass("valid-feedback"));
+		inputContainer.content(getFactory().getHTMLFactory().nonEmptyDiv(feedback).addClass("valid-feedback"));
 		return this;
 	}
 
 	@Override
 	public FormGroup invalid(Object... feedback) {
 		input.addClass("is-invalid");
-		htmlElement.content(getFactory().getHTMLFactory().nonEmptyDiv(feedback).addClass("invalid-feedback"));
+		inputContainer.content(getFactory().getHTMLFactory().nonEmptyDiv(feedback).addClass("invalid-feedback"));
 		return this;
 	}
 
