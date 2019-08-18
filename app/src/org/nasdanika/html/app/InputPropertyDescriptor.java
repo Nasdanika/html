@@ -1,7 +1,10 @@
 package org.nasdanika.html.app;
 
+import java.util.Map;
+
 import org.nasdanika.html.InputBase;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.FormGroup;
 
 /**
@@ -20,7 +23,10 @@ public interface InputPropertyDescriptor extends PropertyDescriptor, InputProper
 	default FormGroup formGroup(ViewGenerator viewGenerator, Object obj) {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		InputBase<?> input = createEditControl(viewGenerator, obj);
-		return bootstrapFactory.formGroup(viewGenerator.label(this), input, getTooltip());
+		return bootstrapFactory.formGroup(viewGenerator.label(this), input, getTooltip(), getFormGroupHorizontalLabelWidths(obj));
 	}
 	
+	default Map<DeviceSize, Integer> getFormGroupHorizontalLabelWidths(Object obj) {
+		return null;		
+	}
 }
