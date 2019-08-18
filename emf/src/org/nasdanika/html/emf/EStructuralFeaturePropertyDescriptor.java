@@ -1,12 +1,11 @@
 package org.nasdanika.html.emf;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.nasdanika.html.InputType;
+import org.nasdanika.html.app.InputPropertyDescriptor;
 import org.nasdanika.html.app.Label;
-import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.bootstrap.Color;
 
-public class EStructuralFeaturePropertyDescriptor extends EStructuralFeatureProperty implements PropertyDescriptor {
+public class EStructuralFeaturePropertyDescriptor extends EStructuralFeatureProperty implements InputPropertyDescriptor {
 
 	protected ENamedElementLabel<EStructuralFeature> label;
 
@@ -58,11 +57,6 @@ public class EStructuralFeaturePropertyDescriptor extends EStructuralFeatureProp
 	@Override
 	public Label getCategory() {
 		return null;
-	}
-
-	@Override
-	public InputType getInputType() {
-		return InputType.text;
 	}
 
 	@Override

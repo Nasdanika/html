@@ -1,5 +1,7 @@
 package org.nasdanika.html.bootstrap.impl;
 
+import java.util.Map;
+
 import org.nasdanika.html.Event;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
@@ -136,8 +138,8 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	}
 	
 	@Override
-	public FormGroup formGroup(Object label, InputBase<?> input, Object hint) {
-		return new FormGroupImpl(this, label, input, hint);
+	public FormGroup formGroup(Object label, InputBase<?> input, Object hint, Map<DeviceSize, Integer> horizontalLabelWidths) {
+		return new FormGroupImpl(this, label, input, hint, horizontalLabelWidths);
 	}
 	
 	@Override

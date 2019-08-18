@@ -1,5 +1,8 @@
 package org.nasdanika.html.tests;
 
+import java.util.Collections;
+import java.util.Map;
+
 import org.junit.Test;
 import org.nasdanika.html.Form;
 import org.nasdanika.html.HTMLFactory;
@@ -166,18 +169,49 @@ public class TestBootstrap extends HTMLTestBase {
 
 		Form form = htmlFactory.form();
 		
-		form.content(factory.formGroup("Email address", htmlFactory.input(InputType.email).value("email@example.com"), "We'll never share").large().plainText());
-		form.content(factory.formGroup("Password", htmlFactory.input(InputType.password).disabled(), null).small());
-		form.content(factory.formGroup("Check me out", htmlFactory.input(InputType.checkbox), null).invalid("Oh, no"));
+		Map<DeviceSize, Integer> horizontalLabelWidths = null;
+		form.content(factory.formGroup(
+				"Email address", 
+				htmlFactory.input(InputType.email).value("email@example.com"), 
+				"We'll never share", 
+				horizontalLabelWidths).large().plainText());
+		form.content(factory.formGroup("Password", htmlFactory.input(InputType.password).disabled(), null, horizontalLabelWidths).small());
+		form.content(factory.formGroup("Check me out", htmlFactory.input(InputType.checkbox), null, horizontalLabelWidths).invalid("Oh, no"));
 
-		form.content(factory.formGroup("1", htmlFactory.input(InputType.radio), null).inline());
-		form.content(factory.formGroup("2", htmlFactory.input(InputType.radio), null).inline());
-		form.content(factory.formGroup("3", htmlFactory.input(InputType.radio), null).inline());
+		form.content(factory.formGroup("1", htmlFactory.input(InputType.radio), null, horizontalLabelWidths).inline());
+		form.content(factory.formGroup("2", htmlFactory.input(InputType.radio), null, horizontalLabelWidths).inline());
+		form.content(factory.formGroup("3", htmlFactory.input(InputType.radio), null, horizontalLabelWidths).inline());
 
-		form.content(factory.formGroup("City", htmlFactory.input(InputType.text), "City").valid());
-		form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "State").invalid("No such state"));
+		form.content(factory.formGroup("City", htmlFactory.input(InputType.text), "City", horizontalLabelWidths).valid());
+		form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "State", horizontalLabelWidths).invalid("No such state"));
 				
 		writeThemedPage("bootstrap/form.html", "Bootstrap form", form); 
+	}
+		
+	@Test
+	public void testHorizontalForm() throws Exception {
+		BootstrapFactory factory = BootstrapFactory.INSTANCE;
+		HTMLFactory htmlFactory = factory.getHTMLFactory();
+
+		Form form = htmlFactory.form();
+		
+		Map<DeviceSize, Integer> horizontalLabelWidths = Collections.singletonMap(DeviceSize.SMALL, 2);
+		form.content(factory.formGroup(
+				"Email address", 
+				htmlFactory.input(InputType.email).value("email@example.com"), 
+				"We'll never share", 
+				horizontalLabelWidths).large().plainText());
+		form.content(factory.formGroup("Password", htmlFactory.input(InputType.password).disabled(), null, horizontalLabelWidths).small());
+		form.content(factory.formGroup("Check me out", htmlFactory.input(InputType.checkbox), null, horizontalLabelWidths).invalid("Oh, no"));
+
+		form.content(factory.formGroup("1", htmlFactory.input(InputType.radio), null, horizontalLabelWidths).inline());
+		form.content(factory.formGroup("2", htmlFactory.input(InputType.radio), null, horizontalLabelWidths).inline());
+		form.content(factory.formGroup("3", htmlFactory.input(InputType.radio), null, horizontalLabelWidths).inline());
+
+		form.content(factory.formGroup("City", htmlFactory.input(InputType.text), "City", horizontalLabelWidths).valid());
+		form.content(factory.formGroup("State", htmlFactory.input(InputType.text), "State", horizontalLabelWidths).invalid("No such state"));
+				
+		writeThemedPage("bootstrap/horizontal-form.html", "Bootstrap horizontal form", form); 
 	}
 	
 	@Test

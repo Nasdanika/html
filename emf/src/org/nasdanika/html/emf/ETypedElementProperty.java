@@ -7,9 +7,9 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.nasdanika.html.app.Choice;
 import org.nasdanika.html.app.Diagnostic;
-import org.nasdanika.html.app.Property;
+import org.nasdanika.html.app.InputProperty;
 
-public abstract class ETypedElementProperty<T extends ETypedElement> implements Property {
+public abstract class ETypedElementProperty<T extends ETypedElement> implements InputProperty {
 
 	protected T typedElement;
 

@@ -23,24 +23,33 @@ public enum InputType {
 	time, 
 	url,
 	week,
+	
 	/**
-	 * Pseudo input type, not to be used in input tag, but to indicate that the control shall be a select. 
+	 * Pseudo input type, not to be used in input tag, but to indicate that the control shall be a select.
 	 */
 	select() {
-		
+
+		/**
+		 * Value is ignored for selects.
+		 */
 		@Override
-		public InputBase<?> create(HTMLFactory htmlFactory) {
+		public InputBase<?> create(HTMLFactory htmlFactory, Object value) {
 			return htmlFactory.select();
 		}
 	},
+	
 	/**
 	 * Pseudo input type, not to be used in input tag, but to indicate that the control shall be a text area. 
 	 */
 	text_area() {
 		
 		@Override
-		public InputBase<?> create(HTMLFactory htmlFactory) {
-			return htmlFactory.textArea();
+		public InputBase<?> create(HTMLFactory htmlFactory, Object value) {
+			TextArea textArea = htmlFactory.textArea();
+			if (value != null) {
+				textArea.content(value);
+			}
+			return textArea;
 		}
 		
 	};
@@ -48,13 +57,25 @@ public enum InputType {
 	public String code() {
 		return name().replace('_', '-');
 	}
+	/**
+	 * Creates input with {@link HTMLFactory}.INSTANCE and specified value.
+	 * @return
+	 */
+	public InputBase<?> create(HTMLFactory htmlFactory, Object value) {
+		Input ret = htmlFactory.input(this);
+		if (value != null) {
+			ret.value(value);
+		}
+		return ret;
+	}
+	
 	
 	/**
 	 * Creates input with {@link HTMLFactory}.INSTANCE.
 	 * @return
 	 */
 	public InputBase<?> create(HTMLFactory htmlFactory) {
-		return htmlFactory.input(this);
+		return create(htmlFactory, null);
 	}
 	
 	/**

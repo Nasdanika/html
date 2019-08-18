@@ -1,5 +1,7 @@
 package org.nasdanika.html.bootstrap;
 
+import java.util.Map;
+
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
@@ -83,7 +85,16 @@ public interface BootstrapFactory {
 	 */
 	Table table();
 	
-	FormGroup formGroup(Object label, InputBase<?> input, Object hint);
+	/**
+	 * 
+	 * @param label
+	 * @param input
+	 * @param hint
+	 * @param horizontalLabelWidths If not null and not empty, a horizontal form group is created as explained here - https://getbootstrap.com/docs/4.0/components/forms/#horizontal-form with
+	 * label widths taken from the map and control widths computed as 12 - label width.  
+	 * @return
+	 */
+	FormGroup formGroup(Object label, InputBase<?> input, Object hint, Map<DeviceSize, Integer> horizontalLabelWidths);
 	
 	<H extends HTMLElement<?>> H tooltip(H htmlElement, Object tooltip, boolean html, Placement placement);
 	

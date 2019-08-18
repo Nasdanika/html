@@ -7,14 +7,15 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.AccessController;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.html.InputType;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Choice;
 import org.nasdanika.html.app.Diagnostic;
-import org.nasdanika.html.app.Property;
+import org.nasdanika.html.app.InputProperty;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 
-public class EStructuralFeatureProperty implements Property {
+public class EStructuralFeatureProperty implements InputProperty {
 
 	private EStructuralFeature feature;
 
@@ -60,8 +61,8 @@ public class EStructuralFeatureProperty implements Property {
 	}
 
 	@Override
-	public List<Choice> getChoices(Object obj) {
-		// TODO Auto-generated method stub
+	public List<Choice> getChoices(Object obj) {		
+		// TODO Choices for references.
 		return null;
 	}
 
@@ -81,6 +82,16 @@ public class EStructuralFeatureProperty implements Property {
 		// check update access, return error diagnostic if no access.
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public InputType getInputType(Object obj) {
+		return InputType.text; // Catch-all. TODO - implement - if-else - EString, EDate, ...
+	}
+	
+	@Override
+	public String getPropertyName() {
+		return feature.getName();
 	}
 
 }

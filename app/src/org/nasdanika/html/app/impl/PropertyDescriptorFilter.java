@@ -2,12 +2,12 @@ package org.nasdanika.html.app.impl;
 
 import java.util.List;
 
-import org.nasdanika.html.InputType;
 import org.nasdanika.html.app.ActionProvider;
 import org.nasdanika.html.app.Choice;
 import org.nasdanika.html.app.Diagnostic;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.PropertyDescriptor;
+import org.nasdanika.html.app.ViewGenerator;
 
 public class PropertyDescriptorFilter<T extends PropertyDescriptor> extends LabelFilter<T> implements PropertyDescriptor {
 
@@ -18,11 +18,6 @@ public class PropertyDescriptorFilter<T extends PropertyDescriptor> extends Labe
 	@Override
 	public Object getDisplayValue(Object obj) {
 		return target.getDisplayValue(obj);
-	}
-
-	@Override
-	public Object getEditValue(Object obj) {
-		return target.getEditValue(obj);
 	}
 
 	@Override
@@ -46,11 +41,6 @@ public class PropertyDescriptorFilter<T extends PropertyDescriptor> extends Labe
 	}
 
 	@Override
-	public InputType getInputType() {
-		return target.getInputType();
-	}
-
-	@Override
 	public boolean isSortable() {
 		return target.isSortable();		
 	}
@@ -63,6 +53,16 @@ public class PropertyDescriptorFilter<T extends PropertyDescriptor> extends Labe
 	@Override
 	public ActionProvider getActionProvider(Object obj) {
 		return target.getActionProvider(obj);
+	}
+
+	@Override
+	public Object createEditControl(ViewGenerator viewGenerator, Object obj) {
+		return target.createEditControl(viewGenerator, obj);
+	}
+	
+	@Override
+	public String getPropertyName() {
+		return target.getPropertyName();
 	}
 	
 }

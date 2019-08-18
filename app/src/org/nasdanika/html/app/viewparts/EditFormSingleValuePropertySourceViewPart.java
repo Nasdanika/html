@@ -1,9 +1,11 @@
 package org.nasdanika.html.app.viewparts;
 
 import java.util.List;
+
 import java.util.Map.Entry;
 
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.html.FieldSet;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Label;
@@ -15,21 +17,23 @@ import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Card;
+import org.nasdanika.html.bootstrap.FormGroup;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
 import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.app.InputPropertyDescriptor;
 
 /**
- * Generates a two-column table with property names in one column and property values in the other.
- * Categories are generated as cards with property tables inside.   
+ * Generates an edit form. {@link InputPropertyDescriptor}s are rendered as {@link FormGroup}s. 
+ * Categories are generated as {@link FieldSet}s.   
  * @author Pavel Vlasov
  *
  */
-public class ViewSingleValuePropertySourceViewPart implements ViewPart {
+public abstract class EditFormSingleValuePropertySourceViewPart implements ViewPart {
 
 	private SingleValuePropertySource propertySource;
 
-	public ViewSingleValuePropertySourceViewPart(SingleValuePropertySource propertySource) {
+	public EditFormSingleValuePropertySourceViewPart(SingleValuePropertySource propertySource) {
 		this.propertySource = propertySource;
 	}
 

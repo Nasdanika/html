@@ -18,7 +18,7 @@ import org.nasdanika.html.app.Identity;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.ActionFilter;
-import org.nasdanika.html.app.viewparts.ViewSingleValuePropertySourceViewPart;
+import org.nasdanika.html.app.viewparts.ViewTableSingleValuePropertySourceViewPart;
 
 /**
  * Adapts {@link EObject} to {@link Action}.
@@ -39,7 +39,7 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		return new ViewSingleValuePropertySourceViewPart(this).generate(viewGenerator, progressMonitor);
+		return new ViewTableSingleValuePropertySourceViewPart(this).generate(viewGenerator, progressMonitor);
 	}
 	
 	@Override

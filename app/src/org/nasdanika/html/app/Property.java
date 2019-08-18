@@ -14,14 +14,15 @@ public interface Property {
 	 * @return Property value to be displayed in the UI or a {@link ViewPart}. For example, if value is a reference to another
 	 * object it might be wrapped into a view {@link Action} and the method may return a ViewPart which generates a link using one of {@link ViewGenerator}.link() methods.  
 	 */
-	Object getDisplayValue(Object obj); 
+	Object getDisplayValue(Object obj);
 	
 	/**
-	 * Property value to use in input "value" attribute.  
-	 * @param obj Value object for single value property sources and collection element for multi-value property sources.
+	 * Creates an edit control.
+	 * @param viewGenerator
+	 * @param obj
 	 * @return
 	 */
-	Object getEditValue(Object obj);
+	Object createEditControl(ViewGenerator viewGenerator, Object obj);
 	
 	List<Choice> getChoices(Object obj);
 		
@@ -42,5 +43,11 @@ public interface Property {
 	 * @return
 	 */
 	Diagnostic update(Object obj, Object originalValue, Object newValue);
+	
+	/**
+	 * Property name to use in controls. Typically scoped to the containing {@link PropertyDescriptor}, i.e. unique within the descriptor.
+	 * @return
+	 */
+	String getPropertyName();
 
 }
