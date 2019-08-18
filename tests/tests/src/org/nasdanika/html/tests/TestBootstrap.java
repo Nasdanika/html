@@ -224,10 +224,11 @@ public class TestBootstrap extends HTMLTestBase {
 				
 		writeThemedPage("bootstrap/simple-tabs.html", "Bootstrap simple tabs", simpleTabs);
 		
-		writeThemedPage("bootstrap/tabs.html", "Bootstrap tabs", navsItems(BootstrapFactory.INSTANCE.tabs()));
-		writeThemedPage("bootstrap/pills.html", "Bootstrap pills", navsItems(BootstrapFactory.INSTANCE.pills()));
+		writeThemedPage("bootstrap/navs.html", "Bootstrap navs", navsItems(BootstrapFactory.INSTANCE.navs(), true));
+		writeThemedPage("bootstrap/tabs.html", "Bootstrap tabs", navsItems(BootstrapFactory.INSTANCE.tabs(), true));
+		writeThemedPage("bootstrap/pills.html", "Bootstrap pills", navsItems(BootstrapFactory.INSTANCE.pills(), true));
 		
-		Navs verticalPills = navsItems(BootstrapFactory.INSTANCE.pills());
+		Navs verticalPills = navsItems(BootstrapFactory.INSTANCE.pills(), false);
 		verticalPills.toHTMLElement().addClass("flex-column");		
 		Container container = BootstrapFactory.INSTANCE.container();
 		Row row = container.row();
@@ -236,15 +237,25 @@ public class TestBootstrap extends HTMLTestBase {
 		writeThemedPage("bootstrap/vertical-pills.html", "Bootstrap vertical pills", container);
 
 		ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
-		navsItems(actionGroup.asNavs());
+		navsItems(actionGroup.asNavs(), false);
 		writeThemedPage("bootstrap/action-group-navs-adapter.html", "Bootstrap action group navs adapter", actionGroup.asContainer());				
 	}
 
-	private Navs navsItems(Navs navs) {
+	private Navs navsItems(Navs navs, boolean withDropdown) {
 		navs.item("First", false, false, null, "First content");
 		navs.item("Second", true, false, null, "Second content");
 		navs.item("Third", false, true, null, "Third content");
 		navs.item("Fourth", "Fourth content");
+		if (withDropdown) {
+			HTMLFactory htmlFactory = navs.getFactory().getHTMLFactory();
+			Dropdown dropdown = navs.dropdown(false, "Fith");
+			dropdown.item(htmlFactory.link("#", "Item 1"), false, false);
+			dropdown.header("Header");
+			dropdown.item(htmlFactory.link("#", "Item 2"), true, false);
+			dropdown.divider();
+			dropdown.item(htmlFactory.link("#", "Item 3"), false, true);
+		}
+		
 		return navs;
 	}
 	

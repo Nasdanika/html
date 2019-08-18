@@ -105,6 +105,8 @@ public interface BootstrapFactory {
 	 */
 	Tag initTooltipScript();
 	
+	Navs navs();
+	
 	Navs tabs();
 	
 	Navs pills();

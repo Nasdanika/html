@@ -21,6 +21,8 @@ public interface Navs extends BootstrapElement<Tag,Navs>, NamedItemsContainer {
 	 */
 	Navs item(Object name, boolean active, boolean disabled, Object contentId, Object... content);
 	
+	Dropdown dropdown(boolean active, Object... name); 	
+	
 	/**
 	 * Navs outputs nav container and content div one after another which works fine for horizontal tabs/pills.
 	 * However, for vertial pills it outputs the pills above the content. Use this method and toHTMLElement() to

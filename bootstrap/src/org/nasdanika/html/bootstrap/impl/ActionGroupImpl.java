@@ -7,6 +7,7 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Container.Row;
+import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.Navs;
 
 public class ActionGroupImpl extends DivWrappingBootstrapElementImpl<ActionGroup> implements ActionGroup {
@@ -100,7 +101,11 @@ public class ActionGroupImpl extends DivWrappingBootstrapElementImpl<ActionGroup
 			public Tag getContentDiv() {
 				return ActionGroupImpl.this.contentDiv;
 			}
-		
+
+			@Override
+			public Dropdown dropdown(boolean active, Object... name) {
+				throw new UnsupportedOperationException();
+			}
 			
 		}
 		return new NavsAdapter();

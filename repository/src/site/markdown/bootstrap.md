@@ -253,6 +253,21 @@ listGroup.item(false, false, Color.WARNING, "Four - warning");
 
 ### Navs
 
+Navs can be constructed as:
+
+* "Plain" - ``.navs()``
+* Tabs - ``.tabs()``
+* Pills - ``.pills()``
+
+#### Plain navs
+
+```
+BootstrapFactory.INSTANCE.navs();
+```
+
+<iframe src="tests/dumps/bootstrap/navs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
+
+
 #### Simple tabs
 
 Using ``NamedItemsContainer`` interfact methods:

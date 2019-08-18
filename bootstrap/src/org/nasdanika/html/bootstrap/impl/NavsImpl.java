@@ -1,9 +1,11 @@
 package org.nasdanika.html.bootstrap.impl;
 
 import org.nasdanika.html.Fragment;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.Navs;
 
 public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements Navs {
@@ -11,12 +13,12 @@ public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements 
 	private Fragment fragment;
 	private Tag contentDiv;
 
-	protected NavsImpl(BootstrapFactory factory, boolean pills) {
+	protected NavsImpl(BootstrapFactory factory, boolean tabs, boolean pills) {
 		super(factory, factory.getHTMLFactory().nonEmptyDiv());
 		htmlElement
 			.addClass("nav")
 			.addClassConditional(pills, "nav-pills")
-			.addClassConditional(!pills, "nav-tabs")
+			.addClassConditional(tabs, "nav-tabs")
 			.attribute("role", "tablist");
 		
 		contentDiv = factory.getHTMLFactory().nonEmptyDiv().addClass("tab-content");
@@ -56,6 +58,21 @@ public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements 
 		contentDiv.content(cDiv);		
 		return this;
 	}
+	
+	@Override
+	public Dropdown dropdown(boolean active, Object... name) {
+		HTMLFactory htmlFactory = getFactory().getHTMLFactory();
+		Tag toggle = htmlFactory.link("#", name)
+				.addClass("nav-link", "dropdown-toggle")
+				.attribute("role", "button")
+				.attribute("data-toggle", "dropdown");		
+		DropdownMenu menu = new DropdownMenu(getFactory());
+		Tag li = htmlFactory.tag(TagName.li, toggle, menu.toHTMLElement())
+				.addClass("nav-item", "dropdown")
+				.addClassConditional(active, "active");
+		htmlElement.content(li); 
+		return menu;
+	}	
 
 	@Override
 	public Object produce(int indent) {

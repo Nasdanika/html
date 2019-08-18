@@ -20,13 +20,10 @@ public interface InputPropertyDescriptor extends PropertyDescriptor, InputProper
 	 * @param obj
 	 * @return
 	 */
-	default FormGroup formGroup(ViewGenerator viewGenerator, Object obj) {
+	default FormGroup formGroup(ViewGenerator viewGenerator, Object obj, Map<DeviceSize, Integer> horizontalLabelWidths) {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		InputBase<?> input = createEditControl(viewGenerator, obj);
-		return bootstrapFactory.formGroup(viewGenerator.label(this), input, getTooltip(), getFormGroupHorizontalLabelWidths(obj));
+		return bootstrapFactory.formGroup(viewGenerator.label(this), input, getTooltip(), horizontalLabelWidths);
 	}
-	
-	default Map<DeviceSize, Integer> getFormGroupHorizontalLabelWidths(Object obj) {
-		return null;		
-	}
+
 }
