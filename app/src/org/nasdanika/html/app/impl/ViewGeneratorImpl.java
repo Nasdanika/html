@@ -389,8 +389,9 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Navs categorizedLinkNavs(List<Action> actions, Action activeAction) {	
-		Navs navs = get(BootstrapFactory.class).navs();
+	public Navs categorizedLinkNavs(List<Action> actions, Action activeAction, Color textColor) {	
+		BootstrapFactory bootstrapFactory = get(BootstrapFactory.class);
+		Navs navs = bootstrapFactory.navs();
 		for (Entry<Label, ?> categoryGroup: Util.groupByCategory(actions)) {
 			Label category = categoryGroup.getKey();
 			if (category == null || (Util.isBlank(category.getText()) && Util.isBlank(category.getIcon()))) {
@@ -404,17 +405,29 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 						if (ca.getConfirmation() != null) {
 							item.on(Event.click, "return confirm('"+ca.getConfirmation()+"');");
 						}
+						if (textColor != null) {
+							bootstrapFactory.wrap(item).text().color(textColor);
+						}
 					} else if (activator instanceof ScriptActionActivator) {
 						String code = ((ScriptActionActivator) activator).getCode();
 						if (ca.getConfirmation() != null) {
 							code = "if (confirm('"+ca.getConfirmation()+"')) { "+code+" }";
 						}
-						navs.item(fragment, "#", Util.equalOrInPath(activeAction, ca), ca.isDisabled()).on(Event.click, code);				
+						Tag item = navs.item(fragment, "#", Util.equalOrInPath(activeAction, ca), ca.isDisabled()).on(Event.click, code);
+						if (textColor != null) {
+							bootstrapFactory.wrap(item).text().color(textColor);
+						}
 					} else if (ca.getChildren().isEmpty()) {
 						// As text
-						navs.item(fragment, "#", Util.equalOrInPath(activeAction, ca), ca.isDisabled());				
+						Tag item = navs.item(fragment, "#", Util.equalOrInPath(activeAction, ca), ca.isDisabled());				
+						if (textColor != null) {
+							bootstrapFactory.wrap(item).text().color(textColor);
+						}
 					} else {
 						Dropdown dropdown = navs.dropdown(Util.equalOrInPath(activeAction, ca), fragment);				
+						if (textColor != null) {
+							dropdown.text().color(textColor);
+						}
 						for (Entry<Label, List<Action>> cats: ca.getChildrenGroupedByCategory()) {
 							if (cats.getKey() != null) {
 								if (Util.isBlank(cats.getKey().getIcon()) && Util.isBlank(cats.getKey().getText())) {
@@ -431,6 +444,9 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 				}
 			} else {
 				Dropdown dropdown = navs.dropdown(false, labelFragment(category));
+				if (textColor != null) {
+					dropdown.text().color(textColor);
+				}
 				for (Action cac: (List<Action>) categoryGroup.getValue()) {	
 					dropdown.item(link(cac), Util.equalOrInPath(activeAction, cac), cac.isDisabled());
 				}

@@ -10,6 +10,7 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.ListGroup;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
@@ -170,8 +171,9 @@ public interface ViewGenerator extends MutableContext {
 	 * Creates navs from a list of actions. Groups actions by category and creates drop-downs and headers for named categories, dividers for anonymous. 
 	 * @param actions
 	 * @param activeAction
+	 * @param textColor Text color of top level items.
 	 * @return
 	 */
-	Navs categorizedLinkNavs(List<Action> actions, Action activeAction);
+	Navs categorizedLinkNavs(List<Action> actions, Action activeAction, Color textColor);
 	
 }

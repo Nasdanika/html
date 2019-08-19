@@ -14,6 +14,7 @@ public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements 
 	private static final String NAV_PILLS = "nav-pills";
 	private Fragment fragment;
 	private Tag contentDiv;
+	private boolean hasContent;
 
 	protected NavsImpl(BootstrapFactory factory) {
 		super(factory, factory.getHTMLFactory().nonEmptyDiv());
@@ -55,6 +56,7 @@ public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements 
 		
 		if (!cDiv.isEmpty()) {
 			htmlElement.attribute("role", "tablist");
+			hasContent = true;
 		}
 				
 		contentDiv.content(cDiv);		
@@ -88,12 +90,12 @@ public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements 
 
 	@Override
 	public Object produce(int indent) {
-		return fragment.produce(indent);
+		return (hasContent ? fragment : htmlElement).produce(indent);
 	}
 	
 	@Override
 	public String toString() {
-		return fragment.toString();
+		return (hasContent ? fragment : htmlElement).toString();
 	}
 
 	@Override

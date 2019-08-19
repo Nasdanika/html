@@ -66,12 +66,20 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 				return linkDisplay;
 			}
 
-			Navs navs = viewGenerator.categorizedLinkNavs(navigationChildren.subList(1, navigationChildren.size()), getActiveAction());
+			Navs navs = viewGenerator.categorizedLinkNavs(navigationChildren.subList(1, navigationChildren.size()), getActiveAction(), getHeaderNavTextColor());
 			navs._float().right();
 			
 			return viewGenerator.get(HTMLFactory.class).fragment(linkDisplay, navs);
 		};
 	}
+
+	/**
+	 * Override to customize header navs text color.
+	 * @return
+	 */
+	protected Color getHeaderNavTextColor() {
+		return null;
+	};
 
 	@Override
 	protected ViewPart getNavigationBarViewPart() {
