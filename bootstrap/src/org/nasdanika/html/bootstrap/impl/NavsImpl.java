@@ -21,7 +21,7 @@ public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements 
 		htmlElement.addClass("nav");
 		
 		contentDiv = factory.getHTMLFactory().nonEmptyDiv().addClass("tab-content");
-		fragment = factory.getHTMLFactory().fragment(factory.getHTMLFactory().tag(TagName.nav).content(htmlElement), contentDiv);
+		fragment = factory.getHTMLFactory().fragment(htmlElement, contentDiv);
 	}
 
 	@Override
