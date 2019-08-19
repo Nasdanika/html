@@ -216,7 +216,7 @@ public class TestBootstrap extends HTMLTestBase {
 	
 	@Test
 	public void testNavs() throws Exception {
-		Navs simpleTabs = BootstrapFactory.INSTANCE.tabs();
+		Navs simpleTabs = BootstrapFactory.INSTANCE.navs().tabs();
 		simpleTabs.item("First", "First content");
 		simpleTabs.item("Second", "Second content");
 		simpleTabs.item("Third", "Third content");
@@ -224,21 +224,17 @@ public class TestBootstrap extends HTMLTestBase {
 				
 		writeThemedPage("bootstrap/simple-tabs.html", "Bootstrap simple tabs", simpleTabs);
 		
-		writeThemedPage("bootstrap/navs.html", "Bootstrap navs", navsItems(BootstrapFactory.INSTANCE.navs(), true));
-		writeThemedPage("bootstrap/tabs.html", "Bootstrap tabs", navsItems(BootstrapFactory.INSTANCE.tabs(), true));
-		writeThemedPage("bootstrap/pills.html", "Bootstrap pills", navsItems(BootstrapFactory.INSTANCE.pills(), true));
+		writeThemedPage("bootstrap/navs.html", "Bootstrap navs", navigationNavsItems(BootstrapFactory.INSTANCE.navs()));
+		writeThemedPage("bootstrap/tabs.html", "Bootstrap tabs", navsItems(BootstrapFactory.INSTANCE.navs().tabs(), true));
+		writeThemedPage("bootstrap/pills.html", "Bootstrap pills", navsItems(BootstrapFactory.INSTANCE.navs().pills(), true));
 		
-		Navs verticalPills = navsItems(BootstrapFactory.INSTANCE.pills(), false);
+		Navs verticalPills = navsItems(BootstrapFactory.INSTANCE.navs().pills(), false);
 		verticalPills.toHTMLElement().addClass("flex-column");		
 		Container container = BootstrapFactory.INSTANCE.container();
 		Row row = container.row();
 		row.col(verticalPills.toHTMLElement()).widthAuto();
 		row.col(verticalPills.getContentDiv());
 		writeThemedPage("bootstrap/vertical-pills.html", "Bootstrap vertical pills", container);
-
-		ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
-		navsItems(actionGroup.asNavs(), false);
-		writeThemedPage("bootstrap/action-group-navs-adapter.html", "Bootstrap action group navs adapter", actionGroup.asContainer());				
 	}
 
 	private Navs navsItems(Navs navs, boolean withDropdown) {
@@ -258,6 +254,24 @@ public class TestBootstrap extends HTMLTestBase {
 		
 		return navs;
 	}
+	
+	private Navs navigationNavsItems(Navs navs) {
+		navs.item("Codegen", "https://www.nasdanika.org/home/products/codegen/index.html", false, false);
+		navs.item("Rigel", "https://www.nasdanika.org/home/products/rigel/index.html", true, false);
+		navs.item("Sage", "https://www.nasdanika.org/home/products/sage/index.html", false, true);
+		navs.item("Core", "https://www.nasdanika.org/home/products/core/index.html", false, false);
+
+		HTMLFactory htmlFactory = navs.getFactory().getHTMLFactory();
+		Dropdown dropdown = navs.dropdown(false, "HTML");
+		dropdown.item(htmlFactory.link("https://www.nasdanika.org/home/products/html/bootstrap.html", "Bootstrap"), false, false);
+		dropdown.header("Header");
+		dropdown.item(htmlFactory.link("https://www.nasdanika.org/home/products/html/app.html", "Application"), true, false);
+		dropdown.divider();
+		dropdown.item(htmlFactory.link("https://www.nasdanika.org/home/products/html/jstree.html", "JsTree"), false, true);
+		
+		return navs;
+	}
+	
 	
 	@Test
 	public void testNavbar() throws Exception {		
@@ -310,7 +324,7 @@ public class TestBootstrap extends HTMLTestBase {
 		actionGroup.contentAction("Three - disabled", false, true, Color.DEFAULT, null, "Disabled content");
 		actionGroup.contentAction("Four - warning", false, false, Color.WARNING, null, BootstrapFactory.INSTANCE.alert(Color.WARNING, "Be careful!"));
 		
-		Navs simpleTabs = BootstrapFactory.INSTANCE.tabs();
+		Navs simpleTabs = BootstrapFactory.INSTANCE.navs().tabs();
 		simpleTabs.item("First", actionGroup.asContainer().margin().top(1).toBootstrapElement());
 		simpleTabs.item("Second", "Second content");
 		simpleTabs.item("Third", "Third content");

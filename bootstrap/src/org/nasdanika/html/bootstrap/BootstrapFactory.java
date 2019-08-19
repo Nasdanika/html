@@ -107,8 +107,18 @@ public interface BootstrapFactory {
 	
 	Navs navs();
 	
+	/**
+	 * @deprecated Use navs().tabs()
+	 * @return
+	 */
+	@Deprecated
 	Navs tabs();
-	
+
+	/**
+	 * @deprecated Use navs().pills() 
+	 * @return
+	 */
+	@Deprecated
 	Navs pills();
 	
 	Container container();

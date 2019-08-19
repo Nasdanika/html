@@ -25,12 +25,6 @@ public interface ActionGroup extends BootstrapElement<Tag, ActionGroup>, NamedIt
 	Tag contentAction(Object name, boolean active, boolean disabled, Color color, Object contentId, Object... content);
 	
 	/**
-	 * Adapts action group to navs.
-	 * @return
-	 */
-	Navs asNavs();
-	
-	/**
 	 * ActionGroup toHTMLElement() returns the div containing action links. 
 	 * Content div shall be output either using this method or asContainer(). 
 	 * @return

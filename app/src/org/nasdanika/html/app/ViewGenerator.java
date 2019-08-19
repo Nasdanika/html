@@ -1,5 +1,6 @@
 package org.nasdanika.html.app;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.nasdanika.common.MutableContext;
@@ -165,4 +166,12 @@ public interface ViewGenerator extends MutableContext {
 	@Override
 	ViewGenerator fork();
 
+	/**
+	 * Creates navs from a list of actions. Groups actions by category and creates drop-downs and headers for named categories, dividers for anonymous. 
+	 * @param actions
+	 * @param activeAction
+	 * @return
+	 */
+	Navs categorizedLinkNavs(List<Action> actions, Action activeAction);
+	
 }

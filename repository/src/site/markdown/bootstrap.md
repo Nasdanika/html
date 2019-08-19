@@ -42,15 +42,6 @@ actionGroup.contentAction("Four - warning", false, false, Color.WARNING, null, B
 
 <iframe src="tests/dumps/bootstrap/action-group-content.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
 
-#### Adapt to navs 
-
-```
-ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
-navsItems(actionGroup.asNavs()); // See "Navs" section for navsItems method code.
-```
-
-<iframe src="tests/dumps/bootstrap/action-group-navs-adapter.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"></iframe>
-
 ### Alert
 
 ```
@@ -259,10 +250,27 @@ Navs can be constructed as:
 * Tabs - ``.tabs()``
 * Pills - ``.pills()``
 
-#### Plain navs
+Navs can be created with content, so a click on the nav shows the content - this option is typically used with tabs. 
+Navs can also be navigational as shown below - a click on the nav navigates to the nav's link.
+
+#### Navigation navs
 
 ```
-BootstrapFactory.INSTANCE.navs();
+Navs navs = BootstrapFactory.INSTANCE.navs();
+
+navs.item("Codegen", "https://www.nasdanika.org/home/products/codegen/index.html", false, false);
+navs.item("Rigel", "https://www.nasdanika.org/home/products/rigel/index.html", true, false);
+navs.item("Sage", "https://www.nasdanika.org/home/products/sage/index.html", false, true);
+navs.item("Core", "https://www.nasdanika.org/home/products/core/index.html", false, false);
+
+HTMLFactory htmlFactory = navs.getFactory().getHTMLFactory();
+Dropdown dropdown = navs.dropdown(false, "HTML");
+dropdown.item(htmlFactory.link("https://www.nasdanika.org/home/products/html/bootstrap.html", "Bootstrap"), false, false);
+dropdown.header("Header");
+dropdown.item(htmlFactory.link("https://www.nasdanika.org/home/products/html/app.html", "Application"), true, false);
+dropdown.divider();
+dropdown.item(htmlFactory.link("https://www.nasdanika.org/home/products/html/jstree.html", "JsTree"), false, true);
+
 ```
 
 <iframe src="tests/dumps/bootstrap/navs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
@@ -273,7 +281,7 @@ BootstrapFactory.INSTANCE.navs();
 Using ``NamedItemsContainer`` interfact methods:
 
 ```
-Navs simpleTabs = BootstrapFactory.INSTANCE.tabs();
+Navs simpleTabs = BootstrapFactory.INSTANCE.navs().tabs();
 simpleTabs.item("First", "First content");
 simpleTabs.item("Second", "Second content");
 simpleTabs.item("Third", "Third content");
@@ -287,11 +295,21 @@ simpleTabs.item("Fourth", "Fourth content");
 Helper method:
 
 ```
-private Navs navsItems(Navs navs) {
+private Navs navsItems(Navs navs, boolean withDropdown) {
 	navs.item("First", false, false, null, "First content");
 	navs.item("Second", true, false, null, "Second content");
 	navs.item("Third", false, true, null, "Third content");
 	navs.item("Fourth", "Fourth content");
+	if (withDropdown) {
+		HTMLFactory htmlFactory = navs.getFactory().getHTMLFactory();
+		Dropdown dropdown = navs.dropdown(false, "Fith");
+		dropdown.item(htmlFactory.link("#", "Item 1"), false, false);
+		dropdown.header("Header");
+		dropdown.item(htmlFactory.link("#", "Item 2"), true, false);
+		dropdown.divider();
+		dropdown.item(htmlFactory.link("#", "Item 3"), false, true);
+	}
+	
 	return navs;
 }
 ```
@@ -299,7 +317,7 @@ private Navs navsItems(Navs navs) {
 Tabs:
 
 ```
-navsItems(BootstrapFactory.INSTANCE.tabs());
+navsItems(BootstrapFactory.INSTANCE.navs().tabs());
 ```
 
 <iframe src="tests/dumps/bootstrap/tabs.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
@@ -307,7 +325,7 @@ navsItems(BootstrapFactory.INSTANCE.tabs());
 #### Pills
 
 ```
-navsItems(BootstrapFactory.INSTANCE.pills());
+navsItems(BootstrapFactory.INSTANCE.navs().pills());
 ```
 
 <iframe src="tests/dumps/bootstrap/pills.html" style="border:none;" width="100%" scrolling="no" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 50) + 'px'"></iframe>
@@ -318,7 +336,7 @@ navsItems(BootstrapFactory.INSTANCE.pills());
 * Output nav and content div separately.
 
 ```
-Navs verticalPills = navsItems(BootstrapFactory.INSTANCE.pills());
+Navs verticalPills = navsItems(BootstrapFactory.INSTANCE.navs().pills());
 verticalPills.toHTMLElement().addClass("flex-column");		
 Container container = BootstrapFactory.INSTANCE.container();
 Row row = container.row();

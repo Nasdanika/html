@@ -10,16 +10,14 @@ import org.nasdanika.html.bootstrap.Navs;
 
 public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements Navs {
 	
+	private static final String NAV_TABS = "nav-tabs";
+	private static final String NAV_PILLS = "nav-pills";
 	private Fragment fragment;
 	private Tag contentDiv;
 
-	protected NavsImpl(BootstrapFactory factory, boolean tabs, boolean pills) {
+	protected NavsImpl(BootstrapFactory factory) {
 		super(factory, factory.getHTMLFactory().nonEmptyDiv());
-		htmlElement
-			.addClass("nav")
-			.addClassConditional(pills, "nav-pills")
-			.addClassConditional(tabs, "nav-tabs")
-			.attribute("role", "tablist");
+		htmlElement.addClass("nav");
 		
 		contentDiv = factory.getHTMLFactory().nonEmptyDiv().addClass("tab-content");
 		fragment = factory.getHTMLFactory().fragment(factory.getHTMLFactory().tag(TagName.nav).content(htmlElement), contentDiv);
@@ -48,15 +46,29 @@ public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements 
 				.addClassConditional(disabled, "disabled")
 				.attribute("role", "tab");
 		htmlElement.content(navLink);
-		
+
 		Tag cDiv = getFactory().getHTMLFactory().nonEmptyDiv(content)
 				.id(contentId)
 				.attribute("role", "tabpanel")
 				.addClass("tab-pane", "fade")
-				.addClassConditional(active, "show", "active");				
+				.addClassConditional(active, "show", "active");
+		
+		if (!cDiv.isEmpty()) {
+			htmlElement.attribute("role", "tablist");
+		}
 				
 		contentDiv.content(cDiv);		
 		return this;
+	}
+	
+	@Override
+	public Tag item(Object name, Object href, boolean active, boolean disabled) {
+		Tag navLink = getFactory().getHTMLFactory().link(href, name)
+				.addClass("nav-item", "nav-link")
+				.addClassConditional(active, "active")
+				.addClassConditional(disabled, "disabled");
+		htmlElement.content(navLink);
+		return navLink;
 	}
 	
 	@Override
@@ -87,6 +99,18 @@ public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements 
 	@Override
 	public Tag getContentDiv() {
 		return contentDiv;
+	}
+
+	@Override
+	public Navs tabs(boolean tabs) {
+		htmlElement.addClassConditional(tabs, NAV_TABS);
+		return this;
+	}
+
+	@Override
+	public Navs pills(boolean pills) {
+		htmlElement.addClassConditional(pills, NAV_PILLS);
+		return this;
 	}
 
 }

@@ -165,17 +165,17 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	
 	@Override
 	public Navs navs() {
-		return new NavsImpl(this, false, false);
+		return new NavsImpl(this);
 	}
 	
 	@Override
 	public Navs pills() {
-		return new NavsImpl(this, false, true);
+		return new NavsImpl(this).pills();
 	}
 	
 	@Override
 	public Navs tabs() {
-		return new NavsImpl(this, true, false);
+		return new NavsImpl(this).tabs();
 	}
 	
 	@Override

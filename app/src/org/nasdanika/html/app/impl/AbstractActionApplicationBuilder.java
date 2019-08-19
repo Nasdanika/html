@@ -13,6 +13,7 @@ import org.nasdanika.html.app.viewparts.FooterViewPart;
 import org.nasdanika.html.app.viewparts.NavigationBarViewPart;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Navs;
 
 /**
  * Builds an application from actions. 
@@ -65,10 +66,10 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 				return linkDisplay;
 			}
 
-			NavigationBarViewPart nbvp = new NavigationBarViewPart(navigationChildren.subList(1, navigationChildren.size()), getActiveAction());
+			Navs navs = viewGenerator.categorizedLinkNavs(navigationChildren.subList(1, navigationChildren.size()), getActiveAction());
+			navs._float().right();
 			
-			// TODO nbvp float right, do not take all the space, ...
-			return viewGenerator.get(HTMLFactory.class).fragment(linkDisplay, nbvp.generate(viewGenerator, progressMonitor));
+			return viewGenerator.get(HTMLFactory.class).fragment(linkDisplay, navs);
 		};
 	}
 

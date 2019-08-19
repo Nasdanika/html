@@ -7,8 +7,6 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Container.Row;
-import org.nasdanika.html.bootstrap.Dropdown;
-import org.nasdanika.html.bootstrap.Navs;
 
 public class ActionGroupImpl extends DivWrappingBootstrapElementImpl<ActionGroup> implements ActionGroup {
 
@@ -71,44 +69,6 @@ public class ActionGroupImpl extends DivWrappingBootstrapElementImpl<ActionGroup
 		contentDiv.content(cDiv);				
 		
 		return a;
-	}
-
-	@Override
-	public Navs asNavs() {
-		class NavsAdapter extends WrappingBootstrapElementImpl<Tag,Navs> implements Navs {
-
-			protected NavsAdapter() {
-				super(ActionGroupImpl.this.getFactory(), ActionGroupImpl.this.htmlElement);
-			}
-
-			@Override
-			public void item(Object name, Object content) {
-				ActionGroupImpl.this.item(name, content);
-			}
-
-			@Override
-			public boolean isEmpty() {
-				return ActionGroupImpl.this.isEmpty();
-			}
-
-			@Override
-			public Navs item(Object name, boolean active, boolean disabled, Object contentId, Object... content) {
-				ActionGroupImpl.this.contentAction(name, active, disabled, Color.DEFAULT, contentId, content);
-				return this;
-			}
-
-			@Override
-			public Tag getContentDiv() {
-				return ActionGroupImpl.this.contentDiv;
-			}
-
-			@Override
-			public Dropdown dropdown(boolean active, Object... name) {
-				throw new UnsupportedOperationException();
-			}
-			
-		}
-		return new NavsAdapter();
 	}
 
 	@Override

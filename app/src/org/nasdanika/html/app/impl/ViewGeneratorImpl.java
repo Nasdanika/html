@@ -386,5 +386,58 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	public ViewGenerator fork() {
 		return new ViewGeneratorImpl(this, headContentConsumer, bodyContentConsumer);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Navs categorizedLinkNavs(List<Action> actions, Action activeAction) {	
+		Navs navs = get(BootstrapFactory.class).navs();
+		for (Entry<Label, ?> categoryGroup: Util.groupByCategory(actions)) {
+			Label category = categoryGroup.getKey();
+			if (category == null || (Util.isBlank(category.getText()) && Util.isBlank(category.getIcon()))) {
+				for (Action ca: (List<Action>) categoryGroup.getValue()) {
+					// Children are ignored if activator is not null.
+					Fragment fragment = get(HTMLFactory.class).fragment();
+					label(ca, fragment::content);
+					ActionActivator activator = ca.getActivator();
+					if (activator instanceof NavigationActionActivator) {
+						Tag item = navs.item(fragment, ((NavigationActionActivator) activator).getUrl(), Util.equalOrInPath(activeAction, ca), ca.isDisabled());
+						if (ca.getConfirmation() != null) {
+							item.on(Event.click, "return confirm('"+ca.getConfirmation()+"');");
+						}
+					} else if (activator instanceof ScriptActionActivator) {
+						String code = ((ScriptActionActivator) activator).getCode();
+						if (ca.getConfirmation() != null) {
+							code = "if (confirm('"+ca.getConfirmation()+"')) { "+code+" }";
+						}
+						navs.item(fragment, "#", Util.equalOrInPath(activeAction, ca), ca.isDisabled()).on(Event.click, code);				
+					} else if (ca.getChildren().isEmpty()) {
+						// As text
+						navs.item(fragment, "#", Util.equalOrInPath(activeAction, ca), ca.isDisabled());				
+					} else {
+						Dropdown dropdown = navs.dropdown(Util.equalOrInPath(activeAction, ca), fragment);				
+						for (Entry<Label, List<Action>> cats: ca.getChildrenGroupedByCategory()) {
+							if (cats.getKey() != null) {
+								if (Util.isBlank(cats.getKey().getIcon()) && Util.isBlank(cats.getKey().getText())) {
+									dropdown.divider();
+								} else {
+									dropdown.header(labelFragment(cats.getKey()));
+								}
+							}
+							for (Action cac: cats.getValue()) {	
+								dropdown.item(link(cac), Util.equalOrInPath(activeAction, cac), cac.isDisabled());
+							}
+						}
+					}
+				}
+			} else {
+				Dropdown dropdown = navs.dropdown(false, labelFragment(category));
+				for (Action cac: (List<Action>) categoryGroup.getValue()) {	
+					dropdown.item(link(cac), Util.equalOrInPath(activeAction, cac), cac.isDisabled());
+				}
+			}
+		}
+		
+		return navs;
+	}
 	
 }
