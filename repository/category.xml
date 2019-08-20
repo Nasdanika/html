@@ -3,9 +3,18 @@
    <feature url="features/org.nasdanika.html.feature_2.0.0.qualifier.jar" id="org.nasdanika.html.feature" version="2.0.0.qualifier">
       <category name="org.nasdanika.runtime"/>
    </feature>
-   <category-def name="org.nasdanika.runtime" label="Runtime bundles"/>
-   <repository-reference location="http://download.eclipse.org/releases/2019-03" enabled="true" />
-   <repository-reference location="http://download.eclipse.org/tools/orbit/downloads/drops/R20181128170323/repository" enabled="true" />
+   <category-def name="org.nasdanika" label="Nasdanika">
+      <description>
+         Products of Nasdanika
+      </description>
+   </category-def>
+   <category-def name="org.nasdanika.runtime" label="Runtime bundles">
+      <category name="org.nasdanika"/>
+      <description>
+         Runtime bundles for building Eclipse products and plug-ins.
+      </description>
+   </category-def>
+   <repository-reference location="http://download.eclipse.org/releases/2019-06" enabled="true" />
    <repository-reference location="http://https://www.nasdanika.org/home/products/third-party/repository" enabled="true" />
    <repository-reference location="http://https://www.nasdanika.org/home/products/core/repository" enabled="true" />
    <repository-reference location="http://https://www.nasdanika.org/home/products/maven-osgi/repository" enabled="true" />
