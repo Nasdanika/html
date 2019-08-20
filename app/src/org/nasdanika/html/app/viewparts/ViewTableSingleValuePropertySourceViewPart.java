@@ -14,7 +14,7 @@ import org.nasdanika.html.app.ViewGenerator;
 public class ViewTableSingleValuePropertySourceViewPart extends TableSingleValuePropertySourceViewPart {
 
 	public ViewTableSingleValuePropertySourceViewPart(SingleValuePropertySource propertySource) {
-		super(propertySource);
+		super(propertySource, false);
 	}
 	
 	@Override

@@ -9,8 +9,7 @@ import org.nasdanika.html.app.Action.Role;
 import org.nasdanika.html.app.impl.Util;
 
 /**
- * Provider of actions. Base interface for {@link PropertyDescriptor} and
- * {@link PropertySource}.
+ * Provider of actions for {@link PropertyDescriptor} and {@link PropertySource}.
  * 
  * @author Pavel
  *
@@ -22,7 +21,7 @@ public interface ActionProvider {
 	 */
 	ActionProvider EMPTY_ACTION_PROVIDER = () -> Collections.emptyList();
 	
-	List<? extends Action> getActions();
+	List<Action> getActions();
 
 	// --- Helper methods ---
 
@@ -32,20 +31,18 @@ public interface ActionProvider {
 	 * @param role
 	 * @return
 	 */
-	default List<? extends Action> getActions(String role) {
+	default List<Action> getActions(String role) {
 		return getActions().stream().filter(c -> c.isInRole(role)).collect(Collectors.toList());
 	}
 
 	@SuppressWarnings("unchecked")
-	default <T extends Action> List<Map.Entry<Label, List<T>>> getActionsGroupedByCategory() {
+	default List<Map.Entry<Label, List<Action>>> getActionsGroupedByCategory() {
 		List<?> ret = Util.groupByCategory(getActions());
-		return (List<Map.Entry<Label, List<T>>>) ret;
+		return (List<Map.Entry<Label, List<Action>>>) ret;
 	}
 
-	@SuppressWarnings("unchecked")
-	default <T extends Action> List<Map.Entry<Label, List<T>>> getActionsGroupedByCategory(String role) {
-		List<?> ret = Util.groupByCategory(getActions(role));
-		return (List<Map.Entry<Label, List<T>>>) ret;
+	default List<Map.Entry<Label, List<Action>>> getActionsGroupedByCategory(String role) {
+		return Util.groupByCategory(getActions(role));
 	}
 
 	/**
@@ -54,11 +51,11 @@ public interface ActionProvider {
 	 * @param role
 	 * @return
 	 */
-	default List<? extends Action> getViewActions() {
+	default List<Action> getViewActions() {
 		return getActions(Role.VIEW);
 	}
 
-	default <T extends Action> List<Map.Entry<Label, List<T>>> getViewActionsGroupedByCategory() {
+	default List<Map.Entry<Label, List<Action>>> getViewActionsGroupedByCategory() {
 		return getActionsGroupedByCategory(Role.VIEW);
 	}
 
@@ -68,11 +65,11 @@ public interface ActionProvider {
 	 * @param role
 	 * @return
 	 */
-	default List<? extends Action> getEditActions() {
+	default List<Action> getEditActions() {
 		return getActions(Role.EDIT);
 	}
 
-	default <T extends Action> List<Map.Entry<Label, List<T>>> getEditActionsGroupedByCategory() {
+	default List<Map.Entry<Label, List<Action>>> getEditActionsGroupedByCategory() {
 		return getActionsGroupedByCategory(Role.EDIT);
 	}
 

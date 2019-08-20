@@ -1,30 +1,28 @@
 package org.nasdanika.html.app.viewparts;
 
 import java.util.List;
-
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.html.FieldContainer;
 import org.nasdanika.html.FieldSet;
-import org.nasdanika.html.Fragment;
+import org.nasdanika.html.Form;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.InputPropertyDescriptor;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.app.SingleValuePropertySource;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.Util;
-import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
-import org.nasdanika.html.bootstrap.Card;
+import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.FormGroup;
-import org.nasdanika.html.bootstrap.RowContainer.Row;
-import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
-import org.nasdanika.html.bootstrap.Table;
-import org.nasdanika.html.app.InputPropertyDescriptor;
 
 /**
- * Generates an edit form. {@link InputPropertyDescriptor}s are rendered as {@link FormGroup}s. 
+ * Generates edit form. {@link InputPropertyDescriptor}s are rendered as {@link FormGroup}s. 
  * Categories are generated as {@link FieldSet}s.   
  * @author Pavel Vlasov
  *
@@ -32,9 +30,11 @@ import org.nasdanika.html.app.InputPropertyDescriptor;
 public abstract class EditFormSingleValuePropertySourceViewPart implements ViewPart {
 
 	private SingleValuePropertySource propertySource;
+	private Map<DeviceSize, Integer> horizontalLabelWidths;
 
-	public EditFormSingleValuePropertySourceViewPart(SingleValuePropertySource propertySource) {
+	public EditFormSingleValuePropertySourceViewPart(SingleValuePropertySource propertySource, Map<DeviceSize, Integer> horizontalLabelWidths) {
 		this.propertySource = propertySource;
+		this.horizontalLabelWidths = horizontalLabelWidths;
 	}
 
 	@Override
@@ -43,41 +43,45 @@ public abstract class EditFormSingleValuePropertySourceViewPart implements ViewP
 			return "";
 		}
 		
-		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();		
-		for(Entry<Label, List<PropertyDescriptor>> descriptorGroup: Util.groupByCategory(propertySource.getPropertyDescriptors())) {			
-			Table propertyTable = viewGenerator.get(BootstrapFactory.class).table();
-			propertyTable.bordered();
-			boolean hasActions = false;
+		Form form = viewGenerator.get(HTMLFactory.class).form();		
+		for(Entry<Label, List<PropertyDescriptor>> descriptorGroup: Util.groupByCategory(propertySource.getPropertyDescriptors())) {
+			FieldContainer<?> fieldContainer;
+			Label category = descriptorGroup.getKey();
+			if (category == null) {
+				fieldContainer = form;
+			} else {
+				fieldContainer = form.fieldset();
+				((FieldSet) fieldContainer).legend(viewGenerator.label(category));
+			}
 			for (PropertyDescriptor pd: descriptorGroup.getValue()) {
-				if (!pd.getActionProvider(propertySource.getValue()).getViewActions().isEmpty()) {
-					hasActions = true;
-					break;
+				if (pd instanceof InputPropertyDescriptor) {
+					fieldContainer.content(((InputPropertyDescriptor) pd).formGroup(viewGenerator, propertySource.getValue(), horizontalLabelWidths));
+				} else {
+					fieldContainer.content(controlGroup(pd));
 				}
-			}			
-			for (PropertyDescriptor pd: descriptorGroup.getValue()) {
-				Row propertyRow = propertyTable.row();
-				Cell nameHeader = propertyRow.header(viewGenerator.labelFragment(pd));
-				nameHeader.toHTMLElement().style("width", "10%").style().whiteSpace().nowrap();
-				propertyRow.cell(viewGenerator.processViewPart(pd.getDisplayValue(propertySource.getValue())));
-				if (hasActions) {
-					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(pd.getActionProvider(propertySource.getValue()).getViewActions());
+				// Better way to render actions? 
+				List<Action> editActions = pd.getActionProvider(propertySource.getValue()).getEditActions();
+				if (!editActions.isEmpty()) {
+					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(editActions);
 					buttonToolbar.margin().top(1).bottom(1);
-					propertyRow.cell(buttonToolbar);
+					fieldContainer.content(buttonToolbar);
 				}
 			}
 			
-			Label category = descriptorGroup.getKey();
-			if (category == null) {
-				ret.content(propertyTable);
-			} else {
-				Card propertyCard = viewGenerator.get(BootstrapFactory.class).card();
-				propertyCard.border(category.getColor());
-				viewGenerator.label(category, propertyCard.getTitle().toHTMLElement());
-				propertyCard.getBody().toHTMLElement().content(propertyTable);
-				ret.content(propertyCard);
-			}
 		}
-		return ret;
+		
+		form.content(viewGenerator.buttonToolbar(propertySource.getActionProvider(propertySource.getValue()).getEditActions()));
+		return form;
+	}
+	
+	/**
+	 * Creates a control group for property descriptors which do not implement {@link InputPropertyDescriptor}. 
+	 * @param propertyDescriptor
+	 * @return
+	 */
+	protected Object controlGroup(PropertyDescriptor propertyDescriptor) {
+		// TODO
+		return null;
 	}
 
 }

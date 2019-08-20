@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.app.ActionProvider;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.app.SingleValuePropertySource;
@@ -28,9 +29,11 @@ import org.nasdanika.html.bootstrap.Table;
 public abstract class TableSingleValuePropertySourceViewPart implements ViewPart {
 
 	protected SingleValuePropertySource propertySource;
+	protected boolean isEdit;
 
-	public TableSingleValuePropertySourceViewPart(SingleValuePropertySource propertySource) {
+	protected TableSingleValuePropertySourceViewPart(SingleValuePropertySource propertySource, boolean isEdit) {
 		this.propertySource = propertySource;
+		this.isEdit = isEdit;
 	}
 
 	@Override
@@ -45,7 +48,8 @@ public abstract class TableSingleValuePropertySourceViewPart implements ViewPart
 			propertyTable.bordered();
 			boolean hasActions = false;
 			for (PropertyDescriptor pd: descriptorGroup.getValue()) {
-				if (!pd.getActionProvider(propertySource.getValue()).getViewActions().isEmpty()) {
+				ActionProvider actionProvider = pd.getActionProvider(propertySource.getValue());
+				if (!(isEdit ? actionProvider.getEditActions() : actionProvider.getViewActions()).isEmpty()) {
 					hasActions = true;
 					break;
 				}
@@ -56,7 +60,8 @@ public abstract class TableSingleValuePropertySourceViewPart implements ViewPart
 				nameHeader.toHTMLElement().style("width", "10%").style().whiteSpace().nowrap();
 				propertyRow.cell(viewGenerator.processViewPart(generateValueView(propertySource.getValue(), pd, viewGenerator, progressMonitor.split("Generating value view of "+pd.getPropertyName(), 1, propertySource.getValue(), pd))));
 				if (hasActions) {
-					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(pd.getActionProvider(propertySource.getValue()).getViewActions());
+					ActionProvider actionProvider = pd.getActionProvider(propertySource.getValue());
+					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(isEdit ? actionProvider.getEditActions() : actionProvider.getViewActions());
 					buttonToolbar.margin().top(1).bottom(1);
 					propertyRow.cell(buttonToolbar);
 				}
@@ -73,8 +78,12 @@ public abstract class TableSingleValuePropertySourceViewPart implements ViewPart
 				ret.content(propertyCard);
 			}
 		}
+		
+		ActionProvider actionProvider = propertySource.getActionProvider(propertySource.getValue());
+		ret.content(viewGenerator.buttonToolbar(isEdit ? actionProvider.getEditActions() : actionProvider.getViewActions()));
 		return ret;
 	}
+	
 	
 	/**
 	 * Generates value view, e.g. text or input control. 

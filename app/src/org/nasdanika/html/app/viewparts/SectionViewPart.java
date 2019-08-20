@@ -101,7 +101,7 @@ public class SectionViewPart implements ViewPart {
 	protected NamedItemsContainer createSectionsContainer(ViewGenerator viewGenerator, Consumer<Object> contentConsumer, int level) {
 		switch (level) {
 		case 0:
-			Navs tabs = viewGenerator.get(BootstrapFactory.class).tabs();
+			Navs tabs = viewGenerator.get(BootstrapFactory.class).navs().tabs();
 			contentConsumer.accept(tabs);
 			return tabs;
 		case 1:

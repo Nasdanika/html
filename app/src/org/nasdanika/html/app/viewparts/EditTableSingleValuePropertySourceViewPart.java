@@ -1,6 +1,8 @@
 package org.nasdanika.html.app.viewparts;
 
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.html.Form;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.PropertyDescriptor;
 import org.nasdanika.html.app.SingleValuePropertySource;
 import org.nasdanika.html.app.ViewGenerator;
@@ -14,9 +16,22 @@ import org.nasdanika.html.app.ViewGenerator;
 public class EditTableSingleValuePropertySourceViewPart extends TableSingleValuePropertySourceViewPart {
 
 	public EditTableSingleValuePropertySourceViewPart(SingleValuePropertySource propertySource) {
-		super(propertySource);
+		super(propertySource, true);
 	}
 	
+	/**
+	 * Wraps table into a form.
+	 */
+	@Override
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
+		Form form = htmlFactory.form();
+		form.content(super.generate(viewGenerator, progressMonitor));
+		// TODO - context (submit) actions.
+		
+		return form;
+	}
+		
 	@Override
 	protected Object generateValueView(
 			Object obj, 
