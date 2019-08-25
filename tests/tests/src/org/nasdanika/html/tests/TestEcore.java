@@ -35,7 +35,7 @@ public class TestEcore extends HTMLTestBase {
 		Container<InputStream> fsc = new FileSystemContainer(new File("target/test-dumps/ecore"));
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		ProgressEntry pe = new ProgressEntry("Generating Bank Model Documentation", 0);
-		BiFunction<org.nasdanika.common.resources.File<InputStream>, Object, InputStream> encoder = (file, contents) -> {
+		BiFunction<org.nasdanika.common.resources.Entity<InputStream>, Object, InputStream> encoder = (file, contents) -> {
 			InputStream ret = DefaultConverter.INSTANCE.convert(contents, InputStream.class);
 			if (ret == null) {
 				// toString() conversion
@@ -82,7 +82,7 @@ public class TestEcore extends HTMLTestBase {
 		generator.loadGenModel("urn:org.nasdanika.bank");
 		Container<InputStream> fsc = new FileSystemContainer(new File("target/test-dumps/ecore/ru"));
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
-		BiFunction<org.nasdanika.common.resources.File<InputStream>, Object, InputStream> encoder = (file, contents) -> {
+		BiFunction<org.nasdanika.common.resources.Entity<InputStream>, Object, InputStream> encoder = (file, contents) -> {
 			InputStream ret = DefaultConverter.INSTANCE.convert(contents, InputStream.class);
 			if (ret == null) {
 				// toString() conversion

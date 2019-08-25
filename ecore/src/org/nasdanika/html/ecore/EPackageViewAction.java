@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.resources.File;
+import org.nasdanika.common.resources.Entity;
 import org.nasdanika.emf.localization.PropertyKeys;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
@@ -80,11 +80,11 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 			baos.close();
 			String imagePath = getId()+".png";
 			org.nasdanika.common.resources.Container<Object> resourceContainer = viewGenerator.get(org.nasdanika.common.resources.Container.class);
-			File<Object> imageFile = resourceContainer.getFile(imagePath);			
+			Entity<Object> imageFile = resourceContainer.getEntity(imagePath);			
 			if (imageFile == null) {
 				imageMonitor.worked(100, "Could not create image file");
 			} else {
-				imageFile.setContents(baos.toByteArray(), imageMonitor);				
+				imageFile.setState(baos.toByteArray(), imageMonitor);				
 				HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
 				Tag diagramImage = htmlFactory.tag(TagName.img).attribute("src", viewGenerator.get("image-path", "")+imagePath).attribute("usemap", "#plantuml_map");
 				tabs.item(getResourceContext().getString(PropertyKeys.UI_DIAGRAM, "Diagram"), htmlFactory.fragment(diagramImage, diagramCMap));				

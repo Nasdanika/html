@@ -77,7 +77,7 @@ public class EcoreHelpGenerator extends EcoreDocumentationGenerator {
 	    StreamResult out = new StreamResult(sw);
 	    transformer.transform(source, out);
 	    sw.close();
-	    resourceConsumer.getFile("toc.xml").setContents(sw.toString(), progressMonitor.split("Writing toc.xml", 100));		
+	    resourceConsumer.getEntity("toc.xml").setState(sw.toString(), progressMonitor.split("Writing toc.xml", 100));		
 	}
 	
 	private Element actionTopic(Action action, Document document) {

@@ -86,7 +86,7 @@ public class ProgressReportGenerator {
 			
 			applicationBuilder.build(app, progressMonitor);
 			
-			resourceConsumer.getFile(action.getId()+".html").setContents(app, im);			
+			resourceConsumer.getEntity(action.getId()+".html").setState(app, im);			
 		}
 		for (Action child: action.getChildren()) {
 			generate(child, resourceConsumer, progressMonitor);
