@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.resources.Entity;
 import org.nasdanika.emf.localization.PropertyKeys;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
@@ -66,7 +65,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 			contentContainer.row().col(description);
 		}
 		
-		Navs tabs = bootstrapFactory.tabs();
+		Navs tabs = bootstrapFactory.navs().tabs();
 		contentContainer.row().col(tabs);
 		
 		if (!Util.isBlank(description) && description.length() >= descriptionTabLengthThreshold) {
@@ -79,15 +78,10 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 			baos.close();
 			org.nasdanika.common.resources.Container<Object> resourceContainer = viewGenerator.get(org.nasdanika.common.resources.Container.class);
 			String imagePath = getId()+".png";
-			Entity<Object> imageFile = resourceContainer.getEntity(imagePath);			
-			if (imageFile == null) {
-				imageMonitor.worked(100, "Could not create image file");
-			} else {
-				imageFile.setState(baos.toByteArray(), imageMonitor);				
-				HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
-				Tag diagramImage = htmlFactory.tag(TagName.img).attribute("src", viewGenerator.get("image-path", "")+imagePath).attribute("usemap", "#plantuml_map");
-				tabs.item(getResourceContext().getString(PropertyKeys.UI_DIAGRAM, "Diagram"), htmlFactory.fragment(diagramImage, diagramCMap));				
-			}
+			resourceContainer.put(imagePath, baos.toByteArray(), imageMonitor);
+			HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
+			Tag diagramImage = htmlFactory.tag(TagName.img).attribute("src", viewGenerator.get("image-path", "")+imagePath).attribute("usemap", "#plantuml_map");
+			tabs.item(getResourceContext().getString(PropertyKeys.UI_DIAGRAM, "Diagram"), htmlFactory.fragment(diagramImage, diagramCMap));				
 		} catch (IOException e) {
 			tabs.item(getResourceContext().getString(PropertyKeys.UI_DIAGRAM, "Diagram"), bootstrapFactory.alert(Color.DANGER, "Error generating class diagram: "+e));
 			e.printStackTrace();

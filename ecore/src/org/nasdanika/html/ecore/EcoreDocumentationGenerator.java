@@ -115,7 +115,7 @@ public class EcoreDocumentationGenerator {
 		context.register(org.nasdanika.common.resources.Container.class, resourceConsumer);
 		
 		MutableContext docContext = new SimpleMutableContext();
-		docContext.register(org.nasdanika.common.resources.Container.class, resourceConsumer.getContainer("doc"));
+		docContext.register(org.nasdanika.common.resources.Container.class, resourceConsumer.getContainer("doc", progressMonitor.split("Getting doc container", 1)));
 		docContext.put("image-path", "doc/");
 		
 		ApplicationBuilder  applicationBuilder = new ActionApplicationBuilder(principalAction.getChildren().get(0)) {
@@ -150,10 +150,10 @@ public class EcoreDocumentationGenerator {
 		applicationBuilder.build(app, progressMonitor);
 		
 		try (ProgressMonitor im = progressMonitor.split("Generating index.html", 100)) {
-			resourceConsumer.getEntity("index.html").setState(app, im);			
+			resourceConsumer.put("index.html", app, im);			
 		}
 		try (ProgressMonitor sm = progressMonitor.split("Generating summary", 100)) {
-			resourceConsumer.getEntity("doc/doc-summary").setState(summary(docContext), sm);			
+			resourceConsumer.put("doc/doc-summary", summary(docContext), sm);			
 		}
 		for (Action action: principalAction.getChildren()) {
 			generateActionContent(action, docContext, progressMonitor);
@@ -198,7 +198,7 @@ public class EcoreDocumentationGenerator {
 			contentBuilder.append(contentPanelViewPart.generate(viewGenerator, progressMonitor));
 			@SuppressWarnings("unchecked")
 			org.nasdanika.common.resources.Container<Object> container = context.get(org.nasdanika.common.resources.Container.class);
-			container.getEntity(action.getId()+".html").setState(contentBuilder, am);
+			container.put(action.getId()+".html", contentBuilder.toString(), am);
 			for (Action child: action.getChildren()) {
 				if (child.isInRole(Role.NAVIGATION)) {
 					generateActionContent(child, context, am);

@@ -32,10 +32,11 @@ public class TestEcore extends HTMLTestBase {
 	public void testEcoreDocumentation() throws Exception {		
 		EcoreDocumentationGenerator generator = new EcoreDocumentationGenerator("Nasdanika Bank Model", null, null, false);
 		generator.loadGenModel("urn:org.nasdanika.bank");
-		Container<InputStream> fsc = new FileSystemContainer(new File("target/test-dumps/ecore"));
+		FileSystemContainer fsc = new FileSystemContainer(new File("target/test-dumps/ecore"));
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		ProgressEntry pe = new ProgressEntry("Generating Bank Model Documentation", 0);
-		BiFunction<org.nasdanika.common.resources.Entity<InputStream>, Object, InputStream> encoder = (file, contents) -> {
+		
+		BiFunction<String, Object, InputStream> converter = (path, contents) -> {
 			InputStream ret = DefaultConverter.INSTANCE.convert(contents, InputStream.class);
 			if (ret == null) {
 				// toString() conversion
@@ -43,12 +44,13 @@ public class TestEcore extends HTMLTestBase {
 			}
 			return ret;
 		};
-		Container<Object> objectContainer = fsc.adapt(null, encoder, null);
+		
+		Container<Object> objectContainer = fsc.stateAdapter().adapt(null, converter);
 		generator.generate(objectContainer, progressMonitor.compose(pe));
 		
 		// HTML report
 		ProgressReportGenerator prg = new ProgressReportGenerator("Documentation generation", pe);
-		prg.generate(objectContainer.getContainer("progress-report"), progressMonitor);		
+		prg.generate(objectContainer.getContainer("progress-report", progressMonitor.split("Getting progress-report container", 1)), progressMonitor);		
 		
 	}
 
@@ -80,9 +82,9 @@ public class TestEcore extends HTMLTestBase {
 			
 		};
 		generator.loadGenModel("urn:org.nasdanika.bank");
-		Container<InputStream> fsc = new FileSystemContainer(new File("target/test-dumps/ecore/ru"));
+		FileSystemContainer fsc = new FileSystemContainer(new File("target/test-dumps/ecore/ru"));
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
-		BiFunction<org.nasdanika.common.resources.Entity<InputStream>, Object, InputStream> encoder = (file, contents) -> {
+		BiFunction<String, Object, InputStream> converter = (file, contents) -> {
 			InputStream ret = DefaultConverter.INSTANCE.convert(contents, InputStream.class);
 			if (ret == null) {
 				// toString() conversion
@@ -90,7 +92,7 @@ public class TestEcore extends HTMLTestBase {
 			}
 			return ret;
 		};
-		generator.generate(fsc.adapt(null, encoder, null), progressMonitor);		
+		generator.generate(fsc.stateAdapter().adapt(null, converter), progressMonitor);		
 	}
 	
 }

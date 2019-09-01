@@ -115,6 +115,11 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 		if (ret != null) {
 			register(type, ret);
 		}
+		
+		// To be able to obtain ViewGenerator as a service when it is composed or chained.
+		if (ret == null && type.isInstance(this)) {
+			ret = (T) this;
+		}
 
 		return ret;
 	}
