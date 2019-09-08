@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -241,6 +242,13 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 	@Override
 	public String getIcon() {
 		return target.isInterface() ? iconsBase+"EInterface.gif" : super.getIcon();			
+	}
+	
+	@Override
+	public String getText() {
+		StringBuilder text = new StringBuilder(super.getText());
+		EList<ETypeParameter> typeParameters = target.getETypeParameters();
+		return text.toString();
 	}
 
 }

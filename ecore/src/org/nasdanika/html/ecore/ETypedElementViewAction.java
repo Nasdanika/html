@@ -1,6 +1,8 @@
 package org.nasdanika.html.ecore;
 
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.localization.PropertyKeys;
@@ -54,6 +56,30 @@ public class ETypedElementViewAction<T extends ETypedElement> extends ENamedElem
 		cardinalityRow.cell(cardinality(target));
 		
 		return table;
+	}
+	
+	@Override
+	public String getText() {
+		StringBuilder label = new StringBuilder();
+		EGenericType genericType = target.getEGenericType();
+		if (genericType != null) {
+			label.append(computeLabel(genericType));
+			if (target.isMany()) {
+				label.append("*");
+			}
+			label.append(" ");
+		}
+
+		String name = super.getText();
+		EObject container = target.eContainer();
+		if (container instanceof EClassifier) {
+			EClassifier classifier = (EClassifier) container;
+			label.append(classifier.getName()); /// ???? Why ????
+		} else {
+			label.append(name);
+		}
+		return label.toString();
+		
 	}
 
 }

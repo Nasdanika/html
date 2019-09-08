@@ -1,7 +1,10 @@
 package org.nasdanika.html.ecore;
 
+import java.util.Iterator;
+
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.ETypeParameter;
 
 public class EClassifierViewAction<T extends EClassifier> extends ENamedElementViewAction<T> {
 	
@@ -19,6 +22,25 @@ public class EClassifierViewAction<T extends EClassifier> extends ENamedElementV
 			parentId = parentIdStr.substring(0, parentIdStr.length() - EPackageViewAction.PACKAGE_SUMMARY_SUFFIX.length()); 
 		}
 		return parentId+"/"+((ENamedElement) getValue()).getName();
+	}
+	
+	@Override
+	public String getText() {
+		StringBuilder label = new StringBuilder(super.getText());
+
+		if (!target.getETypeParameters().isEmpty()) {
+			label.append("&lt;");
+			Iterator<ETypeParameter> tpit = target.getETypeParameters().iterator();
+			while (tpit.hasNext()) {
+				ETypeParameter typeParameter = tpit.next();
+				label.append(getTypeParameterLabel(typeParameter));
+				if (tpit.hasNext()) {
+					label.append(", ");
+				}
+			}
+			label.append("&gt;");
+		}
+		return label.toString();
 	}
 
 }

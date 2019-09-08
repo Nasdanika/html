@@ -1,8 +1,5 @@
 package org.nasdanika.html.emf;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -10,13 +7,6 @@ import org.jsoup.Jsoup;
 import org.nasdanika.emf.AnnotationSource;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.bootstrap.Color;
-
-import com.vladsch.flexmark.html.HtmlRenderer;
-import com.vladsch.flexmark.parser.Parser;
-import com.vladsch.flexmark.profiles.pegdown.Extensions;
-import com.vladsch.flexmark.profiles.pegdown.PegdownOptionsAdapter;
-import com.vladsch.flexmark.util.ast.Document;
-import com.vladsch.flexmark.util.options.DataHolder;
 
 
 /**
