@@ -27,7 +27,7 @@ public class EOperationViewAction extends ETypedElementViewAction<EOperation> {
 			label.append("&lt;");
 			for (Iterator<ETypeParameter> i = target.getETypeParameters().iterator(); i.hasNext();) {
 				ETypeParameter typeParameter = i.next();
-				label.append(getTypeParameterLabel(typeParameter));
+				label.append(EObjectAdaptable.adaptTo(typeParameter, ViewAction.class).getText());
 				if (i.hasNext()) {
 					label.append(", ");
 				}

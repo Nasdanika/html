@@ -69,15 +69,17 @@ public class ETypedElementViewAction<T extends ETypedElement> extends ENamedElem
 			}
 			label.append(" ");
 		}
+		
+		label.append(super.getText());
 
-		String name = super.getText();
-		EObject container = target.eContainer();
-		if (container instanceof EClassifier) {
-			EClassifier classifier = (EClassifier) container;
-			label.append(classifier.getName()); /// ???? Why ????
-		} else {
-			label.append(name);
-		}
+//		String name = super.getText();
+//		EObject container = target.eContainer();
+//		if (container instanceof EClassifier) {
+//			EClassifier classifier = (EClassifier) container;
+//			label.append(classifier.getName()); /// ???? Why ????
+//		} else {
+//			label.append(name);
+//		}
 		return label.toString();
 		
 	}

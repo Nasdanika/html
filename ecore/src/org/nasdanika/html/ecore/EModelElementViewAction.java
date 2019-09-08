@@ -112,75 +112,45 @@ public class EModelElementViewAction<T extends EModelElement> extends EObjectVie
 	
 	// --- Handling generic types in action text --- 
 	// TODO - a way to provide links in addition to plain text
-	
-	protected String getTypeParameterLabel(ETypeParameter typeParameter) {
-		StringBuilder label = new StringBuilder();
-
-		String name = typeParameter.getName();
-		EObject container = typeParameter.eContainer();
-		if (container instanceof EClassifier) {
-			EClassifier classifier = (EClassifier) container;
-			label.append("<a name=\"");
-			label.append(classifier.getName());
-			label.append("@@");
-			label.append(name);
-			label.append("\">");
-			label.append(name);
-			label.append("</a>");
-		} else {
-			label.append(name);
-		}
-
-		if (!typeParameter.getEBounds().isEmpty()) {
-			label.append(" extends ");
-			for (Iterator<EGenericType> j = typeParameter.getEBounds().iterator(); j.hasNext();) {
-				EGenericType bound = j.next();
-				label.append(computeLabel(bound));
-				if (j.hasNext()) {
-					label.append(" &amp; ");
-				}
-			}
-		}
-		return label.toString();
-	}
 
 	protected String computeLabel(EGenericType genericType) {
 		EObject container = genericType.eContainer();
 		EClassifier rawType = genericType.getERawType();
 		ViewAction rawTypeViewAction = EObjectAdaptable.adaptTo(rawType, ViewAction.class);
+		String rawTypeText = rawTypeViewAction == null ? rawType.getName() : rawTypeViewAction.getText();
 		if (container == null || !container.eIsSet(genericType.eContainingFeature())) {
-			return rawTypeViewAction == null ? "" : rawTypeViewAction.getText();
-		} else {
-			StringBuilder label = new StringBuilder();
-			if (genericType.getEClassifier() != null) {
-				label.append(rawTypeViewAction.getText());
-
-				if (!genericType.getETypeArguments().isEmpty()) {
-					label.append("&lt;");
-					for (Iterator<EGenericType> i = genericType.getETypeArguments().iterator(); i.hasNext();) {
-						EGenericType typeArgument = i.next();
-						label.append(computeLabel(typeArgument));
-						if (i.hasNext()) {
-							label.append(", ");
-						}
-					}
-					label.append("&gt;");
-				}
-			} else {
-				ETypeParameter typeParameter = genericType.getETypeParameter();
-				String name = typeParameter != null ? typeParameter.getName() : "?";
-				label.append(name);
-
-				if (genericType.getELowerBound() != null) {
-					label.append(" super ");
-					label.append(computeLabel(genericType.getELowerBound()));
-				} else if (genericType.getEUpperBound() != null) {
-					label.append(" extends ");
-					label.append(computeLabel(genericType.getEUpperBound()));
-				}
-			}
-			return label.toString();
+			return rawTypeText;
 		}
+		
+		StringBuilder label = new StringBuilder();
+		if (genericType.getEClassifier() != null) {
+			label.append(rawTypeText);
+
+			if (!genericType.getETypeArguments().isEmpty()) {
+				label.append("&lt;");
+				for (Iterator<EGenericType> i = genericType.getETypeArguments().iterator(); i.hasNext();) {
+					EGenericType typeArgument = i.next();
+					label.append(computeLabel(typeArgument));
+					if (i.hasNext()) {
+						label.append(", ");
+					}
+				}
+				label.append("&gt;");
+			}
+		} else {
+			ETypeParameter typeParameter = genericType.getETypeParameter();
+			String name = typeParameter != null ? typeParameter.getName() : "?";
+			label.append(name);
+
+			if (genericType.getELowerBound() != null) {
+				label.append(" super ");
+				label.append(computeLabel(genericType.getELowerBound()));
+			} else if (genericType.getEUpperBound() != null) {
+				label.append(" extends ");
+				label.append(computeLabel(genericType.getEUpperBound()));
+			}
+		}
+		return label.toString();
 	}
 
 }

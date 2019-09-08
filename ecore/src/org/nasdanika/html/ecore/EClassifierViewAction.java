@@ -5,6 +5,8 @@ import java.util.Iterator;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.ETypeParameter;
+import org.nasdanika.html.emf.EObjectAdaptable;
+import org.nasdanika.html.emf.ViewAction;
 
 public class EClassifierViewAction<T extends EClassifier> extends ENamedElementViewAction<T> {
 	
@@ -33,7 +35,7 @@ public class EClassifierViewAction<T extends EClassifier> extends ENamedElementV
 			Iterator<ETypeParameter> tpit = target.getETypeParameters().iterator();
 			while (tpit.hasNext()) {
 				ETypeParameter typeParameter = tpit.next();
-				label.append(getTypeParameterLabel(typeParameter));
+				label.append(EObjectAdaptable.adaptTo(typeParameter, ViewAction.class).getText());
 				if (tpit.hasNext()) {
 					label.append(", ");
 				}
