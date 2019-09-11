@@ -1,5 +1,6 @@
 package org.nasdanika.html.ecore;
 
+import org.nasdanika.common.MarkdownHelper;
 import org.nasdanika.html.app.impl.BootstrapContainerRouterApplication;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Theme;
@@ -44,6 +45,7 @@ public class EcoreDocumentationApplication extends BootstrapContainerRouterAppli
 	 */
 	public EcoreDocumentationApplication(BootstrapFactory factory, Theme theme, boolean fluid) {
 		super(factory, theme, fluid);
+		page.stylesheet(MarkdownHelper.GITHUB_MARKDOWN_CSS_CDN);
 	}	
 	
 	/**

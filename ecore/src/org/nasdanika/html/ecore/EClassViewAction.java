@@ -247,7 +247,8 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 	@Override
 	public String getText() {
 		StringBuilder text = new StringBuilder(super.getText());
-		EList<ETypeParameter> typeParameters = target.getETypeParameters();
+		// Generic supertypes?
+//		EList<ETypeParameter> typeParameters = target.getETypeParameters();
 		return text.toString();
 	}
 

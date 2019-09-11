@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.jsoup.Jsoup;
 import org.nasdanika.emf.AnnotationSource;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.bootstrap.Color;
 
@@ -81,7 +82,7 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 			return null;
 		}
 	
-		return markdownToHtml(markdown);				
+		return HTMLFactory.INSTANCE.div(markdownToHtml(markdown)).addClass("markdown-body").toString();				
 	}
 
 	@Override
