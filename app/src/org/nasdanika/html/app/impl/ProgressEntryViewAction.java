@@ -77,11 +77,11 @@ public class ProgressEntryViewAction extends ActionImpl {
 		HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
 		Fragment fragment = htmlFactory.fragment(infoTable);
 		
-		if (progressEntry.getDetails() != null && progressEntry.getDetails().length > 0) {
-			fragment.content(TagName.h2.create("Details"));
+		if (progressEntry.getData() != null && progressEntry.getData().size() > 0) {
+			fragment.content(TagName.h2.create("Data"));
 			Table detailsTable = bootstrapFactory.table().bordered();
 			detailsTable.headerRow("Type", "Value");
-			for (Object obj: progressEntry.getDetails()) {
+			for (Object obj: progressEntry.getData()) {
 				detailsTable.row(obj != null ? obj.getClass().getName() : "", String.valueOf(obj));
 			}
 			fragment.content(detailsTable);
