@@ -21,38 +21,33 @@
 	<repositories>
 		<!-- configure p2 repository to resolve against -->
 		<repository>
-			<id>html</id>
-			<url>https://www.nasdanika.org/home/products/html/repository</url>
-			<layout>p2</layout>
-		</repository>
-		<repository>
-			<id>eclipse</id>
-			<url>http://download.eclipse.org/releases/2019-06</url>
-			<layout>p2</layout>
-		</repository>
-		<repository>
-			<id>orbit</id>
-			<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository</url>
+			<id>foundation</id>
+			<url>https://www.nasdanika.org/master/foundation-repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>third-party</id>
-			<url>https://www.nasdanika.org/home/products/third-party/repository</url>
-			<layout>p2</layout>
-		</repository>
-		<repository>
-			<id>core</id>
-			<url>https://www.nasdanika.org/home/products/core/repository</url>
-			<layout>p2</layout>
-		</repository>
-		<repository>
-			<id>bank</id>
-			<url>https://www.nasdanika.org/home/products/bank/repository</url>
+			<url>https://www.nasdanika.org/master/products/third-party/repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>maven-osgi</id>
-			<url>https://www.nasdanika.org/home/products/maven-osgi/repository</url>
+			<url>https://www.nasdanika.org/master/products/maven-osgi/repository</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>bank</id>
+			<url>https://www.nasdanika.org/master/products/bank/repository</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>core</id>
+			<url>https://www.nasdanika.org/${env.CIRCLE_BRANCH}/products/core/repository</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>html</id>
+			<url>https://www.nasdanika.org/${env.CIRCLE_BRANCH}/products/html/repository</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>

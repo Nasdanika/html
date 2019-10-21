@@ -278,7 +278,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	<url>https://www.nasdanika.org/home/products/${siteDir}/</url>
+	<url>https://www.nasdanika.org/${env.CIRCLE_BRANCH}/products/${siteDir}/</url>
 	<distributionManagement>
 		<site>
 			<id>nasdanika-org</id>
