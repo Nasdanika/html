@@ -15,7 +15,7 @@
 		<repository>
 			<id>nasdanika-core-snapshots</id>
 			<name>nasdanika-core-snapshots</name>
-			<url>https://www.nasdanika.org/home/products/core/maven-repository</url>
+			<url>https://www.nasdanika.org/${env.CIRCLE_BRANCH}/products/core/maven-repository</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>

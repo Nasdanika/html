@@ -22,62 +22,27 @@
 		<!-- configure p2 repository to resolve against -->
 		<repository>
 			<id>foundation</id>
-			<url>https://www.nasdanika.org/home/foundation-repository</url>
+			<url>https://www.nasdanika.org/master/foundation-repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>third-party</id>
-			<url>https://www.nasdanika.org/home/products/third-party/repository</url>
-			<layout>p2</layout>
-		</repository>
-		<repository>
-			<id>core</id>
-			<url>https://www.nasdanika.org/home/products/core/repository</url>
+			<url>https://www.nasdanika.org/master/products/third-party/repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>maven-osgi</id>
-			<url>https://www.nasdanika.org/home/products/maven-osgi/repository</url>
+			<url>https://www.nasdanika.org/master/products/maven-osgi/repository</url>
 			<layout>p2</layout>
 		</repository>
-		<!--
 		<repository>
-			<id>slf4j</id>
-			<url>https://www.nasdanika.org/slf4j</url>
+			<id>core</id>
+			<url>https://www.nasdanika.org/${env.CIRCLE_BRANCH}/products/core/repository</url>
 			<layout>p2</layout>
-		</repository>	
-		-->
+		</repository>
 	</repositories>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
-		<!-- 
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.eclipse.tycho.extras</groupId>
-					<artifactId>tycho-document-bundle-plugin</artifactId>
-					<version>${tycho-version}</version>
-					<configuration>
-						<javadocOptions>
-							<ignoreError>true</ignoreError>
-							
-				        	<doclet>ch.raffael.doclets.pegdown.PegdownDoclet</doclet>
-				        	<docletArtifacts>
-					        	<docletArtifact>
-					         		<groupId>ch.raffael.pegdown-doclet</groupId>
-					         		<artifactId>pegdown-doclet</artifactId>
-					        		<version>1.1</version>
-					        	</docletArtifact>
-				        	</docletArtifacts>
-						    <includes>
-						       <include>org.nasdanika.*</include>
-						    </includes>				        	
-						</javadocOptions>					
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-		-->
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
