@@ -207,6 +207,16 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	}
 	
 	@Override
+	public HTMLPage bootstrapCdnHTMLPage() {
+		return bootstrapCdnHTMLPage(Theme.Default);
+	}
+	
+	@Override
+	public HTMLPage bootstrapCdnHTMLPage(Theme theme) {
+		return bootstrapCdnHTMLPage(getHTMLFactory().page(), theme);
+	}
+	
+	@Override
 	public <P extends HTMLPage> P bootstrapCdnHTMLPage(P page, Theme theme) {
 		theme.cdn(page);
 		P bootstrapPage = bootstrapHTMLPage(page);
@@ -224,16 +234,6 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	@Override
 	public HTMLPage bootstrapHTMLPage() {
 		return bootstrapHTMLPage(getHTMLFactory().page());
-	}
-	
-	@Override
-	public HTMLPage bootstrapCdnHTMLPage(Theme theme) {
-		return bootstrapCdnHTMLPage(bootstrapHTMLPage(), theme);
-	}
-	
-	@Override
-	public HTMLPage bootstrapCdnHTMLPage() {
-		return bootstrapCdnHTMLPage(Theme.Default);
 	}
 
 	@Override
