@@ -13,13 +13,7 @@ public interface Container extends BootstrapElement<Tag,Container> {
 		
 		interface Col extends BootstrapElement<Tag,Col>, org.nasdanika.html.Container<Col> {
 			
-			Col width(int width);
-			
-			Col width(DeviceSize deviceSize, int width);
-			
-			public Col widthAuto();
-
-			public Col widthAuto(DeviceSize deviceSize);
+			Col width(DeviceSize deviceSize, Size width);
 			
 		}
 		

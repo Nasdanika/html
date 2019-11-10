@@ -7,7 +7,9 @@ import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Container.Row;
 import org.nasdanika.html.bootstrap.Container.Row.Col;
+import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.Placement;
+import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.bootstrap.Theme;
 
@@ -91,7 +93,7 @@ public class BootstrapContainerApplication implements Application {
 	 * @param container
 	 */
 	protected void configureContainer(Container container) {
-		container.border(Color.DEFAULT).margin().top(1);		
+		container.border(Color.DEFAULT).margin().top(DeviceSize.EXTRA_SMALL, Size.S1);		
 	}
 	
 	/**
@@ -125,7 +127,7 @@ public class BootstrapContainerApplication implements Application {
 	 * @param navigationPanel
 	 */
 	protected void configureNavigationPanel(Col navigationPanel) {
-		navigationPanel.widthAuto();
+		navigationPanel.width(DeviceSize.EXTRA_SMALL, Size.AUTO);
 	}
 	
 	/**

@@ -7,6 +7,8 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Container.Row;
+import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Size;
 
 public class ActionGroupImpl extends DivWrappingBootstrapElementImpl<ActionGroup> implements ActionGroup {
 
@@ -80,7 +82,7 @@ public class ActionGroupImpl extends DivWrappingBootstrapElementImpl<ActionGroup
 	public Container asContainer() {
 		Container ret = getFactory().container();
 		Row row = ret.row();
-		row.col(htmlElement).widthAuto();
+		row.col(htmlElement).width(DeviceSize.EXTRA_SMALL, Size.AUTO);
 		row.col(contentDiv);
 		return ret;
 	}

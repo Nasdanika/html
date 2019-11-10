@@ -16,6 +16,8 @@ import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Card;
+import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
 import org.nasdanika.html.bootstrap.Table;
@@ -62,7 +64,7 @@ public abstract class TableSingleValuePropertySourceViewPart implements ViewPart
 				if (hasActions) {
 					ActionProvider actionProvider = pd.getActionProvider(propertySource.getValue());
 					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(isEdit ? actionProvider.getEditActions() : actionProvider.getViewActions());
-					buttonToolbar.margin().top(1).bottom(1);
+					buttonToolbar.margin().top(DeviceSize.EXTRA_SMALL, Size.S1).bottom(DeviceSize.EXTRA_SMALL, Size.S1);
 					propertyRow.cell(buttonToolbar);
 				}
 			}

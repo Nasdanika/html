@@ -4,6 +4,7 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Size;
 
 public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> implements Container {
 
@@ -30,30 +31,6 @@ public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> i
 			}
 
 			@Override
-			public Col width(int width) {
-				htmlElement.addClass("col-"+width);
-				return this;
-			}
-
-			@Override
-			public Col width(DeviceSize deviceSize, int width) {
-				htmlElement.addClass("col-"+deviceSize.code+"-"+width);
-				return this;
-			}
-			
-			@Override
-			public Col widthAuto() {
-				htmlElement.addClass("col-auto");
-				return this;
-			}
-
-			@Override
-			public Col widthAuto(DeviceSize deviceSize) {
-				htmlElement.addClass("col-"+deviceSize.code+"-auto");
-				return this;
-			}
-
-			@Override
 			public Col content(Object... content) {
 				htmlElement.content(content);
 				return this;
@@ -62,6 +39,12 @@ public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> i
 			@Override
 			public boolean isEmpty() {
 				return htmlElement.isEmpty();
+			}
+
+			@Override
+			public Col width(DeviceSize deviceSize, Size width) {
+				htmlElement.addClass(deviceSize.size("col", width));
+				return this;
 			}			
 			
 		}

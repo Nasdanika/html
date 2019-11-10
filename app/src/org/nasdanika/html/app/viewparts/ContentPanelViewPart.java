@@ -14,6 +14,8 @@ import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
+import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Size;
 
 /**
  * Constructs content view part as nested sections. 
@@ -60,7 +62,7 @@ public class ContentPanelViewPart implements ViewPart {
 		if (lastNonSectionPath.size() > getMinBreadcrumbsDepth() - getBreadcrumbsOffset()) {
 			// Breadcrumbs
 			Breadcrumbs breadcrumbs = viewGenerator.get(BootstrapFactory.class).breadcrums();
-			breadcrumbs.margin().top(1);
+			breadcrumbs.margin().top(DeviceSize.EXTRA_SMALL, Size.S1);
 			ret.content(breadcrumbs);
 			ListIterator<Action> tit = lastNonSectionPath.listIterator(Math.min(lastNonSectionPath.size(), getBreadcrumbsOffset()));
 			while (tit.hasNext()) {

@@ -20,6 +20,7 @@ import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.DeviceSize;
 import org.nasdanika.html.bootstrap.FormGroup;
+import org.nasdanika.html.bootstrap.Size;
 
 /**
  * Generates edit form. {@link InputPropertyDescriptor}s are rendered as {@link FormGroup}s. 
@@ -63,7 +64,7 @@ public abstract class EditFormSingleValuePropertySourceViewPart implements ViewP
 				List<Action> editActions = pd.getActionProvider(propertySource.getValue()).getEditActions();
 				if (!editActions.isEmpty()) {
 					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(editActions);
-					buttonToolbar.margin().top(1).bottom(1);
+					buttonToolbar.margin().top(DeviceSize.EXTRA_SMALL, Size.S1).bottom(DeviceSize.EXTRA_SMALL, Size.S1);
 					fieldContainer.content(buttonToolbar);
 				}
 			}

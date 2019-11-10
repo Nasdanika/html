@@ -2,7 +2,7 @@ package org.nasdanika.html.bootstrap;
 
 public enum DeviceSize {
 	
-	EXTRA_SMALL("xs"),
+	EXTRA_SMALL(""),
 	SMALL("sm"),
 	MEDIUM("md"),
 	LARGE("lg"),
@@ -13,5 +13,19 @@ public enum DeviceSize {
 	}
 	
 	public final String code;
+	
+	/**
+	 * @return width string
+	 */
+	public String size(String prefix, Size size) {
+		StringBuilder ret = new StringBuilder(prefix);
+		if (code.length() > 0) {
+			ret.append("-").append(code);
+		}
+		if (size.code.length() > 0) {
+			ret.append("-").append(size.code);
+		}
+		return ret.toString();
+	};
 
 }
