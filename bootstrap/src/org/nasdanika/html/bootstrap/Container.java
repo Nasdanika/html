@@ -11,7 +11,7 @@ public interface Container extends BootstrapElement<Tag,Container> {
 	
 	interface Row extends BootstrapElement<Tag,Row> {
 		
-		interface Col extends BootstrapElement<Tag,Col> {
+		interface Col extends BootstrapElement<Tag,Col>, org.nasdanika.html.Container<Col> {
 			
 			Col width(int width);
 			
