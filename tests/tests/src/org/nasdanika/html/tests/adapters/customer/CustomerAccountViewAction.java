@@ -51,7 +51,7 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 	
 	@Override
 	public String getText() {
-		return target.getProduct().getName() + " " + target.getNumber();
+		return target.getProduct().name() + " " + target.getNumber();
 	}
 	
 	/**

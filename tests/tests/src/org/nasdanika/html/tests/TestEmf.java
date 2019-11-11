@@ -211,7 +211,7 @@ public class TestEmf extends HTMLTestBase {
 				applicationBuilder.build(application, new PrintStreamProgressMonitor());
 				
 				NavigationActionActivator activator = (NavigationActionActivator) EObjectAdaptable.adaptTo(next, ViewActionActivator.class);
-				writeFile("emf/customer/"+customer.getName().toLowerCase().replace(' ', '-')+"/"+activator.getUrl(), application.toString());
+				writeFile("emf/customer/"+customer.name().toLowerCase().replace(' ', '-')+"/"+activator.getUrl(), application.toString());
 			}
 		}
 	}
