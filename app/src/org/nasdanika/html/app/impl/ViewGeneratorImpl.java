@@ -28,7 +28,7 @@ import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Color;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.ListGroup;
@@ -222,7 +222,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 			if (cats.getKey() == null) {
 				for (Action cac: cats.getValue()) {
 					BootstrapElement<?, ?> button = button(cac);
-					button.margin().right(DeviceSize.EXTRA_SMALL, Size.S1);
+					button.margin().right(Breakpoint.EXTRA_SMALL, Size.S1);
 					buttonToolbar.add(button);
 				}					
 			} else {
@@ -230,7 +230,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 				for (Action cac: cats.getValue()) {
 					buttonGroup.add(button(cac));
 				}					
-				buttonGroup.margin().right(DeviceSize.EXTRA_SMALL, Size.S1);
+				buttonGroup.margin().right(Breakpoint.EXTRA_SMALL, Size.S1);
 				buttonToolbar.add(buttonGroup);
 			}
 		}

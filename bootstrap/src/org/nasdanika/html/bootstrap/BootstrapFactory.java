@@ -94,7 +94,7 @@ public interface BootstrapFactory {
 	 * label widths taken from the map and control widths computed as 12 - label width.  
 	 * @return
 	 */
-	FormGroup formGroup(Object label, InputBase<?> input, Object hint, Map<DeviceSize, Integer> horizontalLabelWidths);
+	FormGroup formGroup(Object label, InputBase<?> input, Object hint, Map<Breakpoint, Integer> horizontalLabelWidths);
 	
 	<H extends HTMLElement<?>> H tooltip(H htmlElement, Object tooltip, boolean html, Placement placement);
 	
@@ -194,7 +194,7 @@ public interface BootstrapFactory {
 	 * @param brand
 	 * @return
 	 */
-	Navbar navbar(DeviceSize expandSize, boolean dark, Color background, HTMLElement<?> brand);
+	Navbar navbar(Breakpoint expandSize, boolean dark, Color background, HTMLElement<?> brand);
 	
 	ListGroup listGroup(boolean flush);
 	

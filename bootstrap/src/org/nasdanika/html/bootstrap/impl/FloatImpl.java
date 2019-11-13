@@ -1,7 +1,7 @@
 package org.nasdanika.html.bootstrap.impl;
 
 import org.nasdanika.html.bootstrap.BootstrapElement;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Float;
 
 public class FloatImpl<B extends BootstrapElement<?, ?>> implements org.nasdanika.html.bootstrap.Float<B> {
@@ -24,7 +24,7 @@ public class FloatImpl<B extends BootstrapElement<?, ?>> implements org.nasdanik
 	}
 
 	@Override
-	public Float<B> right(DeviceSize size) {
+	public Float<B> right(Breakpoint size) {
 		bootstrapElement.toHTMLElement().addClass("float-"+size.code+"-right");
 		return this;
 	}
@@ -36,7 +36,7 @@ public class FloatImpl<B extends BootstrapElement<?, ?>> implements org.nasdanik
 	}
 
 	@Override
-	public Float<B> left(DeviceSize size) {
+	public Float<B> left(Breakpoint size) {
 		bootstrapElement.toHTMLElement().addClass("float-"+size.code+"-left");
 		return this;
 	}
@@ -48,7 +48,7 @@ public class FloatImpl<B extends BootstrapElement<?, ?>> implements org.nasdanik
 	}
 
 	@Override
-	public Float<B> none(DeviceSize size) {
+	public Float<B> none(Breakpoint size) {
 		bootstrapElement.toHTMLElement().addClass("float-"+size.code+"-none");
 		return this;
 	}

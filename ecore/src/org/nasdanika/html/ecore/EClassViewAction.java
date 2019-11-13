@@ -33,7 +33,7 @@ import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Table;
@@ -61,7 +61,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);
 		if (target.isAbstract()) {
-			contentContainer.row().col(target.isInterface() ? getResourceContext().getString(PropertyKeys.UI_INTERFACE, "Interface") : getResourceContext().getString(PropertyKeys.UI_ABSTRACT, "Abstract")).padding().bottom(DeviceSize.EXTRA_SMALL, Size.S3);
+			contentContainer.row().col(target.isInterface() ? getResourceContext().getString(PropertyKeys.UI_INTERFACE, "Interface") : getResourceContext().getString(PropertyKeys.UI_ABSTRACT, "Abstract")).padding().bottom(Breakpoint.EXTRA_SMALL, Size.S3);
 		}
 		String description = getDescription();
 		if (!Util.isBlank(description) && description.length() < descriptionTabLengthThreshold) {

@@ -19,7 +19,7 @@ import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.Navbar;
 
@@ -121,7 +121,7 @@ public class NavigationBarViewPart implements ViewPart {
 	 * @return
 	 */
 	protected Navbar createNavbar(ViewGenerator viewGenerator, HTMLElement<?> brand) {
-		return viewGenerator.get(BootstrapFactory.class).navbar(DeviceSize.LARGE, false, Color.LIGHT, brand);
+		return viewGenerator.get(BootstrapFactory.class).navbar(Breakpoint.LARGE, false, Color.LIGHT, brand);
 	}
 	
 

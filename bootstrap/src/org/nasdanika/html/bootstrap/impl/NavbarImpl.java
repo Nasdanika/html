@@ -9,7 +9,7 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.Navbar;
 
@@ -20,7 +20,7 @@ public class NavbarImpl extends WrappingBootstrapElementImpl<Tag, Navbar> implem
 
 	public NavbarImpl(
 			BootstrapFactory factory,
-			DeviceSize expandSize, 
+			Breakpoint expandSize, 
 			boolean dark,
 			Color background, 
 			HTMLElement<?> brand) {

@@ -10,7 +10,7 @@ import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Container;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Table;
@@ -31,7 +31,7 @@ public class ETypedElementViewAction<T extends ETypedElement> extends ENamedElem
 		contentContainer.text().alignment(Alignment.LEFT);
 		Table propertiesTable = propertiesTable(viewGenerator);
 		if (!propertiesTable.toHTMLElement().isEmpty()) {
-			contentContainer.row().col(propertiesTable).padding().bottom(DeviceSize.EXTRA_SMALL, Size.S3);
+			contentContainer.row().col(propertiesTable).padding().bottom(Breakpoint.EXTRA_SMALL, Size.S3);
 		}
 		String description = getDescription();
 		if (!Util.isBlank(description)) {

@@ -16,7 +16,7 @@ import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Size;
 
@@ -55,7 +55,7 @@ public class SectionViewPart implements ViewPart {
 			List<? extends Action> contextActions = section.getContextChildren();
 			if (!contextActions.isEmpty()) {			
 				ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(contextActions);
-				buttonToolbar.margin().top(DeviceSize.EXTRA_SMALL, Size.S1).bottom(DeviceSize.EXTRA_SMALL, Size.S1);
+				buttonToolbar.margin().top(Breakpoint.EXTRA_SMALL, Size.S1).bottom(Breakpoint.EXTRA_SMALL, Size.S1);
 				ret.content(buttonToolbar);			
 			}
 		}
@@ -108,7 +108,7 @@ public class SectionViewPart implements ViewPart {
 			return tabs;
 		case 1:
 			ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
-			contentConsumer.accept(actionGroup.asContainer().margin().top(DeviceSize.EXTRA_SMALL, Size.S1).toBootstrapElement());
+			contentConsumer.accept(actionGroup.asContainer().margin().top(Breakpoint.EXTRA_SMALL, Size.S1).toBootstrapElement());
 			return actionGroup;
 		case 2:
 			NamedItemsContainer ret = viewGenerator.get(HTMLFactory.class).tagNamedItemsContainer(TagName.h3);

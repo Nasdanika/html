@@ -14,7 +14,7 @@ import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Container;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.InputGroup;
 import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Theme;
@@ -60,7 +60,7 @@ public class HTMLTestBase {
 		selectInputGroup.prepend("Select Bootstrap theme");
 //		selectInputGroup.append(FontAwesomeFactory.INSTANCE.icon("desktop", Style.SOLID));
 		selectInputGroup.input(select);		
-		container.row().margin().bottom(DeviceSize.EXTRA_SMALL, Size.S1).toBootstrapElement().col(selectInputGroup);
+		container.row().margin().bottom(Breakpoint.EXTRA_SMALL, Size.S1).toBootstrapElement().col(selectInputGroup);
 		container.row().col(content);
 		writePage(path, title, container);
 	}

@@ -4,7 +4,7 @@ import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.Spacing;
 import org.nasdanika.html.bootstrap.Text;
@@ -77,8 +77,8 @@ public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends Bo
 			}
 
 			@Override
-			public Text<B> alignment(DeviceSize deviceSize, Alignment alignment) {
-				String code = deviceSize.code;
+			public Text<B> alignment(Breakpoint breakpoint, Alignment alignment) {
+				String code = breakpoint.code;
 				String prefix = code.length() == 0 ? "text" : "text-"+code;				
 				toHTMLElement().addClass(prefix+"-"+alignment.name().toLowerCase());
 				return this;

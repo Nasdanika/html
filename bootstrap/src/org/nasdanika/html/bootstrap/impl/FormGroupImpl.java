@@ -9,7 +9,7 @@ import org.nasdanika.html.InputType;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.FormGroup;
 
 public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> implements FormGroup {
@@ -17,7 +17,7 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 	private InputBase<?> input;
 	private Container<?> inputContainer;
 
-	public FormGroupImpl(BootstrapFactory factory, Object label, InputBase<?> input, Object hint, Map<DeviceSize, Integer> horizontalLabelWidths) {
+	public FormGroupImpl(BootstrapFactory factory, Object label, InputBase<?> input, Object hint, Map<Breakpoint, Integer> horizontalLabelWidths) {
 		super(factory);
 		this.input = input;
 		boolean isHorizontal = horizontalLabelWidths != null && !horizontalLabelWidths.isEmpty();

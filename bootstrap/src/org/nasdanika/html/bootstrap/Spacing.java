@@ -10,16 +10,16 @@ public interface Spacing<B extends BootstrapElement<?, ?>> {
 	
 	B toBootstrapElement();
 	
-	Spacing<B> top(DeviceSize size, Size space);
+	Spacing<B> top(Breakpoint size, Size space);
 	
-	Spacing<B> bottom(DeviceSize size, Size space);
+	Spacing<B> bottom(Breakpoint size, Size space);
 	
-	Spacing<B> left(DeviceSize size, Size space);
+	Spacing<B> left(Breakpoint size, Size space);
 	
-	Spacing<B> right(DeviceSize size, Size space);
+	Spacing<B> right(Breakpoint size, Size space);
 	
-	Spacing<B> x(DeviceSize size, Size space);
+	Spacing<B> x(Breakpoint size, Size space);
 	
-	Spacing<B> y(DeviceSize size, Size space);
+	Spacing<B> y(Breakpoint size, Size space);
 	
 }

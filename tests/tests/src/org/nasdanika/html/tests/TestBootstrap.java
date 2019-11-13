@@ -19,7 +19,7 @@ import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Container.Row;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.InputGroup;
@@ -170,7 +170,7 @@ public class TestBootstrap extends HTMLTestBase {
 
 		Form form = htmlFactory.form();
 		
-		Map<DeviceSize, Integer> horizontalLabelWidths = null;
+		Map<Breakpoint, Integer> horizontalLabelWidths = null;
 		form.content(factory.formGroup(
 				"Email address", 
 				htmlFactory.input(InputType.email).value("email@example.com"), 
@@ -196,7 +196,7 @@ public class TestBootstrap extends HTMLTestBase {
 
 		Form form = htmlFactory.form();
 		
-		Map<DeviceSize, Integer> horizontalLabelWidths = Collections.singletonMap(DeviceSize.SMALL, 2);
+		Map<Breakpoint, Integer> horizontalLabelWidths = Collections.singletonMap(Breakpoint.SMALL, 2);
 		form.content(factory.formGroup(
 				"Email address", 
 				htmlFactory.input(InputType.email).value("email@example.com"), 
@@ -233,7 +233,7 @@ public class TestBootstrap extends HTMLTestBase {
 		verticalPills.toHTMLElement().addClass("flex-column");		
 		Container container = BootstrapFactory.INSTANCE.container();
 		Row row = container.row();
-		row.col(verticalPills.toHTMLElement()).width(DeviceSize.EXTRA_SMALL, Size.AUTO);
+		row.col(verticalPills.toHTMLElement()).width(Breakpoint.EXTRA_SMALL, Size.AUTO);
 		row.col(verticalPills.getContentDiv());
 		writeThemedPage("bootstrap/vertical-pills.html", "Bootstrap vertical pills", container);
 	}
@@ -277,7 +277,7 @@ public class TestBootstrap extends HTMLTestBase {
 	@Test
 	public void testNavbar() throws Exception {		
 		Tag brand = HTMLFactory.INSTANCE.link("#", "Nasdanika");
-		Navbar navbar = BootstrapFactory.INSTANCE.navbar(DeviceSize.LARGE, false, Color.LIGHT, brand);
+		Navbar navbar = BootstrapFactory.INSTANCE.navbar(Breakpoint.LARGE, false, Color.LIGHT, brand);
 		navbar.item("#", true, false, "Item 1");
 		navbar.item("#", false, false, "Item 2");
 		navbar.item("#", false, true, "Item 3");
@@ -326,7 +326,7 @@ public class TestBootstrap extends HTMLTestBase {
 		actionGroup.contentAction("Four - warning", false, false, Color.WARNING, null, BootstrapFactory.INSTANCE.alert(Color.WARNING, "Be careful!"));
 		
 		Navs simpleTabs = BootstrapFactory.INSTANCE.navs().tabs();
-		simpleTabs.item("First", actionGroup.asContainer().margin().top(DeviceSize.EXTRA_SMALL, Size.S1).toBootstrapElement());
+		simpleTabs.item("First", actionGroup.asContainer().margin().top(Breakpoint.EXTRA_SMALL, Size.S1).toBootstrapElement());
 		simpleTabs.item("Second", "Second content");
 		simpleTabs.item("Third", "Third content");
 		simpleTabs.item("Fourth", "Fourth content");

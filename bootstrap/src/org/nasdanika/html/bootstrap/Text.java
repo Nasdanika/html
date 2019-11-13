@@ -17,7 +17,7 @@ public interface Text<B> {
 	
 	Text<B> alignment(Alignment alignment);
 
-	Text<B> alignment(DeviceSize deviceSize, Alignment alignment);
+	Text<B> alignment(Breakpoint breakpoint, Alignment alignment);
 		
 	enum Transform {
 		LOWERCASE, UPPERCASE, CAPITALIZE

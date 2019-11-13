@@ -14,7 +14,7 @@ import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Card;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Size;
 
 /**
@@ -45,7 +45,7 @@ public class ActionGroupNavigationPanelViewPart implements ViewPart {
 				ret.content(actionGroup);
 			} else {
 				Card categoryCard = viewGenerator.get(BootstrapFactory.class).card();
-				categoryCard.margin().top(DeviceSize.EXTRA_SMALL, Size.S1);
+				categoryCard.margin().top(Breakpoint.EXTRA_SMALL, Size.S1);
 				Label category = categoryGroup.getKey();
 				categoryCard.border(category.getColor());
 				viewGenerator.label(category, categoryCard.getTitle().toHTMLElement());

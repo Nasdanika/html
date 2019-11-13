@@ -1,6 +1,6 @@
 package org.nasdanika.html.bootstrap;
 
-public enum DeviceSize {
+public enum Breakpoint {
 	
 	EXTRA_SMALL(""),
 	SMALL("sm"),
@@ -8,7 +8,7 @@ public enum DeviceSize {
 	LARGE("lg"),
 	EXTRA_LARGE("xl");
 	
-	DeviceSize(String code) {
+	Breakpoint(String code) {
 		this.code = code;
 	}
 	

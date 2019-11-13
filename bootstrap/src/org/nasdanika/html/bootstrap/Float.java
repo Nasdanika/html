@@ -11,12 +11,12 @@ public interface Float<B extends BootstrapElement<?, ?>> {
 	B toBootstrapElement();
 	
 	Float<B> right();
-	Float<B> right(DeviceSize size);
+	Float<B> right(Breakpoint size);
 	
 	Float<B> left();
-	Float<B> left(DeviceSize size);
+	Float<B> left(Breakpoint size);
 	
 	Float<B> none();
-	Float<B> none(DeviceSize size);
+	Float<B> none(Breakpoint size);
 	
 }

@@ -20,7 +20,7 @@ import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.FormGroup;
@@ -138,7 +138,7 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	}
 	
 	@Override
-	public FormGroup formGroup(Object label, InputBase<?> input, Object hint, Map<DeviceSize, Integer> horizontalLabelWidths) {
+	public FormGroup formGroup(Object label, InputBase<?> input, Object hint, Map<Breakpoint, Integer> horizontalLabelWidths) {
 		return new FormGroupImpl(this, label, input, hint, horizontalLabelWidths);
 	}
 	
@@ -253,7 +253,7 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	}
 
 	@Override
-	public Navbar navbar(DeviceSize expandSize, boolean dark, Color background, HTMLElement<?> brand) {
+	public Navbar navbar(Breakpoint expandSize, boolean dark, Color background, HTMLElement<?> brand) {
 		return new NavbarImpl(this, expandSize, dark, background, brand);
 	}
 

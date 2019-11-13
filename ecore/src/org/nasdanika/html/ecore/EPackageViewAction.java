@@ -25,7 +25,7 @@ import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Table;
@@ -62,7 +62,7 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);
-		contentContainer.row().col("<B>"+getResourceContext().getString(PropertyKeys.UI_NAMESPACE_URI, "NameNamespace URI")+":</B> "+target.getNsURI()).padding().bottom(DeviceSize.EXTRA_SMALL, Size.S3);
+		contentContainer.row().col("<B>"+getResourceContext().getString(PropertyKeys.UI_NAMESPACE_URI, "NameNamespace URI")+":</B> "+target.getNsURI()).padding().bottom(Breakpoint.EXTRA_SMALL, Size.S3);
 		String description = getDescription();
 		if (!Util.isBlank(description) && description.length() < descriptionTabLengthThreshold) {
 			contentContainer.row().col(description);

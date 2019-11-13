@@ -3,7 +3,7 @@ package org.nasdanika.html.bootstrap.impl;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Container;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Size;
 
 public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> implements Container {
@@ -42,8 +42,8 @@ public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> i
 			}
 
 			@Override
-			public Col width(DeviceSize deviceSize, Size width) {
-				htmlElement.addClass(deviceSize.size("col", width));
+			public Col width(Breakpoint breakpoint, Size width) {
+				htmlElement.addClass(breakpoint.size("col", width));
 				return this;
 			}			
 			

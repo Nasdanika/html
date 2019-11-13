@@ -18,7 +18,7 @@ import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
-import org.nasdanika.html.bootstrap.DeviceSize;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.FormGroup;
 import org.nasdanika.html.bootstrap.Size;
 
@@ -31,9 +31,9 @@ import org.nasdanika.html.bootstrap.Size;
 public abstract class EditFormSingleValuePropertySourceViewPart implements ViewPart {
 
 	private SingleValuePropertySource propertySource;
-	private Map<DeviceSize, Integer> horizontalLabelWidths;
+	private Map<Breakpoint, Integer> horizontalLabelWidths;
 
-	public EditFormSingleValuePropertySourceViewPart(SingleValuePropertySource propertySource, Map<DeviceSize, Integer> horizontalLabelWidths) {
+	public EditFormSingleValuePropertySourceViewPart(SingleValuePropertySource propertySource, Map<Breakpoint, Integer> horizontalLabelWidths) {
 		this.propertySource = propertySource;
 		this.horizontalLabelWidths = horizontalLabelWidths;
 	}
@@ -64,7 +64,7 @@ public abstract class EditFormSingleValuePropertySourceViewPart implements ViewP
 				List<Action> editActions = pd.getActionProvider(propertySource.getValue()).getEditActions();
 				if (!editActions.isEmpty()) {
 					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(editActions);
-					buttonToolbar.margin().top(DeviceSize.EXTRA_SMALL, Size.S1).bottom(DeviceSize.EXTRA_SMALL, Size.S1);
+					buttonToolbar.margin().top(Breakpoint.EXTRA_SMALL, Size.S1).bottom(Breakpoint.EXTRA_SMALL, Size.S1);
 					fieldContainer.content(buttonToolbar);
 				}
 			}
