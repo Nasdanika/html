@@ -64,7 +64,7 @@ public abstract class EditFormSingleValuePropertySourceViewPart implements ViewP
 				List<Action> editActions = pd.getActionProvider(propertySource.getValue()).getEditActions();
 				if (!editActions.isEmpty()) {
 					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(editActions);
-					buttonToolbar.margin().top(Breakpoint.EXTRA_SMALL, Size.S1).bottom(Breakpoint.EXTRA_SMALL, Size.S1);
+					buttonToolbar.margin().top(Breakpoint.DEFAULT, Size.S1).bottom(Breakpoint.DEFAULT, Size.S1);
 					fieldContainer.content(buttonToolbar);
 				}
 			}

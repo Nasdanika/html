@@ -61,7 +61,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);
 		if (target.isAbstract()) {
-			contentContainer.row().col(target.isInterface() ? getResourceContext().getString(PropertyKeys.UI_INTERFACE, "Interface") : getResourceContext().getString(PropertyKeys.UI_ABSTRACT, "Abstract")).padding().bottom(Breakpoint.EXTRA_SMALL, Size.S3);
+			contentContainer.row().col(target.isInterface() ? getResourceContext().getString(PropertyKeys.UI_INTERFACE, "Interface") : getResourceContext().getString(PropertyKeys.UI_ABSTRACT, "Abstract")).padding().bottom(Breakpoint.DEFAULT, Size.S3);
 		}
 		String description = getDescription();
 		if (!Util.isBlank(description) && description.length() < descriptionTabLengthThreshold) {

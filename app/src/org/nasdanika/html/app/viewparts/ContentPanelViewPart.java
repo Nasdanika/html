@@ -62,7 +62,7 @@ public class ContentPanelViewPart implements ViewPart {
 		if (lastNonSectionPath.size() > getMinBreadcrumbsDepth() - getBreadcrumbsOffset()) {
 			// Breadcrumbs
 			Breadcrumbs breadcrumbs = viewGenerator.get(BootstrapFactory.class).breadcrums();
-			breadcrumbs.margin().top(Breakpoint.EXTRA_SMALL, Size.S1);
+			breadcrumbs.margin().top(Breakpoint.DEFAULT, Size.S1);
 			ret.content(breadcrumbs);
 			ListIterator<Action> tit = lastNonSectionPath.listIterator(Math.min(lastNonSectionPath.size(), getBreadcrumbsOffset()));
 			while (tit.hasNext()) {

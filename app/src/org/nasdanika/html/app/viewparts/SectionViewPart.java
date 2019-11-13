@@ -55,7 +55,7 @@ public class SectionViewPart implements ViewPart {
 			List<? extends Action> contextActions = section.getContextChildren();
 			if (!contextActions.isEmpty()) {			
 				ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(contextActions);
-				buttonToolbar.margin().top(Breakpoint.EXTRA_SMALL, Size.S1).bottom(Breakpoint.EXTRA_SMALL, Size.S1);
+				buttonToolbar.margin().top(Breakpoint.DEFAULT, Size.S1).bottom(Breakpoint.DEFAULT, Size.S1);
 				ret.content(buttonToolbar);			
 			}
 		}
@@ -108,7 +108,7 @@ public class SectionViewPart implements ViewPart {
 			return tabs;
 		case 1:
 			ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
-			contentConsumer.accept(actionGroup.asContainer().margin().top(Breakpoint.EXTRA_SMALL, Size.S1).toBootstrapElement());
+			contentConsumer.accept(actionGroup.asContainer().margin().top(Breakpoint.DEFAULT, Size.S1).toBootstrapElement());
 			return actionGroup;
 		case 2:
 			NamedItemsContainer ret = viewGenerator.get(HTMLFactory.class).tagNamedItemsContainer(TagName.h3);

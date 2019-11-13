@@ -62,7 +62,7 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);
-		contentContainer.row().col("<B>"+getResourceContext().getString(PropertyKeys.UI_NAMESPACE_URI, "NameNamespace URI")+":</B> "+target.getNsURI()).padding().bottom(Breakpoint.EXTRA_SMALL, Size.S3);
+		contentContainer.row().col("<B>"+getResourceContext().getString(PropertyKeys.UI_NAMESPACE_URI, "NameNamespace URI")+":</B> "+target.getNsURI()).padding().bottom(Breakpoint.DEFAULT, Size.S3);
 		String description = getDescription();
 		if (!Util.isBlank(description) && description.length() < descriptionTabLengthThreshold) {
 			contentContainer.row().col(description);

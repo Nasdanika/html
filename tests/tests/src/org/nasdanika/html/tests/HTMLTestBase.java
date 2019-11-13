@@ -60,7 +60,7 @@ public class HTMLTestBase {
 		selectInputGroup.prepend("Select Bootstrap theme");
 //		selectInputGroup.append(FontAwesomeFactory.INSTANCE.icon("desktop", Style.SOLID));
 		selectInputGroup.input(select);		
-		container.row().margin().bottom(Breakpoint.EXTRA_SMALL, Size.S1).toBootstrapElement().col(selectInputGroup);
+		container.row().margin().bottom(Breakpoint.DEFAULT, Size.S1).toBootstrapElement().col(selectInputGroup);
 		container.row().col(content);
 		writePage(path, title, container);
 	}

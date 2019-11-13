@@ -64,7 +64,7 @@ public abstract class TableSingleValuePropertySourceViewPart implements ViewPart
 				if (hasActions) {
 					ActionProvider actionProvider = pd.getActionProvider(propertySource.getValue());
 					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(isEdit ? actionProvider.getEditActions() : actionProvider.getViewActions());
-					buttonToolbar.margin().top(Breakpoint.EXTRA_SMALL, Size.S1).bottom(Breakpoint.EXTRA_SMALL, Size.S1);
+					buttonToolbar.margin().top(Breakpoint.DEFAULT, Size.S1).bottom(Breakpoint.DEFAULT, Size.S1);
 					propertyRow.cell(buttonToolbar);
 				}
 			}

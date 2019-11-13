@@ -82,7 +82,7 @@ public class ActionGroupImpl extends DivWrappingBootstrapElementImpl<ActionGroup
 	public Container asContainer() {
 		Container ret = getFactory().container();
 		Row row = ret.row();
-		row.col(htmlElement).width(Breakpoint.EXTRA_SMALL, Size.AUTO);
+		row.col(htmlElement).width(Breakpoint.DEFAULT, Size.AUTO);
 		row.col(contentDiv);
 		return ret;
 	}

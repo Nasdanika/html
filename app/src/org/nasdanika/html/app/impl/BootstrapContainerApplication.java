@@ -93,7 +93,7 @@ public class BootstrapContainerApplication implements Application {
 	 * @param container
 	 */
 	protected void configureContainer(Container container) {
-		container.border(Color.DEFAULT).margin().top(Breakpoint.EXTRA_SMALL, Size.S1);		
+		container.border(Color.DEFAULT).margin().top(Breakpoint.DEFAULT, Size.S1);		
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class BootstrapContainerApplication implements Application {
 	 * @param navigationPanel
 	 */
 	protected void configureNavigationPanel(Col navigationPanel) {
-		navigationPanel.width(Breakpoint.EXTRA_SMALL, Size.AUTO);
+		navigationPanel.width(Breakpoint.DEFAULT, Size.AUTO);
 	}
 	
 	/**

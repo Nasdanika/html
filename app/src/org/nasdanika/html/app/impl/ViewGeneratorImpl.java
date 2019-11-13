@@ -222,7 +222,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 			if (cats.getKey() == null) {
 				for (Action cac: cats.getValue()) {
 					BootstrapElement<?, ?> button = button(cac);
-					button.margin().right(Breakpoint.EXTRA_SMALL, Size.S1);
+					button.margin().right(Breakpoint.DEFAULT, Size.S1);
 					buttonToolbar.add(button);
 				}					
 			} else {
@@ -230,7 +230,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 				for (Action cac: cats.getValue()) {
 					buttonGroup.add(button(cac));
 				}					
-				buttonGroup.margin().right(Breakpoint.EXTRA_SMALL, Size.S1);
+				buttonGroup.margin().right(Breakpoint.DEFAULT, Size.S1);
 				buttonToolbar.add(buttonGroup);
 			}
 		}

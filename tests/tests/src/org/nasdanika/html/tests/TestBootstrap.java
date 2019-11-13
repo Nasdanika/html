@@ -233,7 +233,7 @@ public class TestBootstrap extends HTMLTestBase {
 		verticalPills.toHTMLElement().addClass("flex-column");		
 		Container container = BootstrapFactory.INSTANCE.container();
 		Row row = container.row();
-		row.col(verticalPills.toHTMLElement()).width(Breakpoint.EXTRA_SMALL, Size.AUTO);
+		row.col(verticalPills.toHTMLElement()).width(Breakpoint.DEFAULT, Size.AUTO);
 		row.col(verticalPills.getContentDiv());
 		writeThemedPage("bootstrap/vertical-pills.html", "Bootstrap vertical pills", container);
 	}
@@ -326,7 +326,7 @@ public class TestBootstrap extends HTMLTestBase {
 		actionGroup.contentAction("Four - warning", false, false, Color.WARNING, null, BootstrapFactory.INSTANCE.alert(Color.WARNING, "Be careful!"));
 		
 		Navs simpleTabs = BootstrapFactory.INSTANCE.navs().tabs();
-		simpleTabs.item("First", actionGroup.asContainer().margin().top(Breakpoint.EXTRA_SMALL, Size.S1).toBootstrapElement());
+		simpleTabs.item("First", actionGroup.asContainer().margin().top(Breakpoint.DEFAULT, Size.S1).toBootstrapElement());
 		simpleTabs.item("Second", "Second content");
 		simpleTabs.item("Third", "Third content");
 		simpleTabs.item("Fourth", "Fourth content");

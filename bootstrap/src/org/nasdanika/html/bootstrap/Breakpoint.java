@@ -2,7 +2,7 @@ package org.nasdanika.html.bootstrap;
 
 public enum Breakpoint {
 	
-	EXTRA_SMALL(""),
+	DEFAULT(""),
 	SMALL("sm"),
 	MEDIUM("md"),
 	LARGE("lg"),

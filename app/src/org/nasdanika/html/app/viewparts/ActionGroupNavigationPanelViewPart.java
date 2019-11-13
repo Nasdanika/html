@@ -45,7 +45,7 @@ public class ActionGroupNavigationPanelViewPart implements ViewPart {
 				ret.content(actionGroup);
 			} else {
 				Card categoryCard = viewGenerator.get(BootstrapFactory.class).card();
-				categoryCard.margin().top(Breakpoint.EXTRA_SMALL, Size.S1);
+				categoryCard.margin().top(Breakpoint.DEFAULT, Size.S1);
 				Label category = categoryGroup.getKey();
 				categoryCard.border(category.getColor());
 				viewGenerator.label(category, categoryCard.getTitle().toHTMLElement());
