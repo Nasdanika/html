@@ -78,7 +78,9 @@ public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends Bo
 
 			@Override
 			public Text<B> alignment(DeviceSize deviceSize, Alignment alignment) {
-				toHTMLElement().addClass("text-"+deviceSize.code+"-"+alignment.name().toLowerCase());
+				String code = deviceSize.code;
+				String prefix = code.length() == 0 ? "text" : "text-"+code;				
+				toHTMLElement().addClass(prefix+"-"+alignment.name().toLowerCase());
 				return this;
 			}
 
