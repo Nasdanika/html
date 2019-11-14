@@ -39,6 +39,12 @@ public interface Text<B> {
 	
 	Text<B> italic(boolean italic);
 	
-	// TODO - nowrap, truncate
+	Text<B> nowrap();
+	
+	Text<B> nowrap(boolean nowrap);
+	
+	Text<B> truncate();
+	
+	Text<B> truncate(boolean truncate);
 	
 }
