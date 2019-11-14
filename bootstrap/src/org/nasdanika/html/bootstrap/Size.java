@@ -25,8 +25,17 @@ public enum Size {
 	
 	Size(String code) {
 		this.code = code;
-	}
+	}		
 	
 	public final String code;
+	
+	public static Size fromCode(String code) {
+		for (Size size: values()) {
+			if (size.code.equals(code)) {
+				return size;
+			}
+		}
+		throw new IllegalArgumentException("No size value for code "+code);
+	}
 
 }

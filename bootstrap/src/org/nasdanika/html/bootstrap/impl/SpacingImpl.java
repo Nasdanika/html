@@ -25,38 +25,45 @@ public class SpacingImpl<B extends BootstrapElement<?, ?>> implements Spacing<B>
 	}
 
 	@Override
-	public Spacing<B> top(Breakpoint size, Size space) {
-		suffix(size.size("t", space));
+	public Spacing<B> top(Breakpoint breakpoint, Size size) {
+		suffix(breakpoint.size("t", size));
 		return this;
 	}
 
 	@Override
-	public Spacing<B> bottom(Breakpoint size, Size space) {
-		suffix(size.size("b", space));
+	public Spacing<B> bottom(Breakpoint breakpoint, Size size) {
+		suffix(breakpoint.size("b", size));
 		return this;
 	}
 
 	@Override
-	public Spacing<B> left(Breakpoint size, Size space) {
-		suffix(size.size("l", space));
+	public Spacing<B> left(Breakpoint breakpoint, Size size) {
+		suffix(breakpoint.size("l", size));
 		return this;
 	}
 
 	@Override
-	public Spacing<B> right(Breakpoint size, Size space) {
-		suffix(size.size("r", space));
+	public Spacing<B> right(Breakpoint breakpoint, Size size) {
+		suffix(breakpoint.size("r", size));
 		return this;
 	}
 
 	@Override
-	public Spacing<B> x(Breakpoint size, Size space) {
-		suffix(size.size("x", space));
+	public Spacing<B> x(Breakpoint breakpoint, Size size) {
+		suffix(breakpoint.size("x", size));
 		return this;
 	}
 
 	@Override
-	public Spacing<B> y(Breakpoint size, Size space) {
-		suffix(size.size("y", space));
+	public Spacing<B> y(Breakpoint breakpoint, Size size) {
+		suffix(breakpoint.size("y", size));
+		return this;
+	}
+
+	@Override
+	public Spacing<B> all(Breakpoint breakpoint, Size size) {
+		bootstrapElement.toHTMLElement().addClass(breakpoint.size(prefix, size));
+		// TODO Auto-generated method stub
 		return this;
 	}
 
