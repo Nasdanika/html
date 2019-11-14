@@ -44,8 +44,7 @@ public class BootstrapContainerRouterApplication extends BootstrapContainerAppli
 	 * Creates bootstrap content routing CDN application
 	 */
 	public BootstrapContainerRouterApplication(BootstrapFactory factory, Theme theme, boolean fluid) {
-		this(factory, factory.getHTMLFactory().page(), fluid);
-		factory.bootstrapCdnHTMLPage(page, theme);
+		this(factory, factory.bootstrapCdnHTMLPage(factory.getHTMLFactory().page(), theme), fluid);
 	}	
 	
 	/**
