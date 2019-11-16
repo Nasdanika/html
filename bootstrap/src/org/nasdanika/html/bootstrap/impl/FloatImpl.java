@@ -24,8 +24,11 @@ public class FloatImpl<B extends BootstrapElement<?, ?>> implements org.nasdanik
 	}
 
 	@Override
-	public Float<B> right(Breakpoint size) {
-		bootstrapElement.toHTMLElement().addClass("float-"+size.code+"-right");
+	public Float<B> right(Breakpoint breakpoint) {
+		if (breakpoint == Breakpoint.DEFAULT) {
+			return right();
+		}
+		bootstrapElement.toHTMLElement().addClass("float-"+breakpoint.code+"-right");
 		return this;
 	}
 
@@ -36,8 +39,11 @@ public class FloatImpl<B extends BootstrapElement<?, ?>> implements org.nasdanik
 	}
 
 	@Override
-	public Float<B> left(Breakpoint size) {
-		bootstrapElement.toHTMLElement().addClass("float-"+size.code+"-left");
+	public Float<B> left(Breakpoint breakpoint) {
+		if (breakpoint == Breakpoint.DEFAULT) {
+			return left();
+		}
+		bootstrapElement.toHTMLElement().addClass("float-"+breakpoint.code+"-left");
 		return this;
 	}
 
@@ -48,8 +54,11 @@ public class FloatImpl<B extends BootstrapElement<?, ?>> implements org.nasdanik
 	}
 
 	@Override
-	public Float<B> none(Breakpoint size) {
-		bootstrapElement.toHTMLElement().addClass("float-"+size.code+"-none");
+	public Float<B> none(Breakpoint breakpoint) {
+		if (breakpoint == Breakpoint.DEFAULT) {
+			return none();
+		}
+		bootstrapElement.toHTMLElement().addClass("float-"+breakpoint.code+"-none");
 		return this;
 	}
 
