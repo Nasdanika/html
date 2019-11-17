@@ -46,6 +46,8 @@ public class EcoreDocumentationApplication extends BootstrapContainerRouterAppli
 	public EcoreDocumentationApplication(BootstrapFactory factory, Theme theme, boolean fluid) {
 		super(factory, theme, fluid);
 		page.stylesheet(MarkdownHelper.GITHUB_MARKDOWN_CSS_CDN);
+		page.stylesheet(MarkdownHelper.HIGHLIGHT_JS_CSS_CDN);
+		page.script(MarkdownHelper.HIGHLIGHT_JS_SCRIPT_CDN);
 	}	
 	
 	/**
