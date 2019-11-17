@@ -48,6 +48,7 @@ public class EcoreDocumentationApplication extends BootstrapContainerRouterAppli
 		page.stylesheet(MarkdownHelper.GITHUB_MARKDOWN_CSS_CDN);
 		page.stylesheet(MarkdownHelper.HIGHLIGHT_JS_CSS_CDN);
 		page.script(MarkdownHelper.HIGHLIGHT_JS_SCRIPT_CDN);
+		page.head("<script>hljs.initHighlightingOnLoad();</script>");
 	}	
 	
 	/**
