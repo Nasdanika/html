@@ -6,12 +6,12 @@ import java.util.List;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart;
 import org.nasdanika.html.app.viewparts.ContentPanelViewPart;
 import org.nasdanika.html.app.viewparts.FooterViewPart;
 import org.nasdanika.html.app.viewparts.NavigationBarViewPart;
-import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Navs;
 
@@ -58,19 +58,27 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 		Action rootAction = getRootAction();
 		return rootAction == null ? (vg, progressMonitor) -> null : (viewGenerator, progressMonitor) -> {
 			Tag link = viewGenerator.link(rootAction).style().text().decoration().none();
-			viewGenerator.get(BootstrapFactory.class).wrap(link).text().color(Color.DARK);
-
-			Tag linkDisplay = viewGenerator.get(BootstrapFactory.class).display(link, 4);
 			List<Action> navigationChildren = rootAction.getNavigationChildren();
 			if (navigationChildren.size() < 2) {
-				return linkDisplay;
+				return styleRootActionLink(viewGenerator, link);
 			}
 
 			Navs navs = viewGenerator.categorizedLinkNavs(navigationChildren.subList(1, navigationChildren.size()), getActiveAction(), getHeaderNavTextColor());
 			navs._float().right();
 			
-			return viewGenerator.get(HTMLFactory.class).fragment(linkDisplay, navs);
+			return viewGenerator.get(HTMLFactory.class).fragment(styleRootActionLink(viewGenerator, link), navs);
 		};
+	}
+	
+	/**
+	 * Apply styling to the root action link in the header.
+	 * @param link
+	 * @return
+	 */
+	protected Object styleRootActionLink(ViewGenerator viewGenerator, Tag link) {
+		return link;
+//		viewGenerator.get(BootstrapFactory.class).wrap(link).text().color(Color.DARK);
+//		return viewGenerator.get(BootstrapFactory.class).display(link, 4);
 	}
 
 	/**

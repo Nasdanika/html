@@ -16,6 +16,7 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.BindingActionActivator;
+import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
@@ -24,11 +25,11 @@ import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Color;
-import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.ListGroup;
@@ -131,6 +132,18 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 		Tag ret = label(action, get(HTMLFactory.class).tag(TagName.a));
 		bindLink(action, ret);
 		return ret;
+	}
+	
+	/**
+	 * Decorates object if decorator implements {@link Decorator}.
+	 * @param target
+	 * @param decorator
+	 * @return
+	 */
+	protected void decorate(Object target, Object decorator) {
+		if (decorator instanceof Decorator) {
+			((Decorator) decorator).decorate(target, this);
+		}
 	}
 	
 	protected void bindLink(Action action, HTMLElement<?> anchor) {
@@ -332,6 +345,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 			container.addClass("nsd-action");
 			container.attribute("data-nsd-action", ((Action) label).getId());
 		}
+		decorate(container, label);
 		return container;
 	}
 	
