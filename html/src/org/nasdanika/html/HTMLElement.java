@@ -3,7 +3,13 @@ package org.nasdanika.html;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Abstraction of a UI element. toString() produces HTML markup.
@@ -163,5 +169,127 @@ public interface HTMLElement<T extends HTMLElement<T>> extends Producer, Markup 
 	 * @return Element content.
 	 */
 	List<Object> getContent();
+	
+	/**
+	 * Loads HTML attributes from a map.
+	 * For all top-level keys except ``class``, ``style``, and ``data`` attribute value is produced by converting the value to string for scalars and to JSON string for lists and maps.
+	 * "children" key is ignored - it is used to define a hierarchy of attributes.
+	 * For class attribute its value is formed by concatenating elements using space as a separator. If elements are hierarchical then class name is formed by concatenation with a dash (``-``) as a separator.
+	 * If value of ``data`` attribute is a map then keys of that map get concatenated with ``data`` using dash (``-``) as a separator, them same applies to nested maps. Non-map values become attribute values - scalars are converted to string, 
+	 * lists are converted to JSON string.
+	 * Style can be defined as a string, list or map. If style is defined as a list, all list values are concatenated with a space as a separator - it is a convent way for long unstructured definitions.
+	 * If style value is a map then the value and its contained map values are processed in the following fashion:
+	 * a) Keys are concatenated with dash as a separator.
+	 * b) List values are concatenated with space as a separator.
+	 * 
+	 * @param attributes
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	default T attributes(Map<String,Object> attributes) {
+		
+		class Util {
+			
+			void setDataAttribute(HTMLElement<?> htmlElement, String key, Object value) {
+				if (value instanceof Map) {
+					for (Entry<String, Object> entry: ((Map<String,Object>) value).entrySet()) {
+						setDataAttribute(htmlElement, key+"-"+entry.getKey(), value);
+					}
+				} else if (value instanceof Collection) {
+					JSONArray jsonArray = new JSONArray((Collection<?>) value);
+					htmlElement.attribute(key, jsonArray); 																
+				} else {
+					htmlElement.attribute(key, value);
+				}				
+			}
+
+			void setStyle(HTMLElement<?> htmlElement, String key, Object value) {
+				if (value instanceof Map) {
+					for (Entry<String, Object> entry: ((Map<String,Object>) value).entrySet()) {
+						setStyle(htmlElement, key + "-" + entry.getKey(), entry.getValue());
+					}
+				} else if (value instanceof Collection) {
+					StringBuilder styleBuilder = new StringBuilder();
+					for (Object e: (Collection<?>) value) {
+						if (styleBuilder.length() > 0) {
+							styleBuilder.append(" ");
+						}
+						styleBuilder.append(e);
+					}
+					htmlElement.style(key, styleBuilder.toString());
+				} else {
+					htmlElement.style(key, value);
+				}				
+			}
+
+			void addClass(HTMLElement<?> htmlElement, String prefix, Object value) {
+				if (value instanceof Map) {
+					for (Entry<String, Object> entry: ((Map<String,Object>) value).entrySet()) {
+						addClass(htmlElement, prefix == null ? String.valueOf(entry.getKey()) : prefix + "-" + entry.getKey(), entry.getValue());
+					}
+				} else if (value instanceof Collection) {
+					for (Object e: (Collection<?>) value) {
+						addClass(htmlElement, prefix, e);
+					}
+				} else {
+					if (value instanceof Boolean) {
+						if (Boolean.TRUE.equals(value) && prefix != null) {
+							htmlElement.addClass(prefix);
+						}
+					} else {
+						htmlElement.addClass(prefix == null ? String.valueOf(value) : prefix + "-" + value);
+					}
+				}				
+			}
+			
+			void setAttributes() {
+				for (Entry<String, Object> entry: attributes.entrySet()) {
+					Object value = entry.getValue();
+					switch (entry.getKey()) {
+					case "children":
+						break;
+					case "class":
+						addClass(HTMLElement.this, null, value);
+						break;
+					case "style":
+						if (value instanceof Collection) {
+							StringBuilder styleBuilder = new StringBuilder();
+							for (Object e: (Collection<?>) value) {
+								if (styleBuilder.length() > 0) {
+									styleBuilder.append(" ");
+								}
+								styleBuilder.append(e);
+							}
+							HTMLElement.this.attribute(entry.getKey(), styleBuilder.toString());								
+						} else if (value instanceof Map) {
+							for (Entry<String, Object> se: ((Map<String,Object>) value).entrySet()) {
+								setStyle(HTMLElement.this, se.getKey(), se.getValue());
+							}
+						} else {
+							HTMLElement.this.attribute(entry.getKey(), value);								
+						}
+						break;
+					case "data":
+						setDataAttribute(HTMLElement.this, entry.getKey(), value);
+						break;
+					default:
+						if (value instanceof Map) {
+							JSONObject jsonObject = new JSONObject((Map<?,?>) value);
+							HTMLElement.this.attribute(entry.getKey(), jsonObject); 								
+						} else if (value instanceof Collection) {
+							JSONArray jsonArray = new JSONArray((Collection<?>) value);
+							HTMLElement.this.attribute(entry.getKey(), jsonArray); 																
+						} else {
+							HTMLElement.this.attribute(entry.getKey(), value);
+						}
+					}
+				}
+			}
+		}
+		
+		new Util().setAttributes();
+	
+		return (T) this;
+	}
 	
 }

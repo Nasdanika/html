@@ -9,5 +9,6 @@ Export-Package: org.nasdanika.html,
  org.nasdanika.html.impl
 Bundle-ClassPath: .
 Require-Bundle: org.apache.commons.lang3;bundle-version="3.7.0",
- org.apache.commons.commons-text;bundle-version="1.8.0"
+ org.apache.commons.commons-text;bundle-version="1.8.0",
+ json;bundle-version="20190722.0.0"
 Automatic-Module-Name: org.nasdanika.html
