@@ -75,6 +75,15 @@ public interface ViewGenerator extends MutableContext {
 	
 	Tag link(Action action);
 	
+	/**
+	 * Decorates object if decorator implements {@link Decorator} or is {@link Adaptable} and adapts to Decorator.
+	 * @param target
+	 * @param decorator
+	 * @return
+	 */
+	void decorate(Object target, Object decorator);
+	
+	
 	// --- List & action groups ---
 	
 	/**

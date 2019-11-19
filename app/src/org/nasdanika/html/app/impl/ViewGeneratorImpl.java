@@ -15,6 +15,7 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
+import org.nasdanika.html.app.Adaptable;
 import org.nasdanika.html.app.BindingActionActivator;
 import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.Label;
@@ -135,14 +136,20 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	}
 	
 	/**
-	 * Decorates object if decorator implements {@link Decorator}.
+	 * Decorates object if decorator implements {@link Decorator} or is {@link Adaptable} and adapts to Decorator.
 	 * @param target
 	 * @param decorator
 	 * @return
 	 */
-	protected void decorate(Object target, Object decorator) {
+	@Override
+	public void decorate(Object target, Object decorator) {
 		if (decorator instanceof Decorator) {
 			((Decorator) decorator).decorate(target, this);
+		} else if (decorator instanceof Adaptable) {
+			Decorator adapter = ((Adaptable) decorator).adaptTo(Decorator.class);
+			if (adapter != null) {
+				adapter.decorate(target, this);
+			}
 		}
 	}
 	
@@ -216,9 +223,9 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 		for (Entry<Label, List<Action>> cats: Util.groupByCategory((List<Action>) action.getChildren())) {
 			if (cats.getKey() != null) {
 				if (Util.isBlank(cats.getKey().getIcon()) && Util.isBlank(cats.getKey().getText())) {
-					dd.divider();
+					decorate(dd.divider(), cats.getKey());
 				} else {
-					dd.header(labelFragment(cats.getKey()));
+					decorate(dd.header(labelFragment(cats.getKey())), cats.getKey());
 				}
 			}
 			for (Action cac: cats.getValue()) {	
@@ -368,7 +375,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 
 	@Override
 	public Tag add(ListGroup listGroup, Label label, boolean active, boolean disabled) {
-		return listGroup.item(active, disabled, label.getColor(), labelFragment(label));
+		return listGroup.item(active, disabled, label.getColor(), labelFragment(label)); // TODO - decorate
 	}
 
 	@Override
@@ -380,19 +387,22 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	public Tag add(ActionGroup actionGroup, Action action, boolean active) {
 		Tag link = actionGroup.action(active, action.isDisabled(), action.getColor(), null, labelFragment(action));
 		bindLink(action, link);
+		decorate(link, action);
 		return link;
 	}
 
 	@Override
 	public Tag addContent(ActionGroup actionGroup, Action action, boolean active) {
 		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
-		return actionGroup.contentAction(labelFragment(action), active, action.isDisabled(), action.getColor(), contentId, processViewPart(action.generate(this, null)));
+		Tag ret = actionGroup.contentAction(labelFragment(action), active, action.isDisabled(), action.getColor(), contentId, processViewPart(action.generate(this, null)));
+		decorate(ret, action);
+		return ret;
 	}
 
 	@Override
 	public void add(Navs navs, Action action, boolean active) {
 		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
-		navs.item(labelFragment(action), active, action.isDisabled(), contentId, processViewPart(action.generate(this, null)));
+		decorate(navs.item(labelFragment(action), active, action.isDisabled(), contentId, processViewPart(action.generate(this, null))), action);
 	}
 	
 	@Override
@@ -429,6 +439,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 						if (textColor != null) {
 							bootstrapFactory.wrap(item).text().color(textColor);
 						}
+						decorate(item, ca);
 					} else if (activator instanceof ScriptActionActivator) {
 						String code = ((ScriptActionActivator) activator).getCode();
 						if (ca.getConfirmation() != null) {
@@ -438,23 +449,26 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 						if (textColor != null) {
 							bootstrapFactory.wrap(item).text().color(textColor);
 						}
+						decorate(item, ca);
 					} else if (ca.getChildren().isEmpty()) {
 						// As text
 						Tag item = navs.item(fragment, "#", Util.equalOrInPath(activeAction, ca), ca.isDisabled());				
 						if (textColor != null) {
 							bootstrapFactory.wrap(item).text().color(textColor);
 						}
+						decorate(item, ca);
 					} else {
 						Dropdown dropdown = navs.dropdown(Util.equalOrInPath(activeAction, ca), fragment);				
 						if (textColor != null) {
 							dropdown.text().color(textColor);
 						}
+						decorate(dropdown, ca);						
 						for (Entry<Label, List<Action>> cats: ca.getChildrenGroupedByCategory()) {
 							if (cats.getKey() != null) {
 								if (Util.isBlank(cats.getKey().getIcon()) && Util.isBlank(cats.getKey().getText())) {
-									dropdown.divider();
+									decorate(dropdown.divider(), cats.getKey());
 								} else {
-									dropdown.header(labelFragment(cats.getKey()));
+									decorate(dropdown.header(labelFragment(cats.getKey())), cats.getKey());
 								}
 							}
 							for (Action cac: cats.getValue()) {	
@@ -468,6 +482,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 				if (textColor != null) {
 					dropdown.text().color(textColor);
 				}
+				decorate(dropdown, category);
 				for (Action cac: (List<Action>) categoryGroup.getValue()) {	
 					dropdown.item(link(cac), Util.equalOrInPath(activeAction, cac), cac.isDisabled());
 				}

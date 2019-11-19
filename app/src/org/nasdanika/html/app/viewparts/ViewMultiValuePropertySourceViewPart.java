@@ -42,10 +42,10 @@ public class ViewMultiValuePropertySourceViewPart implements ViewPart {
 				Label category = categoryEntry.getKey();
 				if (category == null) {
 					for (PropertyDescriptor pd: categoryEntry.getValue()) {
-						categoryRow.header(viewGenerator.labelFragment(pd)).toHTMLElement().rowspan(2);
+						viewGenerator.decorate(categoryRow.header(viewGenerator.labelFragment(pd)).toHTMLElement().rowspan(2), pd);
 					}
 				} else {
-					categoryRow.header(viewGenerator.labelFragment(category)).toHTMLElement().colspan(categoryEntry.getValue().size());					
+					viewGenerator.decorate(categoryRow.header(viewGenerator.labelFragment(category)).toHTMLElement().colspan(categoryEntry.getValue().size()), category);					
 				}
 			}
 			if (hasActions) {
@@ -56,7 +56,7 @@ public class ViewMultiValuePropertySourceViewPart implements ViewPart {
 				Label category = categoryEntry.getKey();
 				if (category != null) {
 					for (PropertyDescriptor pd: categoryEntry.getValue()) {
-						pdRow.header(viewGenerator.labelFragment(pd)).toHTMLElement();
+						viewGenerator.decorate(pdRow.header(viewGenerator.labelFragment(pd)).toHTMLElement(), pd);
 					}
 				}
 			}			
@@ -64,11 +64,11 @@ public class ViewMultiValuePropertySourceViewPart implements ViewPart {
 			Row pdRow = table.row();			
 			for (Entry<Label, List<PropertyDescriptor>> categoryEntry: categories) {
 				for (PropertyDescriptor pd: categoryEntry.getValue()) {
-					pdRow.header(viewGenerator.labelFragment(pd)).toHTMLElement();
+					viewGenerator.decorate(pdRow.header(viewGenerator.labelFragment(pd)), pd);
 				}
 			}
 			if (hasActions) {
-				pdRow.header(actionsHeader()).toHTMLElement();
+				pdRow.header(actionsHeader());
 			}
 		}
 		

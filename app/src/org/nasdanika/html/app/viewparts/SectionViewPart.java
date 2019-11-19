@@ -7,6 +7,7 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.NamedItemsContainer;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.NavigationActionActivator;
@@ -80,11 +81,12 @@ public class SectionViewPart implements ViewPart {
 				String contentId = subSection.getId() == null ? null : "nsd-action-content-"+subSection.getId();
 				Fragment labelFragment = viewGenerator.labelFragment(subSection);
 				if (sectionsContainer instanceof ActionGroup) {
-					((ActionGroup) sectionsContainer).contentAction(labelFragment, subSection == activeSubSection, subSection.isDisabled(), subSection.getColor(), contentId, subSectionContent);				
+					Tag ca = ((ActionGroup) sectionsContainer).contentAction(labelFragment, subSection == activeSubSection, subSection.isDisabled(), subSection.getColor(), contentId, subSectionContent);
+					viewGenerator.decorate(ca, subSection);
 				} else if (sectionsContainer instanceof Navs) {
-					((Navs) sectionsContainer).item(labelFragment, subSection == activeSubSection, subSection.isDisabled(), contentId, subSectionContent);
+					viewGenerator.decorate(((Navs) sectionsContainer).item(labelFragment, subSection == activeSubSection, subSection.isDisabled(), contentId, subSectionContent), subSection);
 				} else {
-					sectionsContainer.item(labelFragment, subSectionContent);
+					sectionsContainer.item(labelFragment, subSectionContent); // TODO - decorate
 				}
 			}
 		}

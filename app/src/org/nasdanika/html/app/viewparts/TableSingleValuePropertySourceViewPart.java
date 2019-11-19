@@ -59,6 +59,7 @@ public abstract class TableSingleValuePropertySourceViewPart implements ViewPart
 			for (PropertyDescriptor pd: descriptorGroup.getValue()) {
 				Row propertyRow = propertyTable.row();
 				Cell nameHeader = propertyRow.header(viewGenerator.labelFragment(pd));
+				viewGenerator.decorate(nameHeader, pd);
 				nameHeader.toHTMLElement().style("width", "10%").style().whiteSpace().nowrap();
 				propertyRow.cell(viewGenerator.processViewPart(generateValueView(propertySource.getValue(), pd, viewGenerator, progressMonitor.split("Generating value view of "+pd.getPropertyName(), 1, propertySource.getValue(), pd))));
 				if (hasActions) {

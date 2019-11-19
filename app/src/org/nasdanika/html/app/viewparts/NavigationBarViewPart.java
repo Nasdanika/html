@@ -78,23 +78,25 @@ public class NavigationBarViewPart implements ViewPart {
 						if (ca.getConfirmation() != null) {
 							item.on(Event.click, "return confirm('"+ca.getConfirmation()+"');");
 						}
+						viewGenerator.decorate(item, ca);
 					} else if (activator instanceof ScriptActionActivator) {
 						String code = ((ScriptActionActivator) activator).getCode();
 						if (ca.getConfirmation() != null) {
 							code = "if (confirm('"+ca.getConfirmation()+"')) { "+code+" }";
 						}
-						navBar.item("#", Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment).on(Event.click, code);				
+						viewGenerator.decorate(navBar.item("#", Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment).on(Event.click, code), ca);				
 					} else if (ca.getChildren().isEmpty()) {
 						// As text
-						navBar.navbarText(fragment);
+						viewGenerator.decorate(navBar.navbarText(fragment), ca);
 					} else {
-						Dropdown dropdown = navBar.dropdown(Util.equalOrInPath(activeAction, ca), fragment);				
+						Dropdown dropdown = navBar.dropdown(Util.equalOrInPath(activeAction, ca), fragment);
+						viewGenerator.decorate(dropdown, ca);
 						for (Entry<Label, List<Action>> cats: ca.getChildrenGroupedByCategory()) {
 							if (cats.getKey() != null) {
 								if (Util.isBlank(cats.getKey().getIcon()) && Util.isBlank(cats.getKey().getText())) {
-									dropdown.divider();
+									viewGenerator.decorate(dropdown.divider(), cats.getKey());
 								} else {
-									dropdown.header(viewGenerator.labelFragment(cats.getKey()));
+									viewGenerator.decorate(dropdown.header(viewGenerator.labelFragment(cats.getKey())), cats.getKey());
 								}
 							}
 							for (Action cac: cats.getValue()) {	
@@ -105,6 +107,7 @@ public class NavigationBarViewPart implements ViewPart {
 				}
 			} else {
 				Dropdown dropdown = navBar.dropdown(false, viewGenerator.labelFragment(category));
+				viewGenerator.decorate(dropdown, category);
 				for (Action cac: (List<Action>) categoryGroup.getValue()) {	
 					dropdown.item(viewGenerator.link(cac), Util.equalOrInPath(activeAction, cac), cac.isDisabled());
 				}

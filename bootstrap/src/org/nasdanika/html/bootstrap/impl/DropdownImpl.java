@@ -3,6 +3,7 @@ package org.nasdanika.html.bootstrap.impl;
 import org.nasdanika.html.Form;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.Direction;
@@ -67,15 +68,13 @@ public class DropdownImpl extends DivWrappingBootstrapElementImpl<Dropdown> impl
 	}
 
 	@Override
-	public Dropdown header(Object... content) {
-		menu.header(content);
-		return this;
+	public Tag header(Object... content) {
+		return menu.header(content);
 	}
 
 	@Override
-	public Dropdown divider() {
-		menu.divider();
-		return this;
+	public Tag divider() {
+		return menu.divider();
 	}
 
 	@Override

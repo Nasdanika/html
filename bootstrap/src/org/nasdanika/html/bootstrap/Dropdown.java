@@ -15,9 +15,18 @@ public interface Dropdown extends BootstrapElement<Tag,Dropdown> {
 	 */
 	Dropdown item(HTMLElement<?> item, boolean active, boolean disabled);
 	
-	Dropdown header(Object... content);
+	/**
+	 * 
+	 * @param content
+	 * @return Header tag so it can be customized if needed.
+	 */
+	Tag header(Object... content);
 	
-	Dropdown divider();
+	/**
+	 * 
+	 * @return Divider tag so it can be customized if needed
+	 */
+	Tag divider();
 
 	Dropdown form(org.nasdanika.html.Form form); 
 	

@@ -2,6 +2,7 @@ package org.nasdanika.html.bootstrap.impl;
 
 import org.nasdanika.html.Form;
 import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Dropdown;
@@ -29,15 +30,17 @@ public class DropdownMenu extends DivWrappingBootstrapElementImpl<Dropdown> impl
 	}
 
 	@Override
-	public Dropdown header(Object... content) {
-		htmlElement.content(getFactory().getHTMLFactory().tag(TagName.h6, content).addClass("dropdown-header"));
-		return this;
+	public Tag header(Object... content) {
+		Tag ret = getFactory().getHTMLFactory().tag(TagName.h6, content).addClass("dropdown-header");
+		htmlElement.content(ret);
+		return ret;
 	}
 
 	@Override
-	public Dropdown divider() {
-		htmlElement.content(getFactory().getHTMLFactory().div().addClass("dropdown-divider"));
-		return this;
+	public Tag divider() {
+		Tag ret = getFactory().getHTMLFactory().div().addClass("dropdown-divider");
+		htmlElement.content(ret);
+		return ret;
 	}
 
 	@Override
