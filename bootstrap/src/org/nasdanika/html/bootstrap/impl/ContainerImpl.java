@@ -27,7 +27,7 @@ public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> i
 
 			protected ColImpl(BootstrapFactory factory, Object... content) {
 				super(factory, true);
-				htmlElement.addClass("col").content(content);
+//				htmlElement.addClass("col").content(content);
 			}
 
 			@Override

@@ -57,7 +57,7 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 	protected ViewPart getHeaderViewPart() {
 		Action rootAction = getRootAction();
 		return rootAction == null ? (vg, progressMonitor) -> null : (viewGenerator, progressMonitor) -> {
-			Tag link = viewGenerator.link(rootAction).style().text().decoration().none();
+			Tag link = viewGenerator.link(rootAction);
 			List<Action> navigationChildren = rootAction.getNavigationChildren();
 			if (navigationChildren.size() < 2) {
 				return styleRootActionLink(viewGenerator, link);
@@ -77,6 +77,7 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 	 */
 	protected Object styleRootActionLink(ViewGenerator viewGenerator, Tag link) {
 		return link;
+//		link.style().text().decoration().none();
 //		viewGenerator.get(BootstrapFactory.class).wrap(link).text().color(Color.DARK);
 //		return viewGenerator.get(BootstrapFactory.class).display(link, 4);
 	}
