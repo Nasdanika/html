@@ -24,7 +24,9 @@ import org.nasdanika.html.app.impl.ActionImpl;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.app.viewparts.ContentPanelViewPart;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.bootstrap.Table.TableBody;
 import org.nasdanika.html.bootstrap.Table.TableHeader;
@@ -168,10 +170,10 @@ public class EcoreDocumentationGenerator {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);		
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		contentContainer.text().alignment(Alignment.LEFT);
-		contentContainer.row().col("<H2>"+rootAction.getText()+"</H2>");
+		contentContainer.row().col("<H2>"+rootAction.getText()+"</H2>").width(Breakpoint.DEFAULT, Size.NONE);
 		String description = rootAction.getDescription();
 		if (!Util.isBlank(description)) {
-			contentContainer.row().col(description);
+			contentContainer.row().col(description).width(Breakpoint.DEFAULT, Size.NONE);
 		}
 				
 		Table table = bootstrapFactory.table().bordered();
@@ -184,7 +186,7 @@ public class EcoreDocumentationGenerator {
 				resourceLocator == null ? summary : resourceLocator.getString(PropertyKeys.UI_SUMMARY, summary));
 		TableBody body = table.body();
 		principalAction.getChildren().forEach(child -> body.row(viewGenerator.link(child), child.getTooltip()));
-		contentContainer.row().col(table);				
+		contentContainer.row().col(table).width(Breakpoint.DEFAULT, Size.NONE);				
 		
 		contentBuilder.append(contentContainer.produce(4));
 		return contentBuilder;

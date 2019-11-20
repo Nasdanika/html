@@ -5,7 +5,9 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Text.Alignment;
 
 public class EEnumViewAction extends EClassifierViewAction<EEnum> {
@@ -21,7 +23,7 @@ public class EEnumViewAction extends EClassifierViewAction<EEnum> {
 		contentContainer.text().alignment(Alignment.LEFT);
 		String description = getDescription();
 		if (!Util.isBlank(description)) {
-			contentContainer.row().col(description);
+			contentContainer.row().col(description).width(Breakpoint.DEFAULT, Size.NONE);
 		}
 		
 		// TODO - enum literals table.

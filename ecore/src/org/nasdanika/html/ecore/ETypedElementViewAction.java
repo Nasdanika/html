@@ -31,11 +31,13 @@ public class ETypedElementViewAction<T extends ETypedElement> extends ENamedElem
 		contentContainer.text().alignment(Alignment.LEFT);
 		Table propertiesTable = propertiesTable(viewGenerator);
 		if (!propertiesTable.toHTMLElement().isEmpty()) {
-			contentContainer.row().col(propertiesTable).padding().bottom(Breakpoint.DEFAULT, Size.S3);
+			contentContainer.row().col(propertiesTable)
+				.width(Breakpoint.DEFAULT, Size.NONE)
+				.padding().bottom(Breakpoint.DEFAULT, Size.S3);
 		}
 		String description = getDescription();
 		if (!Util.isBlank(description)) {
-			contentContainer.row().col(description);
+			contentContainer.row().col(description).width(Breakpoint.DEFAULT, Size.NONE);
 		}		
 		
 		return contentContainer;
