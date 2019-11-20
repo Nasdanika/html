@@ -15,6 +15,7 @@ import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumbs;
 import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Size;
 
 /**
@@ -71,9 +72,17 @@ public class ContentPanelViewPart implements ViewPart {
 			breadcrumbs.item(true, viewGenerator.label(lastNonSection));
 		}
 		
-		if (lastNonSectionPath.size() > getMinTitleDepth() - getBreadcrumbsOffset()) {
+		if (lastNonSectionPath.size() > getMinTitleDepth() - getBreadcrumbsOffset()) {			
+			// Context actions navs floating right
+			List<Action> contextChildren = lastNonSection.getContextChildren();
+			if (!contextChildren.isEmpty()) {
+				Navs navs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
+				navs._float().right();
+				ret.content(navs);
+			}
+			
 			// Page title, doesn't make much sense to show it for the root or principal actions - it would duplicate the header or the nav bar. 
-			ret.content(viewGenerator.label(lastNonSection, viewGenerator.get(HTMLFactory.class).tag(TagName.h2)));			
+			ret.content(viewGenerator.label(lastNonSection, viewGenerator.get(HTMLFactory.class).tag(TagName.h2)));
 		}
 		
 		ret.content(new SectionViewPart(lastNonSection, activeAction, showContextActions, 0).generate(viewGenerator, progressMonitor));		
