@@ -102,6 +102,7 @@ public class BootstrapContainerApplication implements Application {
 	 */
 	protected void configureHeader(Col header) {
 		header.background(Color.PRIMARY);		
+		header.width(Breakpoint.DEFAULT, Size.NONE);
 	}
 	
 	/**
@@ -111,6 +112,7 @@ public class BootstrapContainerApplication implements Application {
 	 */
 	protected void configureNavigationBar(Col navigationBar) {
 		navigationBar.background(Color.LIGHT).text().color(Color.DARK);		
+		navigationBar.width(Breakpoint.DEFAULT, Size.NONE);
 	}
 	
 	/**
@@ -136,6 +138,7 @@ public class BootstrapContainerApplication implements Application {
 	 */
 	protected void configureConentPanel(Col contentPanel) {
 		contentPanel.border(Color.DEFAULT, Placement.LEFT);		
+		contentPanel.width(Breakpoint.DEFAULT, Size.NONE);
 	}
 	
 	/**
@@ -144,7 +147,8 @@ public class BootstrapContainerApplication implements Application {
 	 * @param footer
 	 */
 	protected void configureFooter(Col footer) {
-		footer.background(Color.SECONDARY).text().alignment(Alignment.CENTER);		
+		footer.background(Color.SECONDARY).text().alignment(Alignment.CENTER);
+		footer.width(Breakpoint.DEFAULT, Size.NONE);		
 	}	
 
 	@Override
