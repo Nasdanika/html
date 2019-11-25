@@ -157,40 +157,6 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 */
 	ActionActivator getActivator();
 	
-	/**
-	 * Outputs to map, roles are not output - this shall be handled by sub-classes.
-	 */
-	@Override
-	default Map<String, Object> toMap() {
-		Map<String, Object> map = Label.super.toMap();
-		if (getActivator() instanceof NavigationActionActivator) {
-			map.put("activator", Collections.singletonMap("url", ((NavigationActionActivator) getActivator()).getUrl()));
-		} else if (getActivator() instanceof ScriptActionActivator) {
-			map.put("activator", Collections.singletonMap("code", ((ScriptActionActivator) getActivator()).getCode()));
-		}
-		if (getChildren() != null) {
-			List<Map<String, Object>> mc = new ArrayList<>();
-			map.put("children", mc);
-			for (Action child: getChildren()) {
-				mc.add(child.toMap());
-			}
-		}
-		if (getConfirmation() != null) {
-			map.put("confirmation", getConfirmation());
-		}
-		if (isDisabled()) {
-			map.put("disabled", true);
-		}
-		if (isFloatRight()) {
-			map.put("floatRight", true);
-		}
-		if (getCategory() != null) {
-			map.put("category", getCategory().toMap());
-		}
-		// Roles cannot be stored at this level.
-		return map;
-	}
-	
 	// --- Helper methods ---
 	
 	/**

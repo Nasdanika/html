@@ -1,8 +1,5 @@
 package org.nasdanika.html.app;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.nasdanika.html.bootstrap.Color;
 
 /**
@@ -51,36 +48,5 @@ public interface Label extends Identity {
 	 * @return
 	 */
 	String getNotification();
-	
-	/**
-	 * Stores action data into a map, which can then be stored as JSON or YAML or some other format.
-	 * @return
-	 */
-	default Map<String, Object> toMap() {
-		Map<String, Object> ret = new HashMap<>(Identity.super.toMap());
-		if (getIcon() != null) {
-			ret.put("icon", getIcon());
-		}
-		if (getText() != null) {
-			ret.put("text", getText());
-		}
-		if (getTooltip() != null) {
-			ret.put("tooltip", getTooltip());
-		}
-		if (getColor() != null) {
-			ret.put("color", getColor().name());
-		}
-		if (isOutline()) {
-			ret.put("outline", true);
-		}
-		if (getDescription() != null) {
-			ret.put("description", getDescription());
-		}
-		if (getNotification() != null) {
-			ret.put("notification", getNotification());
-		}
-		return ret;
-	}
-
 
 }
