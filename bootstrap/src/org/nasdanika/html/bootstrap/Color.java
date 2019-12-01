@@ -38,5 +38,15 @@ public enum Color {
 	
 	public final String code;
 	public final String label;
+		
+	public static Color fromLabel(String label) {
+		for (Color color: values()) {
+			if (color.label.equals(label)) {
+				return color;
+			}
+		}
+		throw new IllegalArgumentException("No color value for label "+label);
+	}
+	
 
 }
