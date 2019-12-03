@@ -24,7 +24,6 @@ public enum Color {
 	INFO("info", "Info"),
 	LIGHT("light", "Light"),
 	DARK("dark", "Dark"),
-	BODY("body", "Body"),
 	MUTED("muted", "Muted"),
 	WHITE("white", "White"),
 	BLACK50("black-50", "Black 50%"),
