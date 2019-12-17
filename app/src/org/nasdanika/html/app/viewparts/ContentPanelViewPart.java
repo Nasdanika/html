@@ -26,7 +26,6 @@ import org.nasdanika.html.bootstrap.Size;
 public class ContentPanelViewPart implements ViewPart {
 
 	private Action activeAction;
-	private boolean showContextActions;
 
 	/**
 	 * 
@@ -34,9 +33,8 @@ public class ContentPanelViewPart implements ViewPart {
 	 * @param input
 	 * @param showConextActions Set false for principal actions because their context actions are already shown in the navbar.
 	 */
-	public ContentPanelViewPart(Action activeAction, boolean showConextActions) {
+	public ContentPanelViewPart(Action activeAction) {
 		this.activeAction = activeAction;
-		this.showContextActions = false;
 	}
 		
 	/**

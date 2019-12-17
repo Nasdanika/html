@@ -105,7 +105,7 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 	@Override
 	protected ViewPart getContentPanelViewPart() {
 		Action activeAction = getActiveAction();
-		return activeAction == null ? (vg, progressMonitor) -> null : new ContentPanelViewPart(activeAction, Util.equal(activeAction, getPrincipalAction()) || Util.equal(activeAction, getRootAction()));
+		return activeAction == null ? (vg, progressMonitor) -> null : new ContentPanelViewPart(activeAction);
 	}
 
 	@Override

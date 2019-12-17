@@ -195,7 +195,7 @@ public class EcoreDocumentationGenerator {
 	protected void generateActionContent(Action action, Context context, ProgressMonitor progressMonitor) {
 		try (ProgressMonitor am = progressMonitor.split("Generating action content for "+action.getText(), 100)) {
 			StringBuilder contentBuilder = new StringBuilder();
-			ViewPart contentPanelViewPart = new ContentPanelViewPart(action, false); // Use adapter?
+			ViewPart contentPanelViewPart = new ContentPanelViewPart(action); // Use adapter?
 			ViewGenerator viewGenerator = new EcoreDocumentationViewGenerator(context, contentBuilder::append, contentBuilder::append);
 			contentBuilder.append(contentPanelViewPart.generate(viewGenerator, progressMonitor));
 			@SuppressWarnings("unchecked")
