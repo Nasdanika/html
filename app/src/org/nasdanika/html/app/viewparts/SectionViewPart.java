@@ -110,7 +110,7 @@ public class SectionViewPart implements ViewPart {
 			return tabs;
 		case 1:
 			ActionGroup actionGroup = BootstrapFactory.INSTANCE.actionGroup(false);
-			contentConsumer.accept(actionGroup.asContainer().margin().top(Breakpoint.DEFAULT, Size.S1).toBootstrapElement());
+			contentConsumer.accept(actionGroup.asContainer(true).margin().top(Breakpoint.DEFAULT, Size.S1).toBootstrapElement());
 			return actionGroup;
 		case 2:
 			NamedItemsContainer ret = viewGenerator.get(HTMLFactory.class).tagNamedItemsContainer(TagName.h3);

@@ -58,7 +58,8 @@ public class ContentPanelViewPart implements ViewPart {
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
-		Action lastNonSection = lastNonSection();
+		boolean isContext = activeAction.isInRole(Action.Role.CONTEXT) || (activeAction.getParent() != null && activeAction.getParent().isInRole(Action.Role.CONTEXT));
+		Action lastNonSection = isContext ? activeAction : lastNonSection();
 		List<Action> lastNonSectionPath = lastNonSection.getPath();
 		if (lastNonSectionPath.size() > getMinBreadcrumbsDepth() - getBreadcrumbsOffset()) {
 			// Breadcrumbs
@@ -85,7 +86,12 @@ public class ContentPanelViewPart implements ViewPart {
 			ret.content(viewGenerator.label(lastNonSection, viewGenerator.get(HTMLFactory.class).tag(TagName.h2)));
 		}
 		
-		ret.content(new SectionViewPart(lastNonSection, activeAction, showContextActions, 0).generate(viewGenerator, progressMonitor));		
+		ret.content(lastNonSection.generate(viewGenerator, progressMonitor));
+		
+		ViewPart sectionsViewPart = lastNonSection.createSectionsViewPart(activeAction, 0, 3);
+		if (sectionsViewPart != null) {
+			ret.content(sectionsViewPart.generate(viewGenerator, progressMonitor)); // TODO - split monitor.
+		}
 		return ret;
 	}	
 	

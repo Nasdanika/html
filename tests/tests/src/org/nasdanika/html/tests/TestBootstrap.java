@@ -326,7 +326,7 @@ public class TestBootstrap extends HTMLTestBase {
 		actionGroup.contentAction("Four - warning", false, false, Color.WARNING, null, BootstrapFactory.INSTANCE.alert(Color.WARNING, "Be careful!"));
 		
 		Navs simpleTabs = BootstrapFactory.INSTANCE.navs().tabs();
-		simpleTabs.item("First", actionGroup.asContainer().margin().top(Breakpoint.DEFAULT, Size.S1).toBootstrapElement());
+		simpleTabs.item("First", actionGroup.asContainer(true).margin().top(Breakpoint.DEFAULT, Size.S1).toBootstrapElement());
 		simpleTabs.item("Second", "Second content");
 		simpleTabs.item("Third", "Third content");
 		simpleTabs.item("Fourth", "Fourth content");
@@ -368,7 +368,7 @@ public class TestBootstrap extends HTMLTestBase {
 		actionGroup.contentAction("Three - disabled", false, true, Color.DEFAULT, null, "Disabled content");
 		actionGroup.contentAction("Four - warning", false, false, Color.WARNING, null, BootstrapFactory.INSTANCE.alert(Color.WARNING, "Be careful!"));
 						
-		writeThemedPage("bootstrap/action-group-content.html", "Bootstrap content action group", actionGroup.asContainer()); 
+		writeThemedPage("bootstrap/action-group-content.html", "Bootstrap content action group", actionGroup.asContainer(true)); 
 	}	
 		
 	@Test

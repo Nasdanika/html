@@ -35,6 +35,6 @@ public interface ActionGroup extends BootstrapElement<Tag, ActionGroup>, NamedIt
 	 * Creates a container with a single row and two columns - one with the action group div and the other with the content div. 
 	 * @return
 	 */
-	Container asContainer();
+	Container asContainer(boolean fluid);
 	
 }

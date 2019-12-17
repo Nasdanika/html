@@ -14,6 +14,7 @@ import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
+import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
 
 /**
@@ -31,6 +32,7 @@ public class ActionImpl extends LabelImpl implements Action {
 	private ActionActivator activator;
 	private Label category;
 	private Set<String> roles = new HashSet<>();
+	private SectionStyle sectionStyle = SectionStyle.Auto;
 	
 	public ActionImpl() {
 		
@@ -172,6 +174,15 @@ public class ActionImpl extends LabelImpl implements Action {
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		return null;
+	}
+	
+	@Override
+	public SectionStyle getSectionStyle() {
+		return sectionStyle;
+	}
+	
+	public void setSectionStyle(SectionStyle sectionStyle) {
+		this.sectionStyle = sectionStyle;
 	}
 	
 }

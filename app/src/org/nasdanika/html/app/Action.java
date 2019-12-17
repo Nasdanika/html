@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.nasdanika.html.app.impl.Util;
@@ -107,6 +108,10 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 */
 	Action getParent();
 	
+	default SectionStyle getSectionStyle() {
+		return SectionStyle.Auto; 
+	}
+	
 	/**
 	 * Action path in the hierarchy starting from the root action, not including the action itself.
 	 * @return
@@ -164,19 +169,24 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 * @param role
 	 * @return
 	 */
-	default List<Action> getChildren(String role) {
-		return getChildren().stream().filter(c -> c.isInRole(role)).collect(Collectors.toList());
+	default List<Action> getChildrenByRole(String... roles) {		
+		if (roles.length == 0) {
+			return getChildren();
+		}
+		Predicate<? super Action> predicate = c -> {
+			for (String role: roles) {
+				if (c.isInRole(role)) {
+					return true;
+				}
+			}
+			return false;
+		};
+		return getChildren().stream().filter(predicate).collect(Collectors.toList());
 	}
 	
 	@SuppressWarnings("unchecked")
-	default <T extends Action> List<Map.Entry<Label, List<T>>> getChildrenGroupedByCategory() {
-		List<?> ret = Util.groupByCategory(getChildren());
-		return (List<Map.Entry<Label, List<T>>>) ret;
-	}
-	
-	@SuppressWarnings("unchecked")
-	default <T extends Action> List<Map.Entry<Label, List<T>>> getChildrenGroupedByCategory(String role) {
-		List<?> ret = Util.groupByCategory(getChildren(role));
+	default <T extends Action> List<Map.Entry<Label, List<T>>> getChildrenGroupedByCategory(String... roles) {
+		List<?> ret = Util.groupByCategory(getChildrenByRole(roles));
 		return (List<Map.Entry<Label, List<T>>>) ret;		
 	}	
 		
@@ -186,7 +196,7 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 * @return
 	 */
 	default List<Action> getNavigationChildren() {
-		return getChildren(Role.NAVIGATION);
+		return getChildrenByRole(Role.NAVIGATION);
 	}
 	
 	default <T extends Action> List<Map.Entry<Label, List<T>>> getNavigationChildrenGroupedByCategory() {
@@ -200,7 +210,7 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 * @return
 	 */
 	default List<Action> getContextChildren() {
-		return getChildren(Role.CONTEXT);
+		return getChildrenByRole(Role.CONTEXT);
 	}
 
 	default <T extends Action> List<Map.Entry<Label, List<T>>> getContextChildrenGroupedByCategory() {
@@ -214,11 +224,15 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 * @return
 	 */
 	default List<Action> getSectionChildren() {
-		return getChildren(Role.SECTION);
+		return getChildrenByRole(Role.SECTION);
 	}
 
 	default <T extends Action> List<Map.Entry<Label, List<T>>> getSectionChildrenGroupedByCategory() {
 		return getChildrenGroupedByCategory(Role.SECTION);
+	}
+	
+	default ViewPart createSectionsViewPart(Action activeAction, int level, int paragraphLevel) {
+		return getSectionStyle().createViewPart(this, activeAction, level, paragraphLevel);
 	}
 		
 }

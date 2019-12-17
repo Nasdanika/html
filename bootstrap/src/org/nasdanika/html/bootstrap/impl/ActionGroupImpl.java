@@ -79,11 +79,12 @@ public class ActionGroupImpl extends DivWrappingBootstrapElementImpl<ActionGroup
 	}
 
 	@Override
-	public Container asContainer() {
-		Container ret = getFactory().container();
+	public Container asContainer(boolean fluid) {
+		BootstrapFactory factory = getFactory();
+		Container ret = fluid ? factory.fluidContainer() : factory.container();
 		Row row = ret.row();
 		row.col(htmlElement).width(Breakpoint.DEFAULT, Size.AUTO);
-		row.col(contentDiv);
+		row.col(contentDiv).width(Breakpoint.DEFAULT, Size.NONE);
 		return ret;
 	}
 	
