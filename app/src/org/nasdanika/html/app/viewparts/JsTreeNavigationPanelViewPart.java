@@ -1,6 +1,7 @@
 package org.nasdanika.html.app.viewparts;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -59,8 +60,7 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 					jsTreeNode.selected(Util.equalOrInPath(activeAction, ca) && ca.getNavigationChildren().isEmpty());
 					categoryNode.children().add(jsTreeNode);
 				}				
-			}
-			
+			}			
 		}
 		JSONObject jsTree = jsTreeFactory.buildJsTree(roots);
 		configureJsTree(jsTree);
@@ -71,10 +71,12 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 	
 	/**
 	 * Override to configure jsTree, e.g. add search or state plug-ins.
+	 * This implementation adds state plugin.
 	 * @param jsTree
 	 */
 	protected void configureJsTree(JSONObject jsTree) {
-		
+		jsTree.put("plugins", Collections.singletonList("state"));		
+		jsTree.put("state", Collections.singletonMap("key", "nsd-navigation-tree"));
 	}
 
 }
