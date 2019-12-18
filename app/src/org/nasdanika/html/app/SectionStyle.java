@@ -7,6 +7,7 @@ import org.nasdanika.common.Util;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
@@ -65,7 +66,7 @@ public enum SectionStyle {
 					}										
 					
 					HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
-					Fragment contentFragment = htmlFactory.fragment();	
+					Fragment contentFragment = htmlFactory.fragment();
 
 					for (Action section: sections) {
 						if (activeSection == null) {
@@ -73,6 +74,9 @@ public enum SectionStyle {
 						}
 						
 						Tag sectionDiv = htmlFactory.div();
+						if (action.getId() != null) {
+							sectionDiv.content(TagName.a.create().attribute("name", action.getId()));						
+						}
 						
 						List<Action> contextChildren = section.getContextChildren();
 						if (!contextChildren.isEmpty()) {
@@ -134,6 +138,9 @@ public enum SectionStyle {
 						Fragment labelFragment = viewGenerator.labelFragment(section);
 
 						Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+						if (action.getId() != null) {
+							contentFragment.content(TagName.a.create().attribute("name", action.getId()));						
+						}
 						
 						List<Action> contextChildren = section.getContextChildren();
 						if (!contextChildren.isEmpty()) {
@@ -203,6 +210,9 @@ public enum SectionStyle {
 						Fragment labelFragment = viewGenerator.labelFragment(section);
 
 						Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+						if (action.getId() != null) {
+							contentFragment.content(TagName.a.create().attribute("name", action.getId()));						
+						}
 						
 						List<Action> contextChildren = section.getContextChildren();
 						if (!contextChildren.isEmpty()) {
