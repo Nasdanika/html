@@ -74,8 +74,8 @@ public enum SectionStyle {
 						}
 						
 						Tag sectionDiv = htmlFactory.div();
-						if (action.getId() != null) {
-							sectionDiv.content(TagName.a.create().attribute("name", action.getId()));						
+						if (section.getId() != null) {
+							sectionDiv.content(TagName.a.create().attribute("name", section.getId()));						
 						}
 						
 						List<Action> contextChildren = section.getContextChildren();
@@ -138,8 +138,8 @@ public enum SectionStyle {
 						Fragment labelFragment = viewGenerator.labelFragment(section);
 
 						Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
-						if (action.getId() != null) {
-							contentFragment.content(TagName.a.create().attribute("name", action.getId()));						
+						if (section.getId() != null) {
+							contentFragment.content(TagName.a.create().attribute("name", section.getId()));						
 						}
 						
 						List<Action> contextChildren = section.getContextChildren();
@@ -210,8 +210,8 @@ public enum SectionStyle {
 						Fragment labelFragment = viewGenerator.labelFragment(section);
 
 						Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
-						if (action.getId() != null) {
-							contentFragment.content(TagName.a.create().attribute("name", action.getId()));						
+						if (section.getId() != null) {
+							contentFragment.content(TagName.a.create().attribute("name", section.getId()));						
 						}
 						
 						List<Action> contextChildren = section.getContextChildren();
