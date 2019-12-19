@@ -7,7 +7,7 @@ import org.nasdanika.html.bootstrap.TagBootstrapElement;
 
 public class CardImpl extends WrappingBootstrapElementImpl<Tag, Card> implements Card {
 
-	private TagBootstrapElement title;
+	private TagBootstrapElement header;
 	private TagBootstrapElement body;
 	private TagBootstrapElement footer;
 
@@ -15,9 +15,9 @@ public class CardImpl extends WrappingBootstrapElementImpl<Tag, Card> implements
 		super(factory, factory.getHTMLFactory().nonEmptyDiv());
 		htmlElement.addClass("card");
 		
-		title = factory.wrap(factory.getHTMLFactory().nonEmptyDiv());
-		title.toHTMLElement().addClass("card-header");
-		htmlElement.content(title.toHTMLElement());
+		header = factory.wrap(factory.getHTMLFactory().nonEmptyDiv());
+		header.toHTMLElement().addClass("card-header");
+		htmlElement.content(header.toHTMLElement());
 				
 		body = factory.wrap(factory.getHTMLFactory().nonEmptyDiv());
 		body.toHTMLElement().addClass("card-body");
@@ -30,8 +30,8 @@ public class CardImpl extends WrappingBootstrapElementImpl<Tag, Card> implements
 	}
 
 	@Override
-	public TagBootstrapElement getTitle() {
-		return title;
+	public TagBootstrapElement getHeader() {
+		return header;
 	}
 
 	@Override

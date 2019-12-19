@@ -76,7 +76,7 @@ public abstract class TableSingleValuePropertySourceViewPart implements ViewPart
 			} else {
 				Card propertyCard = viewGenerator.get(BootstrapFactory.class).card();
 				propertyCard.border(category.getColor());
-				viewGenerator.label(category, propertyCard.getTitle().toHTMLElement());
+				viewGenerator.label(category, propertyCard.getHeader().toHTMLElement());
 				propertyCard.getBody().toHTMLElement().content(propertyTable);
 				ret.content(propertyCard);
 			}

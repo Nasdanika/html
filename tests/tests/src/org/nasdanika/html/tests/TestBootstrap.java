@@ -62,7 +62,7 @@ public class TestBootstrap extends HTMLTestBase {
 	@Test
 	public void testCards() throws Exception {
 		Card card = BootstrapFactory.INSTANCE.card().border(Color.SUCCESS);		
-		card.getTitle().toHTMLElement().content("Header");
+		card.getHeader().toHTMLElement().content("Header");
 		card.getBody().toHTMLElement().content("Body");
 		card.getFooter().toHTMLElement().content("Footer");		
 		writeThemedPage("bootstrap/card.html", "Bootstrap card", card); 

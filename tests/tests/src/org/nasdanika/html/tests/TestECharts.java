@@ -15,7 +15,7 @@ public class TestECharts extends HTMLTestBase {
 	@Test
 	public void testCards() throws Exception {
 		Card card = BootstrapFactory.INSTANCE.card().border(Color.SUCCESS);		
-		card.getTitle().toHTMLElement().content("ECharts demo");
+		card.getHeader().toHTMLElement().content("ECharts demo");
 		OptionBuilder optionBuilder = EChartsFactory.INSTANCE.createOptionBuilder();
 		
 		optionBuilder.titleBuilder().text("Nasdanika ECharts example");

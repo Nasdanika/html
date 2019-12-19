@@ -7,7 +7,7 @@ public interface Card extends BootstrapElement<Tag, Card> {
 	/**
 	 * @return Title tag for styling and adding content.
 	 */
-	TagBootstrapElement getTitle();
+	TagBootstrapElement getHeader();
 	
 	/**
 	 * @return Body tag for styling and adding content.
