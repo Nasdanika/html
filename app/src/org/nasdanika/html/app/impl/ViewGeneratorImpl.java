@@ -281,14 +281,26 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	public JsTreeNode jsTreeNode(Action action, boolean ajax) {
 		JsTreeNode ret = jsTreeNode(action);
 		ret.disabled(action.isDisabled());
-		List<? extends Action> navigationChildren = action.getNavigationChildren();
+		List<Entry<Label, List<Action>>> categories = action.getNavigationChildrenGroupedByCategory();
 		if (ajax) {
-			if (!navigationChildren.isEmpty()) {
+			if (!categories.isEmpty()) {
 				ret.hasChildren();
 			}
 		} else {
-			for (Action child: navigationChildren) {
-				ret.children().add(jsTreeNode(child, ajax));
+			for (Entry<Label, List<Action>> group: categories) {			
+				Label category = group.getKey();
+				List<Action> categoryActions = (List<Action>) group.getValue();
+				if (category == null || Util.isBlank(category.getText())) {
+					for (Action ca: categoryActions) {
+						ret.children().add(jsTreeNode(ca, ajax));
+					}				
+				} else {
+					JsTreeNode categoryNode = jsTreeNode(category);
+					ret.children().add(categoryNode);
+					for (Action ca: categoryActions) {
+						categoryNode.children().add(jsTreeNode(ca, ajax));
+					}				
+				}			
 			}
 		}
 		

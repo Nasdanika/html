@@ -64,6 +64,8 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 		}
 		JSONObject jsTree = jsTreeFactory.buildJsTree(roots);
 		configureJsTree(jsTree);
+		System.out.println("----");
+		System.out.println(jsTree.toString(4));
 		// TODO - context menus
 		Tag script = jsTreeFactory.bind(container, jsTree);
 		return htmlFactory.fragment(container, script);

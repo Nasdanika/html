@@ -1,6 +1,8 @@
 package org.nasdanika.html.app;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
@@ -13,7 +15,10 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Navs;
+import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Size;
+import org.nasdanika.html.bootstrap.Table.TableBody;
+import org.nasdanika.html.bootstrap.Table.TableHeader;
 
 /**
  * Defines style of child actions in Section role.
@@ -40,6 +45,86 @@ public enum SectionStyle {
 		}
 		
 	},
+	
+	ActionGroup("Action group") {
+
+		@Override
+		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
+			List<Map.Entry<Label, List<Action>>> categories = level == 0 ? action.getChildrenGroupedByCategory(Action.Role.SECTION) : action.getChildrenGroupedByCategory(Action.Role.SECTION, Action.Role.NAVIGATION);
+			if (categories.isEmpty()) {
+				return null;
+			}
+			
+			return new ViewPart() {
+				
+				@Override
+				public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+					Action activeSection = null;
+					for (Entry<Label, List<Action>> ce: categories) {
+						for (Action section: ce.getValue()) {
+							if (org.nasdanika.html.app.impl.Util.equalOrInPath(activeAction, section)) {
+								activeSection = section;
+							}
+						}
+					}
+					
+					ActionGroup actionGroup = viewGenerator.get(BootstrapFactory.class).actionGroup(false);
+					
+					for (Entry<Label, List<Action>> categoryEntry: categories) {
+						Label category = categoryEntry.getKey(); 
+						if (category == null || Util.isBlank(category.getText())) {
+							for (Action section: categoryEntry.getValue()) {
+								if (activeSection == null) {
+									activeSection = section; // First if null.
+								}
+								String contentId = section.getId() == null ? null : "nsd-action-content-"+section.getId();
+								Fragment labelFragment = viewGenerator.labelFragment(section);
+
+								Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+								if (section.getId() != null) {
+									contentFragment.content(TagName.a.create().attribute("name", section.getId()));						
+								}
+								
+								List<Action> contextChildren = section.getContextChildren();
+								if (!contextChildren.isEmpty()) {
+									Navs navs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
+									navs.background(Color.LIGHT);
+									contentFragment.content(navs);
+								}
+								
+								contentFragment.content(section.generate(viewGenerator, progressMonitor));
+								
+								ViewPart subSectionsViewPart = section.createSectionsViewPart(activeAction, level+1, paragraphLevel);
+								if (subSectionsViewPart != null) {
+									contentFragment.content(subSectionsViewPart.generate(viewGenerator, progressMonitor)); // TODO - split monitor.
+								}
+								
+								Tag ca = actionGroup.contentAction(labelFragment, section == activeSection, section.isDisabled(), section.getColor(), contentId, contentFragment);
+								viewGenerator.decorate(ca, section);
+							}
+						} else {
+							String contentId = category.getId() == null ? null : "nsd-category-content-"+category.getId();
+							Fragment labelFragment = viewGenerator.labelFragment(category);
+	
+							Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+							if (category.getId() != null) {
+								contentFragment.content(TagName.a.create().attribute("name", category.getId()));						
+							}
+							
+							for (Action section: categoryEntry.getValue()) {
+								contentFragment.content(sectionParagraph(section, activeAction, level + 1, paragraphLevel + 1, viewGenerator, progressMonitor));
+							}							
+	
+							viewGenerator.decorate(actionGroup.contentAction(labelFragment, categoryEntry.getValue().contains(activeSection), false, category.getColor(), contentId, contentFragment), category);													
+						}
+					}
+
+					return actionGroup.asContainer(true).margin().top(Breakpoint.DEFAULT, Size.S1).toBootstrapElement();
+				}
+			};
+		}
+		
+	},	
 
 	/**
 	 * Sections are generated as blocks with Hx headers where x starts with 3 and increases for each additional paragraph level up to H6
@@ -48,8 +133,8 @@ public enum SectionStyle {
 
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
-			List<Action> sections = level == 0 ? action.getChildrenByRole(Action.Role.SECTION) : action.getChildrenByRole(Action.Role.SECTION, Action.Role.NAVIGATION);
-			if (sections.isEmpty()) {
+			List<Map.Entry<Label, List<Action>>> categories = level == 0 ? action.getChildrenGroupedByCategory(Action.Role.SECTION) : action.getChildrenGroupedByCategory(Action.Role.SECTION, Action.Role.NAVIGATION);
+			if (categories.isEmpty()) {
 				return null;
 			}
 			
@@ -57,46 +142,35 @@ public enum SectionStyle {
 				
 				@Override
 				public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-										
-					Action activeSection = null;
-					for (Action section: sections) {
-						if (org.nasdanika.html.app.impl.Util.equalOrInPath(activeAction, section)) {
-							activeSection = section;
-						}
-					}										
+					Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();
 					
-					HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
-					Fragment contentFragment = htmlFactory.fragment();
+					for (Entry<Label, List<Action>> categoryEntry: categories) {
+						Label category = categoryEntry.getKey();
+						if (category == null || Util.isBlank(category.getText())) {
+							if (category != null) {
+								contentFragment.content(TagName.hr.create());
+							}
+							for (Action section: categoryEntry.getValue()) {						
+								contentFragment.content(sectionParagraph(section, activeAction, level, paragraphLevel, viewGenerator, progressMonitor));
+							}							
+						} else {
+							HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
+							if (category.getId() != null) {
+								contentFragment.content(TagName.a.create().attribute("name", category.getId()));						
+							}
+							
+							Tag hTag = htmlFactory.tag("H"+Math.min(6, paragraphLevel), viewGenerator.labelFragment(category));
+							viewGenerator.decorate(hTag, category);
+							if (category.getColor() != null) {
+								viewGenerator.get(BootstrapFactory.class).wrap(hTag).background(category.getColor());
+							}
+							
+							contentFragment.content(hTag);
 
-					for (Action section: sections) {
-						if (activeSection == null) {
-							activeSection = section; // First if null.
+							for (Action section: categoryEntry.getValue()) {
+								contentFragment.content(sectionParagraph(section, activeAction, level + 1, paragraphLevel + 1, viewGenerator, progressMonitor));
+							}							
 						}
-						
-						Tag sectionDiv = htmlFactory.div();
-						if (section.getId() != null) {
-							sectionDiv.content(TagName.a.create().attribute("name", section.getId()));						
-						}
-						
-						List<Action> contextChildren = section.getContextChildren();
-						if (!contextChildren.isEmpty()) {
-							Navs navs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
-							navs._float().right();
-							sectionDiv.content(navs);
-						}
-						
-						Fragment labelFragment = viewGenerator.labelFragment(section);
-						Tag hTag = htmlFactory.tag("H"+Math.min(6, paragraphLevel), labelFragment);
-						viewGenerator.decorate(hTag, section);
-						sectionDiv.content(hTag);
-						
-						sectionDiv.content(section.generate(viewGenerator, progressMonitor));
-						
-						ViewPart subSectionsViewPart = section.createSectionsViewPart(activeAction, level+1, paragraphLevel + 1);
-						if (subSectionsViewPart != null) {
-							sectionDiv.content(subSectionsViewPart.generate(viewGenerator, progressMonitor)); // TODO - split monitor.
-						}
-						contentFragment.content(sectionDiv);
 					}
 
 					return contentFragment;
@@ -105,7 +179,7 @@ public enum SectionStyle {
 		}
 		
 	},
-	
+		
 	/**
 	 * Sections are generated as tabs.
 	 */
@@ -113,8 +187,8 @@ public enum SectionStyle {
 
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
-			List<Action> sections = level == 0 ? action.getChildrenByRole(Action.Role.SECTION) : action.getChildrenByRole(Action.Role.SECTION, Action.Role.NAVIGATION);
-			if (sections.isEmpty()) {
+			List<Map.Entry<Label, List<Action>>> categories = level == 0 ? action.getChildrenGroupedByCategory(Action.Role.SECTION) : action.getChildrenGroupedByCategory(Action.Role.SECTION, Action.Role.NAVIGATION);
+			if (categories.isEmpty()) {
 				return null;
 			}			
 			
@@ -123,40 +197,61 @@ public enum SectionStyle {
 				@Override
 				public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 					Action activeSection = null;
-					for (Action section: sections) {
-						if (org.nasdanika.html.app.impl.Util.equalOrInPath(activeAction, section)) {
-							activeSection = section;
+					for (Entry<Label, List<Action>> ce: categories) {
+						for (Action section: ce.getValue()) {
+							if (org.nasdanika.html.app.impl.Util.equalOrInPath(activeAction, section)) {
+								activeSection = section;
+							}
 						}
-					}										
+					}
 					
 					Navs tabs = viewGenerator.get(BootstrapFactory.class).navs().tabs();
-					for (Action section: sections) {
-						if (activeSection == null) {
-							activeSection = section; // First if null.
+					for (Entry<Label, List<Action>> categoryEntry: categories) {
+						Label category = categoryEntry.getKey(); 
+						if (category == null || Util.isBlank(category.getText())) {
+							for (Action section: categoryEntry.getValue()) {
+								if (activeSection == null) {
+									activeSection = section; // First if null.
+								}
+								String contentId = section.getId() == null ? null : "nsd-action-content-"+section.getId();
+								Fragment labelFragment = viewGenerator.labelFragment(section);
+		
+								Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+								if (section.getId() != null) {
+									contentFragment.content(TagName.a.create().attribute("name", section.getId()));						
+								}
+								
+								List<Action> contextChildren = section.getContextChildren();
+								if (!contextChildren.isEmpty()) {
+									Navs navs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
+									navs.background(Color.LIGHT);
+									contentFragment.content(navs);
+								}
+								
+								contentFragment.content(section.generate(viewGenerator, progressMonitor));
+								
+								ViewPart subSectionsViewPart = section.createSectionsViewPart(activeAction, level+1, paragraphLevel);
+								if (subSectionsViewPart != null) {
+									contentFragment.content(subSectionsViewPart.generate(viewGenerator, progressMonitor)); // TODO - split monitor.
+								}
+		
+								viewGenerator.decorate(tabs.item(labelFragment, section == activeSection, section.isDisabled(), contentId, contentFragment), section);						
+							}
+						} else {
+							String contentId = category.getId() == null ? null : "nsd-category-content-"+category.getId();
+							Fragment labelFragment = viewGenerator.labelFragment(category);
+	
+							Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+							if (category.getId() != null) {
+								contentFragment.content(TagName.a.create().attribute("name", category.getId()));						
+							}
+							
+							for (Action section: categoryEntry.getValue()) {
+								contentFragment.content(sectionParagraph(section, activeAction, level + 1, paragraphLevel + 1, viewGenerator, progressMonitor));
+							}							
+	
+							viewGenerator.decorate(tabs.item(labelFragment, categoryEntry.getValue().contains(activeSection), false, contentId, contentFragment), category);													
 						}
-						String contentId = section.getId() == null ? null : "nsd-action-content-"+section.getId();
-						Fragment labelFragment = viewGenerator.labelFragment(section);
-
-						Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
-						if (section.getId() != null) {
-							contentFragment.content(TagName.a.create().attribute("name", section.getId()));						
-						}
-						
-						List<Action> contextChildren = section.getContextChildren();
-						if (!contextChildren.isEmpty()) {
-							Navs navs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
-							navs.background(Color.LIGHT);
-							contentFragment.content(navs);
-						}
-						
-						contentFragment.content(section.generate(viewGenerator, progressMonitor));
-						
-						ViewPart subSectionsViewPart = section.createSectionsViewPart(activeAction, level+1, paragraphLevel);
-						if (subSectionsViewPart != null) {
-							contentFragment.content(subSectionsViewPart.generate(viewGenerator, progressMonitor)); // TODO - split monitor.
-						}
-
-						viewGenerator.decorate(tabs.item(labelFragment, section == activeSection, section.isDisabled(), contentId, contentFragment), section);						
 					}
 
 					return tabs;
@@ -165,79 +260,83 @@ public enum SectionStyle {
 		}
 		
 	},
-	
-//	for (Action subSection: subSections) {
-//		
-//		Object subSectionContent = new SectionViewPart(subSection, activeAction, true, level + 1).generate(viewGenerator, progressMonitor);
-//		
-//		if (sectionsContainer instanceof ActionGroup) {
-//			Tag ca = ((ActionGroup) sectionsContainer).contentAction(labelFragment, subSection == activeSubSection, subSection.isDisabled(), subSection.getColor(), contentId, subSectionContent);
-//			viewGenerator.decorate(ca, subSection);
-//		} else if (sectionsContainer instanceof Navs) {
-//			viewGenerator.decorate(((Navs) sectionsContainer).item(labelFragment, subSection == activeSubSection, subSection.isDisabled(), contentId, subSectionContent), subSection);
-//		} else {
-//			sectionsContainer.item(labelFragment, subSectionContent); // TODO - decorate
-//		}
-//	}
 		
-	ActionGroup("Action group") {
+	/**
+	 * Sections are generated as rows in a table with two columns - header with action label, and content. Categories are displayed in the top row.
+	 */
+	Table {
 
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
-			List<Action> sections = level == 0 ? action.getChildrenByRole(Action.Role.SECTION) : action.getChildrenByRole(Action.Role.SECTION, Action.Role.NAVIGATION);
-			if (sections.isEmpty()) {
+			List<Map.Entry<Label, List<Action>>> categories = level == 0 ? action.getChildrenGroupedByCategory(Action.Role.SECTION) : action.getChildrenGroupedByCategory(Action.Role.SECTION, Action.Role.NAVIGATION);
+			if (categories.isEmpty()) {
 				return null;
-			}			
+			}
 			
 			return new ViewPart() {
 				
 				@Override
 				public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-					Action activeSection = null;
-					for (Action section: sections) {
-						if (org.nasdanika.html.app.impl.Util.equalOrInPath(activeAction, section)) {
-							activeSection = section;
-						}
-					}										
+					Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
 					
-					ActionGroup actionGroup = viewGenerator.get(BootstrapFactory.class).actionGroup(false);
-
-					for (Action section: sections) {
-						if (activeSection == null) {
-							activeSection = section; // First if null.
-						}
-						String contentId = section.getId() == null ? null : "nsd-action-content-"+section.getId();
-						Fragment labelFragment = viewGenerator.labelFragment(section);
-
-						Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
-						if (section.getId() != null) {
-							contentFragment.content(TagName.a.create().attribute("name", section.getId()));						
-						}
+					for (Entry<Label, List<Action>> categoryEntry: categories) {
+						Label category = categoryEntry.getKey();
 						
-						List<Action> contextChildren = section.getContextChildren();
-						if (!contextChildren.isEmpty()) {
-							Navs navs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
-							navs.background(Color.LIGHT);
-							contentFragment.content(navs);
-						}
+						org.nasdanika.html.bootstrap.Table table = viewGenerator.get(BootstrapFactory.class).table().bordered();
+						ret.content(table);
+												
+						if (category != null && !Util.isBlank(category.getText())) {
+							TableHeader header = table.header();
+							Row hRow = header.row();
+							if (category.getColor() == null) {
+								header.light();
+							} else {
+								hRow.color(category.getColor());
+							}
+							
+							hRow.header(viewGenerator.labelFragment(category)).toHTMLElement().colspan(2);
+						} 
 						
-						contentFragment.content(section.generate(viewGenerator, progressMonitor));
-						
-						ViewPart subSectionsViewPart = section.createSectionsViewPart(activeAction, level+1, paragraphLevel);
-						if (subSectionsViewPart != null) {
-							contentFragment.content(subSectionsViewPart.generate(viewGenerator, progressMonitor)); // TODO - split monitor.
-						}
-						
-						Tag ca = actionGroup.contentAction(labelFragment, section == activeSection, section.isDisabled(), section.getColor(), contentId, contentFragment);
-						viewGenerator.decorate(ca, section);
+						TableBody body = table.body();
+						for (Action section: categoryEntry.getValue()) {
+							Row sectionRow = body.row();
+							if (section.getColor() != null) {
+								sectionRow.color(section.getColor());
+							}
+							sectionRow.header(viewGenerator.labelFragment(section));
+							
+							Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+							if (section.getId() != null) {
+								contentFragment.content(TagName.a.create().attribute("name", section.getId()));						
+							}
+							
+							List<Action> contextChildren = section.getContextChildren();
+							if (!contextChildren.isEmpty()) {
+								Navs navs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
+								navs.background(Color.LIGHT);
+								contentFragment.content(navs);
+							}
+							
+							contentFragment.content(section.generate(viewGenerator, progressMonitor));
+							
+							ViewPart subSectionsViewPart = section.createSectionsViewPart(activeAction, level+1, paragraphLevel);
+							if (subSectionsViewPart != null) {
+								contentFragment.content(subSectionsViewPart.generate(viewGenerator, progressMonitor)); // TODO - split monitor.
+							}
+	
+							sectionRow.cell(contentFragment);
+						}													
 					}
 
-					return actionGroup.asContainer(true).margin().top(Breakpoint.DEFAULT, Size.S1).toBootstrapElement();
+					return ret;
 				}
 			};
 		}
 		
-	};
+	}
+	
+	;
+	
 //	Pill
 //	VerticalPill
 //	Card
@@ -270,6 +369,54 @@ public enum SectionStyle {
 			}
 		}
 		throw new IllegalArgumentException("No breakpoint value for label "+label);
-	}	
+	}
+
+	/**
+	 * Generates a section div for an action with Hx header and content.
+	 * @param section
+	 * @param activeAction
+	 * @param level
+	 * @param paragraphLevel
+	 * @param viewGenerator
+	 * @param progressMonitor
+	 * @return
+	 */
+	Tag sectionParagraph(
+			Action section, 
+			Action activeAction, 
+			int level, 
+			int paragraphLevel,
+			ViewGenerator viewGenerator, 
+			ProgressMonitor progressMonitor) {
+		
+		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
+		Tag sectionDiv = htmlFactory.div();
+		if (section.getId() != null) {
+			sectionDiv.content(TagName.a.create().attribute("name", section.getId()));						
+		}
+		
+		List<Action> contextChildren = section.getContextChildren();
+		if (!contextChildren.isEmpty()) {
+			Navs navs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
+			navs._float().right();
+			sectionDiv.content(navs);
+		}
+		
+		Tag hTag = htmlFactory.tag("H"+Math.min(6, paragraphLevel), viewGenerator.labelFragment(section));
+		viewGenerator.decorate(hTag, section);
+		if (section.getColor() != null) {
+			viewGenerator.get(BootstrapFactory.class).wrap(hTag).background(section.getColor());
+		}		
+		sectionDiv.content(hTag);
+		
+		sectionDiv.content(section.generate(viewGenerator, progressMonitor));
+		
+		ViewPart subSectionsViewPart = section.createSectionsViewPart(activeAction, level+1, paragraphLevel + 1);
+		if (subSectionsViewPart != null) {
+			sectionDiv.content(subSectionsViewPart.generate(viewGenerator, progressMonitor)); // TODO - split monitor.
+		}
+		return sectionDiv;
+	}
+	
 	
 }
