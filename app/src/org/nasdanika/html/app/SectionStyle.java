@@ -10,10 +10,10 @@ import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
-import org.nasdanika.html.app.viewparts.NavigationBarViewPart;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
@@ -126,6 +126,40 @@ public enum SectionStyle {
 		}
 		
 	},	
+		
+	/**
+	 * Sections are generated as card pills.
+	 */
+	CardPill("Card pill") {
+	
+		@Override
+		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
+			List<Map.Entry<Label, List<Action>>> categories = level == 0 ? action.getChildrenGroupedByCategory(Action.Role.SECTION) : action.getChildrenGroupedByCategory(Action.Role.SECTION, Action.Role.NAVIGATION);
+			if (categories.isEmpty()) {
+				return null;
+			}			
+			
+			return new NavsViewPart(paragraphLevel, activeAction, categories, level, true, false);
+		}
+		
+	},
+	
+	/**
+	 * Sections are generated as card tabs.
+	 */
+	CardTab("Card tab") {
+	
+		@Override
+		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
+			List<Map.Entry<Label, List<Action>>> categories = level == 0 ? action.getChildrenGroupedByCategory(Action.Role.SECTION) : action.getChildrenGroupedByCategory(Action.Role.SECTION, Action.Role.NAVIGATION);
+			if (categories.isEmpty()) {
+				return null;
+			}			
+			
+			return new NavsViewPart(paragraphLevel, activeAction, categories, level, true, true);
+		}
+		
+	},	
 
 	/**
 	 * Sections are generated as blocks with Hx headers where x starts with 3 and increases for each additional paragraph level up to H6
@@ -182,6 +216,23 @@ public enum SectionStyle {
 	},
 		
 	/**
+	 * Sections are generated as pills.
+	 */
+	Pill {
+
+		@Override
+		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
+			List<Map.Entry<Label, List<Action>>> categories = level == 0 ? action.getChildrenGroupedByCategory(Action.Role.SECTION) : action.getChildrenGroupedByCategory(Action.Role.SECTION, Action.Role.NAVIGATION);
+			if (categories.isEmpty()) {
+				return null;
+			}			
+			
+			return new NavsViewPart(paragraphLevel, activeAction, categories, level, false, false);
+		}
+		
+	},
+	
+	/**
 	 * Sections are generated as tabs.
 	 */
 	Tab {
@@ -193,71 +244,7 @@ public enum SectionStyle {
 				return null;
 			}			
 			
-			return new ViewPart() {
-				
-				@Override
-				public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-					Action activeSection = null;
-					for (Entry<Label, List<Action>> ce: categories) {
-						for (Action section: ce.getValue()) {
-							if (org.nasdanika.html.app.impl.Util.equalOrInPath(activeAction, section)) {
-								activeSection = section;
-							}
-						}
-					}
-					
-					Navs tabs = viewGenerator.get(BootstrapFactory.class).navs().tabs();
-					for (Entry<Label, List<Action>> categoryEntry: categories) {
-						Label category = categoryEntry.getKey(); 
-						if (category == null || Util.isBlank(category.getText())) {
-							for (Action section: categoryEntry.getValue()) {
-								if (activeSection == null) {
-									activeSection = section; // First if null.
-								}
-								String contentId = section.getId() == null ? null : "nsd-action-content-"+section.getId();
-								Fragment labelFragment = viewGenerator.labelFragment(section);
-		
-								Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
-								if (section.getId() != null) {
-									contentFragment.content(TagName.a.create().attribute("name", section.getId()));						
-								}
-								
-								List<Action> contextChildren = section.getContextChildren();
-								if (!contextChildren.isEmpty()) {
-									Navs navs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
-									navs.background(Color.LIGHT);
-									contentFragment.content(navs);
-								}
-								
-								contentFragment.content(section.generate(viewGenerator, progressMonitor));
-								
-								ViewPart subSectionsViewPart = section.createSectionsViewPart(activeAction, level+1, paragraphLevel);
-								if (subSectionsViewPart != null) {
-									contentFragment.content(subSectionsViewPart.generate(viewGenerator, progressMonitor)); // TODO - split monitor.
-								}
-		
-								viewGenerator.decorate(tabs.item(labelFragment, section == activeSection, section.isDisabled(), contentId, contentFragment), section);						
-							}
-						} else {
-							String contentId = category.getId() == null ? null : "nsd-category-content-"+category.getId();
-							Fragment labelFragment = viewGenerator.labelFragment(category);
-	
-							Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
-							if (category.getId() != null) {
-								contentFragment.content(TagName.a.create().attribute("name", category.getId()));						
-							}
-							
-							for (Action section: categoryEntry.getValue()) {
-								contentFragment.content(sectionParagraph(section, activeAction, level + 1, paragraphLevel + 1, viewGenerator, progressMonitor));
-							}							
-	
-							viewGenerator.decorate(tabs.item(labelFragment, categoryEntry.getValue().contains(activeSection), false, contentId, contentFragment), category);													
-						}
-					}
-
-					return tabs;
-				}
-			};
+			return new NavsViewPart(paragraphLevel, activeAction, categories, level, false, true);
 		}
 		
 	},
@@ -346,6 +333,102 @@ public enum SectionStyle {
 //	Card
 //	Accordion
 	
+	private class NavsViewPart implements ViewPart {
+		private final int paragraphLevel;
+		private final Action activeAction;
+		private final List<Entry<Label, List<Action>>> categories;
+		private final int level;
+		private boolean tabs;
+		private boolean card;
+
+		private NavsViewPart(
+				int paragraphLevel, 
+				Action activeAction, 
+				List<Entry<Label, List<Action>>> categories,
+				int level,
+				boolean card,
+				boolean tabs) {
+			this.paragraphLevel = paragraphLevel;
+			this.activeAction = activeAction;
+			this.categories = categories;
+			this.level = level;
+			this.card = card;
+			this.tabs = tabs;			
+		}
+
+		@Override
+		public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+			Action activeSection = null;
+			for (Entry<Label, List<Action>> ce: categories) {
+				for (Action section: ce.getValue()) {
+					if (org.nasdanika.html.app.impl.Util.equalOrInPath(activeAction, section)) {
+						activeSection = section;
+					}
+				}
+			}
+			
+			BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
+			Card theCard = card ? bootstrapFactory.card() : null;  						
+			
+			Card.Navs navs = card ? theCard.asNavs() : bootstrapFactory.navs();
+			if (tabs) {
+				navs.tabs();
+			} else {
+				navs.pills();
+			}
+			
+			for (Entry<Label, List<Action>> categoryEntry: categories) {
+				Label category = categoryEntry.getKey(); 
+				if (category == null || Util.isBlank(category.getText())) {
+					for (Action section: categoryEntry.getValue()) {
+						if (activeSection == null) {
+							activeSection = section; // First if null.
+						}
+						String contentId = section.getId() == null ? null : "nsd-action-content-"+section.getId();
+						Fragment labelFragment = viewGenerator.labelFragment(section);
+
+						Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+						if (section.getId() != null) {
+							contentFragment.content(TagName.a.create().attribute("name", section.getId()));						
+						}
+						
+						List<Action> contextChildren = section.getContextChildren();
+						if (!contextChildren.isEmpty()) {
+							Navs contextNavs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
+							contextNavs.background(Color.LIGHT);
+							contentFragment.content(contextNavs);
+						}
+						
+						contentFragment.content(section.generate(viewGenerator, progressMonitor));
+						
+						ViewPart subSectionsViewPart = section.createSectionsViewPart(activeAction, level+1, paragraphLevel);
+						if (subSectionsViewPart != null) {
+							contentFragment.content(subSectionsViewPart.generate(viewGenerator, progressMonitor)); // TODO - split monitor.
+						}
+
+						viewGenerator.decorate(navs.item(labelFragment, section == activeSection, section.isDisabled(), contentId, contentFragment), section);						
+					}
+				} else {
+					String contentId = category.getId() == null ? null : "nsd-category-content-"+category.getId();
+					Fragment labelFragment = viewGenerator.labelFragment(category);
+
+					Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+					if (category.getId() != null) {
+						contentFragment.content(TagName.a.create().attribute("name", category.getId()));						
+					}
+					
+					for (Action section: categoryEntry.getValue()) {
+						contentFragment.content(sectionParagraph(section, activeAction, level + 1, paragraphLevel + 1, viewGenerator, progressMonitor));
+					}							
+
+					viewGenerator.decorate(navs.item(labelFragment, categoryEntry.getValue().contains(activeSection), false, contentId, contentFragment), category);													
+				}
+			}
+
+			return card ? theCard : navs;
+		}
+	}
+
 	/**
 	 * Creates a view part rendering action's sections.
 	 * @param section Action containing section actions to be rendered. 

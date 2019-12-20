@@ -48,7 +48,7 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 		return activeAction.getPath().get(1);		
 	}
 	
-	protected List<? extends Action> getNavigationPanelActions() {
+	protected List<Action> getNavigationPanelActions() {
 		Action principalAction = getPrincipalAction();
 		return principalAction == null ? Collections.emptyList() : principalAction.getNavigationChildren();
 	}
@@ -98,7 +98,7 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 
 	@Override
 	protected ViewPart getNavigationPanelViewPart() {		
-		List<? extends Action> navigationPanelActions = getNavigationPanelActions();
+		List<Action> navigationPanelActions = getNavigationPanelActions();
 		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? (vg, progressMonitor) -> null : new AdaptiveNavigationPanelViewPart(navigationPanelActions, getActiveAction());
 	}
 

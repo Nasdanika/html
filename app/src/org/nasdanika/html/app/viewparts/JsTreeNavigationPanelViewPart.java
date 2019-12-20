@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
 
 import org.json.JSONObject;
 import org.nasdanika.common.ProgressMonitor;
@@ -26,23 +29,54 @@ import org.nasdanika.html.jstree.JsTreeNode;
  */
 public class JsTreeNavigationPanelViewPart implements ViewPart {
 	
-	protected List<? extends Action> navigationPanelActions;
+	protected List<? extends Action> rootActions;
 	protected Action activeAction;
+	private String treeId;
 
-	public JsTreeNavigationPanelViewPart(List<? extends Action> navigationPanelActions, Action activeAction) {
-		this.navigationPanelActions = navigationPanelActions;
+	public JsTreeNavigationPanelViewPart(List<? extends Action> rootActions, Action activeAction) {
+		this.rootActions = rootActions;
 		this.activeAction = activeAction;
+		
+		// Computing tree ID. If all navigation actions have the same parent or the same category then id is the parent/category id. Otherwise it is a base64 digest of action ID's.
+		Set<Object> parentIDs = new TreeSet<>();
+		Set<Object> categoryIDs = new TreeSet<>();
+		for (Action npa: rootActions) {
+			Action parent = npa.getParent();
+			if (parent != null && parent.getId() != null) {
+				parentIDs.add(parent.getId());
+			}
+			Label category = npa.getCategory();
+			if (category != null && category.getId() != null) {
+				categoryIDs.add(category.getId());
+			}			
+		}	
+		StringBuilder idBuilder = new StringBuilder("nsd-navigation-tree");
+		if (parentIDs.isEmpty() && categoryIDs.isEmpty()) {
+			idBuilder.append("-").append(UUID.randomUUID()); // Random
+		} else {
+			for (Object pid: parentIDs) {
+				idBuilder.append("-");
+				idBuilder.append(pid);
+			}
+			if (!parentIDs.isEmpty()) {
+				idBuilder.append("-");
+			}
+			for (Object cid: categoryIDs) {
+				idBuilder.append("-");
+				idBuilder.append(cid);
+			}
+		}
+		treeId = idBuilder.toString();
 	}
 	
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		String treeId = "nsd-navigation-tree";
 		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
 		Tag container = htmlFactory.div().id(treeId);
 		JsTreeFactory jsTreeFactory = viewGenerator.get(JsTreeFactory.class);
 		List<JsTreeNode> roots = new ArrayList<>();
 		// Group by category
-		for (Entry<Label, ?> group: Util.groupByCategory(navigationPanelActions)) {			
+		for (Entry<Label, ?> group: Util.groupByCategory(rootActions)) {			
 			Label category = group.getKey();
 			@SuppressWarnings("unchecked")
 			List<Action> categoryActions = (List<Action>) group.getValue();
@@ -64,8 +98,8 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 		}
 		JSONObject jsTree = jsTreeFactory.buildJsTree(roots);
 		configureJsTree(jsTree);
-		System.out.println("----");
-		System.out.println(jsTree.toString(4));
+//		System.out.println("----");
+//		System.out.println(jsTree.toString(4));
 		// TODO - context menus
 		Tag script = jsTreeFactory.bind(container, jsTree);
 		return htmlFactory.fragment(container, script);
@@ -78,7 +112,7 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 	 */
 	protected void configureJsTree(JSONObject jsTree) {
 		jsTree.put("plugins", Collections.singletonList("state"));		
-		jsTree.put("state", Collections.singletonMap("key", "nsd-navigation-tree"));
+		jsTree.put("state", Collections.singletonMap("key", treeId));
 	}
 
 }

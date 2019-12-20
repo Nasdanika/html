@@ -48,8 +48,9 @@ public class ActionGroupNavigationPanelViewPart implements ViewPart {
 				categoryCard.margin().top(Breakpoint.DEFAULT, Size.S1);
 				Label category = categoryGroup.getKey();
 				categoryCard.border(category.getColor());
+				categoryCard.getHeader().background(category.getColor());
 				viewGenerator.label(category, categoryCard.getHeader().toHTMLElement());
-				categoryCard.getBody().toHTMLElement().content(actionGroup);
+				categoryCard.toHTMLElement().content(actionGroup);
 				ret.content(categoryCard);
 			}
 		}

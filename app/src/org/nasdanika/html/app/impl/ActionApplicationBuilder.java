@@ -13,7 +13,7 @@ public class ActionApplicationBuilder extends AbstractActionApplicationBuilder {
 	
 	protected Action rootAction;
 	protected Action principalAction;
-	protected List<? extends Action> navigationPanelActions;
+	protected List<Action> navigationPanelActions;
 	protected Action activeAction;
 	
 	/**
@@ -40,14 +40,14 @@ public class ActionApplicationBuilder extends AbstractActionApplicationBuilder {
 	 * 
 	 * @param root Root action label is output in the header, its context actions are output in the footer.
 	 * @param principal Principal context actions are generated as the nav bar.
-	 * @param navigationPanelActions Actions to show in the navigation panel. 
+	 * @param rootActions Actions to show in the navigation panel. 
 	 * @param active Active action to be executed and execution result to be shown in the content container. If active action is shown in the navigation bar or panel is shall
 	 * be selected/active. 
 	 */
 	public ActionApplicationBuilder(
 			Action rootAction, 
 			Action principalAction, 
-			List<? extends Action> navigationPanelActions, 
+			List<Action> navigationPanelActions, 
 			Action activeAction) {
 		this.rootAction = rootAction;
 		this.principalAction = principalAction;
@@ -66,7 +66,7 @@ public class ActionApplicationBuilder extends AbstractActionApplicationBuilder {
 	}
 
 	@Override
-	protected List<? extends Action> getNavigationPanelActions() {
+	protected List<Action> getNavigationPanelActions() {
 		return navigationPanelActions;
 	}
 
