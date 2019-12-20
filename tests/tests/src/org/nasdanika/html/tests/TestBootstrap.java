@@ -76,6 +76,7 @@ public class TestBootstrap extends HTMLTestBase {
 		navs.item("First", false, false, null, "First content");
 		navs.item("Second", true, false, null, "Second content");
 		navs.item("Third", false, true, null, "Third content");
+		navs.tabs();
 		
 		card.getFooter().toHTMLElement().content("Footer");		
 		writeThemedPage("bootstrap/card-tabs.html", "Bootstrap card tabs", card); 

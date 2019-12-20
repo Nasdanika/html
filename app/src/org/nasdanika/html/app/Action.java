@@ -71,11 +71,11 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 */
 	String getConfirmation();
 	
-	/**
-	 * If true the rendered UI element is aligned to the right.
-	 * @return
-	 */
-	boolean isFloatRight(); 
+//	/**
+//	 * If true the rendered UI element is aligned to the right.
+//	 * @return
+//	 */
+//	boolean isFloatRight(); 
 	
 	/**
 	 * Sub-actions. If action has children it may be displayed, for example, as a drop-down button.

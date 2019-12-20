@@ -25,10 +25,10 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 		return target.getConfirmation();
 	}
 
-	@Override
-	public boolean isFloatRight() {
-		return target.isFloatRight();
-	}
+//	@Override
+//	public boolean isFloatRight() {
+//		return target.isFloatRight();
+//	}
 
 	@Override
 	public List<Action> getChildren() {

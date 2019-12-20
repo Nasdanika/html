@@ -3,7 +3,6 @@ package org.nasdanika.html.app.impl;
 import java.util.Map;
 
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 
 /**
@@ -19,10 +18,10 @@ public class ContentAction extends ActionImpl {
 		
 	}
 	
-	public ContentAction(Map<String, Object> data) {
-		super(data);
-		content = (String) data.get("content");
-	}
+//	public ContentAction(Map<String, Object> data) {
+//		super(data);
+//		content = (String) data.get("content");
+//	}
 	
 	public void setContent(String content) {
 		this.content = content;
@@ -46,11 +45,11 @@ public class ContentAction extends ActionImpl {
 		return getContent();
 	}
 
-	@Override
-	protected Action createAction(Map<String, Object> cd) {
-		ContentAction ret = new ContentAction(cd);
-		ret.setParent(this);
-		return ret;
-	}
+//	@Override
+//	protected Action createAction(Map<String, Object> cd) {
+//		ContentAction ret = new ContentAction(cd);
+//		ret.setParent(this);
+//		return ret;
+//	}
 
 }

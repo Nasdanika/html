@@ -79,15 +79,26 @@ public class NavigationBarViewPart implements ViewPart {
 							item.on(Event.click, "return confirm('"+ca.getConfirmation()+"');");
 						}
 						viewGenerator.decorate(item, ca);
+//						if (ca.isFloatRight()) {
+//							viewGenerator.get(BootstrapFactory.class).wrap(item)._float().right();
+//						}
 					} else if (activator instanceof ScriptActionActivator) {
 						String code = ((ScriptActionActivator) activator).getCode();
 						if (ca.getConfirmation() != null) {
 							code = "if (confirm('"+ca.getConfirmation()+"')) { "+code+" }";
 						}
-						viewGenerator.decorate(navBar.item("#", Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment).on(Event.click, code), ca);				
+						Tag item = navBar.item("#", Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment).on(Event.click, code);
+						viewGenerator.decorate(item, ca);
+//						if (ca.isFloatRight()) {
+//							viewGenerator.get(BootstrapFactory.class).wrap(item)._float().right();
+//						}
 					} else if (ca.getChildren().isEmpty()) {
 						// As text
-						viewGenerator.decorate(navBar.navbarText(fragment), ca);
+						Tag item = navBar.navbarText(fragment);
+						viewGenerator.decorate(item, ca);
+//						if (ca.isFloatRight()) {
+//							viewGenerator.get(BootstrapFactory.class).wrap(item)._float().right();
+//						}						
 					} else {
 						Dropdown dropdown = navBar.dropdown(Util.equalOrInPath(activeAction, ca), fragment);
 						viewGenerator.decorate(dropdown, ca);
@@ -103,6 +114,9 @@ public class NavigationBarViewPart implements ViewPart {
 								dropdown.item(viewGenerator.link(cac), Util.equalOrInPath(activeAction, cac), cac.isDisabled());
 							}
 						}
+//						if (ca.isFloatRight()) {
+//							dropdown._float().right();
+//						}
 					}
 				}
 			} else {

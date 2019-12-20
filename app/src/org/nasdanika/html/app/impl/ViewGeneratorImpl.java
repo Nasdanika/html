@@ -213,9 +213,9 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	public BootstrapElement<?,?> button(Action action) {
 		Button<Tag> button = get(BootstrapFactory.class).button(link(action), action.getColor() == null ? Color.PRIMARY : action.getColor(), action.getColor() == null ? true : action.isOutline());
 		button.disabled(action.isDisabled());
-		if (action.isFloatRight()) {
-			button._float().right();
-		}
+//		if (action.isFloatRight()) {
+//			button._float().right();
+//		}
 		if (action.getChildren().isEmpty()) {
 			return button;
 		}

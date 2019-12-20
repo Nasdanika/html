@@ -10,6 +10,7 @@ import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
+import org.nasdanika.html.app.viewparts.NavigationBarViewPart;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
@@ -311,10 +312,13 @@ public enum SectionStyle {
 							}
 							
 							List<Action> contextChildren = section.getContextChildren();
-							if (!contextChildren.isEmpty()) {
+							if (!contextChildren.isEmpty()) {								
 								Navs navs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
 								navs.background(Color.LIGHT);
 								contentFragment.content(navs);
+								
+//								NavigationBarViewPart nbvp = new NavigationBarViewPart(contextChildren, activeAction);
+//								contentFragment.content(nbvp.generate(viewGenerator, progressMonitor));
 							}
 							
 							contentFragment.content(section.generate(viewGenerator, progressMonitor));
