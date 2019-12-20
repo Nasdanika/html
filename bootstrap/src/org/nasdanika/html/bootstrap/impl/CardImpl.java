@@ -10,6 +10,7 @@ public class CardImpl extends WrappingBootstrapElementImpl<Tag, Card> implements
 	private TagBootstrapElement header;
 	private TagBootstrapElement body;
 	private TagBootstrapElement footer;
+	private CardNavsImpl navs;
 
 	public CardImpl(BootstrapFactory factory) {
 		super(factory, factory.getHTMLFactory().nonEmptyDiv());
@@ -42,6 +43,14 @@ public class CardImpl extends WrappingBootstrapElementImpl<Tag, Card> implements
 	@Override
 	public TagBootstrapElement getFooter() {
 		return footer;
+	}
+
+	@Override
+	public Navs asNavs() {
+		if (navs == null) {
+			navs = new CardNavsImpl(this);
+		}
+		return navs;
 	}
 
 }

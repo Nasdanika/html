@@ -66,8 +66,21 @@ public class TestBootstrap extends HTMLTestBase {
 		card.getBody().toHTMLElement().content("Body");
 		card.getFooter().toHTMLElement().content("Footer");		
 		writeThemedPage("bootstrap/card.html", "Bootstrap card", card); 
-	}	
+	}
+	
+	
+	@Test
+	public void testCardTabs() throws Exception {
+		Card card = BootstrapFactory.INSTANCE.card().border(Color.SUCCESS);
+		org.nasdanika.html.bootstrap.Card.Navs navs = card.asNavs();
+		navs.item("First", false, false, null, "First content");
+		navs.item("Second", true, false, null, "Second content");
+		navs.item("Third", false, true, null, "Third content");
 		
+		card.getFooter().toHTMLElement().content("Footer");		
+		writeThemedPage("bootstrap/card-tabs.html", "Bootstrap card tabs", card); 
+	}	
+			
 	@Test
 	public void testButton() throws Exception {
 		BootstrapFactory factory = BootstrapFactory.INSTANCE;
