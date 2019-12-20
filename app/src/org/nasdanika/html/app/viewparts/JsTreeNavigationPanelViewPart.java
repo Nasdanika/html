@@ -2,10 +2,10 @@ package org.nasdanika.html.app.viewparts;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.UUID;
 
 import org.json.JSONObject;
@@ -38,8 +38,8 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 		this.activeAction = activeAction;
 		
 		// Computing tree ID. If all navigation actions have the same parent or the same category then id is the parent/category id. Otherwise it is a base64 digest of action ID's.
-		Set<Object> parentIDs = new TreeSet<>();
-		Set<Object> categoryIDs = new TreeSet<>();
+		Set<Object> parentIDs = new HashSet<>();
+		Set<Object> categoryIDs = new HashSet<>();
 		for (Action npa: rootActions) {
 			Action parent = npa.getParent();
 			if (parent != null && parent.getId() != null) {
@@ -56,14 +56,14 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 		} else {
 			for (Object pid: parentIDs) {
 				idBuilder.append("-");
-				idBuilder.append(pid);
+				idBuilder.append(pid instanceof CharSequence ? pid : pid.hashCode());
 			}
 			if (!parentIDs.isEmpty()) {
 				idBuilder.append("-");
 			}
 			for (Object cid: categoryIDs) {
 				idBuilder.append("-");
-				idBuilder.append(cid);
+				idBuilder.append(cid instanceof CharSequence ? cid : cid.hashCode());
 			}
 		}
 		treeId = idBuilder.toString();
