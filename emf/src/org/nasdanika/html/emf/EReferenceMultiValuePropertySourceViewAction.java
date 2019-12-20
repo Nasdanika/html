@@ -44,11 +44,6 @@ public class EReferenceMultiValuePropertySourceViewAction<T extends EObject> ext
 	}
 
 	@Override
-	public boolean isFloatRight() {
-		return false;
-	}
-
-	@Override
 	public List<Action> getChildren() {
 		return Collections.emptyList();
 	}

@@ -59,11 +59,6 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	}
 
 	@Override
-	public boolean isFloatRight() {
-		return false;
-	}
-
-	@Override
 	public List<Action> getChildren() {
 		List<EStructuralFeature> childFeatures = getChildFeatures();
 		if (childFeatures.isEmpty()) {

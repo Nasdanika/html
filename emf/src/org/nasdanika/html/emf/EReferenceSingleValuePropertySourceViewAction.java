@@ -58,11 +58,6 @@ public class EReferenceSingleValuePropertySourceViewAction<T extends EObject> ex
 	}
 
 	@Override
-	public boolean isFloatRight() {
-		return false;
-	}
-
-	@Override
 	public List<Action> getChildren() {
 		return Collections.emptyList();
 	}
