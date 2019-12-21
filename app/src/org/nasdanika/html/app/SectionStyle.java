@@ -21,7 +21,6 @@ import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Table.TableBody;
 import org.nasdanika.html.bootstrap.Table.TableHeader;
 import org.nasdanika.html.bootstrap.TagBootstrapElement;
-import org.nasdanika.html.bootstrap.Text.Alignment;
 
 /**
  * Defines style of child actions in Section role.
@@ -169,7 +168,7 @@ public enum SectionStyle {
 	 * Categories are created as cards with tabs. In this case context actions are put into the navs at the top of the cards content.
 	 * Category/action card headers are rendered as header and consume paragraph level.
 	 */
-	Cards() {
+	Card() {
 	
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
