@@ -29,6 +29,7 @@ public class ActionImpl extends LabelImpl implements Action {
 	private Label category;
 	private Set<String> roles = new HashSet<>();
 	private SectionStyle sectionStyle = SectionStyle.Auto;
+	private int sectionColumns = 3;
 	
 	public ActionImpl() {
 		
@@ -179,6 +180,15 @@ public class ActionImpl extends LabelImpl implements Action {
 	
 	public void setSectionStyle(SectionStyle sectionStyle) {
 		this.sectionStyle = sectionStyle;
+	}
+	
+	@Override
+	public int getSectionColumns() {
+		return sectionColumns;
+	}
+	
+	public void setSectionColumns(int sectionColumns) {
+		this.sectionColumns = sectionColumns;
 	}
 	
 }

@@ -86,4 +86,9 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	public SectionStyle getSectionStyle() {
 		return target.getSectionStyle();
 	}
+	
+	@Override
+	public int getSectionColumns() {
+		return target.getSectionColumns();
+	}
 }

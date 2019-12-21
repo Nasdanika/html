@@ -112,6 +112,10 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 		return SectionStyle.Auto; 
 	}
 	
+	default int getSectionColumns() {
+		return 3;
+	}
+	
 	/**
 	 * Action path in the hierarchy starting from the root action, not including the action itself.
 	 * @return
