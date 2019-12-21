@@ -127,40 +127,6 @@ public enum SectionStyle {
 		}
 		
 	},	
-		
-	/**
-	 * Sections are generated as card pills.
-	 */
-	CardPill("Card pill") {
-	
-		@Override
-		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
-			List<Map.Entry<Label, List<Action>>> categories = level == 0 ? action.getChildrenGroupedByCategory(Action.Role.SECTION) : action.getChildrenGroupedByCategory(Action.Role.SECTION, Action.Role.NAVIGATION);
-			if (categories.isEmpty()) {
-				return null;
-			}			
-			
-			return new NavsViewPart(paragraphLevel, activeAction, categories, level, true, false);
-		}
-		
-	},
-	
-	/**
-	 * Sections are generated as card tabs.
-	 */
-	CardTab("Card tab") {
-	
-		@Override
-		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
-			List<Map.Entry<Label, List<Action>>> categories = level == 0 ? action.getChildrenGroupedByCategory(Action.Role.SECTION) : action.getChildrenGroupedByCategory(Action.Role.SECTION, Action.Role.NAVIGATION);
-			if (categories.isEmpty()) {
-				return null;
-			}			
-			
-			return new NavsViewPart(paragraphLevel, activeAction, categories, level, true, true);
-		}
-		
-	},	
 	
 	/**
 	 * Sections and categories are generated as cards in card-columns. Number of columns is defined by section-card-column-count context property. Defaults to 3.
@@ -293,7 +259,41 @@ public enum SectionStyle {
 		}
 		
 	},		
-
+		
+	/**
+	 * Sections are generated as card pills.
+	 */
+	CardPill("Card pill") {
+	
+		@Override
+		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
+			List<Map.Entry<Label, List<Action>>> categories = level == 0 ? action.getChildrenGroupedByCategory(Action.Role.SECTION) : action.getChildrenGroupedByCategory(Action.Role.SECTION, Action.Role.NAVIGATION);
+			if (categories.isEmpty()) {
+				return null;
+			}			
+			
+			return new NavsViewPart(paragraphLevel, activeAction, categories, level, true, false);
+		}
+		
+	},
+	
+	/**
+	 * Sections are generated as card tabs.
+	 */
+	CardTab("Card tab") {
+	
+		@Override
+		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
+			List<Map.Entry<Label, List<Action>>> categories = level == 0 ? action.getChildrenGroupedByCategory(Action.Role.SECTION) : action.getChildrenGroupedByCategory(Action.Role.SECTION, Action.Role.NAVIGATION);
+			if (categories.isEmpty()) {
+				return null;
+			}			
+			
+			return new NavsViewPart(paragraphLevel, activeAction, categories, level, true, true);
+		}
+		
+	},
+	
 	/**
 	 * Sections are generated as blocks with Hx headers where x starts with 3 and increases for each additional paragraph level up to H6
 	 */
