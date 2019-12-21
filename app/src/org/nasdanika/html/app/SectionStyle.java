@@ -197,7 +197,7 @@ public enum SectionStyle {
 								List<Action> contextChildren = section.getContextChildren();
 								if (!contextChildren.isEmpty()) {
 									Navs contextNavs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
-									contextNavs.background(Color.LIGHT);
+//									contextNavs.background(Color.LIGHT);
 									TagBootstrapElement footer = card.getFooter();
 									footer.toHTMLElement().content(contextNavs);
 								}
