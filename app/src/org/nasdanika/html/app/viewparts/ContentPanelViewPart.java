@@ -31,7 +31,6 @@ public class ContentPanelViewPart implements ViewPart {
 	 * 
 	 * @param activeAction
 	 * @param input
-	 * @param showConextActions Set false for principal actions because their context actions are already shown in the navbar.
 	 */
 	public ContentPanelViewPart(Action activeAction) {
 		this.activeAction = activeAction;
@@ -56,22 +55,51 @@ public class ContentPanelViewPart implements ViewPart {
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
-		boolean isContext = activeAction.isInRole(Action.Role.CONTEXT) || (activeAction.getParent() != null && activeAction.getParent().isInRole(Action.Role.CONTEXT));
-		Action lastNonSection = isContext ? activeAction : lastNonSection();
+//		boolean isContext = activeAction.isInRole(Action.Role.CONTEXT) || (activeAction.getParent() != null && activeAction.getParent().isInRole(Action.Role.CONTEXT));
+		Action lastNonSection = /* isContext ? activeAction : */ lastNonSection();
 		List<Action> lastNonSectionPath = lastNonSection.getPath();
-		if (lastNonSectionPath.size() > getMinBreadcrumbsDepth() - getBreadcrumbsOffset()) {
+		
+		// Do not show breadcrumbs and title in the principal path, show otherwise
+		boolean showBreadcrumbs = true;
+		boolean showTitle = true;
+		int breadcrumbsOffset = 1;
+		
+		if (lastNonSectionPath.size() == 0) {
+			// Root
+			showBreadcrumbs = false;
+			showTitle = false;
+		} else {
+			Action root = lastNonSectionPath.get(0);
+			if (lastNonSectionPath.size() == 1) {
+				if (root.getNavigationChildren().indexOf(lastNonSection) == 0) {
+					showBreadcrumbs = false;
+					showTitle = false;
+				}
+			} else {
+				Action firstChild = lastNonSectionPath.get(1);
+				if (root.getNavigationChildren().indexOf(firstChild) == 0) {
+					// Principal path
+					showBreadcrumbs = lastNonSectionPath.size() > getMinBreadcrumbsDepth() - getBreadcrumbsOffset();
+					breadcrumbsOffset = getBreadcrumbsOffset();
+					
+					showTitle = lastNonSectionPath.size() > getMinTitleDepth() - getBreadcrumbsOffset();
+				}
+			}
+		}
+		
+		if (showBreadcrumbs) {
 			// Breadcrumbs
 			Breadcrumbs breadcrumbs = viewGenerator.get(BootstrapFactory.class).breadcrums();
 			breadcrumbs.margin().top(Breakpoint.DEFAULT, Size.S1);
 			ret.content(breadcrumbs);
-			ListIterator<Action> tit = lastNonSectionPath.listIterator(Math.min(lastNonSectionPath.size(), getBreadcrumbsOffset()));
+			ListIterator<Action> tit = lastNonSectionPath.listIterator(Math.min(lastNonSectionPath.size(), breadcrumbsOffset));
 			while (tit.hasNext()) {
 				breadcrumbs.item(false, viewGenerator.link(tit.next()));
 			}		
 			breadcrumbs.item(true, viewGenerator.label(lastNonSection));
 		}
 		
-		if (lastNonSectionPath.size() > getMinTitleDepth() - getBreadcrumbsOffset()) {			
+		if (showTitle) {			
 			// Context actions navs floating right
 			List<Action> contextChildren = lastNonSection.getContextChildren();
 			if (!contextChildren.isEmpty()) {
