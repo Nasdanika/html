@@ -31,4 +31,10 @@ public interface Dropdown extends BootstrapElement<Tag,Dropdown> {
 	Dropdown form(org.nasdanika.html.Form form); 
 	
 	// TODO - text, alignment, data-offset, data-reference
+	
+	/**
+	 * @return Toggle element for customization.
+	 */
+	BootstrapElement<?, ?> getToggle();
+	
 }

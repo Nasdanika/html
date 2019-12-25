@@ -4,6 +4,7 @@ import org.nasdanika.html.Form;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
+import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Dropdown;
 
@@ -14,9 +15,12 @@ import org.nasdanika.html.bootstrap.Dropdown;
  */
 public class DropdownMenu extends DivWrappingBootstrapElementImpl<Dropdown> implements Dropdown {
 	
-	public DropdownMenu(BootstrapFactory factory) {
+	private BootstrapElement<?, ?> toggle;
+
+	public DropdownMenu(BootstrapFactory factory, BootstrapElement<?,?> toggle) {
 		super(factory);
 		htmlElement.addClass("dropdown-menu");
+		this.toggle = toggle;
 	}
 
 	@Override
@@ -47,6 +51,11 @@ public class DropdownMenu extends DivWrappingBootstrapElementImpl<Dropdown> impl
 	public Dropdown form(Form form) {
 		htmlElement.content(form);
 		return this;
+	}
+	
+	@Override
+	public BootstrapElement<?, ?> getToggle() {
+		return toggle;
 	}
 
 }

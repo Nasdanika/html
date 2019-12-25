@@ -474,7 +474,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 						if (textColor != null) {
 							dropdown.text().color(textColor);
 						}
-						decorate(dropdown, ca);						
+						decorate(dropdown.getToggle(), ca);						
 						for (Entry<Label, List<Action>> cats: ca.getChildrenGroupedByCategory()) {
 							if (cats.getKey() != null) {
 								if (Util.isBlank(cats.getKey().getIcon()) && Util.isBlank(cats.getKey().getText())) {
@@ -494,7 +494,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 				if (textColor != null) {
 					dropdown.text().color(textColor);
 				}
-				decorate(dropdown, category);
+				decorate(dropdown.getToggle(), category);
 				for (Action cac: (List<Action>) categoryGroup.getValue()) {	
 					dropdown.item(link(cac), Util.equalOrInPath(activeAction, cac), cac.isDisabled());
 				}

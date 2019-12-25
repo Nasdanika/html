@@ -68,7 +68,7 @@ public class NavbarImpl extends WrappingBootstrapElementImpl<Tag, Navbar> implem
 				.addClass("nav-link", "dropdown-toggle")
 				.attribute("role", "button")
 				.attribute("data-toggle", "dropdown");		
-		DropdownMenu menu = new DropdownMenu(getFactory());
+		DropdownMenu menu = new DropdownMenu(getFactory(), getFactory().wrap(toggle));
 		Tag li = htmlFactory.tag(TagName.li, toggle, menu.toHTMLElement())
 				.addClass("nav-item", "dropdown")
 				.addClassConditional(active, "active");
