@@ -5,7 +5,10 @@ import java.util.List;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Decorator;
+import org.nasdanika.html.app.DecoratorProvider;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 
@@ -26,11 +29,16 @@ public class FooterViewPart implements ViewPart {
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		// Single-level footer actions. 
 		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
+		DecoratorProvider decoratorProvider = viewGenerator.computingContext().get(DecoratorProvider.class);
+		Decorator actionDecorator = decoratorProvider == null ? null : decoratorProvider.getDecorator("application/footer/action");
+		
 		for (Action ca: footerActions) {
 			if (!ret.isEmpty()) {
 				ret.content("&nbsp;&bull;&nbsp;");
 			}
-			ret.content(viewGenerator.link(ca));
+			Tag link = viewGenerator.link(ca);
+			viewGenerator.decorate(link, actionDecorator);
+			ret.content(link);
 		}
 		return ret;
 	}

@@ -143,6 +143,10 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	 */
 	@Override
 	public void decorate(Object target, Object decorator) {
+		Decorator decoratorService = get(Decorator.class);
+		if (decoratorService != null) {
+			decoratorService.decorate(target, this);
+		}
 		if (decorator instanceof Decorator) {
 			((Decorator) decorator).decorate(target, this);
 		} else if (decorator instanceof Adaptable) {
@@ -151,6 +155,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 				adapter.decorate(target, this);
 			}
 		}
+		
 	}
 	
 	protected void bindLink(Action action, HTMLElement<?> anchor) {

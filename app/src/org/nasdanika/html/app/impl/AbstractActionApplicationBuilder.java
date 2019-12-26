@@ -6,6 +6,8 @@ import java.util.List;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Decorator;
+import org.nasdanika.html.app.DecoratorProvider;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart;
@@ -58,12 +60,28 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 		Action rootAction = getRootAction();
 		return rootAction == null ? (vg, progressMonitor) -> null : (viewGenerator, progressMonitor) -> {
 			Tag link = viewGenerator.link(rootAction);
+			
+			DecoratorProvider decoratorProvider = viewGenerator.computingContext().get(DecoratorProvider.class);
+			if (decoratorProvider != null) {
+				viewGenerator.decorate(link, decoratorProvider.getDecorator("application/header/title"));
+			}
+			
 			List<Action> navigationChildren = rootAction.getNavigationChildren();
 			if (navigationChildren.size() < 2) {
 				return styleRootActionLink(viewGenerator, link);
 			}
 
-			Navs navs = viewGenerator.categorizedLinkNavs(navigationChildren.subList(1, navigationChildren.size()), getActiveAction(), getHeaderNavTextColor());
+			ViewGenerator navsViewGenerator = viewGenerator;
+			
+			if (decoratorProvider != null) {
+				Decorator navsDecorator = decoratorProvider.getDecorator("application/header/navs");
+				if (navsDecorator != null) {
+					navsViewGenerator = viewGenerator.fork();
+					navsViewGenerator.register(Decorator.class, navsDecorator);
+				}
+			}
+
+			Navs navs = navsViewGenerator.categorizedLinkNavs(navigationChildren.subList(1, navigationChildren.size()), getActiveAction(), getHeaderNavTextColor());
 			navs._float().right();
 			
 			return viewGenerator.get(HTMLFactory.class).fragment(styleRootActionLink(viewGenerator, link), navs);

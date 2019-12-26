@@ -31,7 +31,7 @@ public abstract class ViewPartApplicationBuilder implements ApplicationBuilder {
 	 * @param bodyContentConsumer
 	 * @return
 	 */
-	protected ViewGenerator createViewGenerator(Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
+	protected ViewGenerator createViewGenerator(Application application, Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
 		return new ViewGeneratorImpl(headContentConsumer, bodyContentConsumer);
 	}	
 	
@@ -42,7 +42,7 @@ public abstract class ViewPartApplicationBuilder implements ApplicationBuilder {
 	public void build(Application application, ProgressMonitor progressMonitor) {
 		// A little trick to solve the chicken and egg problem of needing a view generator to create fragments to pass to the view generator.
 		Fragment[] cf = { null, null };
-		ViewGenerator viewGenerator = createViewGenerator(content-> cf[0].accept(content), content-> cf[1].accept(content));
+		ViewGenerator viewGenerator = createViewGenerator(application, content-> cf[0].accept(content), content-> cf[1].accept(content));
 				
 		Fragment headContentFragment = viewGenerator.get(HTMLFactory.class).fragment();
 		cf[0] = headContentFragment;

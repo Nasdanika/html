@@ -77,12 +77,12 @@ public interface ViewGenerator extends MutableContext {
 	
 	/**
 	 * Decorates object if decorator implements {@link Decorator} or is {@link Adaptable} and adapts to Decorator.
+	 * If this view generator has Decorator service then it is also used for decoration.
 	 * @param target
 	 * @param decorator
 	 * @return
 	 */
-	void decorate(Object target, Object decorator);
-	
+	void decorate(Object target, Object decorator);	
 	
 	// --- List & action groups ---
 	
