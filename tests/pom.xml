@@ -22,7 +22,7 @@
 		<!-- configure p2 repository to resolve against -->
 		<repository>
 			<id>foundation</id>
-			<url>https://www.nasdanika.org/master/foundation-repository</url>
+			<url>https://www.nasdanika.org/${env.CIRCLE_BRANCH}/foundation-repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
