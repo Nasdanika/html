@@ -210,7 +210,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 
 	@Override
 	public Tag badge(Label label, boolean isPill) {
-		// TODO Auto-generated method stub
+		// TODO AUTO-generated method stub
 		return null;
 	}
 
@@ -264,7 +264,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 
 	@Override
 	public JsTreeContextMenuItem jsTreeContextMenuItem(Action action) {
-		// TODO Auto-generated method stub
+		// TODO AUTO-generated method stub
 		return null;
 	}
 	

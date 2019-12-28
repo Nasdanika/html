@@ -18,7 +18,7 @@ import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Size;
 
 /**
- * Uses {@link ActionGroup} in the navigation panel.
+ * Uses {@link ACTION_GROUP} in the navigation panel.
  * @author Pavel Vlasov
  *
  */

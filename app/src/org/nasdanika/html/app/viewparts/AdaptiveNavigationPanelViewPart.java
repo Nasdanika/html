@@ -18,7 +18,7 @@ import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Size;
 
 /**
- * Uses {@link ActionGroup} in the navigation panel if navigation panel actions do not have children and 
+ * Uses {@link ACTION_GROUP} in the navigation panel if navigation panel actions do not have children and 
  * {@link JsTreeNavigationPanelViewPart} otherwise.
  * @author Pavel Vlasov
  *

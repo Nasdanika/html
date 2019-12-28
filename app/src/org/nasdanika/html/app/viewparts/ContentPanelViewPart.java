@@ -38,18 +38,15 @@ public class ContentPanelViewPart implements ViewPart {
 		
 	/**
 	 * Returns the last action from the action path or the action itself which is not a section action.
+	 * last non-section is computed after the last context action.
 	 * @return
 	 */
 	protected Action lastNonSection() {
-		List<Action> fullPath = new ArrayList<>(activeAction.getPath());
-		fullPath.add(activeAction);
-		for (int i = 0; i < fullPath.size() - 1; ++i) {
-			Action currentAction = fullPath.get(i);
-			if (Util.contains(currentAction.getSectionChildren(), fullPath.get(i + 1))) {
-				return currentAction;
-			}
+		Action ret = activeAction;
+		while (ret != null && ret.isInRole(Action.Role.SECTION)) {
+			ret = ret.getParent();
 		}
-		return activeAction;
+		return ret;
 	}	
 
 	@Override

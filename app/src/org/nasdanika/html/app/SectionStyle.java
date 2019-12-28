@@ -30,25 +30,25 @@ import org.nasdanika.html.bootstrap.TagBootstrapElement;
 public enum SectionStyle {
 	
 	/**
-	 * Section style is selected based on the section level - Tabs for level 0, ActionGroup for 1, and Paragraph for the rest.
+	 * Section style is selected based on the section level - Tabs for level 0, ACTION_GROUP for 1, and DEFAULT for the rest.
 	 */
-	Auto {
+	AUTO("Auto") {
 
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
 			switch (level) {
 			case 0:
-				return Tab.createViewPart(action, activeAction, level, paragraphLevel);
+				return TAB.createViewPart(action, activeAction, level, paragraphLevel);
 			case 1:
-				return ActionGroup.createViewPart(action, activeAction, level, paragraphLevel);
+				return ACTION_GROUP.createViewPart(action, activeAction, level, paragraphLevel);
 			default:
-				return Paragraph.createViewPart(action, activeAction, level, paragraphLevel);
+				return DEFAULT.createViewPart(action, activeAction, level, paragraphLevel);
 			}
 		}
 		
 	},
 	
-	ActionGroup("Action group") {
+	ACTION_GROUP("Action group") {
 
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
@@ -134,7 +134,7 @@ public enum SectionStyle {
 	 * Categories are created as cards with tabs. In this case context actions are put into the navs at the top of the cards content.
 	 * Category/action card headers are rendered as header and consume paragraph level.
 	 */
-	Card() {
+	CARD("Card") {
 	
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
@@ -263,7 +263,7 @@ public enum SectionStyle {
 	/**
 	 * Sections are generated as card pills.
 	 */
-	CardPill("Card pill") {
+	CARD_PILL("Card pill") {
 	
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
@@ -280,7 +280,7 @@ public enum SectionStyle {
 	/**
 	 * Sections are generated as card tabs.
 	 */
-	CardTab("Card tab") {
+	CARD_TAB("Card tab") {
 	
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
@@ -297,7 +297,7 @@ public enum SectionStyle {
 	/**
 	 * Sections are generated as blocks with Hx headers where x starts with 3 and increases for each additional paragraph level up to H6
 	 */
-	Paragraph {
+	DEFAULT("Default") {
 
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
@@ -351,7 +351,7 @@ public enum SectionStyle {
 	/**
 	 * Sections are generated as pills.
 	 */
-	Pill {
+	PILL("Pill") {
 
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
@@ -368,7 +368,7 @@ public enum SectionStyle {
 	/**
 	 * Sections are generated as tabs.
 	 */
-	Tab {
+	TAB("Tab") {
 
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
@@ -385,7 +385,7 @@ public enum SectionStyle {
 	/**
 	 * Sections are generated as rows in a table with two columns - header with action label, and content. Categories are displayed in the top row.
 	 */
-	Table {
+	TABLE("Table") {
 
 		@Override
 		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
@@ -461,9 +461,9 @@ public enum SectionStyle {
 	
 	;
 	
-//	Pill
+//	PILL
 //	VerticalPill
-//	Card
+//	CARD
 //	Accordion
 	
 	private class NavsViewPart implements ViewPart {
@@ -575,15 +575,18 @@ public enum SectionStyle {
 	
 	public final String label;
 	
-	private SectionStyle() {
-		this(null);
-	}
+//	private SectionStyle() {
+//		this(null);
+//	}
 	
 	private SectionStyle(String label) {		
 		this.label = Util.isBlank(label) ? name() : label;
 	}	
 	
 	public static SectionStyle fromLabel(String label) {
+		if ("Paragraph".equals(label)) {
+			return DEFAULT;
+		}
 		for (SectionStyle sectionStyle: values()) {
 			if (sectionStyle.label.equals(label)) {
 				return sectionStyle;

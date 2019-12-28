@@ -28,7 +28,7 @@ public class ActionImpl extends LabelImpl implements Action {
 	private ActionActivator activator;
 	private Label category;
 	private Set<String> roles = new HashSet<>();
-	private SectionStyle sectionStyle = SectionStyle.Auto;
+	private SectionStyle sectionStyle = SectionStyle.AUTO;
 	private int sectionColumns = 3;
 	
 	public ActionImpl() {

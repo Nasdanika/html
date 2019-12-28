@@ -91,7 +91,7 @@ public abstract class ETypedElementProperty<T extends ETypedElement> implements 
 //				format = (String) ((Map<String, Object>) formatAnnotation).get(forEditing ? "edit" : "display");
 //			}
 //			if (format == null) {
-//				format = "yyyy-MM-dd"; // Default web format for dates.
+//				format = "yyyy-MM-dd"; // DEFAULT web format for dates.
 //			}
 //			SimpleDateFormat sdf = new SimpleDateFormat(format, getLocale(context));
 //			return sdf.format((Date) value);
@@ -124,7 +124,7 @@ public abstract class ETypedElementProperty<T extends ETypedElement> implements 
 
 	@Override
 	public List<Choice> getChoices(Object obj) {
-		// TODO Auto-generated method stub
+		// TODO AUTO-generated method stub
 		return null;
 	}
 

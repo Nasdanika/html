@@ -109,7 +109,7 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	Action getParent();
 	
 	default SectionStyle getSectionStyle() {
-		return SectionStyle.Auto; 
+		return SectionStyle.AUTO; 
 	}
 	
 	default int getSectionColumns() {

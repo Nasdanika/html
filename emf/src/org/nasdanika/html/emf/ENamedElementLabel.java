@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.nasdanika.emf.AnnotationSource;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.Color;
 
 
@@ -78,7 +79,7 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 	public String getDescription() {
 		String markdown = EObjectAdaptable.getResourceContext(modelElement).getString("documentation", EcoreUtil.getDocumentation(modelElement));
 
-		if (markdown == null || markdown.trim().isEmpty()) {
+		if (Util.isBlank(markdown)) {
 			return null;
 		}
 	

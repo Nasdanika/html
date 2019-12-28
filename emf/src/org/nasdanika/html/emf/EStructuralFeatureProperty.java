@@ -80,7 +80,7 @@ public class EStructuralFeatureProperty implements InputProperty {
 	@Override
 	public Diagnostic update(Object obj, Object originalValue, Object newValue) {
 		// check update access, return error diagnostic if no access.
-		// TODO Auto-generated method stub
+		// TODO AUTO-generated method stub
 		return null;
 	}
 
