@@ -55,7 +55,6 @@ public class ActionGroupViewPart implements ViewPart {
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		
 		ActionGroup actionGroup = viewGenerator.get(BootstrapFactory.class).actionGroup(false);
 		
 		for (Entry<Label, List<Action>> categoryEntry: categories) {
@@ -108,8 +107,7 @@ public class ActionGroupViewPart implements ViewPart {
 			}
 		}
 
-		return actionGroup.asContainer(true).margin().top(Breakpoint.DEFAULT, Size.S1).toBootstrapElement();
-		
+		return actionGroup.asContainer(true).margin().top(Breakpoint.DEFAULT, Size.S1).toBootstrapElement();		
 	}
 
 }
