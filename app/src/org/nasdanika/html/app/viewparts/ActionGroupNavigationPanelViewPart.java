@@ -13,8 +13,8 @@ import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Size;
 
 /**

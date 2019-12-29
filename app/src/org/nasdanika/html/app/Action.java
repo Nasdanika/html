@@ -233,8 +233,8 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 		return getChildrenGroupedByCategory(Role.SECTION);
 	}
 	
-	default ViewPart createSectionsViewPart(Action activeAction, int level, int paragraphLevel) {
-		return getSectionStyle().createViewPart(this, activeAction, level, paragraphLevel);
+	default ViewPart createSectionsViewPart(Action activeAction, int sectionLevel, int headerLevel) {
+		return getSectionStyle().createViewPart(this, activeAction, sectionLevel, headerLevel);
 	}
 		
 }
