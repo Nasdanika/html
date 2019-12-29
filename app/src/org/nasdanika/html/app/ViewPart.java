@@ -1,6 +1,7 @@
 package org.nasdanika.html.app;
 
 import java.util.List;
+import java.util.function.Function;
 
 import org.nasdanika.common.ProgressMonitor;
 
@@ -53,6 +54,25 @@ public interface ViewPart {
 			return this;
 		}
 		return then(builders.toArray(new ViewBuilder[builders.size()]));
+	}
+	
+	/**
+	 * @param mapper
+	 * @return View part which applies the mapper function to the result.
+	 */
+	default ViewPart then(Function<Object,Object> mapper) {
+		if (mapper == null) {
+			return this;
+		}
+		
+		return new ViewPart() {
+			
+			@Override
+			public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+				return mapper.apply(ViewPart.this.generate(viewGenerator, progressMonitor));
+			}
+			
+		};
 	}
 
 }

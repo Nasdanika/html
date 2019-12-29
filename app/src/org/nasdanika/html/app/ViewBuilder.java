@@ -1,5 +1,7 @@
 package org.nasdanika.html.app;
 
+import java.util.function.Function;
+
 import org.nasdanika.common.Composeable;
 import org.nasdanika.common.ProgressMonitor;
 
@@ -39,6 +41,25 @@ public interface ViewBuilder extends Composeable<ViewBuilder> {
 			// TODO - monitor splitting.
 			ViewBuilder.this.build(target, viewGenerator, progressMonitor);
 			other.build(target, viewGenerator, progressMonitor);
+		};
+	}
+	
+	/**
+	 * @param mapper
+	 * @return ViewBuilder which applies the mapper function to target and passes the return value to this builder.
+	 */
+	default ViewBuilder before(Function<Object,Object> mapper) {
+		if (mapper == null) {
+			return this;
+		}
+		
+		return new ViewBuilder() {
+			
+			@Override
+			public void build(Object target, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+				ViewBuilder.this.build(mapper.apply(target), viewGenerator, progressMonitor);				
+			}
+			
 		};
 	}
 }
