@@ -61,7 +61,7 @@ public abstract class TableSingleValuePropertySourceViewPart implements ViewPart
 				Cell nameHeader = propertyRow.header(viewGenerator.labelFragment(pd));
 				viewGenerator.decorate(nameHeader, pd);
 				nameHeader.toHTMLElement().style("width", "10%").style().whiteSpace().nowrap();
-				propertyRow.cell(viewGenerator.processViewPart(generateValueView(propertySource.getValue(), pd, viewGenerator, progressMonitor.split("Generating value view of "+pd.getPropertyName(), 1, propertySource.getValue(), pd))));
+				propertyRow.cell(viewGenerator.processViewPart(generateValueView(propertySource.getValue(), pd, viewGenerator, progressMonitor.split("Generating value view of "+pd.getPropertyName(), 1, propertySource.getValue(), pd)), null));
 				if (hasActions) {
 					ActionProvider actionProvider = pd.getActionProvider(propertySource.getValue());
 					ButtonToolbar buttonToolbar = viewGenerator.buttonToolbar(isEdit ? actionProvider.getEditActions() : actionProvider.getViewActions());

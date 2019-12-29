@@ -76,7 +76,7 @@ public class ViewMultiValuePropertySourceViewPart implements ViewPart {
 			Row valueRow = table.row();
 			for (Entry<Label, List<PropertyDescriptor>> categoryEntry: categories) {
 				for (PropertyDescriptor pd: categoryEntry.getValue()) {
-					valueRow.cell(viewGenerator.processViewPart(pd.getDisplayValue(value)));
+					valueRow.cell(viewGenerator.processViewPart(pd.getDisplayValue(value), null));
 				}
 			}
 			if (hasActions) {

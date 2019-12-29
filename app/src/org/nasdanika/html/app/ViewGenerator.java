@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.nasdanika.common.MutableContext;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Tag;
@@ -28,9 +29,10 @@ public interface ViewGenerator extends MutableContext {
 	/**
 	 * If obj is {@link ViewPart} then its generate() method is invoked.
 	 * @param obj
+	 * @param progressMonitor TODO
 	 * @return
 	 */
-	Object processViewPart(Object obj);
+	Object processViewPart(Object obj, ProgressMonitor progressMonitor);
 	
 	// --- Contribution to head and body
 	

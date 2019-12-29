@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 import org.nasdanika.common.Context;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SimpleMutableContext;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
@@ -387,7 +388,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 
 	@Override
 	public void add(NamedItemsContainer container, Action action) {
-		container.item(labelFragment(action), processViewPart(action.generate(this, null)));		
+		container.item(labelFragment(action), processViewPart(action.generate(this, null), null));		
 	}
 
 	@Override
@@ -411,7 +412,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	@Override
 	public Tag addContent(ActionGroup actionGroup, Action action, boolean active) {
 		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
-		Tag ret = actionGroup.contentAction(labelFragment(action), active, action.isDisabled(), action.getColor(), contentId, processViewPart(action.generate(this, null)));
+		Tag ret = actionGroup.contentAction(labelFragment(action), active, action.isDisabled(), action.getColor(), contentId, processViewPart(action.generate(this, null), null));
 		decorate(ret, action);
 		return ret;
 	}
@@ -419,13 +420,13 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	@Override
 	public void add(Navs navs, Action action, boolean active) {
 		String contentId = action.getId() == null ? null : "nsd-action-content-"+action.getId();
-		decorate(navs.item(labelFragment(action), active, action.isDisabled(), contentId, processViewPart(action.generate(this, null))), action);
+		decorate(navs.item(labelFragment(action), active, action.isDisabled(), contentId, processViewPart(action.generate(this, null), null)), action);
 	}
 	
 	@Override
-	public Object processViewPart(Object obj) {
+	public Object processViewPart(Object obj, ProgressMonitor progressMonitor) {
 		if (obj instanceof ViewPart) {
-			return processViewPart(((ViewPart) obj).generate(this, null));
+			return processViewPart(((ViewPart) obj).generate(this, progressMonitor), progressMonitor);
 		}
 		return obj;
 	}
