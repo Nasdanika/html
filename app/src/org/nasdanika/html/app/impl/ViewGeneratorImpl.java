@@ -433,7 +433,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	
 	@Override
 	public ViewGenerator fork() {
-		return new ViewGeneratorImpl(this, headContentConsumer, bodyContentConsumer);
+		return new ViewGeneratorImpl(this, getHeadContentConsumer(), getBodyContentConsumer());
 	}
 
 	@SuppressWarnings("unchecked")

@@ -22,7 +22,7 @@ public interface ViewBuilder extends Composeable<ViewBuilder> {
 		
 		@Override
 		public ViewBuilder compose(ViewBuilder other) {
-			return other;
+			return other == null ? this : other;
 		}
 		
 	};
