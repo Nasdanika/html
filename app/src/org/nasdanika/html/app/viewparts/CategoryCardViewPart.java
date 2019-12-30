@@ -57,7 +57,8 @@ public class CategoryCardViewPart implements ViewPart {
 		HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
 		Card card = bootstrapFactory.card();
 		if (category != null) {
-			Tag hTag = htmlFactory.tag("H"+Math.min(6, headerLevel), viewGenerator.labelFragment(category));
+			Tag hTag = htmlFactory.tag("H"+Math.min(6, headerLevel));
+			viewGenerator.label(category, hTag);
 			hTag.addClass("card-header");
 			card.toHTMLElement().content(hTag);
 			

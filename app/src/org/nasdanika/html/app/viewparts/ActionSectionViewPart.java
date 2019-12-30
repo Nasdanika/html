@@ -46,7 +46,8 @@ public class ActionSectionViewPart  implements ViewPart {
 			sectionDiv.content(navs);
 		}
 		
-		Tag hTag = htmlFactory.tag("H"+Math.min(6, headerLevel), viewGenerator.labelFragment(action));
+		Tag hTag = htmlFactory.tag("H"+Math.min(6, headerLevel));
+		viewGenerator.label(action, hTag);
 		viewGenerator.decorate(hTag, action);
 		if (action.getColor() != null) {
 			viewGenerator.get(BootstrapFactory.class).wrap(hTag).background(action.getColor());

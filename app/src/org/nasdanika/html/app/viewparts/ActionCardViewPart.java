@@ -44,7 +44,8 @@ public class ActionCardViewPart implements ViewPart {
 		Card card = bootstrapFactory.card();
 
 		HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
-		Tag hTag = htmlFactory.tag("H"+Math.min(6, headerLevel), viewGenerator.labelFragment(action));
+		Tag hTag = htmlFactory.tag("H"+Math.min(6, headerLevel));
+		viewGenerator.label(action, hTag);
 		hTag.addClass("card-header");
 		if (action.getColor() != null) {
 			card.border(action.getColor());

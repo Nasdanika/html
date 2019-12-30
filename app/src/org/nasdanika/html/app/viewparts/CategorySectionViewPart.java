@@ -65,7 +65,8 @@ public class CategorySectionViewPart implements ViewPart {
 				ret.content(TagName.a.create().attribute("name", category.getId()));						
 			}
 			
-			Tag hTag = htmlFactory.tag("H"+Math.min(6, headerLevel), viewGenerator.labelFragment(category));
+			Tag hTag = htmlFactory.tag("H"+Math.min(6, headerLevel));
+			viewGenerator.label(category, hTag);
 			viewGenerator.decorate(hTag, category);
 			if (category.getColor() != null) {
 				viewGenerator.get(BootstrapFactory.class).wrap(hTag).background(category.getColor());
