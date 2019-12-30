@@ -41,11 +41,28 @@ public class ContentPanelViewPart implements ViewPart {
 	 */
 	protected Action lastNonSection() {
 		Action ret = activeAction;
-		while (ret != null && ret.isInRole(Action.Role.SECTION)) {
+		while (ret != null && isEffectiveSection(ret)) {
 			ret = ret.getParent();
 		}
 		return ret;
 	}	
+	
+	/**
+	 * 
+	 * @return true if action role is section or navigation and parent is effective section.
+	 */
+	protected boolean isEffectiveSection(Action action) {
+		if (action == null) {
+			return false;
+		}
+		if (action.isInRole(Action.Role.SECTION)) {
+			return true;
+		}
+		if (action.isInRole(Action.Role.NAVIGATION)) {
+			return isEffectiveSection(action.getParent());
+		}
+		return false;		
+	}
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
