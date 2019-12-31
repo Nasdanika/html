@@ -20,7 +20,7 @@ public interface ViewPart {
 	 * @return
 	 */
 	static ViewPart fromValue(Object value) {
-		return new ViewPart() {
+		return value instanceof ViewPart ? (ViewPart) value : new ViewPart() {
 			
 			@Override
 			public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
