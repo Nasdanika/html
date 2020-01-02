@@ -60,7 +60,7 @@ public class ActionTableViewPart implements ViewPart {
 					hRow.color(category.getColor());
 				}
 				
-				hRow.header(viewGenerator.labelFragment(category)).toHTMLElement().colspan(2);
+				viewGenerator.label(category, hRow.header().toHTMLElement().colspan(2));
 			} 
 			
 			TableBody body = table.body();
@@ -69,7 +69,7 @@ public class ActionTableViewPart implements ViewPart {
 				if (section.getColor() != null) {
 					sectionRow.color(section.getColor());
 				}
-				sectionRow.header(viewGenerator.labelFragment(section));
+				viewGenerator.label(section, sectionRow.header().toHTMLElement());
 				
 				Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
 				if (section.getId() != null) {

@@ -2,6 +2,7 @@ package org.nasdanika.html.app.viewparts;
 
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
 
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Event;
@@ -71,7 +72,7 @@ public class NavigationBarViewPart implements ViewPart {
 					hasContent = true;
 					// Children are ignored if activator is not null.
 					Fragment fragment = viewGenerator.get(HTMLFactory.class).fragment();
-					viewGenerator.label(ca, fragment::content);
+					viewGenerator.label(ca, (Consumer<Object>) fragment::content);
 					ActionActivator activator = ca.getActivator();
 					if (activator instanceof NavigationActionActivator) {
 						Tag item = navBar.item(((NavigationActionActivator) activator).getUrl(), Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment);

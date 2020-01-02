@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SimpleMutableContext;
+import org.nasdanika.html.Container;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
@@ -364,8 +365,8 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	}
 	
 	@Override
-	public Tag label(Label label, Tag container) {
-		label(label, container::content);
+	public <H extends HTMLElement<?> & Container<?>> H label(Label label, H container) {
+		label(label, (Consumer<Object>) container::content);
 		if (label instanceof Action) {
 			container.addClass("nsd-action");
 			container.attribute("data-nsd-action", ((Action) label).getId());
@@ -382,7 +383,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	@Override
 	public Fragment labelFragment(Label label) {
 		Fragment ret = get(HTMLFactory.class).fragment();
-		label(label, ret::content);
+		label(label, (Consumer<Object>) ret::content);
 		return ret;
 	}
 
@@ -447,7 +448,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 				for (Action ca: (List<Action>) categoryGroup.getValue()) {
 					// Children are ignored if activator is not null.
 					Fragment fragment = get(HTMLFactory.class).fragment();
-					label(ca, fragment::content);
+					label(ca, (Consumer<Object>) fragment::content);
 					ActionActivator activator = ca.getActivator();
 					if (activator instanceof NavigationActionActivator) {
 						Tag item = navs.item(fragment, ((NavigationActionActivator) activator).getUrl(), Util.equalOrInPath(activeAction, ca), ca.isDisabled());

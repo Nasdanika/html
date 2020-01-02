@@ -5,7 +5,9 @@ import java.util.function.Consumer;
 
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.html.Container;
 import org.nasdanika.html.Fragment;
+import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.ActionGroup;
@@ -64,7 +66,7 @@ public interface ViewGenerator extends MutableContext {
 	 * @param container
 	 * @return
 	 */
-	Tag label(Label label, Tag container);	
+	<H extends HTMLElement<?> & Container<?>> H label(Label label, H container);	
 	
 	Tag label(Label label);
 	
