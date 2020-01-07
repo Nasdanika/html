@@ -60,6 +60,7 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 		Action rootAction = getRootAction();
 		return rootAction == null ? (vg, progressMonitor) -> null : (viewGenerator, progressMonitor) -> {
 			Tag link = viewGenerator.link(rootAction);
+			link.addClass("nsd-root-action");
 			
 			DecoratorProvider decoratorProvider = viewGenerator.computingContext().get(DecoratorProvider.class);
 			if (decoratorProvider != null) {

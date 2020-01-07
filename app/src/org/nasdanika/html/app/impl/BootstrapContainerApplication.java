@@ -79,6 +79,16 @@ public class BootstrapContainerApplication implements Application {
 		contentPanel = contentRow.col();
 		footer = container.row().col();
 		
+		// Nasdanika classes
+		container.toHTMLElement().addClass("nsd-app-container");
+		header.toHTMLElement().addClass("nsd-app-header");
+		navigationBar.toHTMLElement().addClass("nsd-app-navbar");
+		contentRow.toHTMLElement().addClass("nsd-app-content-row");
+		navigationPanel.toHTMLElement().addClass("nsd-app-navigation-panel");
+		contentPanel.toHTMLElement().addClass("nsd-app-content-panel");
+		footer.toHTMLElement().addClass("nsd-app-footer");
+		
+		// Configuration
 		configureContainer(container);
 		configureHeader(header);
 		configureNavigationBar(navigationBar);
