@@ -49,6 +49,6 @@ jobs:
       - run: cd tests/repository/target/products/org.nasdanika.html.tests.product/linux/gtk/x86_64;./eclipse
 
       # Deploying test results and dumps to the site
-      - run: cd tests/site; ../../apache-maven-3.6.0/bin/mvn -s ../../.circleci/settings.xml site-deploy
+      - run: cd tests/site; ../../apache-maven-3.6.0/bin/mvn -s ../../.circleci/settings.xml site
             
 
