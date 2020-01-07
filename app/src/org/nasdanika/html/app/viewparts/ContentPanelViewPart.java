@@ -121,7 +121,7 @@ public class ContentPanelViewPart implements ViewPart {
 			}
 			
 			// Page title, doesn't make much sense to show it for the root or principal actions - it would duplicate the header or the nav bar. 
-			ret.content(viewGenerator.label(lastNonSection, viewGenerator.get(HTMLFactory.class).tag(TagName.h2)));
+			ret.content(viewGenerator.label(lastNonSection, viewGenerator.get(HTMLFactory.class).tag(TagName.h2)).addClass("nsd-content-header"));
 		}
 		
 		ret.content(lastNonSection.generate(viewGenerator, progressMonitor));

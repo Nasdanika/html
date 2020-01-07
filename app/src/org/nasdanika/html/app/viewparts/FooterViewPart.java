@@ -38,6 +38,7 @@ public class FooterViewPart implements ViewPart {
 			}
 			Tag link = viewGenerator.link(ca);
 			viewGenerator.decorate(link, actionDecorator);
+			link.addClass("nsd-footer-action");
 			ret.content(link);
 		}
 		return ret;
