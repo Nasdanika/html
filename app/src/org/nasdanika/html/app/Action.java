@@ -47,6 +47,17 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 		String SECTION = "section";
 		
 		/**
+		 * Content right actions are shown in an adaptive navigation panel to the right of the action content.
+		 */
+		String CONTENT_RIGHT = "content-right";
+		
+		/**
+		 * Content left actions are shown in an adaptive  navigation panel to the left of the action content.
+		 */
+		String CONTENT_LEFT = "content-left";
+		
+		
+		/**
 		 * {@link PropertySource} or {@link PropertyDescriptor} action to be displayed in view mode.
 		 */
 		String VIEW = "view";

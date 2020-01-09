@@ -3,13 +3,13 @@ package org.nasdanika.html.bootstrap.impl;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Breadcrumbs;
+import org.nasdanika.html.bootstrap.Breadcrumb;
 
-public class BreadcrumbsImpl extends WrappingBootstrapElementImpl<Tag,Breadcrumbs> implements Breadcrumbs {
+public class BreadcrumbImpl extends WrappingBootstrapElementImpl<Tag,Breadcrumb> implements Breadcrumb {
 	
 	private Tag ol;
 
-	public BreadcrumbsImpl(BootstrapFactory factory) {
+	public BreadcrumbImpl(BootstrapFactory factory) {
 		super(factory, factory.getHTMLFactory().tag("nav").attribute("aria-label", "breadcrumb"));
 		ol = getFactory().getHTMLFactory().tag(TagName.ol).addClass("breadcrumb");
 		htmlElement.content(ol);

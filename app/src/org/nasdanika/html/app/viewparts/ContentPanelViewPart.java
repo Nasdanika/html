@@ -4,15 +4,17 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Breadcrumbs;
+import org.nasdanika.html.bootstrap.Breadcrumb;
 import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.Container.Row;
+import org.nasdanika.html.bootstrap.Container.Row.Col;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Size;
 
@@ -66,8 +68,9 @@ public class ContentPanelViewPart implements ViewPart {
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
+//		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
 //		boolean isContext = activeAction.isInRole(Action.Role.CONTEXT) || (activeAction.getParent() != null && activeAction.getParent().isInRole(Action.Role.CONTEXT));
+		
 		Action lastNonSection = /* isContext ? activeAction : */ lastNonSection();
 		List<Action> lastNonSectionPath = lastNonSection.getPath();
 		
@@ -98,39 +101,79 @@ public class ContentPanelViewPart implements ViewPart {
 				}
 			}
 		}
+				
+		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
+		String classPrefix = "nsd-app-content-panel-";
+		Container contentContainer = bootstrapFactory.container();
 		
 		if (showBreadcrumbs) {
-			// Breadcrumbs
-			Breadcrumbs breadcrumbs = viewGenerator.get(BootstrapFactory.class).breadcrums();
-			breadcrumbs.margin().top(Breakpoint.DEFAULT, Size.S1);
-			ret.content(breadcrumbs);
+			// Breadcrumb
+			Breadcrumb breadcrumb = viewGenerator.get(BootstrapFactory.class).breadcrumb();
+			breadcrumb.margin().top(Breakpoint.DEFAULT, Size.S1);
+
+			contentContainer
+				.row()
+				.col(breadcrumb)
+				.width(Breakpoint.DEFAULT, Size.NONE)
+				.toHTMLElement()
+				.addClass(classPrefix+"breadcrumb");
+			
 			ListIterator<Action> tit = lastNonSectionPath.listIterator(Math.min(lastNonSectionPath.size(), breadcrumbsOffset));
 			while (tit.hasNext()) {
-				breadcrumbs.item(false, viewGenerator.link(tit.next()));
+				breadcrumb.item(false, viewGenerator.link(tit.next()));
 			}		
-			breadcrumbs.item(true, viewGenerator.label(lastNonSection));
+			breadcrumb.item(true, viewGenerator.label(lastNonSection));
 		}
 		
 		if (showTitle) {			
+			Col titleCol = contentContainer.row().col().width(Breakpoint.DEFAULT, Size.NONE);
+			titleCol.toHTMLElement().addClass(classPrefix+"header-col");
+			
 			// Context actions navs floating right
 			List<Action> contextChildren = lastNonSection.getContextChildren();
 			if (!contextChildren.isEmpty()) {
 				Navs navs = viewGenerator.categorizedLinkNavs(contextChildren, activeAction, null);
 				navs._float().right();
-				ret.content(navs);
+				titleCol.content(navs);
 			}
 			
 			// Page title, doesn't make much sense to show it for the root or principal actions - it would duplicate the header or the nav bar. 
-			ret.content(viewGenerator.label(lastNonSection, viewGenerator.get(HTMLFactory.class).tag(TagName.h2)).addClass("nsd-content-header"));
+			titleCol.content(viewGenerator.label(lastNonSection, viewGenerator.get(HTMLFactory.class).tag(TagName.h2)).addClass(classPrefix+"header"));
 		}
 		
-		ret.content(lastNonSection.generate(viewGenerator, progressMonitor));
+		Row bodyRow = contentContainer.row();
+		bodyRow.toHTMLElement().addClass(classPrefix+"body-row");
+		
+		List<Action> leftPanelActions = lastNonSection.getChildrenByRole(Action.Role.CONTENT_LEFT);
+		if (!leftPanelActions.isEmpty()) {
+			AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(leftPanelActions, activeAction);
+			Col leftPanelCol = bodyRow.col().width(Breakpoint.DEFAULT, Size.AUTO);
+			leftPanelCol.toHTMLElement().addClass(classPrefix+"left-nav");
+			leftPanelCol.content(panelViewPart.generate(viewGenerator, progressMonitor));			 
+		}	
+		
+//		List<Action> navigationPanelActions = getNavigationPanelActions();
+//		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? (vg, progressMonitor) -> null : new AdaptiveNavigationPanelViewPart(navigationPanelActions, getActiveAction());
+
+		
+		Col bodyCol = bodyRow.col().width(Breakpoint.DEFAULT, Size.NONE);
+		bodyCol.toHTMLElement().addClass(classPrefix+"body");
+		bodyCol.content(lastNonSection.generate(viewGenerator, progressMonitor));
 		
 		ViewPart sectionsViewPart = lastNonSection.createSectionsViewPart(activeAction, 0, 3);
 		if (sectionsViewPart != null) {
-			ret.content(sectionsViewPart.generate(viewGenerator, progressMonitor)); // TODO - split monitor.
+			bodyCol.content(sectionsViewPart.generate(viewGenerator, progressMonitor)); // TODO - split monitor.
 		}
-		return ret;
+				
+		List<Action> rightPanelActions = lastNonSection.getChildrenByRole(Action.Role.CONTENT_RIGHT);
+		if (!rightPanelActions.isEmpty()) {
+			AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(rightPanelActions, activeAction);
+			Col rightPanelCol = bodyRow.col().width(Breakpoint.DEFAULT, Size.AUTO);
+			rightPanelCol.toHTMLElement().addClass(classPrefix+"right-nav");
+			rightPanelCol.content(panelViewPart.generate(viewGenerator, progressMonitor));			 
+		}	
+		
+		return contentContainer;
 	}	
 	
 	/**

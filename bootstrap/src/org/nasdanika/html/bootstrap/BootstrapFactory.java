@@ -45,7 +45,7 @@ public interface BootstrapFactory {
 	 */
 	TagBootstrapElement wrap(Tag tag);
 			
-	Breadcrumbs breadcrums();
+	Breadcrumb breadcrumb();
 	
 	/**
 	 * Wraps HTML element into a Bootstrap button.

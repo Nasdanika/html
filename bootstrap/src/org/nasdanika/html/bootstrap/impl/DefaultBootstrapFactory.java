@@ -13,7 +13,7 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Breadcrumbs;
+import org.nasdanika.html.bootstrap.Breadcrumb;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
@@ -88,8 +88,8 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	}
 
 	@Override
-	public Breadcrumbs breadcrums() {
-		return new BreadcrumbsImpl(this);
+	public Breadcrumb breadcrumb() {
+		return new BreadcrumbImpl(this);
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import org.nasdanika.html.InputType;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Breadcrumbs;
+import org.nasdanika.html.bootstrap.Breadcrumb;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
@@ -53,10 +53,10 @@ public class TestBootstrap extends HTMLTestBase {
 	
 	@Test
 	public void testBreadcrumbs() throws Exception {
-		Breadcrumbs breadcrumbs = BootstrapFactory.INSTANCE.breadcrums();
-		breadcrumbs.item(false, breadcrumbs.getFactory().getHTMLFactory().link("#", "First"));
-		breadcrumbs.item(true, "Last");
-		writeThemedPage("bootstrap/breadcrumbs.html", "Bootstrap breadcrumbs", breadcrumbs); 
+		Breadcrumb breadcrumb = BootstrapFactory.INSTANCE.breadcrumb();
+		breadcrumb.item(false, breadcrumb.getFactory().getHTMLFactory().link("#", "First"));
+		breadcrumb.item(true, "Last");
+		writeThemedPage("bootstrap/breadcrumbs.html", "Bootstrap breadcrumbs", breadcrumb); 
 	}
 		
 	@Test
