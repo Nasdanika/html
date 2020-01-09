@@ -104,7 +104,7 @@ public class ContentPanelViewPart implements ViewPart {
 				
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		String classPrefix = "nsd-app-content-panel-";
-		Container contentContainer = bootstrapFactory.container();
+		Container contentContainer = bootstrapFactory.fluidContainer();
 		
 		if (showBreadcrumbs) {
 			// Breadcrumb
