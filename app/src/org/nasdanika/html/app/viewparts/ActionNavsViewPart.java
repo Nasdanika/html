@@ -10,6 +10,7 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -42,7 +43,7 @@ public class ActionNavsViewPart  implements ViewPart {
 	}
 
 	@Override
-	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+	public Object generate(ViewGenerator viewGen, ProgressMonitor progressMonitor) {		
 		Action activeSection = null;
 		for (Entry<Label, List<Action>> ce: categories) {
 			for (Action section: ce.getValue()) {
@@ -52,6 +53,9 @@ public class ActionNavsViewPart  implements ViewPart {
 			}
 		}
 		
+		ViewGenerator viewGenerator = viewGen.fork();
+		viewGenerator.put(SectionStyle.HEADER_LEVEL, headerLevel);
+
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		Card theCard = card ? bootstrapFactory.card() : null;  						
 		

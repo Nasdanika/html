@@ -6,6 +6,7 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -39,7 +40,10 @@ public class ActionCardViewPart implements ViewPart {
 	}
 
 	@Override
-	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+	public Object generate(ViewGenerator viewGen, ProgressMonitor progressMonitor) {
+		ViewGenerator viewGenerator = viewGen.fork();
+		viewGenerator.put(SectionStyle.HEADER_LEVEL, headerLevel);
+		
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		Card card = bootstrapFactory.card();
 

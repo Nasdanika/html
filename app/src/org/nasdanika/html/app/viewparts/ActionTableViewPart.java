@@ -10,6 +10,7 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -42,7 +43,10 @@ public class ActionTableViewPart implements ViewPart {
 	}
 
 	@Override
-	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+	public Object generate(ViewGenerator viewGen, ProgressMonitor progressMonitor) {
+		ViewGenerator viewGenerator = viewGen.fork();
+		viewGenerator.put(SectionStyle.HEADER_LEVEL, headerLevel);
+
 		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
 		
 		for (Entry<Label, List<Action>> categoryEntry: categories) {

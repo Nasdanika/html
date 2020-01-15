@@ -29,14 +29,14 @@ public enum SectionStyle {
 	AUTO("Auto") {
 
 		@Override
-		public ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel) {
+		public ViewPart createViewPart(Action action, Action activeAction, int level, int headerLevel) {
 			switch (level) {
 			case 0:
-				return TAB.createViewPart(action, activeAction, level, paragraphLevel);
+				return TAB.createViewPart(action, activeAction, level, headerLevel);
 			case 1:
-				return ACTION_GROUP.createViewPart(action, activeAction, level, paragraphLevel);
+				return ACTION_GROUP.createViewPart(action, activeAction, level, headerLevel);
 			default:
-				return DEFAULT.createViewPart(action, activeAction, level, paragraphLevel);
+				return DEFAULT.createViewPart(action, activeAction, level, headerLevel);
 			}
 		}
 		
@@ -144,9 +144,11 @@ public enum SectionStyle {
 				public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 					Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();
 					
+					ViewGenerator vg = viewGenerator.fork();
+					vg.put(HEADER_LEVEL, headerLevel);
 					for (Entry<Label, List<Action>> categoryEntry: categories) {
 						CategorySectionViewPart vp = new CategorySectionViewPart(categoryEntry.getKey(), categoryEntry.getValue(), activeAction, sectionLevel, headerLevel);
-						contentFragment.content(vp.generate(viewGenerator, progressMonitor));
+						contentFragment.content(vp.generate(vg, progressMonitor));
 					}
 
 					return contentFragment;
@@ -215,6 +217,11 @@ public enum SectionStyle {
 //	Accordion
 	
 	/**
+	 * Context property name for header level.
+	 */
+	public static final String HEADER_LEVEL = SectionStyle.class.getName() + ":header-level";	
+	
+	/**
 	 * Creates a view part rendering action's sections.
 	 * @param section Action containing section actions to be rendered. 
 	 * @param activeAction
@@ -222,7 +229,7 @@ public enum SectionStyle {
 	 * @param level Section nesting level
 	 * @return
 	 */
-	public abstract ViewPart createViewPart(Action action, Action activeAction, int level, int paragraphLevel);
+	public abstract ViewPart createViewPart(Action action, Action activeAction, int level, int headerLevel);
 	
 	public final String label;
 	
