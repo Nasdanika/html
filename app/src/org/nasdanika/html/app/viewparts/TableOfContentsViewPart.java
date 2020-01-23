@@ -77,30 +77,31 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 		}
 		
 		for (Entry<Label, List<Action>> ge: groupedChildren) {
+			int effectiveLevel = level;
 			if (ge.getKey() != null) {
 				Row categoryRow = table.row();
 				Tag categoryLabel = viewGenerator.label(ge.getKey());
-				if (level > 1) {
-					categoryLabel.style("margin-left", ((level - 1) * 2) + "em");
+				if (effectiveLevel > 1) {
+					categoryLabel.style("margin-left", ((effectiveLevel - 1) * 2) + "em");
 				}
 				Cell categoryCell = categoryRow.cell(categoryLabel);
 				if (descriptions) {
 					categoryCell.toHTMLElement().colspan(2);
 				}
-				++level;
+				++effectiveLevel;
 			}
 			
 			for (Action rowAction: ge.getValue()) {
 				Row actionRow = table.row();
 				Tag actionLink = viewGenerator.link(rowAction);
-				if (level > 1) {
-					actionLink.style("margin-left", ((level - 1) * 2) + "em");
+				if (effectiveLevel > 1) {
+					actionLink.style("margin-left", ((effectiveLevel - 1) * 2) + "em");
 				}
 				actionRow.cell(actionLink);
 				if (descriptions) {
 					actionRow.cell(rowAction.getDescription());
 				}
-				rows(viewGenerator, rowAction, level + 1, table);
+				rows(viewGenerator, rowAction, effectiveLevel + 1, table);
 			}
 		}
 	}
