@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,9 +16,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -31,9 +32,9 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
-import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Table;
@@ -154,6 +155,41 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 		ret.add(EcorePackage.Literals.ECLASS__EOPERATIONS);
 		return ret;
 	}
+		
+	@Override
+	public List<Action> getChildren() {
+		List<Action> ret = new ArrayList<>();
+		
+		for (EStructuralFeature feature: target.getEStructuralFeatures()) {			
+			Action featureAction = adaptTo(feature, ViewAction.class);
+			if (featureAction != null) {
+				ret.add(filterChildAction(featureAction, Action.Role.NAVIGATION, null));
+			}
+		}
+		
+		for (EOperation operation: target.getEOperations()) {			
+			Action operationAction = adaptTo(operation, ViewAction.class);
+			if (operationAction != null) {
+				ret.add(filterChildAction(operationAction, Action.Role.NAVIGATION, null));
+			}
+		}
+		
+		// features before operations.
+		Comparator<? super Action> comparator = (a,b) -> {
+			int nameCmp = a.getText().compareTo(b.getText());
+			if (a instanceof EStructuralFeatureViewAction) {
+				return b instanceof EStructuralFeatureViewAction ? nameCmp : -1;
+			} 
+			
+			if (b instanceof EStructuralFeatureViewAction) {
+				return a instanceof EStructuralFeatureViewAction ? nameCmp : 1;
+			}
+			
+			return nameCmp;			
+		};
+		return ret.stream().sorted(comparator).collect(Collectors.toList());
+	}
+	
 	
 
 	/**

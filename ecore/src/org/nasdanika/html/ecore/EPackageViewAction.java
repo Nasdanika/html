@@ -23,9 +23,9 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
-import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Table;
@@ -33,6 +33,7 @@ import org.nasdanika.html.bootstrap.Table.TableBody;
 import org.nasdanika.html.bootstrap.Table.TableHeader;
 import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.ecore.PlantUmlTextGenerator.RelationshipDirection;
+import org.nasdanika.html.emf.ViewAction;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
@@ -102,9 +103,25 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 		tabs.item(getResourceContext().getString(PropertyKeys.UI_CONTENTS, "Contents"), table);				
 		return contentContainer;
 	}
-	
+		
 	@Override
 	public List<Action> getChildren() {
+		List<Action> ret = new ArrayList<>();
+		
+		for (EPackage subPackage: target.getESubpackages()) {			
+			Action subPackageAction = adaptTo(subPackage, ViewAction.class);
+			if (subPackageAction != null) {
+				ret.add(filterChildAction(subPackageAction, Action.Role.NAVIGATION, null));
+			}
+		}
+		
+		for (EClassifier eClassifier: target.getEClassifiers()) {			
+			Action eClassifierAction = adaptTo(eClassifier, ViewAction.class);
+			if (eClassifierAction != null) {
+				ret.add(filterChildAction(eClassifierAction, Action.Role.NAVIGATION, null));
+			}
+		}
+		
 		// Sub-packages before classifiers.
 		Comparator<? super Action> comparator = (a,b) -> {
 			int nameCmp = a.getText().compareTo(b.getText());
@@ -118,7 +135,7 @@ public class EPackageViewAction extends ENamedElementViewAction<EPackage> {
 			
 			return nameCmp;			
 		};
-		return super.getChildren().stream().sorted(comparator).collect(Collectors.toList());
+		return ret.stream().sorted(comparator).collect(Collectors.toList());
 	}
 	
 	/**
