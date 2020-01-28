@@ -189,8 +189,6 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 		};
 		return ret.stream().sorted(comparator).collect(Collectors.toList());
 	}
-	
-	
 
 	/**
 	 * Generates PNG diagram.
