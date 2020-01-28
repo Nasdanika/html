@@ -8,6 +8,7 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Decorator;
+import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -119,11 +120,16 @@ public class ContentPanelViewPart implements ViewPart {
 				.toHTMLElement()
 				.addClass(classPrefix+"breadcrumb");
 			
-			ListIterator<Action> tit = lastNonSectionPath.listIterator(Math.min(lastNonSectionPath.size(), breadcrumbsOffset));
+			ListIterator<Action> bit = lastNonSectionPath.listIterator(Math.min(lastNonSectionPath.size(), breadcrumbsOffset));
 			ViewGenerator breadcrumbViewGenerator = viewGenerator.fork();
 			breadcrumbViewGenerator.put(Decorator.SELECTOR_KEY, "content-panel.breadcrumb");
-			while (tit.hasNext()) {
-				breadcrumb.item(false, breadcrumbViewGenerator.link(tit.next()));
+			while (bit.hasNext()) {				
+				Action breadcrumbItem = bit.next();
+				Label bic = breadcrumbItem.getCategory();
+				if (bic != null) {
+					breadcrumb.item(false, breadcrumbViewGenerator.label(bic));					
+				}
+				breadcrumb.item(false, breadcrumbViewGenerator.link(breadcrumbItem));
 			}		
 			breadcrumb.item(true, breadcrumbViewGenerator.label(lastNonSection));
 		}
