@@ -1,7 +1,12 @@
 package org.nasdanika.html.ecore;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EEnumLiteral;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -9,6 +14,7 @@ import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Text.Alignment;
+import org.nasdanika.html.emf.ViewAction;
 
 public class EEnumViewAction extends EClassifierViewAction<EEnum> {
 
@@ -30,5 +36,18 @@ public class EEnumViewAction extends EClassifierViewAction<EEnum> {
 		
 		return contentContainer;
 	}
+		
+	@Override
+	public List<Action> getChildren() {
+		List<Action> ret = new ArrayList<>();
+		
+		for (EEnumLiteral literal: target.getELiterals()) {			
+			Action literalAction = adaptTo(literal, ViewAction.class);
+			if (literalAction != null) {
+				ret.add(filterChildAction(literalAction, Action.Role.NAVIGATION, null));
+			}
+		}
+		return ret;
+	}	
 
 }
