@@ -8,6 +8,11 @@ package org.nasdanika.html.app;
 public interface Decorator {
 	
 	/**
+	 * Decorator selector is a view generator property which can be used to customize decoration logic. 
+	 */
+	String SELECTOR_KEY = Decorator.class.getName()+":selector";
+	
+	/**
 	 * Customizes target.
 	 * @param target
 	 * @param viewGenerator

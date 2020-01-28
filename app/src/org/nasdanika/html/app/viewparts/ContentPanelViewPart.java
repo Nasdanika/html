@@ -7,6 +7,7 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -119,10 +120,12 @@ public class ContentPanelViewPart implements ViewPart {
 				.addClass(classPrefix+"breadcrumb");
 			
 			ListIterator<Action> tit = lastNonSectionPath.listIterator(Math.min(lastNonSectionPath.size(), breadcrumbsOffset));
+			ViewGenerator breadcrumbViewGenerator = viewGenerator.fork();
+			breadcrumbViewGenerator.put(Decorator.SELECTOR_KEY, "content-panel.breadcrumb");
 			while (tit.hasNext()) {
-				breadcrumb.item(false, viewGenerator.link(tit.next()));
+				breadcrumb.item(false, breadcrumbViewGenerator.link(tit.next()));
 			}		
-			breadcrumb.item(true, viewGenerator.label(lastNonSection));
+			breadcrumb.item(true, breadcrumbViewGenerator.label(lastNonSection));
 		}
 		
 		if (showTitle) {			
@@ -138,7 +141,9 @@ public class ContentPanelViewPart implements ViewPart {
 			}
 			
 			// Page title, doesn't make much sense to show it for the root or principal actions - it would duplicate the header or the nav bar. 
-			titleCol.content(viewGenerator.label(lastNonSection, viewGenerator.get(HTMLFactory.class).tag(TagName.h2)).addClass(classPrefix+"header"));
+			ViewGenerator titleViewGenerator = viewGenerator.fork();
+			titleViewGenerator.put(Decorator.SELECTOR_KEY, "content-panel.title");			
+			titleCol.content(titleViewGenerator.label(lastNonSection, titleViewGenerator.get(HTMLFactory.class).tag(TagName.h2)).addClass(classPrefix+"header"));
 		}
 		
 		Row bodyRow = contentContainer.row();
