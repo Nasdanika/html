@@ -72,7 +72,7 @@ public class ProgressReportGenerator {
 				
 				@Override
 				protected ViewPart getNavigationPanelViewPart() {
-					return new JsTreeNavigationPanelViewPart(getNavigationPanelActions(), getActiveAction()) {
+					return new JsTreeNavigationPanelViewPart(getNavigationPanelActions(), getActiveAction(), true) {
 						@Override
 						protected void configureJsTree(JSONObject jsTree) {
 							JSONArray plugins = new JSONArray();

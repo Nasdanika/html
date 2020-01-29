@@ -38,7 +38,7 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 	 * @param actions
 	 * @return
 	 */
-	protected ViewPart createActionsViewPart(List<Action> actions) {
+	protected ViewPart createActionsViewPart(List<Action> actions, boolean categorize) {
 		if (actions.stream().mapToInt(a -> a.getNavigationChildren().size()).sum() == 0) {		
 			return new ViewPart() {
 
@@ -54,7 +54,7 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 			};
 		}
 
-		return new JsTreeNavigationPanelViewPart(actions, activeAction);
+		return new JsTreeNavigationPanelViewPart(actions, activeAction, categorize);
 	}
 	
 	protected Card createCategoryCard(Label category, ViewGenerator viewGenerator) {
@@ -83,7 +83,7 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 		if (categoryGroups.size() == 1) {
 			for (Entry<Label, List<Action>> categoryGroup: categoryGroups) {
 				if (categoryGroup.getKey() == null) {
-					return createActionsViewPart(categoryGroup.getValue()).generate(viewGenerator, progressMonitor);
+					return createActionsViewPart(categoryGroup.getValue(), true).generate(viewGenerator, progressMonitor);
 				}
 			}
 		}
@@ -92,7 +92,7 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
 		for (Entry<Label, List<Action>> categoryGroup: categoryGroups) {
 			Card card = createCategoryCard(categoryGroup.getKey(), viewGenerator);
-			Object actionsView = createActionsViewPart(categoryGroup.getValue()).generate(viewGenerator, progressMonitor);
+			Object actionsView = createActionsViewPart(categoryGroup.getValue(), false).generate(viewGenerator, progressMonitor);
 			if (actionsView instanceof ActionGroup) {
 				card.toHTMLElement().content(actionsView);
 			} else {

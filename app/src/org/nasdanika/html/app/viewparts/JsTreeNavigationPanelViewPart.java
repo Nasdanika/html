@@ -32,10 +32,12 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 	protected List<? extends Action> rootActions;
 	protected Action activeAction;
 	private String treeId;
+	private boolean categorize;
 
-	public JsTreeNavigationPanelViewPart(List<? extends Action> rootActions, Action activeAction) {
+	public JsTreeNavigationPanelViewPart(List<? extends Action> rootActions, Action activeAction, boolean categorize) {
 		this.rootActions = rootActions;
 		this.activeAction = activeAction;
+		this.categorize = categorize;
 		
 		// Computing tree ID. If all navigation actions have the same parent or the same category then id is the parent/category id. Otherwise it is a base64 digest of action ID's.
 		Set<Object> parentIDs = new HashSet<>();
@@ -80,7 +82,7 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 			Label category = group.getKey();
 			@SuppressWarnings("unchecked")
 			List<Action> categoryActions = (List<Action>) group.getValue();
-			if (category == null || Util.isBlank(category.getText())) {
+			if (!categorize || category == null || Util.isBlank(category.getText())) {
 				for (Action ca: categoryActions) {
 					JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false);
 					jsTreeNode.selected(Util.equalOrInPath(activeAction, ca) && ca.getNavigationChildren().isEmpty());

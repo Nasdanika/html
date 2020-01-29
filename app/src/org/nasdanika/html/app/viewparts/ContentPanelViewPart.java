@@ -67,6 +67,8 @@ public class ContentPanelViewPart implements ViewPart {
 		}
 		return false;		
 	}
+	
+	private static final String CLASS_PREFIX = "nsd-app-content-panel-";	
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
@@ -77,26 +79,26 @@ public class ContentPanelViewPart implements ViewPart {
 		List<Action> lastNonSectionPath = lastNonSection.getPath();
 		
 		// Do not show breadcrumbs and title in the principal path, show otherwise
-		boolean showBreadcrumbs = true;
+		boolean showBreadcrumb = true;
 		boolean showTitle = true;
 		int breadcrumbsOffset = 1;
 		
 		if (lastNonSectionPath.size() == 0) {
 			// Root
-			showBreadcrumbs = false;
+			showBreadcrumb = false;
 			showTitle = false;
 		} else {
 			Action root = lastNonSectionPath.get(0);
 			if (lastNonSectionPath.size() == 1) {
 				if (root.getNavigationChildren().indexOf(lastNonSection) == 0) {
-					showBreadcrumbs = false;
+					showBreadcrumb = false;
 					showTitle = false;
 				}
 			} else {
 				Action firstChild = lastNonSectionPath.get(1);
 				if (root.getNavigationChildren().indexOf(firstChild) == 0) {
 					// Principal path
-					showBreadcrumbs = lastNonSectionPath.size() > getMinBreadcrumbsDepth() - getBreadcrumbsOffset();
+					showBreadcrumb = lastNonSectionPath.size() > getMinBreadcrumbsDepth() - getBreadcrumbsOffset();
 					breadcrumbsOffset = getBreadcrumbsOffset();
 					
 					showTitle = lastNonSectionPath.size() > getMinTitleDepth() - getBreadcrumbsOffset();
@@ -105,24 +107,13 @@ public class ContentPanelViewPart implements ViewPart {
 		}
 				
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
-		String classPrefix = "nsd-app-content-panel-";
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		
-		if (showBreadcrumbs) {
+		if (showBreadcrumb) {
 			// Breadcrumb
-			Breadcrumb breadcrumb = viewGenerator.get(BootstrapFactory.class).breadcrumb();
-			breadcrumb.margin().top(Breakpoint.DEFAULT, Size.S1);
-
-			contentContainer
-				.row()
-				.col(breadcrumb)
-				.width(Breakpoint.DEFAULT, Size.NONE)
-				.toHTMLElement()
-				.addClass(classPrefix+"breadcrumb");
-			
 			ListIterator<Action> bit = lastNonSectionPath.listIterator(Math.min(lastNonSectionPath.size(), breadcrumbsOffset));
-			ViewGenerator breadcrumbViewGenerator = viewGenerator.fork();
-			breadcrumbViewGenerator.put(Decorator.SELECTOR_KEY, "content-panel.breadcrumb");
+			ViewGenerator breadcrumbViewGenerator = createBreadcrumbViewGenerator(viewGenerator);
+			Breadcrumb breadcrumb = createBreadcrumb(breadcrumbViewGenerator, contentContainer);			
 			while (bit.hasNext()) {				
 				Action breadcrumbItem = bit.next();
 				Label bic = breadcrumbItem.getCategory();
@@ -135,8 +126,14 @@ public class ContentPanelViewPart implements ViewPart {
 		}
 		
 		if (showTitle) {			
+			if (!showBreadcrumb && lastNonSection.getCategory() != null) {
+				// Title category breadcrumb
+				ViewGenerator breadcrumbViewGenerator = createBreadcrumbViewGenerator(viewGenerator);
+				createBreadcrumb(breadcrumbViewGenerator, contentContainer).item(false, breadcrumbViewGenerator.label(lastNonSection.getCategory()));					
+			}			
+						
 			Col titleCol = contentContainer.row().col().width(Breakpoint.DEFAULT, Size.NONE);
-			titleCol.toHTMLElement().addClass(classPrefix+"header-col");
+			titleCol.toHTMLElement().addClass(CLASS_PREFIX+"header-col");
 			
 			// Context actions navs floating right
 			List<Action> contextChildren = lastNonSection.getContextChildren();
@@ -149,17 +146,17 @@ public class ContentPanelViewPart implements ViewPart {
 			// Page title, doesn't make much sense to show it for the root or principal actions - it would duplicate the header or the nav bar. 
 			ViewGenerator titleViewGenerator = viewGenerator.fork();
 			titleViewGenerator.put(Decorator.SELECTOR_KEY, "content-panel.title");			
-			titleCol.content(titleViewGenerator.label(lastNonSection, titleViewGenerator.get(HTMLFactory.class).tag(TagName.h2)).addClass(classPrefix+"header"));
+			titleCol.content(titleViewGenerator.label(lastNonSection, titleViewGenerator.get(HTMLFactory.class).tag(TagName.h2)).addClass(CLASS_PREFIX+"header"));
 		}
 		
 		Row bodyRow = contentContainer.row();
-		bodyRow.toHTMLElement().addClass(classPrefix+"body-row");
+		bodyRow.toHTMLElement().addClass(CLASS_PREFIX+"body-row");
 		
 		List<Action> leftPanelActions = lastNonSection.getChildrenByRole(Action.Role.CONTENT_LEFT);
 		if (!leftPanelActions.isEmpty()) {
 			AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(leftPanelActions, activeAction);
 			Col leftPanelCol = bodyRow.col().width(Breakpoint.DEFAULT, Size.AUTO);
-			leftPanelCol.toHTMLElement().addClass(classPrefix+"left-nav");
+			leftPanelCol.toHTMLElement().addClass(CLASS_PREFIX+"left-nav");
 			leftPanelCol.content(panelViewPart.generate(viewGenerator, progressMonitor));			 
 		}	
 		
@@ -168,7 +165,7 @@ public class ContentPanelViewPart implements ViewPart {
 
 		
 		Col bodyCol = bodyRow.col().width(Breakpoint.DEFAULT, Size.NONE);
-		bodyCol.toHTMLElement().addClass(classPrefix+"body");
+		bodyCol.toHTMLElement().addClass(CLASS_PREFIX+"body");
 		bodyCol.content(lastNonSection.generate(viewGenerator, progressMonitor));
 		
 		ViewPart sectionsViewPart = lastNonSection.createSectionsViewPart(activeAction, 0, 3);
@@ -180,11 +177,30 @@ public class ContentPanelViewPart implements ViewPart {
 		if (!rightPanelActions.isEmpty()) {
 			AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(rightPanelActions, activeAction);
 			Col rightPanelCol = bodyRow.col().width(Breakpoint.DEFAULT, Size.AUTO);
-			rightPanelCol.toHTMLElement().addClass(classPrefix+"right-nav");
+			rightPanelCol.toHTMLElement().addClass(CLASS_PREFIX+"right-nav");
 			rightPanelCol.content(panelViewPart.generate(viewGenerator, progressMonitor));			 
 		}	
 		
 		return contentContainer;
+	}
+
+	protected ViewGenerator createBreadcrumbViewGenerator(ViewGenerator viewGenerator) {
+		ViewGenerator breadcrumbViewGenerator = viewGenerator.fork();
+		breadcrumbViewGenerator.put(Decorator.SELECTOR_KEY, "content-panel.breadcrumb");
+		return breadcrumbViewGenerator;
+	}
+
+	protected Breadcrumb createBreadcrumb(ViewGenerator viewGenerator, Container contentContainer) {
+		Breadcrumb breadcrumb = viewGenerator.get(BootstrapFactory.class).breadcrumb();
+		breadcrumb.margin().top(Breakpoint.DEFAULT, Size.S1);
+
+		contentContainer
+			.row()
+			.col(breadcrumb)
+			.width(Breakpoint.DEFAULT, Size.NONE)
+			.toHTMLElement()
+			.addClass(CLASS_PREFIX+"breadcrumb");
+		return breadcrumb;
 	}	
 	
 	/**
