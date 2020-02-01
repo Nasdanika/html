@@ -248,4 +248,25 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 		return getSectionStyle().createViewPart(this, activeAction, sectionLevel, headerLevel);
 	}
 		
+	/**
+	 * Finds action by id in the hierarchy of this action.
+	 * @param id Id of the action to find. If null, then search is not performed and null is returned. 
+	 * @return Action or null.
+	 */
+	default Action findById(String id) {
+		if (id == null) {
+			return null;
+		}
+		if (id.equals(getId())) {
+			return this;
+		}
+		for (Action child: getChildren()) {
+			Action found = child.findById(id);
+			if (found != null) {
+				return found;
+			}
+		}
+		return null;
+	}	
+		
 }
