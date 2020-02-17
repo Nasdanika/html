@@ -181,6 +181,16 @@ public interface ViewGenerator extends MutableContext {
 	ViewGenerator fork();
 
 	/**
+	 * Convenience method for disabling decorators.
+	 * @return Forked ViewGenerator with {@link Decorator} SELECTOR_KEY set to NO_DECORATOR
+	 */
+	default ViewGenerator forkNoDecorator() {
+		ViewGenerator ret = fork();
+		ret.put(Decorator.SELECTOR_KEY, Decorator.NO_DECORATOR);
+		return ret;
+	}
+
+	/**
 	 * Creates navs from a list of actions. Groups actions by category and creates drop-downs and headers for named categories, dividers for anonymous. 
 	 * @param actions
 	 * @param activeAction

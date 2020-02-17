@@ -13,6 +13,11 @@ public interface Decorator {
 	String SELECTOR_KEY = Decorator.class.getName()+":selector";
 	
 	/**
+	 * Selector value indicating that decorators shall not be used.
+	 */
+	String NO_DECORATOR = "no-decorator";
+	
+	/**
 	 * Customizes target.
 	 * @param target
 	 * @param viewGenerator

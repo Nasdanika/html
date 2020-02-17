@@ -38,11 +38,12 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		Action action = viewGenerator.get(Action.class);
+		ViewGenerator noDecoratorViewGenerator = viewGenerator.forkNoDecorator();
+		Action action = noDecoratorViewGenerator.get(Action.class);
 		if (action == null) {
 			return null;
 		}
-		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
+		BootstrapFactory bootstrapFactory = noDecoratorViewGenerator.get(BootstrapFactory.class);
 		Table table = bootstrapFactory.table();
 		table.bordered(bordered);
 		table.borderless(borderless);
@@ -50,12 +51,12 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 		table.hover(hover);
 		table.small(small);
 		table.striped(striped);
-		rows(viewGenerator, action, 1, table);
+		rows(noDecoratorViewGenerator, action, 1, table);
 		if (Util.isBlank(header)) {
 			return table;
 		}
-		int headerLevel = viewGenerator.get(SectionStyle.HEADER_LEVEL, Integer.class, 3);
-		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);		
+		int headerLevel = noDecoratorViewGenerator.get(SectionStyle.HEADER_LEVEL, Integer.class, 3);
+		HTMLFactory htmlFactory = noDecoratorViewGenerator.get(HTMLFactory.class);		
 		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, header), table);
 	}
 
