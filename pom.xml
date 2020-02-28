@@ -15,29 +15,18 @@
 	</prerequisites>
 
 	<properties>
-		<tycho-version>1.5.0</tycho-version>
+		<tycho-version>1.6.0</tycho-version>
 	</properties>
 
 	<repositories>
-		<!-- configure p2 repository to resolve against -->
 		<repository>
 			<id>foundation</id>
-			<url>https://www.nasdanika.org/${env.CIRCLE_BRANCH}/foundation-repository</url>
-			<layout>p2</layout>
-		</repository>
-		<repository>
-			<id>third-party</id>
-			<url>https://www.nasdanika.org/master/products/third-party/repository</url>
-			<layout>p2</layout>
-		</repository>
-		<repository>
-			<id>maven-osgi</id>
-			<url>https://www.nasdanika.org/master/products/maven-osgi/repository</url>
+			<url>https://www.nasdanika.org/builds/${env.RELEASE}/repositories/composite</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>core</id>
-			<url>https://www.nasdanika.org/${env.CIRCLE_BRANCH}/products/core/repository</url>
+			<url>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/repository</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>
@@ -46,44 +35,43 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<descriptors>
+						<descriptor>source-assembly.xml</descriptor>
+					</descriptors>
+					<!--<outputDirectory>${project.build.directory}/site</outputDirectory>-->
+					<formats>zip</formats>
+					<finalName>source</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-site-plugin</artifactId>
-			    <version>3.7.1</version>
+			    <version>3.8.2</version>
 			    <configuration>
 			        <skip>true</skip>
 			        <skipDeploy>true</skipDeploy>
 			    </configuration>
 			</plugin>	
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-				    <skipAssembly>true</skipAssembly>
-				</configuration>
-			</plugin>						
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.1.1</version>
 				<configuration>
 					<linksource>true</linksource>
 					<failOnError>false</failOnError>
-					
-			        	<doclet>ch.raffael.doclets.pegdown.PegdownDoclet</doclet>
-			        	<docletArtifact>
-			         		<groupId>ch.raffael.pegdown-doclet</groupId>
-			         		<artifactId>pegdown-doclet</artifactId>
-			        		<version>1.1</version>
-			        	</docletArtifact>
-			        	<useStandardDocletOptions>true</useStandardDocletOptions>
-					
-					<links>
-						<link>http://download.eclipse.org/modeling/emf/emf/javadoc/2.11</link>
-						<link>http://help.eclipse.org/oxygen/topic/org.eclipse.emf.cdo.doc/javadoc</link>		
-						<link>http://help.eclipse.org/oxygen/topic/org.eclipse.platform.doc.isv/reference/api</link>
-						<link>http://stleary.github.io/JSON-java</link>			
-						<link>https://osgi.org/javadoc/r4v42/</link>
-						<link>http://seleniumhq.github.io/selenium/docs/api/java/</link>
-					</links>
 				</configuration>				
 			</plugin>
 			<plugin>
@@ -103,8 +91,6 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
-					<!--<pomDependencies>consider</pomDependencies>-->
-					<!-- configure the p2 target environments for multi-platform build -->
 					<environments>
 						<environment>
 							<os>linux</os>
@@ -117,15 +103,6 @@
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
-					<!--
-				        <target> 
-				            <artifact> 
-				                <groupId>org.nasdanika.html</groupId> 
-				                <artifactId>org.nasdanika.html.target</artifactId> 
-				                <version>2.0.0-SNAPSHOT</version> 
-				            </artifact> 
-				        </target> 
-					-->
 				</configuration>
 			</plugin>			
 			<plugin>
@@ -151,34 +128,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.2</version>
-				< ! - - 
-				<configuration>
-					<excludes>
-						<exclude>**/plugin1/Main.class</exclude>
-					</excludes>
-				</configuration>
-				 - - >
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent-integration</goal>
-						</goals>
-					</execution>
-			        <execution>
-			            <id>report-aggregate</id>
-			            <phase>verify</phase>
-			            <goals>
-			                <goal>report-aggregate</goal>
-			            </goals>
-			        </execution>					
-				</executions>
-			</plugin>
-			-->									
 		</plugins>
 	</build>
 	<modules>
@@ -197,8 +146,6 @@
 		<module>repository</module>
 
 	</modules>
-	<!-- For resolution of JavaDoc between modules -->
-	<url>https://www.nasdanika.org/products/html/${project.version}/${env.CIRCLE_BRANCH}/apidocs/</url>
 	<organization>
 		<name>Nasdanika LLC</name>
 		<url>https://www.nasdanika.org</url>
