@@ -15,7 +15,7 @@
 	</prerequisites>
 
 	<properties>
-		<tycho-version>1.5.0</tycho-version>
+		<tycho-version>1.6.0</tycho-version>
 	</properties>
 
 	<repositories>
@@ -32,6 +32,11 @@
 		<repository>
 			<id>html</id>
 			<url>https://www.nasdanika.org/builds/${env.RELEASE}/products/html/repository</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>bank</id>
+			<url>https://www.nasdanika.org/master/products/bank/repository</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>
