@@ -30,7 +30,7 @@
 			<layout>p2</layout>
 		</repository>
 		<repository>
-			<id>core</id>
+			<id>html</id>
 			<url>https://www.nasdanika.org/builds/${env.RELEASE}/products/html/repository</url>
 			<layout>p2</layout>
 		</repository>
