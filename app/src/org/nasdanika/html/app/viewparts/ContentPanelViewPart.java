@@ -1,5 +1,6 @@
 package org.nasdanika.html.app.viewparts;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -76,7 +77,7 @@ public class ContentPanelViewPart implements ViewPart {
 //		boolean isContext = activeAction.isInRole(Action.Role.CONTEXT) || (activeAction.getParent() != null && activeAction.getParent().isInRole(Action.Role.CONTEXT));
 		
 		Action lastNonSection = /* isContext ? activeAction : */ lastNonSection();
-		List<Action> lastNonSectionPath = lastNonSection.getPath();
+		List<Action> lastNonSectionPath = lastNonSection == null ? Collections.emptyList() : lastNonSection.getPath();
 		
 		// Do not show breadcrumbs and title in the principal path, show otherwise
 		boolean showBreadcrumb = true;
@@ -152,7 +153,7 @@ public class ContentPanelViewPart implements ViewPart {
 		Row bodyRow = contentContainer.row();
 		bodyRow.toHTMLElement().addClass(CLASS_PREFIX+"body-row");
 		
-		List<Action> leftPanelActions = lastNonSection.getChildrenByRole(Action.Role.CONTENT_LEFT);
+		List<Action> leftPanelActions = lastNonSection == null ? Collections.emptyList() : lastNonSection.getChildrenByRole(Action.Role.CONTENT_LEFT);
 		if (!leftPanelActions.isEmpty()) {
 			AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(leftPanelActions, activeAction);
 			Col leftPanelCol = bodyRow.col().width(Breakpoint.DEFAULT, Size.AUTO);
@@ -162,11 +163,12 @@ public class ContentPanelViewPart implements ViewPart {
 		
 //		List<Action> navigationPanelActions = getNavigationPanelActions();
 //		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? (vg, progressMonitor) -> null : new AdaptiveNavigationPanelViewPart(navigationPanelActions, getActiveAction());
-
 		
 		Col bodyCol = bodyRow.col().width(Breakpoint.DEFAULT, Size.NONE);
 		bodyCol.toHTMLElement().addClass(CLASS_PREFIX+"body");
-		bodyCol.content(lastNonSection.generate(viewGenerator, progressMonitor));
+		if (lastNonSection != null) {
+			bodyCol.content(lastNonSection.generate(viewGenerator, progressMonitor));
+		}
 		
 		ViewPart sectionsViewPart = lastNonSection.createSectionsViewPart(activeAction, 0, 3);
 		if (sectionsViewPart != null) {
