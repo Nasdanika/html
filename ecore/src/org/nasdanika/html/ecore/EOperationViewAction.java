@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.ETypeParameter;
-import org.nasdanika.html.emf.EObjectAdaptable;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.ViewAction;
 
 public class EOperationViewAction extends ETypedElementViewAction<EOperation> {

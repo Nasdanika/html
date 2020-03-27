@@ -3,6 +3,7 @@ package org.nasdanika.html.app;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.nasdanika.common.Adaptable;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Container;

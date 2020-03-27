@@ -1,8 +1,9 @@
 package org.nasdanika.html.emf;
 
 import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.common.Adaptable;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.app.Action;
-import org.nasdanika.html.app.Adaptable;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.AbstractActionApplicationBuilder;
 

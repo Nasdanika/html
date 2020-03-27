@@ -9,6 +9,7 @@ import org.nasdanika.bank.Customer;
 import org.nasdanika.bank.CustomerAccount;
 import org.nasdanika.bank.Transaction;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
@@ -16,7 +17,6 @@ import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Table;
-import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.EObjectViewAction;
 import org.nasdanika.html.emf.ViewAction;
 

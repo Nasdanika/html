@@ -5,7 +5,7 @@ import java.util.Iterator;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.ETypeParameter;
-import org.nasdanika.html.emf.EObjectAdaptable;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.ViewAction;
 
 public class EClassifierViewAction<T extends EClassifier> extends ENamedElementViewAction<T> {

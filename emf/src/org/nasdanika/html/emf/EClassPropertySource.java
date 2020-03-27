@@ -67,7 +67,7 @@ public class EClassPropertySource extends EClassLabel implements PropertySource 
 		AccessController accessController = accessControllerSupplier.get();
 		return modelElement.getEAllStructuralFeatures()
 				.stream()
-				.filter(f ->  accessController == null || accessController.canRead(f.getName()))
+				.filter(f -> accessController == null || accessController.canRead(f.getName()))
 				.filter(this::isPropertyDescriptorFeature)
 				.sorted((fa, fb) -> fa.getName().compareTo(fb.getName()))
 				.collect(Collectors.toList());		

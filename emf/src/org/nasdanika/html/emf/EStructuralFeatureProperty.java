@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.AccessController;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.InputType;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Choice;

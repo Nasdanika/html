@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
+import org.nasdanika.common.Adaptable;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SimpleMutableContext;
@@ -17,7 +18,6 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
-import org.nasdanika.html.app.Adaptable;
 import org.nasdanika.html.app.BindingActionActivator;
 import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.Label;

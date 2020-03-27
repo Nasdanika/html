@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.localization.PropertyKeys;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.Util;
@@ -15,7 +16,6 @@ import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.bootstrap.Text.Alignment;
-import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.ViewAction;
 
 public class ETypedElementViewAction<T extends ETypedElement> extends ENamedElementViewAction<T> {

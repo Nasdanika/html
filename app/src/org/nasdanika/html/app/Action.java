@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.nasdanika.common.Adaptable;
 import org.nasdanika.html.app.impl.Util;
 
 /**

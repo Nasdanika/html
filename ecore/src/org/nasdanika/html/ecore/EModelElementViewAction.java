@@ -21,16 +21,16 @@ import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.NavigationActionActivator;
-import org.nasdanika.html.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.EObjectViewAction;
 import org.nasdanika.html.emf.ViewAction;
 
 public class EModelElementViewAction<T extends EModelElement> extends EObjectViewAction<T> {
 	
-	public static final String iconsBase = "https://www.nasdanika.org/resources/images/ecore/";
+	public static final String ICONS_BASE = "https://www.nasdanika.org/resources/images/ecore/";
 	
 	/**
 	 * Descriptions shorter than this value are put on the top of the tabs, longer
@@ -57,9 +57,8 @@ public class EModelElementViewAction<T extends EModelElement> extends EObjectVie
 	
 	@Override
 	public String getIcon() {
-		return iconsBase+target.eClass().getName()+".gif";
-	}
-	
+		return ICONS_BASE+target.eClass().getName()+".gif";
+	}	
 
 	/**
 	 * Sorting by text.

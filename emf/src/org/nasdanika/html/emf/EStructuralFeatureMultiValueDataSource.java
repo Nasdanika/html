@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.app.Delta;
 import org.nasdanika.html.app.Diagnostic;
 import org.nasdanika.html.app.MultiValueDataSource;
