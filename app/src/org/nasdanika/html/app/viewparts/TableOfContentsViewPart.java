@@ -25,15 +25,19 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 	private boolean hover;
 	private boolean small;
 	private boolean striped;
+	
+	private boolean tooltips;	
 
 	public TableOfContentsViewPart(
 			String role, 
 			String header, 
 			boolean descriptions, 
+			boolean tooltips,
 			int depth) {
 		
 		super(role, header, depth);
 		this.descriptions = descriptions;
+		this.tooltips = tooltips;
 	}
 
 	@Override
@@ -86,7 +90,7 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 					categoryLabel.style("margin-left", ((effectiveLevel - 1) * 2) + "em");
 				}
 				Cell categoryCell = categoryRow.cell(categoryLabel);
-				if (descriptions) {
+				if (descriptions || tooltips) {
 					categoryCell.toHTMLElement().colspan(2);
 				}
 				++effectiveLevel;
@@ -101,6 +105,8 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 				actionRow.cell(actionLink);
 				if (descriptions) {
 					actionRow.cell(rowAction.getDescription());
+				} else if (tooltips) {
+					actionRow.cell(rowAction.getTooltip());
 				}
 				rows(viewGenerator, rowAction, effectiveLevel + 1, table);
 			}

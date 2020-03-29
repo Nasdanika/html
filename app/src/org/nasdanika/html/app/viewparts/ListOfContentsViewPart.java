@@ -96,9 +96,9 @@ public class ListOfContentsViewPart extends TableOfContentsBaseViewPart {
 				itemsContainer.content(actionItem);
 				actionItem.content(viewGenerator.link(itemAction));	
 				if (tooltip) {
-					String actionDescription = itemAction.getTooltip();
-					if (!Util.isBlank(actionDescription)) {
-						actionItem.content(" - ", actionDescription);
+					String actionTooltip = itemAction.getTooltip();
+					if (!Util.isBlank(actionTooltip)) {
+						actionItem.content(" - ", actionTooltip);
 					}
 				}
 				Tag subList = list(viewGenerator, itemAction, level + 1, levelType);
