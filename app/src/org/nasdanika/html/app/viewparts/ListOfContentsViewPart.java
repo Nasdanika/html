@@ -1,5 +1,6 @@
 package org.nasdanika.html.app.viewparts;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -16,7 +17,7 @@ import org.nasdanika.html.app.ViewGenerator;
 
 public class ListOfContentsViewPart extends TableOfContentsBaseViewPart {
 
-	private OrderedListType orderedListType;
+	protected OrderedListType orderedListType;
 	private boolean tooltip;
 
 	public ListOfContentsViewPart(
@@ -59,8 +60,8 @@ public class ListOfContentsViewPart extends TableOfContentsBaseViewPart {
 		if (level > depth) {
 			return null;
 		}
-		List<Entry<Label, List<Action>>> groupedChildren = currentAction.getChildrenGroupedByCategory(role);
-		if (groupedChildren.isEmpty()) {
+		Collection<Entry<Label, List<Action>>> groupedActions = getGroupedActions(currentAction);
+		if (groupedActions.isEmpty()) {
 			return null;
 		}
 
@@ -70,7 +71,7 @@ public class ListOfContentsViewPart extends TableOfContentsBaseViewPart {
 			list.attribute("type", levelType.code);
 		}
 		
-		for (Entry<Label, List<Action>> ge: groupedChildren) {
+		for (Entry<Label, List<Action>> ge: groupedActions) {
 			Tag itemsContainer = list;
 			if (ge.getKey() != null) {
 				Tag categoryItem = htmlFactory.tag(TagName.li);
@@ -109,6 +110,10 @@ public class ListOfContentsViewPart extends TableOfContentsBaseViewPart {
 		}
 		
 		return list;
+	}
+
+	protected Collection<Entry<Label, List<Action>>> getGroupedActions(Action currentAction) {
+		return currentAction.getChildrenGroupedByCategory(role);
 	}
 
 }

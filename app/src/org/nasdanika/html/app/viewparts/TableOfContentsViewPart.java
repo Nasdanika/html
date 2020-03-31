@@ -1,5 +1,6 @@
 package org.nasdanika.html.app.viewparts;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -47,6 +48,17 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 		if (action == null) {
 			return null;
 		}
+		Table table = createTable(noDecoratorViewGenerator);
+		rows(noDecoratorViewGenerator, action, 1, table);
+		if (Util.isBlank(header)) {
+			return table;
+		}
+		int headerLevel = noDecoratorViewGenerator.get(SectionStyle.HEADER_LEVEL, Integer.class, 3);
+		HTMLFactory htmlFactory = noDecoratorViewGenerator.get(HTMLFactory.class);		
+		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, header), table);
+	}
+
+	protected Table createTable(ViewGenerator noDecoratorViewGenerator) {
 		BootstrapFactory bootstrapFactory = noDecoratorViewGenerator.get(BootstrapFactory.class);
 		Table table = bootstrapFactory.table();
 		table.bordered(bordered);
@@ -55,13 +67,7 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 		table.hover(hover);
 		table.small(small);
 		table.striped(striped);
-		rows(noDecoratorViewGenerator, action, 1, table);
-		if (Util.isBlank(header)) {
-			return table;
-		}
-		int headerLevel = noDecoratorViewGenerator.get(SectionStyle.HEADER_LEVEL, Integer.class, 3);
-		HTMLFactory htmlFactory = noDecoratorViewGenerator.get(HTMLFactory.class);		
-		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, header), table);
+		return table;
 	}
 
 	/**
@@ -76,12 +82,12 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 		if (level > depth) {
 			return;
 		}
-		List<Entry<Label, List<Action>>> groupedChildren = currentAction.getChildrenGroupedByCategory(role);
-		if (groupedChildren.isEmpty()) {
+		Collection<Entry<Label, List<Action>>> groupedActions = getGroupedActions(currentAction);
+		if (groupedActions.isEmpty()) {
 			return;
 		}
 		
-		for (Entry<Label, List<Action>> ge: groupedChildren) {
+		for (Entry<Label, List<Action>> ge: groupedActions) {
 			int effectiveLevel = level;
 			if (ge.getKey() != null) {
 				Row categoryRow = table.row();
@@ -111,6 +117,10 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 				rows(viewGenerator, rowAction, effectiveLevel + 1, table);
 			}
 		}
+	}
+
+	protected Collection<Entry<Label, List<Action>>> getGroupedActions(Action currentAction) {
+		return currentAction.getChildrenGroupedByCategory(role);
 	}
 
 	public void setBordered(boolean bordered) {
