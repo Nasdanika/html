@@ -267,7 +267,7 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 			acit = ePackage.eAllContents();
 		} else {
 			ResourceSet resourceSet = eResource.getResourceSet();
-			acit = resourceSet == null ? eResource.getAllContents() : eResource.getAllContents();
+			acit = resourceSet == null ? eResource.getAllContents() : resourceSet.getAllContents();
 		}
 		Set<EClass> ret = new HashSet<>();
 		acit.forEachRemaining(obj -> {
