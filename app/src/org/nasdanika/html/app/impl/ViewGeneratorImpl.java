@@ -156,8 +156,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 			if (adapter != null) {
 				adapter.decorate(target, this);
 			}
-		}
-		
+		}		
 	}
 	
 	protected void bindLink(Action action, HTMLElement<?> anchor) {
@@ -338,14 +337,15 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 			Tag iconTag;
 			if (icon.contains("/")) {
 				// Image
-				iconTag = get(HTMLFactory.class).tag(TagName.img).attribute("src", icon).style().height("1em");
+				iconTag = get(HTMLFactory.class).tag(TagName.img).attribute("src", icon); //.style().height("1em");
 			} else {
 				// Class
 				iconTag = get(HTMLFactory.class).span().addClass(icon);
 			}
-			if (label.getText() != null) {
-				iconTag.style().margin().right("0.3em");
-			}
+			iconTag.addClass("nsd-label-icon");
+//			if (label.getText() != null) {
+//				iconTag.style().margin().right("0.3em");
+//			}
 			contentConsumer.accept(iconTag);
 		}		
 			
@@ -355,7 +355,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 		
 		if (!Util.isBlank(label.getNotification())) {
 			Tag badge = get(BootstrapFactory.class).badge(true, label.getColor() == Color.PRIMARY ? Color.SECONDARY : Color.PRIMARY, label.getNotification());
-			badge.style().margin().left("0.3em");
+			badge.style().margin().left("0.3em"); // TODO - also style-driven
 			contentConsumer.accept(badge);
 //			getBootstrapFactory().wrap(badge)._float().right();
 		}
