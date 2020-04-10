@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
+import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
@@ -75,7 +76,7 @@ public class NavigationBarViewPart implements ViewPart {
 					viewGenerator.label(ca, (Consumer<Object>) fragment::content);
 					ActionActivator activator = ca.getActivator();
 					if (activator instanceof NavigationActionActivator) {
-						Tag item = navBar.item(((NavigationActionActivator) activator).getUrl(), Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment);
+						Tag item = navBar.item(((NavigationActionActivator) activator).getUrl(viewGenerator.getString(Context.BASE_URI_PROPERTY)), Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment);
 						if (ca.getConfirmation() != null) {
 							item.on(Event.click, "return confirm('"+ca.getConfirmation()+"');");
 						}

@@ -43,8 +43,10 @@ public class ProgressEntryViewAction extends ActionImpl {
 		setActivator(new NavigationActionActivator() {
 			
 			@Override
-			public String getUrl() {
-				return ProgressEntryViewAction.this.getId()+".html";
+			public String getUrl(String base) {
+				String ret = ProgressEntryViewAction.this.getId()+".html";
+				// TODO - take base into account.
+				return ret;
 			}
 			
 		});

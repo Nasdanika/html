@@ -45,7 +45,7 @@ public class EModelElementViewAction<T extends EModelElement> extends EObjectVie
 		}
 		
 		ActionActivator activator = viewAction.getActivator();
-		return activator instanceof NavigationActionActivator  ? ((NavigationActionActivator) activator).getUrl() : null;
+		return activator instanceof NavigationActionActivator  ? ((NavigationActionActivator) activator).getUrl(null) : null;
 	};
 	
 	protected Function<EModelElement, String> eModelElementFirstDocSentenceProvider = eModelElement -> EObjectAdaptable.adaptTo(eModelElement, ViewAction.class).getTooltip();

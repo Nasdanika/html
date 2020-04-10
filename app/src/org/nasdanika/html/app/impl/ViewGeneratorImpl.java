@@ -163,7 +163,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 		// TODO - confirmation.
 		ActionActivator activator = getActionActivator(action);
 		if (activator instanceof NavigationActionActivator) {
-			anchor.attribute("href", ((NavigationActionActivator) activator).getUrl());
+			anchor.attribute("href", ((NavigationActionActivator) activator).getUrl(getString(BASE_URI_PROPERTY)));
 			if (action.getConfirmation() != null) {
 				anchor.on(Event.click, "return confirm('"+action.getConfirmation()+"');");
 			}
@@ -184,8 +184,8 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 			((BindingActionActivator) activator).bind(element, this);
 		} else {
 			String code = null; 
-			if (activator instanceof NavigationActionActivator) {
-				code = "location.href='"+((NavigationActionActivator) activator).getUrl()+"'";
+			if (activator instanceof NavigationActionActivator) {				
+				code = "location.href='"+((NavigationActionActivator) activator).getUrl(getString(BASE_URI_PROPERTY))+"'";
 			} else if (activator instanceof ScriptActionActivator) {
 				code = ((ScriptActionActivator) activator).getCode();
 			}
@@ -312,7 +312,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 		
 		ActionActivator activator = getActionActivator(action);
 		if (activator instanceof NavigationActionActivator) {
-			ret.anchorAttribute("onclick", "window.location='"+((NavigationActionActivator) activator).getUrl()+"';");
+			ret.anchorAttribute("onclick", "window.location='"+((NavigationActionActivator) activator).getUrl(getString(Context.BASE_URI_PROPERTY))+"';");
 		} else if (activator instanceof ScriptActionActivator) {
 			ret.anchorAttribute("onclick", ((ScriptActionActivator) activator).getCode());
 		} else if (activator instanceof BindingActionActivator) {
@@ -451,7 +451,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 					label(ca, (Consumer<Object>) fragment::content);
 					ActionActivator activator = ca.getActivator();
 					if (activator instanceof NavigationActionActivator) {
-						Tag item = navs.item(fragment, ((NavigationActionActivator) activator).getUrl(), Util.equalOrInPath(activeAction, ca), ca.isDisabled());
+						Tag item = navs.item(fragment, ((NavigationActionActivator) activator).getUrl(getString(BASE_URI_PROPERTY)), Util.equalOrInPath(activeAction, ca), ca.isDisabled());
 						if (ca.getConfirmation() != null) {
 							item.on(Event.click, "return confirm('"+ca.getConfirmation()+"');");
 						}

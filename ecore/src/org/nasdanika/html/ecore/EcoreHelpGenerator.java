@@ -82,7 +82,7 @@ public class EcoreHelpGenerator extends EcoreDocumentationGenerator {
 	
 	private Element actionTopic(Action action, Document document) {
 		Element ret = document.createElement("topic");
-		ret.setAttribute("href", contentPath + "index.html"+((NavigationActionActivator) action.getActivator()).getUrl());
+		ret.setAttribute("href", contentPath + "index.html"+((NavigationActionActivator) action.getActivator()).getUrl(null));
 		ret.setAttribute("label", action.getText());
 		for (Action child: action.getNavigationChildren()) {
 			ret.appendChild(actionTopic(child, document));

@@ -64,7 +64,7 @@ public class EcoreDocumentationGenerator {
 		NavigationActionActivator summaryActivator = new NavigationActionActivator() {
 			
 			@Override
-			public String getUrl() {
+			public String getUrl(String base) {
 				return "#content/doc-summary";
 			}
 		};

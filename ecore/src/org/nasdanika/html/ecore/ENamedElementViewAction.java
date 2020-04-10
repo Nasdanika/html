@@ -54,7 +54,7 @@ public class ENamedElementViewAction<T extends ENamedElement> extends EModelElem
 		return new NavigationActionActivator() {
 			
 			@Override
-			public String getUrl() {
+			public String getUrl(String base) {
 				return "#content/"+getId()+".html";
 			}
 			

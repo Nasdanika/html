@@ -49,7 +49,7 @@ public class BankViewAction extends EObjectViewAction<Bank> {
 		contactUs.setActivator(new NavigationActionActivator() {
 			
 			@Override
-			public String getUrl() {
+			public String getUrl(String base) {
 				return "#";
 			}
 			
