@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
@@ -11,6 +13,7 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.OrderedListType;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.ActionRegistry;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
@@ -22,17 +25,17 @@ import org.nasdanika.html.app.ViewGenerator;
  */
 public class ListOfActionsViewPart extends ListOfContentsViewPart {
 
-	private List<Action> actions;
+	private List<String> actionIds;
 
 	public ListOfActionsViewPart(
-			List<Action> actions,
+			List<String> actionIds,
 			String header, 
 			boolean tooltip, 
 			int depth,
 			OrderedListType orderedListType) {
 		
 		super(null, header, tooltip, depth, orderedListType);
-		this.actions = actions;
+		this.actionIds = actionIds;
 	}
 	
 	@Override
@@ -48,8 +51,17 @@ public class ListOfActionsViewPart extends ListOfContentsViewPart {
 	}	
 	
 	@Override
-	protected Collection<Entry<Label, List<Action>>> getGroupedActions(Action currentAction) {
-		return currentAction == null ? Collections.singletonMap((Label) null, actions).entrySet() : super.getGroupedActions(currentAction);
+	protected Collection<Entry<Label, List<Action>>> getGroupedActions(ViewGenerator viewGenerator, Action currentAction) {		
+		if (currentAction == null) {
+			ActionRegistry registry = viewGenerator.get(ActionRegistry.class);
+			if (registry == null) {
+				throw new IllegalStateException("ActionRegistry service is not present in the view generator- cannot find actions by their ids's");
+			}
+			
+			// Configuration strict/lenient? Filtering behavior is more flexible - may list all possible things and generate actual links only to those present.
+			return Collections.singletonMap((Label) null, actionIds.stream().map(registry::get).filter(Objects::nonNull).collect(Collectors.toList())).entrySet(); 
+		}
+		return super.getGroupedActions(viewGenerator, currentAction);
 	}
 
 }

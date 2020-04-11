@@ -60,7 +60,7 @@ public class ListOfContentsViewPart extends TableOfContentsBaseViewPart {
 		if (level > depth) {
 			return null;
 		}
-		Collection<Entry<Label, List<Action>>> groupedActions = getGroupedActions(currentAction);
+		Collection<Entry<Label, List<Action>>> groupedActions = getGroupedActions(viewGenerator, currentAction);
 		if (groupedActions.isEmpty()) {
 			return null;
 		}
@@ -112,7 +112,7 @@ public class ListOfContentsViewPart extends TableOfContentsBaseViewPart {
 		return list;
 	}
 
-	protected Collection<Entry<Label, List<Action>>> getGroupedActions(Action currentAction) {
+	protected Collection<Entry<Label, List<Action>>> getGroupedActions(ViewGenerator viewGenerator, Action currentAction) {
 		return currentAction.getChildrenGroupedByCategory(role);
 	}
 

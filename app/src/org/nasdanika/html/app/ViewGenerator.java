@@ -26,6 +26,14 @@ import org.nasdanika.html.jstree.JsTreeNode;
  *
  */
 public interface ViewGenerator extends MutableContext {
+	
+	/**
+	 * Prefix for an action registry property "folder" for 
+	 * cross-referencing actions. Actions are referenced as <code>registry/actions/&lt;action id&gt;[/&lt;action property&gt;]</code>
+	 * where action property is one of `text`, `icon`, `ref` - action url.
+	 * If there is no action property the reference expands to a link to the action.
+	 */
+	String ACTION_REGISTRY_PROPERTY = "registry/actions";
 		
 	// --- View part unwrapping ---
 	
