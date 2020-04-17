@@ -7,27 +7,43 @@ package org.nasdanika.html.bootstrap;
  */
 public enum Size {
 	
-	NONE(""),
-	S0("0"),
-	S1("1"),
-	S2("2"),
-	S3("3"),
-	S4("4"),
-	S5("5"),
-	S6("6"),
-	S7("7"),
-	S8("8"),
-	S9("9"),
-	S10("10"),
-	S11("11"),
-	S12("12"),
-	AUTO("auto");
+	NONE("", true),
+	S0("0", true),
+	S1("1", true),
+	S2("2", true),
+	S3("3", true),
+	S4("4", true),
+	S5("5", true),
+	S6("6", false),
+	S7("7", false),
+	S8("8", false),
+	S9("9", false),
+	S10("10", false),
+	S11("11", false),
+	S12("12", false),
+	AUTO("auto", true);
 	
-	Size(String code) {
+	Size(String code, boolean spacing) {
 		this.code = code;
+		this.spacing = spacing;
 	}		
 	
+	/**
+	 * Size code.
+	 */
 	public final String code;
+	
+	/**
+	 * If true, this size is applicable for {@link Spacing}.
+	 */
+	private final boolean spacing;
+	
+	/**
+	 * @return true if this size is applicable for {@link Spacing} - 0..5, auto.
+	 */
+	public boolean isSpacing() {
+		return spacing;
+	}
 	
 	public static Size fromCode(String code) {
 		for (Size size: values()) {
