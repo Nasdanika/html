@@ -125,7 +125,7 @@ public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends Bo
 
 			@Override
 			public Text<B> nowrap(boolean nowrap) {
-				toHTMLElement().addClassConditional(nowrap, "font-nowrap");
+				toHTMLElement().addClassConditional(nowrap, "text-nowrap");
 				return this;
 			}
 
@@ -136,7 +136,7 @@ public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends Bo
 
 			@Override
 			public Text<B> truncate(boolean truncate) {
-				toHTMLElement().addClassConditional(truncate, "font-truncate");
+				toHTMLElement().addClassConditional(truncate, "text-truncate");
 				return this;
 			}
 			
