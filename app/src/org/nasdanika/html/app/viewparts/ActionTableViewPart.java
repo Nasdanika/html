@@ -7,7 +7,6 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
-import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.SectionStyle;
@@ -76,9 +75,7 @@ public class ActionTableViewPart implements ViewPart {
 				viewGenerator.label(section, sectionRow.header().toHTMLElement());
 				
 				Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
-				if (section.getId() != null) {
-					contentFragment.content(TagName.a.create().attribute("name", section.getId()));						
-				}
+				contentFragment.content(ViewPartsUtil.sectionAnchor(section));						
 				
 				List<Action> contextChildren = section.getContextChildren();
 				if (!contextChildren.isEmpty()) {								

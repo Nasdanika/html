@@ -72,9 +72,7 @@ public class ActionGroupViewPart implements ViewPart {
 					Fragment labelFragment = viewGenerator.labelFragment(section);
 
 					Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
-					if (section.getId() != null) {
-						contentFragment.content(TagName.a.create().attribute("name", section.getId()));						
-					}
+					contentFragment.content(ViewPartsUtil.sectionAnchor(section));						
 					
 					List<Action> contextChildren = section.getContextChildren();
 					if (!contextChildren.isEmpty()) {

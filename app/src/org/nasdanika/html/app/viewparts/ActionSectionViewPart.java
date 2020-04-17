@@ -5,7 +5,6 @@ import java.util.List;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
-import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
@@ -35,9 +34,7 @@ public class ActionSectionViewPart  implements ViewPart {
 		
 		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
 		Tag sectionDiv = htmlFactory.div();
-		if (action.getId() != null) {
-			sectionDiv.content(TagName.a.create().attribute("name", action.getId()));						
-		}
+		sectionDiv.content(ViewPartsUtil.sectionAnchor(action));						
 		
 		List<Action> contextChildren = action.getContextChildren();
 		if (!contextChildren.isEmpty()) {
