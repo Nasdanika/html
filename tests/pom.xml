@@ -36,7 +36,7 @@
 		</repository>
 		<repository>
 			<id>bank</id>
-			<url>https://www.nasdanika.org/master/products/bank/repository</url>
+			<url>https://www.nasdanika.org/products/bank/1.0.0-SNAPSHOT/master/repository</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>
