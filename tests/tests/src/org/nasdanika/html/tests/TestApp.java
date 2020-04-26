@@ -41,7 +41,10 @@ public class TestApp extends HTMLTestBase {
 		
 		FontAwesomeFactory.INSTANCE.cdn(app.getHTMLPage());
 		
-		app.getHTMLPage().body(jsTreeFactory.bind(treeContainer, jsTreeFactory.buildAjaxJsTree("node.id == '#' ? 'jstree.json' : 'jstree-' + node.id + '.json'", "'context-menu-' + node.id + '.json'")));		
+		app.getHTMLPage().body(jsTreeFactory.bind(
+				treeContainer, 
+				jsTreeFactory.buildAjaxJsTree("node.id == '#' ? 'jstree.json' : 'jstree-' + node.id + '.json'", "'context-menu-' + node.id + '.json'"),
+				null));		
 		
 		writeFile("app/bootstrap/index.html", app.toString());
 		

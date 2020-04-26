@@ -50,17 +50,21 @@ public interface JsTreeFactory {
 	 * Generates script tag for binding jsTree to html element.
 	 * @param selector
 	 * @param jsTree
+	 * @param filter Filter script to manipulate jsTree object before passing it to jsTree. It can be used to add functions to jsTree, which are not supported by JSON. 
+	 * The filter script can access jsTree via <code>tree</code> variable.
 	 * @return
 	 */
-	Tag bind(String selector, Object jsTree);
+	Tag bind(String selector, Object jsTree, Object filter);
 	
 	/**
 	 * Generates script tag for binding jsTree to html element.
 	 * @param selector
 	 * @param jsTree
+	 * @param filter Filter script to manipulate jsTree object before passing it to jsTree. It can be used to add functions to jsTree, which are not supported by JSON. 
+	 * The filter script can access jsTree via <code>tree</code> variable.
 	 * @return
 	 */
-	Tag bind(HTMLElement<?> htmlElement, Object jsTree);
+	Tag bind(HTMLElement<?> htmlElement, Object jsTree, Object filter);
 	
 	HTMLFactory getHTMLFactory();	
 	

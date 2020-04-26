@@ -1,6 +1,7 @@
 package org.nasdanika.html.app;
 
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import org.nasdanika.common.Adaptable;
@@ -161,9 +162,10 @@ public interface ViewGenerator extends MutableContext {
 	 * 
 	 * @param action Action to build node from.
 	 * @param ajax If true the children key is set to 'true' instead of array of children to load children using ajax.
+	 * @param filter If not null filter is invoked and its return value is used returned. Filters can be used to modify, remove or replace nodes. E.g. to set select state.
 	 * @return
 	 */
-	JsTreeNode jsTreeNode(Action action, boolean ajax);
+	JsTreeNode jsTreeNode(Action action, boolean ajax, BiFunction<Action, JsTreeNode, JsTreeNode> filter);
 	
 	/**
 	 * Label node

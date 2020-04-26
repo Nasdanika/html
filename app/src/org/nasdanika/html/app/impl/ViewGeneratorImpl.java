@@ -2,6 +2,7 @@ package org.nasdanika.html.app.impl;
 
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import org.nasdanika.common.Adaptable;
@@ -284,7 +285,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	}
 
 	@Override
-	public JsTreeNode jsTreeNode(Action action, boolean ajax) {
+	public JsTreeNode jsTreeNode(Action action, boolean ajax, BiFunction<Action, JsTreeNode, JsTreeNode> filter) {
 		JsTreeNode ret = jsTreeNode(action);
 		ret.disabled(action.isDisabled());
 		List<Entry<Label, List<Action>>> categories = action.getNavigationChildrenGroupedByCategory();
@@ -298,13 +299,19 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 				List<Action> categoryActions = (List<Action>) group.getValue();
 				if (category == null || Util.isBlank(category.getText())) {
 					for (Action ca: categoryActions) {
-						ret.children().add(jsTreeNode(ca, ajax));
+						JsTreeNode jsTreeNode = jsTreeNode(ca, ajax, filter);
+						if (jsTreeNode != null) {
+							ret.children().add(jsTreeNode);
+						}
 					}				
 				} else {
 					JsTreeNode categoryNode = jsTreeNode(category);
 					ret.children().add(categoryNode);
 					for (Action ca: categoryActions) {
-						categoryNode.children().add(jsTreeNode(ca, ajax));
+						JsTreeNode jsTreeNode = jsTreeNode(ca, ajax, filter);
+						if (jsTreeNode != null) {
+							categoryNode.children().add(jsTreeNode);
+						}
 					}				
 				}			
 			}
@@ -319,7 +326,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 			((BindingActionActivator) activator).bind(ret, this);
 		}				
 		
-		return ret;
+		return filter == null ? ret : filter.apply(action, ret);
 	}
 
 	@Override

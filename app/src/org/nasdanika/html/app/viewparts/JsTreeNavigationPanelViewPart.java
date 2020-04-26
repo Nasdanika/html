@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.function.BiFunction;
 import java.util.Set;
 import java.util.UUID;
 
@@ -77,6 +78,16 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 		Tag container = htmlFactory.div().id(treeId);
 		JsTreeFactory jsTreeFactory = viewGenerator.get(JsTreeFactory.class);
 		List<JsTreeNode> roots = new ArrayList<>();
+		
+		BiFunction<Action, JsTreeNode, JsTreeNode> selector = (action, node) -> {
+			if (action == activeAction) {
+				node.selected();
+			} else {
+				node.selected(Util.equalOrInPath(activeAction, action) && action.getNavigationChildren().isEmpty());
+			}
+			return node;
+		};
+				
 		// Group by category
 		for (Entry<Label, ?> group: Util.groupByCategory(rootActions)) {			
 			Label category = group.getKey();
@@ -84,17 +95,19 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 			List<Action> categoryActions = (List<Action>) group.getValue();
 			if (!categorize || category == null || Util.isBlank(category.getText())) {
 				for (Action ca: categoryActions) {
-					JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false);
-					jsTreeNode.selected(Util.equalOrInPath(activeAction, ca) && ca.getNavigationChildren().isEmpty());
-					roots.add(jsTreeNode);
+					JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false, selector);
+					if (jsTreeNode != null) {
+						roots.add(jsTreeNode);
+					}
 				}				
 			} else {
 				JsTreeNode categoryNode = viewGenerator.jsTreeNode(category);
 				roots.add(categoryNode);
 				for (Action ca: categoryActions) {
-					JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false);
-					jsTreeNode.selected(Util.equalOrInPath(activeAction, ca) && ca.getNavigationChildren().isEmpty());
-					categoryNode.children().add(jsTreeNode);
+					JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false, selector);
+					if (jsTreeNode != null) {
+						categoryNode.children().add(jsTreeNode);
+					}
 				}				
 			}			
 		}
@@ -103,7 +116,7 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 //		System.out.println("----");
 //		System.out.println(jsTree.toString(4));
 		// TODO - context menus
-		Tag script = jsTreeFactory.bind(container, jsTree);
+		Tag script = jsTreeFactory.bind(container, jsTree, getTreeFilter());
 		return htmlFactory.fragment(container, script);
 	}
 	
@@ -115,6 +128,13 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 	protected void configureJsTree(JSONObject jsTree) {
 		jsTree.put("plugins", Collections.singletonList("state"));		
 		jsTree.put("state", Collections.singletonMap("key", treeId));
+	}
+	
+	/**
+	 * @return Script to filter/configure the tree. This implementation adds a filter function to the state plugin which deletes selection.
+	 */
+	protected String getTreeFilter() {
+		return "tree.state.filter = function(state) { delete state.core.selected; return state; };";
 	}
 
 }

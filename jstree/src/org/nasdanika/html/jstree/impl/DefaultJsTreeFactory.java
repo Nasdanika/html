@@ -74,16 +74,19 @@ public class DefaultJsTreeFactory implements JsTreeFactory {
 	}
 
 	@Override
-	public Tag bind(String selector, Object jsTree) {
-		return htmlFactory.nonEmptyTag(TagName.script, "$('"+selector+"').jstree("+jsTree+");");
+	public Tag bind(String selector, Object jsTree, Object filter) {
+		if (filter == null) {
+			return htmlFactory.nonEmptyTag(TagName.script, "$('"+selector+"').jstree("+jsTree+");");
+		}
+		return htmlFactory.nonEmptyTag(TagName.script, "$('"+selector+"').jstree(function(tree) { " + filter + " return tree; }(" + jsTree + "));");
 	}
 
 	@Override
-	public Tag bind(HTMLElement<?> htmlElement, Object jsTree) {
+	public Tag bind(HTMLElement<?> htmlElement, Object jsTree, Object filter) {
 		if (htmlElement.getId() == null) {
 			htmlElement.id(htmlFactory.nextId());
 		}
-		return bind("#"+htmlElement.getId(), jsTree);
+		return bind("#"+htmlElement.getId(), jsTree, filter);
 	}
 	
 }
