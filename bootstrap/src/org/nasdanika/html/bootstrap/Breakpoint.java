@@ -46,6 +46,10 @@ public enum Breakpoint {
 	}
 		
 	public static Breakpoint fromLabel(String label) {
+		if (label == null || label.trim().length() == 0) {
+			return DEFAULT;
+		}
+		
 		for (Breakpoint breakpoint: values()) {
 			if (breakpoint.label.equals(label)) {
 				return breakpoint;
