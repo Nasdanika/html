@@ -108,7 +108,8 @@ public class EClassViewAction extends EClassifierViewAction<EClass> {
 				ETypedElement typedElement = child.adaptTo(ETypedElement.class);
 				EClassifier type = typedElement.getEType();
 				ViewAction typeViewAction = EObjectAdaptable.adaptTo(type, ViewAction.class);
-				body.row(viewGenerator.link(child), typeViewAction == null ?  type.getName() : viewGenerator.link(typeViewAction), cardinality(typedElement), child.getTooltip());			
+				String typeName = type == null ? "void" : type.getName();
+				body.row(viewGenerator.link(child), typeViewAction == null ?  typeName : viewGenerator.link(typeViewAction), cardinality(typedElement), child.getTooltip());			
 			});
 			tabs.item(getResourceContext().getString(PropertyKeys.UI_CONTENTS, "Contents"), table);
 		}
