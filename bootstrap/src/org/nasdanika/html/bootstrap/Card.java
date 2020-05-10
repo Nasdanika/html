@@ -1,12 +1,11 @@
 package org.nasdanika.html.bootstrap;
 
-import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Tag;
 
 public interface Card extends BootstrapElement<Tag, Card> {
 	
 	/**
-	 * Card navs with content using the underlying card header for navs a and body for content. 
+	 * Card navs with content using the underlying card header for navs and body for content. 
 	 * @author Pavel Vlasov
 	 *
 	 */

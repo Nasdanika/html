@@ -1,5 +1,6 @@
 package org.nasdanika.html.bootstrap;
 
+import org.nasdanika.html.Container;
 import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Tag;
 
@@ -8,7 +9,7 @@ import org.nasdanika.html.Tag;
  * @author Pavel Vlasov
  *
  */
-public interface Navs extends BootstrapElement<Tag,Navs>, NamedItemsContainer, Card.Navs {
+public interface Navs extends BootstrapElement<Tag,Navs>, NamedItemsContainer, Card.Navs, Container<Navs> {
 	
 	/**
 	 * Adds an item with content. 

@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import org.nasdanika.common.Adaptable;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.NullProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SimpleMutableContext;
 import org.nasdanika.html.Container;
@@ -457,7 +458,10 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 					Fragment fragment = get(HTMLFactory.class).fragment();
 					label(ca, (Consumer<Object>) fragment::content);
 					ActionActivator activator = ca.getActivator();
-					if (activator instanceof NavigationActionActivator) {
+					if (activator.inline()) {						
+						ProgressMonitor progressMonitor = get(ProgressMonitor.class, new NullProgressMonitor()); // Better way?
+						navs.content(ca.generate(this, progressMonitor));
+					} else if (activator instanceof NavigationActionActivator) {
 						Tag item = navs.item(fragment, ((NavigationActionActivator) activator).getUrl(getString(BASE_URI_PROPERTY)), Util.equalOrInPath(activeAction, ca), ca.isDisabled());
 						if (ca.getConfirmation() != null) {
 							item.on(Event.click, "return confirm('"+ca.getConfirmation()+"');");

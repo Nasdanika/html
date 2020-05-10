@@ -7,5 +7,13 @@ package org.nasdanika.html.app;
  *
  */
 public interface ActionActivator {
+	
+	/**
+	 * If this method returns true then action shall be inlined if possible, i.e. its content shall be rendered instead of a link.
+	 * @return
+	 */
+	default boolean inline() {
+		return false;
+	};
 
 }

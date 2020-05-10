@@ -115,4 +115,10 @@ public class NavsImpl extends WrappingBootstrapElementImpl<Tag,Navs> implements 
 		return this;
 	}
 
+	@Override
+	public Navs content(Object... content) {
+		htmlElement.content(content);
+		return this;
+	}
+
 }

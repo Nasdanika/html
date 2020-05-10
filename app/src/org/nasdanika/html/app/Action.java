@@ -112,8 +112,8 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 * @param role
 	 * @return
 	 */
-	boolean isInRole(String role);	
-	
+	boolean isInRole(String role);
+		
 	/**
 	 * Parent action.
 	 * @return
@@ -268,6 +268,6 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 			}
 		}
 		return null;
-	}	
+	}
 		
 }
