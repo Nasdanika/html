@@ -13,6 +13,6 @@ Require-Bundle: org.nasdanika.html.emf;visibility:=reexport,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi;bundle-version="2.15.0",
  org.nasdanika.emf,
- org.apache.commons.commons-codec;bundle-version="1.13.0"
+ org.apache.commons.codec;bundle-version="1.13.0"
 Export-Package: org.nasdanika.html.ecore
 Automatic-Module-Name: org.nasdanika.html.ecore
