@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Util;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
@@ -127,7 +128,7 @@ public class ContentPanelViewPart implements ViewPart {
 		}
 		
 		if (showTitle) {			
-			if (!showBreadcrumb && lastNonSection.getCategory() != null) {
+			if (!showBreadcrumb && lastNonSection.getCategory() != null && !Util.isBlank(lastNonSection.getCategory().getText())) {
 				// Title category breadcrumb
 				ViewGenerator breadcrumbViewGenerator = createBreadcrumbViewGenerator(viewGenerator);
 				createBreadcrumb(breadcrumbViewGenerator, contentContainer).item(false, breadcrumbViewGenerator.label(lastNonSection.getCategory()));					
