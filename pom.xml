@@ -74,6 +74,25 @@
 				<configuration>
 					<linksource>true</linksource>
 					<failOnError>false</failOnError>
+					<links>
+						<!-- Third party -->
+						<link>https://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/</link>
+
+						<!-- Core -->
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.cli/apidocs</link>
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.common/apidocs</link>
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.emf/apidocs</link>
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.emf.edit/apidocs</link>
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.emf.presentation/apidocs</link>
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.sirius.tree/apidocs</link>
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.sirius.tree.edit/apidocs</link>
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.eclipse/apidocs</link>
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.ncore/apidocs</link>
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.ncore.edit/apidocs</link>
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.ui/apidocs</link>
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.help/apidocs</link>
+						<link>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/bundles/org.nasdanika.texttospeech/apidocs</link>
+					</links>
 				</configuration>				
 			</plugin>
 			<plugin>
