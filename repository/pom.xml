@@ -79,7 +79,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html/apidocs</outputDirectory>
+							<outputDirectory>${basedir}/target/site/bundles/org.nasdanika.html/apidocs</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/../html/target/site/apidocs</directory>
@@ -95,7 +95,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.bootstrap/apidocs</outputDirectory>
+							<outputDirectory>${basedir}/target/site/bundles/org.nasdanika.html.bootstrap/apidocs</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/../bootstrap/target/site/apidocs</directory>
@@ -111,7 +111,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.fontawesome/apidocs</outputDirectory>
+							<outputDirectory>${basedir}/target/site/bundles/org.nasdanika.html.fontawesome/apidocs</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/../fontawesome/target/site/apidocs</directory>
@@ -127,7 +127,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.knockout/apidocs</outputDirectory>
+							<outputDirectory>${basedir}/target/site/bundles/org.nasdanika.html.knockout/apidocs</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/../knockout/target/site/apidocs</directory>
@@ -143,7 +143,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.jstree/apidocs</outputDirectory>
+							<outputDirectory>${basedir}/target/site/bundles/org.nasdanika.html.jstree/apidocs</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/../jstree/target/site/apidocs</directory>
@@ -159,7 +159,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.app/apidocs</outputDirectory>
+							<outputDirectory>${basedir}/target/site/bundles/org.nasdanika.html.app/apidocs</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/../app/target/site/apidocs</directory>
@@ -175,7 +175,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.emf/apidocs</outputDirectory>
+							<outputDirectory>${basedir}/target/site/bundles/org.nasdanika.html.emf/apidocs</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/../emf/target/site/apidocs</directory>
@@ -191,7 +191,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.ecore/apidocs</outputDirectory>
+							<outputDirectory>${basedir}/target/site/bundles/org.nasdanika.html.ecore/apidocs</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/../ecore/target/site/apidocs</directory>
@@ -207,7 +207,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/site/apidocs/org.nasdanika.html.echarts/apidocs</outputDirectory>
+							<outputDirectory>${basedir}/target/site/bundles/org.nasdanika.html.echarts/apidocs</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/../echarts/target/site/apidocs</directory>
