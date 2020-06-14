@@ -15,7 +15,8 @@
 	</prerequisites>
 
 	<properties>
-		<tycho-version>1.6.0</tycho-version>
+		<tycho-version>1.7.0</tycho-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<repositories>
@@ -60,7 +61,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-site-plugin</artifactId>
-			    <version>3.8.2</version>
+			    <version>3.9.0</version>
 			    <configuration>
 			        <skip>true</skip>
 			        <skipDeploy>true</skipDeploy>
@@ -69,7 +70,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.1.1</version>
+				<version>3.2.0</version>
 				<configuration>
 					<linksource>true</linksource>
 					<failOnError>false</failOnError>
