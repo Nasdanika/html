@@ -1,11 +1,11 @@
 package org.nasdanika.html.app.viewparts;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.function.BiFunction;
 import java.util.Set;
 import java.util.UUID;
 
@@ -79,15 +79,6 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 		JsTreeFactory jsTreeFactory = viewGenerator.get(JsTreeFactory.class);
 		List<JsTreeNode> roots = new ArrayList<>();
 		
-		BiFunction<Action, JsTreeNode, JsTreeNode> selector = (action, node) -> {
-			if (action == activeAction) {
-				node.selected();
-			} else {
-				node.selected(Util.equalOrInPath(activeAction, action) && action.getNavigationChildren().isEmpty());
-			}
-			return node;
-		};
-				
 		// Group by category
 		for (Entry<Label, ?> group: Util.groupByCategory(rootActions)) {			
 			Label category = group.getKey();
@@ -95,7 +86,7 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 			List<Action> categoryActions = (List<Action>) group.getValue();
 			if (!categorize || category == null || Util.isBlank(category.getText())) {
 				for (Action ca: categoryActions) {
-					JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false, selector);
+					JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false, this::filterNode);
 					if (jsTreeNode != null) {
 						roots.add(jsTreeNode);
 					}
@@ -104,7 +95,7 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 				JsTreeNode categoryNode = viewGenerator.jsTreeNode(category);
 				roots.add(categoryNode);
 				for (Action ca: categoryActions) {
-					JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false, selector);
+					JsTreeNode jsTreeNode = viewGenerator.jsTreeNode(ca, false, this::filterNode);
 					if (jsTreeNode != null) {
 						categoryNode.children().add(jsTreeNode);
 					}
@@ -126,8 +117,27 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 	 * @param jsTree
 	 */
 	protected void configureJsTree(JSONObject jsTree) {
-		jsTree.put("plugins", Collections.singletonList("state"));		
+		jsTree.put("plugins", Arrays.asList("state", "types")); 		
 		jsTree.put("state", Collections.singletonMap("key", treeId));
+		jsTree.put("types", Collections.singletonMap("leaf", Collections.singletonMap("icon", "las la-file-alt"))); // Line Awesome Leaf Icon.
+	}
+	
+	/**
+	 * Filters/configures node. This implementation sets selection for active node and type to "leaf" for nodes without children.
+	 * @param action
+	 * @param node
+	 * @return
+	 */
+	protected JsTreeNode filterNode(Action action, JsTreeNode node) {
+		if (action == activeAction) {
+			node.selected();
+		} else {
+			node.selected(Util.equalOrInPath(activeAction, action) && action.getNavigationChildren().isEmpty());
+		}
+		if (node.children().isEmpty()) {
+			node.attribute("type", "leaf"); // Set node type to leaf if there are no children.
+		}
+		return node;		
 	}
 	
 	/**

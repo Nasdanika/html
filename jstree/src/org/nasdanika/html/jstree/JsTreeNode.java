@@ -72,6 +72,14 @@ public interface JsTreeNode {
 	 * @return
 	 */
 	JsTreeNode listItemAttribute(String name, Object value);
+
+	/**
+	 * Set custom Attribute/property of the JsTree JSON object.
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	JsTreeNode attribute(String name, Object value);
 	
 	/**
 	 * Attribute for the generated A node.

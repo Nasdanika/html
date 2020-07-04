@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Predicate;
 
 import org.json.JSONArray;
@@ -14,8 +15,11 @@ class JsTreeNodeImpl implements JsTreeNode {
 	
 	private Object id;
 	private Object text;
+	private Map<String, Object> attributes = new HashMap<>();
 	private Map<String, Object> aAttributes = new HashMap<>();
-	private Map<String, Object> liAttributes = new HashMap<>();
+	private Map<String, Object> liAttributes = new HashMap<>();	
+	private Object data;
+	private Map<String, Object> properties = new HashMap<>();
 	private List<JsTreeNode> children = new ArrayList<>();			
 	private boolean selected;
 	private boolean opened;
@@ -67,6 +71,16 @@ class JsTreeNodeImpl implements JsTreeNode {
 	@Override
 	public List<JsTreeNode> children() {
 		return children;
+	}
+
+	@Override
+	public JsTreeNode attribute(String name, Object value) {
+		if (value == null) {
+			attributes.remove(name);
+		} else {
+			attributes.put(name, value);
+		}
+		return this;
 	}
 
 	@Override
@@ -149,15 +163,16 @@ class JsTreeNodeImpl implements JsTreeNode {
 			data.put("a_attr", aAttributes);
 		}
 		
+		for (Entry<String, Object> ae: attributes.entrySet()) {
+			data.put(ae.getKey(), ae.getValue());
+		}
+				
 		return data;
 	}
 	
 	public String toString() {
 		return toJSON().toString();
 	}	
-	
-	private Object data;
-	private Map<String, Object> properties = new HashMap<>();
 	
 	@Override
 	public Object getData() {
