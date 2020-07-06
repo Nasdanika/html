@@ -119,7 +119,7 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 	protected void configureJsTree(JSONObject jsTree) {
 		jsTree.put("plugins", Arrays.asList("state", "types")); 		
 		jsTree.put("state", Collections.singletonMap("key", treeId));
-		jsTree.put("types", Collections.singletonMap("leaf", Collections.singletonMap("icon", "las la-file-alt"))); // Line Awesome Leaf Icon.
+		jsTree.put("types", Collections.singletonMap("leaf", Collections.singletonMap("icon", "jstree-file"))); // Line Awesome Leaf Icon.
 	}
 	
 	/**
