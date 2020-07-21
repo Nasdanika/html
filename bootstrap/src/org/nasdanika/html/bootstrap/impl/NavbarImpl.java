@@ -55,7 +55,7 @@ public class NavbarImpl extends WrappingBootstrapElementImpl<Tag, Navbar> implem
 	@Override
 	public Tag item(Object href, boolean active, boolean disabled, Object... content) {
 		HTMLFactory htmlFactory = getFactory().getHTMLFactory();
-		Tag link = htmlFactory.link(href, content).attribute("disabled", disabled).addClass("nav-link"); 
+		Tag link = htmlFactory.link(href, content).addClassConditional(disabled, "disabled").addClass("nav-link"); 
 		Tag li = htmlFactory.tag(TagName.li, link).addClass("nav-item").addClassConditional(active, "active");
 		items.content(li);
 		return li;
