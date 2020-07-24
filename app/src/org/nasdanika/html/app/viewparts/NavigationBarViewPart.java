@@ -77,7 +77,7 @@ public class NavigationBarViewPart implements ViewPart {
 					ActionActivator activator = ca.getActivator();
 					if (activator instanceof NavigationActionActivator) {
 						Tag item = navBar.item(((NavigationActionActivator) activator).getUrl(viewGenerator.getString(Context.BASE_URI_PROPERTY)), Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment);
-						if (ca.getConfirmation() != null) {
+						if (!Util.isBlank(ca.getConfirmation())) {
 							item.on(Event.click, "return confirm('"+ca.getConfirmation()+"');");
 						}
 						viewGenerator.decorate(item, ca);
@@ -86,7 +86,7 @@ public class NavigationBarViewPart implements ViewPart {
 //						}
 					} else if (activator instanceof ScriptActionActivator) {
 						String code = ((ScriptActionActivator) activator).getCode();
-						if (ca.getConfirmation() != null) {
+						if (!Util.isBlank(ca.getConfirmation())) {
 							code = "if (confirm('"+ca.getConfirmation()+"')) { "+code+" }";
 						}
 						Tag item = navBar.item("#", Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment).on(Event.click, code);

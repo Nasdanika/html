@@ -166,12 +166,12 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 		ActionActivator activator = getActionActivator(action);
 		if (activator instanceof NavigationActionActivator) {
 			anchor.attribute("href", ((NavigationActionActivator) activator).getUrl(getString(BASE_URI_PROPERTY)));
-			if (action.getConfirmation() != null) {
+			if (!Util.isBlank(action.getConfirmation())) {
 				anchor.on(Event.click, "return confirm('"+action.getConfirmation()+"');");
 			}
 		} else if (activator instanceof ScriptActionActivator) {
 			String code = ((ScriptActionActivator) activator).getCode();
-			if (action.getConfirmation() != null) {
+			if (!Util.isBlank(action.getConfirmation())) {
 				code = "if (confirm('"+action.getConfirmation()+"')) { "+code+" }";
 			}
 			anchor.on(Event.click, code);
@@ -193,7 +193,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 			}
 			
 			if (code != null) {
-				if (action.getConfirmation() != null) {
+				if (!Util.isBlank(action.getConfirmation())) {
 					code = "if (confirm('"+action.getConfirmation()+"')) { "+code+" }";
 				}
 				element.on(Event.click, code);
@@ -463,7 +463,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 						navs.content(ca.generate(this, progressMonitor));
 					} else if (activator instanceof NavigationActionActivator) {
 						Tag item = navs.item(fragment, ((NavigationActionActivator) activator).getUrl(getString(BASE_URI_PROPERTY)), Util.equalOrInPath(activeAction, ca), ca.isDisabled());
-						if (ca.getConfirmation() != null) {
+						if (!Util.isBlank(ca.getConfirmation())) {
 							item.on(Event.click, "return confirm('"+ca.getConfirmation()+"');");
 						}
 						if (textColor != null) {
@@ -472,7 +472,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 						decorate(item, ca);
 					} else if (activator instanceof ScriptActionActivator) {
 						String code = ((ScriptActionActivator) activator).getCode();
-						if (ca.getConfirmation() != null) {
+						if (!Util.isBlank(ca.getConfirmation())) {
 							code = "if (confirm('"+ca.getConfirmation()+"')) { "+code+" }";
 						}
 						Tag item = navs.item(fragment, "#", Util.equalOrInPath(activeAction, ca), ca.isDisabled()).on(Event.click, code);
