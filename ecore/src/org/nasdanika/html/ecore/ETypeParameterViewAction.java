@@ -2,12 +2,8 @@ package org.nasdanika.html.ecore;
 
 import java.util.Iterator;
 
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.ETypeParameter;
-import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.html.app.ViewGenerator;
-import org.nasdanika.html.app.impl.Util;
 
 public class ETypeParameterViewAction extends ENamedElementViewAction<ETypeParameter> {
 
