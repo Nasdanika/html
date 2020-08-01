@@ -9,6 +9,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.nasdanika.common.Adaptable;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.FilterExecutionParticipant;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.html.app.impl.Util;
 
 /**
@@ -18,6 +22,63 @@ import org.nasdanika.html.app.impl.Util;
  *
  */
 public interface Action extends Label, ViewPart, Categorized, Adaptable {
+		
+	/**
+	 * Binding of org.nasdanika.Supplier to {@link Action}
+	 * @author Pavel
+	 *
+	 */
+	interface Supplier extends org.nasdanika.common.Supplier<Action> {
+		
+		/**
+		 * Wraps generic supplier in this strongly typed one.
+		 * @param generic
+		 */
+		static Supplier from(org.nasdanika.common.Supplier<Action> generic) {
+			class SupplierImpl extends FilterExecutionParticipant<org.nasdanika.common.Supplier<Action>> implements Supplier {
+	
+				public SupplierImpl(org.nasdanika.common.Supplier<Action> target) {
+					super(target);
+				}
+	
+				@Override
+				public Action execute(ProgressMonitor progressMonitor) throws Exception {
+					return target.execute(progressMonitor);
+				}
+				
+			}
+			return new SupplierImpl(generic);			
+		}
+		
+		/**
+		 * Binding of {@link SupplierFactory} to {@link Supplier}
+		 * @author Pavel
+		 *
+		 */
+		interface Factory extends SupplierFactory<Action> {
+			
+			@Override
+			Supplier create(Context context) throws Exception;
+			
+			/**
+			 * Wraps generic {@link SupplierFactory} in this strongly typed {@link Factory}
+			 * @param generic
+			 * @return
+			 */
+			static Factory from(SupplierFactory<Action> generic) {
+				return new Factory() {
+	
+					@Override
+					public Supplier create(Context context) throws Exception {
+						return Supplier.from(generic.create(context));
+					}
+					
+				};
+			}
+			
+		}
+		
+	}	
 	
 	/**
 	 * "Built-in" roles.

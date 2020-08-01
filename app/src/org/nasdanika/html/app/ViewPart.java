@@ -3,7 +3,10 @@ package org.nasdanika.html.app;
 import java.util.List;
 import java.util.function.Function;
 
+import org.nasdanika.common.Context;
+import org.nasdanika.common.FilterExecutionParticipant;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.SupplierFactory;
 
 /**
  * An interface to delegate UI generation.
@@ -11,6 +14,63 @@ import org.nasdanika.common.ProgressMonitor;
  *
  */
 public interface ViewPart {
+		
+	/**
+	 * Binding of org.nasdanika.Supplier to {@link ViewPart}
+	 * @author Pavel
+	 *
+	 */
+	interface Supplier extends org.nasdanika.common.Supplier<ViewPart> {
+		
+		/**
+		 * Wraps generic supplier in this strongly typed one.
+		 * @param generic
+		 */
+		static Supplier from(org.nasdanika.common.Supplier<ViewPart> generic) {
+			class SupplierImpl extends FilterExecutionParticipant<org.nasdanika.common.Supplier<ViewPart>> implements Supplier {
+
+				public SupplierImpl(org.nasdanika.common.Supplier<ViewPart> target) {
+					super(target);
+				}
+
+				@Override
+				public ViewPart execute(ProgressMonitor progressMonitor) throws Exception {
+					return target.execute(progressMonitor);
+				}
+				
+			}
+			return new SupplierImpl(generic);			
+		}
+		
+		/**
+		 * Binding of {@link SupplierFactory} to {@link Supplier}
+		 * @author Pavel
+		 *
+		 */
+		interface Factory extends SupplierFactory<ViewPart> {
+			
+			@Override
+			Supplier create(Context context) throws Exception;
+			
+			/**
+			 * Wraps generic {@link SupplierFactory} in this strongly typed {@link Factory}
+			 * @param generic
+			 * @return
+			 */
+			static Factory from(SupplierFactory<ViewPart> generic) {
+				return new Factory() {
+
+					@Override
+					public Supplier create(Context context) throws Exception {
+						return Supplier.from(generic.create(context));
+					}
+					
+				};
+			}
+			
+		}
+		
+	}	
 	
 	Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor);
 	

@@ -3,7 +3,10 @@ package org.nasdanika.html.app;
 import java.util.function.Function;
 
 import org.nasdanika.common.Composeable;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.FilterExecutionParticipant;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.SupplierFactory;
 
 /**
  * Builds the target passed to the build method.
@@ -12,6 +15,63 @@ import org.nasdanika.common.ProgressMonitor;
  *
  */
 public interface ViewBuilder extends Composeable<ViewBuilder> {
+		
+	/**
+	 * Binding of org.nasdanika.Supplier to {@link ViewBuilder}
+	 * @author Pavel
+	 *
+	 */
+	interface Supplier extends org.nasdanika.common.Supplier<ViewBuilder> {
+		
+		/**
+		 * Wraps generic supplier in this strongly typed one.
+		 * @param generic
+		 */
+		static Supplier from(org.nasdanika.common.Supplier<ViewBuilder> generic) {
+			class SupplierImpl extends FilterExecutionParticipant<org.nasdanika.common.Supplier<ViewBuilder>> implements Supplier {
+
+				public SupplierImpl(org.nasdanika.common.Supplier<ViewBuilder> target) {
+					super(target);
+				}
+
+				@Override
+				public ViewBuilder execute(ProgressMonitor progressMonitor) throws Exception {
+					return target.execute(progressMonitor);
+				}
+				
+			}
+			return new SupplierImpl(generic);			
+		}
+		
+		/**
+		 * Binding of {@link SupplierFactory} to {@link Supplier}
+		 * @author Pavel
+		 *
+		 */
+		interface Factory extends SupplierFactory<ViewBuilder> {
+			
+			@Override
+			Supplier create(Context context) throws Exception;
+			
+			/**
+			 * Wraps generic {@link SupplierFactory} in this strongly typed {@link Factory}
+			 * @param generic
+			 * @return
+			 */
+			static Factory from(SupplierFactory<ViewBuilder> generic) {
+				return new Factory() {
+
+					@Override
+					public Supplier create(Context context) throws Exception {
+						return Supplier.from(generic.create(context));
+					}
+					
+				};
+			}
+			
+		}
+		
+	}	
 	
 	ViewBuilder NOP = new ViewBuilder() {
 		
