@@ -3,7 +3,6 @@ package org.nasdanika.html.tests.adapters.customer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.nasdanika.bank.Customer;
 import org.nasdanika.bank.CustomerAccount;
@@ -27,9 +26,9 @@ import org.nasdanika.html.emf.ViewAction;
  */
 public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount> {
 
-	private Supplier<Customer> customerSupplier;
+	private java.util.function.Supplier<Customer> customerSupplier;
 
-	public CustomerAccountViewAction(CustomerAccount value, Supplier<Customer> customerSupplier) {
+	public CustomerAccountViewAction(CustomerAccount value, java.util.function.Supplier<Customer> customerSupplier) {
 		super(value);
 		this.customerSupplier = customerSupplier;
 	}

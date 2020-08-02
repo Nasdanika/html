@@ -2,7 +2,6 @@ package org.nasdanika.html.tests.adapters.customer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.bank.Bank;
@@ -25,9 +24,9 @@ import org.nasdanika.html.emf.ViewAction;
  */
 public class BankViewAction extends EObjectViewAction<Bank> {
 
-	private Supplier<Customer> customerSupplier;
+	private java.util.function.Supplier<Customer> customerSupplier;
 
-	public BankViewAction(Bank bank, Supplier<Customer> customerSupplier) {
+	public BankViewAction(Bank bank, java.util.function.Supplier<Customer> customerSupplier) {
 		super(bank);
 		this.customerSupplier = customerSupplier;
 	}
