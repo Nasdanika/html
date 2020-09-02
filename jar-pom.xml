@@ -2,13 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika.html</groupId>
-	<version>2.0.0-SNAPSHOT</version>
-	<artifactId>org.nasdanika.html.parent</artifactId>
+	<version>2020.8.2</version>
+	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Nasdanika HTML Parent</name>
 	<description>Classes for generating HTML UI.</description>
 
-	<url>https://github.com/Nasdanika/html</url>
+	<url>https://nasdanika.org</url>
 		
 	<properties>
 		<siteDir>html/${project.version}</siteDir>
@@ -16,8 +16,8 @@
 
 	<licenses>
 		<license>
-			<name>Eclipse Public License 1.0</name>
-			<url>https://github.com/Nasdanika/html/blob/master/LICENSE</url>
+			<name>Eclipse Public License 2.0</name>
+			<url>https://www.nasdanika.org/builds/master/eclipse-public-license-2.0.html</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -36,6 +36,31 @@
 	    </extensions>
 	
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.5</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>	
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>1.6.7</version>
+					<extensions>true</extensions>
+					<configuration>
+						<serverId>ossrh</serverId>
+						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+						<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					</configuration>
+				</plugin>								
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -92,7 +117,7 @@
 
 	<organization>
 		<name>Nasdanika</name>
-		<url>https://github.com/Nasdanika</url>
+		<url>https://nasdanika.org</url>
 	</organization>
 
 	<developers>
@@ -116,61 +141,16 @@
 		<module>app/jar-pom.xml</module>
 		<module>echarts/jar-pom.xml</module>
 	</modules>	
-	
-	<profiles>
-		<profile>
-			<id>nsd-repo</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			
-			<distributionManagement>
-				<snapshotRepository>
-					<id>nasdanika-org</id>
-					<url>sftp://${env.FTP_SERVER}/html/${project.version}/${env.CIRCLE_BRANCH}/maven-repository</url>
-				</snapshotRepository>
-			</distributionManagement>
-		</profile>
-		<profile>
-			<id>oss-repo</id>
 
-			<distributionManagement>
-				<snapshotRepository>
-					<id>ossrh</id>
-					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-				</snapshotRepository>
-			</distributionManagement>
-			
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.5</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>	
-					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>1.6.7</version>
-						<extensions>true</extensions>
-						<configuration>
-							<serverId>ossrh</serverId>
-							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-							<autoReleaseAfterClose>true</autoReleaseAfterClose>
-						</configuration>
-					</plugin>								
-				</plugins>
-			</build>
-		
-		</profile>
-	</profiles>
+
+	<distributionManagement>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>	
 </project>
