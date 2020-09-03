@@ -6,7 +6,7 @@
 	<groupId>org.nasdanika.html.tests</groupId>
 	<artifactId>org.nasdanika.html.tests.parent</artifactId>
 	<name>HTML Tests Parent</name>
-	<version>2.0.0-SNAPSHOT</version>
+	<version>2020.12.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<!-- tycho requires maven >= 3.0 -->
