@@ -21,22 +21,22 @@
 	<repositories>
 		<repository>
 			<id>foundation</id>
-			<url>https://www.nasdanika.org/builds/${env.RELEASE}/repositories/composite</url>
+			<url>https://nasdanika.org/builds/${env.RELEASE}/repositories/composite</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>core</id>
-			<url>https://www.nasdanika.org/builds/${env.RELEASE}/products/core/repository</url>
+			<url>https://nasdanika.org/builds/${env.RELEASE}/products/core/repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>html</id>
-			<url>https://www.nasdanika.org/builds/${env.RELEASE}/products/html/repository</url>
+			<url>https://nasdanika.org/builds/${env.RELEASE}/products/html/repository</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
 			<id>bank</id>
-			<url>https://www.nasdanika.org/products/bank/1.0.0-SNAPSHOT/master/repository</url>
+			<url>https://nasdanika.org/products/bank/1.0.0-SNAPSHOT/master/repository</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>
@@ -132,7 +132,7 @@
 	</modules>
 	<organization>
 		<name>Nasdanika LLC</name>
-		<url>https://www.nasdanika.org</url>
+		<url>https://nasdanika.org</url>
 	</organization>
 	<developers>
 	    <developer>
@@ -140,7 +140,7 @@
 	      <name>Pavel Vlasov</name>
 	      <url>https://github.com/pvlasov</url>
 	      <organization>Nasdanika LLC</organization>
-	      <organizationUrl>https://www.nasdanika.org</organizationUrl>
+	      <organizationUrl>https://nasdanika.org</organizationUrl>
 	      <roles>
 	        <role>developer</role>
 	      </roles>
