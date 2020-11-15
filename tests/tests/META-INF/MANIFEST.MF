@@ -9,9 +9,9 @@ Require-Bundle: org.junit,
  org.nasdanika.html.app;bundle-version="2.0.0",
  org.nasdanika.bank;bundle-version="1.0.0",
  org.nasdanika.html.emf;bundle-version="2.0.0",
+ org.nasdanika.html.ecore;bundle-version="2.0.0",
  org.eclipse.emf.ecore.xmi;bundle-version="2.15.0",
- org.eclipse.equinox.app;bundle-version="1.4.100",
- org.nasdanika.html.ecore;bundle-version="2.0.0"
+ org.eclipse.equinox.app;bundle-version="1.4.100"
 Automatic-Module-Name: org.nasdanika.html.tests
 Export-Package: org.nasdanika.html.tests,
  org.nasdanika.html.tests.adapters.customer

@@ -138,7 +138,7 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	}
 	
 	@Override
-	public FormGroup formGroup(Object label, InputBase<?> input, Object hint, Map<Breakpoint, Integer> horizontalLabelWidths) {
+	public FormGroup formGroup(Object label, HTMLElement<?> input, Object hint, Map<Breakpoint, Integer> horizontalLabelWidths) {
 		return new FormGroupImpl(this, label, input, hint, horizontalLabelWidths);
 	}
 	

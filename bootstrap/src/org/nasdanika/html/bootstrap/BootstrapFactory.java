@@ -5,7 +5,6 @@ import java.util.Map;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
-import org.nasdanika.html.InputBase;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.impl.DefaultBootstrapFactory;
@@ -94,7 +93,7 @@ public interface BootstrapFactory {
 	 * label widths taken from the map and control widths computed as 12 - label width.  
 	 * @return
 	 */
-	FormGroup formGroup(Object label, InputBase<?> input, Object hint, Map<Breakpoint, Integer> horizontalLabelWidths);
+	FormGroup formGroup(Object label, HTMLElement<?> input, Object hint, Map<Breakpoint, Integer> horizontalLabelWidths);
 	
 	<H extends HTMLElement<?>> H tooltip(H htmlElement, Object tooltip, boolean html, Placement placement);
 	

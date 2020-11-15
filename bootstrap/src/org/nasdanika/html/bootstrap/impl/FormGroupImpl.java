@@ -3,8 +3,8 @@ package org.nasdanika.html.bootstrap.impl;
 import java.util.Map;
 
 import org.nasdanika.html.Container;
+import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.Input;
-import org.nasdanika.html.InputBase;
 import org.nasdanika.html.InputType;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
@@ -14,10 +14,10 @@ import org.nasdanika.html.bootstrap.FormGroup;
 
 public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> implements FormGroup {
 
-	private InputBase<?> input;
+	private HTMLElement<?> input;
 	private Container<?> inputContainer;
 
-	public FormGroupImpl(BootstrapFactory factory, Object label, InputBase<?> input, Object hint, Map<Breakpoint, Integer> horizontalLabelWidths) {
+	public FormGroupImpl(BootstrapFactory factory, Object label, HTMLElement<?> input, Object hint, Map<Breakpoint, Integer> horizontalLabelWidths) {
 		super(factory);
 		this.input = input;
 		boolean isHorizontal = horizontalLabelWidths != null && !horizontalLabelWidths.isEmpty();

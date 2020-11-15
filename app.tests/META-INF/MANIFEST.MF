@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core Tests
+Bundle-SymbolicName: org.nasdanika.html.app.tests
+Bundle-Version: 2020.12.0.qualifier
+Bundle-Vendor: Nasdanika LLC
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit,
+ org.nasdanika.emf;bundle-version="1.0.0",
+ org.nasdanika.common;bundle-version="1.0.0",
+ org.nasdanika.exec;bundle-version="1.0.0",
+ org.nasdanika.html.app;bundle-version="2020.12.0"
+Automatic-Module-Name: org.nasdanika.html.app.tests
+Export-Package: org.nasdanika.core.tests
