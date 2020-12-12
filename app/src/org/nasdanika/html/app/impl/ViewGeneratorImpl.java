@@ -1,5 +1,6 @@
 package org.nasdanika.html.app.impl;
 
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.BiFunction;
@@ -436,6 +437,13 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	public Object processViewPart(Object obj, ProgressMonitor progressMonitor) {
 		if (obj instanceof ViewPart) {
 			return processViewPart(((ViewPart) obj).generate(this, progressMonitor), progressMonitor);
+		}
+		if (obj != null && obj.getClass().isArray()) {
+			Object ret = Array.newInstance(obj.getClass().getComponentType(), Array.getLength(obj));
+			for (int i=0; i < Array.getLength(obj); ++i) {
+				Array.set(ret, i, processViewPart(Array.get(obj, i), progressMonitor));
+			}
+			return ret;
 		}
 		return obj;
 	}

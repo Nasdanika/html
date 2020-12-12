@@ -27,6 +27,7 @@ public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> i
 
 			protected ColImpl(BootstrapFactory factory, Object... content) {
 				super(factory, true);
+				htmlElement.addClass("col");
 				htmlElement.content(content);
 			}
 
@@ -43,6 +44,7 @@ public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> i
 
 			@Override
 			public Col width(Breakpoint breakpoint, Size width) {
+				htmlElement.removeClass("col");
 				htmlElement.addClass(breakpoint.size("col", width));
 				return this;
 			}			

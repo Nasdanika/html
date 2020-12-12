@@ -11,4 +11,4 @@ Require-Bundle: org.junit,
  org.nasdanika.exec;bundle-version="1.0.0",
  org.nasdanika.html.app;bundle-version="2020.12.0"
 Automatic-Module-Name: org.nasdanika.html.app.tests
-Export-Package: org.nasdanika.core.tests
+Export-Package: org.nasdanika.html.app.tests

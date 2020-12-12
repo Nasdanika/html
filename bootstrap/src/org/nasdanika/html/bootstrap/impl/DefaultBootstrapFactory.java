@@ -6,7 +6,6 @@ import org.nasdanika.html.Event;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
-import org.nasdanika.html.InputBase;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
@@ -14,13 +13,13 @@ import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumb;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Button;
 import org.nasdanika.html.bootstrap.ButtonGroup;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Container;
-import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Direction;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.FormGroup;
@@ -31,6 +30,7 @@ import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
+import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.bootstrap.TagBootstrapElement;
 import org.nasdanika.html.bootstrap.Theme;
@@ -138,7 +138,7 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	}
 	
 	@Override
-	public FormGroup formGroup(Object label, HTMLElement<?> input, Object hint, Map<Breakpoint, Integer> horizontalLabelWidths) {
+	public FormGroup formGroup(Object label, HTMLElement<?> input, Object hint, Map<Breakpoint, Size> horizontalLabelWidths) {
 		return new FormGroupImpl(this, label, input, hint, horizontalLabelWidths);
 	}
 	

@@ -18,6 +18,7 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.DiagnosticException;
 import org.nasdanika.common.NasdanikaException;
+import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
@@ -25,9 +26,11 @@ import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.exec.Loader;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Select;
+import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.InputGroup;
 import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Theme;
@@ -42,6 +45,7 @@ public class HTMLTestBase {
 	 * Writes content to a bootstrap/fontawesome/jstree/knockout page and to a file under repository site.
 	 * @param path
 	 * @param title
+	 * @param pageConsumer for callback to wire {@link ViewGenerator} to page header and body consumers.
 	 * @param content
 	 * @throws Exception
 	 */
@@ -53,7 +57,9 @@ public class HTMLTestBase {
 		EChartsFactory.INSTANCE.cdn(bootstrapPage);
 		// More declarations as needed.		
 		bootstrapPage.title(title);
-		bootstrapPage.body(content);
+		ViewGenerator viewGenerator = new ViewGeneratorImpl(null, null); // TODO - head and body consumers for modals.
+		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+		bootstrapPage.body(viewGenerator.processViewPart(content, progressMonitor));			
 		writeFile(path, bootstrapPage.toString());
 	}
 	
@@ -62,6 +68,7 @@ public class HTMLTestBase {
 	 * A theme select is added above the content for live switching between available themes.
 	 * @param path
 	 * @param title
+	 * @param pageConsumer page consumer for callback to wire {@link ViewGenerator} to page header and body consumers.
 	 * @param content
 	 * @throws IOException
 	 */
@@ -74,7 +81,11 @@ public class HTMLTestBase {
 //		selectInputGroup.append(FontAwesomeFactory.INSTANCE.icon("desktop", Style.SOLID));
 		selectInputGroup.input(select);		
 		container.row().margin().bottom(Breakpoint.DEFAULT, Size.S1).toBootstrapElement().col(selectInputGroup);
-		container.row().col(content);
+
+		ViewGenerator viewGenerator = new ViewGeneratorImpl(null, null); // TODO - head and body consumers for modals.
+		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+		
+		container.row().col(viewGenerator.processViewPart(content, progressMonitor));
 		writePage(path, title, container);
 	}
 	

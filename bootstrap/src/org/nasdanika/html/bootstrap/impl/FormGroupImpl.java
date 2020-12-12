@@ -11,13 +11,14 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.FormGroup;
+import org.nasdanika.html.bootstrap.Size;
 
 public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> implements FormGroup {
 
 	private HTMLElement<?> input;
 	private Container<?> inputContainer;
 
-	public FormGroupImpl(BootstrapFactory factory, Object label, HTMLElement<?> input, Object hint, Map<Breakpoint, Integer> horizontalLabelWidths) {
+	public FormGroupImpl(BootstrapFactory factory, Object label, HTMLElement<?> input, Object hint, Map<Breakpoint, Size> horizontalLabelWidths) {
 		super(factory);
 		this.input = input;
 		boolean isHorizontal = horizontalLabelWidths != null && !horizontalLabelWidths.isEmpty();
@@ -26,7 +27,7 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 		Tag labelTag = label==null ? null : factory.getHTMLFactory().nonEmptyTag(TagName.label, label).addClassConditional(isHorizontal, "col-form-label");
 		if (isHorizontal && labelTag != null) {
 			horizontalLabelWidths.entrySet().forEach(horizontalLabelWidth -> {
-				labelTag.addClass("col-"+horizontalLabelWidth.getKey().code+"-"+horizontalLabelWidth.getValue());
+				labelTag.addClass(horizontalLabelWidth.getKey().size("col", horizontalLabelWidth.getValue()));
 			});
 		}
 		
@@ -36,7 +37,7 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 			}				
 			Tag controlDiv = getFactory().getHTMLFactory().div();
 			horizontalLabelWidths.entrySet().forEach(horizontalLabelWidth -> {
-				controlDiv.addClass("col-"+horizontalLabelWidth.getKey().code+"-"+(12 - horizontalLabelWidth.getValue()));
+				controlDiv.addClass(horizontalLabelWidth.getKey().size("col", horizontalLabelWidth.getValue().complementary()));
 			});
 			
 			htmlElement.content(controlDiv);

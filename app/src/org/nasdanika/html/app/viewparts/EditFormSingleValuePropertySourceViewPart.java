@@ -31,9 +31,9 @@ import org.nasdanika.html.bootstrap.Size;
 public abstract class EditFormSingleValuePropertySourceViewPart implements ViewPart {
 
 	private SingleValuePropertySource propertySource;
-	private Map<Breakpoint, Integer> horizontalLabelWidths;
+	private Map<Breakpoint, Size> horizontalLabelWidths;
 
-	public EditFormSingleValuePropertySourceViewPart(SingleValuePropertySource propertySource, Map<Breakpoint, Integer> horizontalLabelWidths) {
+	public EditFormSingleValuePropertySourceViewPart(SingleValuePropertySource propertySource, Map<Breakpoint, Size> horizontalLabelWidths) {
 		this.propertySource = propertySource;
 		this.horizontalLabelWidths = horizontalLabelWidths;
 	}

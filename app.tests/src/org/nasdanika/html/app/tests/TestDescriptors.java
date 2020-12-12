@@ -2,26 +2,25 @@ package org.nasdanika.html.app.tests;
 
 import static org.junit.Assert.assertEquals;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.Collections;
+import java.util.Map;
+
 import org.junit.Test;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.Util;
+import org.nasdanika.common.descriptors.DescriptorSet;
+import org.nasdanika.common.descriptors.ValueDescriptor;
 import org.nasdanika.exec.Group;
 import org.nasdanika.exec.Loader;
-import org.nasdanika.html.HTMLFactory;
-import org.nasdanika.html.Tag;
-import org.nasdanika.html.app.Application;
-import org.nasdanika.html.app.impl.BootstrapContainerApplication;
-import org.nasdanika.html.app.impl.HTMLTableApplication;
-import org.nasdanika.html.bootstrap.Theme;
-import org.nasdanika.html.fontawesome.FontAwesomeFactory;
-import org.nasdanika.html.jstree.JsTreeContextMenuItem;
-import org.nasdanika.html.jstree.JsTreeFactory;
-import org.nasdanika.html.jstree.JsTreeNode;
+import org.nasdanika.exec.input.PropertySet;
+import org.nasdanika.html.Form;
+import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.viewparts.descriptors.DescriptorSetFormViewPart;
+import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Size;
 
 /**
  * Tests of descriptor view parts and wizards.
@@ -38,10 +37,54 @@ public class TestDescriptors extends HTMLTestBase {
 		assertEquals(Group.class, group.getClass());
 		
 //		Context context = Context.EMPTY_CONTEXT;
-		Context context = Context.singleton("name", "Universe");
+		MutableContext context = Context.singleton("name", "Universe").fork();
 		
-		System.out.println(Util.toString(context, callSupplier(context, monitor, group)));
-		writeThemedPage("descriptors/view-parts/index.html", "Descriptor View Parts", "Hello");
+		PropertySet propertySet = ((Group) group).adaptTo(PropertySet.class);
+		DescriptorSet descriptorSet = propertySet.createDescriptorSet(context);
+		Map<Breakpoint, Size> horizontalLabelWidths = Collections.singletonMap(Breakpoint.DEFAULT, Size.S2);
+		DescriptorSetFormViewPart viewPart = new DescriptorSetFormViewPart(descriptorSet, horizontalLabelWidths, false) {
+			
+			@Override
+			public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+				Form form = (Form) super.generate(viewGenerator, progressMonitor);
+				form.action("purum");
+				form.button("Submit");
+				return form;
+			}
+		};
+		
+//		System.out.println(Util.toString(context, callSupplier(context, monitor, group)));
+		writeThemedPage("descriptors/view-parts/index.html", "Descriptor View Parts", viewPart);
 	}
+		
+	@Test
+	public void testDiagnostic() throws Exception {
+		ObjectLoader loader = new Loader();
+		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
+		Object group = loader.loadYaml(this.getClass().getResource("group-spec.yml"), monitor);
+		assertEquals(Group.class, group.getClass());
+		
+//		Context context = Context.EMPTY_CONTEXT;
+		MutableContext context = Context.EMPTY_CONTEXT.fork();
+		
+		PropertySet propertySet = ((Group) group).adaptTo(PropertySet.class);
+		DescriptorSet descriptorSet = propertySet.createDescriptorSet(context);
+		((ValueDescriptor) descriptorSet.getDescriptors().get(0)).set("Hello");
+		Map<Breakpoint, Size> horizontalLabelWidths = Collections.singletonMap(Breakpoint.DEFAULT, Size.S2);
+		DescriptorSetFormViewPart viewPart = new DescriptorSetFormViewPart(descriptorSet, horizontalLabelWidths, true) {
+			
+			@Override
+			public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+				Form form = (Form) super.generate(viewGenerator, progressMonitor);
+				form.action("purum");
+				form.button("Submit");
+				return form;
+			}
+		};
+		
+//		System.out.println(Util.toString(context, callSupplier(context, monitor, group)));
+		writeThemedPage("descriptors/diagnostic/index.html", "Descriptor Diagnostic", viewPart);
+	}
+	
 		
 }

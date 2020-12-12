@@ -53,5 +53,45 @@ public enum Size {
 		}
 		throw new IllegalArgumentException("No size value for code "+code);
 	}
+	
+	/**
+	 * For numeric sizes returns size complementing to 12
+	 * @param size
+	 * @return
+	 */
+	public Size complementary() {
+		switch (this) {
+		case S0:
+			return S12;
+		case S1:
+			return S11;
+		case S2:
+			return S10;
+		case S3:
+			return S9;
+		case S4:
+			return S8;
+		case S5:
+			return S7;
+		case S6:
+			return S6;
+		case S7:
+			return S5;
+		case S8:
+			return S4;
+		case S9:
+			return S3;
+		case S10:
+			return S2;
+		case S11:
+			return S1;
+		case S12:
+			return S0;
+		case AUTO:
+		case NONE:
+		default:
+			return AUTO;
+		}
+	}
 
 }

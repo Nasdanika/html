@@ -110,6 +110,13 @@ public interface HTMLElement<T extends HTMLElement<T>> extends Producer, Markup 
 	 * @return
 	 */
 	T addClass(Object... clazz);
+
+	/**
+	 * Removes class definition.
+	 * @param clazz
+	 * @return
+	 */
+	T removeClass(Object... clazz);	
 	
 	/**
 	 * Adds class definition if condition is true. Convenience method to write shorter code.

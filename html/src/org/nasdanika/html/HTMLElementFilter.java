@@ -7,66 +7,104 @@ import java.util.List;
 
 public class HTMLElementFilter<T extends HTMLElement<T>> implements HTMLElement<T> {
 
-	public T on(Event event, Object handler) {
-		return target.on(event, handler);
-	}
-
-	public T on(String event, Object handler) {
-		return target.on(event, handler);
-	}
-
-	public T on(Event event, Reader handler) throws IOException {
-		return target.on(event, handler);
-	}
-
-	public T on(String event, Reader handler) throws IOException {
-		return target.on(event, handler);
-	}
-
-	public T on(Event event, InputStream handler) throws IOException {
-		return target.on(event, handler);
-	}
-
-	public T on(String event, InputStream handler) throws IOException {
-		return target.on(event, handler);
-	}
-
-	public T id(Object id) {
-		return target.id(id);
-	}
-
-	public Object getId() {
-		return target.getId();
-	}
-
-	public T attribute(String name, Object value) {
-		return target.attribute(name, value);
-	}
-
-	public T attribute(String name, Object value, boolean condition) {
-		return target.attribute(name, value, condition);
-	}
-
-	public String getAttribute(String name) {
-		return target.getAttribute(name);
-	}
-
-	public T style(String name, Object value) {
-		return target.style(name, value);
-	}
-
-	public T addClass(Object... clazz) {
-		return target.addClass(clazz);
-	}
-
-	public T addClassConditional(boolean condition, Object... clazz) {
-		return target.addClass(clazz);
-	}
-
 	private T target;
 
 	public HTMLElementFilter(T target) {
 		this.target = target;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T on(Event event, Object handler) {
+		target.on(event, handler);
+		return (T) this;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T on(String event, Object handler) {
+		target.on(event, handler);
+		return (T) this;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T on(Event event, Reader handler) throws IOException {
+		target.on(event, handler);
+		return (T) this;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T on(String event, Reader handler) throws IOException {
+		target.on(event, handler);
+		return (T) this;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T on(Event event, InputStream handler) throws IOException {
+		target.on(event, handler);
+		return (T) this;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T on(String event, InputStream handler) throws IOException {
+		target.on(event, handler);
+		return (T) this;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T id(Object id) {
+		target.id(id);
+		return (T) this;
+	}
+
+	@Override
+	public Object getId() {
+		return target.getId();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T attribute(String name, Object value) {
+		target.attribute(name, value);
+		return (T) this;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T attribute(String name, Object value, boolean condition) {
+		target.attribute(name, value, condition);
+		return (T) this;
+	}
+
+	@Override
+	public String getAttribute(String name) {
+		return target.getAttribute(name);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T style(String name, Object value) {
+		target.style(name, value);
+		return (T) this;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T addClass(Object... clazz) {
+		target.addClass(clazz);
+		return (T) this;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T addClassConditional(boolean condition, Object... clazz) {
+		target.addClass(clazz);
+		return (T) this;		
 	}
 	
 	@Override
@@ -75,13 +113,17 @@ public class HTMLElementFilter<T extends HTMLElement<T>> implements HTMLElement<
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public T comment(String comment) {
-		return target.comment(comment);
+		target.comment(comment);
+		return (T) this;		
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Object produce(int indent) {
-		return target.produce(indent);
+		target.produce(indent);
+		return (T) this;
 	}
 
 	@Override
@@ -110,18 +152,29 @@ public class HTMLElementFilter<T extends HTMLElement<T>> implements HTMLElement<
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public T setData(Object data) {
-		return target.setData(data);
+		target.setData(data);
+		return (T) this;
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public T setData(String key, Object data) {
-		return target.setData(key, data);
+		target.setData(key, data);
+		return (T) this;
 	}
 	
 	@Override
 	public List<Object> getContent() {
 		return target.getContent();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public T removeClass(Object... clazz) {
+		target.removeClass(clazz);
+		return (T) this;
 	}
 	
 }

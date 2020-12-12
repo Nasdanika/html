@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -255,10 +256,13 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 		return condition ? addClass(clazz) : (T) this;
 	}
 	
-	protected void removeClass(Object... clazz) {
+	@SuppressWarnings("unchecked")
+	@Override
+	public T removeClass(Object... clazz) {
 		for (Object clz: clazz) {
 			classes.remove(clz);
 		}
+		return (T) this;
 	}
 
 	@Override
@@ -448,7 +452,19 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 	@SuppressWarnings("unchecked")
 	protected T content(Object... content) {
 		for (Object c: content) {
-			this.content.add(c);
+			if (c instanceof Iterable) {
+				for (Object cc: (Iterable<?>) c) {
+					content(cc);
+				}
+			} else if (c != null) {
+				if (c.getClass().isArray()) {
+					for (int i = 0; i < Array.getLength(c); ++i) {
+						content(Array.get(c, i));
+					}
+				} else {
+					this.content.add(c);
+				}
+			}
 		}
 		return (T) this;
 	}

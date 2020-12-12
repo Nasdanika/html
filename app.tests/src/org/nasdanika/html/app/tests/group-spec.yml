@@ -1,6 +1,12 @@
 group: 
    input:
+       label: My group   
        properties:
            name: 
-               arity: 1
+              arity: 1
+           password:
+              arity: 2..5
+              description: Account password
+              control: password
+              icon: fa fa-key    
    elements: Hello, ${name}!
