@@ -90,7 +90,7 @@ public class ChoicesPropertyDescriptorViewPart implements ViewPart {
 			label += " " + (index + 1);
 		}
 		// TODO - icon
-		return index <= descriptor.getLowerBound() ? TagName.b.create(label) : label;
+		return index < descriptor.getLowerBound() ? TagName.b.create(label) : label;
 	}
 
 	protected HTMLElement<?> createControl(ViewGenerator viewGenerator, Status diagnosticStatus, ProgressMonitor progressMonitor) {

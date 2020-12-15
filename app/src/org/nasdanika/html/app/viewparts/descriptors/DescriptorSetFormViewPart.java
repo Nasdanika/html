@@ -68,9 +68,11 @@ public class DescriptorSetFormViewPart implements ViewPart {
 			}
 		}
 		for (Descriptor descriptor: descriptorSet.getDescriptors()) {
-			ViewPart descriptorViewPart = createDescriptorViewPart(descriptor);
-			if (descriptorViewPart != null) {
-				form.content(descriptorViewPart.generate(viewGenerator, progressMonitor));
+			if (descriptor.isEnabled()) {
+				ViewPart descriptorViewPart = createDescriptorViewPart(descriptor);
+				if (descriptorViewPart != null) {
+					form.content(descriptorViewPart.generate(viewGenerator, progressMonitor));
+				}
 			}
 		}
 		

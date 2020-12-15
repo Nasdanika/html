@@ -37,7 +37,7 @@ public class TestDescriptors extends HTMLTestBase {
 		assertEquals(Group.class, group.getClass());
 		
 //		Context context = Context.EMPTY_CONTEXT;
-		MutableContext context = Context.singleton("name", "Universe").fork();
+		MutableContext context = Context.singleton("name", "Quadrant").fork();
 		
 		PropertySet propertySet = ((Group) group).adaptTo(PropertySet.class);
 		DescriptorSet descriptorSet = propertySet.createDescriptorSet(context);
