@@ -1,6 +1,7 @@
 group: 
    input:
        label: My group   
+       description: Some my group description
        properties:
            name: 
               arity: 1
@@ -13,4 +14,26 @@ group:
            location:
               description: Location in the Universe
               condition: context.get('name') != 'Universe'   
+              default-value: delta-quadrant
+              editable: context.get("name") == 'Universe'
+              choices:
+                 alpha-quadrant: Alpha Quadrant
+                 delta-quadrant: Delta Quadrant
+           legal:
+              label: Legal
+              description: Legal inputs
+              properties:      
+                 agree-to-terms-and-conditions:
+                    label: Agree to Terms and Conditions
+                    arity: 2
+                    control: checkbox
+                    description: You must agree to the terms and conditions in order to proceed
+                    choices:
+                       yes: Agree
+                       no: Disagree
+                 comment:
+                    control: text-area
+                    description: Additional information      
+                 readiness:
+                    control: number
    elements: Hello, ${name}!

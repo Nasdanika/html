@@ -93,7 +93,7 @@ public interface BootstrapFactory {
 	 * label widths taken from the map and control widths computed as 12 - label width.  
 	 * @return
 	 */
-	FormGroup formGroup(Object label, HTMLElement<?> input, Object hint, Map<Breakpoint, Size> horizontalLabelWidths);
+	FormGroup formGroup(Object label, Object input, Object hint, Map<Breakpoint, Size> horizontalLabelWidths);
 	
 	<H extends HTMLElement<?>> H tooltip(H htmlElement, Object tooltip, boolean html, Placement placement);
 	

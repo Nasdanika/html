@@ -15,10 +15,11 @@ import org.nasdanika.html.bootstrap.Size;
 
 public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> implements FormGroup {
 
-	private HTMLElement<?> input;
+	private Object input;
 	private Container<?> inputContainer;
 
-	public FormGroupImpl(BootstrapFactory factory, Object label, HTMLElement<?> input, Object hint, Map<Breakpoint, Size> horizontalLabelWidths) {
+	@SuppressWarnings("unchecked")
+	public FormGroupImpl(BootstrapFactory factory, Object label, Object input, Object hint, Map<Breakpoint, Size> horizontalLabelWidths) {
 		super(factory);
 		this.input = input;
 		boolean isHorizontal = horizontalLabelWidths != null && !horizontalLabelWidths.isEmpty();
@@ -42,21 +43,23 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 			
 			htmlElement.content(controlDiv);
 			if (input instanceof Input && (((Input) input).getType() == InputType.checkbox || ((Input) input).getType() == InputType.radio)) {				
-				input.addClass("form-check-input");	
+				((Input) input).addClass("form-check-input");	
 				Tag formCheckDiv = getFactory().getHTMLFactory().div();
 				controlDiv.content(formCheckDiv);
 				formCheckDiv.addClass("form-check");
 				formCheckDiv.content(input);
 				inputContainer = formCheckDiv;
 				if (label == null) {
-					input.addClass("position-static");
+					((Input) input).addClass("position-static");
 				} 				
 				if (hint != null) {
 					formCheckDiv.content(factory.getHTMLFactory().nonEmptyTag(TagName.label, hint).addClass("form-check-label"));			
 				}
 			} else {
 				inputContainer = controlDiv;
-				input.addClass("form-control");
+				if (input instanceof HTMLElement) {
+					((HTMLElement<Input>) input).addClass("form-control");
+				}
 				controlDiv.content(input);				
 				
 				if (hint != null) {
@@ -66,10 +69,10 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 		} else {	
 			inputContainer = htmlElement;
 			if (input instanceof Input && (((Input) input).getType() == InputType.checkbox || ((Input) input).getType() == InputType.radio)) {
-				input.addClass("form-check-input");			
+				((HTMLElement<Input>) input).addClass("form-check-input");			
 				htmlElement.addClass("form-check");
 				if (label == null) {
-					input.addClass("position-static");
+					((HTMLElement<Input>) input).addClass("position-static");
 				} else {
 					htmlElement.content(labelTag.addClass("form-check-label"));
 				}
@@ -77,7 +80,9 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 				if (label != null) {
 					htmlElement.content(labelTag);
 				}
-				input.addClass("form-control");
+				if (input instanceof HTMLElement<?>) {
+					((HTMLElement<Input>) input).addClass("form-control");
+				}
 				htmlElement.content(input);
 			}
 			
@@ -92,9 +97,12 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 		return large(true);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public FormGroup large(boolean large) {
-		input.addClassConditional(large, "form-control-lg");
+		if (input instanceof HTMLElement) {
+			((HTMLElement<Input>) input).addClassConditional(large, "form-control-lg");
+		}
 		return this;
 	}
 
@@ -103,9 +111,12 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 		return small(true);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public FormGroup small(boolean small) {
-		input.addClassConditional(small, "form-control-sm");
+		if (input instanceof HTMLElement) {
+			((HTMLElement<Input>) input).addClassConditional(small, "form-control-sm");
+		}
 		return this;
 	}
 
@@ -114,9 +125,12 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 		return plainText(true);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public FormGroup plainText(boolean plainText) {
-		input.addClassConditional(plainText, "form-control-plaintext");
+		if (input instanceof HTMLElement) {
+			((HTMLElement<Input>) input).addClassConditional(plainText, "form-control-plaintext");
+		}
 		return this;
 	}
 
@@ -131,16 +145,22 @@ public class FormGroupImpl extends DivWrappingBootstrapElementImpl<FormGroup> im
 		return this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public FormGroup valid(Object... feedback) {
-		input.addClass("is-valid");
+		if (input instanceof HTMLElement) {
+			((HTMLElement<Input>) input).addClass("is-valid");
+		}
 		inputContainer.content(getFactory().getHTMLFactory().nonEmptyDiv(feedback).addClass("valid-feedback"));
 		return this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public FormGroup invalid(Object... feedback) {
-		input.addClass("is-invalid");
+		if (input instanceof HTMLElement) {
+			((HTMLElement<Input>) input).addClass("is-invalid");
+		}
 		inputContainer.content(getFactory().getHTMLFactory().nonEmptyDiv(feedback).addClass("invalid-feedback"));
 		return this;
 	}
