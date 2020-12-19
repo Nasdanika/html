@@ -36,4 +36,13 @@ group:
                     description: Additional information      
                  readiness:
                     control: number
+                 legal:
+                    label: Fine print
+                    description: Read carefully
+                    properties:      
+                       signature:
+                          control: text
+                          description: Type your name as a digital signature      
+                       readiness:
+                          control: number
    elements: Hello, ${name}!

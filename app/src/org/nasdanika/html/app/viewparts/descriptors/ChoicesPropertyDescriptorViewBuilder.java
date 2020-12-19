@@ -27,8 +27,9 @@ import org.nasdanika.html.Select.OptionGroup;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.TextArea;
+import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.ViewBuilder;
 import org.nasdanika.html.app.ViewGenerator;
-import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Color;
@@ -40,7 +41,7 @@ import org.nasdanika.html.bootstrap.Size;
  * @author Pavel
  *
  */
-public class ChoicesPropertyDescriptorViewPart implements ViewPart {
+public class ChoicesPropertyDescriptorViewBuilder implements ViewBuilder {
 	
 	private ChoicesPropertyDescriptor descriptor;
 	private boolean diagnose;
@@ -55,7 +56,7 @@ public class ChoicesPropertyDescriptorViewPart implements ViewPart {
 	 * @param diagnose If true the descriptor is diagnosed, diagnostics are output in the form group and the group is styled
 	 * accordingly.
 	 */
-	public ChoicesPropertyDescriptorViewPart(ChoicesPropertyDescriptor descriptor, Map<Breakpoint, Size> horizontalLabelWidths, boolean diagnose, int index) {
+	public ChoicesPropertyDescriptorViewBuilder(ChoicesPropertyDescriptor descriptor, Map<Breakpoint, Size> horizontalLabelWidths, boolean diagnose, int index) {
 		this.descriptor = descriptor;
 		this.choices = descriptor.getChoices();
 		this.horizontalLabelWidths = horizontalLabelWidths;
@@ -64,7 +65,7 @@ public class ChoicesPropertyDescriptorViewPart implements ViewPart {
 	}
 
 	@Override
-	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+	public void build(Object container, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		Fragment description = bootstrapFactory.getHTMLFactory().fragment(StringEscapeUtils.escapeHtml4(descriptor.getDescription()));
 		
@@ -95,26 +96,40 @@ public class ChoicesPropertyDescriptorViewPart implements ViewPart {
 			}
 		}
 		
-		FormGroup ret = bootstrapFactory.formGroup(createLabel(), createControl(viewGenerator, diagnosticStatus, progressMonitor), description, horizontalLabelWidths);
+		
+		
+		Tag label = viewGenerator.label(createLabel(diagnosticStatus));
+		FormGroup formGroup = bootstrapFactory.formGroup(
+				index < descriptor.getLowerBound() ? TagName.b.create(label) : label, 
+				createControl(viewGenerator, diagnosticStatus, progressMonitor), 
+				description, 
+				horizontalLabelWidths);
 		
 		for (String ife: invalidFeedback) {
-			ret.invalid(ife);
+			formGroup.invalid(ife);
 		}
 		
 		for (String vfe: validFeedback) {
-			ret.valid(vfe);
+			formGroup.valid(vfe);
 		}
 		
-		return ret;
+		DescriptorSetConsumerViewBuilder.asConsumer(container).accept(formGroup);
 	}
 
-	protected Object createLabel() {		
-		String label = descriptor.getLabel();
-		if (descriptor.getUpperBound() > 1) {
-			label += " " + (index + 1);
-		}
-		// TODO - icon
-		return index < descriptor.getLowerBound() ? TagName.b.create(label) : label;
+	protected Label createLabel(Status status) {		
+		return new DescriptorLabel(descriptor, status) {
+			
+			@Override
+			public String getText() {
+				String label = super.getText();
+				if (descriptor.getUpperBound() > 1) {
+					label += " " + (index + 1);
+				}
+				return label;
+			}
+			
+		};
+		
 	}
 	
 	/**
@@ -179,8 +194,7 @@ public class ChoicesPropertyDescriptorViewPart implements ViewPart {
 			input.attribute("checked", true);
 		}
 		
-		// TODO - Icon.
-		formCheckDiv.content(htmlFactory.nonEmptyTag(TagName.label, choice.getLabel()).addClass("form-check-label"));			
+		formCheckDiv.content(htmlFactory.nonEmptyTag(TagName.label, new DescriptorLabel(choice, diagnosticStatus)).addClass("form-check-label"));			
 		return formCheckDiv;
 	}
 	

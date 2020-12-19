@@ -350,6 +350,10 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 			} else {
 				// Class
 				iconTag = get(HTMLFactory.class).span().addClass(icon);
+				if (label.getColor() != null) {
+					get(BootstrapFactory.class).wrap(iconTag).text().color(label.getColor());
+				}
+				
 			}
 			iconTag.addClass("nsd-label-icon");
 //			if (label.getText() != null) {
@@ -359,7 +363,13 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 		}		
 			
 		if (!Util.isBlank(label.getText())) {
-			contentConsumer.accept(label.getText());
+			if (label.getColor() == null) {
+				contentConsumer.accept(label.getText());
+			} else {
+				Tag span = get(HTMLFactory.class).span(label.getText());
+				get(BootstrapFactory.class).wrap(span).text().color(label.getColor());
+				contentConsumer.accept(span);
+			}
 		}	
 		
 		if (!Util.isBlank(label.getNotification())) {
