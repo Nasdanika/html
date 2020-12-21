@@ -1,6 +1,7 @@
 package org.nasdanika.html.app.impl;
 
 import java.lang.reflect.Array;
+import java.net.URL;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.BiFunction;
@@ -9,8 +10,11 @@ import java.util.function.Consumer;
 import org.nasdanika.common.Adaptable;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.NullProgressMonitor;
+import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SimpleMutableContext;
+import org.nasdanika.common.persistence.ConfigurationException;
+import org.nasdanika.common.persistence.Marker;
 import org.nasdanika.html.Container;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
@@ -55,6 +59,9 @@ import org.nasdanika.html.knockout.impl.DefaultKnockoutFactory;
 
 public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGenerator {
 	
+	private static final String EXEC_PREFIX = "exec-";
+	private static final String APP_PREFIX = "app-";
+
 	/**
 	 * Content passed to this consumer is added to the head of the HTML page. E.g. stylesheets or scripts.
 	 */
@@ -538,6 +545,26 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 		}
 		
 		return navs;
+	}
+	
+	private org.nasdanika.exec.Loader execLoader = new org.nasdanika.exec.Loader();
+	private Loader appLoader = new Loader();
+	
+
+	@Override
+	public Object create(ObjectLoader loader, String type, Object config, URL base, ProgressMonitor progressMonitor, Marker marker) throws Exception {
+		if (type.startsWith(EXEC_PREFIX)) {
+			return execLoader.create(loader, type.substring(EXEC_PREFIX.length()), config, base, progressMonitor, marker);
+		}
+		if (type.startsWith(APP_PREFIX)) {
+			Object ret = appLoader.create(loader, type.substring(APP_PREFIX.length()), config, base, progressMonitor, marker);
+			if (ret instanceof LabelFactory) {
+				return ((LabelFactory) ret).create(this);
+			}
+			return ret;
+		}
+		
+		throw new ConfigurationException("Unsupported type: " + type, marker);
 	}
 	
 }

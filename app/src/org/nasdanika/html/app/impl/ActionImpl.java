@@ -34,60 +34,6 @@ public class ActionImpl extends LabelImpl implements Action {
 	public ActionImpl() {
 		
 	}
-//	
-//	public ActionImpl(Map<String, Object> data) {
-//		super(data);
-//		@SuppressWarnings("unchecked")
-//		Iterable<Map<String, Object>> cd = (Iterable<Map<String, Object>>) data.get("children");
-//		if (cd != null) {
-//			for (Map<String, Object> c: cd) {
-//				children.add(createAction(c));
-//			}
-//		}
-//		confirmation = (String) data.get("confirmation");
-//		disabled = Boolean.TRUE.equals(data.get("disabled"));
-//		floatRight = Boolean.TRUE.equals(data.get("floatRight"));
-//		
-//		@SuppressWarnings("unchecked")
-//		Map<String, String> ad = (Map<String, String>) data.get("activator");
-//		if (ad != null) {
-//			for (Entry<String, String> e: ad.entrySet()) {
-//				if ("url".equals(e.getKey())) {
-//					activator = new NavigationActionActivator() {
-//						
-//						@Override
-//						public String getUrl() {
-//							return e.getValue();
-//						}
-//					};
-//					break;
-//				}
-//				if ("code".equals(e.getKey())) {
-//					activator = new ScriptActionActivator() {
-//						
-//						@Override
-//						public String getCode() {
-//							return e.getValue();
-//						}
-//					};
-//					break;
-//				}
-//			}
-//		}
-//		
-//		@SuppressWarnings("unchecked")
-//		Map<String, Object> catd = (Map<String,Object>) data.get("category");
-//		if (catd != null) {
-//			category = new LabelImpl(catd);
-//		}
-//		
-//		@SuppressWarnings("unchecked")
-//		Collection<String> roles = (Collection<String>) data.get("roles");
-//		if (roles != null) {
-//			this.roles.addAll(roles);
-//		}
-//		
-//	}
 	
 	public Set<String> getRoles() {
 		return roles;

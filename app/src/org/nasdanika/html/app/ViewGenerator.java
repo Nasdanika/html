@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import org.nasdanika.common.Adaptable;
 import org.nasdanika.common.MutableContext;
+import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Container;
 import org.nasdanika.html.Fragment;
@@ -26,7 +27,7 @@ import org.nasdanika.html.jstree.JsTreeNode;
  * @author Pavel Vlasov
  *
  */
-public interface ViewGenerator extends MutableContext {
+public interface ViewGenerator extends MutableContext, ObjectLoader {
 	
 	/**
 	 * Prefix for an action registry property "folder" for 
