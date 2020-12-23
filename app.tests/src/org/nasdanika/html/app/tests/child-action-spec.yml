@@ -1,0 +1,6 @@
+app-action:
+   icon: fa fa-cog
+   text: Nav 2
+   tooltip: Something important
+   color: WARNING 
+   href: nav-2.html

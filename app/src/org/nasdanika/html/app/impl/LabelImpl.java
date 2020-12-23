@@ -1,16 +1,5 @@
 package org.nasdanika.html.app.impl;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-
-import org.nasdanika.common.ObjectLoader;
-import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.Util;
-import org.nasdanika.common.persistence.ConfigurationException;
-import org.nasdanika.common.persistence.Marked;
-import org.nasdanika.common.persistence.Marker;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.bootstrap.Color;
 
@@ -20,8 +9,6 @@ import org.nasdanika.html.bootstrap.Color;
  *
  */
 public class LabelImpl extends IdentityImpl implements Label {
-	
-	private Marker marker;
 	
 	private String icon;
 	private String text;
@@ -34,14 +21,6 @@ public class LabelImpl extends IdentityImpl implements Label {
 	public LabelImpl() {
 		
 	}
-	
-	private static final String ICON_KEY = "icon";
-	private static final String TEXT_KEY = "text";
-	private static final String TOOLTIP_KEY = "tooltip";
-	private static final String COLOR_KEY = "color";
-	private static final String OUTLINE_KEY = "outline";
-	private static final String DESCRIPTION_KEY = "description";
-	private static final String NOTIFICATION_KEY = "notification";
 
 	@Override
 	public String getIcon() {

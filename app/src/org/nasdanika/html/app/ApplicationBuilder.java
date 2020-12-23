@@ -64,6 +64,11 @@ public interface ApplicationBuilder {
 		
 	}	
 	
+	/**
+	 * Builds the application
+	 * @param application
+	 * @param progressMonitor
+	 */
 	void build(Application application, ProgressMonitor progressMonitor);
 
 }

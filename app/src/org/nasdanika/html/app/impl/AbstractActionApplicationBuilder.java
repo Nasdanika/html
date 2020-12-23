@@ -3,6 +3,7 @@ package org.nasdanika.html.app.impl;
 import java.util.Collections;
 import java.util.List;
 
+import org.nasdanika.common.Context;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
@@ -24,6 +25,14 @@ import org.nasdanika.html.bootstrap.Navs;
  */
 public abstract class AbstractActionApplicationBuilder extends ViewPartApplicationBuilder {
 	
+	protected AbstractActionApplicationBuilder() {
+		super();
+	}
+
+	protected AbstractActionApplicationBuilder(Context context) {
+		super(context);
+	}
+
 	protected abstract Action getActiveAction();
 	
 	protected Action getRootAction() {

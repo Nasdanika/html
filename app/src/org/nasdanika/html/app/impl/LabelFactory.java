@@ -4,19 +4,21 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.UUID;
 
-import org.nasdanika.common.Factory;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ContextualFactory;
 import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marked;
 import org.nasdanika.common.persistence.Marker;
+import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.Label;
-import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.Color;
 
-public class LabelFactory implements Factory<ViewGenerator, Label>, Marked {
+public class LabelFactory implements ContextualFactory<Label>, Marked {
 	
 	private Marker marker;
 	
@@ -64,7 +66,7 @@ public class LabelFactory implements Factory<ViewGenerator, Label>, Marked {
 			this.marker = marker;
 			Map<String,Object> configMap = (Map<String,Object>) config;
 			Util.checkUnsupportedKeys(configMap, getSupportedKeys());
-			id = Util.getString(configMap, ID_KEY, null);
+			id = Util.getString(configMap, ID_KEY, UUID.randomUUID().toString());
 			icon = Util.getString(configMap, ICON_KEY, null);
 			text = Util.getString(configMap, TEXT_KEY, null);
 			tooltip = Util.getString(configMap, TOOLTIP_KEY, null);
@@ -79,32 +81,36 @@ public class LabelFactory implements Factory<ViewGenerator, Label>, Marked {
 	}		
 	
 	@Override
-	public Label create(ViewGenerator viewGenerator) throws Exception {
-		LabelImpl ret = createLabel();
+	public Label create(Context context) throws Exception {
+		LabelImpl ret = createLabel(context);
 		if (color != null) {
 			try {
-				ret.setColor(Color.valueOf(viewGenerator.interpolateToString(color)));
+				ret.setColor(Color.valueOf(context.interpolateToString(color)));
 			} catch (IllegalArgumentException e) {
 				throw new ConfigurationException(e.getMessage(), e, colorMarker);
 			}
 		}
-		ret.setDescription(viewGenerator.interpolateToString(description));
-		ret.setIcon(viewGenerator.interpolateToString(icon));
-		ret.setId(viewGenerator.interpolateToString(id));
-		ret.setNotification(viewGenerator.interpolateToString(notification));
+		ret.setDescription(context.interpolateToString(description));
+		ret.setIcon(context.interpolateToString(icon));
+		ret.setId(context.interpolateToString(id));
+		ret.setNotification(context.interpolateToString(notification));
 		ret.setOutline(outline);
-		ret.setText(viewGenerator.interpolateToString(text));
-		ret.setTooltip(viewGenerator.interpolateToString(tooltip));
+		ret.setText(context.interpolateToString(text));
+		ret.setTooltip(context.interpolateToString(tooltip));
 		
 		return ret;
+	}
+	
+	protected Decorator createDecorator(Context context) {
+		return null; // TODO - Appearance.
 	}
 	
 	/**
 	 * Override to return ActionImpl
 	 * @return
 	 */
-	protected LabelImpl createLabel() {
-		return new LabelImpl(); 
+	protected LabelImpl createLabel(Context context) {
+		return new DecoratedLabel(createDecorator(context)); 
 	}
 
 }

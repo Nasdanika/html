@@ -18,6 +18,7 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.DiagnosticException;
 import org.nasdanika.common.NasdanikaException;
+import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
@@ -27,6 +28,7 @@ import org.nasdanika.exec.Loader;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.impl.ComposedLoader;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
@@ -41,6 +43,8 @@ import org.nasdanika.html.knockout.KnockoutFactory;
 
 public class HTMLTestBase {
 	
+	protected ObjectLoader composedLoader = new ComposedLoader();
+	
 	/**
 	 * Writes content to a bootstrap/fontawesome/jstree/knockout page and to a file under repository site.
 	 * @param path
@@ -49,44 +53,18 @@ public class HTMLTestBase {
 	 * @param content
 	 * @throws Exception
 	 */
-	protected void writePage(String path, String title, Object... content) throws IOException {		
-		HTMLPage bootstrapPage = BootstrapFactory.INSTANCE.bootstrapCdnHTMLPage();
+	protected void writePage(String path, String title, Object... content) throws Exception {				
+		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+		HTMLPage bootstrapPage = (HTMLPage) composedLoader.loadYaml(HTMLTestBase.class.getResource("bootstrap-page-spec"), progressMonitor);
 		FontAwesomeFactory.INSTANCE.cdn(bootstrapPage);
 		JsTreeFactory.INSTANCE.cdn(bootstrapPage);
 		KnockoutFactory.INSTANCE.cdn(bootstrapPage);
 		EChartsFactory.INSTANCE.cdn(bootstrapPage);
 		// More declarations as needed.		
 		bootstrapPage.title(title);
-		ViewGenerator viewGenerator = new ViewGeneratorImpl(null, null); // TODO - head and body consumers for modals.
-		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+		ViewGenerator viewGenerator = new ViewGeneratorImpl(bootstrapPage::head, bootstrapPage::body); 
 		bootstrapPage.body(viewGenerator.processViewPart(content, progressMonitor));			
 		writeFile(path, bootstrapPage.toString());
-	}
-	
-	/**
-	 * Writes content to a bootstrap/fontawesome/jstree/knockout page and to a file under repository site.
-	 * A theme select is added above the content for live switching between available themes.
-	 * @param path
-	 * @param title
-	 * @param pageConsumer page consumer for callback to wire {@link ViewGenerator} to page header and body consumers.
-	 * @param content
-	 * @throws IOException
-	 */
-	protected void writeThemedPage(String path, String title, Object... content) throws IOException {		
-		BootstrapFactory factory = BootstrapFactory.INSTANCE;
-		Container container = factory.container();
-		Select select = factory.themeSelect(Theme.Default);
-		InputGroup selectInputGroup = factory.inputGroup();
-		selectInputGroup.prepend("Select Bootstrap theme");
-//		selectInputGroup.append(FontAwesomeFactory.INSTANCE.icon("desktop", Style.SOLID));
-		selectInputGroup.input(select);		
-		container.row().margin().bottom(Breakpoint.DEFAULT, Size.S1).toBootstrapElement().col(selectInputGroup);
-
-		ViewGenerator viewGenerator = new ViewGeneratorImpl(null, null); // TODO - head and body consumers for modals.
-		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
-		
-		container.row().col(viewGenerator.processViewPart(content, progressMonitor));
-		writePage(path, title, container);
 	}
 	
 	/**
@@ -233,7 +211,6 @@ public class HTMLTestBase {
 				}
 			}
 		}
-	}
-	
+	}	
 	
 }

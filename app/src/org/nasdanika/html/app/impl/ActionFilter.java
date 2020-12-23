@@ -91,4 +91,14 @@ public class ActionFilter<T extends Action> extends LabelFilter<T> implements Ac
 	public int getSectionColumns() {
 		return target.getSectionColumns();
 	}
+	
+	@Override
+	public boolean isEmpty() {
+		return target.isEmpty();
+	}
+	
+	@Override
+	public boolean isOutline() {
+		return target.isOutline();
+	}
 }

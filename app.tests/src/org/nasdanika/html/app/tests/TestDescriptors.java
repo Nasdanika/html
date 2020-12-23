@@ -54,7 +54,7 @@ public class TestDescriptors extends HTMLTestBase {
 		};
 		
 //		System.out.println(Util.toString(context, callSupplier(context, monitor, group)));
-		writeThemedPage("descriptors/view-parts/index.html", "Descriptor View Parts", viewPart);
+		writePage("descriptors/view-parts/index.html", "Descriptor View Parts", viewPart);
 	}
 		
 	@Test
@@ -83,7 +83,7 @@ public class TestDescriptors extends HTMLTestBase {
 		};
 		
 //		System.out.println(Util.toString(context, callSupplier(context, monitor, group)));
-		writeThemedPage("descriptors/diagnostic/index.html", "Descriptor Diagnostic", viewPart);
+		writePage("descriptors/diagnostic/index.html", "Descriptor Diagnostic", viewPart);
 	}
 	
 		

@@ -2,6 +2,7 @@ package org.nasdanika.html.app.impl;
 
 import java.util.function.Consumer;
 
+import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
@@ -20,19 +21,28 @@ import org.nasdanika.html.app.ViewPart;
  */
 public abstract class ViewPartApplicationBuilder implements ApplicationBuilder {
 		
+	protected Context context;
 	protected abstract ViewPart getHeaderViewPart();
 	protected abstract ViewPart getNavigationBarViewPart();
 	protected abstract ViewPart getNavigationPanelViewPart();
 	protected abstract ViewPart getContentPanelViewPart();
 	protected abstract ViewPart getFooterViewPart();
 	
+	protected ViewPartApplicationBuilder(Context context) {
+		this.context = context;
+	}
+	
+	protected ViewPartApplicationBuilder() {
+		this(Context.EMPTY_CONTEXT);
+	}
+			
 	/**
 	 * Creates a view generator to be used by view parts.
 	 * @param bodyContentConsumer
 	 * @return
 	 */
 	protected ViewGenerator createViewGenerator(Application application, Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
-		return new ViewGeneratorImpl(headContentConsumer, bodyContentConsumer);
+		return new ViewGeneratorImpl(context, headContentConsumer, bodyContentConsumer);
 	}	
 	
 	/**

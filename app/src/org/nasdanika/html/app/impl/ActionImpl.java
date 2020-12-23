@@ -120,6 +120,11 @@ public class ActionImpl extends LabelImpl implements Action {
 	}
 	
 	@Override
+	public boolean isEmpty() {
+		return true;
+	}
+	
+	@Override
 	public SectionStyle getSectionStyle() {
 		return sectionStyle;
 	}

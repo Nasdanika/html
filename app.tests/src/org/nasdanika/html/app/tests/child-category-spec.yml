@@ -1,0 +1,10 @@
+app-category:
+   text: My category
+   actions:
+      - app-action:
+         text: Navigation
+         href: navigation.html
+         content:                  
+            exec-markdown: 
+               exec-interpolator: Hello, ``${color}``!
+      - app-action-reference: child-action-spec.yml        

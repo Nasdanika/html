@@ -134,5 +134,13 @@ public interface ViewPart {
 			
 		};
 	}
+	
+	/**
+	 * Override to return true if the ViewPart returns null or empty string.
+	 * @return
+	 */
+	default boolean isEmpty() {
+		return false;
+	}
 
 }
