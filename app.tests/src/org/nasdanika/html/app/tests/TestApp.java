@@ -1,9 +1,12 @@
 package org.nasdanika.html.app.tests;
 
 import org.junit.Test;
+import org.nasdanika.common.Adaptable;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
@@ -12,6 +15,7 @@ import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.ActionFactory;
 import org.nasdanika.html.app.impl.BootstrapContainerApplicationFactory;
+import org.nasdanika.html.app.impl.ComposedLoader;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 
 /**
@@ -29,6 +33,21 @@ public class TestApp extends HTMLTestBase {
 		Label label = (Label) viewGenerator.loadYaml(this.getClass().getResource("label-spec.yml"), monitor);
 		
 		writePage("app/label.html", "Label", viewGenerator.label(label));
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testLabelSupplierFactory() throws Exception {
+		ComposedLoader loader = new ComposedLoader();
+		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
+		Object sf = loader.loadYaml(this.getClass().getResource("label-supplier-factory-spec.yml"), monitor);
+		SupplierFactory<Label> sfa = Adaptable.adaptTo(sf, SupplierFactory.class);
+		Context context = Context.singleton("color", "SUCCESS");
+		Label label = Util.callSupplier(sfa.create(context), monitor);
+		
+		ViewGenerator viewGenerator = new ViewGeneratorImpl(null, null);
+		
+		writePage("app/label-supplier-factory.html", "Label Supplier Factory", viewGenerator.label(label));
 	}
 	
 	@Test

@@ -7,18 +7,18 @@ import java.util.Map;
 
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ContextualFactory;
-import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marked;
 import org.nasdanika.common.persistence.Marker;
+import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.impl.HTMLPageFactory;
 
-public class BootstrapContainerApplicationFactory implements ContextualFactory<BootstrapContainerApplication>, Marked {
+public class BootstrapContainerApplicationFactory implements /* TODO - Supplier factory because parts are suppliers, need to then() them */ ContextualFactory<BootstrapContainerApplication>, Marked {
 	
 	private Marker marker;
 	
@@ -52,8 +52,10 @@ public class BootstrapContainerApplicationFactory implements ContextualFactory<B
 			Util.checkUnsupportedKeys(configMap, getSupportedKeys());
 			
 			if (configMap.containsKey(PAGE_KEY)) {
-				// TODO - mutually exclusive with theme, load page.
-				throw new UnsupportedOperationException();
+				pageFactory = (HTMLPageFactory) loader.load(configMap.get(PAGE_KEY), base, progressMonitor);
+				if (configMap.containsKey(THEME_KEY)) {
+					throw new ConfigurationException(PAGE_KEY + " and " + THEME_KEY + " are mutually exclusive", marker);					
+				}
 			}
 			
 			if (configMap.containsKey(FLUID_KEY)) {

@@ -28,7 +28,7 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 * @author Pavel
 	 *
 	 */
-	interface Supplier extends org.nasdanika.common.Supplier<Action> {
+	interface Supplier extends Label.Supplier<Action> {
 		
 		/**
 		 * Wraps generic supplier in this strongly typed one.
@@ -55,7 +55,7 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 		 * @author Pavel
 		 *
 		 */
-		interface Factory extends SupplierFactory<Action> {
+		interface Factory extends Label.Supplier.Factory<Action> {
 			
 			@Override
 			Supplier create(Context context) throws Exception;

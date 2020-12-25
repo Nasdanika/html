@@ -2,10 +2,11 @@ package org.nasdanika.html.app.impl;
 
 import java.net.URL;
 
-import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marker;
+import org.nasdanika.common.persistence.ObjectLoader;
+import org.nasdanika.html.app.Label;
 
 /**
  * Loader of labels and actions. 
@@ -14,7 +15,7 @@ import org.nasdanika.common.persistence.Marker;
  */
 public class AppLoader implements ObjectLoader {
 	
-	private org.nasdanika.common.ObjectLoader chain;
+	private org.nasdanika.common.persistence.ObjectLoader chain;
 
 	public AppLoader(ObjectLoader chain) {
 		this.chain = chain;
@@ -29,7 +30,7 @@ public class AppLoader implements ObjectLoader {
 			switch (type) {
 			// General
 			case "label":
-				return new LabelFactory(loader, config, base, subMonitor, marker);
+				return new LabelSupplierFactory<Label>().load(loader, config, base, subMonitor, marker);
 			case "action":
 				return new ActionFactory(loader, config, base, subMonitor, marker);
 			case "category":

@@ -12,11 +12,11 @@ import org.nasdanika.common.Adaptable;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ContextualFactory;
 import org.nasdanika.common.NullProgressMonitor;
-import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SimpleMutableContext;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.persistence.Marker;
+import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.html.Container;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
@@ -560,9 +560,8 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 					ret = org.nasdanika.common.Util.TO_STRING.create(this).execute((InputStream) ret, progressMonitor);
 				}
 			}
-			return ret;
 		}
-		return ret;
+		return processViewPart(ret, progressMonitor);
 	}
 	
 }

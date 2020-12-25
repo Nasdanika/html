@@ -6,8 +6,8 @@ import java.util.function.Consumer;
 
 import org.nasdanika.common.Adaptable;
 import org.nasdanika.common.MutableContext;
-import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.html.Container;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;

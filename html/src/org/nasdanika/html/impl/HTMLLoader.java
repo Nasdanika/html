@@ -2,10 +2,10 @@ package org.nasdanika.html.impl;
 
 import java.net.URL;
 
-import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marker;
+import org.nasdanika.common.persistence.ObjectLoader;
 
 /**
  * Loader of labels and actions. 
@@ -14,7 +14,7 @@ import org.nasdanika.common.persistence.Marker;
  */
 public class HTMLLoader implements ObjectLoader {
 	
-	private org.nasdanika.common.ObjectLoader chain;
+	private org.nasdanika.common.persistence.ObjectLoader chain;
 
 	public HTMLLoader(ObjectLoader chain) {
 		this.chain = chain;

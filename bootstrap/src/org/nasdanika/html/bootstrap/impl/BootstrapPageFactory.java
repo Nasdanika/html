@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.nasdanika.common.Context;
-import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marker;
+import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Theme;

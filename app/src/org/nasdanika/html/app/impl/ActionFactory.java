@@ -15,12 +15,12 @@ import java.util.Set;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ContextualFactory;
 import org.nasdanika.common.NullProgressMonitor;
-import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marker;
+import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ScriptActionActivator;
@@ -28,7 +28,7 @@ import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 
-public class ActionFactory extends LabelFactory {
+public class ActionFactory extends /* TODO - Supplier factory because parts are suppliers, need to then() them */ LabelFactory {
 		
 	private List<Object> children = new ArrayList<>();
 	private Object content;
@@ -86,7 +86,7 @@ public class ActionFactory extends LabelFactory {
 		}
 		confirmation = Util.getString(configMap, CONFIRMATION_KEY, null);
 		if (configMap.containsKey(DISABLED_KEY)) {
-			disabled = org.nasdanika.exec.Loader.asSupplierFactory(loader.load(configMap.get(DISABLED_KEY), base, progressMonitor));
+			disabled = org.nasdanika.common.Util.asSupplierFactory(loader.load(configMap.get(DISABLED_KEY), base, progressMonitor));
 		}
 		if (configMap.containsKey(HREF_KEY) && configMap.containsKey(SCRIPT_KEY)) {
 			throw new ConfigurationException("'href' and 'script' configuration keys are mutually exclusive", marker);
@@ -96,7 +96,7 @@ public class ActionFactory extends LabelFactory {
 			hrefMarker = Util.getMarker(configMap, HREF_KEY);
 		}
 		if (configMap.containsKey(SCRIPT_KEY)) {
-			script = org.nasdanika.exec.Loader.asSupplierFactory(loader.load(configMap.get(SCRIPT_KEY), base, progressMonitor));
+			script = org.nasdanika.common.Util.asSupplierFactory(loader.load(configMap.get(SCRIPT_KEY), base, progressMonitor));
 		}
 		if (configMap.containsKey(CATEGORY_KEY)) {
 			category = (LabelFactory) loader.load(configMap.get(CATEGORY_KEY), base, progressMonitor);			
@@ -206,7 +206,7 @@ public class ActionFactory extends LabelFactory {
 				}
 				
 				try {
-					SupplierFactory<InputStream> cf = org.nasdanika.exec.Loader.asSupplierFactory(content);
+					SupplierFactory<InputStream> cf = org.nasdanika.common.Util.asSupplierFactory(content);
 					return cf.then(Util.TO_STRING).create(viewGenerator).execute(progressMonitor);
 				} catch (Exception e) {
 					throw new ConfigurationException(e.getMessage(), e, contentMarker);

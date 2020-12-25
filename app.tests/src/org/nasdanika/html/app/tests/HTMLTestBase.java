@@ -18,13 +18,13 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.DiagnosticException;
 import org.nasdanika.common.NasdanikaException;
-import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
+import org.nasdanika.common.Util;
+import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.common.resources.BinaryEntityContainer;
-import org.nasdanika.exec.Loader;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.app.ViewGenerator;
@@ -36,6 +36,7 @@ import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.InputGroup;
 import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Theme;
+import org.nasdanika.html.bootstrap.impl.BootstrapPageFactory;
 import org.nasdanika.html.echarts.EChartsFactory;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeFactory;
@@ -55,7 +56,8 @@ public class HTMLTestBase {
 	 */
 	protected void writePage(String path, String title, Object... content) throws Exception {				
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
-		HTMLPage bootstrapPage = (HTMLPage) composedLoader.loadYaml(HTMLTestBase.class.getResource("bootstrap-page-spec"), progressMonitor);
+		BootstrapPageFactory pageFactory = (BootstrapPageFactory) composedLoader.loadYaml(HTMLTestBase.class.getResource("bootstrap-page-spec.yml"), progressMonitor);
+		HTMLPage bootstrapPage = pageFactory.create(Context.EMPTY_CONTEXT); 
 		FontAwesomeFactory.INSTANCE.cdn(bootstrapPage);
 		JsTreeFactory.INSTANCE.cdn(bootstrapPage);
 		KnockoutFactory.INSTANCE.cdn(bootstrapPage);
@@ -121,7 +123,7 @@ public class HTMLTestBase {
 	 * @throws Exception
 	 */
 	protected static InputStream callSupplier(Context context, ProgressMonitor monitor, Object component) throws Exception {
-		try (Supplier<InputStream> supplier = Loader.asSupplierFactory(component).create(context); ProgressMonitor progressMonitor = monitor.setWorkRemaining(3).split("Calling component", 3)) {
+		try (Supplier<InputStream> supplier = Util.asSupplierFactory(component).create(context); ProgressMonitor progressMonitor = monitor.setWorkRemaining(3).split("Calling component", 3)) {
 			Diagnostic diagnostic = supplier.splitAndDiagnose(progressMonitor);
 			if (diagnostic.getStatus() == Status.ERROR) {
 				diagnostic.dump(System.err, 4);
@@ -156,7 +158,7 @@ public class HTMLTestBase {
 	 * @throws Exception
 	 */
 	protected static void callConsumer(Context context, ProgressMonitor monitor, Object component, BinaryEntityContainer container) throws Exception {
-		try (Consumer<BinaryEntityContainer> consumer = Loader.asConsumerFactory(component).create(context); ProgressMonitor progressMonitor = monitor.setWorkRemaining(3).split("Calling component", 3)) {
+		try (Consumer<BinaryEntityContainer> consumer = Util.asConsumerFactory(component).create(context); ProgressMonitor progressMonitor = monitor.setWorkRemaining(3).split("Calling component", 3)) {
 			Diagnostic diagnostic = consumer.splitAndDiagnose(progressMonitor);
 			if (diagnostic.getStatus() == Status.ERROR) {
 				diagnostic.dump(System.err, 4);
@@ -189,7 +191,7 @@ public class HTMLTestBase {
 	 * @throws Exception
 	 */
 	protected static void callCommand(Context context, ProgressMonitor monitor, Object component) throws Exception {
-		try (Command command = Loader.asCommandFactory(component).create(context); ProgressMonitor progressMonitor = monitor.setWorkRemaining(3).split("Calling component", 3)) {
+		try (Command command = Util.asCommandFactory(component).create(context); ProgressMonitor progressMonitor = monitor.setWorkRemaining(3).split("Calling component", 3)) {
 			Diagnostic diagnostic = command.splitAndDiagnose(progressMonitor);
 			if (diagnostic.getStatus() == Status.ERROR) {
 				diagnostic.dump(System.err, 4);

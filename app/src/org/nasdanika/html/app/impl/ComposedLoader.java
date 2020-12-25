@@ -2,10 +2,10 @@ package org.nasdanika.html.app.impl;
 
 import java.net.URL;
 
-import org.nasdanika.common.ObjectLoader;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marker;
+import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.html.bootstrap.impl.BootstrapLoader;
 import org.nasdanika.html.impl.HTMLLoader;
 
@@ -16,7 +16,7 @@ import org.nasdanika.html.impl.HTMLLoader;
  */
 public class ComposedLoader implements ObjectLoader {
 	
-	private org.nasdanika.common.ObjectLoader chain;
+	private org.nasdanika.common.persistence.ObjectLoader chain;
 
 	public ComposedLoader(ObjectLoader chain) {
 		this.chain = chain;
