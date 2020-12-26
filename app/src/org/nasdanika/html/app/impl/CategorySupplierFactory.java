@@ -17,7 +17,7 @@ public class CategorySupplierFactory extends LabelSupplierFactory<Category> {
 	private ListSupplierFactoryAttribute<Action> actions;
 	
 	public CategorySupplierFactory() {
-		actions = addFeature(new ListSupplierFactoryAttribute<Action>(new ReferenceList<>("actions", false, true, null, null)));
+		actions = addFeature(new ListSupplierFactoryAttribute<Action>(new ReferenceList<>("actions", false, true, null, null), false));
 	}
 
 	@Override

@@ -1,23 +1,27 @@
 package org.nasdanika.html.app.impl;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.nasdanika.common.Context;
+import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.Attribute;
 import org.nasdanika.common.persistence.ConfigurationException;
-import org.nasdanika.common.persistence.DelegatingSupplierFactoryFeature;
 import org.nasdanika.common.persistence.EnumSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.Feature;
 import org.nasdanika.common.persistence.ListSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.ReferenceList;
 import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.SupplierFactoryFeature;
+import org.nasdanika.html.Fragment;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
@@ -26,7 +30,7 @@ import org.nasdanika.html.app.ViewPart;
 public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 	
 	// Content - single value or a list of input streams.
-	private SupplierFactoryFeature<?> content;
+	private SupplierFactoryFeature<List<Object>> content;
 	private ListSupplierFactoryAttribute<Action> children;
 	private StringSupplierFactoryAttribute confirmation;
 	private StringSupplierFactoryAttribute disabled;
@@ -38,8 +42,8 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 	private Feature<Integer> sectionColumns = new Attribute<Integer>("section-columns", false, false, 3, null);	
 	
 	public ActionSupplierFactory() {
-		content = addFeature(new DelegatingSupplierFactoryFeature<Object>(new Attribute<Object>("content", false, false, null, null)));
-		children = addFeature(new ListSupplierFactoryAttribute<Action>(new ReferenceList<>("children", false, false, null, null)));
+		content = addFeature(new ListSupplierFactoryAttribute<>(new ReferenceList<Object>("content", false, false, null, null), true));
+		children = addFeature(new ListSupplierFactoryAttribute<Action>(new ReferenceList<>("children", false, false, null, null), false));
 		href = addFeature(new StringSupplierFactoryAttribute(new Attribute<String>("href", false, false, null, "script" ), true));
 //		confirmation;
 //		disabled;
@@ -110,10 +114,8 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 					children = (Collection<Action>) c;
 				} else if (c instanceof Category) {
 					children = ((Category) c).getActions();
-//				} else {
-//					children = Collections.singleton(((ContextualFactory<Action>) c).create(context));
 				} else {
-					throw new ConfigurationException("Unexpected child: "+c, this.children.getMarker());
+					throw new ConfigurationException("Unexpected action child: "+c, this.children.getMarker());
 				}
 				
 				action.getChildren().addAll(children);
@@ -208,20 +210,28 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 				if (isEmpty()) {
 					return super.generate(viewGenerator, progressMonitor);					
 				}
-				Object contentData = data.get(content.getKey());
-				if (contentData instanceof ViewPart) {
-					return ((ViewPart) content).generate(viewGenerator, progressMonitor);
+				@SuppressWarnings("unchecked")
+				List<Object> contentData = (List<Object>) data.get(content.getKey());
+				if (contentData.size() == 1 && contentData.get(0) instanceof ViewPart) {
+					return ((ViewPart) contentData.get(0)).generate(viewGenerator, progressMonitor);
 				}
-				if (contentData == null) {
-					return super.generate(viewGenerator, progressMonitor);
+			
+				HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class, HTMLFactory.INSTANCE);
+				Fragment fragment = htmlFactory.fragment();
+				for (Object ce: contentData) {
+					if (ce instanceof ViewPart) {
+						fragment.content(((ViewPart) ce).generate(viewGenerator, progressMonitor));
+					} else if (ce instanceof InputStream) {
+						try {
+							fragment.content(DefaultConverter.INSTANCE.toString((InputStream) ce));
+						} catch (IOException e) {
+							throw new ConfigurationException(e.getMessage(), e, content.getMarker());
+						}
+					} else {
+						fragment.content(ce);
+					}
 				}
-				
-				try {
-					SupplierFactory<InputStream> cf = org.nasdanika.common.Util.asInputStreamSupplierFactory(contentData);
-					return cf.then(Util.TO_STRING).create(viewGenerator).execute(progressMonitor);
-				} catch (Exception e) {
-					throw new ConfigurationException(e.getMessage(), e, content.getMarker());
-				}
+				return fragment;
 			}
 			
 			@Override

@@ -3,6 +3,7 @@ package org.nasdanika.html.app.tests;
 import org.junit.Test;
 import org.nasdanika.common.Adaptable;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
@@ -12,6 +13,7 @@ import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.BootstrapContainerApplicationFactory;
 import org.nasdanika.html.app.impl.ComposedLoader;
@@ -59,22 +61,25 @@ public class TestApp extends HTMLTestBase {
 		Object actionFactory = loader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor);
 		
 		Action action = Util.callSupplier(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor);
-		
-		
+				
 	}
 	
-//	@Test
-//	public void testBootstrapActionApplication() throws Exception {
-//		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
-//		Context context = Context.singleton("color", "SUCCESS");
-//		Application app = ((BootstrapContainerApplicationFactory) composedLoader.loadYaml(getClass().getResource("application-spec.yml"), monitor)).create(context);
-//		
-//		actionFactory composedLoader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor)).create(context);
-//
-//		ApplicationBuilder builder = new ActionApplicationBuilder(context, action.getChildren().get(0).getChildren().get(0));
-//		builder.build(app, monitor);
-//		
-//		writeFile("app/app.html", app.toString());
-//	}
+	@Test
+	public void testBootstrapActionApplication() throws Exception {
+		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
+		MutableContext context = Context.singleton("color", "SUCCESS").fork();
+		ViewPart viewPart = (v,p) -> "I am a view part";
+		context.put("view-part", viewPart);
+		Application app = ((BootstrapContainerApplicationFactory) composedLoader.loadYaml(getClass().getResource("application-spec.yml"), monitor)).create(context);
+		
+		ComposedLoader loader = new ComposedLoader();
+		Object actionFactory = loader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor);
+		Action action = Util.callSupplier(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor);
+
+		ApplicationBuilder builder = new ActionApplicationBuilder(context, action, action.getChildren().get(0), action);
+		builder.build(app, monitor);
+		
+		writeFile("app/app.html", app.toString());
+	}
 		
 }

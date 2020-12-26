@@ -4,6 +4,7 @@ app-action:
    tooltip: Opens configuration dialog
    color: ${color} 
    href: index.html
+   content: ${view-part}
    children:
       - app-action:
          text: Principal
