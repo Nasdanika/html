@@ -32,9 +32,9 @@ public class AppLoader implements ObjectLoader {
 			case "label":
 				return new LabelSupplierFactory<Label>().load(loader, config, base, subMonitor, marker);
 			case "action":
-				return new ActionFactory(loader, config, base, subMonitor, marker);
+				return new ActionSupplierFactory().load(loader, config, base, subMonitor, marker);
 			case "category":
-				return new CategoryFactory(loader, config, base, subMonitor, marker);
+				return new CategorySupplierFactory().load(loader, config, base, subMonitor, marker);
 			case "action-reference":
 				return new ActionReference(loader, config, base, subMonitor, marker);
 			case "category-reference":

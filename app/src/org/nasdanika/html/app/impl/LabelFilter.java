@@ -1,9 +1,11 @@
 package org.nasdanika.html.app.impl;
 
+import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.Color;
 
-public class LabelFilter<T extends Label> extends IdentityFilter<T> implements Label {
+public class LabelFilter<T extends Label> extends IdentityFilter<T> implements Label, Decorator {
 	
 	public LabelFilter(T target) {
 		super(target);
@@ -47,6 +49,13 @@ public class LabelFilter<T extends Label> extends IdentityFilter<T> implements L
 	@Override
 	public String getNotification() {
 		return target.getNotification();
+	}
+
+	@Override
+	public void decorate(Object target, ViewGenerator viewGenerator) {
+		if (this.target instanceof Decorator) {
+			((Decorator) this.target).decorate(target, viewGenerator);
+		}		
 	}
 
 }

@@ -1,17 +1,16 @@
 package org.nasdanika.html.app.impl;
 
 import java.net.URL;
-import java.util.Collection;
 
 import org.nasdanika.common.Context;
-import org.nasdanika.common.ContextualFactory;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marked;
 import org.nasdanika.common.persistence.Marker;
 import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.exec.Reference;
-import org.nasdanika.html.app.Action;
 
 /**
  * Not interpolated category reference resolved/loaded at load time.
@@ -19,11 +18,10 @@ import org.nasdanika.html.app.Action;
  * @author Pavel
  *
  */
-public class CategoryReference implements ContextualFactory<Collection<Action>>, Marked {
+public class CategoryReference implements SupplierFactory<Category>, Marked {
 	
-	protected Object target;
+	protected SupplierFactory<Category> target;
 	private Marker marker;
-	// TODO - path & properties
 	
 	@Override
 	public Marker getMarker() {
@@ -32,28 +30,22 @@ public class CategoryReference implements ContextualFactory<Collection<Action>>,
 
 	public CategoryReference(ObjectLoader loader, Object config, URL base, ProgressMonitor progressMonitor, Marker marker) throws Exception {
 		if (config instanceof String) {
+			this.marker = marker;
 			String configStr = (String) config;			
 			URL targetURL = configStr.startsWith(Reference.CLASSPATH_URL_PREFIX) ? loader.getClass().getClassLoader().getResource(configStr.substring(Reference.CLASSPATH_URL_PREFIX.length())) : new URL(base, configStr);
-			target = loader.loadYaml(targetURL, progressMonitor);
-			this.marker = marker;
+			Object loaded = loader.loadYaml(targetURL, progressMonitor);
+			target = org.nasdanika.common.Util.<Category>asSupplierFactory(loaded);
+			if (target == null) {
+				throw new ConfigurationException("Cannot adapt to SupplierFactory: " + loaded, marker);
+			}
 		} else {
 			throw new ConfigurationException("Category reference type must be a string", marker);
 		}
 	}
 	
-	public CategoryReference(Marker marker, Object target) {
-		this.marker = marker;
-		this.target = target;
-	}
-	
-	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<Action> create(Context context) throws Exception {
-		if (target instanceof Collection) {
-			return (Collection<Action>) target;
-		}
-		
-		return ((ContextualFactory<Collection<Action>>) target).create(context);
+	public Supplier<Category> create(Context context) throws Exception {
+		return target.create(context);
 	}		
 
 }

@@ -9,6 +9,7 @@ import java.util.Set;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
+import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
@@ -35,6 +36,10 @@ public class ActionImpl extends LabelImpl implements Action {
 		
 	}
 	
+	public ActionImpl(Decorator decorator) {
+		super(decorator);
+	}
+
 	public Set<String> getRoles() {
 		return roles;
 	}

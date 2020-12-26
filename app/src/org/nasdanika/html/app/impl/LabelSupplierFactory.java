@@ -17,14 +17,14 @@ import org.nasdanika.html.bootstrap.Color;
 
 public class LabelSupplierFactory<L extends Label> extends SupplierFactoryFeatureObject<L> {
 
-	private Attribute<String> id = addFeature(new Attribute<String>("id", false, UUID.randomUUID().toString()));
-	private Attribute<String> icon = addFeature(new Attribute<String>("icon", false, null));
-	private Attribute<String> text = addFeature(new Attribute<String>("text", false, null));
-	private Attribute<String> tooltip = addFeature(new Attribute<String>("tooltip", false, null));
-	private Attribute<String> color = addFeature(new Attribute<String>("color", false, null));
-	private Attribute<Boolean> outline = addFeature(new Attribute<Boolean>("outline", false, false));
-	private StringSupplierFactoryAttribute description = addFeature(new StringSupplierFactoryAttribute(new Reference("description", false, null), true));
-	private Attribute<String> notification = addFeature(new Attribute<String>("notification", false, null));
+	private Attribute<String> id = addFeature(new Attribute<String>("id", false, false, UUID.randomUUID().toString(), null));
+	private Attribute<String> icon = addFeature(new Attribute<String>("icon", false, false, null, null));
+	private Attribute<String> text = addFeature(new Attribute<String>("text", true, false, null, null));
+	private Attribute<String> tooltip = addFeature(new Attribute<String>("tooltip", false, false, null, null));
+	private Attribute<String> color = addFeature(new Attribute<String>("color", false, false, null, null));
+	private Attribute<Boolean> outline = addFeature(new Attribute<Boolean>("outline", false, false, false, null));
+	private StringSupplierFactoryAttribute description = addFeature(new StringSupplierFactoryAttribute(new Reference("description", false, false, null, null), true));
+	private Attribute<String> notification = addFeature(new Attribute<String>("notification", false, false, null, null));
 
 	@Override
 	protected Function<Map<Object, Object>, L> createResultFunction(Context context) {			
@@ -43,7 +43,7 @@ public class LabelSupplierFactory<L extends Label> extends SupplierFactoryFeatur
 			@SuppressWarnings("unchecked")
 			@Override
 			public L execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {								
-				LabelImpl ret = (LabelImpl) createLabel(context);
+				LabelImpl ret = (LabelImpl) createLabel(context, data);
 				setData(context, data, ret);
 				return (L) ret;
 			}
@@ -55,8 +55,8 @@ public class LabelSupplierFactory<L extends Label> extends SupplierFactoryFeatur
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	protected L createLabel(Context context) {
-		return (L) new DecoratedLabel(createDecorator(context)); 
+	protected L createLabel(Context context, Map<Object, Object> data) {
+		return (L) new LabelImpl(createDecorator(context)); 
 	}
 	
 	protected Decorator createDecorator(Context context) {

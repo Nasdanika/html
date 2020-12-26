@@ -123,7 +123,7 @@ public class HTMLTestBase {
 	 * @throws Exception
 	 */
 	protected static InputStream callSupplier(Context context, ProgressMonitor monitor, Object component) throws Exception {
-		try (Supplier<InputStream> supplier = Util.asSupplierFactory(component).create(context); ProgressMonitor progressMonitor = monitor.setWorkRemaining(3).split("Calling component", 3)) {
+		try (Supplier<InputStream> supplier = Util.asInputStreamSupplierFactory(component).create(context); ProgressMonitor progressMonitor = monitor.setWorkRemaining(3).split("Calling component", 3)) {
 			Diagnostic diagnostic = supplier.splitAndDiagnose(progressMonitor);
 			if (diagnostic.getStatus() == Status.ERROR) {
 				diagnostic.dump(System.err, 4);

@@ -13,7 +13,6 @@ import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
-import org.nasdanika.html.app.impl.ActionFactory;
 import org.nasdanika.html.app.impl.BootstrapContainerApplicationFactory;
 import org.nasdanika.html.app.impl.ComposedLoader;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
@@ -27,11 +26,13 @@ public class TestApp extends HTMLTestBase {
 	
 	@Test
 	public void testLabel() throws Exception {
-		ViewGenerator viewGenerator = new ViewGeneratorImpl(null, null);
-		viewGenerator.put("color", "SUCCESS");
+		Context context = Context.singleton("color", "SUCCESS");
 		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
-		Label label = (Label) viewGenerator.loadYaml(this.getClass().getResource("label-spec.yml"), monitor);
+		ComposedLoader loader = new ComposedLoader();
+		Object labelFactory = loader.loadYaml(this.getClass().getResource("label-spec.yml"), monitor);
 		
+		Label label = Util.callSupplier(Util.<Label>asSupplierFactory(labelFactory).create(context), monitor);
+		ViewGeneratorImpl viewGenerator = new ViewGeneratorImpl(context, null, null);
 		writePage("app/label.html", "Label", viewGenerator.label(label));
 	}
 	
@@ -51,17 +52,29 @@ public class TestApp extends HTMLTestBase {
 	}
 	
 	@Test
-	public void testBootstrapActionApplication() throws Exception {
-		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
+	public void testAction() throws Exception {
 		Context context = Context.singleton("color", "SUCCESS");
-		Application app = ((BootstrapContainerApplicationFactory) composedLoader.loadYaml(getClass().getResource("application-spec.yml"), monitor)).create(context);
+		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
+		ComposedLoader loader = new ComposedLoader();
+		Object actionFactory = loader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor);
 		
-		Action action = ((ActionFactory) composedLoader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor)).create(context);
-
-		ApplicationBuilder builder = new ActionApplicationBuilder(context, action.getChildren().get(0).getChildren().get(0));
-		builder.build(app, monitor);
+		Action action = Util.callSupplier(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor);
 		
-		writeFile("app/app.html", app.toString());
+		
 	}
+	
+//	@Test
+//	public void testBootstrapActionApplication() throws Exception {
+//		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
+//		Context context = Context.singleton("color", "SUCCESS");
+//		Application app = ((BootstrapContainerApplicationFactory) composedLoader.loadYaml(getClass().getResource("application-spec.yml"), monitor)).create(context);
+//		
+//		actionFactory composedLoader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor)).create(context);
+//
+//		ApplicationBuilder builder = new ActionApplicationBuilder(context, action.getChildren().get(0).getChildren().get(0));
+//		builder.build(app, monitor);
+//		
+//		writeFile("app/app.html", app.toString());
+//	}
 		
 }

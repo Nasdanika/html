@@ -1,6 +1,8 @@
 package org.nasdanika.html.app.impl;
 
+import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.Color;
 
 /**
@@ -8,7 +10,7 @@ import org.nasdanika.html.bootstrap.Color;
  * @author Pavel Vlasov
  *
  */
-public class LabelImpl extends IdentityImpl implements Label {
+public class LabelImpl extends IdentityImpl implements Label, Decorator {
 	
 	private String icon;
 	private String text;
@@ -17,9 +19,14 @@ public class LabelImpl extends IdentityImpl implements Label {
 	private boolean outline;
 	private String description;
 	private String notification;
+	private Decorator decorator;
 	
 	public LabelImpl() {
 		
+	}
+	
+	public LabelImpl(Decorator decorator) {
+		this.decorator = decorator;
 	}
 
 	@Override
@@ -83,6 +90,13 @@ public class LabelImpl extends IdentityImpl implements Label {
 
 	public void setNotification(String notification) {
 		this.notification = notification;
+	}
+	
+	@Override
+	public void decorate(Object target, ViewGenerator viewGenerator) {
+		if (decorator != null) {
+			decorator.decorate(target, viewGenerator);
+		}
 	}		
 
 }
