@@ -1,5 +1,6 @@
 app-category:
    text: My category
+   path: my-category/
    actions:
       - app-action:
          text: Navigation

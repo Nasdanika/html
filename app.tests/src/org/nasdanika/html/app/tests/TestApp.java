@@ -1,5 +1,7 @@
 package org.nasdanika.html.app.tests;
 
+import java.net.URI;
+
 import org.junit.Test;
 import org.nasdanika.common.Adaptable;
 import org.nasdanika.common.Context;
@@ -81,5 +83,11 @@ public class TestApp extends HTMLTestBase {
 		
 		writeFile("app/app.html", app.toString());
 	}
+	
+	@Test
+	public void testURI() throws Exception {
+		new URI("test");
+	}
+	
 		
 }
