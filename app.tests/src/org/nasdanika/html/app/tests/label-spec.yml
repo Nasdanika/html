@@ -2,4 +2,12 @@ app-label:
    icon: fa fa-cog
    text: Configuration
    tooltip: Opens configuration dialog
-   color: ${color} 
+   color: INFO 
+   appearance: 
+      background: ${color}
+      attributes:
+         purum: ${color}
+      margin: 
+         - size: 1
+           breakpoint: md
+      padding: 2

@@ -11,6 +11,7 @@ import org.nasdanika.common.persistence.ListSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.ReferenceList;
 import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.impl.ActionImpl;
 import org.nasdanika.html.app.impl.Category;
 import org.nasdanika.html.app.impl.HrefNavigationActionActivator;
@@ -19,10 +20,10 @@ import org.nasdanika.html.app.impl.LabelImpl;
 public class CategorySupplierFactory extends LabelSupplierFactory<Category> {
 		
 	private StringSupplierFactoryAttribute path = addFeature(new StringSupplierFactoryAttribute(new Attribute<String>("path", false, false, null, null), true));
-	private ListSupplierFactoryAttribute<Action> actions;
+	private ListSupplierFactoryAttribute<Action,?> actions;
 	
 	public CategorySupplierFactory() {
-		actions = addFeature(new ListSupplierFactoryAttribute<Action>(new ReferenceList<>("actions", false, true, null, null), false));
+		actions = addFeature(new ListSupplierFactoryAttribute<>(new ReferenceList<>("actions", false, true, null, null), false));
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public class CategorySupplierFactory extends LabelSupplierFactory<Category> {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Category createLabel(Context context, Map<Object, Object> data) {
-		return new Category(createDecorator(context), actions.isLoaded() ? (List<Action>) actions.get(data) : Collections.emptyList());
+		return new Category((Decorator) appearance.get(data), actions.isLoaded() ? (List<Action>) actions.get(data) : Collections.emptyList());
 	}
 
 }

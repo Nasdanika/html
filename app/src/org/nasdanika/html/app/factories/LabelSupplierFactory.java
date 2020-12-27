@@ -8,8 +8,11 @@ import org.nasdanika.common.Function;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.persistence.Attribute;
 import org.nasdanika.common.persistence.ConfigurationException;
+import org.nasdanika.common.persistence.DelegatingSupplierFactoryFeature;
+import org.nasdanika.common.persistence.FeatureObjectAttribute;
 import org.nasdanika.common.persistence.Reference;
 import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
+import org.nasdanika.common.persistence.SupplierFactoryFeature;
 import org.nasdanika.common.persistence.SupplierFactoryFeatureObject;
 import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.Label;
@@ -26,6 +29,11 @@ public class LabelSupplierFactory<L extends Label> extends SupplierFactoryFeatur
 	private Attribute<Boolean> outline = addFeature(new Attribute<Boolean>("outline", false, false, false, null));
 	private StringSupplierFactoryAttribute description = addFeature(new StringSupplierFactoryAttribute(new Reference("description", false, false, null, null), true));
 	private Attribute<String> notification = addFeature(new Attribute<String>("notification", false, false, null, null));
+	protected SupplierFactoryFeature<Decorator> appearance;
+	
+	public LabelSupplierFactory() {
+		appearance = addFeature(new DelegatingSupplierFactoryFeature<Decorator>(new FeatureObjectAttribute<AppearanceSupplierFactory>("appearance", AppearanceSupplierFactory::new, false, false, null, "Appearance"))); 
+	}
 
 	@Override
 	protected Function<Map<Object, Object>, L> createResultFunction(Context context) {			
@@ -57,13 +65,9 @@ public class LabelSupplierFactory<L extends Label> extends SupplierFactoryFeatur
 	 */
 	@SuppressWarnings("unchecked")
 	protected L createLabel(Context context, Map<Object, Object> data) {
-		return (L) new LabelImpl(createDecorator(context)); 
+		return (L) new LabelImpl((Decorator) appearance.get(data)); 
 	}
 	
-	protected Decorator createDecorator(Context context) {
-		return null; // TODO - Appearance.
-	}
-
 	protected void setData(Context context, Map<Object, Object> data, LabelImpl label) {
 		// TODO - interpolations where needed.
 		label.setId(data.get(id.getKey()));

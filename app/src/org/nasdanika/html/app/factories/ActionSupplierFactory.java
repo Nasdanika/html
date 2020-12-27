@@ -23,6 +23,7 @@ import org.nasdanika.common.persistence.SupplierFactoryFeature;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
@@ -36,18 +37,18 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 	
 	// Content - single value or a list of input streams.
 	private SupplierFactoryFeature<List<Object>> content;
-	private ListSupplierFactoryAttribute<Action> children;
+	private ListSupplierFactoryAttribute<Action,?> children;
 	private StringSupplierFactoryAttribute confirmation;
 	private StringSupplierFactoryAttribute disabled;
 	private StringSupplierFactoryAttribute href;
 	private StringSupplierFactoryAttribute script; 
-	private ListSupplierFactoryAttribute<String> roles;
+	private ListSupplierFactoryAttribute<String,?> roles;
 	private EnumSupplierFactoryAttribute<SectionStyle> sectionStyle;
 	private Feature<Integer> sectionColumns = addFeature(new Attribute<Integer>("section-columns", false, false, 3, null));	
 	
 	public ActionSupplierFactory() {
-		content = addFeature(new ListSupplierFactoryAttribute<>(new ReferenceList<Object>("content", false, false, null, null), true));
-		children = addFeature(new ListSupplierFactoryAttribute<Action>(new ReferenceList<>("children", false, false, null, null), false));
+		content = addFeature(new ListSupplierFactoryAttribute<>(new ReferenceList<>("content", false, false, null, null), true));
+		children = addFeature(new ListSupplierFactoryAttribute<>(new ReferenceList<>("children", false, false, null, null), false));
 		href = addFeature(new StringSupplierFactoryAttribute(new Attribute<String>("href", false, false, null, null, "script"), true));
 		confirmation = addFeature(new StringSupplierFactoryAttribute(new Attribute<String>("confirmation", false, false, null, null), true));
 		script = addFeature(new StringSupplierFactoryAttribute(new Attribute<String>("script", false, false, null, null, "href"), true));
@@ -117,7 +118,7 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 	
 	@Override
 	protected Action createLabel(Context context, Map<Object, Object> data) {
-		ActionImpl ret = new ActionImpl(createDecorator(context)) {
+		ActionImpl ret = new ActionImpl((Decorator) appearance.get(data)) {
 			
 			@Override
 			public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
