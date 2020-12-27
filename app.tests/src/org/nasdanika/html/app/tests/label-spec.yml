@@ -10,4 +10,7 @@ app-label:
       margin: 
          - size: 1
            breakpoint: md
-      padding: 2
+           position: y
+      padding: 
+         size: 2
+         position: top

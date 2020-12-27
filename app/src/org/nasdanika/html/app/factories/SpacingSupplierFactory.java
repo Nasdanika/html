@@ -46,7 +46,7 @@ public class SpacingSupplierFactory extends SupplierFactoryFeatureObject<Decorat
 		FunctionFactory<String, Breakpoint> breakpointFactory = context -> Function.fromFunction(Breakpoint::fromCode, "Breakpoint from code", 1);
 		breakpoint = addFeature(new FunctionSupplierFactoryAttribute<String,Breakpoint>(new StringSupplierFactoryAttribute(new Attribute<String>("breakpoint", false, false, "", null), true), breakpointFactory));
 	
-		position = new ListSupplierFactoryAttribute<>(new ListAttribute<String>("position", false, false, null, "Spacing position - top, bottom, left, right, x, or y"), true);
+		position = addFeature(new ListSupplierFactoryAttribute<>(new ListAttribute<String>("position", false, false, null, "Spacing position - top, bottom, left, right, x, or y"), true));
 	}
 
 	@Override
@@ -106,75 +106,6 @@ public class SpacingSupplierFactory extends SupplierFactoryFeatureObject<Decorat
 					} else {
 						spacing.all(theBreakpoint, theSize);
 					}
-//					for (Spacing margin : AppearanceSupplierFactory.this.target.getMargin()) {
-//					Size size = org.nasdanika.html.bootstrap.Size.fromCode(margin.getSize());
-//					String bpStr = margin.getBreakpoint();
-//					Breakpoint breakpoint = Util.isBlank(bpStr) ? Breakpoint.DEFAULT : Breakpoint.fromLabel(bpStr);
-//					
-//					if ((margin.isBottom() && margin.isLeft() && margin.isRight() && margin.isTop()) || (margin.isX() && margin.isY())) {
-//						bootstrapElement.margin().all(breakpoint, size);
-//					} else {
-//						if (margin.isBottom()) {
-//							bootstrapElement.margin().bottom(breakpoint, size);
-//						}
-//						if (margin.isTop()) {
-//							bootstrapElement.margin().top(breakpoint, size);
-//						}
-//						if (margin.isLeft()) {
-//							bootstrapElement.margin().left(breakpoint, size);
-//						}
-//						if (margin.isRight()) {
-//							bootstrapElement.margin().right(breakpoint, size);
-//						}
-//						
-//						if (margin.isX()) {
-//							bootstrapElement.margin().x(breakpoint, size);
-//						}
-//						if (margin.isY()) {
-//							bootstrapElement.margin().y(breakpoint, size);
-//						}						
-//					}					
-//				}
-	//
-//				for (Spacing padding : AppearanceSupplierFactory.this.target.getPadding()) {
-//					Size size = org.nasdanika.html.bootstrap.Size.fromCode(padding.getSize());
-//					String bpStr = padding.getBreakpoint();
-//					Breakpoint breakpoint = Util.isBlank(bpStr) ? Breakpoint.DEFAULT : Breakpoint.fromLabel(bpStr);
-//					if (!Util.isBlank(bpStr)) {
-//						for (Breakpoint candidate: Breakpoint.values()) {
-//							if (candidate.label.equals(bpStr)) {
-//								breakpoint = candidate;
-//								break;
-//							}
-//						}
-//					}
-//					
-//					if ((padding.isBottom() && padding.isLeft() && padding.isRight() && padding.isTop()) || (padding.isX() && padding.isY())) {
-//						bootstrapElement.padding().all(breakpoint, size);
-//					} else {
-//						if (padding.isBottom()) {
-//							bootstrapElement.padding().bottom(breakpoint, size);
-//						}
-//						if (padding.isTop()) {
-//							bootstrapElement.padding().top(breakpoint, size);
-//						}
-//						if (padding.isLeft()) {
-//							bootstrapElement.padding().left(breakpoint, size);
-//						}
-//						if (padding.isRight()) {
-//							bootstrapElement.padding().right(breakpoint, size);
-//						}
-//						
-//						if (padding.isX()) {
-//							bootstrapElement.padding().x(breakpoint, size);
-//						}
-//						if (padding.isY()) {
-//							bootstrapElement.padding().y(breakpoint, size);
-//						}						
-//					}					
-//				}
-					
-					
 				};
 				
 			}
