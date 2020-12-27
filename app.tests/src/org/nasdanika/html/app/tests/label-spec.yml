@@ -10,7 +10,12 @@ app-label:
       margin: 
          - size: 1
            breakpoint: md
-           position: y
+           side: y
       padding: 
          size: 2
-         position: top
+         side: top
+      border: 
+         color: WARNING
+         placement: 
+            - bottom
+            - right

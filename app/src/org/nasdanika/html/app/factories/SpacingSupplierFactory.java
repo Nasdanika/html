@@ -35,7 +35,7 @@ public class SpacingSupplierFactory extends SupplierFactoryFeatureObject<Decorat
 
 	private SupplierFactoryFeature<Size> size;
 	private SupplierFactoryFeature<Breakpoint> breakpoint;
-	private SupplierFactoryFeature<List<String>> position;
+	private SupplierFactoryFeature<List<String>> side;
 	
 	public SpacingSupplierFactory(java.util.function.Function<BootstrapElement<?,?>, Spacing<?>> spacingProvider) {
 		this.spacingProvider = spacingProvider;
@@ -46,7 +46,7 @@ public class SpacingSupplierFactory extends SupplierFactoryFeatureObject<Decorat
 		FunctionFactory<String, Breakpoint> breakpointFactory = context -> Function.fromFunction(Breakpoint::fromCode, "Breakpoint from code", 1);
 		breakpoint = addFeature(new FunctionSupplierFactoryAttribute<String,Breakpoint>(new StringSupplierFactoryAttribute(new Attribute<String>("breakpoint", false, false, "", null), true), breakpointFactory));
 	
-		position = addFeature(new ListSupplierFactoryAttribute<>(new ListAttribute<String>("position", false, false, null, "Spacing position - top, bottom, left, right, x, or y"), true));
+		side = addFeature(new ListSupplierFactoryAttribute<>(new ListAttribute<String>("side", false, false, null, "Spacing side - top, bottom, left, right, x, or y"), true));
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class SpacingSupplierFactory extends SupplierFactoryFeatureObject<Decorat
 			@Override
 			public Decorator execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
 				return (target, viewGenerator) -> {
-					BootstrapElement<?,?> bootstrapElement = null;		
+					BootstrapElement<?,?> bootstrapElement;		
 					if (target instanceof BootstrapElement) { 
 						bootstrapElement = (BootstrapElement<?, ?>) target;
 					} else if (target instanceof HTMLElement) {
@@ -78,8 +78,8 @@ public class SpacingSupplierFactory extends SupplierFactoryFeatureObject<Decorat
 					Spacing<?> spacing = spacingProvider.apply(bootstrapElement);
 					Size theSize = (Size) size.get(data);
 					Breakpoint theBreakpoint = (Breakpoint) breakpoint.get(data); 
-					if (position.isLoaded()) {
-						for (String p: (List<String>) position.get(data)) {
+					if (side.isLoaded()) {
+						for (String p: (List<String>) side.get(data)) {
 							switch (p) {
 							case "x":
 								spacing.x(theBreakpoint, theSize);
@@ -100,7 +100,7 @@ public class SpacingSupplierFactory extends SupplierFactoryFeatureObject<Decorat
 								spacing.right(theBreakpoint, theSize);
 								break;
 							default:
-								throw new ConfigurationException("Invalid position value: " + p, position.getMarker());						
+								throw new ConfigurationException("Invalid side value: " + p, side.getMarker());						
 							}
 						}
 					} else {

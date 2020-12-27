@@ -54,10 +54,15 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 
 		Feature<List<SpacingSupplierFactory>> paddingListAttribute = new FeatureObjectListAttribute<>("padding", () -> new SpacingSupplierFactory(BootstrapElement::padding), false, false, null, null);
 		padding = addFeature(new ListSupplierFactoryAttribute<>(paddingListAttribute , true));
+
+		Feature<List<BorderSupplierFactory>> borderListAttribute = new FeatureObjectListAttribute<>("border", BorderSupplierFactory::new, false, false, null, null);
+		border = addFeature(new ListSupplierFactoryAttribute<>(borderListAttribute , true));
 		
-//		protected SupplierFactoryFeature<List<Decorator>> border;
 //		protected SupplierFactoryFeature<List<Decorator>> floatDecorator;
-//		protected SupplierFactoryFeature<Decorator> text;	
+//		protected SupplierFactoryFeature<Decorator> text;
+		
+		// classes - in HTML element itself.
+		// style
 	}
 
 	@Override
@@ -110,11 +115,14 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 						pd.decorate(target, viewGenerator);
 					}
 					
-//					margin;
-//					padding;
-//					border;
+					for (Decorator bd: (List<Decorator>) border.get(data)) {
+						bd.decorate(target, viewGenerator);
+					}
+					
 //					floatDecorator;
-//					text;	
+//					text;
+//					class
+//					style
 					
 				};
 			}
@@ -130,39 +138,6 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 //	
 //	@Override
 //	public Supplier<ViewBuilder> create(Context context) throws Exception {
-//		
-//		ViewBuilder borderBuilder = new ViewBuilder() {
-//			
-//			@Override
-//			public void build(Object target, ViewGenerator viewGenerator, ProgressMonitor monitor) {
-//				org.nasdanika.html.bootstrap.BootstrapElement<?,?> bootstrapElement = (org.nasdanika.html.bootstrap.BootstrapElement<?,?>) target;
-//				for (Border border: AppearanceSupplierFactory.this.target.getBorder()) {
-//					Color color = org.nasdanika.html.bootstrap.Color.fromLabel(border.getColor());
-//					if (border.isBottom() && border.isLeft() && border.isRight() && border.isTop()) {
-//						bootstrapElement.border(color);
-//					} else {
-//						if (border.isBottom()) {
-//							bootstrapElement.border(color, Placement.BOTTOM);
-//						}
-//						if (border.isTop()) {
-//							bootstrapElement.border(color, Placement.TOP);
-//						}
-//						if (border.isLeft()) {
-//							bootstrapElement.border(color, Placement.LEFT);
-//						}
-//						if (border.isRight()) {
-//							bootstrapElement.border(color, Placement.RIGHT);
-//						}
-//					}
-//					
-//				}
-//				String bgStr = AppearanceSupplierFactory.this.target.getBackground();
-//				if (!Util.isBlank(bgStr)) {
-//					bootstrapElement.background(org.nasdanika.html.bootstrap.Color.fromLabel(bgStr));
-//				}				
-//			}
-//			
-//		};
 //
 //		ViewBuilder spacingBuilder = new ViewBuilder() {
 //			
