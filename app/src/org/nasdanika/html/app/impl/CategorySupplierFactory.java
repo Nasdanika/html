@@ -30,7 +30,7 @@ public class CategorySupplierFactory extends LabelSupplierFactory<Category> {
 		for (Action action: category.getActions()) {
 			((ActionImpl) action).setCategory(category);
 			if (!Util.isBlank(category.getPath()) && action.getActivator() instanceof HrefNavigationActionActivator) {
-				((HrefNavigationActionActivator) action.getActivator()).setPath(category.getPath());
+				((HrefNavigationActionActivator) action.getActivator()).getPath().addFirst(category.getPath());
 			}
 		}
 	}

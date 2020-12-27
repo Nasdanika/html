@@ -10,4 +10,6 @@ app-action:
          text: Principal
          href: principal.html
          children:
-            - app-category-reference: child-category-spec.yml
+            - app-category-reference: 
+               target: child-category-spec.yml
+               path: xyz/

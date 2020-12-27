@@ -8,4 +8,6 @@ app-category:
          content:                  
             exec-markdown: 
                exec-interpolator: Hello, ``${color}``!
-      - app-action-reference: child-action-spec.yml        
+      - app-action-reference: 
+         target: child-action-spec.yml
+         path: child-action-path/        

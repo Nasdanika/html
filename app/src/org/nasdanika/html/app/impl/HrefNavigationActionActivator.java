@@ -2,6 +2,7 @@ package org.nasdanika.html.app.impl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
 
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marker;
@@ -12,7 +13,7 @@ public class HrefNavigationActionActivator implements NavigationActionActivator 
 	
 	private Action action;
 	private String href;
-	private String path; // TODO - multiple paths - from category and references
+	private LinkedList<String> path = new LinkedList<>(); 
 	private Marker marker;
 
 	public HrefNavigationActionActivator(Action action, String href, Marker marker) {
@@ -20,9 +21,9 @@ public class HrefNavigationActionActivator implements NavigationActionActivator 
 		this.href = href;
 		this.marker = marker;
 	}
-	
-	public void setPath(String path) {
-		this.path = path;
+
+	public LinkedList<String> getPath() {
+		return path;
 	}
 
 	@Override
@@ -37,15 +38,19 @@ public class HrefNavigationActionActivator implements NavigationActionActivator 
 		
 		try {
 			if (Util.isBlank(theBase)) {
-				if (Util.isBlank(path)) {
+				if (path.isEmpty()) {
 					return href;
 				}
-				return new URI(path).resolve(new URI(href)).toString();
+				URI baseURI = new URI(path.getFirst());
+				for (String pe: path.subList(1, path.size())) {
+					baseURI = baseURI.resolve(new URI(pe));
+				}
+				return baseURI.resolve(new URI(href)).toString();
 			}
 		
 			URI baseURI = new URI(theBase);
-			if (!Util.isBlank(path)) {
-				baseURI = baseURI.resolve(new URI(path));
+			for (String pe: path) {
+				baseURI = baseURI.resolve(new URI(pe));
 			}
 			return baseURI.resolve(new URI(href)).toString();
 		} catch (URISyntaxException e) {
