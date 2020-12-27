@@ -16,6 +16,7 @@ Require-Bundle: org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport,
  org.nasdanika.exec;visibility:=reexport
 Automatic-Module-Name: org.nasdanika.html.app
 Export-Package: org.nasdanika.html.app,
+ org.nasdanika.html.app.factories,
  org.nasdanika.html.app.impl,
  org.nasdanika.html.app.viewparts,
  org.nasdanika.html.app.viewparts.descriptors

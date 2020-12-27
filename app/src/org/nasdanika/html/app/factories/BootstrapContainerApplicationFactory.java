@@ -1,4 +1,4 @@
-package org.nasdanika.html.app.impl;
+package org.nasdanika.html.app.factories;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import org.nasdanika.common.persistence.Marked;
 import org.nasdanika.common.persistence.Marker;
 import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.html.HTMLPage;
+import org.nasdanika.html.app.impl.BootstrapContainerApplication;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.impl.HTMLPageFactory;

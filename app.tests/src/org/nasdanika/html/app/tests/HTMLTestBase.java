@@ -28,7 +28,7 @@ import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.app.ViewGenerator;
-import org.nasdanika.html.app.impl.ComposedLoader;
+import org.nasdanika.html.app.factories.ComposedLoader;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;

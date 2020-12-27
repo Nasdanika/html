@@ -1,4 +1,4 @@
-package org.nasdanika.html.app.impl;
+package org.nasdanika.html.app.factories;
 
 import java.util.Map;
 import java.util.UUID;
@@ -13,6 +13,7 @@ import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.SupplierFactoryFeatureObject;
 import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.impl.LabelImpl;
 import org.nasdanika.html.bootstrap.Color;
 
 public class LabelSupplierFactory<L extends Label> extends SupplierFactoryFeatureObject<L> {

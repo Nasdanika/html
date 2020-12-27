@@ -17,9 +17,9 @@ import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.app.factories.BootstrapContainerApplicationFactory;
+import org.nasdanika.html.app.factories.ComposedLoader;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
-import org.nasdanika.html.app.impl.BootstrapContainerApplicationFactory;
-import org.nasdanika.html.app.impl.ComposedLoader;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 
 /**
@@ -64,7 +64,7 @@ public class TestApp extends HTMLTestBase {
 		Object actionFactory = loader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor);
 		
 		Action action = Util.callSupplier(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor);
-				
+		
 	}
 	
 	@Test

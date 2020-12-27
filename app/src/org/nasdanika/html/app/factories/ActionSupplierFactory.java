@@ -1,4 +1,4 @@
-package org.nasdanika.html.app.impl;
+package org.nasdanika.html.app.factories;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +27,10 @@ import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.app.impl.ActionImpl;
+import org.nasdanika.html.app.impl.Category;
+import org.nasdanika.html.app.impl.HrefNavigationActionActivator;
+import org.nasdanika.html.app.impl.LabelImpl;
 
 public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 	

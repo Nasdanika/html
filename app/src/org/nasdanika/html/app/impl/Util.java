@@ -86,7 +86,7 @@ public final class Util {
 	}
 	
 	public static boolean isBlank(String str) {
-		return str == null || str.trim().length() == 0;
+		return org.nasdanika.common.Util.isBlank(str);
 	}
 	
 	// TODO - sectionLevel(Action)

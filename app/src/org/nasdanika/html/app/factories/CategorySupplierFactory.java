@@ -1,15 +1,20 @@
-package org.nasdanika.html.app.impl;
+package org.nasdanika.html.app.factories;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.nasdanika.common.Context;
+import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.Attribute;
 import org.nasdanika.common.persistence.ListSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.ReferenceList;
 import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.impl.ActionImpl;
+import org.nasdanika.html.app.impl.Category;
+import org.nasdanika.html.app.impl.HrefNavigationActionActivator;
+import org.nasdanika.html.app.impl.LabelImpl;
 
 public class CategorySupplierFactory extends LabelSupplierFactory<Category> {
 		
