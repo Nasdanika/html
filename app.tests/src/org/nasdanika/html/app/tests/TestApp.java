@@ -14,6 +14,7 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
@@ -72,16 +73,28 @@ public class TestApp extends HTMLTestBase {
 		MutableContext context = Context.singleton("color", "SUCCESS").fork();
 		ViewPart viewPart = (v,p) -> "I am a view part";
 		context.put("view-part", viewPart);
-		Application app = ((BootstrapContainerApplicationFactory) composedLoader.loadYaml(getClass().getResource("application-spec.yml"), monitor)).create(context);
 		
 		ComposedLoader loader = new ComposedLoader();
 		Object actionFactory = loader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor);
 		Action action = Util.callSupplier(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor);
+		writeAction(context, action, action.getChildren().get(0), action, monitor);
+	}
+	
+	private void writeAction(Context context, Action root, Action principal, Action active, ProgressMonitor monitor) throws Exception {
+		if (!active.isEmpty() && active.getActivator() instanceof NavigationActionActivator) {
+			ApplicationBuilder builder = new ActionApplicationBuilder(context, root, principal, active);
+			Application app = ((BootstrapContainerApplicationFactory) composedLoader.loadYaml(getClass().getResource("application-spec.yml"), monitor)).create(context);
+			builder.build(app, monitor);
 
-		ApplicationBuilder builder = new ActionApplicationBuilder(context, action, action.getChildren().get(0), action);
-		builder.build(app, monitor);
-		
-		writeFile("app/app.html", app.toString());
+			String base = "tmp://base/";
+			String url = ((NavigationActionActivator) active.getActivator()).getUrl(base);
+			if (url != null && url.startsWith(base)) {			
+				writeFile("app/" + url.substring(base.length()), app.toString());
+			}			
+		}		
+		for (Action child: active.getChildren()) {
+			writeAction(context, root, principal, child, monitor);
+		}
 	}
 	
 	@Test
