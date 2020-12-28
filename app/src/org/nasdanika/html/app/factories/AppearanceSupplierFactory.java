@@ -57,6 +57,9 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 
 		Feature<List<BorderSupplierFactory>> borderListAttribute = new FeatureObjectListAttribute<>("border", BorderSupplierFactory::new, false, false, null, null);
 		border = addFeature(new ListSupplierFactoryAttribute<>(borderListAttribute , true));
+
+		Feature<List<FloatSupplierFactory>> floatListAttribute = new FeatureObjectListAttribute<>("float", FloatSupplierFactory::new, false, false, null, null);
+		floatDecorator = addFeature(new ListSupplierFactoryAttribute<>(floatListAttribute , true));
 		
 //		protected SupplierFactoryFeature<List<Decorator>> floatDecorator;
 //		protected SupplierFactoryFeature<Decorator> text;
@@ -119,7 +122,10 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 						bd.decorate(target, viewGenerator);
 					}
 					
-//					floatDecorator;
+					for (Decorator fd: (List<Decorator>) floatDecorator.get(data)) {
+						fd.decorate(target, viewGenerator);
+					}
+					
 //					text;
 //					class
 //					style
@@ -138,16 +144,6 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 //	
 //	@Override
 //	public Supplier<ViewBuilder> create(Context context) throws Exception {
-//
-//		ViewBuilder spacingBuilder = new ViewBuilder() {
-//			
-//			@Override
-//			public void build(Object target, ViewGenerator viewGenerator, ProgressMonitor monitor) {
-//				org.nasdanika.html.bootstrap.BootstrapElement<?,?> bootstrapElement = (org.nasdanika.html.bootstrap.BootstrapElement<?,?>) target;
-//				
-//			}
-//			
-//		};
 //		
 //		ViewBuilder textBuilder = new ViewBuilder() {
 //			
@@ -187,85 +183,6 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 //			}
 //			
 //		};
-//				
-//		ViewBuilder floatBuilder = new ViewBuilder() {
-//			
-//			@Override
-//			public void build(Object target, ViewGenerator viewGenerator, ProgressMonitor monitor) {
-//				org.nasdanika.html.bootstrap.BootstrapElement<?,?> bootstrapElement = (org.nasdanika.html.bootstrap.BootstrapElement<?,?>) target;
-//				for (Float _float: AppearanceSupplierFactory.this.target.getFloat()) {
-//					org.nasdanika.html.bootstrap.Float<?> bsFloat = bootstrapElement._float();
-//					Breakpoint breakpoint = Breakpoint.fromLabel(_float.getBreakpoint());
-//					switch (_float.getSide()) {
-//					case "Left":
-//						bsFloat.left(breakpoint);
-//						break;
-//					case "Right":
-//						bsFloat.right(breakpoint);
-//						break;
-//					case "None":
-//						bsFloat.none(breakpoint);
-//						break;
-//					default:
-//						throw new IllegalArgumentException("Invalid float side: "+_float.getSide()+", shall be Left, Right, or None");
-//					}
-//				}
-//			}
-//			
-//		};
-//		
-//		java.util.function.Function<Object, Object> wrapper = target -> {
-//			if (target instanceof org.nasdanika.html.bootstrap.BootstrapElement) {
-//				return (org.nasdanika.html.bootstrap.BootstrapElement<?,?>) target;
-//			} 
-//			if (target instanceof HTMLElement) {
-//				return BootstrapFactory.INSTANCE.wrap((HTMLElement<?>) target);
-//			} 
-//			return BootstrapFactory.INSTANCE.wrap(HTMLFactory.INSTANCE.span(target));									
-//		};
-//		
-//		ViewBuilder composedBuilder = backgroundBuilder
-//				.compose(borderBuilder)
-//				.compose(spacingBuilder)
-//				.compose(textBuilder)
-//				.compose(floatBuilder).before(wrapper);
-//
-//		Supplier<ViewBuilder> appearanceSupplier = Supplier.from(composedBuilder, "Appearance");
-//		
-//		if (AppearanceSupplierFactory.this.target.getAttributes().isEmpty()) {		
-//			return appearanceSupplier;
-//		}
-//		
-//		@SuppressWarnings("resource")
-//		MapCompoundSupplier<String,Object> attrsSupplier = new MapCompoundSupplier<>("Attributes");
-//		
-//		for (AbstractEntry e: AppearanceSupplierFactory.this.target.getAttributes()) {
-//			if (e.isEnabled()) {
-//				attrsSupplier.put(e.getName(), EObjectAdaptable.adaptToSupplierFactory(e, Object.class).create(context));
-//			}
-//		}
-//		
-//		return appearanceSupplier.then(attrsSupplier.asFunction()).then(bs -> new ViewBuilder() {
-//
-//			@Override
-//			public void build(Object target, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-//				bs.getFirst().build(target, viewGenerator, progressMonitor);
-//				org.nasdanika.html.HTMLElement<?> htmlElement;
-//				if (target instanceof org.nasdanika.html.bootstrap.BootstrapElement<?,?>) {
-//					htmlElement = ((org.nasdanika.html.bootstrap.BootstrapElement<?,?>) target).toHTMLElement();  
-//				} else if (target instanceof org.nasdanika.html.HTMLElement) {
-//					htmlElement = (org.nasdanika.html.HTMLElement<?>) target;
-//				} else {
-//					htmlElement = target == null || target instanceof String && Util.isBlank((String) target) ? null : viewGenerator.get(HTMLFactory.class).span(target);
-//				}
-//				if (htmlElement != null) {
-//					htmlElement.attributes(bs.getSecond());
-//				}
-//			}
-//			
-//		});
-//				
-//	}		
 	
 	
 	

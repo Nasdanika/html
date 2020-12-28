@@ -5,6 +5,9 @@ app-label:
    color: INFO 
    appearance: 
       background: ${color}
+      float: 
+         side: right
+         breakpoint: lg
       attributes:
          purum: ${color}
       margin: 
