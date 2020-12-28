@@ -9,7 +9,7 @@ import org.nasdanika.common.Function;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.persistence.Attribute;
 import org.nasdanika.common.persistence.ConfigurationException;
-import org.nasdanika.common.persistence.EnumSupplierFactoryAttribute;
+import org.nasdanika.common.persistence.FunctionSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.ListAttribute;
 import org.nasdanika.common.persistence.ListSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
@@ -31,11 +31,10 @@ import org.nasdanika.html.bootstrap.Placement;
 public class BorderSupplierFactory extends SupplierFactoryFeatureObject<Decorator> {
 	
 	private SupplierFactoryFeature<Color> color;
-	private SupplierFactoryFeature<List<String>> placement;
-	
+	private SupplierFactoryFeature<List<String>> placement;	
 	
 	public BorderSupplierFactory() {
-		color = addFeature(new EnumSupplierFactoryAttribute<Color>(new StringSupplierFactoryAttribute(new Attribute<String>("color", true, false, null, null), true), Color.class, null));
+		color = addFeature(new FunctionSupplierFactoryAttribute<String,Color>(new StringSupplierFactoryAttribute(new Attribute<String>("color", true, false, null, null), true), AppearanceSupplierFactory.COLOR_FROM_CODE_FACTORY));
 		placement = addFeature(new ListSupplierFactoryAttribute<>(new ListAttribute<String>("placement", false, false, null, "Border placement - top, bottom, left, or right"), true));		
 	}
 

@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.nasdanika.common.Util;
+
 /**
  * Bootstrap colors. Not all colors are applicable in all situations. E.g. TRANSPARENT is applicable for backgrounds.
  * @author Pavel Vlasov
@@ -85,6 +87,18 @@ public enum Color {
 			}
 		}
 		throw new IllegalArgumentException("No color value for label "+label);
+	}
+	
+	public static Color fromCode(String code) {
+		if (Util.isBlank(code)) {
+			return NONE;
+		}
+		for (Color color: values()) {
+			if (color.code != null && color.code.equals(code)) {
+				return color;
+			}
+		}
+		throw new IllegalArgumentException("No color value for code "+code);
 	}
 	
 	public boolean isApplicable(Applicability applicability) {

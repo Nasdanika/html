@@ -6,13 +6,15 @@ import java.util.Map.Entry;
 
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
+import org.nasdanika.common.FunctionFactory;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.persistence.Attribute;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.DelegatingSupplierFactoryFeature;
-import org.nasdanika.common.persistence.EnumSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.Feature;
+import org.nasdanika.common.persistence.FeatureObjectAttribute;
 import org.nasdanika.common.persistence.FeatureObjectListAttribute;
+import org.nasdanika.common.persistence.FunctionSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.InterpolatedMapSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.ListSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
@@ -32,6 +34,9 @@ import org.nasdanika.html.bootstrap.Color;
  */
 public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Decorator> {
 	
+	public static final FunctionFactory<String, Color> COLOR_FROM_CODE_FACTORY = context -> Function.fromFunction(Color::fromCode, "Color from code", 1);
+
+	
 	private SupplierFactoryFeature<Color> background;
 	private SupplierFactoryFeature<Map<?,?>> attributes;
 	protected SupplierFactoryFeature<List<Decorator>> margin;
@@ -40,10 +45,9 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 	protected SupplierFactoryFeature<List<Decorator>> floatDecorator;
 	protected SupplierFactoryFeature<Decorator> text;	
 	
-//	private EnumAttribute<Color> background = addFeature(new EnumAttribute<Color>("background", Color.class, true, false, null, "Bootstrap background color"));
-	
 	public AppearanceSupplierFactory() {
-		background = addFeature(new EnumSupplierFactoryAttribute<Color>(new StringSupplierFactoryAttribute(new Attribute<String>("background", true, false, null, null), true), Color.class, null));
+		background = addFeature(new FunctionSupplierFactoryAttribute<String,Color>(new StringSupplierFactoryAttribute(new Attribute<String>("background", true, false, null, null), true), COLOR_FROM_CODE_FACTORY));
+
 		attributes =  addFeature(
 				new InterpolatedMapSupplierFactoryAttribute(
 						new DelegatingSupplierFactoryFeature<>(				
@@ -60,6 +64,8 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 
 		Feature<List<FloatSupplierFactory>> floatListAttribute = new FeatureObjectListAttribute<>("float", FloatSupplierFactory::new, false, false, null, null);
 		floatDecorator = addFeature(new ListSupplierFactoryAttribute<>(floatListAttribute , true));
+
+		text = addFeature(new DelegatingSupplierFactoryFeature<>(new FeatureObjectAttribute<>("text", TextSupplierFactory::new, false, false, null, null)));
 		
 //		protected SupplierFactoryFeature<List<Decorator>> floatDecorator;
 //		protected SupplierFactoryFeature<Decorator> text;
@@ -126,7 +132,10 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 						fd.decorate(target, viewGenerator);
 					}
 					
-//					text;
+					if (text.isLoaded()) {
+						((Decorator) text.get(data)).decorate(target, viewGenerator);
+					}
+					
 //					class
 //					style
 					
@@ -141,50 +150,6 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 //	public AppearanceSupplierFactory(Appearance target) {
 //		this.target = target;
 //	}
-//	
-//	@Override
-//	public Supplier<ViewBuilder> create(Context context) throws Exception {
-//		
-//		ViewBuilder textBuilder = new ViewBuilder() {
-//			
-//			@Override
-//			public void build(Object target, ViewGenerator viewGenerator, ProgressMonitor monitor) {
-//				org.nasdanika.html.bootstrap.BootstrapElement<?,?> bootstrapElement = (org.nasdanika.html.bootstrap.BootstrapElement<?,?>) target;
-//				Text text = AppearanceSupplierFactory.this.target.getText();
-//				if (text != null) {
-//					org.nasdanika.html.bootstrap.Text<?> bsText = bootstrapElement.text();
-//
-//					String colorStr = text.getColor();
-//					if (!Util.isBlank(colorStr)) {						
-//						bsText.color(org.nasdanika.html.bootstrap.Color.fromLabel(colorStr));
-//					}
-//					
-//					String alignmentStr = text.getAlignment();
-//					if (!Util.isBlank(alignmentStr)) {						
-//						bsText.alignment(org.nasdanika.html.bootstrap.Text.Alignment.valueOf(alignmentStr.toUpperCase()));
-//					}				
-//
-//					String transformStr = text.getTransform();
-//					if (!Util.isBlank(transformStr)) {						
-//						bsText.transform(org.nasdanika.html.bootstrap.Text.Transform.valueOf(transformStr.toUpperCase()));
-//					}				
-//
-//					String weightStr = text.getWeight();
-//					if (!Util.isBlank(weightStr)) {						
-//						bsText.weight(org.nasdanika.html.bootstrap.Text.Weight.valueOf(weightStr.toUpperCase()));
-//					}				
-//					
-//					bsText.monospace(text.isMonospace());
-//					bsText.italic(text.isItalic());
-//					bsText.nowrap(text.isNowrap());
-//					bsText.truncate(text.isTruncate());
-//					
-//				}
-//			}
-//			
-//		};
-	
-	
 	
 
 	

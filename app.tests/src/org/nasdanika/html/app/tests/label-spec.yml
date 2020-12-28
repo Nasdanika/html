@@ -2,9 +2,17 @@ app-label:
    icon: fa fa-cog
    text: Configuration
    tooltip: Opens configuration dialog
-   color: INFO 
+   #color: INFO 
    appearance: 
       background: ${color}
+      text: 
+         color: danger
+         alignment: center
+         weight: bold
+         transform: uppercase
+         style: 
+            - italic 
+            - monospace
       float: 
          side: right
          breakpoint: lg
@@ -18,7 +26,7 @@ app-label:
          size: 2
          side: top
       border: 
-         color: WARNING
+         color: warning
          placement: 
             - bottom
             - right

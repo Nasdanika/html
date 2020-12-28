@@ -31,7 +31,7 @@ public class TestApp extends HTMLTestBase {
 	
 	@Test
 	public void testLabel() throws Exception {
-		Context context = Context.singleton("color", "SUCCESS");
+		Context context = Context.singleton("color", "success");
 		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
 		ComposedLoader loader = new ComposedLoader();
 		Object labelFactory = loader.loadYaml(this.getClass().getResource("label-spec.yml"), monitor);
@@ -48,7 +48,7 @@ public class TestApp extends HTMLTestBase {
 		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
 		Object sf = loader.loadYaml(this.getClass().getResource("label-supplier-factory-spec.yml"), monitor);
 		SupplierFactory<Label> sfa = Adaptable.adaptTo(sf, SupplierFactory.class);
-		Context context = Context.singleton("color", "SUCCESS");
+		Context context = Context.singleton("color", "success");
 		Label label = Util.callSupplier(sfa.create(context), monitor);
 		
 		ViewGenerator viewGenerator = new ViewGeneratorImpl(null, null);
@@ -58,7 +58,7 @@ public class TestApp extends HTMLTestBase {
 	
 	@Test
 	public void testAction() throws Exception {
-		Context context = Context.singleton("color", "SUCCESS");
+		Context context = Context.singleton("color", "success");
 		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
 		ComposedLoader loader = new ComposedLoader();
 		Object actionFactory = loader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor);
@@ -70,7 +70,7 @@ public class TestApp extends HTMLTestBase {
 	@Test
 	public void testBootstrapActionApplication() throws Exception {
 		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
-		MutableContext context = Context.singleton("color", "SUCCESS").fork();
+		MutableContext context = Context.singleton("color", "success").fork();
 		ViewPart viewPart = (v,p) -> "I am a view part";
 		context.put("view-part", viewPart);
 		
