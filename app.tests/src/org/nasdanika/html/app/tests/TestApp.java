@@ -17,7 +17,7 @@ import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
-import org.nasdanika.html.app.factories.BootstrapContainerApplicationFactory;
+import org.nasdanika.html.app.factories.BootstrapContainerApplicationSupplierFactory;
 import org.nasdanika.html.app.factories.ComposedLoader;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
@@ -83,7 +83,7 @@ public class TestApp extends HTMLTestBase {
 	private void writeAction(Context context, Action root, Action principal, Action active, ProgressMonitor monitor) throws Exception {
 		if (!active.isEmpty() && active.getActivator() instanceof NavigationActionActivator) {
 			ApplicationBuilder builder = new ActionApplicationBuilder(context, root, principal, active);
-			Application app = ((BootstrapContainerApplicationFactory) composedLoader.loadYaml(getClass().getResource("application-spec.yml"), monitor)).create(context);
+			Application app = Util.callSupplier(((BootstrapContainerApplicationSupplierFactory) composedLoader.loadYaml(getClass().getResource("application-spec.yml"), monitor)).create(context), monitor);
 			builder.build(app, monitor);
 
 			String base = "tmp://base/";

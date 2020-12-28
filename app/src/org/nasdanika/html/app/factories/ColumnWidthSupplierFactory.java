@@ -2,10 +2,10 @@ package org.nasdanika.html.app.factories;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
+import org.nasdanika.common.FunctionFactory;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.persistence.Attribute;
 import org.nasdanika.common.persistence.ConfigurationException;
@@ -20,22 +20,23 @@ import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.ViewBuilder;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Color;
-import org.nasdanika.html.bootstrap.Placement;
+import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Float;
 
 /**
- * A {@link ViewBuilder} loaded from a {@link Map}.
  * @author Pavel
  *
  */
-public class BorderSupplierFactory extends SupplierFactoryFeatureObject<Decorator> {
+public class ColumnWidthSupplierFactory extends SupplierFactoryFeatureObject<Decorator> {
+
+	private SupplierFactoryFeature<List<String>> side;
+	private SupplierFactoryFeature<Breakpoint> breakpoint;
 	
-	private SupplierFactoryFeature<Color> color;
-	private SupplierFactoryFeature<List<String>> placement;	
-	
-	public BorderSupplierFactory() {
-		color = addFeature(new FunctionSupplierFactoryAttribute<String,Color>(new StringSupplierFactoryAttribute(new Attribute<String>("color", true, false, null, null), true), AppearanceSupplierFactory.COLOR_FROM_CODE_FACTORY));
-		placement = addFeature(new ListSupplierFactoryAttribute<>(new ListAttribute<String>("placement", false, false, null, "Border placement - top, bottom, left, or right"), true));		
+	public ColumnWidthSupplierFactory() {
+		side = addFeature(new ListSupplierFactoryAttribute<>(new ListAttribute<String>("side", true, true, null, "Float side - left, right, or none"), true));
+		
+		FunctionFactory<String, Breakpoint> breakpointFactory = context -> Function.fromFunction(Breakpoint::fromCode, "Breakpoint from code", 1);
+		breakpoint = addFeature(new FunctionSupplierFactoryAttribute<String,Breakpoint>(new StringSupplierFactoryAttribute(new Attribute<String>("breakpoint", false, false, "", null), true), breakpointFactory));
 	}
 
 	@Override
@@ -60,18 +61,28 @@ public class BorderSupplierFactory extends SupplierFactoryFeatureObject<Decorato
 					if (target instanceof BootstrapElement) { 
 						bootstrapElement = (BootstrapElement<?, ?>) target;
 					} else if (target instanceof HTMLElement) {
-						bootstrapElement = BootstrapFactory.INSTANCE.wrap((HTMLElement<?>) target);
+						bootstrapElement = BootstrapFactory.INSTANCE.wrap((HTMLElement<?>) target);						
 					} else {
-						throw new ConfigurationException("Cannot apply border to " + target, getMarker());						
+						throw new ConfigurationException("Cannot apply float to " + target, getMarker());						
 					}
+					Float<?> bsFloat = bootstrapElement._float();
 					
-					Color theColor = (Color) color.get(data);
-					if (placement.isLoaded()) {
-						Placement[] thePlacement = ((List<String>) placement.get(data)).stream().map(str -> Placement.valueOf(str.toUpperCase())).collect(Collectors.toList()).toArray(new Placement[] {});
-						bootstrapElement.border(theColor, thePlacement);
-					} else {
-						bootstrapElement.border(theColor);
-					}
+					Breakpoint theBreakpoint = (Breakpoint) breakpoint.get(data); 
+					for (String p: (List<String>) side.get(data)) {
+						switch (p) {
+						case "left":
+							bsFloat.left(theBreakpoint);
+							break;
+						case "right":
+							bsFloat.right(theBreakpoint);
+							break;
+						case "none":
+							bsFloat.none(theBreakpoint);
+							break;
+						default:
+							throw new ConfigurationException("Invalid float side value: " + p, side.getMarker());						
+						}
+					}					
 				};
 			}
 		};

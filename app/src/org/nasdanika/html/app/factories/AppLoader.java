@@ -40,9 +40,7 @@ public class AppLoader implements ObjectLoader {
 			case "category-reference":
 				return new CategoryReference(loader, config, base, subMonitor, marker);
 			case "application":
-				return new BootstrapContainerApplicationFactory(loader, config, base, subMonitor, marker);
-				
-			// TODO - appearance	
+				return new BootstrapContainerApplicationSupplierFactory().load(loader, config, base, subMonitor, marker);
 			
 			default:
 				if (chain == null) {

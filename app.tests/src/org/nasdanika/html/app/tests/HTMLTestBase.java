@@ -26,17 +26,10 @@ import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.html.HTMLPage;
-import org.nasdanika.html.Select;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.factories.ComposedLoader;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
-import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Breakpoint;
-import org.nasdanika.html.bootstrap.Container;
-import org.nasdanika.html.bootstrap.InputGroup;
-import org.nasdanika.html.bootstrap.Size;
-import org.nasdanika.html.bootstrap.Theme;
-import org.nasdanika.html.bootstrap.impl.BootstrapPageFactory;
+import org.nasdanika.html.bootstrap.factories.BootstrapPageSupplierFactory;
 import org.nasdanika.html.echarts.EChartsFactory;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeFactory;
@@ -56,8 +49,8 @@ public class HTMLTestBase {
 	 */
 	protected void writePage(String path, String title, Object... content) throws Exception {				
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
-		BootstrapPageFactory pageFactory = (BootstrapPageFactory) composedLoader.loadYaml(HTMLTestBase.class.getResource("bootstrap-page-spec.yml"), progressMonitor);
-		HTMLPage bootstrapPage = pageFactory.create(Context.EMPTY_CONTEXT); 
+		BootstrapPageSupplierFactory pageFactory = (BootstrapPageSupplierFactory) composedLoader.loadYaml(HTMLTestBase.class.getResource("bootstrap-page-spec.yml"), progressMonitor);
+		HTMLPage bootstrapPage = Util.callSupplier(pageFactory.create(Context.EMPTY_CONTEXT), progressMonitor); 
 		FontAwesomeFactory.INSTANCE.cdn(bootstrapPage);
 		JsTreeFactory.INSTANCE.cdn(bootstrapPage);
 		KnockoutFactory.INSTANCE.cdn(bootstrapPage);

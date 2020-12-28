@@ -6,8 +6,8 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marker;
 import org.nasdanika.common.persistence.ObjectLoader;
-import org.nasdanika.html.bootstrap.impl.BootstrapLoader;
-import org.nasdanika.html.impl.HTMLLoader;
+import org.nasdanika.html.bootstrap.factories.BootstrapLoader;
+import org.nasdanika.html.factories.HTMLLoader;
 
 /**
  * Delegates to Loa {@link HTMLLoader}, {@link BootstrapLoader}, and {@link AppLoader} dispatching by a prefix <code>html-</code> for HTML, <code>bootstrap-</code> for Bootstrap, and <code>app-</code> for App.  

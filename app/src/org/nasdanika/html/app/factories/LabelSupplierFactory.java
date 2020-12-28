@@ -2,6 +2,7 @@ package org.nasdanika.html.app.factories;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -18,6 +19,7 @@ import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.impl.LabelImpl;
 import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.factories.AppearanceSupplierFactory;
 
 public class LabelSupplierFactory<L extends Label> extends SupplierFactoryFeatureObject<L> {
 
@@ -29,10 +31,10 @@ public class LabelSupplierFactory<L extends Label> extends SupplierFactoryFeatur
 	private Attribute<Boolean> outline = addFeature(new Attribute<Boolean>("outline", false, false, false, null));
 	private StringSupplierFactoryAttribute description = addFeature(new StringSupplierFactoryAttribute(new Reference("description", false, false, null, null), true));
 	private Attribute<String> notification = addFeature(new Attribute<String>("notification", false, false, null, null));
-	protected SupplierFactoryFeature<Decorator> appearance;
+	protected SupplierFactoryFeature<Consumer<Object>> appearance;
 	
 	public LabelSupplierFactory() {
-		appearance = addFeature(new DelegatingSupplierFactoryFeature<Decorator>(new FeatureObjectAttribute<AppearanceSupplierFactory>("appearance", AppearanceSupplierFactory::new, false, false, null, "Appearance"))); 
+		appearance = addFeature(new DelegatingSupplierFactoryFeature<Consumer<Object>>(new FeatureObjectAttribute<AppearanceSupplierFactory>("appearance", AppearanceSupplierFactory::new, false, false, null, "Appearance"))); 
 	}
 
 	@Override
@@ -65,7 +67,12 @@ public class LabelSupplierFactory<L extends Label> extends SupplierFactoryFeatur
 	 */
 	@SuppressWarnings("unchecked")
 	protected L createLabel(Context context, Map<Object, Object> data) {
-		return (L) new LabelImpl((Decorator) appearance.get(data)); 
+		Decorator decorator = (target, viewBuilder) -> {
+			if (appearance.isLoaded()) {
+				((Consumer<Object>) appearance.get(data)).accept(target);
+			}
+		};
+		return (L) new LabelImpl(decorator); 
 	}
 	
 	protected void setData(Context context, Map<Object, Object> data, LabelImpl label) {

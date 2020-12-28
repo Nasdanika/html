@@ -1,8 +1,8 @@
-package org.nasdanika.html.app.factories;
+package org.nasdanika.html.bootstrap.factories;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.function.Consumer;
 
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -21,8 +21,6 @@ import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.SupplierFactoryFeature;
 import org.nasdanika.common.persistence.SupplierFactoryFeatureObject;
 import org.nasdanika.html.HTMLElement;
-import org.nasdanika.html.app.Decorator;
-import org.nasdanika.html.app.ViewBuilder;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
@@ -32,18 +30,18 @@ import org.nasdanika.html.bootstrap.Color;
  * @author Pavel
  *
  */
-public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Decorator> {
+public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Consumer<Object>> {
 	
 	public static final FunctionFactory<String, Color> COLOR_FROM_CODE_FACTORY = context -> Function.fromFunction(Color::fromCode, "Color from code", 1);
 
 	
 	private SupplierFactoryFeature<Color> background;
 	private SupplierFactoryFeature<Map<?,?>> attributes;
-	protected SupplierFactoryFeature<List<Decorator>> margin;
-	protected SupplierFactoryFeature<List<Decorator>> padding;
-	protected SupplierFactoryFeature<List<Decorator>> border;
-	protected SupplierFactoryFeature<List<Decorator>> floatDecorator;
-	protected SupplierFactoryFeature<Decorator> text;	
+	protected SupplierFactoryFeature<List<Consumer<Object>>> margin;
+	protected SupplierFactoryFeature<List<Consumer<Object>>> padding;
+	protected SupplierFactoryFeature<List<Consumer<Object>>> border;
+	protected SupplierFactoryFeature<List<Consumer<Object>>> floatDecorator;
+	protected SupplierFactoryFeature<Consumer<Object>> text;	
 	
 	public AppearanceSupplierFactory() {
 		background = addFeature(new FunctionSupplierFactoryAttribute<String,Color>(new StringSupplierFactoryAttribute(new Attribute<String>("background", true, false, null, null), true), COLOR_FROM_CODE_FACTORY));
@@ -75,8 +73,8 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 	}
 
 	@Override
-	protected Function<Map<Object, Object>, Decorator> createResultFunction(Context context) {
-		return new Function<Map<Object,Object>, Decorator>() {
+	protected Function<Map<Object, Object>, Consumer<Object>> createResultFunction(Context context) {
+		return new Function<Map<Object,Object>, Consumer<Object>>() {
 			
 			@Override
 			public double size() {
@@ -90,8 +88,8 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public Decorator execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
-				return (target, viewGenerator) -> {
+			public Consumer<Object> execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
+				return (target) -> {
 					BootstrapElement<?,?> bootstrapElement = null;		
 					HTMLElement<?> htmlElement = null;		
 					if (target instanceof BootstrapElement) { 
@@ -111,121 +109,32 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Deco
 						if (htmlElement == null) {
 							throw new ConfigurationException("Cannot apply attributes to " + target, getMarker());
 						}
-						for (Entry<Object, Object> ae: ((Map<Object,Object>) attributes.get(data)).entrySet()) {
-							htmlElement.attribute(ae.getKey().toString(), ae.getValue());
-						}
+						htmlElement.attributes((Map<?,?>) attributes.get(data));
 					}
 					
-					for (Decorator md: (List<Decorator>) margin.get(data)) {
-						md.decorate(target, viewGenerator);
+					for (Consumer<Object> md: (List<Consumer<Object>>) margin.get(data)) {
+						md.accept(target);
 					}
 					
-					for (Decorator pd: (List<Decorator>) padding.get(data)) {
-						pd.decorate(target, viewGenerator);
+					for (Consumer<Object> pd: (List<Consumer<Object>>) padding.get(data)) {
+						pd.accept(target);
 					}
 					
-					for (Decorator bd: (List<Decorator>) border.get(data)) {
-						bd.decorate(target, viewGenerator);
+					for (Consumer<Object> bd: (List<Consumer<Object>>) border.get(data)) {
+						bd.accept(target);
 					}
 					
-					for (Decorator fd: (List<Decorator>) floatDecorator.get(data)) {
-						fd.decorate(target, viewGenerator);
+					for (Consumer<Object> fd: (List<Consumer<Object>>) floatDecorator.get(data)) {
+						fd.accept(target);
 					}
 					
 					if (text.isLoaded()) {
-						((Decorator) text.get(data)).decorate(target, viewGenerator);
+						((Consumer<Object>) text.get(data)).accept(target);
 					}
-					
-//					class
-//					style
 					
 				};
 			}
 		};
 	}
-	
-	
-//	private Appearance target;
-//
-//	public AppearanceSupplierFactory(Appearance target) {
-//		this.target = target;
-//	}
-	
-
-	
-// ---	
-	
-//
-//	private Attribute<String> id = addFeature(new Attribute<String>("id", false, false, UUID.randomUUID().toString(), null));
-//	private Attribute<String> icon = addFeature(new Attribute<String>("icon", false, false, null, null));
-//	private Attribute<String> text = addFeature(new Attribute<String>("text", true, false, null, null));
-//	private Attribute<String> tooltip = addFeature(new Attribute<String>("tooltip", false, false, null, null));
-//	private Attribute<String> color = addFeature(new Attribute<String>("color", false, false, null, null));
-//	private Attribute<Boolean> outline = addFeature(new Attribute<Boolean>("outline", false, false, false, null));
-//	private StringSupplierFactoryAttribute description = addFeature(new StringSupplierFactoryAttribute(new Reference("description", false, false, null, null), true));
-//	private Attribute<String> notification = addFeature(new Attribute<String>("notification", false, false, null, null));
-//
-//	@Override
-//	protected Function<Map<Object, Object>, L> createResultFunction(Context context) {			
-//		return new Function<Map<Object, Object>, L>() {
-//
-//			@Override
-//			public double size() {
-//				return 1;
-//			}
-//
-//			@Override
-//			public String name() {
-//				return "Creating label";
-//			}
-//
-//			@SuppressWarnings("unchecked")
-//			@Override
-//			public L execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {								
-//				LabelImpl ret = (LabelImpl) createLabel(context, data);
-//				setData(context, data, ret);
-//				return (L) ret;
-//			}
-//		};
-//	}
-//	
-//	/**
-//	 * Override to return ActionImpl
-//	 * @return
-//	 */
-//	@SuppressWarnings("unchecked")
-//	protected L createLabel(Context context, Map<Object, Object> data) {
-//		return (L) new LabelImpl(createDecorator(context)); 
-//	}
-//	
-//	protected Decorator createDecorator(Context context) {
-//		return null; // TODO - Appearance.
-//	}
-//
-//	protected void setData(Context context, Map<Object, Object> data, LabelImpl label) {
-//		// TODO - interpolations where needed.
-//		label.setId(data.get(id.getKey()));
-//		label.setIcon((String) data.get(icon.getKey()));
-//		label.setText((String) data.get(text.getKey()));
-//		if (tooltip.isLoaded()) {
-//			label.setTooltip((String) data.get(tooltip.getKey()));
-//		}
-//		if (description.isLoaded()) {
-//			label.setDescription((String) data.get(description.getKey()));
-//			if (!tooltip.isLoaded()) {
-//				org.nasdanika.common.Util.firstPlainTextSentence(label.getDescription(), 50, 250);
-//			}
-//		}
-//		if (color.isLoaded()) {
-//			try {
-//				label.setColor(Color.valueOf(context.interpolateToString((String) data.get(color.getKey()))));
-//			} catch (IllegalArgumentException e) {
-//				throw new ConfigurationException(e.getMessage(), e, color.getMarker());
-//			}
-//		}
-//		
-//		label.setOutline((boolean) data.get(outline.getKey()));
-//		label.setNotification((String) data.get(notification.getKey()));
-//	}
 	
 }

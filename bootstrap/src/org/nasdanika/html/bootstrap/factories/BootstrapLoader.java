@@ -1,4 +1,4 @@
-package org.nasdanika.html.impl;
+package org.nasdanika.html.bootstrap.factories;
 
 import java.net.URL;
 
@@ -12,15 +12,15 @@ import org.nasdanika.common.persistence.ObjectLoader;
  * @author Pavel
  *
  */
-public class HTMLLoader implements ObjectLoader {
+public class BootstrapLoader implements ObjectLoader {
 	
 	private org.nasdanika.common.persistence.ObjectLoader chain;
 
-	public HTMLLoader(ObjectLoader chain) {
+	public BootstrapLoader(ObjectLoader chain) {
 		this.chain = chain;
 	}
 	
-	public HTMLLoader() {}	
+	public BootstrapLoader() {}	
 
 	@Override
 	public Object create(ObjectLoader loader, String type, Object config, URL base, ProgressMonitor progressMonitor, Marker marker) throws Exception {
@@ -28,7 +28,7 @@ public class HTMLLoader implements ObjectLoader {
 		try (ProgressMonitor subMonitor = progressMonitor.setWorkRemaining(10).split("Creating " + type, 1, marker)) {
 			switch (type) {
 			case "page":
-				return new HTMLPageFactory(loader, config, base, subMonitor, marker);
+				return new BootstrapPageSupplierFactory().load(loader, config, base, subMonitor, marker);			
 			default:
 				if (chain == null) {
 					throw new ConfigurationException("Unsupported type: " + type, marker);

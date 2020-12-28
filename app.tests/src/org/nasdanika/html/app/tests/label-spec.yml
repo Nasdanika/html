@@ -17,11 +17,20 @@ app-label:
          side: right
          breakpoint: lg
       attributes:
-         purum: ${color}
+         class:
+            - a
+            - b
+         style:
+            border:
+               left:
+                  - solid
+                  - 10px
+                  - black
       margin: 
          - size: 1
            breakpoint: md
            side: y
+      margin: 4
       padding: 
          size: 2
          side: top

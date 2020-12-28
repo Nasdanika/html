@@ -1,7 +1,8 @@
-package org.nasdanika.html.app.factories;
+package org.nasdanika.html.bootstrap.factories;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -16,8 +17,6 @@ import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.SupplierFactoryFeature;
 import org.nasdanika.common.persistence.SupplierFactoryFeatureObject;
 import org.nasdanika.html.HTMLElement;
-import org.nasdanika.html.app.Decorator;
-import org.nasdanika.html.app.ViewBuilder;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
@@ -28,7 +27,7 @@ import org.nasdanika.html.bootstrap.Float;
  * @author Pavel
  *
  */
-public class FloatSupplierFactory extends SupplierFactoryFeatureObject<Decorator> {
+public class FloatSupplierFactory extends SupplierFactoryFeatureObject<Consumer<Object>> {
 
 	private SupplierFactoryFeature<List<String>> side;
 	private SupplierFactoryFeature<Breakpoint> breakpoint;
@@ -41,8 +40,8 @@ public class FloatSupplierFactory extends SupplierFactoryFeatureObject<Decorator
 	}
 
 	@Override
-	protected Function<Map<Object, Object>, Decorator> createResultFunction(Context context) {
-		return new Function<Map<Object,Object>, Decorator>() {
+	protected Function<Map<Object, Object>, Consumer<Object>> createResultFunction(Context context) {
+		return new Function<Map<Object,Object>, Consumer<Object>>() {
 			
 			@Override
 			public double size() {
@@ -56,8 +55,8 @@ public class FloatSupplierFactory extends SupplierFactoryFeatureObject<Decorator
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public Decorator execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
-				return (target, viewGenerator) -> {
+			public Consumer<Object> execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
+				return (target) -> {
 					BootstrapElement<?,?> bootstrapElement;		
 					if (target instanceof BootstrapElement) { 
 						bootstrapElement = (BootstrapElement<?, ?>) target;

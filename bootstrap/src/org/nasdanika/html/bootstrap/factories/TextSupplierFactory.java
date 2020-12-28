@@ -1,7 +1,8 @@
-package org.nasdanika.html.app.factories;
+package org.nasdanika.html.bootstrap.factories;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -16,8 +17,6 @@ import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.SupplierFactoryFeature;
 import org.nasdanika.common.persistence.SupplierFactoryFeatureObject;
 import org.nasdanika.html.HTMLElement;
-import org.nasdanika.html.app.Decorator;
-import org.nasdanika.html.app.ViewBuilder;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
@@ -28,7 +27,7 @@ import org.nasdanika.html.bootstrap.Text;
  * @author Pavel
  *
  */
-public class TextSupplierFactory extends SupplierFactoryFeatureObject<Decorator> {
+public class TextSupplierFactory extends SupplierFactoryFeatureObject<Consumer<Object>> {
 
 	private SupplierFactoryFeature<Color> color;
 	private SupplierFactoryFeature<List<String>> style;	
@@ -51,8 +50,8 @@ public class TextSupplierFactory extends SupplierFactoryFeatureObject<Decorator>
 	}
 
 	@Override
-	protected Function<Map<Object, Object>, Decorator> createResultFunction(Context context) {
-		return new Function<Map<Object,Object>, Decorator>() {
+	protected Function<Map<Object, Object>, Consumer<Object>> createResultFunction(Context context) {
+		return new Function<Map<Object,Object>, Consumer<Object>>() {
 			
 			@Override
 			public double size() {
@@ -66,8 +65,8 @@ public class TextSupplierFactory extends SupplierFactoryFeatureObject<Decorator>
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public Decorator execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
-				return (target, viewGenerator) -> {
+			public Consumer<Object> execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
+				return (target) -> {
 					BootstrapElement<?,?> bootstrapElement;		
 					if (target instanceof BootstrapElement) { 
 						bootstrapElement = (BootstrapElement<?, ?>) target;
