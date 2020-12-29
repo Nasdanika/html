@@ -2,6 +2,7 @@ package org.nasdanika.html.app.factories;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -28,7 +29,7 @@ import org.nasdanika.html.bootstrap.Float;
  * @author Pavel
  *
  */
-public class BootstrapContainerApplicationSectionSupplierFactory extends SupplierFactoryFeatureObject<ViewBuilder> {
+public class BootstrapContainerApplicationSectionSupplierFactory extends SupplierFactoryFeatureObject<Consumer<Object>> {
 
 	private SupplierFactoryFeature<List<String>> side;
 	private SupplierFactoryFeature<Breakpoint> breakpoint;
@@ -41,8 +42,8 @@ public class BootstrapContainerApplicationSectionSupplierFactory extends Supplie
 	}
 
 	@Override
-	protected Function<Map<Object, Object>, ViewBuilder> createResultFunction(Context context) {
-		return new Function<Map<Object,Object>, ViewBuilder>() {
+	protected Function<Map<Object, Object>, Consumer<Object>> createResultFunction(Context context) {
+		return new Function<Map<Object,Object>, Consumer<Object>>() {
 			
 			@Override
 			public double size() {
@@ -56,8 +57,8 @@ public class BootstrapContainerApplicationSectionSupplierFactory extends Supplie
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public ViewBuilder execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
-				return (target, viewGenerator, monitor) -> {
+			public Consumer<Object> execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
+				return (target) -> {
 					BootstrapElement<?,?> bootstrapElement;		
 					if (target instanceof BootstrapElement) { 
 						bootstrapElement = (BootstrapElement<?, ?>) target;
@@ -85,12 +86,12 @@ public class BootstrapContainerApplicationSectionSupplierFactory extends Supplie
 						}
 					}
 					
-					BootstrapContainerApplicationSectionSupplierFactory.this.decorate(data, target, viewGenerator);
+					BootstrapContainerApplicationSectionSupplierFactory.this.decorate(data, target);
 				};
 			}
 		};
 	}
 	
-	protected void decorate(Map<Object, Object> data, Object target, ViewGenerator viewGenerator) {}	
+	protected void decorate(Map<Object, Object> data, Object target) {}	
 		
 }

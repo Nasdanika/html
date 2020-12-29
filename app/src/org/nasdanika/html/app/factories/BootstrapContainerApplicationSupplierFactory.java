@@ -3,8 +3,10 @@ package org.nasdanika.html.app.factories;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ContextualFactory;
@@ -28,6 +30,7 @@ import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewBuilder;
 import org.nasdanika.html.app.impl.BootstrapContainerApplication;
+import org.nasdanika.html.app.impl.BootstrapContainerApplication.Section;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
@@ -37,11 +40,11 @@ import org.nasdanika.html.factories.HTMLPageSupplierFactory;
 
 public class BootstrapContainerApplicationSupplierFactory extends SupplierFactoryFeatureObject<BootstrapContainerApplication> {
 	
-	protected SupplierFactoryFeature<ViewBuilder> header;	
-	protected SupplierFactoryFeature<ViewBuilder> navigationBar;	
-	protected SupplierFactoryFeature<ViewBuilder> navigationPanel;	
-	protected SupplierFactoryFeature<ViewBuilder> contentPanel;	
-	protected SupplierFactoryFeature<ViewBuilder> footer;	
+	protected SupplierFactoryFeature<Consumer<Object>> header;	
+	protected SupplierFactoryFeature<Consumer<Object>> navigationBar;	
+	protected SupplierFactoryFeature<Consumer<Object>> navigationPanel;	
+	protected SupplierFactoryFeature<Consumer<Object>> contentPanel;	
+	protected SupplierFactoryFeature<Consumer<Object>> footer;	
 	protected SupplierFactoryFeature<HTMLPage> page;
 	private Attribute<Boolean> fluid = addFeature(new Attribute<Boolean>("fluid", false, false, false, null));
 	private EnumSupplierFactoryAttribute<Theme> theme;
@@ -78,13 +81,14 @@ public class BootstrapContainerApplicationSupplierFactory extends SupplierFactor
 				} else {
 					htmlPage = bootstrapFactory.bootstrapCdnHTMLPage((Theme) theme.get(data));
 				}
-				BootstrapContainerApplication app = new BootstrapContainerApplication(bootstrapFactory, htmlPage, (boolean) fluid.get(data)) {
-					
-				};
 				
+				Map<Section, Consumer<Object>> sectionConfigurators = new HashMap<>();
 				if (header.isLoaded()) {
-					((ViewBuilder) header.get(data)).build(app.he, viewGenerator, progressMonitor);
+					// TODO ((ViewBuilder) header.get(data)).build(app.he, viewGenerator, progressMonitor);
 				}
+				
+				BootstrapContainerApplication app = new BootstrapContainerApplication(bootstrapFactory, htmlPage, (boolean) fluid.get(data), sectionConfigurators::get);
+				
 				// header
 				// navigation bar
 				// navigation panel
