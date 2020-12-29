@@ -1,7 +1,11 @@
 package org.nasdanika.html.app.impl;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.TagName;
+import org.nasdanika.html.app.impl.BootstrapContainerApplication.Section;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Theme;
 
@@ -44,14 +48,18 @@ public class BootstrapContainerRouterApplication extends BootstrapContainerAppli
 	 * Creates bootstrap content routing CDN application
 	 */
 	public BootstrapContainerRouterApplication(BootstrapFactory factory, Theme theme, boolean fluid) {
-		this(factory, factory.bootstrapCdnHTMLPage(factory.getHTMLFactory().page(), theme), fluid);
+		this(factory, factory.bootstrapCdnHTMLPage(factory.getHTMLFactory().page(), theme), fluid, null);
 	}	
 	
 	/**
 	 * Creates bootstrap content routing CDN application
 	 */
-	public BootstrapContainerRouterApplication(BootstrapFactory factory, HTMLPage page, boolean fluid) {
-		super(factory, page, fluid);
+	public BootstrapContainerRouterApplication(
+			BootstrapFactory factory, 
+			HTMLPage page, 
+			boolean fluid,
+			Function<Section,Consumer<Object>> sectionConfigurators) {
+		super(factory, page, fluid, sectionConfigurators);
 		page.script("https://underscorejs.org/underscore-min.js");
 		page.script("https://backbonejs.org/backbone-min.js");
 		page.head(factory.getHTMLFactory().tag(TagName.script, getContentRouterCode(factory))); 		

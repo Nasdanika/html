@@ -1,5 +1,8 @@
 package org.nasdanika.html.app.impl;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -19,6 +22,21 @@ import org.nasdanika.html.bootstrap.Theme;
  *
  */
 public class BootstrapContainerApplication implements Application {
+	
+	/**
+	 * Application section
+	 * @author Pavel
+	 *
+	 */
+	public enum Section {
+		Container,
+		Header,
+		NavigationBar,
+		ContentRow,
+		NavigationPanel,
+		ContentPanel,
+		Footer
+	}	
 
 	protected HTMLPage page;
 	protected Container container;
@@ -28,6 +46,7 @@ public class BootstrapContainerApplication implements Application {
 	protected Col contentPanel;
 	protected Col footer;
 	protected Row contentRow;
+	protected Function<Section, Consumer<Object>> sectionConfigurators;
 
 	/**
 	 * Creates bootstrap CDN application
@@ -61,14 +80,18 @@ public class BootstrapContainerApplication implements Application {
 	 * Creates bootstrap CDN application
 	 */
 	public BootstrapContainerApplication(BootstrapFactory factory, Theme theme, boolean fluid) {
-		this(factory, factory.getHTMLFactory().page(), fluid);
+		this(factory, factory.getHTMLFactory().page(), fluid,  null);
 		factory.bootstrapCdnHTMLPage(page, theme);
 	}		
 	
 	/**
 	 * Creates bootstrap application from bootstrap pre-configured page.
 	 */
-	public BootstrapContainerApplication(BootstrapFactory factory, HTMLPage page, boolean fluid) {
+	public BootstrapContainerApplication(
+			BootstrapFactory factory, 
+			HTMLPage page, 
+			boolean fluid,
+			Function<Section,Consumer<Object>> sectionConfigurators) {
 		this.page = page;
 		container = fluid ? factory.fluidContainer() : factory.container();
 		page.body(container);
@@ -88,6 +111,8 @@ public class BootstrapContainerApplication implements Application {
 		contentPanel.toHTMLElement().addClass("nsd-app-content-panel");
 		footer.toHTMLElement().addClass("nsd-app-footer");
 		
+		this.sectionConfigurators = sectionConfigurators;
+		
 		// Configuration
 		configureContainer(container);
 		configureHeader(header);
@@ -97,13 +122,22 @@ public class BootstrapContainerApplication implements Application {
 		configureConentPanel(contentPanel);
 		configureFooter(footer);
 	}
+	
+	private Consumer<Object> getConfigurator(Section section) {
+		return sectionConfigurators == null ? null : sectionConfigurators.apply(section);
+	}
 		
 	/**
 	 * Override to configure container. This implementation sets border color to DEFAULt and top margin to 1.
 	 * @param container
 	 */
 	protected void configureContainer(Container container) {
-		container.border(Color.DEFAULT).margin().top(Breakpoint.DEFAULT, Size.S1);		
+		Consumer<Object> configurator = getConfigurator(Section.Container);
+		if (configurator == null) {
+			container.border(Color.DEFAULT).margin().top(Breakpoint.DEFAULT, Size.S1);		
+		} else {
+			configurator.accept(header);
+		}
 	}
 	
 	/**
@@ -111,8 +145,13 @@ public class BootstrapContainerApplication implements Application {
 	 * @param header
 	 */
 	protected void configureHeader(Col header) {
-		header.background(Color.PRIMARY);		
-		header.width(Breakpoint.DEFAULT, Size.NONE);
+		Consumer<Object> configurator = getConfigurator(Section.Header);
+		if (configurator == null) {
+			header.width(Breakpoint.DEFAULT, Size.NONE);
+			header.background(Color.PRIMARY);
+		} else {
+			configurator.accept(header);
+		}
 	}
 	
 	/**
@@ -121,8 +160,13 @@ public class BootstrapContainerApplication implements Application {
 	 * @param navigationBar
 	 */
 	protected void configureNavigationBar(Col navigationBar) {
-		navigationBar.background(Color.LIGHT).text().color(Color.DARK);		
-		navigationBar.width(Breakpoint.DEFAULT, Size.NONE);
+		Consumer<Object> configurator = getConfigurator(Section.NavigationBar);
+		if (configurator == null) {
+			navigationBar.background(Color.LIGHT).text().color(Color.DARK);		
+			navigationBar.width(Breakpoint.DEFAULT, Size.NONE);
+		} else {
+			configurator.accept(header);
+		}
 	}
 	
 	/**
@@ -130,7 +174,12 @@ public class BootstrapContainerApplication implements Application {
 	 * @param contentRow
 	 */
 	protected void configureContentRow(Row contentRow) {
-		contentRow.toHTMLElement().style("min-height", "30em");		
+		Consumer<Object> configurator = getConfigurator(Section.ContentRow);
+		if (configurator == null) {
+			contentRow.toHTMLElement().style("min-height", "30em");		
+		} else {
+			configurator.accept(header);
+		}
 	}
 	
 	/**
@@ -139,7 +188,12 @@ public class BootstrapContainerApplication implements Application {
 	 * @param navigationPanel
 	 */
 	protected void configureNavigationPanel(Col navigationPanel) {
-		navigationPanel.width(Breakpoint.DEFAULT, Size.AUTO);
+		Consumer<Object> configurator = getConfigurator(Section.NavigationPanel);
+		if (configurator == null) {
+			navigationPanel.width(Breakpoint.DEFAULT, Size.AUTO);
+		} else {
+			configurator.accept(header);
+		}
 	}
 	
 	/**
@@ -147,8 +201,13 @@ public class BootstrapContainerApplication implements Application {
 	 * @param contentPanel
 	 */
 	protected void configureConentPanel(Col contentPanel) {
-		contentPanel.border(Color.DEFAULT, Placement.LEFT);		
-		contentPanel.width(Breakpoint.DEFAULT, Size.NONE);
+		Consumer<Object> configurator = getConfigurator(Section.ContentPanel);
+		if (configurator == null) {
+			contentPanel.border(Color.DEFAULT, Placement.LEFT);		
+			contentPanel.width(Breakpoint.DEFAULT, Size.NONE);
+		} else {
+			configurator.accept(header);
+		}
 	}
 	
 	/**
@@ -157,8 +216,13 @@ public class BootstrapContainerApplication implements Application {
 	 * @param footer
 	 */
 	protected void configureFooter(Col footer) {
-		footer.background(Color.SECONDARY).text().alignment(Alignment.CENTER);
-		footer.width(Breakpoint.DEFAULT, Size.NONE);		
+		Consumer<Object> configurator = getConfigurator(Section.Footer);
+		if (configurator == null) {
+			footer.background(Color.SECONDARY).text().alignment(Alignment.CENTER);
+			footer.width(Breakpoint.DEFAULT, Size.NONE);		
+		} else {
+			configurator.accept(header);
+		}
 	}	
 
 	@Override

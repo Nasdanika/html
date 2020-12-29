@@ -25,19 +25,18 @@ public class HTMLPageSupplierFactory extends SupplierFactoryFeatureObject<HTMLPa
 				return "Creating bootstrap container application";
 			}
 			
-			@SuppressWarnings("unchecked")
 			@Override
 			public HTMLPage execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
 				HTMLFactory factory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
 				HTMLPage page = factory.page();
 //				- from context HTMLFactory.INSTANCE.page()
 				// configure
-				return configure(page);
+				return configure(context, data, page, progressMonitor);
 			}
 		};
 	}
 	
-	protected HTMLPage configure(HTMLPage page) {
+	protected HTMLPage configure(Context context, Map<Object, Object> data, HTMLPage page, ProgressMonitor progressMonitor) {
 		return page;
 	}
 	

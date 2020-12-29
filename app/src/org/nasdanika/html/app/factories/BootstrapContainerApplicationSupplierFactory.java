@@ -32,6 +32,7 @@ import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Theme;
+import org.nasdanika.html.bootstrap.factories.BootstrapPageSupplierFactory;
 import org.nasdanika.html.factories.HTMLPageSupplierFactory;
 
 public class BootstrapContainerApplicationSupplierFactory extends SupplierFactoryFeatureObject<BootstrapContainerApplication> {
@@ -50,7 +51,7 @@ public class BootstrapContainerApplicationSupplierFactory extends SupplierFactor
 	
 	public BootstrapContainerApplicationSupplierFactory() {
 		theme = addFeature(new EnumSupplierFactoryAttribute<Theme>(new StringSupplierFactoryAttribute(new Attribute<String>("theme", false, false, null, null, "page"), true), Theme.class, Theme.Default));
-		page = addFeature(new DelegatingSupplierFactoryFeature<>(new FeatureObjectAttribute<>("page", HTMLPageSupplierFactory::new, false, false, null, null)));
+		page = addFeature(new DelegatingSupplierFactoryFeature<>(new FeatureObjectAttribute<>("page", BootstrapPageSupplierFactory::new, false, false, null, null, "theme")));
 	}
 	
 	@Override
@@ -70,13 +71,20 @@ public class BootstrapContainerApplicationSupplierFactory extends SupplierFactor
 			@SuppressWarnings("unchecked")
 			@Override
 			public BootstrapContainerApplication execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
-				BootstrapContainerApplication app;
+				HTMLPage htmlPage;
+				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				if (page.isLoaded()) {
-					app = new BootstrapContainerApplication(context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE), (HTMLPage) page.get(data), (boolean) fluid.get(data));
+					htmlPage = (HTMLPage) page.get(data);
 				} else {
-					app = new BootstrapContainerApplication((Theme) theme.get(data), (boolean) fluid.get(data));
+					htmlPage = bootstrapFactory.bootstrapCdnHTMLPage((Theme) theme.get(data));
 				}
+				BootstrapContainerApplication app = new BootstrapContainerApplication(bootstrapFactory, htmlPage, (boolean) fluid.get(data)) {
+					
+				};
 				
+				if (header.isLoaded()) {
+					((ViewBuilder) header.get(data)).build(app.he, viewGenerator, progressMonitor);
+				}
 				// header
 				// navigation bar
 				// navigation panel
