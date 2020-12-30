@@ -136,7 +136,7 @@ public class BootstrapContainerApplication implements Application {
 		if (configurator == null) {
 			container.border(Color.DEFAULT).margin().top(Breakpoint.DEFAULT, Size.S1);		
 		} else {
-			configurator.accept(header);
+			configurator.accept(container);
 		}
 	}
 	
@@ -165,7 +165,7 @@ public class BootstrapContainerApplication implements Application {
 			navigationBar.background(Color.LIGHT).text().color(Color.DARK);		
 			navigationBar.width(Breakpoint.DEFAULT, Size.NONE);
 		} else {
-			configurator.accept(header);
+			configurator.accept(navigationBar);
 		}
 	}
 	
@@ -178,7 +178,7 @@ public class BootstrapContainerApplication implements Application {
 		if (configurator == null) {
 			contentRow.toHTMLElement().style("min-height", "30em");		
 		} else {
-			configurator.accept(header);
+			configurator.accept(contentRow);
 		}
 	}
 	
@@ -192,7 +192,7 @@ public class BootstrapContainerApplication implements Application {
 		if (configurator == null) {
 			navigationPanel.width(Breakpoint.DEFAULT, Size.AUTO);
 		} else {
-			configurator.accept(header);
+			configurator.accept(navigationPanel);
 		}
 	}
 	
@@ -206,7 +206,7 @@ public class BootstrapContainerApplication implements Application {
 			contentPanel.border(Color.DEFAULT, Placement.LEFT);		
 			contentPanel.width(Breakpoint.DEFAULT, Size.NONE);
 		} else {
-			configurator.accept(header);
+			configurator.accept(contentPanel);
 		}
 	}
 	
@@ -221,7 +221,7 @@ public class BootstrapContainerApplication implements Application {
 			footer.background(Color.SECONDARY).text().alignment(Alignment.CENTER);
 			footer.width(Breakpoint.DEFAULT, Size.NONE);		
 		} else {
-			configurator.accept(header);
+			configurator.accept(footer);
 		}
 	}	
 

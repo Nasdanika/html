@@ -39,13 +39,13 @@ public class TextSupplierFactory extends SupplierFactoryFeatureObject<Consumer<O
 		color = addFeature(new FunctionSupplierFactoryAttribute<String,Color>(new StringSupplierFactoryAttribute(new Attribute<String>("color", true, false, null, "Text color"), true), AppearanceSupplierFactory.COLOR_FROM_CODE_FACTORY));
 		style = addFeature(new ListSupplierFactoryAttribute<>(new ListAttribute<String>("style", false, false, null, "Text style, single value or a list of: italic, monospace, nowrap, truncate"), true));		
 				
-		FunctionFactory<String, Text.Alignment> alignmentFactory = context -> Function.fromFunction(str -> Text.Alignment.valueOf(str.toUpperCase()), "Alignment from lower case", 1);
+		FunctionFactory<String, Text.Alignment> alignmentFactory = context -> Function.fromFunction(str -> str == null ? null : Text.Alignment.valueOf(str.toUpperCase()), "Alignment from lower case", 1);
 		alignment = addFeature(new FunctionSupplierFactoryAttribute<String,Text.Alignment>(new StringSupplierFactoryAttribute(new Attribute<String>("alignment", false, false, null, null), true), alignmentFactory));
 		
-		FunctionFactory<String, Text.Transform> transformFactory = context -> Function.fromFunction(str -> Text.Transform.valueOf(str.toUpperCase()), "Transform from lower case", 1);
+		FunctionFactory<String, Text.Transform> transformFactory = context -> Function.fromFunction(str -> str == null ? null : Text.Transform.valueOf(str.toUpperCase()), "Transform from lower case", 1);
 		transform = addFeature(new FunctionSupplierFactoryAttribute<String,Text.Transform>(new StringSupplierFactoryAttribute(new Attribute<String>("transform", false, false, null, null), true), transformFactory));
 		
-		FunctionFactory<String, Text.Weight> weightFactory = context -> Function.fromFunction(str -> Text.Weight.valueOf(str.toUpperCase()), "Weight from lower case", 1);
+		FunctionFactory<String, Text.Weight> weightFactory = context -> Function.fromFunction(str -> str == null ? null : Text.Weight.valueOf(str.toUpperCase()), "Weight from lower case", 1);
 		weight = addFeature(new FunctionSupplierFactoryAttribute<String,Text.Weight>(new StringSupplierFactoryAttribute(new Attribute<String>("weight", false, false, null, null), true), weightFactory));		
 	}
 

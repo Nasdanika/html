@@ -1,42 +1,37 @@
 package org.nasdanika.html.app.factories;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
 import org.nasdanika.common.Context;
-import org.nasdanika.common.ContextualFactory;
+import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.Attribute;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.DelegatingSupplierFactoryFeature;
 import org.nasdanika.common.persistence.EnumSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.FeatureObjectAttribute;
-import org.nasdanika.common.persistence.Marked;
-import org.nasdanika.common.persistence.Marker;
-import org.nasdanika.common.persistence.ObjectLoader;
+import org.nasdanika.common.persistence.ListSupplierFactoryAttribute;
+import org.nasdanika.common.persistence.ReferenceList;
 import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.SupplierFactoryFeature;
 import org.nasdanika.common.persistence.SupplierFactoryFeatureObject;
-import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLPage;
-import org.nasdanika.html.app.Decorator;
-import org.nasdanika.html.app.SectionStyle;
-import org.nasdanika.html.app.ViewBuilder;
 import org.nasdanika.html.app.impl.BootstrapContainerApplication;
 import org.nasdanika.html.app.impl.BootstrapContainerApplication.Section;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.bootstrap.Theme;
+import org.nasdanika.html.bootstrap.factories.AppearanceSupplierFactory;
 import org.nasdanika.html.bootstrap.factories.BootstrapPageSupplierFactory;
-import org.nasdanika.html.factories.HTMLPageSupplierFactory;
 
 public class BootstrapContainerApplicationSupplierFactory extends SupplierFactoryFeatureObject<BootstrapContainerApplication> {
 	
@@ -48,13 +43,16 @@ public class BootstrapContainerApplicationSupplierFactory extends SupplierFactor
 	protected SupplierFactoryFeature<HTMLPage> page;
 	private Attribute<Boolean> fluid = addFeature(new Attribute<Boolean>("fluid", false, false, false, null));
 	private EnumSupplierFactoryAttribute<Theme> theme;
+	protected SupplierFactoryFeature<Consumer<Object>> appearance;
+	private SupplierFactoryFeature<List<Object>> content;
 	
-	// page - default page?
-	// action?
+	// action? Adapting to consumer of BinaryEntity container for generation of application pages.
 	
 	public BootstrapContainerApplicationSupplierFactory() {
 		theme = addFeature(new EnumSupplierFactoryAttribute<Theme>(new StringSupplierFactoryAttribute(new Attribute<String>("theme", false, false, null, null, "page"), true), Theme.class, Theme.Default));
 		page = addFeature(new DelegatingSupplierFactoryFeature<>(new FeatureObjectAttribute<>("page", BootstrapPageSupplierFactory::new, false, false, null, null, "theme")));
+		appearance = addFeature(new DelegatingSupplierFactoryFeature<Consumer<Object>>(new FeatureObjectAttribute<AppearanceSupplierFactory>("appearance", AppearanceSupplierFactory::new, false, false, null, "Appearance"))); 
+		content = addFeature(new ListSupplierFactoryAttribute<>(new ReferenceList<>("content", false, false, null, null), true));
 	}
 	
 	@Override
@@ -83,9 +81,45 @@ public class BootstrapContainerApplicationSupplierFactory extends SupplierFactor
 				}
 				
 				Map<Section, Consumer<Object>> sectionConfigurators = new HashMap<>();
-				if (header.isLoaded()) {
-					// TODO ((ViewBuilder) header.get(data)).build(app.he, viewGenerator, progressMonitor);
-				}
+				sectionConfigurators.put(Section.Container, container -> {
+					if (appearance.isLoaded()) {
+						((Consumer<Object>) appearance.get(data)).accept(container);
+					} else {
+						// Default border
+						((org.nasdanika.html.bootstrap.Container) container).border(Color.DEFAULT).margin().top(Breakpoint.DEFAULT, Size.S1);	
+					}
+					if (content.isLoaded()) {	
+						Object target = container;
+						if (container instanceof BootstrapElement) { 
+							target = ((BootstrapElement<?, ?>) container).toHTMLElement();
+						} 
+						
+						if (!(target instanceof Consumer)) {
+							throw new ConfigurationException("Cannot add content to " + target, getMarker());						
+						} 	
+						
+						Consumer<Object> consumer = (Consumer<Object>) target;
+						
+						for (Object ce: (List<Object>) data.get(content.getKey())) {
+							if (ce instanceof InputStream) {
+								try {
+									consumer.accept(DefaultConverter.INSTANCE.toString((InputStream) ce));
+								} catch (IOException e) {
+									throw new ConfigurationException(e.getMessage(), e, content.getMarker());
+								}
+							} else {
+								consumer.accept(ce);
+							}
+						}
+					}					
+										
+				});
+				
+				
+				
+//				if (header.isLoaded()) {
+//					// TODO ((ViewBuilder) header.get(data)).build(app.he, viewGenerator, progressMonitor);
+//				}
 				
 				BootstrapContainerApplication app = new BootstrapContainerApplication(bootstrapFactory, htmlPage, (boolean) fluid.get(data), sectionConfigurators::get);
 				

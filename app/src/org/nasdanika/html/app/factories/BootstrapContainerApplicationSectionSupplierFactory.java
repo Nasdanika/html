@@ -1,29 +1,40 @@
 package org.nasdanika.html.app.factories;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
 import org.nasdanika.common.Context;
+import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.FunctionFactory;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.persistence.Attribute;
 import org.nasdanika.common.persistence.ConfigurationException;
+import org.nasdanika.common.persistence.DelegatingSupplierFactoryFeature;
+import org.nasdanika.common.persistence.FeatureObjectAttribute;
 import org.nasdanika.common.persistence.FunctionSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.ListAttribute;
 import org.nasdanika.common.persistence.ListSupplierFactoryAttribute;
+import org.nasdanika.common.persistence.ReferenceList;
 import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.SupplierFactoryFeature;
 import org.nasdanika.common.persistence.SupplierFactoryFeatureObject;
+import org.nasdanika.html.Container;
+import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.ViewBuilder;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Float;
+import org.nasdanika.html.bootstrap.factories.AppearanceSupplierFactory;
 
 /**
  * @author Pavel
@@ -31,14 +42,12 @@ import org.nasdanika.html.bootstrap.Float;
  */
 public class BootstrapContainerApplicationSectionSupplierFactory extends SupplierFactoryFeatureObject<Consumer<Object>> {
 
-	private SupplierFactoryFeature<List<String>> side;
-	private SupplierFactoryFeature<Breakpoint> breakpoint;
+	protected SupplierFactoryFeature<Consumer<Object>> appearance;
+	private SupplierFactoryFeature<List<Object>> content;
 	
 	public BootstrapContainerApplicationSectionSupplierFactory() {
-		side = addFeature(new ListSupplierFactoryAttribute<>(new ListAttribute<String>("side", true, true, null, "Float side - left, right, or none"), true));
-		
-		FunctionFactory<String, Breakpoint> breakpointFactory = context -> Function.fromFunction(Breakpoint::fromCode, "Breakpoint from code", 1);
-		breakpoint = addFeature(new FunctionSupplierFactoryAttribute<String,Breakpoint>(new StringSupplierFactoryAttribute(new Attribute<String>("breakpoint", false, false, "", null), true), breakpointFactory));
+		appearance = addFeature(new DelegatingSupplierFactoryFeature<Consumer<Object>>(new FeatureObjectAttribute<AppearanceSupplierFactory>("appearance", AppearanceSupplierFactory::new, false, false, null, "Appearance"))); 
+		content = addFeature(new ListSupplierFactoryAttribute<>(new ReferenceList<>("content", false, false, null, null), true));
 	}
 
 	@Override
@@ -58,35 +67,33 @@ public class BootstrapContainerApplicationSectionSupplierFactory extends Supplie
 			@SuppressWarnings("unchecked")
 			@Override
 			public Consumer<Object> execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
-				return (target) -> {
-					BootstrapElement<?,?> bootstrapElement;		
-					if (target instanceof BootstrapElement) { 
-						bootstrapElement = (BootstrapElement<?, ?>) target;
-					} else if (target instanceof HTMLElement) {
-						bootstrapElement = BootstrapFactory.INSTANCE.wrap((HTMLElement<?>) target);						
-					} else {
-						throw new ConfigurationException("Cannot apply float to " + target, getMarker());						
+				return target -> {
+					if (appearance.isLoaded()) {
+						((Consumer<Object>) appearance.get(data)).accept(target);
 					}
-					Float<?> bsFloat = bootstrapElement._float();
-					
-					Breakpoint theBreakpoint = (Breakpoint) breakpoint.get(data); 
-					for (String p: (List<String>) side.get(data)) {
-						switch (p) {
-						case "left":
-							bsFloat.left(theBreakpoint);
-							break;
-						case "right":
-							bsFloat.right(theBreakpoint);
-							break;
-						case "none":
-							bsFloat.none(theBreakpoint);
-							break;
-						default:
-							throw new ConfigurationException("Invalid float side value: " + p, side.getMarker());						
+					if (content.isLoaded()) {						
+						if (target instanceof BootstrapElement) { 
+							target = ((BootstrapElement<?, ?>) target).toHTMLElement();
+						} 
+						
+						if (!(target instanceof Consumer)) {
+							throw new ConfigurationException("Cannot add content to " + target, getMarker());						
+						} 	
+						
+						Consumer<Object> consumer = (Consumer<Object>) target;
+						
+						for (Object ce: (List<Object>) data.get(content.getKey())) {
+							if (ce instanceof InputStream) {
+								try {
+									consumer.accept(DefaultConverter.INSTANCE.toString((InputStream) ce));
+								} catch (IOException e) {
+									throw new ConfigurationException(e.getMessage(), e, content.getMarker());
+								}
+							} else {
+								consumer.accept(ce);
+							}
 						}
-					}
-					
-					BootstrapContainerApplicationSectionSupplierFactory.this.decorate(data, target);
+					}					
 				};
 			}
 		};

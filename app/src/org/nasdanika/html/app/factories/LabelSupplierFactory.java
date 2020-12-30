@@ -91,7 +91,7 @@ public class LabelSupplierFactory<L extends Label> extends SupplierFactoryFeatur
 		}
 		if (color.isLoaded()) {
 			try {
-				label.setColor(Color.valueOf(context.interpolateToString((String) data.get(color.getKey()))));
+				label.setColor(Color.fromCode(context.interpolateToString((String) data.get(color.getKey()))));
 			} catch (IllegalArgumentException e) {
 				throw new ConfigurationException(e.getMessage(), e, color.getMarker());
 			}
