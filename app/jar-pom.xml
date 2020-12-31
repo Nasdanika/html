@@ -44,7 +44,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.nasdanika.core</groupId>
-			<artifactId>common</artifactId>
+			<artifactId>exec</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
