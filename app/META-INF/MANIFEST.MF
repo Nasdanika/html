@@ -18,5 +18,7 @@ Automatic-Module-Name: org.nasdanika.html.app
 Export-Package: org.nasdanika.html.app,
  org.nasdanika.html.app.factories,
  org.nasdanika.html.app.impl,
+ org.nasdanika.html.app.templates,
+ org.nasdanika.html.app.templates.cerulean,
  org.nasdanika.html.app.viewparts,
  org.nasdanika.html.app.viewparts.descriptors

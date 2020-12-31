@@ -1,7 +1,8 @@
 app-application:
-   theme: Litera
    fluid: false
-   navigation-panel:
-      content: Hello!
-      appearance: danger
-      width: auto
+   page:
+      theme: Cerulean
+      head:
+         exec-resource: app-page-head.html   
+   footer:
+      appearance: info

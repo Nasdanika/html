@@ -83,7 +83,7 @@ public class TestApp extends HTMLTestBase {
 	private void writeAction(Context context, Action root, Action principal, Action active, ProgressMonitor monitor) throws Exception {
 		if (!active.isEmpty() && active.getActivator() instanceof NavigationActionActivator) {
 			ApplicationBuilder builder = new ActionApplicationBuilder(context, root, principal, active);
-			Application app = Util.callSupplier(((BootstrapContainerApplicationSupplierFactory) composedLoader.loadYaml(getClass().getResource("application-spec.yml"), monitor)).create(context), monitor);
+			Application app = Util.callSupplier(((BootstrapContainerApplicationSupplierFactory) composedLoader.loadYaml(getClass().getClassLoader().getResource("org/nasdanika/html/app/templates/cerulean/dark.yml"), monitor)).create(context), monitor);
 			builder.build(app, monitor);
 
 			String base = "tmp://base/";

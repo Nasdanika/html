@@ -2,7 +2,6 @@ app-action:
    icon: fa fa-cog
    text: My Application
    tooltip: Opens configuration dialog
-   color: ${color} 
    href: index.html
    content: ${view-part}
    children:

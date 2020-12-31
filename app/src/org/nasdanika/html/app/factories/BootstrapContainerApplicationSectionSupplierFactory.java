@@ -9,31 +9,15 @@ import java.util.function.Consumer;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.Function;
-import org.nasdanika.common.FunctionFactory;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.persistence.Attribute;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.DelegatingSupplierFactoryFeature;
 import org.nasdanika.common.persistence.FeatureObjectAttribute;
-import org.nasdanika.common.persistence.FunctionSupplierFactoryAttribute;
-import org.nasdanika.common.persistence.ListAttribute;
 import org.nasdanika.common.persistence.ListSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.ReferenceList;
-import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.SupplierFactoryFeature;
 import org.nasdanika.common.persistence.SupplierFactoryFeatureObject;
-import org.nasdanika.html.Container;
-import org.nasdanika.html.Fragment;
-import org.nasdanika.html.HTMLElement;
-import org.nasdanika.html.HTMLFactory;
-import org.nasdanika.html.app.Decorator;
-import org.nasdanika.html.app.ViewBuilder;
-import org.nasdanika.html.app.ViewGenerator;
-import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.BootstrapElement;
-import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Breakpoint;
-import org.nasdanika.html.bootstrap.Float;
 import org.nasdanika.html.bootstrap.factories.AppearanceSupplierFactory;
 
 /**
@@ -83,7 +67,7 @@ public class BootstrapContainerApplicationSectionSupplierFactory extends Supplie
 						
 						Consumer<Object> consumer = (Consumer<Object>) theTarget;
 						
-						for (Object ce: (List<Object>) data.get(content.getKey())) {
+						for (Object ce: (List<Object>) content.get(data)) {
 							if (ce instanceof InputStream) {
 								try {
 									consumer.accept(DefaultConverter.INSTANCE.toString((InputStream) ce));

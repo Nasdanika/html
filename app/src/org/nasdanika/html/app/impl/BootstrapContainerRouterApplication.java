@@ -5,7 +5,6 @@ import java.util.function.Function;
 
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.TagName;
-import org.nasdanika.html.app.impl.BootstrapContainerApplication.Section;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Theme;
 
