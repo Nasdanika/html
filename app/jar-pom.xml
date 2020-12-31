@@ -11,6 +11,16 @@
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML Application</name>
 	<description>Classes for generating HTML Application UI.</description>
+	<build>
+	    <resources>
+	        <resource>
+	            <directory>src</directory>
+	            <includes>
+	            	<include>org/nasdanika/html/app/templates/**</include>
+	            </includes>
+	        </resource>
+	    </resources>	
+	</build>
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
