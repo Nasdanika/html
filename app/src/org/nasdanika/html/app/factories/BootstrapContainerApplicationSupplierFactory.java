@@ -37,6 +37,7 @@ public class BootstrapContainerApplicationSupplierFactory extends SupplierFactor
 	
 	protected SupplierFactoryFeature<Consumer<Object>> header;	
 	protected SupplierFactoryFeature<Consumer<Object>> navigationBar;	
+	protected SupplierFactoryFeature<Consumer<Object>> contentRow;	
 	protected SupplierFactoryFeature<Consumer<Object>> navigationPanel;	
 	protected SupplierFactoryFeature<Consumer<Object>> contentPanel;	
 	protected SupplierFactoryFeature<Consumer<Object>> footer;	
@@ -53,6 +54,13 @@ public class BootstrapContainerApplicationSupplierFactory extends SupplierFactor
 		page = addFeature(new DelegatingSupplierFactoryFeature<>(new FeatureObjectAttribute<>("page", BootstrapPageSupplierFactory::new, false, false, null, null, "theme")));
 		appearance = addFeature(new DelegatingSupplierFactoryFeature<Consumer<Object>>(new FeatureObjectAttribute<AppearanceSupplierFactory>("appearance", AppearanceSupplierFactory::new, false, false, null, "Appearance"))); 
 		content = addFeature(new ListSupplierFactoryAttribute<>(new ReferenceList<>("content", false, false, null, null), true));
+		
+		header = addFeature(new DelegatingSupplierFactoryFeature<Consumer<Object>>(new FeatureObjectAttribute<BootstrapContainerApplicationSectionSupplierFactory>("header", BootstrapContainerApplicationSectionSupplierFactory::new, false, false, null, "Header"))); 
+		navigationBar = addFeature(new DelegatingSupplierFactoryFeature<Consumer<Object>>(new FeatureObjectAttribute<BootstrapContainerApplicationSectionSupplierFactory>("navigation-bar", BootstrapContainerApplicationSectionSupplierFactory::new, false, false, null, "Navigation Bar"))); 
+		contentRow = addFeature(new DelegatingSupplierFactoryFeature<Consumer<Object>>(new FeatureObjectAttribute<BootstrapContainerApplicationSectionSupplierFactory>("content-row", BootstrapContainerApplicationSectionSupplierFactory::new, false, false, null, "Content Row"))); 
+		navigationPanel = addFeature(new DelegatingSupplierFactoryFeature<Consumer<Object>>(new FeatureObjectAttribute<BootstrapContainerApplicationPanelSupplierFactory>("navigation-panel", BootstrapContainerApplicationPanelSupplierFactory::new, false, false, null, "Navigation Panel"))); 
+		contentPanel = addFeature(new DelegatingSupplierFactoryFeature<Consumer<Object>>(new FeatureObjectAttribute<BootstrapContainerApplicationPanelSupplierFactory>("content-panel", BootstrapContainerApplicationPanelSupplierFactory::new, false, false, null, "Content Panel"))); 
+		footer = addFeature(new DelegatingSupplierFactoryFeature<Consumer<Object>>(new FeatureObjectAttribute<BootstrapContainerApplicationSectionSupplierFactory>("footer", BootstrapContainerApplicationSectionSupplierFactory::new, false, false, null, "Footer"))); 		
 	}
 	
 	@Override
@@ -81,6 +89,7 @@ public class BootstrapContainerApplicationSupplierFactory extends SupplierFactor
 				}
 				
 				Map<Section, Consumer<Object>> sectionConfigurators = new HashMap<>();
+
 				sectionConfigurators.put(Section.Container, container -> {
 					if (appearance.isLoaded()) {
 						((Consumer<Object>) appearance.get(data)).accept(container);
@@ -115,19 +124,31 @@ public class BootstrapContainerApplicationSupplierFactory extends SupplierFactor
 										
 				});
 				
+				if (header.isLoaded()) {
+					sectionConfigurators.put(Section.Header, container -> ((Consumer<Object>) header.get(data)).accept(container));
+				}
 				
+				if (navigationBar.isLoaded()) {
+					sectionConfigurators.put(Section.NavigationBar, container -> ((Consumer<Object>) navigationBar.get(data)).accept(container));
+				}
 				
-//				if (header.isLoaded()) {
-//					// TODO ((ViewBuilder) header.get(data)).build(app.he, viewGenerator, progressMonitor);
-//				}
+				if (contentRow.isLoaded()) {
+					sectionConfigurators.put(Section.ContentRow, container -> ((Consumer<Object>) contentRow.get(data)).accept(container));
+				}
+				
+				if (navigationPanel.isLoaded()) {
+					sectionConfigurators.put(Section.NavigationPanel, container -> ((Consumer<Object>) navigationPanel.get(data)).accept(container));
+				}
+				
+				if (contentPanel.isLoaded()) {
+					sectionConfigurators.put(Section.ContentPanel, container -> ((Consumer<Object>) contentPanel.get(data)).accept(container));
+				}
+				
+				if (footer.isLoaded()) {
+					sectionConfigurators.put(Section.Footer, container -> ((Consumer<Object>) footer.get(data)).accept(container));
+				}
 				
 				BootstrapContainerApplication app = new BootstrapContainerApplication(bootstrapFactory, htmlPage, (boolean) fluid.get(data), sectionConfigurators::get);
-				
-				// header
-				// navigation bar
-				// navigation panel
-				// content panel
-				// footer
 
 				return app;
 			}

@@ -71,16 +71,17 @@ public class BootstrapContainerApplicationSectionSupplierFactory extends Supplie
 					if (appearance.isLoaded()) {
 						((Consumer<Object>) appearance.get(data)).accept(target);
 					}
-					if (content.isLoaded()) {						
-						if (target instanceof BootstrapElement) { 
-							target = ((BootstrapElement<?, ?>) target).toHTMLElement();
+					if (content.isLoaded()) {
+						Object theTarget = target;
+						if (theTarget instanceof BootstrapElement) { 
+							theTarget = ((BootstrapElement<?, ?>) theTarget).toHTMLElement();
 						} 
 						
-						if (!(target instanceof Consumer)) {
-							throw new ConfigurationException("Cannot add content to " + target, getMarker());						
+						if (!(theTarget instanceof Consumer)) {
+							throw new ConfigurationException("Cannot add content to " + theTarget, getMarker());						
 						} 	
 						
-						Consumer<Object> consumer = (Consumer<Object>) target;
+						Consumer<Object> consumer = (Consumer<Object>) theTarget;
 						
 						for (Object ce: (List<Object>) data.get(content.getKey())) {
 							if (ce instanceof InputStream) {
@@ -93,7 +94,8 @@ public class BootstrapContainerApplicationSectionSupplierFactory extends Supplie
 								consumer.accept(ce);
 							}
 						}
-					}					
+					}	
+					decorate(data, target);
 				};
 			}
 		};

@@ -1,47 +1,41 @@
 package org.nasdanika.html.app.factories;
 
-import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.FunctionFactory;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.persistence.Attribute;
-import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.FunctionSupplierFactoryAttribute;
-import org.nasdanika.common.persistence.ListAttribute;
-import org.nasdanika.common.persistence.ListSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.StringSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.SupplierFactoryFeature;
 import org.nasdanika.common.persistence.SupplierFactoryFeatureObject;
-import org.nasdanika.html.HTMLElement;
-import org.nasdanika.html.app.Decorator;
-import org.nasdanika.html.app.ViewBuilder;
-import org.nasdanika.html.bootstrap.BootstrapElement;
-import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
-import org.nasdanika.html.bootstrap.Float;
+import org.nasdanika.html.bootstrap.Container;
+import org.nasdanika.html.bootstrap.Size;
 
 /**
  * @author Pavel
  *
  */
-public class ColumnWidthSupplierFactory extends SupplierFactoryFeatureObject<Decorator> {
+public class ColumnWidthSupplierFactory extends SupplierFactoryFeatureObject<Consumer<Object>> {
 
-	private SupplierFactoryFeature<List<String>> side;
+	private SupplierFactoryFeature<Size> width;
 	private SupplierFactoryFeature<Breakpoint> breakpoint;
 	
 	public ColumnWidthSupplierFactory() {
-		side = addFeature(new ListSupplierFactoryAttribute<>(new ListAttribute<String>("side", true, true, null, "Float side - left, right, or none"), true));
+		FunctionFactory<String, Size> sizeFactory = context -> Function.fromFunction(Size::fromCode, "Size from code", 1);
+		width = addFeature(new FunctionSupplierFactoryAttribute<String,Size>(new StringSupplierFactoryAttribute(new Attribute<String>("width", true, true, null, null), true), sizeFactory));
 		
 		FunctionFactory<String, Breakpoint> breakpointFactory = context -> Function.fromFunction(Breakpoint::fromCode, "Breakpoint from code", 1);
 		breakpoint = addFeature(new FunctionSupplierFactoryAttribute<String,Breakpoint>(new StringSupplierFactoryAttribute(new Attribute<String>("breakpoint", false, false, "", null), true), breakpointFactory));
 	}
 
 	@Override
-	protected Function<Map<Object, Object>, Decorator> createResultFunction(Context context) {
-		return new Function<Map<Object,Object>, Decorator>() {
+	protected Function<Map<Object, Object>, Consumer<Object>> createResultFunction(Context context) {
+		return new Function<Map<Object,Object>, Consumer<Object>>() {
 			
 			@Override
 			public double size() {
@@ -50,40 +44,12 @@ public class ColumnWidthSupplierFactory extends SupplierFactoryFeatureObject<Dec
 			
 			@Override
 			public String name() {
-				return "Creating appearance decorator";
+				return "Creating column width decorator";
 			}
 			
-			@SuppressWarnings("unchecked")
 			@Override
-			public Decorator execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
-				return (target, viewGenerator) -> {
-					BootstrapElement<?,?> bootstrapElement;		
-					if (target instanceof BootstrapElement) { 
-						bootstrapElement = (BootstrapElement<?, ?>) target;
-					} else if (target instanceof HTMLElement) {
-						bootstrapElement = BootstrapFactory.INSTANCE.wrap((HTMLElement<?>) target);						
-					} else {
-						throw new ConfigurationException("Cannot apply float to " + target, getMarker());						
-					}
-					Float<?> bsFloat = bootstrapElement._float();
-					
-					Breakpoint theBreakpoint = (Breakpoint) breakpoint.get(data); 
-					for (String p: (List<String>) side.get(data)) {
-						switch (p) {
-						case "left":
-							bsFloat.left(theBreakpoint);
-							break;
-						case "right":
-							bsFloat.right(theBreakpoint);
-							break;
-						case "none":
-							bsFloat.none(theBreakpoint);
-							break;
-						default:
-							throw new ConfigurationException("Invalid float side value: " + p, side.getMarker());						
-						}
-					}					
-				};
+			public Consumer<Object> execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
+				return target -> ((Container.Row.Col) target).width((Breakpoint) breakpoint.get(data), (Size) width.get(data));
 			}
 		};
 	}

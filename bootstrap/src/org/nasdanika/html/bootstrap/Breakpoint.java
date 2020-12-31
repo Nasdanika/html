@@ -1,5 +1,7 @@
 package org.nasdanika.html.bootstrap;
 
+import org.nasdanika.common.Util;
+
 public enum Breakpoint {
 	
 	DEFAULT("", ""),
@@ -37,6 +39,9 @@ public enum Breakpoint {
 	};
 		
 	public static Breakpoint fromCode(String code) {
+		if (Util.isBlank(code)) {
+			return DEFAULT;
+		}
 		for (Breakpoint breakpoint: values()) {
 			if (breakpoint.code.equals(code)) {
 				return breakpoint;

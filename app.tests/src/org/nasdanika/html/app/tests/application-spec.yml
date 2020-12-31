@@ -1,3 +1,7 @@
 app-application:
    theme: Litera
-   fluid: true
+   fluid: false
+   navigation-panel:
+      content: Hello!
+      appearance: danger
+      width: auto

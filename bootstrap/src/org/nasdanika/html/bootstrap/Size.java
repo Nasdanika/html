@@ -46,6 +46,9 @@ public enum Size {
 	}
 	
 	public static Size fromCode(String code) {
+		if (code == null) {
+			return NONE;
+		}
 		for (Size size: values()) {
 			if (size.code.equals(code)) {
 				return size;
