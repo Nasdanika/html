@@ -6,7 +6,7 @@
 	<groupId>org.nasdanika.html</groupId>
 	<artifactId>org.nasdanika.html.parent</artifactId>
 	<name>HTML Parent</name>
-	<version>2020.12.0-SNAPSHOT</version>
+	<version>2021.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<!-- tycho requires maven >= 3.0 -->
