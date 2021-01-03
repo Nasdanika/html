@@ -1,5 +1,7 @@
 package org.nasdanika.html.app.tests;
 
+import java.util.function.Consumer;
+
 import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.nasdanika.common.Adaptable;
@@ -9,6 +11,9 @@ import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
@@ -38,6 +43,19 @@ public class TestApp extends HTMLTestBase {
 		Label label = Util.callSupplier(Util.<Label>asSupplierFactory(labelFactory).create(context), monitor);
 		ViewGeneratorImpl viewGenerator = new ViewGeneratorImpl(context, null, null);
 		writePage("app/label.html", "Label", viewGenerator.label(label));
+	}
+	
+	@Test
+	public void testAppearance() throws Exception {
+		Context context = Context.singleton("color", "success");
+		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
+		ComposedLoader loader = new ComposedLoader();
+		Object appearanceFactory = loader.loadYaml(this.getClass().getResource("appearance-spec.yml"), monitor);
+		
+		Consumer<Object> appearance = Util.callSupplier(Util.<Consumer<Object>>asSupplierFactory(appearanceFactory).create(context), monitor);
+		Tag div = TagName.div.create("I'm customized");
+		appearance.accept(div);
+		writePage("app/appearance.html", "Appearance", div);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -90,6 +108,7 @@ public class TestApp extends HTMLTestBase {
 			ApplicationBuilder builder = new ActionApplicationBuilder(actionContext, root, principal, active);
 			Application app = Util.callSupplier(((BootstrapContainerApplicationSupplierFactory) composedLoader.loadYaml(getClass().getClassLoader().getResource("org/nasdanika/html/app/templates/cerulean/dark.yml"), monitor)).create(actionContext), monitor);
 			builder.build(app, monitor);
+			app.getHTMLPage().head("\n<!-- my comment -->\n");
 
 			String url = ((NavigationActionActivator) active.getActivator()).getUrl(null);
 			if (url != null && url.startsWith(base)) {			

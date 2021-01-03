@@ -1,0 +1,36 @@
+bootstrap-appearance: 
+   background: primary
+   text: 
+      color: danger
+      alignment: center
+      weight: bold
+      transform: uppercase
+      style: 
+         - italic 
+         - monospace
+   float: 
+      side: right
+      breakpoint: lg
+   attributes:
+      class:
+         - a
+         - b
+      style:
+         border:
+            left:
+               - solid
+               - 10px
+               - black
+   margin: 
+      - size: 1
+        breakpoint: md
+        side: y
+   margin: 4
+   padding: 
+      size: 2
+      side: top
+   border: 
+      color: warning
+      placement: 
+         - bottom
+         - right

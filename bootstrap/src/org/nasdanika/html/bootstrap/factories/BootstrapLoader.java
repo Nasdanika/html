@@ -28,7 +28,9 @@ public class BootstrapLoader implements ObjectLoader {
 		try (ProgressMonitor subMonitor = progressMonitor.setWorkRemaining(10).split("Creating " + type, 1, marker)) {
 			switch (type) {
 			case "page":
-				return new BootstrapPageSupplierFactory().load(loader, config, base, subMonitor, marker);			
+				return new BootstrapPageSupplierFactory().load(loader, config, base, subMonitor, marker);	
+			case "appearance":
+				return new AppearanceSupplierFactory().load(loader, config, base, progressMonitor, marker);
 			default:
 				if (chain == null) {
 					throw new ConfigurationException("Unsupported type: " + type, marker);
