@@ -3,4 +3,4 @@ app-action:
    text: Nav 2
    tooltip: Something important
    color: warning 
-   href: nav-2.html
+   content: Hello, I'm a a child!

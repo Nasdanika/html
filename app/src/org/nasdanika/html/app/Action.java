@@ -316,14 +316,23 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 	 * @return Action or null.
 	 */
 	default Action findById(String id) {
-		if (id == null) {
+		return find(id == null ? null : action -> id.equals(action.getId()));
+	}
+	
+	/**
+	 * Finds action matching a predicate in the hierarchy of this action.
+	 * @param predicate Action predicate 
+	 * @return Action or null.
+	 */
+	default Action find(Predicate<Action> predicate) {
+		if (predicate == null) {
 			return null;
 		}
-		if (id.equals(getId())) {
+		if (predicate.test(this)) {
 			return this;
 		}
 		for (Action child: getChildren()) {
-			Action found = child.findById(id);
+			Action found = child.find(predicate);
 			if (found != null) {
 				return found;
 			}

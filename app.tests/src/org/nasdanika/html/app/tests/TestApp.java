@@ -1,7 +1,6 @@
 package org.nasdanika.html.app.tests;
 
-import java.net.URI;
-
+import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.nasdanika.common.Adaptable;
 import org.nasdanika.common.Context;
@@ -73,33 +72,42 @@ public class TestApp extends HTMLTestBase {
 		MutableContext context = Context.singleton("color", "success").fork();
 		ViewPart viewPart = (v,p) -> "I am a view part";
 		context.put("view-part", viewPart);
+		String base = "tmp://base/";
+		context.put(Context.BASE_URI_PROPERTY, base);
 		
 		ComposedLoader loader = new ComposedLoader();
 		Object actionFactory = loader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor);
 		Action action = Util.callSupplier(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor);
-		writeAction(context, action, action.getChildren().get(0), action, monitor);
+		writeAction(context, base, action, action.getChildren().get(0), action, monitor);
 	}
 	
-	private void writeAction(Context context, Action root, Action principal, Action active, ProgressMonitor monitor) throws Exception {
+	private void writeAction(Context context, String base, Action root, Action principal, Action active, ProgressMonitor monitor) throws Exception {
+		MutableContext actionContext = context.fork();		
 		if (!active.isEmpty() && active.getActivator() instanceof NavigationActionActivator) {
-			ApplicationBuilder builder = new ActionApplicationBuilder(context, root, principal, active);
-			Application app = Util.callSupplier(((BootstrapContainerApplicationSupplierFactory) composedLoader.loadYaml(getClass().getClassLoader().getResource("org/nasdanika/html/app/templates/cerulean/dark.yml"), monitor)).create(context), monitor);
+			NavigationActionActivator activator = (NavigationActionActivator) active.getActivator();
+			String actionURI = activator.getUrl(null);
+			actionContext.put(Context.BASE_URI_PROPERTY, actionURI);
+			ApplicationBuilder builder = new ActionApplicationBuilder(actionContext, root, principal, active);
+			Application app = Util.callSupplier(((BootstrapContainerApplicationSupplierFactory) composedLoader.loadYaml(getClass().getClassLoader().getResource("org/nasdanika/html/app/templates/cerulean/dark.yml"), monitor)).create(actionContext), monitor);
 			builder.build(app, monitor);
 
-			String base = "tmp://base/";
-			String url = ((NavigationActionActivator) active.getActivator()).getUrl(base);
+			String url = ((NavigationActionActivator) active.getActivator()).getUrl(null);
 			if (url != null && url.startsWith(base)) {			
-				writeFile("app/" + url.substring(base.length()), app.toString());
+				String path = "app/" + url.substring(base.length());
+				writeFile(path, app.toString());
 			}			
 		}		
 		for (Action child: active.getChildren()) {
-			writeAction(context, root, principal, child, monitor);
+			writeAction(actionContext, base, root, principal, child, monitor);
 		}
 	}
 	
 	@Test
 	public void testURI() throws Exception {
-		new URI("test");
+		URI base = URI.createURI("tmp://base/maze/case/param/pompom/test.html");
+		URI uri = URI.createURI("tmp://base/maze/case/purum/index.html");
+		System.out.println(uri.deresolve(base, true, true, true));
+		
 	}
 	
 		

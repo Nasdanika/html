@@ -8,6 +8,7 @@ app-action:
       - app-action:
          text: Principal
          href: principal.html
+         content: I'm in charge here!
          children:
             - app-category-reference: 
                target: child-category-spec.yml

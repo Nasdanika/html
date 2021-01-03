@@ -93,7 +93,10 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 				
 			});
 		} else if (href.isLoaded()) {
-			action.setActivator(new HrefNavigationActionActivator(action, (String) href.get(data), href.getMarker()));
+			action.setActivator(new HrefNavigationActionActivator(action, context.getString(Context.BASE_URI_PROPERTY), (String) href.get(data), href.getMarker()));
+		} else if (content.isLoaded()) {
+			// Action with content and not activator - using NavigationActionActivator with <id>.html href
+			action.setActivator(new HrefNavigationActionActivator(action, context.getString(Context.BASE_URI_PROPERTY), action.getId() + ".html", getMarker()));
 		}
 		
 		if (disabled.isLoaded()) {
