@@ -35,8 +35,12 @@ public class DescriptorSetFieldSetViewBuilder extends DescriptorSetConsumerViewB
 	 * @param horizontalLabelWidths
 	 * @param diagnose
 	 */
-	public DescriptorSetFieldSetViewBuilder(DescriptorSet descriptorSet, Map<Breakpoint, Size> horizontalLabelWidths, boolean diagnose) {
-		super(descriptorSet, horizontalLabelWidths, diagnose);
+	public DescriptorSetFieldSetViewBuilder(
+			DescriptorSet descriptorSet, 
+			Map<Breakpoint, Size> horizontalLabelWidths, 
+			boolean diagnose,
+			Listener listener) {
+		super(descriptorSet, horizontalLabelWidths, diagnose, listener);
 	}
 	
 	@Override
@@ -46,7 +50,7 @@ public class DescriptorSetFieldSetViewBuilder extends DescriptorSetConsumerViewB
 	
 	@Override
 	protected ViewBuilder createDescriptorSetViewBuilder(DescriptorSet descriptorSet) {
-		return new DescriptorSetCardViewBuilder(descriptorSet, horizontalLabelWidths, diagnose);
+		return new DescriptorSetCardViewBuilder(descriptorSet, horizontalLabelWidths, diagnose, listener);
 	}	
 
 }

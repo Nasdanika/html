@@ -11,6 +11,8 @@ import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.descriptors.DescriptorSet;
+import org.nasdanika.common.descriptors.NamedDescriptor;
+import org.nasdanika.common.descriptors.PropertyDescriptor;
 import org.nasdanika.common.descriptors.ValueDescriptor;
 import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.exec.Group;
@@ -18,8 +20,10 @@ import org.nasdanika.exec.Loader;
 import org.nasdanika.exec.input.PropertySet;
 import org.nasdanika.html.Form;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.viewparts.descriptors.DescriptorSetConsumerViewBuilder.Listener;
 import org.nasdanika.html.app.viewparts.descriptors.DescriptorSetFormViewPart;
 import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.FormGroup;
 import org.nasdanika.html.bootstrap.Size;
 
 /**
@@ -28,6 +32,25 @@ import org.nasdanika.html.bootstrap.Size;
  *
  */
 public class TestDescriptors extends HTMLTestBase {
+	
+	Listener listener = new Listener() {
+		
+		@Override
+		public void onPropertyDescriptorFormGroup(PropertyDescriptor descriptor, int index, FormGroup formGroup, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+			
+		}
+		
+		@Override
+		public void onPropertyDescriptorControl(PropertyDescriptor descriptor, int index, Object control, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+			System.out.println("*** \t Property: " + descriptor.getName() + " -> " + control.getClass());
+		}
+		
+		@Override
+		public void onDescriptorSetContainer(DescriptorSet descriptorSet, Object container, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+			System.out.println("*** Descriptor set: " + ((NamedDescriptor) descriptorSet).getName() + " -> " + container.getClass());
+		}
+	};
+	
 	
 	@Test
 	public void testViewParts() throws Exception {
@@ -42,7 +65,7 @@ public class TestDescriptors extends HTMLTestBase {
 		PropertySet propertySet = ((Group) group).adaptTo(PropertySet.class);
 		DescriptorSet descriptorSet = propertySet.createDescriptorSet(context);
 		Map<Breakpoint, Size> horizontalLabelWidths = Collections.singletonMap(Breakpoint.DEFAULT, Size.S2);
-		DescriptorSetFormViewPart viewPart = new DescriptorSetFormViewPart(descriptorSet, horizontalLabelWidths, false) {
+		DescriptorSetFormViewPart viewPart = new DescriptorSetFormViewPart(descriptorSet, horizontalLabelWidths, false, listener) {
 			
 			@Override
 			public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
@@ -71,7 +94,7 @@ public class TestDescriptors extends HTMLTestBase {
 		DescriptorSet descriptorSet = propertySet.createDescriptorSet(context);
 		((ValueDescriptor) descriptorSet.getDescriptors().get(0)).set("Hello");
 		Map<Breakpoint, Size> horizontalLabelWidths = Collections.singletonMap(Breakpoint.DEFAULT, Size.S2);
-		DescriptorSetFormViewPart viewPart = new DescriptorSetFormViewPart(descriptorSet, horizontalLabelWidths, true) {
+		DescriptorSetFormViewPart viewPart = new DescriptorSetFormViewPart(descriptorSet, horizontalLabelWidths, true, listener) {
 			
 			@Override
 			public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {

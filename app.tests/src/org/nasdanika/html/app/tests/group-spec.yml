@@ -36,7 +36,7 @@ group:
                     description: Additional information      
                  readiness:
                     control: number
-                 legal:
+                 fine-print:
                     label: Fine print
                     description: Read carefully
                     properties:      

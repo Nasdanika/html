@@ -30,6 +30,7 @@ import org.nasdanika.html.TextArea;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewBuilder;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.viewparts.descriptors.DescriptorSetConsumerViewBuilder.Listener;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Color;
@@ -48,6 +49,7 @@ public class ChoicesPropertyDescriptorViewBuilder implements ViewBuilder {
 	private Map<Breakpoint, Size> horizontalLabelWidths;
 	private int index;
 	private List<Descriptor> choices; 
+	protected Listener listener;
 
 	/**
 	 * 
@@ -56,12 +58,18 @@ public class ChoicesPropertyDescriptorViewBuilder implements ViewBuilder {
 	 * @param diagnose If true the descriptor is diagnosed, diagnostics are output in the form group and the group is styled
 	 * accordingly.
 	 */
-	public ChoicesPropertyDescriptorViewBuilder(ChoicesPropertyDescriptor descriptor, Map<Breakpoint, Size> horizontalLabelWidths, boolean diagnose, int index) {
+	public ChoicesPropertyDescriptorViewBuilder(
+			ChoicesPropertyDescriptor descriptor, 
+			Map<Breakpoint, Size> horizontalLabelWidths, 
+			boolean diagnose, 
+			int index,
+			Listener listener) {
 		this.descriptor = descriptor;
 		this.choices = descriptor.getChoices();
 		this.horizontalLabelWidths = horizontalLabelWidths;
 		this.diagnose = diagnose;
 		this.index = index;
+		this.listener = listener;
 	}
 
 	@Override
@@ -94,14 +102,19 @@ public class ChoicesPropertyDescriptorViewBuilder implements ViewBuilder {
 					}
 				}
 			}
+		}				
+		
+		Tag label = viewGenerator.label(createLabel(diagnosticStatus));
+		Object control = createControl(viewGenerator, diagnosticStatus, progressMonitor);
+		
+		if (listener != null) {
+			listener.onPropertyDescriptorControl(descriptor, index, control, viewGenerator, progressMonitor);
 		}
 		
 		
-		
-		Tag label = viewGenerator.label(createLabel(diagnosticStatus));
 		FormGroup formGroup = bootstrapFactory.formGroup(
 				index < descriptor.getLowerBound() ? TagName.b.create(label) : label, 
-				createControl(viewGenerator, diagnosticStatus, progressMonitor), 
+				control, 
 				description, 
 				horizontalLabelWidths);
 		
@@ -111,6 +124,10 @@ public class ChoicesPropertyDescriptorViewBuilder implements ViewBuilder {
 		
 		for (String vfe: validFeedback) {
 			formGroup.valid(vfe);
+		}
+		
+		if (listener != null) {
+			listener.onPropertyDescriptorFormGroup(descriptor, index, formGroup, viewGenerator, progressMonitor);
 		}
 		
 		DescriptorSetConsumerViewBuilder.asConsumer(container).accept(formGroup);

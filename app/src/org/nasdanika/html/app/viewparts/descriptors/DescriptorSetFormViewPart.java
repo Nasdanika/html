@@ -9,6 +9,7 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.ViewBuilder;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.app.viewparts.descriptors.DescriptorSetConsumerViewBuilder.Listener;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Size;
 
@@ -27,12 +28,17 @@ public class DescriptorSetFormViewPart implements ViewPart {
 	 * @param horizontalLabelWidths
 	 * @param diagnose
 	 */
-	public DescriptorSetFormViewPart(DescriptorSet descriptorSet, Map<Breakpoint, Size> horizontalLabelWidths, boolean diagnose) {
-		viewBuilder = new DescriptorSetConsumerViewBuilder(descriptorSet, horizontalLabelWidths, diagnose) {
+	public DescriptorSetFormViewPart(
+			DescriptorSet descriptorSet, 
+			Map<Breakpoint, Size> horizontalLabelWidths, 
+			boolean diagnose,
+			Listener listener) {
+		
+		viewBuilder = new DescriptorSetConsumerViewBuilder(descriptorSet, horizontalLabelWidths, diagnose, listener) {
 
 			@Override
 			protected ViewBuilder createDescriptorSetViewBuilder(DescriptorSet descriptorSet) {
-				return new DescriptorSetFieldSetViewBuilder(descriptorSet, horizontalLabelWidths, diagnose);
+				return new DescriptorSetFieldSetViewBuilder(descriptorSet, horizontalLabelWidths, diagnose, listener);
 			}	
 			
 		};

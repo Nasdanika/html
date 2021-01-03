@@ -63,8 +63,12 @@ public class DescriptorSetCardViewBuilder extends DescriptorSetConsumerViewBuild
 	 * @param horizontalLabelWidths
 	 * @param diagnose
 	 */
-	public DescriptorSetCardViewBuilder(DescriptorSet descriptorSet, Map<Breakpoint, Size> horizontalLabelWidths, boolean diagnose) {
-		super(descriptorSet, horizontalLabelWidths, diagnose);
+	public DescriptorSetCardViewBuilder(
+			DescriptorSet descriptorSet, 
+			Map<Breakpoint, Size> horizontalLabelWidths, 
+			boolean diagnose,
+			Listener listener) {
+		super(descriptorSet, horizontalLabelWidths, diagnose, listener);
 	}
 	
 	@Override
