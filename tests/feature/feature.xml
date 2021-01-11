@@ -2,7 +2,7 @@
 <feature
       id="org.nasdanika.html.tests.feature"
       label="Nasdanika HTML Tests/Demos"
-      version="2020.12.0.qualifier">
+      version="2021.3.0.qualifier">
 
    <description>
       Tests and demos of Nasdanika HTML functionality.
@@ -17,7 +17,7 @@
    </license>
 
    <requires>
-      <import feature="org.nasdanika.html.feature" version="2020.12.0.qualifier"/>
+      <import feature="org.nasdanika.html.feature" version="2021.3.0.qualifier"/>
       <!-- <import feature="org.nasdanika.equinox.feature" version="1.0.0.qualifier"/> -->
    </requires>
 
