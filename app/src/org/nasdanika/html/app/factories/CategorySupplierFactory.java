@@ -14,7 +14,7 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.impl.ActionImpl;
 import org.nasdanika.html.app.impl.Category;
-import org.nasdanika.html.app.impl.HrefNavigationActionActivator;
+import org.nasdanika.html.app.impl.PathNavigationActionActivator;
 import org.nasdanika.html.app.impl.LabelImpl;
 
 public class CategorySupplierFactory extends LabelSupplierFactory<Category> {
@@ -35,8 +35,8 @@ public class CategorySupplierFactory extends LabelSupplierFactory<Category> {
 		}
 		for (Action action: category.getActions()) {
 			((ActionImpl) action).setCategory(category);
-			if (!Util.isBlank(category.getPath()) && action.getActivator() instanceof HrefNavigationActionActivator) {
-				((HrefNavigationActionActivator) action.getActivator()).getPath().addFirst(category.getPath());
+			if (!Util.isBlank(category.getPath()) && action.getActivator() instanceof PathNavigationActionActivator) {
+				((PathNavigationActionActivator) action.getActivator()).getPath().addFirst(category.getPath());
 			}
 		}
 	}

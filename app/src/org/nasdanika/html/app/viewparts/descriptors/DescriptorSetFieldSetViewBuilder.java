@@ -2,6 +2,7 @@ package org.nasdanika.html.app.viewparts.descriptors;
 
 import java.util.Map;
 
+import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Util;
@@ -24,7 +25,19 @@ public class DescriptorSetFieldSetViewBuilder extends DescriptorSetConsumerViewB
 	public void build(Object target, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		FieldSet fieldSet = ((Form) target).fieldset();
 		if (!Util.isBlank(descriptorSet.getLabel())) {
-			fieldSet.legend(viewGenerator.label(new DescriptorLabel(descriptorSet, null)));			
+			Status status = null;
+			
+			if (diagnose) {
+				Diagnostic diagnostic = descriptorSet.diagnose(progressMonitor);
+				
+				if (listener != null) {
+					listener.onDiagnostic(descriptorSet, diagnostic, progressMonitor);
+				}
+				
+				status = diagnostic.getStatus();
+			}		
+			
+			fieldSet.legend(viewGenerator.label(new DescriptorLabel(descriptorSet, status)));			
 		}
 		super.build(fieldSet, viewGenerator, progressMonitor);
 	}

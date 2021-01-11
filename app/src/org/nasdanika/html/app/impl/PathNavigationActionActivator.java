@@ -8,7 +8,7 @@ import org.nasdanika.common.persistence.Marker;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.NavigationActionActivator;
 
-public class HrefNavigationActionActivator implements NavigationActionActivator {
+public class PathNavigationActionActivator implements NavigationActionActivator {
 	
 	private Action action;
 	private LinkedList<String> path = new LinkedList<>(); 
@@ -19,13 +19,13 @@ public class HrefNavigationActionActivator implements NavigationActionActivator 
 	 * 
 	 * @param action Owning action
 	 * @param contextUri URI to resolve action URI's agains for actions which do not have ancestors with navigation activator.
-	 * @param href Action URL relative to its first navigation ancestor or to the context URI.
+	 * @param path Action URL relative to its first navigation ancestor or to the context URI.
 	 * @param marker
 	 */
-	public HrefNavigationActionActivator(Action action, String contextUri, String href, Marker marker) {
+	public PathNavigationActionActivator(Action action, String contextUri, String path, Marker marker) {
 		this.action = action;
 		this.contextUri = contextUri;
-		path.add(href);
+		this.path.add(path);
 		this.marker = marker;
 	}
 

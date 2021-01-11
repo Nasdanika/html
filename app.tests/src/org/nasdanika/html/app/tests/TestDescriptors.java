@@ -6,10 +6,14 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.junit.Test;
+import org.nasdanika.common.BasicDiagnostic;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Status;
+import org.nasdanika.common.descriptors.Descriptor;
 import org.nasdanika.common.descriptors.DescriptorSet;
 import org.nasdanika.common.descriptors.NamedDescriptor;
 import org.nasdanika.common.descriptors.PropertyDescriptor;
@@ -49,6 +53,14 @@ public class TestDescriptors extends HTMLTestBase {
 		public void onDescriptorSetContainer(DescriptorSet descriptorSet, Object container, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 			System.out.println("*** Descriptor set: " + ((NamedDescriptor) descriptorSet).getName() + " -> " + container.getClass());
 		}
+
+		@Override
+		public void onDiagnostic(Descriptor descriptor, Diagnostic diagnostic, ProgressMonitor progressMonitor) {
+//			if (diagnostic instanceof BasicDiagnostic) {
+//				BasicDiagnostic subDiagnostic = new BasicDiagnostic(Status.ERROR, "Found some issues with " + descriptor, descriptor);
+//				((BasicDiagnostic) diagnostic).add(subDiagnostic);
+//			}			
+		}
 	};
 	
 	
@@ -80,6 +92,38 @@ public class TestDescriptors extends HTMLTestBase {
 		writePage("descriptors/view-parts/index.html", "Descriptor View Parts", viewPart);
 	}
 		
+	public static class AnnotatedListener {
+		
+		@Listener.DescriptorSetContainerListener
+		public void onLegalFinePrintContainer(
+				DescriptorSet descriptorSet, 
+				Object container, 
+				ViewGenerator viewGenerator, 
+				ProgressMonitor progressMonitor) {
+			System.out.println("*** Gotcha: " + descriptorSet.getLabel());
+		}
+		
+		@Listener.PropertyDescriptorControlListener
+		public void onLegalAgreeToTermsAndConditionsControl(PropertyDescriptor descriptor, int index, Object control, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+			System.out.println("*** Gotcha >>> \t Property: " + descriptor.getName() + " -> " + control.getClass());
+		}
+
+		@Listener.PropertyDescriptorFormGroupListener("password")
+		public void onNameFormGroup(PropertyDescriptor descriptor, int index, FormGroup formGroup, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+			System.out.println("*** Gotcha >>> Property form group: " + formGroup);
+		}
+
+		@Listener.DiagnosticListener("name")
+		public void onLocationDiagnostic(Descriptor descriptor, Diagnostic diagnostic, ProgressMonitor progressMonitor) {
+			System.out.println("*** Gotcha >>> Diagnostic: " + diagnostic);
+			if (diagnostic instanceof BasicDiagnostic) {
+				BasicDiagnostic subDiagnostic = new BasicDiagnostic(Status.ERROR, "Found some issues with " + descriptor, descriptor);
+				((BasicDiagnostic) diagnostic).add(subDiagnostic);
+			}			
+		}
+		
+	}	
+		
 	@Test
 	public void testDiagnostic() throws Exception {
 		ObjectLoader loader = new Loader();
@@ -94,7 +138,8 @@ public class TestDescriptors extends HTMLTestBase {
 		DescriptorSet descriptorSet = propertySet.createDescriptorSet(context);
 		((ValueDescriptor) descriptorSet.getDescriptors().get(0)).set("Hello");
 		Map<Breakpoint, Size> horizontalLabelWidths = Collections.singletonMap(Breakpoint.DEFAULT, Size.S2);
-		DescriptorSetFormViewPart viewPart = new DescriptorSetFormViewPart(descriptorSet, horizontalLabelWidths, true, listener) {
+		
+		DescriptorSetFormViewPart viewPart = new DescriptorSetFormViewPart(descriptorSet, horizontalLabelWidths, true, listener.compose(Listener.asListener(new AnnotatedListener()))) {
 			
 			@Override
 			public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {

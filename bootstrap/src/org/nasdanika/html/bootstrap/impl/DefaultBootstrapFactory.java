@@ -221,8 +221,8 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 		theme.cdn(page);
 		P bootstrapPage = bootstrapHTMLPage(page);
 		bootstrapPage.script("https://code.jquery.com/jquery-3.3.1.min.js");
-		bootstrapPage.script("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js");
-		bootstrapPage.script("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js");
+		bootstrapPage.script("https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js");
+		bootstrapPage.script("https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js");
 		return page;
 	}
 	

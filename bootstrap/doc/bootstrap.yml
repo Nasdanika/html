@@ -1,0 +1,32 @@
+app-action:
+   text: Bootstrap
+   tooltip: Java API for building Bootstrap UI elements. 
+   href: index.html   
+   content: 
+      exec-interpolator:
+         exec-styled-markdown:
+            exec-resource: index.md
+   children:
+      - app-action:
+         text: Factories
+         href: factories/index.html
+         content: 
+            exec-interpolator:
+               exec-styled-markdown:
+                  exec-resource: factories/index.md
+         children:
+            - app-action:
+               text: Appearance
+               href: appearance.html
+               content:
+                  exec-interpolator:
+                     exec-styled-markdown:
+                        exec-resource: factories/appearance.md
+            - app-action:
+               text: Page
+               href: page.html
+               content:
+                  exec-interpolator:
+                     exec-styled-markdown:
+                        exec-resource: factories/page.md
+         

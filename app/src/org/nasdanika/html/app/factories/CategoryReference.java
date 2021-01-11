@@ -17,7 +17,7 @@ import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.exec.Reference;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.impl.Category;
-import org.nasdanika.html.app.impl.HrefNavigationActionActivator;
+import org.nasdanika.html.app.impl.PathNavigationActionActivator;
 
 /**
  * Not interpolated category reference resolved/loaded at load time.
@@ -85,8 +85,8 @@ public class CategoryReference implements SupplierFactory<Category>, Marked {
 			@Override
 			public Category execute(Category category, ProgressMonitor progressMonitor) throws Exception {
 				for (Action action: category.getActions()) {
-					if (action.getActivator() instanceof HrefNavigationActionActivator) {
-						((HrefNavigationActionActivator) action.getActivator()).getPath().addFirst(iPath);
+					if (action.getActivator() instanceof PathNavigationActionActivator) {
+						((PathNavigationActionActivator) action.getActivator()).getPath().addFirst(iPath);
 					}
 				}
 				

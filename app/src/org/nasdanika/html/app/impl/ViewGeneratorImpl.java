@@ -485,7 +485,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 					label(ca, (Consumer<Object>) fragment::content);
 					ActionActivator activator = ca.getActivator();
 					if (activator != null && activator.inline()) {						
-						ProgressMonitor progressMonitor = get(ProgressMonitor.class, new NullProgressMonitor()); // Better way?
+						ProgressMonitor progressMonitor = get(ProgressMonitor.class, get(ProgressMonitor.class, new NullProgressMonitor()));
 						navs.content(ca.generate(this, progressMonitor));
 					} else if (activator instanceof NavigationActionActivator) {
 						Tag item = navs.item(fragment, ((NavigationActionActivator) activator).getUrl(getString(BASE_URI_PROPERTY)), Util.equalOrInPath(activeAction, ca), ca.isDisabled());

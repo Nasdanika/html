@@ -2,7 +2,6 @@ package org.nasdanika.html.emf;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
@@ -22,9 +21,9 @@ import org.nasdanika.html.app.PropertySource;
  */
 public class EClassPropertySource extends EClassLabel implements PropertySource {
 
-	private Supplier<AccessController> accessControllerSupplier;
+	private java.util.function.Supplier<AccessController> accessControllerSupplier;
 	
-	public EClassPropertySource(EClass eClass, Supplier<AccessController> accessControllerSupplier) {
+	public EClassPropertySource(EClass eClass, java.util.function.Supplier<AccessController> accessControllerSupplier) {
 		super(eClass);
 		this.accessControllerSupplier = accessControllerSupplier == null ? () -> AccessController.ALLOW_ALL : accessControllerSupplier;
 	}

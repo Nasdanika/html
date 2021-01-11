@@ -1,7 +1,7 @@
-appearance: 
+bootstrap-appearance: 
    background: primary
    text: 
-      color: ${color}
+      color: danger
       alignment: center
       weight: bold
       transform: uppercase
@@ -21,11 +21,14 @@ appearance:
                - solid
                - 10px
                - black
-   margin:
-      size: 1
-      breakpoint: md
-      side: y
-   padding: 2
+   margin: 
+      - size: 1
+        breakpoint: md
+        side: y
+   margin: 4
+   padding: 
+      size: 2
+      side: top
    border: 
       color: warning
       placement: 

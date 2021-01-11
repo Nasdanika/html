@@ -30,7 +30,7 @@ import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.ActionImpl;
 import org.nasdanika.html.app.impl.Category;
-import org.nasdanika.html.app.impl.HrefNavigationActionActivator;
+import org.nasdanika.html.app.impl.PathNavigationActionActivator;
 import org.nasdanika.html.app.impl.LabelImpl;
 
 public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
@@ -40,6 +40,7 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 	private ListSupplierFactoryAttribute<Action,?> children;
 	private StringSupplierFactoryAttribute confirmation;
 	private StringSupplierFactoryAttribute disabled;
+	private Attribute<Boolean> inline = addFeature(new Attribute<Boolean>("inline", false, false, false, null));
 	private StringSupplierFactoryAttribute href;
 	private StringSupplierFactoryAttribute script; 
 	private ListSupplierFactoryAttribute<String,?> roles;
@@ -83,6 +84,7 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 				}
 			}
 		}
+		boolean isInline = (boolean) inline.get(data);
 		if (script.isLoaded()) {
 			action.setActivator(new ScriptActionActivator() {
 				
@@ -91,12 +93,31 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 					return (String) script.get(data);
 				}
 				
+				@Override
+				public boolean inline() {
+					return isInline;
+				}
+				
 			});
 		} else if (href.isLoaded()) {
-			action.setActivator(new HrefNavigationActionActivator(action, context.getString(Context.BASE_URI_PROPERTY), (String) href.get(data), href.getMarker()));
+			action.setActivator(new PathNavigationActionActivator(action, context.getString(Context.BASE_URI_PROPERTY), (String) href.get(data), href.getMarker()) {
+				
+				@Override
+				public boolean inline() {
+					return isInline;
+				}
+				
+			});
 		} else if (content.isLoaded()) {
 			// Action with content and not activator - using NavigationActionActivator with <id>.html href
-			action.setActivator(new HrefNavigationActionActivator(action, context.getString(Context.BASE_URI_PROPERTY), action.getId() + ".html", getMarker()));
+			action.setActivator(new PathNavigationActionActivator(action, context.getString(Context.BASE_URI_PROPERTY), action.getId() + ".html", getMarker()) {
+				
+				@Override
+				public boolean inline() {
+					return isInline;
+				}
+				
+			});
 		}
 		
 		if (disabled.isLoaded()) {

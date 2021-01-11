@@ -11,7 +11,8 @@ import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
-import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.common.persistence.ObjectLoader;
+import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
@@ -25,6 +26,13 @@ import org.nasdanika.html.app.factories.BootstrapContainerApplicationSupplierFac
 import org.nasdanika.html.app.factories.ComposedLoader;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
+import org.nasdanika.html.bootstrap.factories.BootstrapLoader;
+import org.nasdanika.html.bootstrap.factories.BootstrapPageSupplierFactory;
+import org.nasdanika.html.echarts.EChartsFactory;
+import org.nasdanika.html.factories.HTMLLoader;
+import org.nasdanika.html.fontawesome.FontAwesomeFactory;
+import org.nasdanika.html.jstree.JsTreeFactory;
+import org.nasdanika.html.knockout.KnockoutFactory;
 
 /**
  * Tests of descriptor view parts and wizards.
@@ -46,17 +54,48 @@ public class TestApp extends HTMLTestBase {
 	}
 	
 	@Test
-	public void testAppearance() throws Exception {
+	public void testHTMLPage() throws Exception {
+		Context context = Context.EMPTY_CONTEXT;
+		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
+		ObjectLoader loader = new HTMLLoader();
+		Object pageFactory = loader.loadYaml(this.getClass().getResource("page-spec.yml"), monitor);
+		
+		HTMLPage htmlPage = Util.callSupplier(Util.<HTMLPage>asSupplierFactory(pageFactory).create(context), monitor);
+		System.out.println(htmlPage.toString());
+	}
+	
+	@Test
+	public void testAppearanceComposed() throws Exception {
 		Context context = Context.singleton("color", "success");
 		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
 		ComposedLoader loader = new ComposedLoader();
-		Object appearanceFactory = loader.loadYaml(this.getClass().getResource("appearance-spec.yml"), monitor);
+		Object appearanceFactory = loader.loadYaml(this.getClass().getResource("bootstrap-appearance-spec.yml"), monitor);
 		
 		Consumer<Object> appearance = Util.callSupplier(Util.<Consumer<Object>>asSupplierFactory(appearanceFactory).create(context), monitor);
 		Tag div = TagName.div.create("I'm customized");
 		appearance.accept(div);
 		writePage("app/appearance.html", "Appearance", div);
 	}
+		
+	@Test
+	public void testAppearance() throws Exception {
+		Context context = Context.singleton("color", "success");
+		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
+		ObjectLoader loader = new BootstrapLoader();
+		Object appearanceFactory = loader.loadYaml(this.getClass().getResource("appearance-spec.yml"), monitor);
+		
+		Consumer<Object> appearance = Util.callSupplier(Util.<Consumer<Object>>asSupplierFactory(appearanceFactory).create(context), monitor);
+		Tag div = TagName.div.create("I'm styled");		
+		appearance.accept(div);
+		
+		BootstrapPageSupplierFactory pageFactory = (BootstrapPageSupplierFactory) loader.loadYaml(HTMLTestBase.class.getResource("bootstrap-page-spec.yml"), monitor);
+		HTMLPage bootstrapPage = Util.callSupplier(pageFactory.create(Context.EMPTY_CONTEXT), monitor); 
+
+		bootstrapPage.title("Appearance demo");
+		bootstrapPage.body(div);
+		
+		System.out.println(bootstrapPage);
+	}	
 	
 	@SuppressWarnings("unchecked")
 	@Test

@@ -16,7 +16,7 @@ import org.nasdanika.common.persistence.Marker;
 import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.exec.Reference;
 import org.nasdanika.html.app.Action;
-import org.nasdanika.html.app.impl.HrefNavigationActionActivator;
+import org.nasdanika.html.app.impl.PathNavigationActionActivator;
 
 /**
  * Not interpolated action reference resolved/loaded at load time.
@@ -84,8 +84,8 @@ public class ActionReference implements SupplierFactory<Action>, Marked {
 
 			@Override
 			public Action execute(Action action, ProgressMonitor progressMonitor) throws Exception {
-				if (action.getActivator() instanceof HrefNavigationActionActivator) {
-					((HrefNavigationActionActivator) action.getActivator()).getPath().addFirst(iPath);
+				if (action.getActivator() instanceof PathNavigationActionActivator) {
+					((PathNavigationActionActivator) action.getActivator()).getPath().addFirst(iPath);
 				}
 				
 				return action;

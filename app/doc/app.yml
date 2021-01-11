@@ -1,0 +1,60 @@
+app-action:
+   text: App
+   tooltip: Java API for building HTML applications. 
+   href: index.html   
+   content: 
+      exec-interpolator:
+         exec-styled-markdown:
+            exec-resource: index.md
+   children:
+      - app-action:
+         text: Factories
+         href: factories/index.html
+         content: 
+            exec-interpolator:
+               exec-styled-markdown:
+                  exec-resource: factories/index.md
+         children:
+            - app-action:
+               text: Action
+               href: action.html
+               content:
+                  exec-interpolator:
+                     exec-styled-markdown:
+                        exec-resource: factories/action.md
+            - app-action:
+               text: Action reference
+               href: action-reference.html
+               content:
+                  exec-interpolator:
+                     exec-styled-markdown:
+                        exec-resource: factories/action-reference.md
+            - app-action:
+               text: Application
+               href: application.html
+               content:
+                  exec-interpolator:
+                     exec-styled-markdown:
+                        exec-resource: factories/application.md
+            - app-action:
+               text: Category
+               href: category.html
+               content:
+                  exec-interpolator:
+                     exec-styled-markdown:
+                        exec-resource: factories/category.md
+            - app-action:
+               text: Category reference
+               href: category-reference.html
+               content:
+                  exec-interpolator:
+                     exec-styled-markdown:
+                        exec-resource: factories/category-reference.md
+            - app-action:
+               text: Label
+               href: label.html
+               content:
+                  exec-interpolator:
+                     exec-styled-markdown:
+                        exec-resource: factories/label.md
+         

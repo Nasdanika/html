@@ -97,7 +97,7 @@ public class DefaultFontAwesomeFactory implements FontAwesomeFactory {
 
 	@Override
 	public <P extends HTMLPage> P cdn(P page) {
-		page.stylesheet("https://use.fontawesome.com/releases/v5.11.2/css/all.css");
+		page.stylesheet("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css");
 		return page;
 	}
 	

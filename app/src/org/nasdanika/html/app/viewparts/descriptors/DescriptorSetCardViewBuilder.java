@@ -2,6 +2,7 @@ package org.nasdanika.html.app.viewparts.descriptors;
 
 import java.util.Map;
 
+import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Util;
@@ -28,17 +29,28 @@ public class DescriptorSetCardViewBuilder extends DescriptorSetConsumerViewBuild
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
 		Card card = bootstrapFactory.card();
 		
-		Status status = diagnose ? descriptorSet.diagnose(progressMonitor).getStatus() : null;
-		DescriptorLabel label = new DescriptorLabel(descriptorSet, status);
-
 		Tag hTag = null;
 		if (!Util.isBlank(descriptorSet.getLabel())) {
 			HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
 			hTag = htmlFactory.tag("H3"+Math.min(6, getHeaderLevel()));
-			viewGenerator.label(label, hTag);
+			viewGenerator.label(new DescriptorLabel(descriptorSet, null), hTag);
 			hTag.addClass("card-header");
 		}
 		
+		Status status = null;
+		
+		if (diagnose) {
+			Diagnostic diagnostic = descriptorSet.diagnose(progressMonitor);
+			
+			if (listener != null) {
+				listener.onDiagnostic(descriptorSet, diagnostic, progressMonitor);
+			}
+			
+			status = diagnostic.getStatus();
+		}		
+		
+		DescriptorLabel label = new DescriptorLabel(descriptorSet, status);
+
 		if (label.getColor() != null) {
 			card.border(label.getColor());
 			if (hTag != null) {

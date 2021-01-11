@@ -83,6 +83,11 @@ public class ChoicesPropertyDescriptorViewBuilder implements ViewBuilder {
 		List<String> validFeedback = new ArrayList<>();
 		if (diagnose) {
 			Diagnostic diagnostic = descriptor.diagnose(progressMonitor);
+						
+			if (diagnose && listener != null) {
+				listener.onDiagnostic(descriptor, diagnostic, progressMonitor);
+			}			
+			
 			diagnosticStatus = diagnostic.getStatus();
 			if (diagnosticStatus != Status.SUCCESS) {				
 				for (Diagnostic child: diagnostic.getChildren()) {
@@ -211,7 +216,8 @@ public class ChoicesPropertyDescriptorViewBuilder implements ViewBuilder {
 			input.attribute("checked", true);
 		}
 		
-		formCheckDiv.content(htmlFactory.nonEmptyTag(TagName.label, new DescriptorLabel(choice, diagnosticStatus)).addClass("form-check-label"));			
+		Tag choiceLabel = viewGenerator.label(new DescriptorLabel(choice, diagnosticStatus));
+		formCheckDiv.content(htmlFactory.nonEmptyTag(TagName.label, choiceLabel).addClass("form-check-label"));			
 		return formCheckDiv;
 	}
 	
@@ -236,7 +242,7 @@ public class ChoicesPropertyDescriptorViewBuilder implements ViewBuilder {
 				Object choiceDescriptorValue = choiceDescriptor.get();
 				select.option(
 						DefaultConverter.INSTANCE.convert(choiceDescriptorValue, String.class), 
-						choiceDescriptor.getLabel(),
+						StringEscapeUtils.escapeHtml4(choiceDescriptor.getLabel()),
 						choiceDescriptorValue != null && choiceDescriptorValue.equals(value),
 						false);
 			} else if (choice instanceof DescriptorSet) {

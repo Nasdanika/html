@@ -9,7 +9,7 @@ import org.nasdanika.html.HTMLPage;
  */
 public enum Theme {
 	/** Default Bootstrap theme **/
-	Default("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"),
+	Default("https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"),
 	/** Bootswatch theme **/
 	Cerulean,
 	/** Bootswatch theme **/
@@ -72,9 +72,8 @@ public enum Theme {
 		page.stylesheet(stylesheetCdnURL).id(STYLESHEET_ID);
 		return page;
 	}
-	
 	private Theme() {
-		stylesheetCdnURL = "https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/"+name().toLowerCase()+"/bootstrap.min.css";
+		stylesheetCdnURL = "https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/"+name().toLowerCase()+"/bootstrap.min.css";
 	}
 	
 	private Theme(String stylesheetCdnURL) {

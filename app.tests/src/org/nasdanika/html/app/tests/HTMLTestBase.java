@@ -49,7 +49,7 @@ public class HTMLTestBase {
 	 */
 	protected void writePage(String path, String title, Object... content) throws Exception {				
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
-		BootstrapPageSupplierFactory pageFactory = (BootstrapPageSupplierFactory) composedLoader.loadYaml(HTMLTestBase.class.getResource("bootstrap-page-spec.yml"), progressMonitor);
+		BootstrapPageSupplierFactory pageFactory = (BootstrapPageSupplierFactory) composedLoader.loadYaml(HTMLTestBase.class.getResource("bootstrap-page-spec-composed.yml"), progressMonitor);
 		HTMLPage bootstrapPage = Util.callSupplier(pageFactory.create(Context.EMPTY_CONTEXT), progressMonitor); 
 		FontAwesomeFactory.INSTANCE.cdn(bootstrapPage);
 		JsTreeFactory.INSTANCE.cdn(bootstrapPage);
