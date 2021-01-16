@@ -141,7 +141,20 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 	}
 	
 	@Override
-	protected Action createLabel(Context context, Map<Object, Object> data) {
+	protected Action createLabel(Context context, Map<Object, Object> data) throws Exception {
+		@SuppressWarnings("unchecked")
+		Object[] contentData = ((List<Object>) content.get(data)).toArray();
+		for (int i = 0; i < contentData.length; ++i) {
+			if (contentData[i] instanceof InputStream) {
+				try {
+					contentData[i] = DefaultConverter.INSTANCE.toString((InputStream) contentData[i]);
+				} catch (IOException e) {
+					throw new ConfigurationException(e.getMessage(), e, content.getMarker());
+				}
+			}
+		}
+		
+		
 		ActionImpl ret = new ActionImpl((Decorator) appearance.get(data)) {
 			
 			@Override
@@ -149,10 +162,8 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 				if (isEmpty()) {
 					return super.generate(viewGenerator, progressMonitor);					
 				}
-				@SuppressWarnings("unchecked")
-				List<Object> contentData = (List<Object>) data.get(content.getKey());
-				if (contentData.size() == 1 && contentData.get(0) instanceof ViewPart) {
-					return ((ViewPart) contentData.get(0)).generate(viewGenerator, progressMonitor);
+				if (contentData.length == 1 && contentData[0] instanceof ViewPart) {
+					return ((ViewPart) contentData[0]).generate(viewGenerator, progressMonitor);
 				}
 			
 				HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class, HTMLFactory.INSTANCE);
@@ -160,12 +171,6 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 				for (Object ce: contentData) {
 					if (ce instanceof ViewPart) {
 						fragment.content(((ViewPart) ce).generate(viewGenerator, progressMonitor));
-					} else if (ce instanceof InputStream) {
-						try {
-							fragment.content(DefaultConverter.INSTANCE.toString((InputStream) ce));
-						} catch (IOException e) {
-							throw new ConfigurationException(e.getMessage(), e, content.getMarker());
-						}
 					} else {
 						fragment.content(ce);
 					}

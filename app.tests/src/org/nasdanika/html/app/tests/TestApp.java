@@ -135,13 +135,13 @@ public class TestApp extends HTMLTestBase {
 	public void testBootstrapActionApplication() throws Exception {
 		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
 		MutableContext context = Context.singleton("color", "success").fork();
-		ViewPart viewPart = (v,p) -> "I am a view part";
+		ViewPart viewPart = (v,p) -> "Dynamic content obtained from the context";
 		context.put("view-part", viewPart);
 		String base = "tmp://base/";
 		context.put(Context.BASE_URI_PROPERTY, base);
 		
 		ComposedLoader loader = new ComposedLoader();
-		Object actionFactory = loader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor);
+		Object actionFactory = loader.loadYaml(this.getClass().getResource("app/action-spec.yml"), monitor);
 		Action action = Util.callSupplier(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor);
 		for (Theme theme: Theme.values()) {
 			writeAction(context, base, theme, action, action.getChildren().get(0), action, monitor);
@@ -160,7 +160,7 @@ public class TestApp extends HTMLTestBase {
 			System.out.println(resourceName);
 			Application app = Util.callSupplier(((BootstrapContainerApplicationSupplierFactory) composedLoader.loadYaml(getClass().getClassLoader().getResource(resourceName), monitor)).create(actionContext), monitor);
 			builder.build(app, monitor);
-			app.getHTMLPage().head("\n<!-- my comment -->\n");
+			// app.getHTMLPage().head("\n<!-- my comment -->\n");
 
 			String url = ((NavigationActionActivator) active.getActivator()).getUrl(null);
 			if (url != null && url.startsWith(base)) {			

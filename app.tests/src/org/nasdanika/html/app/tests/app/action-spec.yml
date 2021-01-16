@@ -1,0 +1,80 @@
+# Demonstrates an action application and different application roles.
+# See https://nasdanika.org/builds/develop/doc/reference/knowledge-base/html/app/factories/index.html for configuration reference 
+app-action:
+   icon: fa fa-cog
+   text: My Application
+   tooltip: The root action of the application
+   href: index.html
+   content: ${view-part}
+   children:
+   # Root action children. The first navigation child is the principal action. 
+      - app-action:
+         text: Principal
+         href: principal.html
+         content: I'm in charge here!
+         children:
+            - app-category-reference: 
+               target: child-category-spec.yml
+               path: xyz/
+   # Subsequent navigation children of the root action are displayed in the top right corner. 
+      - app-action:
+         text: Root navigation child 1
+         # No href - dynamically generated random page URL.
+         content: I'm a the root navigation child 1
+      - app-action:
+         text: Root navigation child 2
+         # No href - dynamically generated random page URL.
+         content: I'm a the root navigation child 2
+      - app-action:
+         text: Root navigation drop-down
+         # Drop-down action shall not have content. If it does children are ignored.
+         children:
+           - app-category:
+               text: My category
+               icon: fas fa-anchor
+               path: root-navigation-my-category/
+               actions:
+                  - app-action:
+                     text: Item 1
+                     href: item-1.html
+                     content:                  
+                        exec-markdown: 
+                           exec-interpolator: Hello, ``${color}``!
+                  - app-action:
+                     text: Item 2
+                     href: item-2.html
+                     content:                  
+                        exec-styled-markdown: |+2 
+                          An example of inline markdown styled with GitHub CSS.
+                          
+                          ### List 
+                          
+                          * Bullet 1
+                          * Bullet 2 
+           - app-category:
+               # No text - anonymous category - displayed as a separator
+               path: root-navigation-anonymous-category/
+               actions:
+                  - app-action:
+                     text: Item 3
+                     href: item-3.html
+                     content: Item 3 content.                 
+                  - app-action:
+                     text: Item 4
+                     href: item-4.html
+                     content: Item 4 content.
+                     icon: fa fa-book 
+   # Themes selector - TODO        
+               
+   # Context children of the root action are displayed in the footer                 
+      - app-action:
+         text: Footer 1
+         href: footer-1.html
+         content: Footer info 1
+         role: context
+      - app-action:
+         text: Footer 2
+         href: footer-2.html
+         content: footer info 2
+         role: context
+               

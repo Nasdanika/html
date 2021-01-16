@@ -66,7 +66,7 @@ public class LabelSupplierFactory<L extends Label> extends SupplierFactoryFeatur
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	protected L createLabel(Context context, Map<Object, Object> data) {
+	protected L createLabel(Context context, Map<Object, Object> data) throws Exception {
 		Decorator decorator = (target, viewBuilder) -> {
 			if (appearance.isLoaded()) {
 				((Consumer<Object>) appearance.get(data)).accept(target);
