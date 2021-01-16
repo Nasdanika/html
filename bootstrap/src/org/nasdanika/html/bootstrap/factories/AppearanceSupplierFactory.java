@@ -33,7 +33,6 @@ import org.nasdanika.html.bootstrap.Color;
 public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Consumer<Object>> {
 	
 	public static final FunctionFactory<String, Color> COLOR_FROM_CODE_FACTORY = context -> Function.fromFunction(Color::fromCode, "Color from code", 1);
-
 	
 	private SupplierFactoryFeature<Color> background;
 	private SupplierFactoryFeature<Map<?,?>> attributes;
@@ -64,12 +63,6 @@ public class AppearanceSupplierFactory extends SupplierFactoryFeatureObject<Cons
 		floatDecorator = addFeature(new ListSupplierFactoryAttribute<>(floatListAttribute , true));
 
 		text = addFeature(new DelegatingSupplierFactoryFeature<>(new FeatureObjectAttribute<>("text", TextSupplierFactory::new, false, false, null, null)));
-		
-//		protected SupplierFactoryFeature<List<Decorator>> floatDecorator;
-//		protected SupplierFactoryFeature<Decorator> text;
-		
-		// classes - in HTML element itself.
-		// style
 	}
 
 	@Override

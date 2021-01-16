@@ -65,6 +65,17 @@ public class TestApp extends HTMLTestBase {
 	}
 	
 	@Test
+	public void testHTMLPageBody() throws Exception {
+		Context context = Context.EMPTY_CONTEXT;
+		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
+		ObjectLoader loader = new HTMLLoader();
+		Object pageFactory = loader.loadYaml(this.getClass().getResource("page-body-spec.yml"), monitor);
+		
+		HTMLPage htmlPage = Util.callSupplier(Util.<HTMLPage>asSupplierFactory(pageFactory).create(context), monitor);
+		System.out.println(htmlPage.toString());
+	}
+	
+	@Test
 	public void testAppearanceComposed() throws Exception {
 		Context context = Context.singleton("color", "success");
 		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
