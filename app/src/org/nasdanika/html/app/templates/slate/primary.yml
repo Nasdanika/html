@@ -1,11 +1,11 @@
 app-application:
    page:
-      theme: Cerulean
+      theme: Slate
       head:
-         exec-resource: ../dark-head.html   
+         exec-resource: ../primary-head.html   
    appearance:
       margin: 
          size: 1
          side: top
-      border: dark
+      border: secondary
          

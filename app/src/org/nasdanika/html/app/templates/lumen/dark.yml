@@ -1,6 +1,6 @@
 app-application:
    page:
-      theme: Cerulean
+      theme: Lumen
       head:
          exec-resource: ../dark-head.html   
    appearance:

@@ -13,3 +13,14 @@ app-action:
             - app-category-reference: 
                target: child-category-spec.yml
                path: xyz/
+      - app-action:
+         text: Footer 1
+         href: footer-1.html
+         content: Footer info 1
+         role: context
+      - app-action:
+         text: Footer 2
+         href: footer-2.html
+         content: footer info 2
+         role: context
+               

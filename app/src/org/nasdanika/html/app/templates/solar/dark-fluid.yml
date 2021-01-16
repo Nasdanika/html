@@ -1,6 +1,6 @@
 app-application:
    fluid: true
    page:
-      theme: Cerulean
+      theme: Solar
       head:
          exec-resource: ../dark-head.html

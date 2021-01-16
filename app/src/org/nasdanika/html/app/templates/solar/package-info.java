@@ -1,0 +1,1 @@
+package org.nasdanika.html.app.templates.solar;

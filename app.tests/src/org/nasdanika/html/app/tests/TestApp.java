@@ -26,13 +26,10 @@ import org.nasdanika.html.app.factories.BootstrapContainerApplicationSupplierFac
 import org.nasdanika.html.app.factories.ComposedLoader;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
+import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.bootstrap.factories.BootstrapLoader;
 import org.nasdanika.html.bootstrap.factories.BootstrapPageSupplierFactory;
-import org.nasdanika.html.echarts.EChartsFactory;
 import org.nasdanika.html.factories.HTMLLoader;
-import org.nasdanika.html.fontawesome.FontAwesomeFactory;
-import org.nasdanika.html.jstree.JsTreeFactory;
-import org.nasdanika.html.knockout.KnockoutFactory;
 
 /**
  * Tests of descriptor view parts and wizards.
@@ -146,28 +143,33 @@ public class TestApp extends HTMLTestBase {
 		ComposedLoader loader = new ComposedLoader();
 		Object actionFactory = loader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor);
 		Action action = Util.callSupplier(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor);
-		writeAction(context, base, action, action.getChildren().get(0), action, monitor);
+		for (Theme theme: Theme.values()) {
+			writeAction(context, base, theme, action, action.getChildren().get(0), action, monitor);
+		}
 	}
 	
-	private void writeAction(Context context, String base, Action root, Action principal, Action active, ProgressMonitor monitor) throws Exception {
+	private void writeAction(Context context, String base, Theme theme, Action root, Action principal, Action active, ProgressMonitor monitor) throws Exception {
 		MutableContext actionContext = context.fork();		
 		if (!active.isEmpty() && active.getActivator() instanceof NavigationActionActivator) {
 			NavigationActionActivator activator = (NavigationActionActivator) active.getActivator();
 			String actionURI = activator.getUrl(null);
 			actionContext.put(Context.BASE_URI_PROPERTY, actionURI);
 			ApplicationBuilder builder = new ActionApplicationBuilder(actionContext, root, principal, active);
-			Application app = Util.callSupplier(((BootstrapContainerApplicationSupplierFactory) composedLoader.loadYaml(getClass().getClassLoader().getResource("org/nasdanika/html/app/templates/cerulean/dark.yml"), monitor)).create(actionContext), monitor);
+			String themePath = theme == Theme.Default ? "bootstrap" : theme.name().toLowerCase();
+			String resourceName = "org/nasdanika/html/app/templates/" + themePath + "/" + (theme == Theme.Slate ? "primary" : "dark") + ".yml";
+			System.out.println(resourceName);
+			Application app = Util.callSupplier(((BootstrapContainerApplicationSupplierFactory) composedLoader.loadYaml(getClass().getClassLoader().getResource(resourceName), monitor)).create(actionContext), monitor);
 			builder.build(app, monitor);
 			app.getHTMLPage().head("\n<!-- my comment -->\n");
 
 			String url = ((NavigationActionActivator) active.getActivator()).getUrl(null);
 			if (url != null && url.startsWith(base)) {			
-				String path = "app/" + url.substring(base.length());
+				String path = "app/" + themePath + "/" + url.substring(base.length());
 				writeFile(path, app.toString());
 			}			
 		}		
 		for (Action child: active.getChildren()) {
-			writeAction(actionContext, base, root, principal, child, monitor);
+			writeAction(actionContext, base, theme, root, principal, child, monitor);
 		}
 	}
 	

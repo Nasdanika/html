@@ -1,0 +1,6 @@
+app-application:
+   fluid: true
+   page:
+      theme: Slate
+      head:
+         exec-resource: ../primary-head.html

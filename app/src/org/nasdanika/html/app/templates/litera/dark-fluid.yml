@@ -1,6 +1,6 @@
 app-application:
    fluid: true
    page:
-      theme: Cerulean
+      theme: Litera
       head:
          exec-resource: ../dark-head.html

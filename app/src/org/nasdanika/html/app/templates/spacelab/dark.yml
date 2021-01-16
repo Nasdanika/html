@@ -1,6 +1,6 @@
 app-application:
    page:
-      theme: Cerulean
+      theme: Spacelab
       head:
          exec-resource: ../dark-head.html   
    appearance:
