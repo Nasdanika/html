@@ -184,6 +184,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 				code = "if (confirm('"+action.getConfirmation()+"')) { "+code+" }";
 			}
 			anchor.on(Event.click, code);
+			anchor.style("cursor", "pointer");
 		} else if (activator instanceof BindingActionActivator) {
 			((BindingActionActivator) activator).bind(anchor, this);
 		}		
