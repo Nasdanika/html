@@ -134,8 +134,11 @@ app-action:
                script: document.getElementById('nsd-bootstrap-theme-stylesheet').href = "https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/united/bootstrap.min.css"
             - app-action:
                text: Yeti
-               script: document.getElementById('nsd-bootstrap-theme-stylesheet').href = "https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/yeti/bootstrap.min.css"
-               
+               script: document.getElementById('nsd-bootstrap-theme-stylesheet').href = "https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/yeti/bootstrap.min.css"               
+      # For inline actions their content is displayed instead of text and action, where applicable - currently in navigation bars.
+      - app-action:
+         inline: true
+         content: <form><input type="text" placeholder="Search"></input></form>                 
    # Context children of the root action are displayed in the footer                 
       - app-action:
          text: Footer 1

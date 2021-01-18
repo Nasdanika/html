@@ -117,8 +117,7 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 		 * Content left actions are shown in an adaptive  navigation panel to the left of the action content.
 		 */
 		String CONTENT_LEFT = "content-left";
-		
-		
+				
 		/**
 		 * {@link PropertySource} or {@link PropertyDescriptor} action to be displayed in view mode.
 		 */
