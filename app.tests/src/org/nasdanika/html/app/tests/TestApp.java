@@ -125,7 +125,7 @@ public class TestApp extends HTMLTestBase {
 		Context context = Context.singleton("color", "success");
 		ProgressMonitor monitor = new PrintStreamProgressMonitor(System.out, 0, 4, false);
 		ComposedLoader loader = new ComposedLoader();
-		Object actionFactory = loader.loadYaml(this.getClass().getResource("action-spec.yml"), monitor);
+		Object actionFactory = loader.loadYaml(this.getClass().getResource("app/root.yml"), monitor);
 		
 		Action action = Util.callSupplier(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor);
 		
@@ -141,7 +141,7 @@ public class TestApp extends HTMLTestBase {
 		context.put(Context.BASE_URI_PROPERTY, base);
 		
 		ComposedLoader loader = new ComposedLoader();
-		Object actionFactory = loader.loadYaml(this.getClass().getResource("app/action-spec.yml"), monitor);
+		Object actionFactory = loader.loadYaml(this.getClass().getResource("app/root.yml"), monitor);
 		Action action = Util.callSupplier(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor);
 		for (Theme theme: Theme.values()) {
 			writeAction(context, base, theme, action, action.getChildren().get(0), action, monitor);

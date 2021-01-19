@@ -8,7 +8,7 @@ The bundle features the following packages:
 * [org.nasdanika.html.app.factories](factories/index.html) contains an object loader and factories for loading application elements from YAML.
 * ``org.nasdanika.html.app.templates.*`` packages contain application templates for different ${javadoc/org.nasdanika.html.bootstrap.Theme Bootstrap themes}. 
 * ${javadoc/org.nasdanika.html.app.viewparts} contains view parts for rendering of different parts of the application. 
-* ${javadoc/org.nasdanika.html.app.viewparts.descriptors} contains view parts for rendering descriptors, e.g. generating Web UI from [group input specification](${base-uri}../../core/exec/general/group.html). [Spring Exec][https://github.com/Nasdanika/spring-exec) repository on GitHub provides an example of such rendering.
+* ${javadoc/org.nasdanika.html.app.viewparts.descriptors} contains view parts for rendering descriptors, e.g. generating Web UI from [group input specification](${base-uri}../../core/exec/general/group.html). [Spring Exec](https://github.com/Nasdanika/spring-exec) repository on GitHub provides an example of such rendering.
 
 ### Core concepts
 
@@ -50,6 +50,15 @@ building an application from a hierarchy of actions. Action role defines where a
 The action-centric approach allows developers to focus on the functionality of their application in terms of actions and select action roles and application themes later. 
 Also, changing of the action role does not change the application functionality, just the appearance.
 It allows to adjust the application as it evolves. For example, an action of a documentation site might be in a section role if it doesn't have a lot of content and then change its role to navigation.
+
+#### Action UI life cycle
+
+In the UI an action goes through the following stages:
+
+* Display - an action link is displayed to the user. The link may have an icon, text or both. It may also have a tooltip. Inline actions don't go through this stage - they go directly to the last stage. 
+Some actions are always visible to the user, e.g. the root and principal actions (see below). Some are only shown in a context of another active action, e.g. context and section actions.
+* Activation - user clicks on the action link. Actions may have URL, script, and binding activators. URL activator navigates to a URL, script activator executes a script, and a binding activator executes a script on page load allowing to perform custom action binding, e.g. set [Knockout](https://knockoutjs.com/) binding attributes.
+* Display of action content. At this stage action content is displayed to the user. For inline actions content is displayed where the link is displayed for non-inline actions. For other actions content is displayed in the content panel. 
 
 #### Action types
 
@@ -137,7 +146,7 @@ Section children of the active action.
 
 ###### Content left navigation panel 
 
-Adaptive navigation panel displaying ``content left`` children of the active action. Sections may have their own content left and right panels.
+Adaptive navigation panel displaying ``content left`` children of the active action. Support for section content left and right panels will be added in the future releases.
 
 ###### Content right navigation panel
 

@@ -106,7 +106,9 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 		configureJsTree(jsTree);
 //		System.out.println("----");
 //		System.out.println(jsTree.toString(4));
-		// TODO - context menus
+		// TODO - context menus - extract from 
+		// https://github.com/Nasdanika/server/blob/0f641d3c60bea3acff19bc5cd90ce8060cc48556/org.nasdanika.cdo.web/src/org/nasdanika/cdo/web/routes/app/Renderer.java
+		// https://github.com/Nasdanika/server/blob/0f641d3c60bea3acff19bc5cd90ce8060cc48556/org.nasdanika.cdo.web/src/org/nasdanika/cdo/web/routes/app/jstree-initializer.js
 		Tag script = jsTreeFactory.bind(container, jsTree, getTreeFilter());
 		return htmlFactory.fragment(container, script);
 	}

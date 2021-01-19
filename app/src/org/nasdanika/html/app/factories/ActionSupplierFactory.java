@@ -9,12 +9,14 @@ import java.util.Map;
 
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DefaultConverter;
+import org.nasdanika.common.Function;
+import org.nasdanika.common.FunctionFactory;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.Attribute;
 import org.nasdanika.common.persistence.ConfigurationException;
-import org.nasdanika.common.persistence.EnumSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.Feature;
+import org.nasdanika.common.persistence.FunctionSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.ListAttribute;
 import org.nasdanika.common.persistence.ListSupplierFactoryAttribute;
 import org.nasdanika.common.persistence.ReferenceList;
@@ -30,8 +32,8 @@ import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.ActionImpl;
 import org.nasdanika.html.app.impl.Category;
-import org.nasdanika.html.app.impl.PathNavigationActionActivator;
 import org.nasdanika.html.app.impl.LabelImpl;
+import org.nasdanika.html.app.impl.PathNavigationActionActivator;
 
 public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 	
@@ -44,7 +46,7 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 	private StringSupplierFactoryAttribute href;
 	private StringSupplierFactoryAttribute script; 
 	private ListSupplierFactoryAttribute<String,?> roles;
-	private EnumSupplierFactoryAttribute<SectionStyle> sectionStyle;
+	private SupplierFactoryFeature<SectionStyle> sectionStyle;
 	private Feature<Integer> sectionColumns = addFeature(new Attribute<Integer>("section-columns", false, false, 3, null));	
 	
 	public ActionSupplierFactory() {
@@ -55,7 +57,9 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 		script = addFeature(new StringSupplierFactoryAttribute(new Attribute<String>("script", false, false, null, null, "href"), true));
 		disabled = addFeature(new StringSupplierFactoryAttribute(new Attribute<String>("disabled", false, false, null, "JavaScript expression which is evaluated with context binding"), true));
 		roles = addFeature(new ListSupplierFactoryAttribute<>(new ListAttribute<String>("role", false, false, Collections.singletonList(Action.Role.NAVIGATION), null), true));
-		sectionStyle = addFeature(new EnumSupplierFactoryAttribute<SectionStyle>(new StringSupplierFactoryAttribute(new Attribute<String>("section-style", false, false, null, null), true), SectionStyle.class, SectionStyle.AUTO));
+				
+		FunctionFactory<String, SectionStyle> sectionStyleFactory = context -> Function.fromFunction(str -> str == null ? null : SectionStyle.valueOf(str.toUpperCase().replace("-", "_")), "Section style from lower kebab case", 1);
+		sectionStyle = addFeature(new FunctionSupplierFactoryAttribute<String,SectionStyle>(new StringSupplierFactoryAttribute(new Attribute<String>("section-style", false, false, null, null), true), sectionStyleFactory));		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -135,8 +139,13 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 			action.setConfirmation((String) confirmation.get(data));
 		}
 		
-		action.setSectionStyle((SectionStyle) sectionStyle.get(data));
-		action.setSectionColumns((int) sectionColumns.get(data));
+		if (sectionStyle.isLoaded()) {
+			action.setSectionStyle((SectionStyle) sectionStyle.get(data));
+		}
+		
+		if (sectionColumns.isLoaded()) {
+			action.setSectionColumns((int) sectionColumns.get(data));
+		}
 		
 	}
 	

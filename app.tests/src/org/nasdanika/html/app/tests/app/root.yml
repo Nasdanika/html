@@ -8,14 +8,7 @@ app-action:
    content: ${view-part}
    children:
    # Root action children. The first navigation child is the principal action. 
-      - app-action:
-         text: Principal
-         href: principal.html
-         content: I'm in charge here!
-         children:
-            - app-category-reference: 
-               target: child-category-spec.yml
-               path: xyz/
+      - app-action-reference: principal.yml
    # Subsequent navigation children of the root action are displayed in the top right corner. 
       - app-action:
          text: Root navigation child 1
