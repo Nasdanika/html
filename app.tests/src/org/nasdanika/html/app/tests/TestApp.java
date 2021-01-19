@@ -154,10 +154,10 @@ public class TestApp extends HTMLTestBase {
 			NavigationActionActivator activator = (NavigationActionActivator) active.getActivator();
 			String actionURI = activator.getUrl(null);
 			actionContext.put(Context.BASE_URI_PROPERTY, actionURI);
+			actionContext.put("page-title", active.getText());
 			ApplicationBuilder builder = new ActionApplicationBuilder(actionContext, root, principal, active);
 			String themePath = theme == Theme.Default ? "bootstrap" : theme.name().toLowerCase();
 			String resourceName = "org/nasdanika/html/app/templates/" + themePath + "/" + (theme == Theme.Slate ? "primary" : "dark") + ".yml";
-			System.out.println(resourceName);
 			Application app = Util.callSupplier(((BootstrapContainerApplicationSupplierFactory) composedLoader.loadYaml(getClass().getClassLoader().getResource(resourceName), monitor)).create(actionContext), monitor);
 			builder.build(app, monitor);
 			// app.getHTMLPage().head("\n<!-- my comment -->\n");

@@ -3,4 +3,5 @@ app-application:
    page:
       theme: Slate
       head:
-         exec-resource: ../primary-head.html
+         exec-interpolator:
+            exec-resource: ../dark-head.html  

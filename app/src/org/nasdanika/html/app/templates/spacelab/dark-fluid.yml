@@ -3,4 +3,5 @@ app-application:
    page:
       theme: Spacelab
       head:
-         exec-resource: ../dark-head.html
+         exec-interpolator:
+            exec-resource: ../dark-head.html  

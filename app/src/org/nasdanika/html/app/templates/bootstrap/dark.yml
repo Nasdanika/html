@@ -1,7 +1,8 @@
 app-application:
    page:
       head:
-         exec-resource: ../dark-head.html   
+         exec-interpolator:
+            exec-resource: ../dark-head.html   
    appearance:
       margin: 
          size: 1
