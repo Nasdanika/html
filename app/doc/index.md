@@ -10,7 +10,7 @@ The bundle features the following packages:
 * ${javadoc/org.nasdanika.html.app.viewparts} contains view parts for rendering of different parts of the application. 
 * ${javadoc/org.nasdanika.html.app.viewparts.descriptors} contains view parts for rendering descriptors, e.g. generating Web UI from [group input specification](${base-uri}../../core/exec/general/group.html). [Spring Exec](https://github.com/Nasdanika/spring-exec) repository on GitHub provides an example of such rendering.
 
-### Core concepts
+### Concepts
 
 Nasdanika HTML application consists of multiple parts as shown on the illustration below. 
 
