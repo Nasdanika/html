@@ -1,3 +1,5 @@
+TODO - list of available templates, copy from index.md
+
 Supported keys:
 
 * ``header``
