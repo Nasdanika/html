@@ -30,7 +30,6 @@ app-label:
          - size: 1
            breakpoint: md
            side: y
-      margin: 4
       padding: 
          size: 2
          side: top

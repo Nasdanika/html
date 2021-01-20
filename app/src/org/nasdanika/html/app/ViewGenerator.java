@@ -54,14 +54,14 @@ public interface ViewGenerator extends MutableContext, ObjectLoader {
 	 * It can be used, for example, to declare a modal dialog.
 	 * @return
 	 */
-	Consumer<?> getBodyContentConsumer();
+	Consumer<Object> getBodyContentConsumer();
 
 	/**
 	 * This consumer adds content to the page head.
 	 * It can be used, for example, to add a script or a stylesheet.
 	 * @return
 	 */
-	Consumer<?> getHeadContentConsumer();
+	Consumer<Object> getHeadContentConsumer();
 	
 	/**
 	 * Outputs icon, text, help tooltip icon to the content consumer.

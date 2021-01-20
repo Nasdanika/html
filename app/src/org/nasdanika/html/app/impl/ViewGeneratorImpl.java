@@ -66,12 +66,12 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	/**
 	 * Content passed to this consumer is added to the head of the HTML page. E.g. stylesheets or scripts.
 	 */
-	protected Consumer<?> headContentConsumer;
+	protected Consumer<Object> headContentConsumer;
 
 	/**
 	 * Content passed to this consumer is added to the body of the HTML page. E.g. modal dialogs definitions.
 	 */
-	protected Consumer<?> bodyContentConsumer;
+	protected Consumer<Object> bodyContentConsumer;
 
 	/**
 	 * Create a new view generator implementation with a given context, head content consumer and body content consumer.
@@ -79,7 +79,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	 * @param headContentConsumer
 	 * @param bodyContentConsumer
 	 */
-	public ViewGeneratorImpl(Context context, Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
+	public ViewGeneratorImpl(Context context, Consumer<Object> headContentConsumer, Consumer<Object> bodyContentConsumer) {
 		super(context);
 		this.headContentConsumer = headContentConsumer;
 		this.bodyContentConsumer = bodyContentConsumer;
@@ -91,17 +91,17 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	 * @param headContentConsumer
 	 * @param bodyContentConsumer
 	 */
-	public ViewGeneratorImpl(Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
+	public ViewGeneratorImpl(Consumer<Object> headContentConsumer, Consumer<Object> bodyContentConsumer) {
 		this(Context.EMPTY_CONTEXT, headContentConsumer, bodyContentConsumer);
 	}
 	
 	@Override
-	public Consumer<?> getBodyContentConsumer() {
+	public Consumer<Object> getBodyContentConsumer() {
 		return bodyContentConsumer;
 	}
 	
 	@Override
-	public Consumer<?> getHeadContentConsumer() {
+	public Consumer<Object> getHeadContentConsumer() {
 		return headContentConsumer;
 	}
 	

@@ -25,6 +25,7 @@ import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.FormGroup;
 import org.nasdanika.html.bootstrap.InputGroup;
 import org.nasdanika.html.bootstrap.ListGroup;
+import org.nasdanika.html.bootstrap.Modal;
 import org.nasdanika.html.bootstrap.Navbar;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Placement;
@@ -280,6 +281,11 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	@Override
 	public Card card() {
 		return new CardImpl(this);
+	}
+	
+	@Override
+	public Modal modal() {
+		return new ModalImpl(this);
 	}
 	
 }

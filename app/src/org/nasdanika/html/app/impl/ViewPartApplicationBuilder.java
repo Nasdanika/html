@@ -41,7 +41,7 @@ public abstract class ViewPartApplicationBuilder implements ApplicationBuilder {
 	 * @param bodyContentConsumer
 	 * @return
 	 */
-	protected ViewGenerator createViewGenerator(Application application, Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {
+	protected ViewGenerator createViewGenerator(Application application, Consumer<Object> headContentConsumer, Consumer<Object> bodyContentConsumer) {
 		return new ViewGeneratorImpl(context, headContentConsumer, bodyContentConsumer);
 	}	
 	

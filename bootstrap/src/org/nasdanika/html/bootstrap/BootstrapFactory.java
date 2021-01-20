@@ -200,6 +200,8 @@ public interface BootstrapFactory {
 	ActionGroup actionGroup(boolean flush);
 	
 	Card card();
+	
+	Modal modal();
 		
 	/* TODO - Implement, add factory method and remove
 	 * Modal, 

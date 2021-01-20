@@ -12,6 +12,8 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.ObjectLoader;
+import org.nasdanika.html.Button;
+import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
@@ -26,6 +28,8 @@ import org.nasdanika.html.app.factories.BootstrapContainerApplicationSupplierFac
 import org.nasdanika.html.app.factories.ComposedLoader;
 import org.nasdanika.html.app.impl.ActionApplicationBuilder;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Modal;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.bootstrap.factories.BootstrapLoader;
 import org.nasdanika.html.bootstrap.factories.BootstrapPageSupplierFactory;
@@ -37,6 +41,27 @@ import org.nasdanika.html.factories.HTMLLoader;
  *
  */
 public class TestApp extends HTMLTestBase {
+	
+	@Test
+	public void testModal() throws Exception {
+		BootstrapFactory bootstrapFactory = BootstrapFactory.INSTANCE;
+		Fragment body = bootstrapFactory.getHTMLFactory().fragment();
+		
+		Modal modal = bootstrapFactory.modal();
+		body.content(modal);
+		modal.getBody().toHTMLElement().content("I'm modal content");
+		
+		Button trigger = bootstrapFactory.getHTMLFactory().button("Open it");
+		body.content(trigger);
+		modal.bindTrigger(trigger);
+		
+//		Button dismisser = bootstrapFactory.getHTMLFactory().button("x").addClass("close");
+//		modal.getHeader().toHTMLElement().content(dismisser);
+//		modal.bindDismisser(dismisser);
+		
+		
+		writePage("app/modal.html", "Modal", body);
+	}
 	
 	@Test
 	public void testLabel() throws Exception {
