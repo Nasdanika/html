@@ -3,10 +3,14 @@ package org.nasdanika.html.app.viewparts;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.Consumer;
 
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
+import org.nasdanika.html.Button;
+import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Decorator;
@@ -19,6 +23,7 @@ import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Container.Row;
 import org.nasdanika.html.bootstrap.Container.Row.Col;
+import org.nasdanika.html.bootstrap.Modal;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Size;
 
@@ -148,7 +153,27 @@ public class ContentPanelViewPart implements ViewPart {
 			// Page title, doesn't make much sense to show it for the root or principal actions - it would duplicate the header or the nav bar. 
 			ViewGenerator titleViewGenerator = viewGenerator.fork();
 			titleViewGenerator.put(Decorator.SELECTOR_KEY, "content-panel.title");			
-			titleCol.content(titleViewGenerator.label(lastNonSection, titleViewGenerator.get(HTMLFactory.class).tag(TagName.h2)).addClass(CLASS_PREFIX+"header"));
+			Tag titleHeader = titleViewGenerator.get(HTMLFactory.class).tag(TagName.h2);
+			titleCol.content(titleViewGenerator.label(lastNonSection, titleHeader).addClass(CLASS_PREFIX+"header"));
+			
+			// For test
+			Consumer<Object> bcc = viewGenerator.getBodyContentConsumer();
+			if (bcc != null) {
+				Modal descriptionModal = bootstrapFactory.modal();
+				descriptionModal.scrollable().size(Breakpoint.LARGE);
+				bcc.accept(descriptionModal);
+				Tag headerTag = descriptionModal.getHeader().toHTMLElement();
+				headerTag.content(titleViewGenerator.label(lastNonSection, titleViewGenerator.get(HTMLFactory.class).tag(TagName.h5)));
+				Button dismisser = bootstrapFactory.getHTMLFactory().button("x").addClass("close");
+				headerTag.content(dismisser);
+				descriptionModal.bindDismisser(dismisser);
+				
+				HTMLElement<?> trigger = bootstrapFactory.getHTMLFactory().tag(TagName.sup).addClass("far fa-question-circle").style("cursor", "pointer"); // TODO - tooltip.
+				titleHeader.content(trigger);
+				descriptionModal.bindTrigger(trigger);
+				
+				descriptionModal.getBody().toHTMLElement().content("Description");
+			}
 		}
 		
 		Row bodyRow = contentContainer.row();

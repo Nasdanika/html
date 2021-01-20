@@ -103,7 +103,7 @@ public class EcoreDocumentationGenerator {
 		}
 	}
 	
-	protected ViewGenerator createViewGenerator(Context context, Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {		
+	protected ViewGenerator createViewGenerator(Context context, Consumer<Object> headContentConsumer, Consumer<Object> bodyContentConsumer) {		
 		return new EcoreDocumentationViewGenerator(context, headContentConsumer, bodyContentConsumer);
 	}	
 		
@@ -123,7 +123,7 @@ public class EcoreDocumentationGenerator {
 		ApplicationBuilder  applicationBuilder = new ActionApplicationBuilder(principalAction.getChildren().get(0)) {
 			
 			@Override
-			protected ViewGenerator createViewGenerator(Application application, Consumer<?> headContentConsumer, Consumer<?> bodyContentConsumer) {				
+			protected ViewGenerator createViewGenerator(Application application, Consumer<Object> headContentConsumer, Consumer<Object> bodyContentConsumer) {				
 				return EcoreDocumentationGenerator.this.createViewGenerator(docContext, headContentConsumer, bodyContentConsumer);
 			}
 			

@@ -22,8 +22,7 @@ import org.nasdanika.html.jstree.JsTreeNode;
  */
 public class EcoreDocumentationViewGenerator extends ViewGeneratorImpl {
 
-	public EcoreDocumentationViewGenerator(Context context, Consumer<?> headContentConsumer,
-			Consumer<?> bodyContentConsumer) {
+	public EcoreDocumentationViewGenerator(Context context, Consumer<Object> headContentConsumer, Consumer<Object> bodyContentConsumer) {
 		super(context, headContentConsumer, bodyContentConsumer);
 	}
 
