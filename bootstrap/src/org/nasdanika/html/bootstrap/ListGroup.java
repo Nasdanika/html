@@ -3,7 +3,7 @@ package org.nasdanika.html.bootstrap;
 import org.nasdanika.html.Tag;
 
 /**
- * Interface for building <a href="https://getbootstrap.com/docs/4.1/components/list-group/">List groups</a> with UL and LI.
+ * Interface for building <a href="https://getbootstrap.com/docs/4.5/components/list-group/">List groups</a> with UL and LI.
  * @author Pavel Vlasov
  *
  */

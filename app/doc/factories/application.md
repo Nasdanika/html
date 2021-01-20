@@ -1,62 +1,53 @@
-TODO - list of available templates, copy from index.md
+Specification of Bootstrap Container Application. Supports the following configuration keys:
 
-Supported keys:
+* ``appearance`` - application container [Appearance](../../bootstrap/factories/appearance.html).
+* ``content`` - application container content.
+* ``content-row`` - content row **section** configuration - see "Section" below.
+* ``content-panel`` - content **panel** configuration - see "Panel" below.
+* ``header`` - header section configuration.
+* ``fluid`` - if ``true``, then the application is built in a full width container, spanning the entire width of the viewport.
+* ``footer`` - footer section configuration.
+* ``navigation-bar`` - navigation bar section configuration.
+* ``navigation-panel`` - navigation panel configuration. 
+* ``page`` - [Bootstrap page](../../bootstrap/factories/page.html) specification. Mutually exclusive with ``theme``. If not provided then a Bootstrap CDN page is constructed to contain the application.
+* ``theme`` - Bootstrap theme. Mutually exclusive with ``page``. Default Bootstrap theme or one of [Bootswatch](https://bootswatch.com/) themes. Supported values (theme names):
+    * Default
+    * [Cerulean](https://bootswatch.com/cerulean/)
+    * [Cosmo](https://bootswatch.com/cosmo/)
+    * [Cyborg](https://bootswatch.com/cyborg/)
+    * [Darkly](https://bootswatch.com/darkly/)
+    * [Flatly](https://bootswatch.com/flatly/)
+    * [Journal](https://bootswatch.com/journal/)
+    * [Litera](https://bootswatch.com/litera/)
+    * [Lumen](https://bootswatch.com/lumen/)
+    * [Lux](https://bootswatch.com/lux/)
+    * [Materia](https://bootswatch.com/materia/)
+    * [Minty](https://bootswatch.com/minty/)
+    * [Pulse](https://bootswatch.com/pulse/)
+    * [Sandstone](https://bootswatch.com/sandstone/)
+    * [Simplex](https://bootswatch.com/simplex/)
+    * [Sketchy](https://bootswatch.com/sketchy/)
+    * [Slate](https://bootswatch.com/slate/)
+    * [Solar](https://bootswatch.com/solar/)
+    * [Spacelab](https://bootswatch.com/spacelab/)
+    * [Superhero](https://bootswatch.com/superhero/)
+    * [United](https://bootswatch.com/united/)
+    * [Yeti](https://bootswatch.com/yeti/)
 
-* ``header``
-* ``navigation-bar``
-* ``navigation-panel``
-* ``content-panel``
-* ``footer``
-* ``appearance``
-* ``actions``
-* ``template`` - Application template URL. If present the template is used to build the application before this specification. 
-* ``fluid`` - If ``true``, then the application is built in a full width container, spanning the entire width of the viewport.
-* ``page`` - Bootstrap page specification.
-    * ``theme`` - Bootstrap theme. One of:
-        *	Cerulean
-        *	Cosmo
-        *	Cyborg
-        *	Darkly
-        *	Flatly
-        *	Journal
-        *	Litera
-        *	Lumen
-        *	Lux
-        *	Materia
-        *	Minty	
-        *	Pulse
-        *	Sandstone
-        *	Simplex
-        *	Sketchy
-        *	Slate
-        *	Solar
-        *	Spacelab
-        *	Superhero
-        *	United
-        *	Yeti    
-    *  ``cdn`` - if ``true`` (default), Bootstrap CDN stylesheets and scripts are added to the page.
-    * ``scripts``
-    * ``script-references``
-    * ``stylesheets``
-    * ``stylesheet-references``
-    * ``font-awesome`` - If this attribute is set to true (default) Font Awesome CDN stylesheet reference is added to the head.
-    * ``github-markdown-css`` - If this attribute is set to true (default) GitHub Markdown CSS CDN stylesheet reference is added to the head.
-    * ``highlight-js`` - If this attribute is set to true (default) highlight.js CDN script and stylesheet references are added to the head as well as the initialization script in order to provide syntax highlighting in markdown fenced blocks.
-    * ``js-tree`` - If this attribute is set to true (default) jsTree CDN script and stylesheet references are added to the head.
-    * ``line-awesome`` - If this attribute is set to true (default) Line Awesome CDN stylesheet reference is added to the head.
-    * ``head``
-    * ``body``
+### Section
 
-Header, navigation-bar, navigation-panel, content-panel and footer support the following keys:
+Application section supports the following configuration keys:
 
-* ``appearance``
-* ``content``
+* ``appearance`` - specifies section [Appearance](../../bootstrap/factories/appearance.html).
+* ``content`` - section content.
 
-navigation-panel and content-panel also support ``width`` key which shall be either a number (default breakpoint) of a map of Bootstrap breakpoints to numbers. 
-Breakpoint keys: 
+### Panel
 
-* ``default``
-* ``sm`` - Small
-* ``md`` - Medium
-* ``lg`` - Large
-* ``xl`` - Extra large
+Application panel extends application section and in addition to the section keys also supports ``width`` key - a map or a list of maps with the following sub-keys:
+
+* **``size``** - panel column width size. Number from ``0`` to ``12`` or ``auto``. Default key.
+* ``breakpoint``- [responsive breakpoint](https://getbootstrap.com/docs/4.5/layout/overview/#responsive-breakpoints) for this margin. Supported values:
+    * ``sm`` - Small
+    * ``md`` - Medium
+    * ``lg`` - Large
+    * ``xl`` - Extra large

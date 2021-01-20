@@ -21,7 +21,7 @@ ${javadoc/org.nasdanika.html.app.factories.ComposedLoader} delegates loading cal
 It allows to "wire" general purpose generators into the application and actions, primarily content components.
 For example, load action content from markdown or make an [HTTP Call](${base-uri}../../core/exec/content/http-call.html) to produce action content.
 * ``html-`` - removes the prefix and calls [HTML loader](${base-uri}../html/factories/index.html).
-* ``bootstrap-`` - removes the prefix and calls [Bootstrap loader](${base-uri}../bootstrap/factories/index.html). It can be used, for example, to adjust action or application part [Appearance](../../bootstrap/factories/appearance.html).
+* ``bootstrap-`` - removes the prefix and calls [Bootstrap loader](${base-uri}../bootstrap/factories/index.html). 
 * ``app-`` - removes the prefix and calls App loader described in the previous section. 
 
 ### Generating a static site

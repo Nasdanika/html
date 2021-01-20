@@ -67,10 +67,10 @@ An application page is generated from 3 actions:
 * Root action - the root of the action hierarchy. It is displayed in the header with its navigation children (see action roles), except the first one, displayed in the root navigation bar on the top right.
 On this page "Nasdanika" is the root action.
 Context children of the root action are displayed in the footer.
-* Principal action - by default the first navigation child of the root action. Displayed in the [navigation bar brand](https://getbootstrap.com/docs/4.0/components/navbar/#brand) on the left. On this page "Documentation" is the principal action.
+* Principal action - by default the first navigation child of the root action. Displayed in the [navigation bar brand](https://getbootstrap.com/docs/4.5/components/navbar/#brand) on the left. On this page "Documentation" is the principal action.
 Context children of the principal action are displayed in the navigation bar on the right of the principal action.
 Navigation children of the principal action are displayed recursively in the navigation panel. On this page it is a tree of documentation actions.
-* Active action - any action in the hierarchy which is currently "active", i.e. it's content is displayed in the content panel and it is shown as active/selected in the navigation panel or navigation bar. On this page ``Reference/Knowledge Base/HTML/App`` is the active action - it is selected in the navigation tree and your are reading its content. Active action path is displayed in the [breadcrumb](https://getbootstrap.com/docs/4.0/components/breadcrumb/).
+* Active action - any action in the hierarchy which is currently "active", i.e. it's content is displayed in the content panel and it is shown as active/selected in the navigation panel or navigation bar. On this page ``Reference/Knowledge Base/HTML/App`` is the active action - it is selected in the navigation tree and your are reading its content. Active action path is displayed in the [breadcrumb](https://getbootstrap.com/docs/4.5/components/breadcrumb/).
     * Context children of the active action are displayed in in the active action navigation bar to the right of the action title.
     * Section children are displayed as page sections with their context children displayed in section navigation bars to the right of section titles (for paragraph section style).
     * Content left children are displayed in the left content navigation panel.

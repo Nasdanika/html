@@ -4,7 +4,7 @@ import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Tag;
 
 /**
- * Interface for building <a href="https://getbootstrap.com/docs/4.1/components/list-group/">List groups</a> with actions - div container, link elements.
+ * Interface for building <a href="https://getbootstrap.com/docs/4.5/components/list-group/">List groups</a> with actions - div container, link elements.
  * @author Pavel Vlasov
  *
  */

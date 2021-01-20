@@ -22,12 +22,12 @@ import org.nasdanika.html.bootstrap.Size;
  */
 public class ColumnWidthSupplierFactory extends SupplierFactoryFeatureObject<Consumer<Object>> {
 
-	private SupplierFactoryFeature<Size> width;
+	private SupplierFactoryFeature<Size> size;
 	private SupplierFactoryFeature<Breakpoint> breakpoint;
 	
 	public ColumnWidthSupplierFactory() {
 		FunctionFactory<String, Size> sizeFactory = context -> Function.fromFunction(Size::fromCode, "Size from code", 1);
-		width = addFeature(new FunctionSupplierFactoryAttribute<String,Size>(new StringSupplierFactoryAttribute(new Attribute<String>("width", true, true, null, null), true), sizeFactory));
+		size = addFeature(new FunctionSupplierFactoryAttribute<String,Size>(new StringSupplierFactoryAttribute(new Attribute<String>("size", true, true, null, null), true), sizeFactory));
 		
 		FunctionFactory<String, Breakpoint> breakpointFactory = context -> Function.fromFunction(Breakpoint::fromCode, "Breakpoint from code", 1);
 		breakpoint = addFeature(new FunctionSupplierFactoryAttribute<String,Breakpoint>(new StringSupplierFactoryAttribute(new Attribute<String>("breakpoint", false, false, "", null), true), breakpointFactory));
@@ -49,7 +49,7 @@ public class ColumnWidthSupplierFactory extends SupplierFactoryFeatureObject<Con
 			
 			@Override
 			public Consumer<Object> execute(Map<Object, Object> data, ProgressMonitor progressMonitor) throws Exception {
-				return target -> ((Container.Row.Col) target).width((Breakpoint) breakpoint.get(data), (Size) width.get(data));
+				return target -> ((Container.Row.Col) target).width((Breakpoint) breakpoint.get(data), (Size) size.get(data));
 			}
 		};
 	}

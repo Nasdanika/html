@@ -57,7 +57,7 @@ public enum SectionStyle {
 	},	
 	
 	/**
-	 * Sections and categories are generated as cards in card-columns. Number of columns is defined by section-card-column-count context property. Defaults to 3.
+	 * Sections and categories are generated as cards in card-columns. Number of columns is defined by Action.getSectionColumns() return value.
 	 * Context actions are put in a centered footer. 
 	 * Categories are created as cards with tabs. In this case context actions are put into the navs at the top of the cards content.
 	 * Category/action card headers are rendered as header and consume paragraph level.

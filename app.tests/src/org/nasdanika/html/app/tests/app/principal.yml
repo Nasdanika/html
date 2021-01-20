@@ -20,7 +20,8 @@ app-action:
                   - app-action:
                      text: Context A.1.a
                      role: context
-                     content: Context A.1.a
+                     content: Context A.1.a with a notification decorator.
+                     notification: "3"
                   - app-action:
                      text: Context A.1.b
                      role: context

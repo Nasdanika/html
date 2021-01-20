@@ -89,7 +89,7 @@ public interface BootstrapFactory {
 	 * @param label
 	 * @param input
 	 * @param hint
-	 * @param horizontalLabelWidths If not null and not empty, a horizontal form group is created as explained here - https://getbootstrap.com/docs/4.0/components/forms/#horizontal-form with
+	 * @param horizontalLabelWidths If not null and not empty, a horizontal form group is created as explained here - https://getbootstrap.com/docs/4.5/components/forms/#horizontal-form with
 	 * label widths taken from the map and control widths computed as 12 - label width.  
 	 * @return
 	 */

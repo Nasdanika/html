@@ -1,11 +1,9 @@
 Appearance applies Bootstrap styles and HTML attributes loaded from YAML to a target ${javadoc/org.nasdanika.html.bootstrap.BootstrapElement Bootstrap} or ${javadoc/org.nasdanika.html.HTMLElement HTML} element.
 
-The following sections provide information about configuration keys supported by appearance and its sub-elements. 
+Below is a list of configuration keys supported by appearance and its sub-elements. 
 Keys in bold are default keys, i.e. non-map configuration values are treated as values for those keys.
 
-### Appearance
-
-* **``background``** - Background [bootstrap color](https://getbootstrap.com/docs/4.0/utilities/colors/) code. Default key. Valid values:
+* **``background``** - Background [bootstrap color](https://getbootstrap.com/docs/4.5/utilities/colors/) code. Default key. Valid values:
     * ``primary``
     * ``secondary``
     * ``success``
@@ -26,7 +24,7 @@ Keys in bold are default keys, i.e. non-map configuration values are treated as 
 	     * List values are concatenated with space as a separator.
 * ``margin`` - margin spacing specification, supports the following sub-keys:
     * **``size``** - a number from ``0`` to ``5`` or ``auto``. Default key, so a margin can be defined as ``margin: 3``.
-    * ``breakpoint`` - [responsive breakpoint](https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints) for this margin. Supported values:
+    * ``breakpoint`` - [responsive breakpoint](https://getbootstrap.com/docs/4.5/layout/overview/#responsive-breakpoints) for this margin. Supported values:
         * ``sm`` - Small
         * ``md`` - Medium
         * ``lg`` - Large

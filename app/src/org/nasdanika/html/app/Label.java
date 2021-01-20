@@ -93,7 +93,7 @@ public interface Label extends Identity {
 	Color getColor();
 	
 	/**
-	 * Indicates that label shall be rendered as outline, not "solid" - see https://getbootstrap.com/docs/4.1/components/buttons/#outline-buttons 
+	 * Indicates that label shall be rendered as outline, not "solid" - see https://getbootstrap.com/docs/4.5/components/buttons/#outline-buttons 
 	 * @return
 	 */
 	boolean isOutline();
