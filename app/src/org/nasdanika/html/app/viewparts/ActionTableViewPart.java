@@ -7,6 +7,7 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.RowContainer.Row.Cell;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.SectionStyle;
@@ -63,7 +64,9 @@ public class ActionTableViewPart implements ViewPart {
 					hRow.color(category.getColor());
 				}
 				
-				viewGenerator.label(category, hRow.header().toHTMLElement().colspan(2));
+				Cell categoryRowHeader = hRow.header().toHTMLElement().colspan(2);
+				viewGenerator.label(category, categoryRowHeader);
+				categoryRowHeader.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, category));
 			} 
 			
 			TableBody body = table.body();
@@ -72,7 +75,9 @@ public class ActionTableViewPart implements ViewPart {
 				if (section.getColor() != null) {
 					sectionRow.color(section.getColor());
 				}
-				viewGenerator.label(section, sectionRow.header().toHTMLElement());
+				Cell sectionRowHeader = sectionRow.header().toHTMLElement();
+				viewGenerator.label(section, sectionRowHeader);
+				sectionRowHeader.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, section));				
 				
 				Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
 				contentFragment.content(ViewPartsUtil.sectionAnchor(section));						

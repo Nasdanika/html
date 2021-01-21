@@ -86,7 +86,7 @@ public class LabelSupplierFactory<L extends Label> extends SupplierFactoryFeatur
 		if (description.isLoaded()) {
 			label.setDescription((String) data.get(description.getKey()));
 			if (!tooltip.isLoaded()) {
-				org.nasdanika.common.Util.firstPlainTextSentence(label.getDescription(), 50, 250);
+				label.setTooltip(org.nasdanika.common.Util.firstPlainTextSentence(label.getDescription(), 50, 250));
 			}
 		}
 		if (color.isLoaded()) {

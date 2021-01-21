@@ -8,6 +8,7 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Navs;
 
@@ -48,7 +49,8 @@ public class ActionSectionViewPart  implements ViewPart {
 		viewGenerator.decorate(hTag, action);
 		if (action.getColor() != null) {
 			viewGenerator.get(BootstrapFactory.class).wrap(hTag).background(action.getColor());
-		}		
+		}	
+		hTag.content(Util.descriptionModal(viewGenerator, action));
 		sectionDiv.content(hTag);
 		
 		sectionDiv.content(action.generate(viewGenerator, progressMonitor));

@@ -11,6 +11,17 @@ app-action:
          path: xyz/         
       - app-action:
          text: Nav A
+         description: 
+            exec-styled-markdown: |+2
+               An example of an action description which can be displayed in a modal dialog.
+               
+               Table explaining how to do something important:
+               
+               | Syntax      | Description | Test Text     |
+               | :---        |    :----:   |          ---: |
+               | Header      | Title       | Here's this   |
+               | Paragraph   | Text        | And more      |
+               
          content: Navigation A
          children:
             - app-action:
@@ -97,6 +108,17 @@ app-action:
          role: section
          content: Principal section 1
          section-style: default
+         description: 
+            exec-styled-markdown: |+2
+               An example of an action description which can be displayed in a modal dialog.
+               
+               Table explaining how to do something important:
+               
+               | Syntax      | Description | Test Text     |
+               | :---        |    :----:   |          ---: |
+               | Header      | Title       | Here's this   |
+               | Paragraph   | Text        | And more      |
+               
          children:
            - app-action:
               text: Context 1.1

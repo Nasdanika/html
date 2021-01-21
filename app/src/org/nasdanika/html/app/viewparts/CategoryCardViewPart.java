@@ -63,6 +63,7 @@ public class CategoryCardViewPart implements ViewPart {
 			Tag hTag = htmlFactory.tag("H"+Math.min(6, headerLevel));
 			viewGenerator.label(category, hTag);
 			hTag.addClass("card-header");
+			hTag.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, category));
 			card.toHTMLElement().content(hTag);
 			
 			if (category.getColor() != null) {
@@ -82,6 +83,7 @@ public class CategoryCardViewPart implements ViewPart {
 			}
 			String contentId = "nsd-action-content-" + (section.getId() == null ? htmlFactory.nextId() : section.getId());
 			Fragment labelFragment = viewGenerator.labelFragment(section);
+			labelFragment.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, section));
 
 			Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
 			contentFragment.content(ViewPartsUtil.sectionAnchor(section));						

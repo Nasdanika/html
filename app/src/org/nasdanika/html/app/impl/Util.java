@@ -6,10 +6,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
 
+import org.nasdanika.html.Button;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Categorized;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Modal;
 
 public final class Util {
 
@@ -87,6 +96,43 @@ public final class Util {
 	
 	public static boolean isBlank(String str) {
 		return org.nasdanika.common.Util.isBlank(str);
+	}
+
+	/**
+	 * @param viewGenerator
+	 * @param label
+	 * @return A trigger tag to activate description modal or null if there is no description or it is the same as tooltip.
+	 */
+	public static Tag descriptionModal(ViewGenerator viewGenerator, Label label) {
+		// Description modal
+		String description = label.getDescription();
+		String tooltip = label.getTooltip();
+		if (!Util.isBlank(description) && !description.equals(tooltip)) {
+			Consumer<Object> bcc = viewGenerator.getBodyContentConsumer();
+			if (bcc != null) {
+				BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
+				Modal descriptionModal = bootstrapFactory.modal();
+				descriptionModal.scrollable().size(Breakpoint.LARGE);
+				bcc.accept(descriptionModal);
+				Tag headerTag = descriptionModal.getHeader().toHTMLElement();
+				String questionCircleIcon = "far fa-question-circle";
+				Tag modalTitle = viewGenerator.get(HTMLFactory.class).tag(TagName.h5, TagName.span.create().addClass(questionCircleIcon), " ");
+				headerTag.content(viewGenerator.label(label, modalTitle));
+				Button dismisser = bootstrapFactory.getHTMLFactory().button("x").addClass("close");
+				headerTag.content(dismisser);
+				descriptionModal.bindDismisser(dismisser);
+				
+				Tag trigger = bootstrapFactory.getHTMLFactory().tag(TagName.sup).addClass(questionCircleIcon).style("cursor", "pointer");
+				if (!Util.isBlank(tooltip)) {
+					trigger.attribute("title", tooltip);
+				}
+				descriptionModal.bindTrigger(trigger);
+				
+				descriptionModal.getBody().toHTMLElement().content(description);
+				return trigger;
+			}
+		}
+		return null;
 	}
 	
 	// TODO - sectionLevel(Action)

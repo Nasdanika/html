@@ -13,7 +13,7 @@ Below is a list of label configuration keys:
     * ``light``
     * ``dark``
     * ``white``
-* ``description`` - label description. 
+* ``description`` - label description. Can be displayed in a modal dialog box in the UI.
 * ``icon`` - label icon. If value contains a slash (``/``) then it is treated as an image URL. Otherwise it is treated as a CSS class. E.g. ``fas fa-cog`` for Font Awesome [cog icon](https://fontawesome.com/icons/cog?style=solid).
 * ``id`` - label id. If not set then a unique label id is generated during loading.
 * ``notification`` - a [badge](https://getbootstrap.com/docs/4.5/components/badge/) notification to display next to the label icon and text. E.g. a number of new messages in a mailbox.

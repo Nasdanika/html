@@ -71,6 +71,7 @@ public class CategorySectionViewPart implements ViewPart {
 			if (category.getColor() != null) {
 				viewGenerator.get(BootstrapFactory.class).wrap(hTag).background(category.getColor());
 			}
+			hTag.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, category));
 			ret.content(hTag);
 			
 			++asl;

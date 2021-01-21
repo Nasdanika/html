@@ -50,6 +50,7 @@ public class ActionCardViewPart implements ViewPart {
 		HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
 		Tag hTag = htmlFactory.tag("H"+Math.min(6, headerLevel));
 		viewGenerator.label(action, hTag);
+		hTag.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, action));
 		hTag.addClass("card-header");
 		if (action.getColor() != null) {
 			card.border(action.getColor());

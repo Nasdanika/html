@@ -76,6 +76,7 @@ public class ActionNavsViewPart  implements ViewPart {
 					}
 					String contentId = "nsd-action-content-" + (section.getId() == null ? htmlFactory.nextId() : section.getId());
 					Fragment labelFragment = viewGenerator.labelFragment(section);
+					labelFragment.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, section));
 
 					Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
 					contentFragment.content(ViewPartsUtil.sectionAnchor(section));						
@@ -99,6 +100,7 @@ public class ActionNavsViewPart  implements ViewPart {
 			} else {
 				String contentId = "nsd-category-content-" + (category.getId() == null ? htmlFactory.nextId() : category.getId());
 				Fragment labelFragment = viewGenerator.labelFragment(category);
+				labelFragment.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, category));
 
 				Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
 				if (category.getId() != null) {

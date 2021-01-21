@@ -70,6 +70,7 @@ public class ActionGroupViewPart implements ViewPart {
 					}
 					String contentId = section.getId() == null ? null : "nsd-action-content-"+section.getId();
 					Fragment labelFragment = viewGenerator.labelFragment(section);
+					labelFragment.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, section));
 
 					Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
 					contentFragment.content(ViewPartsUtil.sectionAnchor(section));						
@@ -94,6 +95,7 @@ public class ActionGroupViewPart implements ViewPart {
 			} else {
 				String contentId = category.getId() == null ? null : "nsd-category-content-"+category.getId();
 				Fragment labelFragment = viewGenerator.labelFragment(category);
+				labelFragment.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, category));
 
 				Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
 				if (category.getId() != null) {
