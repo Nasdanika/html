@@ -16,6 +16,7 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Size;
+import org.nasdanika.html.bootstrap.TagBootstrapElement;
 
 /**
  * Uses {@link ACTION_GROUP} in the navigation panel if navigation panel actions do not have children and 
@@ -24,6 +25,25 @@ import org.nasdanika.html.bootstrap.Size;
  *
  */
 public class AdaptiveNavigationPanelViewPart implements ViewPart {
+	
+	public enum Style {
+		
+		/**
+		 * TREE if the tree depth is higher than one, CARD otherwise.
+		 */
+		AUTO,
+		
+		/**
+		 * Tree even if the depth is one.
+		 */
+		TREE,
+		
+		/**
+		 * Top level elements are cards - category cards and action cards. 
+		 * Cards contents depends on the tree depth - list if one, tree if more than one.  
+		 */
+		CARDS
+	}
 	
 	protected List<Action> navigationPanelActions;
 	protected Action activeAction;
@@ -71,6 +91,8 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 		
 		return categoryCard;
 	}
+	
+	// TODO - createActionCard if top level is forced to be cards
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
@@ -96,7 +118,9 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 			if (actionsView instanceof ActionGroup) {
 				card.toHTMLElement().content(actionsView);
 			} else {
-				card.getBody().toHTMLElement().content(actionsView);
+				TagBootstrapElement cardBody = card.getBody();
+				cardBody.toHTMLElement().content(actionsView);
+				cardBody.padding().all(Breakpoint.DEFAULT, Size.S1);
 			}
 			ret.content(card);
 		}
