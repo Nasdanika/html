@@ -7,7 +7,10 @@ Action extends [Label](label.html). It supports of label's configuration keys an
 * ``inline`` - if ``true`` action content is displayed in the navigation parts instead of the action link. Currently supported in navigation bars. Can be used to inline search or login forms.
 * ``href`` - Action URL relative to the parent action URL or ``base-uri`` context property for the root action. Interpolated and as such can contain ``${{base-uri}}`` token. 
 It can be useful when the parent action points to an external location and a child action needs to have its href resolved relative to the base URI. 
-For example, this site's root action references the Nasdanika site and the principal action uses ``base-uri`` property in its ``href``.
+For example, this site's root action references the Nasdanika site and the principal action uses ``base-uri`` property in its ``href``. If ``href`` is not specified and an action
+has content then ``href`` is derived from action ``id`` by adding ``.html`` extension. As such if ``id`` is also not specified an action URL is randomly generated. This behavior
+frees application developers from having to think about aciton URL's and avoiding clashes when URL's are not of a concern - e.g. users know only the entry point URL (e.g. root or principal action URL's)
+and then navigate from it to other actions.
 * ``roles`` - A single value or a list of action roles. If not specified then ``navigation`` role is assumed. Therefore, if you need an action with no roles you'll need so supply an empty list. Roles:
     * ``content-left``
     * ``content-right``
