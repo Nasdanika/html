@@ -171,42 +171,22 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	}
 	
 	protected void bindLink(Action action, HTMLElement<?> anchor) {
-		// TODO - confirmation.
-		ActionActivator activator = getActionActivator(action);
-		if (activator instanceof NavigationActionActivator) {
-			anchor.attribute("href", ((NavigationActionActivator) activator).getUrl(getString(BASE_URI_PROPERTY)));
-			if (!Util.isBlank(action.getConfirmation())) {
-				anchor.on(Event.click, "return confirm('"+action.getConfirmation()+"');");
-			}
-		} else if (activator instanceof ScriptActionActivator) {
-			String code = ((ScriptActionActivator) activator).getCode();
-			if (!Util.isBlank(action.getConfirmation())) {
-				code = "if (confirm('"+action.getConfirmation()+"')) { "+code+" }";
-			}
-			anchor.on(Event.click, code);
-			anchor.style("cursor", "pointer");
-		} else if (activator instanceof BindingActionActivator) {
-			((BindingActionActivator) activator).bind(anchor, this);
-		}		
-	}
-	
-	protected void bind(Action action, HTMLElement<?> element) {
-		ActionActivator activator = getActionActivator(action);
-		if (activator instanceof BindingActionActivator) {
-			((BindingActionActivator) activator).bind(element, this);
-		} else {
-			String code = null; 
-			if (activator instanceof NavigationActionActivator) {				
-				code = "location.href='"+((NavigationActionActivator) activator).getUrl(getString(BASE_URI_PROPERTY))+"'";
+		if (!action.isDisabled()) {
+			ActionActivator activator = getActionActivator(action);
+			if (activator instanceof NavigationActionActivator) {
+				anchor.attribute("href", ((NavigationActionActivator) activator).getUrl(getString(BASE_URI_PROPERTY)));
+				if (!Util.isBlank(action.getConfirmation())) {
+					anchor.on(Event.click, "return confirm('"+action.getConfirmation()+"');");
+				}
 			} else if (activator instanceof ScriptActionActivator) {
-				code = ((ScriptActionActivator) activator).getCode();
-			}
-			
-			if (code != null) {
+				String code = ((ScriptActionActivator) activator).getCode();
 				if (!Util.isBlank(action.getConfirmation())) {
 					code = "if (confirm('"+action.getConfirmation()+"')) { "+code+" }";
 				}
-				element.on(Event.click, code);
+				anchor.on(Event.click, code);
+				anchor.style("cursor", "pointer");
+			} else if (activator instanceof BindingActionActivator) {
+				((BindingActionActivator) activator).bind(anchor, this);
 			}
 		}
 	}
