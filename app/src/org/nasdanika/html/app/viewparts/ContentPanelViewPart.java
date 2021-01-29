@@ -14,6 +14,7 @@ import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart.Style;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumb;
 import org.nasdanika.html.bootstrap.Breakpoint;
@@ -160,7 +161,7 @@ public class ContentPanelViewPart implements ViewPart {
 		
 		List<Action> leftPanelActions = lastNonSection == null ? Collections.emptyList() : lastNonSection.getChildrenByRole(Action.Role.CONTENT_LEFT);
 		if (!leftPanelActions.isEmpty()) {
-			AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(leftPanelActions, activeAction);
+			AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(leftPanelActions, activeAction, getLeftPanelStyle());
 			Col leftPanelCol = bodyRow.col().width(Breakpoint.DEFAULT, Size.AUTO);
 			leftPanelCol.toHTMLElement().addClass(CLASS_PREFIX+"left-nav");
 			leftPanelCol.content(panelViewPart.generate(viewGenerator, progressMonitor));			 
@@ -182,13 +183,21 @@ public class ContentPanelViewPart implements ViewPart {
 				
 		List<Action> rightPanelActions = lastNonSection.getChildrenByRole(Action.Role.CONTENT_RIGHT);
 		if (!rightPanelActions.isEmpty()) {
-			AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(rightPanelActions, activeAction);
+			AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(rightPanelActions, activeAction, getRightPanelStyle());
 			Col rightPanelCol = bodyRow.col().width(Breakpoint.DEFAULT, Size.AUTO);
 			rightPanelCol.toHTMLElement().addClass(CLASS_PREFIX+"right-nav");
 			rightPanelCol.content(panelViewPart.generate(viewGenerator, progressMonitor));			 
 		}	
 		
 		return contentContainer;
+	}
+
+	protected Style getLeftPanelStyle() {
+		return Style.AUTO;
+	}
+
+	protected Style getRightPanelStyle() {
+		return Style.AUTO;
 	}
 
 	protected ViewGenerator createBreadcrumbViewGenerator(ViewGenerator viewGenerator) {

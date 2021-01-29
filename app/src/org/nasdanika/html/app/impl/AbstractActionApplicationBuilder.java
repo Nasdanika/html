@@ -15,6 +15,7 @@ import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart;
 import org.nasdanika.html.app.viewparts.ContentPanelViewPart;
 import org.nasdanika.html.app.viewparts.FooterViewPart;
 import org.nasdanika.html.app.viewparts.NavigationBarViewPart;
+import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart.Style;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Navs;
 
@@ -127,8 +128,12 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 	@Override
 	protected ViewPart getNavigationPanelViewPart() {		
 		List<Action> navigationPanelActions = getNavigationPanelActions();
-		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? (vg, progressMonitor) -> null : new AdaptiveNavigationPanelViewPart(navigationPanelActions, getActiveAction());
+		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? (vg, progressMonitor) -> null : new AdaptiveNavigationPanelViewPart(navigationPanelActions, getActiveAction(), getNavigationPanelStyle());
 	}
+	
+	protected Style getNavigationPanelStyle() {
+		return Style.AUTO;
+	}	
 
 	@Override
 	protected ViewPart getContentPanelViewPart() {
