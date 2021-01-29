@@ -18,7 +18,9 @@ import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Modal;
+import org.nasdanika.html.bootstrap.TagBootstrapElement;
 
 public final class Util {
 
@@ -114,7 +116,9 @@ public final class Util {
 				Modal descriptionModal = bootstrapFactory.modal();
 				descriptionModal.scrollable().size(Breakpoint.LARGE);
 				bcc.accept(descriptionModal);
-				Tag headerTag = descriptionModal.getHeader().toHTMLElement();
+				TagBootstrapElement header = descriptionModal.getHeader();
+				header.background(Color.SECONDARY);
+				Tag headerTag = header.toHTMLElement();
 				String questionCircleIcon = "far fa-question-circle";
 				Tag modalTitle = viewGenerator.get(HTMLFactory.class).tag(TagName.h5, TagName.span.create().addClass(questionCircleIcon), " ");
 				headerTag.content(viewGenerator.label(label, modalTitle));
@@ -134,6 +138,5 @@ public final class Util {
 		}
 		return null;
 	}
-	
-	// TODO - sectionLevel(Action)
+
 }
