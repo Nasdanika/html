@@ -24,15 +24,17 @@ public class ComposedLoader implements ObjectLoader {
 	
 	public ComposedLoader() {}
 	
-	private org.nasdanika.exec.Loader execLoader = new org.nasdanika.exec.Loader();
-	private AppLoader appLoader = new AppLoader();
-	private HTMLLoader htmlLoader = new HTMLLoader();
-	private BootstrapLoader bootstrapLoader = new BootstrapLoader();
+	private ObjectLoader execLoader = new org.nasdanika.exec.Loader();
+	private ObjectLoader appLoader = new AppLoader();
+	private ObjectLoader componentLoader = new ComponentLoader();
+	private ObjectLoader htmlLoader = new HTMLLoader();
+	private ObjectLoader bootstrapLoader = new BootstrapLoader();
 	
 	private static final String EXEC_PREFIX = "exec-";
 	private static final String APP_PREFIX = "app-";
 	private static final String HTML_PREFIX = "html-";
 	private static final String BOOTSTRAP_PREFIX = "bootstrap-";
+	private static final String COMPONENT_PREFIX = "component-";
 
 	@Override
 	public Object create(ObjectLoader loader, String type, Object config, URL base, ProgressMonitor progressMonitor, Marker marker) throws Exception {
@@ -41,6 +43,9 @@ public class ComposedLoader implements ObjectLoader {
 		}
 		if (type.startsWith(APP_PREFIX)) {
 			return appLoader.create(loader, type.substring(APP_PREFIX.length()), config, base, progressMonitor, marker);
+		}
+		if (type.startsWith(COMPONENT_PREFIX)) {
+			return componentLoader.create(loader, type.substring(COMPONENT_PREFIX.length()), config, base, progressMonitor, marker);
 		}
 		if (type.startsWith(HTML_PREFIX)) {
 			return htmlLoader.create(loader, type.substring(HTML_PREFIX.length()), config, base, progressMonitor, marker);

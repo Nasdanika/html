@@ -171,15 +171,17 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 				if (isEmpty()) {
 					return super.generate(viewGenerator, progressMonitor);					
 				}
+				ViewGenerator actionViewGenerator = viewGenerator.fork();
+				actionViewGenerator.register(Action.class, this);
 				if (contentData.length == 1 && contentData[0] instanceof ViewPart) {
-					return ((ViewPart) contentData[0]).generate(viewGenerator, progressMonitor);
+					return ((ViewPart) contentData[0]).generate(actionViewGenerator, progressMonitor);
 				}
 			
-				HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class, HTMLFactory.INSTANCE);
+				HTMLFactory htmlFactory = actionViewGenerator.get(HTMLFactory.class, HTMLFactory.INSTANCE);
 				Fragment fragment = htmlFactory.fragment();
 				for (Object ce: contentData) {
 					if (ce instanceof ViewPart) {
-						fragment.content(((ViewPart) ce).generate(viewGenerator, progressMonitor));
+						fragment.content(((ViewPart) ce).generate(actionViewGenerator, progressMonitor));
 					} else {
 						fragment.content(ce);
 					}
