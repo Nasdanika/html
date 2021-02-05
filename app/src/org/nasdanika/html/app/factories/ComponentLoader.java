@@ -28,7 +28,9 @@ public class ComponentLoader implements ObjectLoader {
 		try (ProgressMonitor subMonitor = progressMonitor.setWorkRemaining(10).split("Creating " + type, 1, marker)) {
 			switch (type) {
 			case "list-of-contents":
-				return new ListOfContentsSupplierFactory().load(loader, config, base, subMonitor, marker);			
+				ListOfContentsSupplierFactory listOfContentsSupplierFactory = new ListOfContentsSupplierFactory();
+				listOfContentsSupplierFactory.load(loader, config, base, subMonitor, marker);
+				return listOfContentsSupplierFactory;
 			default:
 				if (chain == null) {
 					throw new ConfigurationException("Unsupported type: " + type, marker);

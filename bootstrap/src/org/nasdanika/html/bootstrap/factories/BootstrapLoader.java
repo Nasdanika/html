@@ -27,10 +27,16 @@ public class BootstrapLoader implements ObjectLoader {
 		
 		try (ProgressMonitor subMonitor = progressMonitor.setWorkRemaining(10).split("Creating " + type, 1, marker)) {
 			switch (type) {
-			case "page":
-				return new BootstrapPageSupplierFactory().load(loader, config, base, subMonitor, marker);	
-			case "appearance":
-				return new AppearanceSupplierFactory().load(loader, config, base, progressMonitor, marker);
+			case "page": {
+				BootstrapPageSupplierFactory bootstrapPageSupplierFactory = new BootstrapPageSupplierFactory();
+				bootstrapPageSupplierFactory.load(loader, config, base, subMonitor, marker);
+				return bootstrapPageSupplierFactory;
+			}
+			case "appearance": {
+				AppearanceSupplierFactory appearanceSupplierFactory = new AppearanceSupplierFactory();
+				appearanceSupplierFactory.load(loader, config, base, progressMonitor, marker);
+				return appearanceSupplierFactory;
+			}
 			default:
 				if (chain == null) {
 					throw new ConfigurationException("Unsupported type: " + type, marker);

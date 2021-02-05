@@ -28,7 +28,9 @@ public class HTMLLoader implements ObjectLoader {
 		try (ProgressMonitor subMonitor = progressMonitor.setWorkRemaining(10).split("Creating " + type, 1, marker)) {
 			switch (type) {
 			case "page":
-				return new HTMLPageSupplierFactory().load(loader, config, base, subMonitor, marker);
+				HTMLPageSupplierFactory htmlPageSupplierFactory = new HTMLPageSupplierFactory();
+				htmlPageSupplierFactory.load(loader, config, base, subMonitor, marker);
+				return htmlPageSupplierFactory;
 			default:
 				if (chain == null) {
 					throw new ConfigurationException("Unsupported type: " + type, marker);

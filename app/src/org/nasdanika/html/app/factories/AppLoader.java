@@ -28,19 +28,30 @@ public class AppLoader implements ObjectLoader {
 		
 		try (ProgressMonitor subMonitor = progressMonitor.setWorkRemaining(10).split("Creating " + type, 1, marker)) {
 			switch (type) {
-			case "label":
-				return new LabelSupplierFactory<Label>().load(loader, config, base, subMonitor, marker);
-			case "action":
-				return new ActionSupplierFactory().load(loader, config, base, subMonitor, marker);
-			case "category":
-				return new CategorySupplierFactory().load(loader, config, base, subMonitor, marker);
+			case "label": {
+				LabelSupplierFactory<Label> labelSupplierFactory = new LabelSupplierFactory<Label>();
+				labelSupplierFactory.load(loader, config, base, subMonitor, marker);
+				return labelSupplierFactory;
+			}
+			case "action": {
+				ActionSupplierFactory actionSupplierFactory = new ActionSupplierFactory();
+				actionSupplierFactory.load(loader, config, base, subMonitor, marker);
+				return actionSupplierFactory;
+			}
+			case "category": {
+				CategorySupplierFactory categorySupplierFactory = new CategorySupplierFactory();
+				categorySupplierFactory.load(loader, config, base, subMonitor, marker);
+				return categorySupplierFactory;
+			}
 			case "action-reference":
 				return new ActionReference(loader, config, base, subMonitor, marker);
 			case "category-reference":
 				return new CategoryReference(loader, config, base, subMonitor, marker);
-			case "application":
-				return new BootstrapContainerApplicationSupplierFactory().load(loader, config, base, subMonitor, marker);
-			
+			case "application": {
+				BootstrapContainerApplicationSupplierFactory bootstrapContainerApplicationSupplierFactory = new BootstrapContainerApplicationSupplierFactory();
+				bootstrapContainerApplicationSupplierFactory.load(loader, config, base, subMonitor, marker);
+				return bootstrapContainerApplicationSupplierFactory;
+			}
 			default:
 				if (chain == null) {
 					throw new ConfigurationException("Unsupported type: " + type, marker);
