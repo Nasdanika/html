@@ -2,11 +2,13 @@ package org.nasdanika.html.app.factories;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.nasdanika.common.Adaptable;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.Function;
@@ -75,11 +77,24 @@ public class ActionSupplierFactory extends LabelSupplierFactory<Action> {
 				if (c instanceof Action) {
 					children = Collections.singleton((Action) c);
 				} else if (c instanceof Collection) {
-					children = (Collection<Action>) c;
+					children = new ArrayList<>();
+					Collection<Action> cc = (Collection<Action>) c;
+					for (Object e: cc) {
+						Action a = Adaptable.adaptTo(e, Action.class);
+						if (a == null) {
+							throw new ConfigurationException("Unexpected action child: "+e, Util.getMarker(cc, children.size()));
+						} else {
+							children.add(a);
+						}
+					}
 				} else if (c instanceof Category) {
 					children = ((Category) c).getActions();
 				} else {
-					throw new ConfigurationException("Unexpected action child: "+c, this.children.getMarker());
+					Action adapter = Adaptable.adaptTo(c, Action.class);
+					if (adapter == null) {
+						throw new ConfigurationException("Unexpected action child: "+c, this.children.getMarker());
+					}
+					children = Collections.singleton((Action) c);					
 				}
 				
 				action.getChildren().addAll(children);
