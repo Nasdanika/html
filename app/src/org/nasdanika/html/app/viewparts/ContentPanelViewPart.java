@@ -93,14 +93,15 @@ public class ContentPanelViewPart implements ViewPart {
 			showTitle = false;
 		} else {
 			Action root = lastNonSectionPath.get(0);
+			List<Action> navigationChildren = root.getNavigationChildren();
 			if (lastNonSectionPath.size() == 1) {
-				if (root.getNavigationChildren().indexOf(lastNonSection) == 0) {
+				if (navigationChildren.indexOf(lastNonSection) == 0) {
 					showBreadcrumb = false;
 					showTitle = false;
 				}
 			} else {
 				Action firstChild = lastNonSectionPath.get(1);
-				if (root.getNavigationChildren().indexOf(firstChild) == 0) {
+				if (navigationChildren.indexOf(firstChild) == 0) {
 					// Principal path
 					showBreadcrumb = lastNonSectionPath.size() > getMinBreadcrumbsDepth() - getBreadcrumbsOffset();
 					breadcrumbsOffset = getBreadcrumbsOffset();

@@ -25,7 +25,9 @@ public class PathNavigationActionActivator implements NavigationActionActivator 
 	public PathNavigationActionActivator(Action action, String contextUri, String path, Marker marker) {
 		this.action = action;
 		this.contextUri = contextUri;
-		this.path.add(path);
+		if (path != null) {
+			this.path.add(path);
+		}
 		this.marker = marker;
 	}
 
