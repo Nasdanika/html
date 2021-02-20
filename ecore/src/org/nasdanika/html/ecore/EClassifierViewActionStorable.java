@@ -1,6 +1,8 @@
 package org.nasdanika.html.ecore;
 
+import java.net.URL;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
@@ -15,6 +17,13 @@ public class EClassifierViewActionStorable<T extends EClassifier> extends ENamed
 
 	public EClassifierViewActionStorable(T value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value, context, ePackagePathComputer);
+	}
+	
+	@Override
+	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
+		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
+		put(data, "href", eObject.getName() + ".html");
+		return data;
 	}
 //	
 //	@Override

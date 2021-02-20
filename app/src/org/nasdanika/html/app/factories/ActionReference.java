@@ -58,10 +58,11 @@ public class ActionReference implements SupplierFactory<Action>, Marked {
 	private void setTarget(ObjectLoader loader, URL base, ProgressMonitor progressMonitor, Marker marker, String configStr) throws MalformedURLException, Exception {
 		URL targetURL = configStr.startsWith(Reference.CLASSPATH_URL_PREFIX) ? loader.getClass().getClassLoader().getResource(configStr.substring(Reference.CLASSPATH_URL_PREFIX.length())) : new URL(base, configStr);
 		Object loaded = loader.loadYaml(targetURL, progressMonitor);
-		target = org.nasdanika.common.Util.<Object>asSupplierFactory(loaded).then(FunctionFactory.adapter(Action.class));
-		if (target == null) {
+		SupplierFactory<Object> supplierFactory = org.nasdanika.common.Util.<Object>asSupplierFactory(loaded);
+		if (supplierFactory == null) {
 			throw new ConfigurationException("Cannot adapt to SupplierFactory: " + loaded, marker);
 		}
+		target = supplierFactory.then(FunctionFactory.adapter(Action.class));
 	}
 	
 	@Override

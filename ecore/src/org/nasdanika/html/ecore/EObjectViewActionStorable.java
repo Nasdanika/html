@@ -1,6 +1,7 @@
 package org.nasdanika.html.ecore;
 
 import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.ViewActionStorable;
 
 /**
@@ -15,6 +16,14 @@ public abstract class EObjectViewActionStorable<T extends EObject> implements Vi
 	public EObjectViewActionStorable(T eObject) {
 		this.eObject = eObject;
 	}	
-			
+	
+	/**
+	 * Adapts child eObject to {@link ViewActionSupplier} and adds to the list of children to be configured.
+	 * @param child
+	 * @return
+	 */
+	protected ViewActionStorable adaptChild(EObject child) {
+		return EObjectAdaptable.adaptTo(child, ViewActionStorable.class);
+	}
 	
 }

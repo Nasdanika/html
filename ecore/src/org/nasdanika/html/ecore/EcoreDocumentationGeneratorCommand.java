@@ -1,9 +1,6 @@
 package org.nasdanika.html.ecore;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,21 +16,14 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.nasdanika.cli.CommandBase;
 import org.nasdanika.cli.ProgressMonitorMixin;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.MutableContext;
-import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
-import org.nasdanika.common.persistence.Storable;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.emf.ViewActionStorable;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.DumperOptions.FlowStyle;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
@@ -53,12 +43,12 @@ public class EcoreDocumentationGeneratorCommand extends CommandBase {
 	static final String JAVADOC_CONTEXT_BUILDER_MOUNT = "javadoc-context-builder-mount";
 
 	@Parameters(
-			paramLabel = "NS-URI", 
+			paramLabel = "URI", 
 			arity = "1..*",
-			description = "A list of model NS URI's to generate documentation for. "
-					+ "For each NS-URI a vinci file is generated named after the root package in the model. "
+			description = "A list of gen-model URI's to generate documentation for. "
+					+ "For each URI a YAML actions file is generated named after the root package in the model. "
 					+ "If there are duplicate package names then argument index is added to de-dup the names. ")
-	protected List<String> nsURIs = new ArrayList<>();	
+	protected List<String> URIs = new ArrayList<>();	
 	
 	@Mixin
 	private ProgressMonitorMixin progressMonitorMixin;
@@ -133,10 +123,10 @@ public class EcoreDocumentationGeneratorCommand extends CommandBase {
 		resourceSet.getAdapterFactories().add(createAdapterFactory());
 		
 		List<Resource> resources = new ArrayList<>();
-		for (String nsURI: nsURIs) {
-			Resource genModel = resourceSet.loadGenModel(nsURI);
+		for (String uri: URIs) {
+			Resource genModel = resourceSet.getResource(URI.createURI(uri), true);
 			if (genModel == null) {
-				throw new IllegalArgumentException("Gen model not found for NS URI " + nsURI);
+				throw new IllegalArgumentException("Gen model not found: " + uri);
 			}
 			resources.add(genModel);
 		}

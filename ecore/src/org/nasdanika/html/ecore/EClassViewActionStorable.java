@@ -22,16 +22,13 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.PlantUmlTextGenerator;
 import org.nasdanika.emf.PlantUmlTextGenerator.RelationshipDirection;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.SectionStyle;
-
-import net.sourceforge.plantuml.FileFormat;
-import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.SourceStringReader;
 
 public class EClassViewActionStorable extends EClassifierViewActionStorable<EClass> {
 
@@ -219,7 +216,6 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 //			}
 //			
 //		};
-//		gen.appendStartUml();
 //		
 //		if (leftToRightDirection) {
 //			sb.append("left to right direction").append(System.lineSeparator());
@@ -231,13 +227,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 //						
 //		gen.appendWithRelationships(Collections.singleton(eObject), relationshipDirection, depth);
 //		
-//		gen.appendEndUml();
-//		SourceStringReader reader = new SourceStringReader(sb.toString());
-//		
-//		FileFormatOption fileFormatOption = new FileFormatOption(FileFormat.PNG);
-//		reader.outputImage(out, 0, fileFormatOption);
-//		
-//		return reader.getCMapData(0, fileFormatOption);
+//		return context.get(DiagramGenerator.class).generateUmlDiagram(sb.toString());
 //	}
 		
 	/**

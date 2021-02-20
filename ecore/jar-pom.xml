@@ -7,15 +7,21 @@
 	    <version>2021.2.0</version>
 	    <relativePath>../jar-pom.xml</relativePath>
 	  </parent>
-	<artifactId>fontawesome</artifactId>
+	<artifactId>ecore</artifactId>
 	<packaging>jar</packaging>
-	<name>Nasdanika HTML Font Awesome</name>
-	<description>Classes for generating Font Awesome icons.</description>
+	<name>Nasdanika HTML Ecore documentation</name>
+	<description>Classes for generating Ecore models documentation as YAML action spec.</description>
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
-			<artifactId>html</artifactId>
+			<artifactId>emf</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+		  <groupId>commons-codec</groupId>
+		  <artifactId>commons-codec</artifactId>
+		  <version>1.15</version>
 		</dependency>
 	</dependencies>
 </project>
+

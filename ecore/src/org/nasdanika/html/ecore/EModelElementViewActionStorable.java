@@ -36,6 +36,10 @@ import org.nasdanika.html.app.impl.Util;
 
 public class EModelElementViewActionStorable<T extends EModelElement> extends EObjectViewActionStorable<T> {
 	
+	private static final String CONTENT_KEY = "content";
+
+	private static final String APP_ACTION_KEY = "app-action";
+
 	public static final String ICONS_BASE = "https://www.nasdanika.org/resources/images/ecore/";
 		
 	/**
@@ -55,7 +59,7 @@ public class EModelElementViewActionStorable<T extends EModelElement> extends EO
 	}
 	
 	@Override
-	public Map<String,Object> store(URL base, ProgressMonitor progressMonitor) throws Exception {
+	public Map<String,Map<String,Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
 		Map<String,Object> data = new LinkedHashMap<>();
 		
 		data.put("icon", ICONS_BASE+eObject.eClass().getName()+".gif");
@@ -65,13 +69,23 @@ public class EModelElementViewActionStorable<T extends EModelElement> extends EO
 			markdown = EmfUtil.getDocumentation(eObject);
 		}
 		List<Object> content = new ArrayList<>();
-		data.put("content", content);
+		data.put(CONTENT_KEY, content);
 		
 		if (!Util.isBlank(markdown)) {
-			addContent(data, interpolatedMarkdown(markdown));
+			content.add(interpolatedMarkdown(markdown));
 			data.put("tooltip", context.get(MarkdownHelper.class).firstPlainTextSentence(markdown));
 		}
 		
+		return Collections.singletonMap(APP_ACTION_KEY, data);
+	}
+	
+	/**
+	 * 
+	 * @param key
+	 * @param value
+	 */
+	protected Map<String,Map<String,Object>> put(Map<String,Map<String,Object>> data, String key, Object value) {
+		data.get(APP_ACTION_KEY).put(key, value);
 		return data;
 	}
 	
@@ -88,9 +102,9 @@ public class EModelElementViewActionStorable<T extends EModelElement> extends EO
 	 * @param data
 	 * @param content
 	 */
-	protected static void addContent(Map<String,Object> data, Object... content) {
+	protected static void addContent(Map<String,Map<String,Object>> data, Object... content) {
 		@SuppressWarnings("unchecked")
-		Collection<Object> dc = (Collection<Object>) data.get("content");
+		Collection<Object> dc = (Collection<Object>) data.get(APP_ACTION_KEY).get(CONTENT_KEY);
 		for (Object ce: content) {
 			dc.add(ce);		
 		}

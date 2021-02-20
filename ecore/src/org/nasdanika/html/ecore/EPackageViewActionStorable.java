@@ -1,12 +1,12 @@
 package org.nasdanika.html.ecore;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -14,18 +14,39 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.PlantUmlTextGenerator;
 import org.nasdanika.emf.PlantUmlTextGenerator.RelationshipDirection;
-
-import net.sourceforge.plantuml.FileFormat;
-import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.SourceStringReader;
 
 public class EPackageViewActionStorable extends ENamedElementViewActionStorable<EPackage> {
 
 	public EPackageViewActionStorable(EPackage value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value, context, ePackagePathComputer);
+	}
+	
+	@Override
+	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
+		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
+		put(data, "href", eObject.getName() + "/package-summary.html");
+		
+		addContent(data, generateDiagram(false,  null, 0, RelationshipDirection.both, true, true));
+		addContent(data, Collections.singletonMap("component-list-of-contents", Collections.singletonMap("tooltip", true))); 
+		
+		List<Object> children = new ArrayList<>();
+		for (EPackage subPackage: eObject.getESubpackages().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+			children.add(adaptChild(subPackage).store(base, progressMonitor));
+		}
+	
+		for (EClassifier eClassifier: eObject.getEClassifiers().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+			children.add(adaptChild(eClassifier).store(base, progressMonitor));			
+		}
+		
+		if (!children.isEmpty()) {
+			put(data, "children", children);
+		}
+		
+		return data;
 	}
 //	
 //	@Override
@@ -35,13 +56,6 @@ public class EPackageViewActionStorable extends ENamedElementViewActionStorable<
 //		action.setId(eObject.eClass().getName() + "-" + nsUriEncoded);
 //		action.setActivator(nsUriEncoded + "/package-summary.html");
 //		
-//		for (EPackage subPackage: eObject.getESubpackages().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-//			action.getElements().add(adaptChild(subPackage).getAction(progressMonitor));
-//		}
-//		
-//		for (EClassifier eClassifier: eObject.getEClassifiers().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-//			action.getElements().add(adaptChild(eClassifier).getAction(progressMonitor));			
-//		}
 //		
 //		return action;
 //	}
@@ -82,7 +96,7 @@ public class EPackageViewActionStorable extends ENamedElementViewActionStorable<
 	
 	/**
 	 * Generates PNG diagram.
-	 * @return Image map for the diagram
+	 * @return Inline PNG and the image map.
 	 * @throws IOException 
 	 */
 	protected String generateDiagram(
@@ -91,8 +105,7 @@ public class EPackageViewActionStorable extends ENamedElementViewActionStorable<
 			int depth, 
 			PlantUmlTextGenerator.RelationshipDirection relationshipDirection,
 			boolean appendAttributes,
-			boolean appendOperations,
-			OutputStream out) throws IOException {
+			boolean appendOperations) throws IOException {
 		
 		StringBuilder sb = new StringBuilder();
 		
@@ -124,7 +137,6 @@ public class EPackageViewActionStorable extends ENamedElementViewActionStorable<
 			}
 								
 		};
-		gen.appendStartUml();
 		
 		if (leftToRightDirection) {
 			sb.append("left to right direction").append(System.lineSeparator());
@@ -135,15 +147,7 @@ public class EPackageViewActionStorable extends ENamedElementViewActionStorable<
 		}
 										
 		gen.appendWithRelationships(eObject.getEClassifiers(), relationshipDirection, depth);		
-		
-		gen.appendEndUml();
-
-		SourceStringReader reader = new SourceStringReader(sb.toString());
-		
-		FileFormatOption fileFormatOption = new FileFormatOption(FileFormat.PNG);
-		reader.outputImage(out, 0, fileFormatOption);
-		
-		return reader.getCMapData(0, fileFormatOption);
+		return context.get(DiagramGenerator.class).generateUmlDiagram(sb.toString());
 	}
 
 	/**

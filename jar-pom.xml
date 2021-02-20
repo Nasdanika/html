@@ -140,6 +140,7 @@
 		<module>fontawesome/jar-pom.xml</module>
 		<module>app/jar-pom.xml</module>
 		<module>echarts/jar-pom.xml</module>
+		<module>emf/jar-pom.xml</module>
 		<module>ecore/jar-pom.xml</module>
 	</modules>	
 
