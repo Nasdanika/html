@@ -11,16 +11,22 @@ import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.html.Container;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.NamedItemsContainer;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.bootstrap.ActionGroup;
 import org.nasdanika.html.bootstrap.BootstrapElement;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.ButtonToolbar;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.ListGroup;
 import org.nasdanika.html.bootstrap.Navs;
+import org.nasdanika.html.echarts.EChartsFactory;
+import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeContextMenuItem;
+import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
+import org.nasdanika.html.knockout.KnockoutFactory;
 
 /**
  * Provides access to factories and generates UI elements from application interfaces.
@@ -210,5 +216,29 @@ public interface ViewGenerator extends MutableContext, ObjectLoader {
 	 * @return
 	 */
 	Navs categorizedLinkNavs(List<Action> actions, Action activeAction, Color textColor);
+	
+	default HTMLFactory getHTMLFactory() {
+		return getBootstrapFactory().getHTMLFactory();		
+	}
+		
+	default BootstrapFactory getBootstrapFactory() {
+		return get(BootstrapFactory.class);		
+	}
+	
+	default EChartsFactory getEChartsFactory() {
+		return get(EChartsFactory.class);		
+	}
+
+	default FontAwesomeFactory getFontAwesomeFactory() {
+		return get(FontAwesomeFactory.class);		
+	}
+
+	default JsTreeFactory getJsTreeFactory() {
+		return get(JsTreeFactory.class);		
+	}
+
+	default KnockoutFactory getKnockoutFactory() {
+		return get(KnockoutFactory.class);		
+	}
 	
 }
