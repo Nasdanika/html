@@ -1,10 +1,14 @@
 package org.nasdanika.html.ecore;
 
+import java.net.URL;
+import java.util.Map;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.html.app.Action;
 
 public class EStructuralFeatureViewActionStorable<T extends EStructuralFeature> extends ETypedElementViewActionStorable<T> {
 
@@ -12,23 +16,22 @@ public class EStructuralFeatureViewActionStorable<T extends EStructuralFeature> 
 		super(value, context, ePackagePathComputer);
 	}
 	
-//	@Override
-//	protected Action create(ProgressMonitor progressMonitor) throws Exception {
-//		Action action = super.create(progressMonitor);
-//		action.setRole(ActionRole.SECTION.label);
-//		EClass eContainingClass = eObject.getEContainingClass();
-//		action.setId(
-//				encodeEPackage(eContainingClass.getEPackage())
-//				+ "-"
-//				+ eContainingClass.getName()
-//				+ "-"
-//				+ eObject.eClass().getName()
-//				+ "-" 				
-//				+ eObject.getName());
-//		
-//		action.setActivator(eContainingClass.getName() + ".html#" + eObject.eClass().getName() + "-" + eObject.getName());
-//		
-//		return action;
-//	}
+	@Override
+	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
+		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
+		put(data, "role", Action.Role.SECTION);
+		EClass eContainingClass = eObject.getEContainingClass();
+		put(data, "id", encodeEPackage(
+				eContainingClass.getEPackage())
+				+ "-"
+				+ eContainingClass.getName()
+				+ "-"
+				+ eObject.eClass().getName()
+				+ "-" 				
+				+ eObject.getName());
+
+		put(data, "href", eContainingClass.getName() + ".html#" + eObject.eClass().getName() + "-" + eObject.getName());
+		return data;
+	}
 	
 }

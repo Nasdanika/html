@@ -48,51 +48,6 @@ public class EPackageViewActionStorable extends ENamedElementViewActionStorable<
 		
 		return data;
 	}
-//	
-//	@Override
-//	protected Action create(ProgressMonitor progressMonitor) throws Exception {
-//		Action action = super.create(progressMonitor);
-//		String nsUriEncoded = encodeEPackage(eObject);
-//		action.setId(eObject.eClass().getName() + "-" + nsUriEncoded);
-//		action.setActivator(nsUriEncoded + "/package-summary.html");
-//		
-//		
-//		return action;
-//	}
-//	
-//	@Override
-//	public void configure(ProgressMonitor monitor) throws Exception {
-//		super.configure(monitor);
-//		
-//		// Diagram		
-//		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//		String diagramCMap = generateDiagram(false, null, 0, RelationshipDirection.both, true, true, baos);
-//		baos.close();
-//		ContentTag imageTag = HtmlFactory.eINSTANCE.createContentTag();
-//		imageTag.setName("img");
-//		
-//		Property srcAttribute = NcoreFactory.eINSTANCE.createProperty();
-//		srcAttribute.setName("src");
-//		srcAttribute.setValue("data:image/png;base64, " + Base64.getEncoder().encodeToString(baos.toByteArray()));
-//		imageTag.getAttributes().add(srcAttribute);
-//		
-//		Property useMapAttribute = NcoreFactory.eINSTANCE.createProperty();
-//		useMapAttribute.setName("usemap");
-//		useMapAttribute.setValue("#plantuml_map");
-//		imageTag.getAttributes().add(useMapAttribute);
-//		
-//		action.getContent().add(imageTag);
-//		
-//		Value cMapValue = NcoreFactory.eINSTANCE.createValue();
-//		cMapValue.setValue(diagramCMap);
-//		action.getContent().add(cMapValue);
-//
-//		ListOfContents loc = ComponentsFactory.eINSTANCE.createListOfContents();
-//		loc.setDepth(1);
-//		loc.setTooltips(true);
-//		loc.setHeader("EClassifiers");
-//		action.getContent().add(loc);		
-//	}
 	
 	/**
 	 * Generates PNG diagram.

@@ -3,15 +3,12 @@ package org.nasdanika.html.ecore;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
-import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.Util;
 
 public class EClassifierViewActionStorable<T extends EClassifier> extends ENamedElementViewActionStorable<T> {
 
@@ -23,13 +20,9 @@ public class EClassifierViewActionStorable<T extends EClassifier> extends ENamed
 	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
 		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
 		put(data, "href", eObject.getName() + ".html");
-		return data;
-	}
-//	
-//	@Override
-//	protected Action create(ProgressMonitor progressMonitor) throws Exception {
-//		Action action = super.create(progressMonitor);
-//		
+		put(data, "id", eObject.eClass().getName() + "-" + encodeEPackage(eObject.getEPackage()) + "-" + eObject.getName());
+		put(data, "text", eObject.getName() + typeParameters(eObject));
+		
 //		// Instance class
 //		Class<?> instanceClass = eObject.getInstanceClass();
 //		if (instanceClass == null) {
@@ -61,33 +54,9 @@ public class EClassifierViewActionStorable<T extends EClassifier> extends ENamed
 //						mc);				
 //			}
 //		}
-//						
-//		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject.getEPackage()) + "-" + eObject.getName());
-//		action.setActivator(eObject.getName()+".html");
-//		
-//		return action;
-//	}
-//
-//	private EPackage getRegisteredPackage() {
-//		String nsURI = eObject.getEPackage().getNsURI();
-//		Object value = EPackage.Registry.INSTANCE.get(nsURI);
-//		if (value instanceof EPackage) {
-//			return (EPackage) value;
-//		}
-//		if (value instanceof EPackage.Descriptor) {
-//			return Objects.requireNonNull(((EPackage.Descriptor) value).getEPackage(), "EPackage is null for " + nsURI);  
-//		}
-//		if (value == null) {
-//			throw new NullPointerException("No registry entry for " + nsURI);
-//		}
-//		throw new NasdanikaException("Unexpected registry value for " + nsURI + ": " + value);
-//	}
-//	
-//	@Override
-//	public void configure(ProgressMonitor monitor) throws Exception {
-//		super.configure(monitor);		
-//		action.setText(eObject.getName() + typeParameters(eObject));
-//	}
+		
+		return data;
+	}
 	
 	/**
 	 * Finds all type uses in the resourceset. 

@@ -1,9 +1,13 @@
 package org.nasdanika.html.ecore;
 
+import java.net.URL;
+import java.util.Map;
+
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.html.app.Action;
 
 public class EEnumLiteralViewActionStorable extends ENamedElementViewActionStorable<EEnumLiteral> {
 
@@ -11,15 +15,14 @@ public class EEnumLiteralViewActionStorable extends ENamedElementViewActionStora
 		super(value, context, ePackagePathComputer);
 	}
 	
-//	@Override
-//	protected Action create(ProgressMonitor progressMonitor) throws Exception {
-//		Action action = super.create(progressMonitor);
-//		action.setRole(ActionRole.SECTION.label);
-//		
-//		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject.getEEnum().getEPackage()) + "-" + eObject.getEEnum().getName() + "-" + eObject.getName());
-//		action.setActivator(eObject.getEEnum().getName()+".html#"+eObject.getName());
-//		
-//		return action;
-//	}
-	
+	@Override
+	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
+		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
+		put(data, "role", Action.Role.SECTION);
+		put(data, "id", eObject.eClass().getName() + "-" + encodeEPackage(eObject.getEEnum().getEPackage()) + "-" + eObject.getEEnum().getName() + "-" + eObject.getName());
+		put(data, "href", eObject.getEEnum().getName()+".html#"+eObject.getName());
+		
+		return data;
+	}	
+		
 }

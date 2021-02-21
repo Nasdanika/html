@@ -1,6 +1,12 @@
 package org.nasdanika.html.ecore;
 
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
@@ -9,7 +15,11 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.Fragment;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
+import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.SectionStyle;
 
 public class EEnumViewActionStorable extends EClassifierViewActionStorable<EEnum> {
@@ -18,52 +28,60 @@ public class EEnumViewActionStorable extends EClassifierViewActionStorable<EEnum
 		super(value, context, ePackagePathComputer);
 	}
 	
-//	@Override
-//	protected Action create(ProgressMonitor progressMonitor) throws Exception {
-//		Action action = super.create(progressMonitor);
-//		action.setSectionStyle(SectionStyle.DEFAULT.label);
-//		
-//		action.getElements().add(createLiteralsAction(progressMonitor));
-//		action.getElements().add(createUsesAction(progressMonitor));
-//	
-//		return action;
-//	}
-//	
-//	protected Action createLiteralsAction(ProgressMonitor progressMonitor) throws Exception {
-//		Action literalsAction = AppFactory.eINSTANCE.createAction();
-//		literalsAction.setSectionStyle(SectionStyle.TABLE.label);
-//		literalsAction.setText("Literals");
-//		literalsAction.setRole(ActionRole.SECTION.label);
-//		
-//		for (EEnumLiteral literal: eObject.getELiterals()) {
-//			literalsAction.getElements().add(adaptChild(literal).getAction(progressMonitor));
-//		}
-//		
-//		return literalsAction;
-//	}
-//		
-//	protected Action createUsesAction(ProgressMonitor progressMonitor) throws Exception {
-//		Action usesAction = AppFactory.eINSTANCE.createAction();
-//		usesAction.setText("Uses");
-//		usesAction.setRole(ActionRole.SECTION.label);
-//				
-//		// Uses
-//		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
-//		if (!uses.isEmpty()) {
-//			ListOfActions usesList = ComponentsFactory.eINSTANCE.createListOfActions();
-//			usesAction.getContent().add(usesList);
-//			usesList.setDepth(1);
-//			usesList.setTooltips(true);
-//			for (EClass use: uses) {
-//				ViewActionSupplier uvas = EObjectAdaptable.adaptTo(use, ViewActionSupplier.class);
-//				if (uvas != null) {
-//					usesList.getActions().add(uvas.getAction(progressMonitor));
-//				}
-//			}
-//		}
-//		
-//		
-//		return usesAction;
-//	}
+	@Override
+	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
+		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
+		put(data, "section-style", SectionStyle.DEFAULT.name().toLowerCase());
+		
+		List<Object> children = new ArrayList<>();
+		children.add(createLiteralsAction(base, progressMonitor));
+		Map<String, Map<String, Object>> usesAction = createUsesAction(base, progressMonitor);
+		if (usesAction != null) {
+			children.add(usesAction);
+		}
+		put(data, "children", children);
+
+		return data;
+	}
+	
+	protected Map<String, Map<String, Object>> createLiteralsAction(URL base, ProgressMonitor progressMonitor) throws Exception {
+		Map<String, Object> literalsData = new LinkedHashMap<>();
+		literalsData.put("section-style", SectionStyle.TABLE.name().toLowerCase());
+		literalsData.put("text", "Literals");
+		literalsData.put("role", Action.Role.SECTION);
+		
+		List<Object> children = new ArrayList<>();
+		for (EEnumLiteral literal: eObject.getELiterals()) {
+			children.add(adaptChild(literal).store(base, progressMonitor));
+		}
+		literalsData.put("children", children);
+		
+		return Collections.singletonMap("app-action", literalsData);
+	}
+	
+	protected Map<String, Map<String, Object>> createUsesAction(URL base, ProgressMonitor progressMonitor) throws Exception {
+		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		if (uses.isEmpty()) {
+			return null;
+		}
+		
+		Map<String, Object> usesData = new LinkedHashMap<>();
+		usesData.put("text", "Uses");
+		usesData.put("role", Action.Role.SECTION);
+		
+		// Uses
+		HTMLFactory htmlFactory = context.get(HTMLFactory.class);
+		Fragment gstf = htmlFactory.fragment(TagName.h3.create("Uses"));
+
+		Tag list = TagName.ul.create();
+		gstf.content(list);
+		
+		for (EClass use: uses) {
+			list.content(TagName.li.create(link(use)));
+		}
+		usesData.put(CONTENT_KEY, gstf.toString());
+		
+		return Collections.singletonMap("app-action", usesData);
+	}
 
 }

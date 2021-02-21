@@ -1,6 +1,8 @@
 package org.nasdanika.html.ecore;
 
+import java.net.URL;
 import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
@@ -8,7 +10,10 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.Fragment;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 
 public class EDataTypeViewActionStorable extends EClassifierViewActionStorable<EDataType> {
 
@@ -16,27 +21,27 @@ public class EDataTypeViewActionStorable extends EClassifierViewActionStorable<E
 		super(value, context, ePackagePathComputer);
 	}
 	
-//	@Override
-//	protected Action create(ProgressMonitor progressMonitor) throws Exception {
-//		Action ret = super.create(progressMonitor);
-//		
-//		// Uses
-//		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
-//		if (!uses.isEmpty()) {
-//			ListOfActions usesList = ComponentsFactory.eINSTANCE.createListOfActions();
-//			ret.getContent().add(usesList);
-//			usesList.setDepth(1);
-//			usesList.setTooltips(true);
-//			usesList.setHeader("Uses");
-//			for (EClass use: uses) {
-//				ViewActionSupplier uvas = EObjectAdaptable.adaptTo(use, ViewActionSupplier.class);
-//				if (uvas != null) {
-//					usesList.getActions().add(uvas.getAction(progressMonitor));
-//				}
-//			}
-//		}
-//		
-//		return ret;
-//	}
+	
+	@Override
+	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
+		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
+		
+		// Uses
+		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		if (!uses.isEmpty()) {
+			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
+			Fragment gstf = htmlFactory.fragment(TagName.h3.create("Uses"));
+
+			Tag list = TagName.ul.create();
+			gstf.content(list);
+			
+			for (EClass use: uses) {
+				list.content(TagName.li.create(link(use)));
+			}
+			addContent(data, gstf.toString());
+		}
+		
+		return data;
+	}
 	
 }

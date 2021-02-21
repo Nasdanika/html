@@ -4,7 +4,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.common.Util;
+import org.nasdanika.html.bootstrap.Table;
 
 public class EReferenceViewActionStorable extends EStructuralFeatureViewActionStorable<EReference> {
 
@@ -12,21 +13,19 @@ public class EReferenceViewActionStorable extends EStructuralFeatureViewActionSt
 		super(value, context, ePackagePathComputer);
 	}
 	
-//	@Override
-//	protected Table propertiesTable(ProgressMonitor monitor) throws Exception {
-//		Table propertiesTable = super.propertiesTable(monitor);
-//		EReference opposite = eObject.getEOpposite();
-//		if (opposite != null) {
-//			ViewActionSupplier oppositeViewActionSupplier = EObjectAdaptable.adaptTo(opposite, ViewActionSupplier.class);
-//			if (oppositeViewActionSupplier == null) {
-//				addRow(propertiesTable, "Opposite").add(wrap(opposite.getName()));
-//			} else {
-//				ActionLink link = ComponentsFactory.eINSTANCE.createActionLink();
-//				link.setTarget(oppositeViewActionSupplier.getAction(monitor));
-//				addRow(propertiesTable, "Opposite").add(link);				
-//			}
-//		}
-//		return propertiesTable;
-//	}
+	@Override
+	protected Table propertiesTable(ProgressMonitor monitor) throws Exception {
+		Table propertiesTable = super.propertiesTable(monitor);
+		EReference opposite = eObject.getEOpposite();
+		if (opposite != null) {
+			String oPath = path(opposite.getEContainingClass());
+			if (Util.isBlank(oPath)) {
+				addRow(propertiesTable, "Opposite").add(opposite.getName());
+			} else {
+				addRow(propertiesTable, "Opposite").add("<a href=\"" + oPath + "#EReference-" + opposite.getName() +"\">" + opposite.getName() + "</a>");				
+			}
+		}		
+		return propertiesTable;
+	}
 
 }

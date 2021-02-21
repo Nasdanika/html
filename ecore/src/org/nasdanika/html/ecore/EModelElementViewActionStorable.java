@@ -36,9 +36,9 @@ import org.nasdanika.html.app.impl.Util;
 
 public class EModelElementViewActionStorable<T extends EModelElement> extends EObjectViewActionStorable<T> {
 	
-	private static final String CONTENT_KEY = "content";
+	static final String CONTENT_KEY = "content";
 
-	private static final String APP_ACTION_KEY = "app-action";
+	static final String APP_ACTION_KEY = "app-action";
 
 	public static final String ICONS_BASE = "https://www.nasdanika.org/resources/images/ecore/";
 		
@@ -298,31 +298,72 @@ public class EModelElementViewActionStorable<T extends EModelElement> extends EO
 		if (eGenericType.getETypeParameter() != null) {
 			accumulator.add(eGenericType.getETypeParameter().getName());
 		} else if (eGenericType.getEClassifier() != null) {
-			EClassifier eClassifier = eGenericType.getEClassifier();
-			String targetEPackagePath = encodeEPackage(eClassifier.getEPackage());
-			if (Util.isBlank(targetEPackagePath)) {
-				accumulator.add(eClassifier.getName());
-			} else {
-				String targetPath = targetEPackagePath + "/" + eClassifier.getName() + ".html";
-				String thisPath = null;
-				if (eObject instanceof EClassifier) {
-					thisPath = encodeEPackage(((EClassifier) eObject).getEPackage()) + "/" + ((EClassifier) eObject).getName() + ".html";
-				} else if (eObject instanceof EPackage) {
-					thisPath = encodeEPackage(((EPackage) eObject)) + "/package-summary.html";					
-				}
-				
-				if (thisPath == null) {
-					accumulator.add(eClassifier.getName());					
-				} else {
-					URI base = URI.createURI(context.getString(Context.BASE_URI_PROPERTY, "tmp://base/doc/"));
-					URI target = URI.createURI(targetPath).resolve(base);
-					URI source = URI.createURI(thisPath).resolve(base);
-					URI relativeTarget = target.deresolve(source);
-					accumulator.add("<a href=\"" + relativeTarget + "\">" + eClassifier.getName() + "</a>");
-				}
-			}
+			accumulator.add(link(eGenericType.getEClassifier()));
 			genericTypeArguments(eGenericType, accumulator, monitor);
+		} else {
+			accumulator.add('?');
+			if (eGenericType.getELowerBound() != null) {
+				accumulator.add(" super ");
+				genericType(eGenericType.getELowerBound(), accumulator, monitor);
+			} else if (eGenericType.getEUpperBound() != null) {
+				accumulator.add(" extends ");
+				genericType(eGenericType.getEUpperBound(), accumulator, monitor);
+			}
+		}
+	}
+	
+	/**
+	 * @param eClassifier
+	 * @return Relatieve path to the argument {@link EClassifier} or null if the classifier is not part of the documentation resource set.
+	 */
+	protected String path(EClassifier eClassifier) {
+		// TODO - resolution of external eClassifiers for federated/hierarchical documentation - from the adapter factory.
+		Resource targetResource = eClassifier.eResource();
+		if (targetResource == null) {
+			return null;
+		}
+		ResourceSet targetResourceSet = targetResource.getResourceSet();
+		if (targetResourceSet != eObject.eResource().getResourceSet()) {
+			return null;
 		}		
+
+		String targetEPackagePath = encodeEPackage(eClassifier.getEPackage());
+		if (Util.isBlank(targetEPackagePath)) {
+			return null;
+		}
+		
+		String targetPath = targetEPackagePath + "/" + eClassifier.getName() + ".html";
+		String thisPath = null;
+		EClassifier contextClassifier = null;
+		if (eObject instanceof EClassifier) {
+			contextClassifier = (EClassifier) eObject;
+		} else if (eObject.eContainer() instanceof EClassifier) {
+			contextClassifier = (EClassifier) eObject.eContainer();
+		}
+			
+		if (contextClassifier != null) {	
+			thisPath = encodeEPackage(contextClassifier.getEPackage()) + "/" + contextClassifier.getName() + ".html";
+		} else if (eObject instanceof EPackage) {
+			thisPath = encodeEPackage(((EPackage) eObject)) + "/package-summary.html";					
+		}
+		
+		if (thisPath == null) {
+			return null;
+		}
+		
+		URI base = URI.createURI(context.getString(Context.BASE_URI_PROPERTY, "tmp://base/doc/"));
+		URI target = URI.createURI(targetPath).resolve(base);
+		URI source = URI.createURI(thisPath).resolve(base);
+		URI relativeTarget = target.deresolve(source, true, true, true);
+		return relativeTarget.toString();		
+	}
+	
+	/**
+	 * @return Link to {@link EClassifier} if it is part of the doc or plain text if it is not.
+	 */
+	protected String link(EClassifier eClassifier) {
+		String path = path(eClassifier);
+		return Util.isBlank(path) ? eClassifier.getName() : "<a href=\"" + path + "\">" + eClassifier.getName() + "</a>";
 	}
 
 	protected void genericTypeArguments(EGenericType eGenericType, List<Object> accumulator, ProgressMonitor monitor) throws Exception {

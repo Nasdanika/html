@@ -1,14 +1,15 @@
 package org.nasdanika.html.ecore;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Base64;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
@@ -24,10 +25,13 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.PlantUmlTextGenerator;
 import org.nasdanika.emf.PlantUmlTextGenerator.RelationshipDirection;
+import org.nasdanika.html.Fragment;
+import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
+import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.SectionStyle;
 
 public class EClassViewActionStorable extends EClassifierViewActionStorable<EClass> {
@@ -36,199 +40,181 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 		super(value, context, ePackagePathComputer);
 	}
 	
-//	@Override
-//	protected Action create(ProgressMonitor progressMonitor) throws Exception {
-//		Action action = super.create(progressMonitor);
-//		action.setSectionStyle(SectionStyle.DEFAULT.label);
-//		
-//		if (!eObject.getEAttributes().isEmpty()) {
-//			ActionCategory attrsCategory = AppFactory.eINSTANCE.createActionCategory();
-//			attrsCategory.setText("Attributes");
-//			action.getElements().add(attrsCategory);
-//			for (EStructuralFeature sf: eObject.getEAttributes().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-//				attrsCategory.getElements().add(adaptChild(sf).getAction(progressMonitor));
-//			}
-//		}
-//		
-//		if (!eObject.getEReferences().isEmpty()) {
-//			ActionCategory refsCategory = AppFactory.eINSTANCE.createActionCategory();
-//			refsCategory.setText("References");
-//			action.getElements().add(refsCategory);
-//			for (EStructuralFeature sf: eObject.getEReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-//				refsCategory.getElements().add(adaptChild(sf).getAction(progressMonitor));
-//			}
-//		}
-//		
-//		if (!eObject.getEOperations().isEmpty()) {
-//			ActionCategory opsCategory = AppFactory.eINSTANCE.createActionCategory();
-//			opsCategory.setText("Operations");
-//			action.getElements().add(opsCategory);
-//			for (EOperation eOp: eObject.getEOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-//				opsCategory.getElements().add(adaptChild(eOp).getAction(progressMonitor));			
-//			}
-//		}
-//		
-//		if (eObject.isInterface()) {
-//			action.setIcon(ICONS_BASE + "EInterface.gif");			
-//		}
-//		
-//		return action;
-//	}
-//	
-//	@Override
-//	public void configure(ProgressMonitor monitor) throws Exception {
-//		super.configure(monitor);
-//
-//		// Diagram
-//		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//		String diagramCMap = generateDiagram(false, null, 1, RelationshipDirection.both, true, true, baos, monitor);
-//		baos.close();
-//		ContentTag imageTag = BootstrapFactory.eINSTANCE.createContentTag();
-//		imageTag.setName(TagName.img.name());
-//		
-//		Property srcAttribute = NcoreFactory.eINSTANCE.createProperty();
-//		srcAttribute.setName("src");
-//		srcAttribute.setValue("data:image/png;base64, " + Base64.getEncoder().encodeToString(baos.toByteArray()));
-//		imageTag.getAttributes().add(srcAttribute);
-//		
-//		Property useMapAttribute = NcoreFactory.eINSTANCE.createProperty();
-//		useMapAttribute.setName("usemap");
-//		useMapAttribute.setValue("#plantuml_map");
-//		imageTag.getAttributes().add(useMapAttribute);
-//		
-//		action.getContent().add(imageTag);
-//		
-//		action.addContent(diagramCMap);
-//				
-//		// Generic supertypes
-//		EList<EGenericType> eGenericSuperTypes = eObject.getEGenericSuperTypes();
-//		if (!eGenericSuperTypes.isEmpty()) {
-//			ContentTag header = BootstrapFactory.eINSTANCE.createContentTag();
-//			header.setName(TagName.h3.name());
-//			header.addContent("Supertypes");
-//			action.getContent().add(header);
-//			
-//			ContentTag list = BootstrapFactory.eINSTANCE.createContentTag();
-//			list.setName(TagName.ul.name());
-//			action.getContent().add(list);
-//			
-//			for (EGenericType superType: eGenericSuperTypes) {
-//				ContentTag listItem = BootstrapFactory.eINSTANCE.createContentTag();
-//				listItem.setName(TagName.li.name());
-//				list.getContent().add(listItem);
-//				genericType(superType, listItem.getContent(), monitor);
-//			}
-//		}
-//		
-//		// Subtypes
-//		Collection<EClass> eSubTypes = getSubTypes(eObject).stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
-//		if (!eSubTypes.isEmpty()) {
-//			ListOfActions subTypesList = ComponentsFactory.eINSTANCE.createListOfActions();
-//			action.getContent().add(subTypesList);
-//			subTypesList.setDepth(1);
-//			subTypesList.setTooltips(true);
-//			subTypesList.setHeader("Subtypes");
-//			for (EClass subType: eSubTypes) {
-//				ViewActionSupplier stvas = EObjectAdaptable.adaptTo(subType, ViewActionSupplier.class);
-//				if (stvas != null) {
-//					subTypesList.getActions().add(stvas.getAction(monitor));
-//				}
-//			}
-//		}
-//		
-//		// Referrers
-//		Collection<EClass> referrers = getReferrers().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
-//		if (!referrers.isEmpty()) {
-//			ListOfActions referrersList = ComponentsFactory.eINSTANCE.createListOfActions();
-//			action.getContent().add(referrersList);
-//			referrersList.setDepth(1);
-//			referrersList.setTooltips(true);
-//			referrersList.setHeader("Referrers");
-//			for (EClass referrer: referrers) {
-//				ViewActionSupplier rvas = EObjectAdaptable.adaptTo(referrer, ViewActionSupplier.class);
-//				if (rvas != null) {
-//					referrersList.getActions().add(rvas.getAction(monitor));
-//				}
-//			}
-//		}
-//		
-//		// Uses
-//		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
-//		if (!uses.isEmpty()) {
-//			ListOfActions usesList = ComponentsFactory.eINSTANCE.createListOfActions();
-//			action.getContent().add(usesList);
-//			usesList.setDepth(1);
-//			usesList.setTooltips(true);
-//			usesList.setHeader("Uses");
-//			for (EClass use: uses) {
-//				ViewActionSupplier uvas = EObjectAdaptable.adaptTo(use, ViewActionSupplier.class);
-//				if (uvas != null) {
-//					usesList.getActions().add(uvas.getAction(monitor));
-//				}
-//			}
-//		}
-//		
-//		ListOfContents loc = ComponentsFactory.eINSTANCE.createListOfContents();
-//		loc.setDepth(1);
-//		loc.setHeader("Members");
-//		loc.setTooltips(true);
-//		loc.setRole(ActionRole.SECTION.label);
-//		action.getContent().add(loc);		
-//		
-//	}
-//
-//	protected String generateDiagram(
-//			boolean leftToRightDirection, 
-//			String width, 
-//			int depth, 
-//			PlantUmlTextGenerator.RelationshipDirection relationshipDirection,
-//			boolean appendAttributes,
-//			boolean appendOperations,
-//			OutputStream out,
-//			ProgressMonitor monitor) throws IOException {
-//		
-//		StringBuilder sb = new StringBuilder();
-//		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, eClassifierLinkResolver, EModelElementViewActionSupplier::getEModelElementFirstDocSentence) {
-//			
-//			@Override
-//			protected Collection<EClass> getSubTypes(EClass eClass) {
-//				return EClassViewActionSupplier.this.getSubTypes(eClass);
-//			}
-//			
-//			@Override
-//			protected Collection<EClass> getReferrers(EClass eClass) {
-//				return EClassViewActionSupplier.this.getReferrers(eClass);
-//			}
-//			
-//			@Override
-//			protected Collection<EClass> getUses(EClassifier eClassifier) {
-//				return EClassViewActionSupplier.this.getUses(eClassifier);
-//			}
-//			
-//			@Override
-//			protected boolean isAppendAttributes(EClass eClass) {
-//				return appendAttributes;
-//			}
-//			
-//			@Override
-//			protected boolean isAppendOperations(EClass eClass) {
-//				return appendOperations;
-//			}
-//			
-//		};
-//		
-//		if (leftToRightDirection) {
-//			sb.append("left to right direction").append(System.lineSeparator());
-//		}
-//		
-//		if (width != null) {
-//			sb.append("scale ").append(width).append(" width").append(System.lineSeparator());
-//		}
-//						
-//		gen.appendWithRelationships(Collections.singleton(eObject), relationshipDirection, depth);
-//		
-//		return context.get(DiagramGenerator.class).generateUmlDiagram(sb.toString());
-//	}
+	@Override
+	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
+		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
+		put(data, "section-style", SectionStyle.DEFAULT.name().toLowerCase());
+		
+		// Diagram
+		addContent(data, generateDiagram(false, null, 1, RelationshipDirection.both, true, true, progressMonitor));
+
+		// Generic supertypes
+		EList<EGenericType> eGenericSuperTypes = eObject.getEGenericSuperTypes();
+		if (!eGenericSuperTypes.isEmpty()) {
+			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
+			Fragment gstf = htmlFactory.fragment(TagName.h3.create("Supertypes"));
+
+			Tag list = TagName.ul.create();
+			gstf.content(list);
+			
+			for (EGenericType superType: eGenericSuperTypes) {
+				Tag listItem = TagName.li.create();
+				list.content(listItem);
+				genericType(superType, listItem.getContent(), progressMonitor);
+			}
+			addContent(data, gstf.toString());
+		}
+		
+		// Subtypes
+		Collection<EClass> eSubTypes = getSubTypes(eObject).stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		if (!eSubTypes.isEmpty()) {
+			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
+			Fragment gstf = htmlFactory.fragment(TagName.h3.create("Subtypes"));
+
+			Tag list = TagName.ul.create();
+			gstf.content(list);
+			
+			for (EClass subType: eSubTypes) {
+				list.content(TagName.li.create(link(subType)));
+			}
+			addContent(data, gstf.toString());
+		}
+		
+		// Referrers
+		Collection<EClass> referrers = getReferrers().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		if (!referrers.isEmpty()) {
+			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
+			Fragment gstf = htmlFactory.fragment(TagName.h3.create("Referrers"));
+
+			Tag list = TagName.ul.create();
+			gstf.content(list);
+			
+			for (EClass referrer: referrers) {
+				list.content(TagName.li.create(link(referrer)));
+			}
+			addContent(data, gstf.toString());
+		}
+		
+		// Uses
+		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		if (!uses.isEmpty()) {
+			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
+			Fragment gstf = htmlFactory.fragment(TagName.h3.create("Uses"));
+
+			Tag list = TagName.ul.create();
+			gstf.content(list);
+			
+			for (EClass use: uses) {
+				list.content(TagName.li.create(link(use)));
+			}
+			addContent(data, gstf.toString());
+		}
+
+		Map<String, Object> locConfig = new LinkedHashMap<>();
+		locConfig.put("tooltip", true);
+		locConfig.put("header", "Members");		
+		locConfig.put("role", Action.Role.SECTION);		
+		addContent(data, Collections.singletonMap("component-list-of-contents", locConfig));
+		
+		List<Object> children = new ArrayList<>();
+		
+		if (!eObject.getEAttributes().isEmpty()) {
+			Map<String,Object> attrsCategory = new LinkedHashMap<>();
+			children.add(Collections.singletonMap("app-category", attrsCategory));
+			attrsCategory.put("text", "Attributes");
+			Collection<Object> attrList = new ArrayList<>();
+			attrsCategory.put("actions", attrList);
+			for (EStructuralFeature sf: eObject.getEAttributes().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+				attrList.add(adaptChild(sf).store(base, progressMonitor));
+			}
+		}
+		
+		if (!eObject.getEReferences().isEmpty()) {
+			Map<String,Object> refsCategory = new LinkedHashMap<>();
+			children.add(Collections.singletonMap("app-category", refsCategory));
+			refsCategory.put("text", "References");
+			Collection<Object> refList = new ArrayList<>();
+			refsCategory.put("actions", refList);
+			
+			for (EStructuralFeature sf: eObject.getEReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+				refList.add(adaptChild(sf).store(base, progressMonitor));
+			}
+		}
+		
+		if (!eObject.getEOperations().isEmpty()) {
+			Map<String,Object> opsCategory = new LinkedHashMap<>();
+			children.add(Collections.singletonMap("app-category", opsCategory));
+			opsCategory.put("text", "Operations");
+			Collection<Object> opList = new ArrayList<>();
+			opsCategory.put("actions", opList);
+			
+			for (EOperation eOp: eObject.getEOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+				opList.add(adaptChild(eOp).store(base, progressMonitor));			
+			}
+		}
+		
+		if (!children.isEmpty()) {
+			put(data, "children", children);
+		}
+		
+		if (eObject.isInterface()) {
+			put(data, "icon", ICONS_BASE + "EInterface.gif");			
+		}		
+		
+		return data;
+	}
+	
+	protected String generateDiagram(
+			boolean leftToRightDirection, 
+			String width, 
+			int depth, 
+			PlantUmlTextGenerator.RelationshipDirection relationshipDirection,
+			boolean appendAttributes,
+			boolean appendOperations,
+			ProgressMonitor monitor) throws IOException {
+		
+		StringBuilder sb = new StringBuilder();
+		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, this::path, this::getEModelElementFirstDocSentence) {
+			
+			@Override
+			protected Collection<EClass> getSubTypes(EClass eClass) {
+				return EClassViewActionStorable.this.getSubTypes(eClass);
+			}
+			
+			@Override
+			protected Collection<EClass> getReferrers(EClass eClass) {
+				return EClassViewActionStorable.this.getReferrers(eClass);
+			}
+			
+			@Override
+			protected Collection<EClass> getUses(EClassifier eClassifier) {
+				return EClassViewActionStorable.this.getUses(eClassifier);
+			}
+			
+			@Override
+			protected boolean isAppendAttributes(EClass eClass) {
+				return appendAttributes;
+			}
+			
+			@Override
+			protected boolean isAppendOperations(EClass eClass) {
+				return appendOperations;
+			}
+			
+		};
+		
+		if (leftToRightDirection) {
+			sb.append("left to right direction").append(System.lineSeparator());
+		}
+		
+		if (width != null) {
+			sb.append("scale ").append(width).append(" width").append(System.lineSeparator());
+		}
+						
+		gen.appendWithRelationships(Collections.singleton(eObject), relationshipDirection, depth);
+		
+		return context.get(DiagramGenerator.class).generateUmlDiagram(sb.toString());
+	}
 		
 	/**
 	 * Override to return a list of sub-types of given EClass. 
@@ -257,26 +243,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 		});
 		return ret;
 	}
-	
-	protected Function<EClassifier, String> eClassifierLinkResolver = target -> {
-		// only from the same resource set
-		Resource targetResource = target.eResource();
-		if (targetResource == null) {
-			return null;
-		}
-		ResourceSet targetResourceSet = targetResource.getResourceSet();
-		if (targetResourceSet != eObject.eResource().getResourceSet()) {
-			return null;
-		}		
-		
-		String localName = target.getName() + ".html";
-		if (target.getEPackage().getNsURI().equals(eObject.getEPackage().getNsURI())) {
-			return localName;
-		}
-		
-		return "../" + encodeEPackage(target.getEPackage()) + "/" + localName;
-	};
-		
+			
 	/**
 	 * @return Referrers to this class
 	 */	

@@ -1,9 +1,13 @@
 package org.nasdanika.html.ecore;
 
+import java.net.URL;
+import java.util.Map;
+
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.html.app.Action;
 
 public class EParameterViewActionStorable extends ETypedElementViewActionStorable<EParameter> {
 
@@ -11,13 +15,11 @@ public class EParameterViewActionStorable extends ETypedElementViewActionStorabl
 		super(value, context, ePackagePathComputer);
 	}
 	
-//	@Override
-//	protected Action create(ProgressMonitor progressMonitor) throws Exception {
-//		Action ret = super.create(progressMonitor);
-//		ret.setRole(ActionRole.SECTION.label);
-//		
-//		ret.setActivatorType(ActivatorType.NONE);
-//		return ret;
-//	}
+	@Override
+	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
+		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
+		put(data, "role", Action.Role.SECTION);		
+		return data;
+	}
 
 }
