@@ -1,9 +1,17 @@
 package org.nasdanika.html.app;
 
+import java.net.URL;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
+
 import org.nasdanika.common.Context;
 import org.nasdanika.common.FilterExecutionParticipant;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
+import org.nasdanika.common.persistence.Storable;
 import org.nasdanika.html.bootstrap.Color;
 
 /**
@@ -109,5 +117,52 @@ public interface Label extends Identity {
 	 * @return
 	 */
 	String getNotification();
+	
+	/**
+	 * @param keyResolver Resolves label type to map key. E.g. to <code>app-label</code> for labels and <code>app-action</code> for actions.
+	 * @return
+	 */
+	default Storable asStorable(Function<Label,String> keyResolver) {
+		
+		return new Storable() {
+			
+			/**
+			 * Stores itself to a Map.
+			 */
+			@Override
+			public Object store(URL base, ProgressMonitor progressMonitor) throws Exception {
+				Map<String, Object> data = new LinkedHashMap<>();
+				Color color = getColor();
+				if (color != null) {
+					data.put("color", color.code);
+				}
+				String description = getDescription();
+				if (!Util.isBlank(description)) {
+					data.put("description", description);
+				}
+				String icon = getIcon();
+				if (!Util.isBlank(icon)) {
+					data.put("icon", icon);
+				}
+				String notification = getNotification();
+				if (!Util.isBlank(notification)) {
+					data.put("notification", notification);
+				}
+				String text = getText();
+				if (!Util.isBlank(text)) {
+					data.put("text", text);
+				}
+				String tooltip = getTooltip();
+				if (!Util.isBlank(tooltip)) {
+					data.put("tooltip", tooltip);
+				}
+				if (isOutline()) {
+					data.put("outline", true);
+				}
+				return Collections.singletonMap(keyResolver.apply(Label.this), data);
+			}
+			
+		};
+	}
 
 }
