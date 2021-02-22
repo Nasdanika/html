@@ -222,23 +222,23 @@ public interface ViewGenerator extends MutableContext, ObjectLoader {
 	}
 		
 	default BootstrapFactory getBootstrapFactory() {
-		return get(BootstrapFactory.class);		
+		return get(BootstrapFactory.class, BootstrapFactory.INSTANCE);		
 	}
 	
 	default EChartsFactory getEChartsFactory() {
-		return get(EChartsFactory.class);		
+		return get(EChartsFactory.class, EChartsFactory.INSTANCE);		
 	}
 
 	default FontAwesomeFactory getFontAwesomeFactory() {
-		return get(FontAwesomeFactory.class);		
+		return get(FontAwesomeFactory.class, FontAwesomeFactory.INSTANCE);		
 	}
 
 	default JsTreeFactory getJsTreeFactory() {
-		return get(JsTreeFactory.class);		
+		return get(JsTreeFactory.class, JsTreeFactory.INSTANCE);		
 	}
 
 	default KnockoutFactory getKnockoutFactory() {
-		return get(KnockoutFactory.class);		
+		return get(KnockoutFactory.class, KnockoutFactory.INSTANCE);		
 	}
 	
 }

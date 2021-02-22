@@ -73,7 +73,7 @@ public class EModelElementViewActionStorable<T extends EModelElement> extends EO
 		
 		if (!Util.isBlank(markdown)) {
 			content.add(interpolatedMarkdown(markdown));
-			data.put("tooltip", context.get(MarkdownHelper.class).firstPlainTextSentence(markdown));
+			data.put("tooltip", context.get(MarkdownHelper.class, MarkdownHelper.INSTANCE).firstPlainTextSentence(markdown));
 		}
 		
 		return Collections.singletonMap(APP_ACTION_KEY, data);
@@ -115,7 +115,7 @@ public class EModelElementViewActionStorable<T extends EModelElement> extends EO
 		if (Util.isBlank(markdown)) {
 			markdown = EmfUtil.getDocumentation(modelElement);
 		}
-		return Util.isBlank(markdown) ? null : context.get(MarkdownHelper.class).firstPlainTextSentence(markdown);
+		return Util.isBlank(markdown) ? null : context.get(MarkdownHelper.class, MarkdownHelper.INSTANCE).firstPlainTextSentence(markdown);
 	}
 		
 	/**
