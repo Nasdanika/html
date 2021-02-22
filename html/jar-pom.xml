@@ -4,7 +4,7 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2021.2.0</version>
+	    <version>2021.2.1</version>
 	    <relativePath>../jar-pom.xml</relativePath>
 	  </parent>
 	<artifactId>html</artifactId>
@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>org.nasdanika.core</groupId>
 			<artifactId>common</artifactId>
-			<version>${project.version}</version>
+			<version>${core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
