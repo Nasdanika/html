@@ -1,6 +1,5 @@
 package org.nasdanika.html.ecore;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -171,7 +170,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 			PlantUmlTextGenerator.RelationshipDirection relationshipDirection,
 			boolean appendAttributes,
 			boolean appendOperations,
-			ProgressMonitor monitor) throws IOException {
+			ProgressMonitor monitor) throws Exception {
 		
 		StringBuilder sb = new StringBuilder();
 		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, this::path, this::getEModelElementFirstDocSentence) {
