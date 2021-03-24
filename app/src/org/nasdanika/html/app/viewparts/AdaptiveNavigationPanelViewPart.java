@@ -45,6 +45,7 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 		 * Cards contents depends on the tree depth - list if one, tree if more than one.  
 		 */
 		CARDS
+		
 	}
 	
 	protected List<Action> navigationPanelActions;

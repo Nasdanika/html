@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.nasdanika.html.app.model;singleton:=true
+Bundle-Version: 2021.4.0.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.nasdanika.html.app.model,
+ org.nasdanika.html.app.model.impl,
+ org.nasdanika.html.app.model.util
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport
+Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.nasdanika.html.app.model

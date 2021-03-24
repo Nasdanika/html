@@ -9,7 +9,7 @@ import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
 
 /**
- * Interface to build ECharts option object - https://ecomfe.github.io/echarts-doc/public/en/option.html.
+ * Interface to build ECharts option object - https://echarts.apache.org/en/option.html#title
  * @author Pavel
  *
  */

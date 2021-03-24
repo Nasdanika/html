@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika.html</groupId>
-	<version>2021.3.1</version>
+	<version>2021.4.0</version>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Nasdanika HTML Parent</name>
@@ -144,6 +144,10 @@
 		<module>echarts/jar-pom.xml</module>
 		<module>emf/jar-pom.xml</module>
 		<module>ecore/jar-pom.xml</module>
+
+		<module>html.model/jar-pom.xml</module>
+		<module>bootstrap.model/jar-pom.xml</module>
+		<module>app.model/jar-pom.xml</module>
 	</modules>	
 
 
