@@ -163,9 +163,8 @@
 		
 		<module>emf</module>		
 		<module>ecore</module>
-		<module>html.model</module>
-		<module>bootstrap.model</module>
-		<module>app.model</module>
+
+		<module>model</module>
 
 		<module>feature</module>
 		<module>repository</module>

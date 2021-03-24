@@ -145,9 +145,9 @@
 		<module>emf/jar-pom.xml</module>
 		<module>ecore/jar-pom.xml</module>
 
-		<module>html.model/jar-pom.xml</module>
-		<module>bootstrap.model/jar-pom.xml</module>
-		<module>app.model/jar-pom.xml</module>
+		<module>model/html/jar-pom.xml</module>
+		<module>model/bootstrap/jar-pom.xml</module>
+		<module>model/app/jar-pom.xml</module>
 	</modules>	
 
 

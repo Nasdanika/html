@@ -7,7 +7,7 @@
 	    <version>2021.4.0</version>
 	    <relativePath>../jar-pom.xml</relativePath>
 	  </parent>
-	<artifactId>app-model</artifactId>
+	<artifactId>model-app</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML Application Model</name>
 
