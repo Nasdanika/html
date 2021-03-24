@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.nasdanika.html.model.components/src" modelPluginID="org.nasdanika.html.model.components"
+    modelName="Components" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" featureDelegation="Dynamic" complianceLevel="8.0"
+    suppressGenModelAnnotations="false" copyrightFields="false" providerRootExtendsClass="org.nasdanika.emf.edit.NasdanikaItemProviderAdapter"
+    usedGenPackages="../../org.nasdanika.html.model.bootstrap/model/bootstrap.genmodel#//bootstrap ../../org.nasdanika.html.model.html/model/html.genmodel#//html ../../org.nasdanika.ncore/model/ncore.genmodel#//ncore"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>components.ecore</foreignModel>
+  <genPackages prefix="Components" basePackage="org.nasdanika.html.model" disposableProviderFactory="true"
+      ecorePackage="components.ecore#/">
+    <genClasses image="false" ecoreClass="components.ecore#//TableOfContentsBase">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//TableOfContentsBase/header"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//TableOfContentsBase/role"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//TableOfContentsBase/depth"/>
+    </genClasses>
+    <genClasses ecoreClass="components.ecore#//TableOfContents">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//TableOfContents/descriptions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//TableOfContents/tooltips"/>
+    </genClasses>
+    <genClasses ecoreClass="components.ecore#//ListOfContents">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//ListOfContents/ordering"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//ListOfContents/tooltips"/>
+    </genClasses>
+    <genClasses ecoreClass="components.ecore#//TextToSpeech">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//TextToSpeech/language"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//TextToSpeech/voice"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//TextToSpeech/format"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//TextToSpeech/interpolate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference components.ecore#//TextToSpeech/appearance"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//TextToSpeech/path"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//TextToSpeech/embed"/>
+    </genClasses>
+    <genClasses ecoreClass="components.ecore#//TextToSpeechText">
+      <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EAttribute components.ecore#//TextToSpeechText/text"/>
+    </genClasses>
+    <genClasses ecoreClass="components.ecore#//TextToSpeechResource">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute components.ecore#//TextToSpeechResource/location"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

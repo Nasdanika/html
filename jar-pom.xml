@@ -148,6 +148,7 @@
 		<module>model/html/jar-pom.xml</module>
 		<module>model/bootstrap/jar-pom.xml</module>
 		<module>model/app/jar-pom.xml</module>
+		<module>model/components/jar-pom.xml</module>
 	</modules>	
 
 

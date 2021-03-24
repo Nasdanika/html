@@ -37,21 +37,28 @@
          unpack="false"/>
 
    <plugin
-         id="org.nasdanika.html.model"
+         id="org.nasdanika.html.model.html"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.nasdanika.html.bootstrap.model"
+         id="org.nasdanika.html.model.bootstrap"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.nasdanika.html.app.model"
+         id="org.nasdanika.html.model.app"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.nasdanika.html.model.components"
          download-size="0"
          install-size="0"
          version="0.0.0"
