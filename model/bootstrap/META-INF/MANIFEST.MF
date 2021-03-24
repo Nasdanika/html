@@ -13,6 +13,7 @@ Export-Package: org.nasdanika.html.model.bootstrap,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.nasdanika.html.model.html;visibility:=reexport,
- org.nasdanika.ncore;visibility:=reexport
+ org.nasdanika.ncore;visibility:=reexport,
+ org.nasdanika.html.bootstrap;bundle-version="2021.3.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: org.nasdanika.html.model.bootstrap

@@ -12,6 +12,6 @@ Export-Package: org.nasdanika.html.model.app,
  org.nasdanika.html.model.app.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.nasdanika.html.app;bundle-version="2021.3.0"
+ org.nasdanika.html.app;bundle-version="2021.3.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: org.nasdanika.html.model.app
