@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="bootstrap" nsURI="urn:org.nasdanika.vinci.bootstrap" nsPrefix="org.nasdanika.vinci.bootstrap">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="bootstrap" nsURI="urn:org.nasdanika.html.model.bootstrap" nsPrefix="org.nasdanika.html.model.bootstrap">
   <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
     <details key="documentation" value="Model of Bootstrap elements."/>
   </eAnnotations>
-  <eClassifiers xsi:type="ecore:EClass" name="BootstrapElement" abstract="true" eSuperTypes="../../org.nasdanika.vinci.html/model/html.ecore#//HtmlElement">
+  <eClassifiers xsi:type="ecore:EClass" name="BootstrapElement" abstract="true" eSuperTypes="../../org.nasdanika.html.model.html/model/html.ecore#//HtmlElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="An HTML element with Bootstrap appearance."/>
     </eAnnotations>
@@ -15,7 +15,7 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BootstrapPage" eSuperTypes="../../org.nasdanika.vinci.html/model/html.ecore#//Page">
+  <eClassifiers xsi:type="ecore:EClass" name="BootstrapPage" eSuperTypes="../../org.nasdanika.html.model.html/model/html.ecore#//Page">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="HTML page with bootstrap elements in the head - meta, stylesheets, and scripts.&#xA;&#xA;[Overview video](https://www.youtube.com/watch?v=Q6u6hL10xXA) in Russian."/>
     </eAnnotations>
@@ -240,12 +240,12 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Tag" eSuperTypes="../../org.nasdanika.vinci.html/model/html.ecore#//Tag #//BootstrapElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Tag" eSuperTypes="../../org.nasdanika.html.model.html/model/html.ecore#//Tag #//BootstrapElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="HTML tag with Bootstrap appearance"/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ContentTag" eSuperTypes="../../org.nasdanika.vinci.html/model/html.ecore#//ContentTag #//BootstrapElement">
+  <eClassifiers xsi:type="ecore:EClass" name="ContentTag" eSuperTypes="../../org.nasdanika.html.model.html/model/html.ecore#//ContentTag #//BootstrapElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="HTML tag with content and Bootstrap appearance"/>
     </eAnnotations>
@@ -299,7 +299,7 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ContentActionGroupItem" eSuperTypes="#//ActionGroupItem ../../org.nasdanika.vinci.html/model/html.ecore#//Container">
+  <eClassifiers xsi:type="ecore:EClass" name="ContentActionGroupItem" eSuperTypes="#//ActionGroupItem ../../org.nasdanika.html.model.html/model/html.ecore#//Container">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Action Group Item with content. Click on the item shows the content in the content container."/>
     </eAnnotations>
@@ -366,7 +366,7 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Column" eSuperTypes="#//BootstrapElement ../../org.nasdanika.vinci.html/model/html.ecore#//Container">
+  <eClassifiers xsi:type="ecore:EClass" name="Column" eSuperTypes="#//BootstrapElement ../../org.nasdanika.html.model.html/model/html.ecore#//Container">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Container row column."/>
     </eAnnotations>
@@ -488,7 +488,7 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TableCell" eSuperTypes="../../org.nasdanika.vinci.html/model/html.ecore#//Container #//BootstrapElement">
+  <eClassifiers xsi:type="ecore:EClass" name="TableCell" eSuperTypes="../../org.nasdanika.html.model.html/model/html.ecore#//Container #//BootstrapElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Table cell - regular or header."/>
     </eAnnotations>

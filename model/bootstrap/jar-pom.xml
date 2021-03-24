@@ -7,7 +7,7 @@
 	    <version>2021.4.0</version>
 	    <relativePath>../jar-pom.xml</relativePath>
 	  </parent>
-	<artifactId>bootstrap-model</artifactId>
+	<artifactId>model-bootstrap</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Bootstrap Model</name>
 	
