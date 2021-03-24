@@ -7,11 +7,11 @@
 <plugin>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated party -->
+      <!-- @generated html -->
       <package
-            uri="urn:org.nasdanika.party"
-            class="org.nasdanika.party.PartyPackage"
-            genModel="model/party.genmodel"/>
+            uri="urn:org.nasdanika..html.model.html"
+            class="org.nasdanika.html.model.html.HtmlPackage"
+            genModel="model/html.genmodel"/>
    </extension>
 
 </plugin>
