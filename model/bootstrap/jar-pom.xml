@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	  <parent>
 	    <artifactId>parent</artifactId>
-	    <groupId>org.nasdanika.core</groupId>
+	    <groupId>org.nasdanika.html</groupId>
 	    <version>2021.4.0</version>
-	    <relativePath>../jar-pom.xml</relativePath>
+	    <relativePath>../../jar-pom.xml</relativePath>
 	  </parent>
 	<artifactId>model-bootstrap</artifactId>
 	<packaging>jar</packaging>
@@ -13,8 +13,13 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>org.nasdanika.core</groupId>
-			<artifactId>ncore</artifactId>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>model-html</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

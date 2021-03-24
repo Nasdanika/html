@@ -5,16 +5,21 @@
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
 	    <version>2021.4.0</version>
-	    <relativePath>../jar-pom.xml</relativePath>
+	    <relativePath>../../jar-pom.xml</relativePath>
 	  </parent>
 	<artifactId>model-app</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML Application Model</name>
-
+	
 	<dependencies>
 		<dependency>
-			<groupId>org.nasdanika.core</groupId>
-			<artifactId>ncore</artifactId>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>app</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>model-bootstrap</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

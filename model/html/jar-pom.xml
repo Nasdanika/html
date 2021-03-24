@@ -5,7 +5,7 @@
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
 	    <version>2021.4.0</version>
-	    <relativePath>../jar-pom.xml</relativePath>
+	    <relativePath>../../jar-pom.xml</relativePath>
 	  </parent>
 	<artifactId>model-html</artifactId>
 	<packaging>jar</packaging>
@@ -15,6 +15,11 @@
 		<dependency>
 			<groupId>org.nasdanika.core</groupId>
 			<artifactId>ncore</artifactId>
+			<version>${core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>html</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

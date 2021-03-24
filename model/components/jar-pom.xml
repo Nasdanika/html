@@ -3,18 +3,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	  <parent>
 	    <artifactId>parent</artifactId>
-	    <groupId>org.nasdanika.core</groupId>
+	    <groupId>org.nasdanika.html</groupId>
 	    <version>2021.4.0</version>
-	    <relativePath>../jar-pom.xml</relativePath>
+	    <relativePath>../../jar-pom.xml</relativePath>
 	  </parent>
 	<artifactId>model-components</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Components Model</name>
 	
+	
 	<dependencies>
 		<dependency>
-			<groupId>org.nasdanika.core</groupId>
-			<artifactId>ncore</artifactId>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>model-app</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
