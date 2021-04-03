@@ -2,6 +2,8 @@
  */
 package org.nasdanika.html.model.app;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.html.app.SectionStyle;
 
 
@@ -27,13 +29,13 @@ import org.nasdanika.html.app.SectionStyle;
  *   <li>{@link org.nasdanika.html.model.app.Action#getBinding <em>Binding</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getConfirmation <em>Confirmation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#isDisabled <em>Disabled</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getMarkdownContent <em>Markdown Content</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getPageTemplate <em>Page Template</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getContent <em>Content</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getElements <em>Elements</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#isInline <em>Inline</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getAction()
- * @model abstract="true" superTypes="org.nasdanika.html.model.app.Label org.nasdanika.html.model.app.IAction"
+ * @model superTypes="org.nasdanika.html.model.app.Label org.nasdanika.html.model.app.IAction"
  *        annotation="http://www.eclipse.org/emf/2002/Ecore constraints='sectionStyle'"
  * @generated
  */
@@ -86,6 +88,7 @@ public interface Action extends Label, org.nasdanika.html.app.Action {
 
 	/**
 	 * Returns the value of the '<em><b>Section Style</b></em>' attribute.
+	 * The default value is <code>"AUTO"</code>.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -94,7 +97,7 @@ public interface Action extends Label, org.nasdanika.html.app.Action {
 	 * @return the value of the '<em>Section Style</em>' attribute.
 	 * @see #setSectionStyle(SectionStyle)
 	 * @see org.nasdanika.html.model.app.AppPackage#getAction_SectionStyle()
-	 * @model dataType="org.nasdanika.html.model.app.SectionStyle"
+	 * @model default="AUTO" dataType="org.nasdanika.html.model.app.SectionStyle"
 	 * @generated
 	 */
 	SectionStyle getSectionStyle();
@@ -288,77 +291,6 @@ public interface Action extends Label, org.nasdanika.html.app.Action {
 	void setDisabled(boolean value);
 
 	/**
-	 * Returns the value of the '<em><b>Markdown Content</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * [Markdown](https://en.wikipedia.org/wiki/Markdown) text. If this attribute contains text, the text is converted to HTML, interpolated and used as the first content element.
-	 * The primary purpose of this attribute is rapid development/prototyping of web applications/sites. 
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Markdown Content</em>' attribute.
-	 * @see #setMarkdownContent(String)
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_MarkdownContent()
-	 * @model annotation="urn:org.nasdanika content-type='text/markdown'"
-	 * @generated
-	 */
-	String getMarkdownContent();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getMarkdownContent <em>Markdown Content</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Markdown Content</em>' attribute.
-	 * @see #getMarkdownContent()
-	 * @generated
-	 */
-	void setMarkdownContent(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Page Template</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * URI of the page template to use for generation of a Web Application. The URI is resolved relative to the action's containing resource.
-	 * Defaults to ``platform:/plugin/org.nasdanika.vinci.templates/pages/default/primary.vinci`` built-in template.
-	 * 
-	 * ## Built-in page templates
-	 * 
-	 * ``org.nasdanika.vinci.templates`` plugin, which is part of the Vinci distribution, provides the following page templates (organized by theme and header color):
-	 * 
-	 * * Default
-	 *     * Primary
-	 *         * ``platform:/plugin/org.nasdanika.vinci.templates/pages/default/primary.vinci``
-	 *         * ``platform:/plugin/org.nasdanika.vinci.templates/pages/default/primary-fluid.vinci`` - fluid container.
-	 * * Cerulean
-	 *     * Primary
-	 *         * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/primary.vinci``
-	 *         * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/primary-fluid.vinci`` - fluid container.
-	 *         * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/primary-dark.vinci`` - dark navigation bar.
-	 *         * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/primary-dark-fluid.vinci`` - dark navigation bar, fluid container.
-	 *     * Dark 
-	 *         * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/dark.vinci``
-	 *         * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/dark-fluid.vinci`` - fluid container.
-	 *     
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Page Template</em>' attribute.
-	 * @see #setPageTemplate(String)
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_PageTemplate()
-	 * @model
-	 * @generated
-	 */
-	String getPageTemplate();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getPageTemplate <em>Page Template</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Page Template</em>' attribute.
-	 * @see #getPageTemplate()
-	 * @generated
-	 */
-	void setPageTemplate(String value);
-
-	/**
 	 * Returns the value of the '<em><b>Content</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -379,5 +311,40 @@ public interface Action extends Label, org.nasdanika.html.app.Action {
 	 * @generated
 	 */
 	void setContent(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Elements</em>' containment reference list.
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Elements()
+	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika load-key='children'"
+	 * @generated
+	 */
+	EList<EObject> getElements();
+
+	/**
+	 * Returns the value of the '<em><b>Inline</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Inline</em>' attribute.
+	 * @see #setInline(boolean)
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Inline()
+	 * @model
+	 * @generated
+	 */
+	boolean isInline();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#isInline <em>Inline</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Inline</em>' attribute.
+	 * @see #isInline()
+	 * @generated
+	 */
+	void setInline(boolean value);
 
 } // Action

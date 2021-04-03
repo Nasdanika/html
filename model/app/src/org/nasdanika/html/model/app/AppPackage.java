@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -98,13 +99,31 @@ public interface AppPackage extends EPackage {
 	int LABEL = 1;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__ID = ILABEL_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__DESCRIPTION = ILABEL_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Color</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__COLOR = ILABEL_FEATURE_COUNT + 0;
+	int LABEL__COLOR = ILABEL_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Text</b></em>' attribute.
@@ -113,7 +132,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__TEXT = ILABEL_FEATURE_COUNT + 1;
+	int LABEL__TEXT = ILABEL_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Icon</b></em>' attribute.
@@ -122,7 +141,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__ICON = ILABEL_FEATURE_COUNT + 2;
+	int LABEL__ICON = ILABEL_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Tooltip</b></em>' attribute.
@@ -131,7 +150,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__TOOLTIP = ILABEL_FEATURE_COUNT + 3;
+	int LABEL__TOOLTIP = ILABEL_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Outline</b></em>' attribute.
@@ -140,7 +159,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__OUTLINE = ILABEL_FEATURE_COUNT + 4;
+	int LABEL__OUTLINE = ILABEL_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Notification</b></em>' attribute.
@@ -149,7 +168,16 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__NOTIFICATION = ILABEL_FEATURE_COUNT + 5;
+	int LABEL__NOTIFICATION = ILABEL_FEATURE_COUNT + 7;
+
+	/**
+	 * The feature id for the '<em><b>Apperance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__APPERANCE = ILABEL_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Label</em>' class.
@@ -158,7 +186,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL_FEATURE_COUNT = ILABEL_FEATURE_COUNT + 6;
+	int LABEL_FEATURE_COUNT = ILABEL_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of operations of the '<em>Label</em>' class.
@@ -178,6 +206,24 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	int CATEGORY = 2;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CATEGORY__ID = LABEL__ID;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CATEGORY__DESCRIPTION = LABEL__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Color</b></em>' attribute.
@@ -234,13 +280,31 @@ public interface AppPackage extends EPackage {
 	int CATEGORY__NOTIFICATION = LABEL__NOTIFICATION;
 
 	/**
+	 * The feature id for the '<em><b>Apperance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CATEGORY__APPERANCE = LABEL__APPERANCE;
+
+	/**
+	 * The feature id for the '<em><b>Actions</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CATEGORY__ACTIONS = LABEL_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Category</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CATEGORY_FEATURE_COUNT = LABEL_FEATURE_COUNT + 0;
+	int CATEGORY_FEATURE_COUNT = LABEL_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Category</em>' class.
@@ -288,6 +352,24 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	int ACTION = 4;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__ID = LABEL__ID;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__DESCRIPTION = LABEL__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Color</b></em>' attribute.
@@ -342,6 +424,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION__NOTIFICATION = LABEL__NOTIFICATION;
+
+	/**
+	 * The feature id for the '<em><b>Apperance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__APPERANCE = LABEL__APPERANCE;
 
 	/**
 	 * The feature id for the '<em><b>Role</b></em>' attribute.
@@ -416,31 +507,31 @@ public interface AppPackage extends EPackage {
 	int ACTION__DISABLED = LABEL_FEATURE_COUNT + 7;
 
 	/**
-	 * The feature id for the '<em><b>Markdown Content</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION__MARKDOWN_CONTENT = LABEL_FEATURE_COUNT + 8;
-
-	/**
-	 * The feature id for the '<em><b>Page Template</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION__PAGE_TEMPLATE = LABEL_FEATURE_COUNT + 9;
-
-	/**
 	 * The feature id for the '<em><b>Content</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__CONTENT = LABEL_FEATURE_COUNT + 10;
+	int ACTION__CONTENT = LABEL_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Elements</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__ELEMENTS = LABEL_FEATURE_COUNT + 9;
+
+	/**
+	 * The feature id for the '<em><b>Inline</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__INLINE = LABEL_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Action</em>' class.
@@ -503,6 +594,17 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getLabel();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Label#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see org.nasdanika.html.model.app.Label#getId()
+	 * @see #getLabel()
+	 * @generated
+	 */
+	EAttribute getLabel_Id();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Label#getColor <em>Color</em>}'.
@@ -571,6 +673,28 @@ public interface AppPackage extends EPackage {
 	EAttribute getLabel_Notification();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.Label#getApperance <em>Apperance</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Apperance</em>'.
+	 * @see org.nasdanika.html.model.app.Label#getApperance()
+	 * @see #getLabel()
+	 * @generated
+	 */
+	EReference getLabel_Apperance();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Label#getDescription <em>Description</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Description</em>'.
+	 * @see org.nasdanika.html.model.app.Label#getDescription()
+	 * @see #getLabel()
+	 * @generated
+	 */
+	EAttribute getLabel_Description();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.Category <em>Category</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -579,6 +703,17 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getCategory();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.Category#getActions <em>Actions</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Actions</em>'.
+	 * @see org.nasdanika.html.model.app.Category#getActions()
+	 * @see #getCategory()
+	 * @generated
+	 */
+	EReference getCategory_Actions();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.app.Action <em>IAction</em>}'.
@@ -690,28 +825,6 @@ public interface AppPackage extends EPackage {
 	EAttribute getAction_Disabled();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Action#getMarkdownContent <em>Markdown Content</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Markdown Content</em>'.
-	 * @see org.nasdanika.html.model.app.Action#getMarkdownContent()
-	 * @see #getAction()
-	 * @generated
-	 */
-	EAttribute getAction_MarkdownContent();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Action#getPageTemplate <em>Page Template</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Page Template</em>'.
-	 * @see org.nasdanika.html.model.app.Action#getPageTemplate()
-	 * @see #getAction()
-	 * @generated
-	 */
-	EAttribute getAction_PageTemplate();
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Action#getContent <em>Content</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -721,6 +834,28 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getAction_Content();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.Action#getElements <em>Elements</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Elements</em>'.
+	 * @see org.nasdanika.html.model.app.Action#getElements()
+	 * @see #getAction()
+	 * @generated
+	 */
+	EReference getAction_Elements();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Action#isInline <em>Inline</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Inline</em>'.
+	 * @see org.nasdanika.html.model.app.Action#isInline()
+	 * @see #getAction()
+	 * @generated
+	 */
+	EAttribute getAction_Inline();
 
 	/**
 	 * Returns the meta object for data type '{@link org.nasdanika.html.bootstrap.Color <em>Color</em>}'.
@@ -788,6 +923,14 @@ public interface AppPackage extends EPackage {
 		EClass LABEL = eINSTANCE.getLabel();
 
 		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LABEL__ID = eINSTANCE.getLabel_Id();
+
+		/**
 		 * The meta object literal for the '<em><b>Color</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -836,6 +979,22 @@ public interface AppPackage extends EPackage {
 		EAttribute LABEL__NOTIFICATION = eINSTANCE.getLabel_Notification();
 
 		/**
+		 * The meta object literal for the '<em><b>Apperance</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LABEL__APPERANCE = eINSTANCE.getLabel_Apperance();
+
+		/**
+		 * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LABEL__DESCRIPTION = eINSTANCE.getLabel_Description();
+
+		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.CategoryImpl <em>Category</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -844,6 +1003,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EClass CATEGORY = eINSTANCE.getCategory();
+
+		/**
+		 * The meta object literal for the '<em><b>Actions</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CATEGORY__ACTIONS = eINSTANCE.getCategory_Actions();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.app.Action <em>IAction</em>}' class.
@@ -930,28 +1097,28 @@ public interface AppPackage extends EPackage {
 		EAttribute ACTION__DISABLED = eINSTANCE.getAction_Disabled();
 
 		/**
-		 * The meta object literal for the '<em><b>Markdown Content</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute ACTION__MARKDOWN_CONTENT = eINSTANCE.getAction_MarkdownContent();
-
-		/**
-		 * The meta object literal for the '<em><b>Page Template</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute ACTION__PAGE_TEMPLATE = eINSTANCE.getAction_PageTemplate();
-
-		/**
 		 * The meta object literal for the '<em><b>Content</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute ACTION__CONTENT = eINSTANCE.getAction_Content();
+
+		/**
+		 * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ACTION__ELEMENTS = eINSTANCE.getAction_Elements();
+
+		/**
+		 * The meta object literal for the '<em><b>Inline</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACTION__INLINE = eINSTANCE.getAction_Inline();
 
 		/**
 		 * The meta object literal for the '<em>Color</em>' data type.

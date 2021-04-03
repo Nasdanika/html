@@ -2,11 +2,34 @@
  */
 package org.nasdanika.html.model.app.impl;
 
-import org.eclipse.emf.ecore.EClass;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.persistence.ConfigurationException;
+import org.nasdanika.common.persistence.Marked;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.app.ActionActivator;
+import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.SectionStyle;
+import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.ViewPart;
+import org.nasdanika.html.app.impl.PathNavigationActionActivator;
+import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.Category;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,14 +47,14 @@ import org.nasdanika.html.model.app.AppPackage;
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getBinding <em>Binding</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getConfirmation <em>Confirmation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isDisabled <em>Disabled</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getMarkdownContent <em>Markdown Content</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getPageTemplate <em>Page Template</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getContent <em>Content</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getElements <em>Elements</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isInline <em>Inline</em>}</li>
  * </ul>
  *
  * @generated
  */
-public abstract class ActionImpl extends LabelImpl implements Action {
+public class ActionImpl extends LabelImpl implements Action {
 	/**
 	 * The default value of the '{@link #getRole() <em>Role</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -50,7 +73,7 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final SectionStyle SECTION_STYLE_EDEFAULT = null;
+	protected static final SectionStyle SECTION_STYLE_EDEFAULT = (SectionStyle)AppFactory.eINSTANCE.createFromString(AppPackage.eINSTANCE.getSectionStyle(), "AUTO");
 
 	/**
 	 * The default value of the '{@link #getSectionColumns() <em>Section Columns</em>}' attribute.
@@ -113,26 +136,6 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 	protected static final boolean DISABLED_EDEFAULT = false;
 
 	/**
-	 * The default value of the '{@link #getMarkdownContent() <em>Markdown Content</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMarkdownContent()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String MARKDOWN_CONTENT_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getPageTemplate() <em>Page Template</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPageTemplate()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String PAGE_TEMPLATE_EDEFAULT = null;
-
-	/**
 	 * The default value of the '{@link #getContent() <em>Content</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -141,6 +144,16 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 	 * @ordered
 	 */
 	protected static final String CONTENT_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #isInline() <em>Inline</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isInline()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean INLINE_EDEFAULT = false;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -327,46 +340,6 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 	 * @generated
 	 */
 	@Override
-	public String getMarkdownContent() {
-		return (String)eDynamicGet(AppPackage.ACTION__MARKDOWN_CONTENT, AppPackage.Literals.ACTION__MARKDOWN_CONTENT, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setMarkdownContent(String newMarkdownContent) {
-		eDynamicSet(AppPackage.ACTION__MARKDOWN_CONTENT, AppPackage.Literals.ACTION__MARKDOWN_CONTENT, newMarkdownContent);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getPageTemplate() {
-		return (String)eDynamicGet(AppPackage.ACTION__PAGE_TEMPLATE, AppPackage.Literals.ACTION__PAGE_TEMPLATE, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setPageTemplate(String newPageTemplate) {
-		eDynamicSet(AppPackage.ACTION__PAGE_TEMPLATE, AppPackage.Literals.ACTION__PAGE_TEMPLATE, newPageTemplate);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public String getContent() {
 		return (String)eDynamicGet(AppPackage.ACTION__CONTENT, AppPackage.Literals.ACTION__CONTENT, true, true);
 	}
@@ -379,6 +352,51 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 	@Override
 	public void setContent(String newContent) {
 		eDynamicSet(AppPackage.ACTION__CONTENT, AppPackage.Literals.ACTION__CONTENT, newContent);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public EList<EObject> getElements() {
+		return (EList<EObject>)eDynamicGet(AppPackage.ACTION__ELEMENTS, AppPackage.Literals.ACTION__ELEMENTS, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isInline() {
+		return (Boolean)eDynamicGet(AppPackage.ACTION__INLINE, AppPackage.Literals.ACTION__INLINE, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setInline(boolean newInline) {
+		eDynamicSet(AppPackage.ACTION__INLINE, AppPackage.Literals.ACTION__INLINE, newInline);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case AppPackage.ACTION__ELEMENTS:
+				return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -405,12 +423,12 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 				return getConfirmation();
 			case AppPackage.ACTION__DISABLED:
 				return isDisabled();
-			case AppPackage.ACTION__MARKDOWN_CONTENT:
-				return getMarkdownContent();
-			case AppPackage.ACTION__PAGE_TEMPLATE:
-				return getPageTemplate();
 			case AppPackage.ACTION__CONTENT:
 				return getContent();
+			case AppPackage.ACTION__ELEMENTS:
+				return getElements();
+			case AppPackage.ACTION__INLINE:
+				return isInline();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -420,6 +438,7 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -447,14 +466,15 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 			case AppPackage.ACTION__DISABLED:
 				setDisabled((Boolean)newValue);
 				return;
-			case AppPackage.ACTION__MARKDOWN_CONTENT:
-				setMarkdownContent((String)newValue);
-				return;
-			case AppPackage.ACTION__PAGE_TEMPLATE:
-				setPageTemplate((String)newValue);
-				return;
 			case AppPackage.ACTION__CONTENT:
 				setContent((String)newValue);
+				return;
+			case AppPackage.ACTION__ELEMENTS:
+				getElements().clear();
+				getElements().addAll((Collection<? extends EObject>)newValue);
+				return;
+			case AppPackage.ACTION__INLINE:
+				setInline((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -492,14 +512,14 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 			case AppPackage.ACTION__DISABLED:
 				setDisabled(DISABLED_EDEFAULT);
 				return;
-			case AppPackage.ACTION__MARKDOWN_CONTENT:
-				setMarkdownContent(MARKDOWN_CONTENT_EDEFAULT);
-				return;
-			case AppPackage.ACTION__PAGE_TEMPLATE:
-				setPageTemplate(PAGE_TEMPLATE_EDEFAULT);
-				return;
 			case AppPackage.ACTION__CONTENT:
 				setContent(CONTENT_EDEFAULT);
+				return;
+			case AppPackage.ACTION__ELEMENTS:
+				getElements().clear();
+				return;
+			case AppPackage.ACTION__INLINE:
+				setInline(INLINE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -529,14 +549,111 @@ public abstract class ActionImpl extends LabelImpl implements Action {
 				return CONFIRMATION_EDEFAULT == null ? getConfirmation() != null : !CONFIRMATION_EDEFAULT.equals(getConfirmation());
 			case AppPackage.ACTION__DISABLED:
 				return isDisabled() != DISABLED_EDEFAULT;
-			case AppPackage.ACTION__MARKDOWN_CONTENT:
-				return MARKDOWN_CONTENT_EDEFAULT == null ? getMarkdownContent() != null : !MARKDOWN_CONTENT_EDEFAULT.equals(getMarkdownContent());
-			case AppPackage.ACTION__PAGE_TEMPLATE:
-				return PAGE_TEMPLATE_EDEFAULT == null ? getPageTemplate() != null : !PAGE_TEMPLATE_EDEFAULT.equals(getPageTemplate());
 			case AppPackage.ACTION__CONTENT:
 				return CONTENT_EDEFAULT == null ? getContent() != null : !CONTENT_EDEFAULT.equals(getContent());
+			case AppPackage.ACTION__ELEMENTS:
+				return !getElements().isEmpty();
+			case AppPackage.ACTION__INLINE:
+				return isInline() != INLINE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	@Override
+	public boolean isEmpty() {
+		ViewPart delegate = (ViewPart) EcoreUtil.getRegisteredAdapter(this, ViewPart.class);
+		return delegate == null && Util.isBlank(getContent());
+	}
+	
+	@Override
+	public Label getCategory() {
+		return eContainer() instanceof Category ? (Category) eContainer : null;
+	}
+	
+	private List<org.nasdanika.html.app.Action> children = new ArrayList<>();	
+	
+	@Override
+	public List<org.nasdanika.html.app.Action> getChildren() {
+		if (children == null) {
+			List<org.nasdanika.html.app.Action> children = new ArrayList<>();
+			for (EObject e: getElements()) {
+				if (e instanceof Category) {
+					children.addAll(((Category) e).getActions());
+				} else {
+					org.nasdanika.html.app.Action action = EObjectAdaptable.adaptTo(e, org.nasdanika.html.app.Action.class);
+					if (action == null) {
+						throw new ConfigurationException("Cannot adapt " + e + " to " + org.nasdanika.html.app.Action.class.getName(), EObjectAdaptable.adaptTo(this, Marked.class));
+					}
+					children.add(action);
+				}
+			}
+		}
+		return children;
+	}
+
+	@Override
+	public boolean isInRole(String role) {
+		return role.equals(getRole());
+	}
+
+	@Override
+	public org.nasdanika.html.app.Action getParent() {
+		EObject c = eContainer();
+		if (c instanceof org.nasdanika.html.app.Action) {
+			return (org.nasdanika.html.app.Action) c;
+		}
+		if (c instanceof Category) {
+			EObject cc = c.eContainer();
+			if (cc instanceof org.nasdanika.html.app.Action) {
+				return (org.nasdanika.html.app.Action) cc;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public ActionActivator getActivator() {
+		if (eIsSet(AppPackage.Literals.ACTION__SCRIPT)) {
+			 return new ScriptActionActivator() {
+				
+				@Override
+				public String getCode() {
+					return getScript();
+				}
+				
+				@Override
+				public boolean inline() {
+					return ActionImpl.this.isInline();
+				}
+				
+			};
+		}
+		
+		Marked marked = (Marked) EcoreUtil.getRegisteredAdapter(this, Marked.class);
+		
+		if (eIsSet(AppPackage.Literals.ACTION__LOCATION)) {
+			Context context = (Context) EcoreUtil.getRegisteredAdapter(this, Context.class);
+			return new PathNavigationActionActivator(this, context == null ? null : context.getString(Context.BASE_URI_PROPERTY), getLocation(), marked == null ? null : marked.getMarker()) {
+				
+				@Override
+				public boolean inline() {
+					return ActionImpl.this.isInline();
+				}
+				
+			};			
+		}
+		
+		if (eIsSet(AppPackage.Literals.ACTION__BINDING)) { 
+			throw new ConfigurationException("Binding activator is not yet supported", marked);
+		}
+		
+		return null;
+	}
+
+	@Override
+	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		ViewPart delegate = (ViewPart) EcoreUtil.getRegisteredAdapter(this, ViewPart.class);
+		return delegate == null ? getContent() : delegate.generate(viewGenerator, progressMonitor);
 	}
 
 } //ActionImpl

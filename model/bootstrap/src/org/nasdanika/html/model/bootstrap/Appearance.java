@@ -116,6 +116,7 @@ public interface Appearance extends EObject {
 	 * @return the value of the '<em>Border</em>' containment reference list.
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getAppearance_Border()
 	 * @model containment="true" upper="4"
+	 *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"
 	 * @generated
 	 */
 	EList<Border> getBorder();
@@ -131,6 +132,7 @@ public interface Appearance extends EObject {
 	 * @return the value of the '<em>Margin</em>' containment reference list.
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getAppearance_Margin()
 	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"
 	 * @generated
 	 */
 	EList<Spacing> getMargin();
@@ -146,6 +148,7 @@ public interface Appearance extends EObject {
 	 * @return the value of the '<em>Padding</em>' containment reference list.
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getAppearance_Padding()
 	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"
 	 * @generated
 	 */
 	EList<Spacing> getPadding();
@@ -161,6 +164,7 @@ public interface Appearance extends EObject {
 	 * @see #setText(Text)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getAppearance_Text()
 	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"
 	 * @generated
 	 */
 	Text getText();
@@ -186,6 +190,7 @@ public interface Appearance extends EObject {
 	 * @return the value of the '<em>Float</em>' containment reference list.
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getAppearance_Float()
 	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"
 	 * @generated
 	 */
 	EList<org.nasdanika.html.model.bootstrap.Float> getFloat();

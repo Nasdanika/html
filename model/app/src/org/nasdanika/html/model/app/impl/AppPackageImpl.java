@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EValidator;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
@@ -20,6 +21,9 @@ import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Category;
 
 import org.nasdanika.html.model.app.util.AppValidator;
+import org.nasdanika.html.model.bootstrap.BootstrapPackage;
+import org.nasdanika.html.model.html.HtmlPackage;
+import org.nasdanika.ncore.NcorePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -124,6 +128,11 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		isInited = true;
 
+		// Initialize simple dependencies
+		BootstrapPackage.eINSTANCE.eClass();
+		HtmlPackage.eINSTANCE.eClass();
+		NcorePackage.eINSTANCE.eClass();
+
 		// Create package meta-data objects
 		theAppPackage.createPackageContents();
 
@@ -174,7 +183,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLabel_Color() {
+	public EAttribute getLabel_Id() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -184,17 +193,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLabel_Text() {
-		return (EAttribute)labelEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getLabel_Icon() {
+	public EAttribute getLabel_Color() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -204,7 +203,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLabel_Tooltip() {
+	public EAttribute getLabel_Text() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -214,7 +213,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLabel_Outline() {
+	public EAttribute getLabel_Icon() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -224,8 +223,48 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLabel_Notification() {
+	public EAttribute getLabel_Tooltip() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getLabel_Outline() {
+		return (EAttribute)labelEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getLabel_Notification() {
+		return (EAttribute)labelEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getLabel_Apperance() {
+		return (EReference)labelEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getLabel_Description() {
+		return (EAttribute)labelEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -236,6 +275,16 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	@Override
 	public EClass getCategory() {
 		return categoryEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getCategory_Actions() {
+		return (EReference)categoryEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -344,7 +393,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getAction_MarkdownContent() {
+	public EAttribute getAction_Content() {
 		return (EAttribute)actionEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -354,8 +403,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getAction_PageTemplate() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(9);
+	public EReference getAction_Elements() {
+		return (EReference)actionEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
@@ -364,7 +413,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getAction_Content() {
+	public EAttribute getAction_Inline() {
 		return (EAttribute)actionEClass.getEStructuralFeatures().get(10);
 	}
 
@@ -420,14 +469,18 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		iLabelEClass = createEClass(ILABEL);
 
 		labelEClass = createEClass(LABEL);
+		createEAttribute(labelEClass, LABEL__ID);
+		createEAttribute(labelEClass, LABEL__DESCRIPTION);
 		createEAttribute(labelEClass, LABEL__COLOR);
 		createEAttribute(labelEClass, LABEL__TEXT);
 		createEAttribute(labelEClass, LABEL__ICON);
 		createEAttribute(labelEClass, LABEL__TOOLTIP);
 		createEAttribute(labelEClass, LABEL__OUTLINE);
 		createEAttribute(labelEClass, LABEL__NOTIFICATION);
+		createEReference(labelEClass, LABEL__APPERANCE);
 
 		categoryEClass = createEClass(CATEGORY);
+		createEReference(categoryEClass, CATEGORY__ACTIONS);
 
 		iActionEClass = createEClass(IACTION);
 
@@ -440,9 +493,9 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(actionEClass, ACTION__BINDING);
 		createEAttribute(actionEClass, ACTION__CONFIRMATION);
 		createEAttribute(actionEClass, ACTION__DISABLED);
-		createEAttribute(actionEClass, ACTION__MARKDOWN_CONTENT);
-		createEAttribute(actionEClass, ACTION__PAGE_TEMPLATE);
 		createEAttribute(actionEClass, ACTION__CONTENT);
+		createEReference(actionEClass, ACTION__ELEMENTS);
+		createEAttribute(actionEClass, ACTION__INLINE);
 
 		// Create data types
 		colorEDataType = createEDataType(COLOR);
@@ -472,6 +525,9 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		setNsPrefix(eNS_PREFIX);
 		setNsURI(eNS_URI);
 
+		// Obtain other dependent packages
+		BootstrapPackage theBootstrapPackage = (BootstrapPackage)EPackage.Registry.INSTANCE.getEPackage(BootstrapPackage.eNS_URI);
+
 		// Create type parameters
 
 		// Set bounds for type parameters
@@ -485,30 +541,34 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		// Initialize classes, features, and operations; add parameters
 		initEClass(iLabelEClass, Label.class, "ILabel", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(labelEClass, org.nasdanika.html.model.app.Label.class, "Label", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(labelEClass, org.nasdanika.html.model.app.Label.class, "Label", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getLabel_Id(), ecorePackage.getEString(), "id", null, 0, 1, org.nasdanika.html.model.app.Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getLabel_Description(), ecorePackage.getEString(), "description", null, 0, 1, org.nasdanika.html.model.app.Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Color(), this.getColor(), "color", null, 0, 1, org.nasdanika.html.model.app.Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Text(), ecorePackage.getEString(), "text", null, 0, 1, org.nasdanika.html.model.app.Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Icon(), ecorePackage.getEString(), "icon", null, 0, 1, org.nasdanika.html.model.app.Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Tooltip(), ecorePackage.getEString(), "tooltip", null, 0, 1, org.nasdanika.html.model.app.Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Outline(), ecorePackage.getEBoolean(), "outline", null, 0, 1, org.nasdanika.html.model.app.Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Notification(), ecorePackage.getEString(), "notification", null, 0, 1, org.nasdanika.html.model.app.Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLabel_Apperance(), theBootstrapPackage.getAppearance(), null, "apperance", null, 0, 1, org.nasdanika.html.model.app.Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(categoryEClass, Category.class, "Category", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getCategory_Actions(), this.getAction(), null, "actions", null, 1, -1, Category.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(iActionEClass, Action.class, "IAction", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(actionEClass, org.nasdanika.html.model.app.Action.class, "Action", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(actionEClass, org.nasdanika.html.model.app.Action.class, "Action", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAction_Role(), ecorePackage.getEString(), "role", "Navigation", 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAction_SectionStyle(), this.getSectionStyle(), "sectionStyle", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_SectionStyle(), this.getSectionStyle(), "sectionStyle", "AUTO", 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_SectionColumns(), ecorePackage.getEInt(), "sectionColumns", "3", 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Location(), ecorePackage.getEString(), "location", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Script(), ecorePackage.getEString(), "script", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Binding(), ecorePackage.getEString(), "binding", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Confirmation(), ecorePackage.getEString(), "confirmation", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Disabled(), ecorePackage.getEBoolean(), "disabled", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAction_MarkdownContent(), ecorePackage.getEString(), "markdownContent", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAction_PageTemplate(), ecorePackage.getEString(), "pageTemplate", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Content(), ecorePackage.getEString(), "content", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Elements(), ecorePackage.getEObject(), null, "elements", null, 0, -1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_Inline(), ecorePackage.getEBoolean(), "inline", null, 0, 1, org.nasdanika.html.model.app.Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(colorEDataType, Color.class, "Color", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
@@ -545,6 +605,18 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   source,
 		   new String[] {
 			   "documentation", "Label is a base class for actions and categories."
+		   });
+		addAnnotation
+		  (getLabel_Id(),
+		   source,
+		   new String[] {
+			   "documentation", "Notification to display next to the label. E.g. a number of new messages in an inbox."
+		   });
+		addAnnotation
+		  (getLabel_Description(),
+		   source,
+		   new String[] {
+			   "documentation", "Notification to display next to the label. E.g. a number of new messages in an inbox."
 		   });
 		addAnnotation
 		  (getLabel_Color(),
@@ -642,18 +714,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   new String[] {
 			   "documentation", "If true, then action is displayed as disabled. "
 		   });
-		addAnnotation
-		  (getAction_MarkdownContent(),
-		   source,
-		   new String[] {
-			   "documentation", "[Markdown](https://en.wikipedia.org/wiki/Markdown) text. If this attribute contains text, the text is converted to HTML, interpolated and used as the first content element.\nThe primary purpose of this attribute is rapid development/prototyping of web applications/sites. "
-		   });
-		addAnnotation
-		  (getAction_PageTemplate(),
-		   source,
-		   new String[] {
-			   "documentation", "URI of the page template to use for generation of a Web Application. The URI is resolved relative to the action\'s containing resource.\nDefaults to ``platform:/plugin/org.nasdanika.vinci.templates/pages/default/primary.vinci`` built-in template.\n\n## Built-in page templates\n\n``org.nasdanika.vinci.templates`` plugin, which is part of the Vinci distribution, provides the following page templates (organized by theme and header color):\n\n* Default\n    * Primary\n        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/default/primary.vinci``\n        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/default/primary-fluid.vinci`` - fluid container.\n* Cerulean\n    * Primary\n        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/primary.vinci``\n        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/primary-fluid.vinci`` - fluid container.\n        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/primary-dark.vinci`` - dark navigation bar.\n        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/primary-dark-fluid.vinci`` - dark navigation bar, fluid container.\n    * Dark \n        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/dark.vinci``\n        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/dark-fluid.vinci`` - fluid container.\n    "
-		   });
 	}
 
 	/**
@@ -687,10 +747,23 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	protected void createUrnorgAnnotations() {
 		String source = "urn:org.nasdanika";
 		addAnnotation
-		  (getAction_MarkdownContent(),
+		  (getLabel_Apperance(),
 		   source,
 		   new String[] {
-			   "content-type", "text/markdown"
+			   "homogenous", "true",
+			   "strict-containment", "true"
+		   });
+		addAnnotation
+		  (getCategory_Actions(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getAction_Elements(),
+		   source,
+		   new String[] {
+			   "load-key", "children"
 		   });
 	}
 

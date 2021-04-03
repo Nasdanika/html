@@ -4,6 +4,7 @@ package org.nasdanika.html.model.app;
 
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.model.bootstrap.Appearance;
 
 /**
  * <!-- begin-user-doc -->
@@ -18,20 +19,48 @@ import org.nasdanika.html.bootstrap.Color;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.nasdanika.html.model.app.Label#getId <em>Id</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Label#getDescription <em>Description</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getColor <em>Color</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getText <em>Text</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getIcon <em>Icon</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getTooltip <em>Tooltip</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#isOutline <em>Outline</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getNotification <em>Notification</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Label#getApperance <em>Apperance</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getLabel()
- * @model abstract="true" superTypes="org.nasdanika.html.model.app.ILabel"
+ * @model superTypes="org.nasdanika.html.model.app.ILabel"
  *        annotation="http://www.eclipse.org/emf/2002/Ecore constraints='color'"
  * @generated
  */
 public interface Label extends EObject, org.nasdanika.html.app.Label {
+	/**
+	 * Returns the value of the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Notification to display next to the label. E.g. a number of new messages in an inbox.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Id</em>' attribute.
+	 * @see #setId(String)
+	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Id()
+	 * @model
+	 * @generated
+	 */
+	String getId();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getId <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * @see #getId()
+	 * @generated
+	 */
+	void setId(String value);
+
 	/**
 	 * Returns the value of the '<em><b>Color</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -181,5 +210,53 @@ public interface Label extends EObject, org.nasdanika.html.app.Label {
 	 * @generated
 	 */
 	void setNotification(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Apperance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Apperance</em>' containment reference.
+	 * @see #setApperance(Appearance)
+	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Apperance()
+	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"
+	 * @generated
+	 */
+	Appearance getApperance();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getApperance <em>Apperance</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Apperance</em>' containment reference.
+	 * @see #getApperance()
+	 * @generated
+	 */
+	void setApperance(Appearance value);
+
+	/**
+	 * Returns the value of the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Notification to display next to the label. E.g. a number of new messages in an inbox.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Description</em>' attribute.
+	 * @see #setDescription(String)
+	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Description()
+	 * @model
+	 * @generated
+	 */
+	String getDescription();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getDescription <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Description</em>' attribute.
+	 * @see #getDescription()
+	 * @generated
+	 */
+	void setDescription(String value);
 
 } // Label

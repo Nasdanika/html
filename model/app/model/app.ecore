@@ -6,13 +6,23 @@
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="ILabel" instanceClassName="org.nasdanika.html.app.Label"
       abstract="true" interface="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Label" abstract="true" eSuperTypes="#//ILabel">
+  <eClassifiers xsi:type="ecore:EClass" name="Label" eSuperTypes="#//ILabel">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Label is a base class for actions and categories."/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
       <details key="constraints" value="color"/>
     </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Notification to display next to the label. E.g. a number of new messages in an inbox."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Notification to display next to the label. E.g. a number of new messages in an inbox."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Label bootstrap color."/>
@@ -43,15 +53,28 @@
         <details key="documentation" value="Notification to display next to the label. E.g. a number of new messages in an inbox."/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="apperance" eType="ecore:EClass ../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//Appearance"
+        containment="true">
+      <eAnnotations source="urn:org.nasdanika">
+        <details key="homogenous" value="true"/>
+        <details key="strict-containment" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Category" abstract="true" eSuperTypes="#//Label">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Categories are used for grouping of its elements such as actions or properties. "/>
     </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actions" lowerBound="1"
+        upperBound="-1" eType="#//Action" containment="true">
+      <eAnnotations source="urn:org.nasdanika">
+        <details key="homogenous" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IAction" instanceClassName="org.nasdanika.html.app.Action"
       abstract="true" interface="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Action" abstract="true" eSuperTypes="#//Label #//IAction">
+  <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//Label #//IAction">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Base class for concrete action classes - Action and Partition. These sub-classes are semantically equivalent and differ only in diagram representation - Action is represented by a node, Partition by a container node.&#xA;Action can be a child of another action or of an action category. It may contain content and action elements - abstract actions and action categories. It may also contain action mappings - logical names of actions referenced by this action's content."/>
     </eAnnotations>
@@ -64,7 +87,8 @@
         <details key="documentation" value="Action roles are used in &quot;wiring&quot; of actions into the generated Web UI.&#xA;&#xA;For the root action its children are displayed depending on their rolw as follows:&#xA;&#xA;* Navigation: &#xA;    * The first navigation child is called &quot;Principal&quot; and is displayed in the navbar brand. &#xA;    * The remaining navigation children are displayed in navs on the right in the header.&#xA;* Context children are displayed in the footer.&#xA;&#xA;For the principal action (the first navigation child of the root action):&#xA;&#xA;* Navigation actions are displayed in the navigation panel on the left.&#xA;* Context actions are displayed in the navbar.&#xA;&#xA;For other non-section actions navigation children are displayed in the navigation panel and context children are displayed in right-floating navs on the top of the content panel.&#xA;&#xA;Section actions are displayed as part of the content panel body of their parent. Their navigation children are treated as sections and display of their context children depends on the section style.&#xA;&#xA;Content left and Content right acitons are displayed on the left and right of the content body respectively.&#xA;&#xA;View and Edit actions are applicable for properties and property sources."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sectionStyle" eType="#//SectionStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sectionStyle" eType="#//SectionStyle"
+        defaultValueLiteral="AUTO">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Defines how to generate section children."/>
       </eAnnotations>
@@ -100,20 +124,14 @@
         <details key="documentation" value="If true, then action is displayed as disabled. "/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="markdownContent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="[Markdown](https://en.wikipedia.org/wiki/Markdown) text. If this attribute contains text, the text is converted to HTML, interpolated and used as the first content element.&#xA;The primary purpose of this attribute is rapid development/prototyping of web applications/sites. "/>
-      </eAnnotations>
-      <eAnnotations source="urn:org.nasdanika">
-        <details key="content-type" value="text/markdown"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pageTemplate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="URI of the page template to use for generation of a Web Application. The URI is resolved relative to the action's containing resource.&#xA;Defaults to ``platform:/plugin/org.nasdanika.vinci.templates/pages/default/primary.vinci`` built-in template.&#xA;&#xA;## Built-in page templates&#xA;&#xA;``org.nasdanika.vinci.templates`` plugin, which is part of the Vinci distribution, provides the following page templates (organized by theme and header color):&#xA;&#xA;* Default&#xA;    * Primary&#xA;        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/default/primary.vinci``&#xA;        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/default/primary-fluid.vinci`` - fluid container.&#xA;* Cerulean&#xA;    * Primary&#xA;        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/primary.vinci``&#xA;        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/primary-fluid.vinci`` - fluid container.&#xA;        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/primary-dark.vinci`` - dark navigation bar.&#xA;        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/primary-dark-fluid.vinci`` - dark navigation bar, fluid container.&#xA;    * Dark &#xA;        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/dark.vinci``&#xA;        * ``platform:/plugin/org.nasdanika.vinci.templates/pages/cerulean/dark-fluid.vinci`` - fluid container.&#xA;    "/>
-      </eAnnotations>
-    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="content" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true">
+      <eAnnotations source="urn:org.nasdanika">
+        <details key="load-key" value="children"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="inline" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Color" instanceClassName="org.nasdanika.html.bootstrap.Color"/>
   <eClassifiers xsi:type="ecore:EDataType" name="SectionStyle" instanceClassName="org.nasdanika.html.app.SectionStyle"/>

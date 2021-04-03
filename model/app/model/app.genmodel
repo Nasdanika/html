@@ -5,7 +5,8 @@
     editPluginClass="org.nasdanika.html.model.app.provider.ModelEditPlugin" editorPluginClass="org.nasdanika.html.model.app.presentation.ModelEditorPlugin"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
     featureDelegation="Dynamic" complianceLevel="8.0" suppressGenModelAnnotations="false"
-    copyrightFields="false" operationReflection="true" importOrganizing="true">
+    copyrightFields="false" usedGenPackages="../../org.nasdanika.html.model.bootstrap/model/bootstrap.genmodel#//bootstrap ../../org.nasdanika.html.model.html/model/html.genmodel#//html ../../org.nasdanika.ncore/model/ncore.genmodel#//ncore"
+    operationReflection="true" importOrganizing="true">
   <foreignModel>app.ecore</foreignModel>
   <genPackages prefix="App" basePackage="org.nasdanika.html.model" disposableProviderFactory="true"
       ecorePackage="app.ecore#/">
@@ -13,14 +14,19 @@
     <genDataTypes ecoreDataType="app.ecore#//SectionStyle"/>
     <genClasses ecoreClass="app.ecore#//ILabel"/>
     <genClasses ecoreClass="app.ecore#//Label">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/description"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/color"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/text"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/icon"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/tooltip"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/outline"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/notification"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Label/apperance"/>
     </genClasses>
-    <genClasses ecoreClass="app.ecore#//Category"/>
+    <genClasses ecoreClass="app.ecore#//Category">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Category/actions"/>
+    </genClasses>
     <genClasses ecoreClass="app.ecore#//IAction"/>
     <genClasses ecoreClass="app.ecore#//Action">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/role"/>
@@ -31,9 +37,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/binding"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/confirmation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/disabled"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/markdownContent"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/pageTemplate"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/content"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/elements"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/inline"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
