@@ -8,14 +8,23 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
+import org.nasdanika.common.Context;
+import org.nasdanika.common.MutableContext;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.resources.Container;
 import org.nasdanika.html.Button;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Application;
+import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.Categorized;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart.Style;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Color;
@@ -138,5 +147,54 @@ public final class Util {
 		}
 		return null;
 	}
+	
+	/**
+	 * Writes action application to a container.
+	 * @param applicationSupplierFactory
+	 * @param context
+	 * @param base
+	 * @param root
+	 * @param principal
+	 * @param active
+	 * @param monitor
+	 * @throws Exception
+	 */
+	public static void writeAction(
+			Action root, 
+			Action principal, 
+			Action active, 
+			String base,
+			Container<String> container,
+			Context context, 
+			Style navigationPanelStyle,
+			SupplierFactory<? extends Application> applicationSupplierFactory,
+			ProgressMonitor monitor) throws Exception {
+		
+		MutableContext actionContext = context.fork();		
+		if (!active.isEmpty() && active.getActivator() instanceof NavigationActionActivator) {
+			NavigationActionActivator activator = (NavigationActionActivator) active.getActivator();
+			String actionURI = activator.getUrl(null);
+			actionContext.put(Context.BASE_URI_PROPERTY, actionURI);
+			actionContext.put("page-title", active.getText());
+			ApplicationBuilder builder = new ActionApplicationBuilder(actionContext, root, principal, active) {
+				
+				@Override
+				protected Style getNavigationPanelStyle() {
+					return navigationPanelStyle == null ? super.getNavigationPanelStyle() : navigationPanelStyle;
+				}
+				
+			};
+			Application app = org.nasdanika.common.Util.callSupplier(applicationSupplierFactory.create(actionContext), monitor);
+			builder.build(app, monitor);
+
+			String url = ((NavigationActionActivator) active.getActivator()).getUrl(null);
+			if (url != null && url.startsWith(base)) {	
+				container.put(url.substring(base.length()), app.toString(), monitor);
+			}			
+		}		
+		for (Action child: active.getChildren()) {
+			writeAction(root, principal, child, base, container, actionContext, navigationPanelStyle, applicationSupplierFactory, monitor);
+		}
+	}	
 
 }
