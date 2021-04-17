@@ -537,7 +537,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 		if (ret instanceof ContextualFactory) {
 			ret = ((ContextualFactory<?>) ret).create(this);
 			if (ret instanceof Supplier) {
-				ret = org.nasdanika.common.Util.callSupplier((Supplier<?>) ret, progressMonitor);
+				ret = org.nasdanika.common.Util.call((Supplier<?>) ret, progressMonitor);
 				if (ret instanceof InputStream) {
 					ret = org.nasdanika.common.Util.TO_STRING.create(this).execute((InputStream) ret, progressMonitor);
 				}
