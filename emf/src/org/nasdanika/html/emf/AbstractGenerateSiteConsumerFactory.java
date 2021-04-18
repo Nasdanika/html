@@ -56,13 +56,13 @@ import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart.Style;
  */
 public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFactory<Action> {
 	
-	protected List<URI> resources;
+	protected Collection<URI> resources;
 	protected Container<String> output;
 	protected SupplierFactory<? extends Application> applicationSupplierFactory;
 	private String baseURI;
 
 	protected AbstractGenerateSiteConsumerFactory(
-			List<URI> resources,
+			Collection<URI> resources,
 			SupplierFactory<? extends Application> applicationSupplierFactory,
 			Container<String> output) {
 		this.resources = resources;
@@ -72,14 +72,14 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 	}
 
 	protected AbstractGenerateSiteConsumerFactory(
-			List<URI> resources, 
+			Collection<URI> resources, 
 			SupplierFactory<? extends Application> applicationSupplierFactory,
 			BinaryEntityContainer output) {
 		this(resources, applicationSupplierFactory, output.stateAdapter().adapt(Util.INPUT_STREAM_TO_STRING_DECODER, Util.OBJECT_TO_INPUT_STREAM_ENCODER));
 	}
 	
 	protected AbstractGenerateSiteConsumerFactory(
-			List<URI> resources, 
+			Collection<URI> resources, 
 			SupplierFactory<? extends Application> applicationSupplierFactory,
 			File output) {
 		this(resources, applicationSupplierFactory, new FileSystemContainer(output));

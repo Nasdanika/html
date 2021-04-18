@@ -8,7 +8,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marked;
 import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.OrderedListType;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.viewparts.ListOfActionsViewPart;
 
 /**
  * Marker interface for "view" (as opposed to "edit") actions.
@@ -36,6 +38,13 @@ public interface ViewAction extends Action {
 
 	static List<Action> adaptToViewActionNonNullSorted(Collection<? extends EObject> c) {
 		return c.stream().map(ViewAction::adaptToViewActionNonNull).sorted((a,b) -> a.getText().compareTo(b.getText())).collect(Collectors.toList());
+	}
+
+	static Object listOfActions(Collection<? extends EObject> elements, String header, boolean sort, boolean tooltip, int depth) { 
+		if (elements.isEmpty()) {
+			return null;
+		}
+		return new ListOfActionsViewPart(adaptToViewActionNonNullSorted(elements), header, tooltip, depth, OrderedListType.ROTATE);
 	}
 
 }
