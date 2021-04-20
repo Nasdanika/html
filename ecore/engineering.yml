@@ -1,0 +1,17 @@
+engineering-module:
+  name: Ecore
+  path: ecore
+  issues:
+     - name: Application model as output in addition to YAML
+       increment: nasdanika://increments/2021/children/q2/children/apr  
+       category: nasdanika://issue-categories/test 
+     - name: Engineering model as output
+       description: EClass and EPackage are output as engineered elements. Issues, owner, and other things are loaded using Nasdanika engineering annotation pointing to a yaml file.     
+       children:
+         - name: Sub-issue
+           path: sub-iss
+           status: nasdanika://issue-statuses/done
+           description:
+             exec-markdown: "``Purum``-pum-pum."           
+
+

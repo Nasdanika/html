@@ -1,0 +1,17 @@
+engineering-product:
+   name: HTML
+   path: html
+   modules:
+      - html/engineering.yml
+      - model/html/engineering.yml
+      - bootstrap/engineering.yml
+      - model/bootstrap/engineering.yml
+      - app/engineering.yml
+      - model/app/engineering.yml
+      - model/components/engineering.yml
+      - jstree/engineering.yml
+      - knockout/engineering.yml
+      - fontawesome/engineering.yml
+      - echarts/engineering.yml
+      - emf/engineering.yml
+      - ecore/engineering.yml

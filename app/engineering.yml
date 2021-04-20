@@ -1,0 +1,6 @@
+engineering-module:
+  name: App
+  path: App
+  issues:
+     - name: Search with LunrJs
+       

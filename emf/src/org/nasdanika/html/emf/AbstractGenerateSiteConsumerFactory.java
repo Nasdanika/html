@@ -184,24 +184,11 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 				}
 				ObjectLoader loader = createLoader(resourceSet);				
 				resourceSet.setResourceFactoryRegistry(createResourceFactoryRegistry(loader, context, progressMonitor));
-
-				Diagnostician diagnostician = new Diagnostician();
-				Map<Class<Context>, MutableContext> diagnosticContext = Collections.singletonMap(Context.class, context);
-				BasicDiagnostic ret = (BasicDiagnostic) Consumer.super.diagnose(progressMonitor);
-				
-				topLevelElements = new ArrayList<>();
-				for (URI uri: resources) {
-					Resource engineeringResource = resourceSet.getResource(uri, true);
-					for (EObject e: engineeringResource.getContents()) {
-						ret.add(EmfUtil.wrap(diagnostician.validate(e, diagnosticContext)));
-						
-						if (isTopLevelElement(e)) {
-							topLevelElements.add(e);
-						}
-					}
-				}
 				
 				EcoreUtil.resolveAll(resourceSet);
+				
+				Diagnostician diagnostician = new Diagnostician();
+				BasicDiagnostic ret = (BasicDiagnostic) Consumer.super.diagnose(progressMonitor);
 				
 				TreeIterator<Notifier> cit = resourceSet.getAllContents();
 				while (cit.hasNext()) {
@@ -227,6 +214,19 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 							}
 						}
 					}	
+				}
+				
+				topLevelElements = new ArrayList<>();
+				Map<Class<Context>, MutableContext> diagnosticContext = Collections.singletonMap(Context.class, context);
+				for (URI uri: resources) {
+					Resource engineeringResource = resourceSet.getResource(uri, true);
+					for (EObject e: engineeringResource.getContents()) {
+						ret.add(EmfUtil.wrap(diagnostician.validate(e, diagnosticContext)));
+						
+						if (isTopLevelElement(e)) {
+							topLevelElements.add(e);
+						}
+					}
 				}
 				
 				return ret;

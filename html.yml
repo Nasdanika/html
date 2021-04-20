@@ -1,2 +1,0 @@
-backlog:
-  - EMF models for html, bootstrap, ... - similar to Vinci, but pure Maven-ish. .gen with adapter factories to adapt to runtime objects. YAML-loading annotations. .edit too later.

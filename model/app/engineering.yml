@@ -1,0 +1,7 @@
+engineering-module:
+  name: App Model
+  path: models/app
+  issues:
+     - name: Ability to inherit action hierarchies and override specific actions
+       description: Override by ID. Children will have to be derived and will need "ownChildren" reference with "children" load key.
+  
