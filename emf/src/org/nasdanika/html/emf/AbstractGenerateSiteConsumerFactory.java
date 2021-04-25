@@ -185,6 +185,11 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 				ObjectLoader loader = createLoader(resourceSet);				
 				resourceSet.setResourceFactoryRegistry(createResourceFactoryRegistry(loader, context, progressMonitor));
 				
+				// Pre-loading
+				for (URI uri: resources) {
+					resourceSet.getResource(uri, true);
+				}
+				
 				EcoreUtil.resolveAll(resourceSet);
 				
 				Diagnostician diagnostician = new Diagnostician();
