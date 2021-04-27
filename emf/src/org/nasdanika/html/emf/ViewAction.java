@@ -40,7 +40,14 @@ public interface ViewAction extends Action {
 		return c.stream().map(ViewAction::adaptToViewActionNonNull).sorted((a,b) -> a.getText().compareTo(b.getText())).collect(Collectors.toList());
 	}
 
-	static Object listOfActions(Collection<? extends EObject> elements, String header, boolean sort, boolean tooltip, int depth) { 
+	static Object listOfViewActions(Collection<? extends EObject> elements, String header, boolean sort, boolean tooltip, int depth) { 
+		if (elements.isEmpty()) {
+			return null;
+		}
+		return new ListOfActionsViewPart(adaptToViewActionNonNull(elements), header, tooltip, depth, OrderedListType.ROTATE);
+	}
+
+	static Object listOfViewActionsSorted(Collection<? extends EObject> elements, String header, boolean sort, boolean tooltip, int depth) { 
 		if (elements.isEmpty()) {
 			return null;
 		}
