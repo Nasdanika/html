@@ -184,7 +184,7 @@ public final class Util {
 				}
 				
 			};
-			Application app = org.nasdanika.common.Util.call(applicationSupplierFactory.create(actionContext), monitor);
+			Application app = org.nasdanika.common.Util.call(applicationSupplierFactory.create(actionContext), monitor, null);
 			builder.build(app, monitor);
 
 			String url = ((NavigationActionActivator) active.getActivator()).getUrl(null);

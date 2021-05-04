@@ -70,7 +70,7 @@ public class TestApp extends HTMLTestBase {
 		ComposedLoader loader = new ComposedLoader();
 		Object labelFactory = loader.loadYaml(this.getClass().getResource("label-spec.yml"), monitor);
 		
-		Label label = Util.call(Util.<Label>asSupplierFactory(labelFactory).create(context), monitor);
+		Label label = Util.call(Util.<Label>asSupplierFactory(labelFactory).create(context), monitor, null);
 		ViewGeneratorImpl viewGenerator = new ViewGeneratorImpl(context, null, null);
 		writePage("app/label.html", "Label", viewGenerator.label(label));
 	}
@@ -82,7 +82,7 @@ public class TestApp extends HTMLTestBase {
 		ObjectLoader loader = new HTMLLoader();
 		Object pageFactory = loader.loadYaml(this.getClass().getResource("page-spec.yml"), monitor);
 		
-		HTMLPage htmlPage = Util.call(Util.<HTMLPage>asSupplierFactory(pageFactory).create(context), monitor);
+		HTMLPage htmlPage = Util.call(Util.<HTMLPage>asSupplierFactory(pageFactory).create(context), monitor, null);
 		System.out.println(htmlPage.toString());
 	}
 	
@@ -93,7 +93,7 @@ public class TestApp extends HTMLTestBase {
 		ObjectLoader loader = new HTMLLoader();
 		Object pageFactory = loader.loadYaml(this.getClass().getResource("page-body-spec.yml"), monitor);
 		
-		HTMLPage htmlPage = Util.call(Util.<HTMLPage>asSupplierFactory(pageFactory).create(context), monitor);
+		HTMLPage htmlPage = Util.call(Util.<HTMLPage>asSupplierFactory(pageFactory).create(context), monitor, null);
 		System.out.println(htmlPage.toString());
 	}
 	
@@ -104,7 +104,7 @@ public class TestApp extends HTMLTestBase {
 		ComposedLoader loader = new ComposedLoader();
 		Object appearanceFactory = loader.loadYaml(this.getClass().getResource("bootstrap-appearance-spec.yml"), monitor);
 		
-		Consumer<Object> appearance = Util.call(Util.<Consumer<Object>>asSupplierFactory(appearanceFactory).create(context), monitor);
+		Consumer<Object> appearance = Util.call(Util.<Consumer<Object>>asSupplierFactory(appearanceFactory).create(context), monitor, null);
 		Tag div = TagName.div.create("I'm customized");
 		appearance.accept(div);
 		writePage("app/appearance.html", "Appearance", div);
@@ -117,12 +117,12 @@ public class TestApp extends HTMLTestBase {
 		ObjectLoader loader = new BootstrapLoader();
 		Object appearanceFactory = loader.loadYaml(this.getClass().getResource("appearance-spec.yml"), monitor);
 		
-		Consumer<Object> appearance = Util.call(Util.<Consumer<Object>>asSupplierFactory(appearanceFactory).create(context), monitor);
+		Consumer<Object> appearance = Util.call(Util.<Consumer<Object>>asSupplierFactory(appearanceFactory).create(context), monitor, null);
 		Tag div = TagName.div.create("I'm styled");		
 		appearance.accept(div);
 		
 		BootstrapPageSupplierFactory pageFactory = (BootstrapPageSupplierFactory) loader.loadYaml(HTMLTestBase.class.getResource("bootstrap-page-spec.yml"), monitor);
-		HTMLPage bootstrapPage = Util.call(pageFactory.create(Context.EMPTY_CONTEXT), monitor); 
+		HTMLPage bootstrapPage = Util.call(pageFactory.create(Context.EMPTY_CONTEXT), monitor, null); 
 
 		bootstrapPage.title("Appearance demo");
 		bootstrapPage.body(div);
@@ -138,7 +138,7 @@ public class TestApp extends HTMLTestBase {
 		Object sf = loader.loadYaml(this.getClass().getResource("label-supplier-factory-spec.yml"), monitor);
 		SupplierFactory<Label> sfa = Adaptable.adaptTo(sf, SupplierFactory.class);
 		Context context = Context.singleton("color", "success");
-		Label label = Util.call(sfa.create(context), monitor);
+		Label label = Util.call(sfa.create(context), monitor, null);
 		
 		ViewGenerator viewGenerator = new ViewGeneratorImpl(null, null);
 		
@@ -152,7 +152,7 @@ public class TestApp extends HTMLTestBase {
 		ComposedLoader loader = new ComposedLoader();
 		Object actionFactory = loader.loadYaml(this.getClass().getResource("app/root.yml"), monitor);
 		
-		Action action = Util.call(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor);
+		Action action = Util.call(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor, null);
 		
 	}
 	
@@ -167,7 +167,7 @@ public class TestApp extends HTMLTestBase {
 		
 		ComposedLoader loader = new ComposedLoader();
 		Object actionFactory = loader.loadYaml(this.getClass().getResource("app/root.yml"), monitor);
-		Action action = Util.call(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor);
+		Action action = Util.call(Util.<Action>asSupplierFactory(actionFactory).create(context), monitor, null);
 		for (Theme theme: Theme.values()) {
 			writeAction(context, base, theme, action, action.getChildren().get(0), action, monitor);
 		}
@@ -183,7 +183,7 @@ public class TestApp extends HTMLTestBase {
 			ApplicationBuilder builder = new ActionApplicationBuilder(actionContext, root, principal, active);
 			String themePath = theme == Theme.Default ? "bootstrap" : theme.name().toLowerCase();
 			String resourceName = "org/nasdanika/html/app/templates/" + themePath + "/" + (theme == Theme.Slate ? "primary" : "dark") + ".yml";
-			Application app = Util.call(((BootstrapContainerApplicationSupplierFactory) composedLoader.loadYaml(getClass().getClassLoader().getResource(resourceName), monitor)).create(actionContext), monitor);
+			Application app = Util.call(((BootstrapContainerApplicationSupplierFactory) composedLoader.loadYaml(getClass().getClassLoader().getResource(resourceName), monitor)).create(actionContext), monitor, null);
 			builder.build(app, monitor);
 			// app.getHTMLPage().head("\n<!-- my comment -->\n");
 

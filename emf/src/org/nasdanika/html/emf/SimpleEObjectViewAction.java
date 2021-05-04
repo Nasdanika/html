@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -154,9 +155,34 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	protected String getDefaultPath() {
 		return String.valueOf(((List<?>) target.eContainer().eGet(target.eContainmentFeature())).indexOf(this));
 	}
+	
+	/**
+	 * Override to return false if generated content should not be cached.
+	 * @return
+	 */
+	protected boolean isCacheContent() {
+		return true;
+	}
+	
+	protected Optional<Object> content;
 
+	/**
+	 * Delegates to doGenerate to perform content generation. Caches if isCacheContent() returns true.
+	 */
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		if (isCacheContent() && content != null) {
+			return content.isPresent() ? content.get() : null;
+		}
+		if (!isCacheContent()) {
+			return doGenerate(viewGenerator, progressMonitor);
+		}
+		Object contentValue = doGenerate(viewGenerator, progressMonitor);
+		content = contentValue == null ? Optional.empty() : Optional.of(contentValue);
+		return contentValue;
+	}
+	
+	protected Object doGenerate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 		Fragment ret = bootstrapFactory.getHTMLFactory().fragment();
 		ret.content(propertiesTable(viewGenerator, progressMonitor));
@@ -167,7 +193,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		
 		String description = getTargetDescription();
 		if (!Util.isBlank(description)) {
-			ret.content(getContext().interpolateToString(description));
+			ret.content(description);
 		}
 		
 		// Contents
@@ -178,7 +204,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}				
 		
 		return ret;
-	}
+	}	
 	
 	/**
 	 * Returns features. This implementation returns all features not sorted.
@@ -218,9 +244,22 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		return null;
 	}
 	
-	@SuppressWarnings({ "unchecked", "incomplete-switch" })
+	protected List<Action> children;
+
+	/**
+	 * Call collectChildren() if children is null. Otherwise returns previously collected children.
+	 * @return child actions. 
+	 */
 	@Override
 	public List<Action> getChildren() {
+		if (children == null) {
+			children = collectChildren();
+		}
+		return children;
+	}
+
+	@SuppressWarnings({ "unchecked"})
+	protected List<Action> collectChildren() {
 		ArrayList<Action> children = new ArrayList<Action>();
 		for (EStructuralFeature feature: getFeatures()) {
 			if (isFeatureInRole(feature, FeatureRole.ELEMENT_ACTIONS)) {				
@@ -236,8 +275,8 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			}
 		}
 		return children;
-	}
-
+	}	
+	
 	/**
 	 * @param feature
 	 * @return {@link Action} wrapping the feature. This implementation returns a list of actions section. May return null
@@ -332,7 +371,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	public String getTooltip() {
 		String description = getTargetDescription();
 		if (!Util.isBlank(description)) {
-			return Util.firstPlainTextSentence(getContext().interpolateToString(description), 50, 250);
+			return Util.firstPlainTextSentence(description, 50, 250);
 		}
 		
 		return null;

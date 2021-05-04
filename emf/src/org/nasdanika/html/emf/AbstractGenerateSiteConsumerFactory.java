@@ -37,10 +37,13 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
+import org.nasdanika.common.persistence.Marked;
+import org.nasdanika.common.persistence.Marker;
 import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.common.resources.Container;
 import org.nasdanika.common.resources.FileSystemContainer;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.YamlResourceFactory;
@@ -83,6 +86,28 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 			SupplierFactory<? extends Application> applicationSupplierFactory,
 			File output) {
 		this(resources, applicationSupplierFactory, new FileSystemContainer(output));
+	}	
+
+	protected AbstractGenerateSiteConsumerFactory(
+			URI resource,
+			SupplierFactory<? extends Application> applicationSupplierFactory,
+			Container<String> output) {
+		this(Collections.singleton(resource), applicationSupplierFactory, output);
+	}
+
+	protected AbstractGenerateSiteConsumerFactory(
+			URI resource, 
+			SupplierFactory<? extends Application> applicationSupplierFactory,
+			BinaryEntityContainer output) {
+		this(Collections.singleton(resource), applicationSupplierFactory, output);
+	}
+	
+	protected AbstractGenerateSiteConsumerFactory(
+			URI resource, 
+			SupplierFactory<? extends Application> applicationSupplierFactory,
+			File output) {
+		this(Collections.singleton(resource), applicationSupplierFactory, output);
+
 	}	
 	
 	/**
@@ -144,11 +169,11 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 				// Creating loader
 				resourceSet = new ResourceSetImpl() {
 					
-					Map<String, EObject> cache = new HashMap<>();
+					Map<URI, EObject> cache = new HashMap<>();
 					
 					@Override
 					public EObject getEObject(URI uri, boolean loadOnDemand) {
-						EObject ret = cache.get(uri.toString());
+						EObject ret = cache.get(uri);
 						if (ret != null) {
 							return ret;
 						}
@@ -158,12 +183,9 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 							Notifier next = cit.next();
 							if (next instanceof EObject) {
 								EObject nextEObject = (EObject) next;
-								String nUri = getURI(nextEObject);
-								if (!Util.isBlank(nUri)) {
-									cache.put(nUri, nextEObject);
-									if (uri != null && uri.toString().equals(nUri)) {
-										ret = nextEObject;
-									}							
+								if (matchURI(nextEObject, uri)) {
+									cache.put(uri, nextEObject);
+									ret = nextEObject;
 								}
 							}
 						}
@@ -176,7 +198,6 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 					}
 					
 				};	
-
 				
 				Registry packageRegistry = resourceSet.getPackageRegistry();
 				for (EPackage ePackage: getEPackages()) {
@@ -200,19 +221,19 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 					Notifier next = cit.next();
 					if (next instanceof EObject) {
 						EObject nextEObject = (EObject) next;
-						if (nextEObject.eIsProxy()) {
-							ret.add(new BasicDiagnostic(Status.ERROR, "Unresolved proxy: " + next, next));
+						if (nextEObject.eIsProxy()) {							
+							ret.add(unresolvedProxyDiagnostic(nextEObject));
 						} else {
 							for (EReference ref: nextEObject.eClass().getEAllReferences()) {
 								Object val = nextEObject.eGet(ref);
 								if (val instanceof EObject) {
 									if (((EObject) val).eIsProxy()) {
-										ret.add(new BasicDiagnostic(Status.ERROR, "Unresolved proxy: " + val, val));
+										ret.add(unresolvedProxyDiagnostic((EObject) val));
 									}
 								} else if (val instanceof Collection) {
 									for (EObject ve: (Collection<EObject>) val) {
 										if (ve.eIsProxy()) {
-											ret.add(new BasicDiagnostic(Status.ERROR, "Unresolved proxy: " + ve, ve));
+											ret.add(unresolvedProxyDiagnostic((EObject) ve));
 										}								
 									}
 								}
@@ -221,15 +242,17 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 					}	
 				}
 				
-				topLevelElements = new ArrayList<>();
-				Map<Class<Context>, MutableContext> diagnosticContext = Collections.singletonMap(Context.class, context);
-				for (URI uri: resources) {
-					Resource engineeringResource = resourceSet.getResource(uri, true);
-					for (EObject e: engineeringResource.getContents()) {
-						ret.add(EmfUtil.wrap(diagnostician.validate(e, diagnosticContext)));
-						
-						if (isTopLevelElement(e)) {
-							topLevelElements.add(e);
+				if (ret.getStatus() != Status.FAIL) {				
+					topLevelElements = new ArrayList<>();
+					Map<Class<Context>, MutableContext> diagnosticContext = Collections.singletonMap(Context.class, context);
+					for (URI uri: resources) {
+						Resource engineeringResource = resourceSet.getResource(uri, true);
+						for (EObject e: engineeringResource.getContents()) {
+							ret.add(EmfUtil.wrap(diagnostician.validate(e, diagnosticContext)));
+							
+							if (isTopLevelElement(e)) {
+								topLevelElements.add(e);
+							}
 						}
 					}
 				}
@@ -262,6 +285,16 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 			}
 			
 		};
+	}
+		
+	protected Diagnostic unresolvedProxyDiagnostic(EObject source) {
+		Marked marked = EObjectAdaptable.adaptTo(source, Marked.class);
+		Marker marker = marked == null ? null : marked.getMarker();
+		if (marker == null) {
+			return new BasicDiagnostic(Status.FAIL, "Unresolved proxy: " + source, source);
+		}
+
+		return new BasicDiagnostic(Status.FAIL, "Unresolved proxy at " + marker + ": " + source, source, marker);		
 	}
 	
 	protected Style getNavigationPanelStyle() {
@@ -329,10 +362,13 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 	protected abstract boolean isTopLevelElement(EObject eObj);
 	
 	/**
+	 * Matches {@link URI} to {@link EObject}. One object may match more than one URI. E.g. a person may match their e-mail URI and
+	 * an organization may match its web address URI.
 	 * @param eObj Model element
-	 * @return An "alternative" object URI which can be used to resolve proxies or null if there is no such URI. 
+	 * @param uri URI to match
+	 * @return true if the URI identifies the object. 
 	 */
-	protected abstract String getURI(EObject eObj);
+	protected abstract boolean matchURI(EObject eObj, URI uri);
 	
 	/**
 	 * @return {@link EPackage}s to register with the {@link ResourceSet}.
