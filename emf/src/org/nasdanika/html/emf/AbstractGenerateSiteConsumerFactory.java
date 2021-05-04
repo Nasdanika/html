@@ -141,7 +141,6 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 	@Override
 	public Consumer<Action> create(Context ctx) throws Exception {
 		
-		
 		return new Consumer<Action>() {
 			
 			@Override
@@ -161,7 +160,6 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 			/**
 			 * Loads resources, checks for unresolved proxies and diagnoses.
 			 */
-			@SuppressWarnings("unchecked")
 			@Override
 			public Diagnostic diagnose(ProgressMonitor progressMonitor) {
 				context = forkContext(ctx, progressMonitor);
@@ -213,35 +211,9 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 				
 				EcoreUtil.resolveAll(resourceSet);
 				
+				BasicDiagnostic ret = AbstractGenerateSiteConsumerFactory.this.diagnose(resourceSet);
+				
 				Diagnostician diagnostician = new Diagnostician();
-				BasicDiagnostic ret = (BasicDiagnostic) Consumer.super.diagnose(progressMonitor);
-				
-				TreeIterator<Notifier> cit = resourceSet.getAllContents();
-				while (cit.hasNext()) {
-					Notifier next = cit.next();
-					if (next instanceof EObject) {
-						EObject nextEObject = (EObject) next;
-						if (nextEObject.eIsProxy()) {							
-							ret.add(unresolvedProxyDiagnostic(nextEObject));
-						} else {
-							for (EReference ref: nextEObject.eClass().getEAllReferences()) {
-								Object val = nextEObject.eGet(ref);
-								if (val instanceof EObject) {
-									if (((EObject) val).eIsProxy()) {
-										ret.add(unresolvedProxyDiagnostic((EObject) val));
-									}
-								} else if (val instanceof Collection) {
-									for (EObject ve: (Collection<EObject>) val) {
-										if (ve.eIsProxy()) {
-											ret.add(unresolvedProxyDiagnostic((EObject) ve));
-										}								
-									}
-								}
-							}
-						}
-					}	
-				}
-				
 				if (ret.getStatus() != Status.FAIL) {				
 					topLevelElements = new ArrayList<>();
 					Map<Class<Context>, MutableContext> diagnosticContext = Collections.singletonMap(Context.class, context);
@@ -263,7 +235,7 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 			@Override
 			public void execute(Action rootAction, ProgressMonitor progressMonitor) throws Exception {
 				Action principal;
-				if (topLevelElements.size() == 1) {
+				if (topLevelElements != null && topLevelElements.size() == 1) {
 					resourceSet.getAdapterFactories().add(createAdapterFactory(rootAction, context));
 					principal = ViewAction.adaptToViewActionNonNull(topLevelElements.get(0));
 				} else {
@@ -285,16 +257,6 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 			}
 			
 		};
-	}
-		
-	protected Diagnostic unresolvedProxyDiagnostic(EObject source) {
-		Marked marked = EObjectAdaptable.adaptTo(source, Marked.class);
-		Marker marker = marked == null ? null : marked.getMarker();
-		if (marker == null) {
-			return new BasicDiagnostic(Status.FAIL, "Unresolved proxy: " + source, source);
-		}
-
-		return new BasicDiagnostic(Status.FAIL, "Unresolved proxy at " + marker + ": " + source, source, marker);		
 	}
 	
 	protected Style getNavigationPanelStyle() {
@@ -383,5 +345,60 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 	 * @return
 	 */
 	protected abstract Action createPricipalAction(Action rootAction, Collection<EObject> topLevelElements);
+
+	/**
+	 * Diagnoses the {@link ResourceSet}. This implementation finds unresolved proxies and reports them
+	 * with {@link Status} FAIL by calling unresolvedProxyDiagnostic().
+	 * @param resourceSet
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	protected BasicDiagnostic diagnose(ResourceSet resourceSet) {
+		BasicDiagnostic ret = new BasicDiagnostic(Status.SUCCESS, "Diagnostic of " + resourceSet, resourceSet);
+		
+		TreeIterator<Notifier> cit = resourceSet.getAllContents();
+		while (cit.hasNext()) {
+			Notifier next = cit.next();
+			if (next instanceof EObject) {
+				EObject nextEObject = (EObject) next;
+				if (nextEObject.eIsProxy()) {							
+					ret.add(unresolvedProxyDiagnostic(nextEObject, null, null));
+				} else {
+					for (EReference ref: nextEObject.eClass().getEAllReferences()) {
+						Object val = nextEObject.eGet(ref);
+						if (val instanceof EObject) {
+							if (((EObject) val).eIsProxy()) {
+								ret.add(unresolvedProxyDiagnostic((EObject) val, ref, nextEObject));
+							}
+						} else if (val instanceof Collection) {
+							for (EObject ve: (Collection<EObject>) val) {
+								if (ve.eIsProxy()) {
+									ret.add(unresolvedProxyDiagnostic((EObject) ve, ref, nextEObject));
+								}								
+							}
+						}
+					}
+				}
+			}	
+		}
+		return ret;
+	}
+	
+	/**
+	 * Reports unresolved proxies
+	 * @param source Unresolved proxy
+	 * @param containmentReference Reference containing the proxy. Can be null.
+	 * @param container Container of unresolved proxy. Can be null. 
+	 * @return
+	 */
+	protected Diagnostic unresolvedProxyDiagnostic(EObject source, EReference containmentReference, EObject container) {
+		Marked marked = EObjectAdaptable.adaptTo(source, Marked.class);
+		Marker marker = marked == null ? null : marked.getMarker();
+		if (marker == null) {
+			return new BasicDiagnostic(Status.FAIL, "Unresolved proxy: " + source, source, containmentReference, container);
+		}
+	
+		return new BasicDiagnostic(Status.FAIL, "Unresolved proxy at " + marker + ": " + source, source, marker, containmentReference, container);		
+	}
 	
 }
