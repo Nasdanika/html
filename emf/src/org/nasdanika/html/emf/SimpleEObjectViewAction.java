@@ -222,10 +222,9 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	 * @param progressMonitor
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	protected Object featureContent(EStructuralFeature feature, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		if (feature instanceof EReference) {
-			Object listOfActions = ViewAction.listOfViewActionsSorted((Collection<EObject>) target.eGet(feature), Util.nameToLabel(feature.getName()), false, true, 1);
+			Object listOfActions = ViewAction.listOfViewActionsSorted(referenceValue(feature), Util.nameToLabel(feature.getName()), false, true, 1);
 			return viewGenerator.processViewPart(listOfActions, progressMonitor);
 		}
 		
@@ -258,14 +257,13 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		return children;
 	}
 
-	@SuppressWarnings({ "unchecked"})
 	protected List<Action> collectChildren() {
 		ArrayList<Action> children = new ArrayList<Action>();
 		for (EStructuralFeature feature: getFeatures()) {
 			if (isFeatureInRole(feature, FeatureRole.ELEMENT_ACTIONS)) {				
-				children.addAll(ViewAction.adaptToViewActionNonNull((Collection<EObject>) target.eGet(feature)));
+				children.addAll(ViewAction.adaptToViewActionNonNull(referenceValue(feature)));
 			} else if (isFeatureInRole(feature, FeatureRole.ELEMENT_ACTIONS_SORTED)) {				
-				children.addAll(ViewAction.adaptToViewActionNonNullSorted((Collection<EObject>) target.eGet(feature)));
+				children.addAll(ViewAction.adaptToViewActionNonNullSorted(referenceValue(feature)));
 			}
 			if (isFeatureInRole(feature, FeatureRole.FEATURE_ACTION)) {				
 				Action featureAction = featureAction(feature);
@@ -275,6 +273,15 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			}
 		}
 		return children;
+	}
+
+	/**
+	 * @param feature
+	 * @return A collection of reference elements. Override to filter.
+	 */
+	@SuppressWarnings({ "unchecked"})
+	protected Collection<EObject> referenceValue(EStructuralFeature feature) {
+		return (Collection<EObject>) target.eGet(feature);
 	}	
 	
 	/**
