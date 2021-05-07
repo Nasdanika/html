@@ -25,7 +25,7 @@ import org.nasdanika.html.app.viewparts.ViewTableSingleValuePropertySourceViewPa
  * @author Pavel Vlasov
  *
  */
-public class EObjectViewAction<T extends EObject> extends EObjectSingleValuePropertySource<T> implements ViewAction {
+public class EObjectViewAction<T extends EObject> extends EObjectSingleValuePropertySource<T> implements ViewAction<T> {
 	
 	public EObjectViewAction(T value) {
 		super(value);
@@ -211,6 +211,11 @@ public class EObjectViewAction<T extends EObject> extends EObjectSingleValueProp
 	public boolean isInRole(String role) {
 		EReference containmentFeature = target.eContainmentFeature();	
 		return role != null && containmentFeature != null && role.equals(getFeatureRole(containmentFeature));
+	}
+
+	@Override
+	public T getSemanticElement() {
+		return target;
 	}
 	
 }

@@ -92,7 +92,7 @@ public final class HtmlEmfUtil {
 					Object value = element.eGet(feature);
 					if (value != null) {
 						if (value instanceof EObject) {
-							ViewAction va = EObjectAdaptable.adaptTo((EObject) value, ViewAction.class);
+							ViewAction<?> va = EObjectAdaptable.adaptTo((EObject) value, ViewAction.class);
 							cell.toHTMLElement().content(va == null ? value : viewGenerator.link(va));
 						} else {
 							cell.toHTMLElement().content(value);							

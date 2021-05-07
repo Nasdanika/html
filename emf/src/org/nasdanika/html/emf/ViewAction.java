@@ -17,13 +17,14 @@ import org.nasdanika.html.app.viewparts.ListOfActionsViewPart;
  * @author Pavel Vlasov
  *
  */
-public interface ViewAction extends Action {
+public interface ViewAction<T extends EObject> extends Action {
 
-	static ViewAction adaptToViewActionNonNull(EObject obj) {
+	static <T extends EObject> ViewAction<T> adaptToViewActionNonNull(T obj) {
 		if (obj.eIsProxy()) {
 			throw new ConfigurationException("Unresolved proxy " + obj);			
 		}
-		ViewAction ret = EObjectAdaptable.adaptTo(obj, ViewAction.class); 
+		@SuppressWarnings("unchecked")
+		ViewAction<T> ret = EObjectAdaptable.adaptTo(obj, ViewAction.class); 
 		if (ret == null) {
 			Marked marked = EObjectAdaptable.adaptTo(obj, Marked.class);
 			throw new ConfigurationException("ViewAction adapter not found for " + obj, marked);
@@ -31,6 +32,11 @@ public interface ViewAction extends Action {
 		
 		return ret;
 	}
+	
+	/**
+	 * @return The underlying {@link EObject}.
+	 */
+	T getSemanticElement();
 
 	static List<Action> adaptToViewActionNonNull(Collection<? extends EObject> c) {
 		return c.stream().map(ViewAction::adaptToViewActionNonNull).collect(Collectors.toList());
@@ -53,5 +59,5 @@ public interface ViewAction extends Action {
 		}
 		return new ListOfActionsViewPart(adaptToViewActionNonNullSorted(elements), header, tooltip, depth, OrderedListType.ROTATE);
 	}
-
+	
 }

@@ -3,7 +3,9 @@ package org.nasdanika.html.emf;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
@@ -45,12 +47,12 @@ import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Table;
 
 /**
- * Base class for ViewAction adapters which do not use extend {@link EObjectSingleValuePropertySource} like {@link EObjectViewAction}.
+ * Base class for ViewAction adapters which do not extend {@link EObjectSingleValuePropertySource} like {@link EObjectViewAction}.
  * @author Pavel
  * @since 2015.4.3
  * @param <T>
  */
-public abstract class SimpleEObjectViewAction<T extends EObject> implements ViewAction {
+public abstract class SimpleEObjectViewAction<T extends EObject> implements ViewAction<T> {
 	
 	/**
 	 * Feature role determines where a feature is displayed in the UI.
@@ -82,16 +84,16 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		ELEMENT_ACTIONS_SORTED,
 		
 		/**
-		 * A child action for the feature, e.g. a section with action list
+		 * Child actions for the feature, e.g. a section with action list
 		 */
-		FEATURE_ACTION
+		FEATURE_ACTIONS
 		
 	}
 	
-	protected T target;
+	private T semanticElement;
 		
-	public SimpleEObjectViewAction(T target) {
-		this.target = target;		
+	public SimpleEObjectViewAction(T semanticElement) {
+		this.semanticElement = semanticElement;		
 	}
 
 	/**
@@ -109,21 +111,21 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		
 	@Override
 	public ActionActivator getActivator() {
-		String contextUri = (String) EObjectAdaptable.adaptTo(target, Context.class).get(Context.BASE_URI_PROPERTY);
-		Marked marked = EObjectAdaptable.adaptTo(target, Marked.class);
+		String contextUri = (String) EObjectAdaptable.adaptTo(getSemanticElement(), Context.class).get(Context.BASE_URI_PROPERTY);
+		Marked marked = EObjectAdaptable.adaptTo(getSemanticElement(), Marked.class);
 		StringBuilder path = new StringBuilder();
-		EReference eContainmentReference = target.eContainmentFeature();
+		EReference eContainmentReference = getSemanticElement().eContainmentFeature();
 		if (eContainmentReference == null) {
 			path.append(contextUri);
-			String resourcePath = resolveResourcePath(target.eResource());			
+			String resourcePath = resolveResourcePath(getSemanticElement().eResource());			
 			if (!Util.isBlank(resourcePath)) {
 				path.append(resourcePath);
 			}
-			EList<EObject> resourceContents = target.eResource().getContents();
+			EList<EObject> resourceContents = getSemanticElement().eResource().getContents();
 			if (resourceContents.size() > 1) {
 				String localPath = getTargetPath();
-				if (Util.isBlank(localPath) && target.eResource() != null) {
-					path.append(resourceContents.indexOf(target));
+				if (Util.isBlank(localPath) && getSemanticElement().eResource() != null) {
+					path.append(resourceContents.indexOf(getSemanticElement()));
 				} else {
 					path.append(localPath);
 				}
@@ -136,7 +138,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 				path.append("/");			
 				String localPath = getTargetPath();
 				if (Util.isBlank(localPath)) {
-					EObject eContainer = target.eContainer();
+					EObject eContainer = getSemanticElement().eContainer();
 					if (eContainer != null) {
 						path.append(getDefaultPath());
 					}
@@ -145,7 +147,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 				}
 			}	
 		}		
-		if (target.eClass().getEReferences().stream().filter(EReference::isContainment).findAny().isPresent()) {
+		if (getSemanticElement().eClass().getEReferences().stream().filter(EReference::isContainment).findAny().isPresent()) {
 			path.append("/index");
 		}
 		path.append(".html");				
@@ -153,7 +155,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	}
 	
 	protected String getDefaultPath() {
-		return String.valueOf(((List<?>) target.eContainer().eGet(target.eContainmentFeature())).indexOf(this));
+		return String.valueOf(((List<?>) getSemanticElement().eContainer().eGet(getSemanticElement().eContainmentFeature())).indexOf(this));
 	}
 	
 	/**
@@ -212,7 +214,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	 * @return
 	 */
 	protected List<EStructuralFeature> getFeatures() {
-		return target.eClass().getEAllStructuralFeatures();
+		return getSemanticElement().eClass().getEAllStructuralFeatures();
 	}
 	
 	/**
@@ -230,7 +232,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		
 		Card ret = viewGenerator.getBootstrapFactory().card();
 		ret.getHeader().toHTMLElement().content(Util.nameToLabel(feature.getName()));
-		ret.getBody().toHTMLElement().content(featureValue(feature, target.eGet(feature), viewGenerator, progressMonitor));
+		ret.getBody().toHTMLElement().content(featureValue(feature, getSemanticElement().eGet(feature), viewGenerator, progressMonitor));
 	
 		return ret.toString();
 	}
@@ -265,10 +267,10 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			} else if (isFeatureInRole(feature, FeatureRole.ELEMENT_ACTIONS_SORTED)) {				
 				children.addAll(ViewAction.adaptToViewActionNonNullSorted(referenceValue(feature)));
 			}
-			if (isFeatureInRole(feature, FeatureRole.FEATURE_ACTION)) {				
-				Action featureAction = featureAction(feature);
-				if (featureAction != null) {
-					children.add(featureAction);
+			if (isFeatureInRole(feature, FeatureRole.FEATURE_ACTIONS)) {				
+				Collection<Action> featureActions = featureActions(feature);
+				if (featureActions != null) {
+					featureActions.stream().filter(Objects::nonNull).forEach(children::add);
 				}
 			}
 		}
@@ -281,21 +283,22 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	 */
 	@SuppressWarnings({ "unchecked"})
 	protected Collection<EObject> referenceValue(EStructuralFeature feature) {
-		return (Collection<EObject>) target.eGet(feature);
+		return (Collection<EObject>) getSemanticElement().eGet(feature);
 	}	
 	
 	/**
 	 * @param feature
-	 * @return {@link Action} wrapping the feature. This implementation returns a list of actions section. May return null
+	 * @return A collection of {@link Action} wrapping the feature. This implementation returns a singleton of list of actions section. May return null instead of an empty collection
+	 * The returned collection may contain null elements - they will be filtered out. 
 	 */
-	protected Action featureAction(EStructuralFeature feature) {
-		if (feature.isDerived() || target.eIsSet(feature)) {
-			Object featureValue = target.eGet(feature);
+	protected Collection<Action> featureActions(EStructuralFeature feature) {
+		if (feature.isDerived() || getSemanticElement().eIsSet(feature)) {
+			Object featureValue = getSemanticElement().eGet(feature);
 			if (featureValue == null) {
-				return null;
+				return Collections.emptyList();
 			}
 			if (featureValue instanceof Collection && ((Collection<?>) featureValue).isEmpty()) {
-				return null;
+				return Collections.emptyList();
 			}			
 			
 			ActionImpl featureSection = new ActionImpl() {
@@ -318,9 +321,9 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			featureSection.setText(Util.nameToLabel(feature.getName())); 			
 			featureSection.setActivator(new PathNavigationActionActivator(featureSection, ((NavigationActionActivator) getActivator()).getUrl(null), "#feature-" + feature.getName(), getMarker()));
 	
-			return featureSection;
+			return Collections.singleton(featureSection);
 		}
-		return null;
+		return Collections.emptyList();
 	}
 		
 	protected boolean isFeatureInRole(EStructuralFeature feature, FeatureRole role) {
@@ -334,7 +337,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			if (ref.isContainment()) {
 				return role == FeatureRole.ELEMENT_ACTIONS_SORTED;
 			}
-			return role == FeatureRole.FEATURE_ACTION;
+			return role == FeatureRole.FEATURE_ACTIONS;
 		}
 		
 		return role == FeatureRole.PROPERTY;
@@ -357,7 +360,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 
 	@Override
 	public Action getParent() {
-		EObject eContainer = target.eContainer();
+		EObject eContainer = getSemanticElement().eContainer();
 		if (eContainer != null) {
 			return EObjectAdaptable.adaptTo(eContainer, ViewAction.class);
 		}
@@ -366,12 +369,12 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 
 	@Override
 	public String getIcon() {
-		return EmfUtil.getNasdanikaAnnotationDetail(target.eClass(), "icon");
+		return EmfUtil.getNasdanikaAnnotationDetail(getSemanticElement().eClass(), "icon");
 	}
 
 	@Override
 	public String getText() {
-		return target.toString();
+		return getSemanticElement().toString();
 	}
 
 	@Override
@@ -396,7 +399,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 
 	@Override
 	public String getDescription() {
-		URL descriptionResource = getClass().getResource(Util.camelToKebab(target.eClass().getName())+".md");
+		URL descriptionResource = getClass().getResource(Util.camelToKebab(getSemanticElement().eClass().getName())+".md");
 		if (descriptionResource == null) {
 			return null;
 		}
@@ -413,7 +416,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	 */
 	protected Context getContext() {
 		URI thisUri = URI.createURI(((NavigationActionActivator) getActivator()).getUrl(null));
-		Context targetContext = EObjectAdaptable.adaptTo(target, Context.class);
+		Context targetContext = EObjectAdaptable.adaptTo(getSemanticElement(), Context.class);
 		URI baseUri = URI.createURI(targetContext.get(Context.BASE_URI_PROPERTY).toString());
 		URI relativeBaseUri = baseUri.deresolve(thisUri, true, true, true);
 		MutableContext ret = targetContext.fork();
@@ -425,7 +428,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			@Override
 			public <U> U compute(Context context, String key, String path, Class<U> type) {
 				URI uri = URI.createURI(path);
-				EObject eObj = target.eResource().getResourceSet().getEObject(uri, false);
+				EObject eObj = getSemanticElement().eResource().getResourceSet().getEObject(uri, false);
 				if (eObj == null) {
 					return null;
 				}
@@ -451,8 +454,8 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}
 		
 		for (EStructuralFeature sf: getFeatures()) {			
-			if (isFeatureInRole(sf, FeatureRole.PROPERTY) && (sf.isDerived() || target.eIsSet(sf))) {
-				Object fv = target.eGet(sf);
+			if (isFeatureInRole(sf, FeatureRole.PROPERTY) && (sf.isDerived() || getSemanticElement().eIsSet(sf))) {
+				Object fv = getSemanticElement().eGet(sf);
 				if (fv == null || (fv instanceof String && Util.isBlank((String) fv))) {
 					continue;
 				}
@@ -522,22 +525,26 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 
 	@Override
 	public Label getCategory() {
-		EReference cf = target.eContainmentFeature();
+		EReference cf = getSemanticElement().eContainmentFeature();
 		if (cf == null) {
 			return null;
 		}
 		
-		EObject ec = target.eContainer();
+		EObject ec = getSemanticElement().eContainer();
 		
 		// not exactly valid approach - should use isChildFeature of the container view action, but need to "peel" proxy for that.
 		if (ec == null || ec.eClass().getEAllReferences().stream().filter(r -> isFeatureInRole(r, FeatureRole.ELEMENT_ACTIONS) || isFeatureInRole(r, FeatureRole.ELEMENT_ACTIONS_SORTED)).count() == 1) {
 			return null;
 		}		
+		Action parent = getParent();
+		if (parent == null) {
+			return null;
+		}
 		LabelImpl category = new LabelImpl();
 		category.setId(cf.getName());
 		category.setText(EmfUtil.getNasdanikaAnnotationDetail(cf, "label", Util.nameToLabel(cf.getName()))); 
 		category.setIcon(EmfUtil.getNasdanikaAnnotationDetail(cf, "icon"));		
-		category.setId(ViewAction.adaptToViewActionNonNull(ec).getId() + "-" + cf.getName());
+		category.setId(parent.getId() + "-feature-category-" + cf.getName());
 		return category;
 	}
 
@@ -545,7 +552,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((target == null) ? 0 : target.hashCode());
+		result = prime * result + ((getSemanticElement() == null) ? 0 : getSemanticElement().hashCode());
 		return result;
 	}
 
@@ -558,22 +565,27 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		if (getClass() != obj.getClass())
 			return false;		
 		SimpleEObjectViewAction<?> other = (SimpleEObjectViewAction<?>) obj;
-		return target == other.target;
+		return getSemanticElement() == other.getSemanticElement();
 	}
 	
 	@Override
 	public String toString() {
-		return super.toString() + " -> " + target;
+		return super.toString() + " -> " + getSemanticElement();
 	}
 	
 	protected Marker getMarker() {
-		Marked marked = EObjectAdaptable.adaptTo(target, Marked.class);
+		Marked marked = EObjectAdaptable.adaptTo(getSemanticElement(), Marked.class);
 		return marked == null ? null : marked.getMarker();
 	}
 
 	@Override
 	public SectionStyle getSectionStyle() {
 		return SectionStyle.DEFAULT;
+	}
+
+	@Override
+	public T getSemanticElement() {
+		return semanticElement;
 	}
 	
 }

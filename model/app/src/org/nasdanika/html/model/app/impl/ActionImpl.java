@@ -570,12 +570,12 @@ public class ActionImpl extends LabelImpl implements Action {
 		return eContainer() instanceof Category ? (Category) eContainer : null;
 	}
 	
-	private List<org.nasdanika.html.app.Action> children = new ArrayList<>();	
+	private List<org.nasdanika.html.app.Action> children;	
 	
 	@Override
 	public List<org.nasdanika.html.app.Action> getChildren() {
 		if (children == null) {
-			List<org.nasdanika.html.app.Action> children = new ArrayList<>();
+			children = new ArrayList<>();
 			for (EObject e: getElements()) {
 				if (e instanceof Category) {
 					children.addAll(((Category) e).getActions());

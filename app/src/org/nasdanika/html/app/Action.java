@@ -251,7 +251,7 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 		}
 		Predicate<? super Action> predicate = c -> {
 			for (String role: roles) {
-				if (c.isInRole(role)) {
+				if (c != null && c.isInRole(role)) {
 					return true;
 				}
 			}
