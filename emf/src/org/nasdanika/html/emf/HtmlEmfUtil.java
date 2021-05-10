@@ -55,14 +55,14 @@ public final class HtmlEmfUtil {
 		return c.stream().map(HtmlEmfUtil::adaptToActionNonNull).sorted((a,b) -> a.getText().compareTo(b.getText())).collect(Collectors.toList());
 	}
 
-	public static Object listOfActions(Collection<? extends EObject> elements, String header, boolean sort, boolean tooltip, int depth) { 
+	public static Object listOfActions(Collection<? extends EObject> elements, Object header, boolean sort, boolean tooltip, int depth) { 
 		if (elements.isEmpty()) {
 			return null;
 		}
 		return new ListOfActionsViewPart(adaptToActionNonNull(elements), header, tooltip, depth, OrderedListType.ROTATE);
 	}
 
-	public static Object listOfActionsSorted(Collection<? extends EObject> elements, String header, boolean sort, boolean tooltip, int depth) { 
+	public static Object listOfActionsSorted(Collection<? extends EObject> elements, Object header, boolean sort, boolean tooltip, int depth) { 
 		if (elements.isEmpty()) {
 			return null;
 		}

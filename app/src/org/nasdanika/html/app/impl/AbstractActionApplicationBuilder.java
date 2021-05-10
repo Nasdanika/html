@@ -128,7 +128,7 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 	@Override
 	protected ViewPart getNavigationPanelViewPart() {		
 		List<Action> navigationPanelActions = getNavigationPanelActions();
-		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? (vg, progressMonitor) -> null : new AdaptiveNavigationPanelViewPart(navigationPanelActions, getActiveAction(), getNavigationPanelStyle());
+		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? (vg, progressMonitor) -> null : new AdaptiveNavigationPanelViewPart(navigationPanelActions, getActiveAction(), Action.Role.NAVIGATION, getNavigationPanelStyle());
 	}
 	
 	protected Style getNavigationPanelStyle() {

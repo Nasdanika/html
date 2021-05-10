@@ -11,7 +11,7 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Application;
 import org.nasdanika.html.app.ApplicationBuilder;
 import org.nasdanika.html.app.ViewPart;
-import org.nasdanika.html.app.viewparts.JsTreeNavigationPanelViewPart;
+import org.nasdanika.html.app.viewparts.JsTreePanelViewPart;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.fontawesome.FontAwesomeFactory;
 import org.nasdanika.html.jstree.JsTreeFactory;
@@ -72,7 +72,7 @@ public class ProgressReportGenerator {
 				
 				@Override
 				protected ViewPart getNavigationPanelViewPart() {
-					return new JsTreeNavigationPanelViewPart(getNavigationPanelActions(), getActiveAction(), true) {
+					return new JsTreePanelViewPart(getNavigationPanelActions(), getActiveAction(), Action.Role.NAVIGATION, true) {
 						@Override
 						protected void configureJsTree(JSONObject jsTree) {
 							JSONArray plugins = new JSONArray();

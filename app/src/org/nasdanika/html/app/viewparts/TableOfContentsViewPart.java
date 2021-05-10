@@ -31,7 +31,7 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 
 	public TableOfContentsViewPart(
 			String role, 
-			String header, 
+			Object header, 
 			boolean descriptions, 
 			boolean tooltips,
 			int depth) {
@@ -50,12 +50,13 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 		}
 		Table table = createTable(noDecoratorViewGenerator);
 		rows(noDecoratorViewGenerator, action, 1, table);
-		if (Util.isBlank(header)) {
+		Object headerVal = noDecoratorViewGenerator.processViewPart(header, progressMonitor);
+		if (headerVal == null || Util.isBlank(headerVal.toString())) {
 			return table;
 		}
 		int headerLevel = noDecoratorViewGenerator.get(SectionStyle.HEADER_LEVEL, Integer.class, 3);
 		HTMLFactory htmlFactory = noDecoratorViewGenerator.get(HTMLFactory.class);		
-		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, header), table);
+		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, headerVal), table);
 	}
 
 	protected Table createTable(ViewGenerator noDecoratorViewGenerator) {

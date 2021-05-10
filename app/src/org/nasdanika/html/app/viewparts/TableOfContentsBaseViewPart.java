@@ -10,12 +10,12 @@ import org.nasdanika.html.app.ViewPart;
 public abstract class TableOfContentsBaseViewPart implements ViewPart {
 
 	protected String role;
-	protected String header;
+	protected Object header;
 	protected int depth;
 
 	public TableOfContentsBaseViewPart(
 			String role,
-			String header,
+			Object header,
 			int depth) {
 
 		this.role = role;

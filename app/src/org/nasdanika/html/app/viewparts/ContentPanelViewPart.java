@@ -3,6 +3,8 @@ package org.nasdanika.html.app.viewparts;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
@@ -125,8 +127,12 @@ public class ContentPanelViewPart implements ViewPart {
 				if (bic != null) {
 					breadcrumb.item(false, breadcrumbViewGenerator.label(bic));					
 				}
-				breadcrumb.item(false, breadcrumbViewGenerator.link(breadcrumbItem));
+				breadcrumb.item(false, breadcrumbItem.getActivator() == null ? breadcrumbViewGenerator.label(breadcrumbItem) : breadcrumbViewGenerator.link(breadcrumbItem));
 			}		
+			Label bic = lastNonSection.getCategory();
+			if (bic != null) {
+				breadcrumb.item(false, breadcrumbViewGenerator.label(bic));					
+			}
 			breadcrumb.item(true, breadcrumbViewGenerator.label(lastNonSection));
 		}
 		
@@ -160,13 +166,20 @@ public class ContentPanelViewPart implements ViewPart {
 		Row bodyRow = contentContainer.row();
 		bodyRow.toHTMLElement().addClass(CLASS_PREFIX+"body-row");
 		
+		Predicate<? super Action> inlinePredicate = a -> a.getActivator() != null && a.getActivator().inline();
 		List<Action> leftPanelActions = lastNonSection == null ? Collections.emptyList() : lastNonSection.getChildrenByRole(Action.Role.CONTENT_LEFT);
 		if (!leftPanelActions.isEmpty()) {
-			AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(leftPanelActions, activeAction, getLeftPanelStyle());
 			Col leftPanelCol = bodyRow.col().width(Breakpoint.DEFAULT, Size.AUTO);
 			leftPanelCol.toHTMLElement().addClass(CLASS_PREFIX+"left-nav");
-			leftPanelCol.content(panelViewPart.generate(viewGenerator, progressMonitor));			 
-		}	
+			List<Action> notInlineLeftPanelActions = leftPanelActions.stream().filter(inlinePredicate.negate()).collect(Collectors.toList());
+			if (!notInlineLeftPanelActions.isEmpty()) {
+				AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(notInlineLeftPanelActions, activeAction, Action.Role.CONTENT_LEFT, getLeftPanelStyle());
+				leftPanelCol.content(panelViewPart.generate(viewGenerator, progressMonitor));			 
+			}	
+			for (Action inlineAction: leftPanelActions.stream().filter(inlinePredicate).collect(Collectors.toList())) {
+				leftPanelCol.content(inlineAction.generate(viewGenerator, progressMonitor));
+			}
+		}
 		
 //		List<Action> navigationPanelActions = getNavigationPanelActions();
 //		return navigationPanelActions == null || navigationPanelActions.isEmpty() ? (vg, progressMonitor) -> null : new AdaptiveNavigationPanelViewPart(navigationPanelActions, getActiveAction());
@@ -184,11 +197,17 @@ public class ContentPanelViewPart implements ViewPart {
 				
 		List<Action> rightPanelActions = lastNonSection.getChildrenByRole(Action.Role.CONTENT_RIGHT);
 		if (!rightPanelActions.isEmpty()) {
-			AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(rightPanelActions, activeAction, getRightPanelStyle());
 			Col rightPanelCol = bodyRow.col().width(Breakpoint.DEFAULT, Size.AUTO);
 			rightPanelCol.toHTMLElement().addClass(CLASS_PREFIX+"right-nav");
-			rightPanelCol.content(panelViewPart.generate(viewGenerator, progressMonitor));			 
-		}	
+			List<Action> notInlineRightPanelActions = rightPanelActions.stream().filter(inlinePredicate.negate()).collect(Collectors.toList());
+			if (!notInlineRightPanelActions.isEmpty()) {
+				AdaptiveNavigationPanelViewPart panelViewPart = new AdaptiveNavigationPanelViewPart(notInlineRightPanelActions, activeAction, Action.Role.CONTENT_RIGHT, getRightPanelStyle());
+				rightPanelCol.content(panelViewPart.generate(viewGenerator, progressMonitor));			 
+			}	
+			for (Action inlineAction: rightPanelActions.stream().filter(inlinePredicate).collect(Collectors.toList())) {
+				rightPanelCol.content(inlineAction.generate(viewGenerator, progressMonitor));
+			}
+		}
 		
 		return contentContainer;
 	}

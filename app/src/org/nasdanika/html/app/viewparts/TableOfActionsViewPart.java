@@ -23,7 +23,7 @@ public class TableOfActionsViewPart extends TableOfContentsViewPart {
 
 	public TableOfActionsViewPart(
 			List<String> actionIds,
-			String header, 
+			Object header, 
 			boolean descriptions, 
 			boolean tooltips,
 			int depth) {
@@ -51,12 +51,13 @@ public class TableOfActionsViewPart extends TableOfContentsViewPart {
 		ViewGenerator noDecoratorViewGenerator = viewGenerator.forkNoDecorator();
 		Table table = createTable(noDecoratorViewGenerator);
 		rows(noDecoratorViewGenerator, null, 1, table);
-		if (Util.isBlank(header)) {
+		Object headerVal = noDecoratorViewGenerator.processViewPart(header, progressMonitor);
+		if (headerVal == null || Util.isBlank(headerVal.toString())) {
 			return table;
 		}
 		int headerLevel = noDecoratorViewGenerator.get(SectionStyle.HEADER_LEVEL, Integer.class, 3);
 		HTMLFactory htmlFactory = noDecoratorViewGenerator.get(HTMLFactory.class);		
-		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, header), table);
+		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, headerVal), table);
 	}
 
 }

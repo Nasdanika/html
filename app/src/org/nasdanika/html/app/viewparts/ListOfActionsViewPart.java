@@ -30,7 +30,7 @@ public class ListOfActionsViewPart extends ListOfContentsViewPart {
 
 	public ListOfActionsViewPart(
 			List<?> actions,
-			String header, 
+			Object header, 
 			boolean tooltip, 
 			int depth,
 			OrderedListType orderedListType) {
@@ -43,12 +43,13 @@ public class ListOfActionsViewPart extends ListOfContentsViewPart {
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		ViewGenerator noDecoratorViewGenerator = viewGenerator.forkNoDecorator();
 		Tag list = list(noDecoratorViewGenerator, null, 1, orderedListType == OrderedListType.ROTATE ? OrderedListType.NUMBER : orderedListType);
-		if (list == null || Util.isBlank(header)) {
+		Object headerVal = noDecoratorViewGenerator.processViewPart(header, progressMonitor);
+		if (list == null || headerVal == null || Util.isBlank(headerVal.toString())) {
 			return list;
 		}
 		int headerLevel = noDecoratorViewGenerator.get(SectionStyle.HEADER_LEVEL, Integer.class, 3);
 		HTMLFactory htmlFactory = noDecoratorViewGenerator.get(HTMLFactory.class);		
-		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, header), list);
+		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, headerVal), list);
 	}	
 	
 	@Override

@@ -37,7 +37,6 @@ import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
-import org.nasdanika.html.app.impl.ActionImpl;
 import org.nasdanika.html.app.impl.LabelImpl;
 import org.nasdanika.html.app.impl.PathNavigationActionActivator;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -226,12 +225,25 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	 */
 	protected Object featureContent(EStructuralFeature feature, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		if (feature instanceof EReference) {
-			Object listOfActions = ViewAction.listOfViewActionsSorted(referenceValue(feature), Util.nameToLabel(feature.getName()), false, true, 1);
+			Label fl = new LabelImpl() {
+				
+				@Override
+				public String getText() {
+					return featureLabel(feature);
+				}
+				
+				@Override
+				public String getIcon() {
+					return featureIcon(feature);
+				}
+				
+			};
+			Object listOfActions = ViewAction.listOfViewActionsSorted(referenceValue(feature), viewGenerator.label(fl), false, true, 1);
 			return viewGenerator.processViewPart(listOfActions, progressMonitor);
 		}
 		
 		Card ret = viewGenerator.getBootstrapFactory().card();
-		ret.getHeader().toHTMLElement().content(Util.nameToLabel(feature.getName()));
+		ret.getHeader().toHTMLElement().content(featureLabel(feature));
 		ret.getBody().toHTMLElement().content(featureValue(feature, getSemanticElement().eGet(feature), viewGenerator, progressMonitor));
 	
 		return ret.toString();
@@ -301,7 +313,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 				return Collections.emptyList();
 			}			
 			
-			ActionImpl featureSection = new ActionImpl() {
+			EStructuralFeatureViewActionImpl<T, EStructuralFeature> featureSection = new EStructuralFeatureViewActionImpl<T, EStructuralFeature>(getSemanticElement(), feature) {
 				
 				@Override
 				public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
@@ -318,12 +330,17 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			
 			featureSection.getRoles().add(Action.Role.SECTION); 
 			featureSection.setSectionStyle(SectionStyle.DEFAULT);
-			featureSection.setText(Util.nameToLabel(feature.getName())); 			
+			featureSection.setText(featureLabel(feature)); 		
+			featureSection.setIcon(featureIcon(feature));
 			featureSection.setActivator(new PathNavigationActionActivator(featureSection, ((NavigationActionActivator) getActivator()).getUrl(null), "#feature-" + feature.getName(), getMarker()));
 	
 			return Collections.singleton(featureSection);
 		}
 		return Collections.emptyList();
+	}
+
+	protected String featureLabel(EStructuralFeature feature) {
+		return EmfUtil.getNasdanikaAnnotationDetail(feature, "label", Util.nameToLabel(feature.getName()));
 	}
 		
 	protected boolean isFeatureInRole(EStructuralFeature feature, FeatureRole role) {
@@ -454,7 +471,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}
 		
 		for (EStructuralFeature sf: getFeatures()) {			
-			if (isFeatureInRole(sf, FeatureRole.PROPERTY) && (sf.isDerived() || getSemanticElement().eIsSet(sf))) {
+			if (isFeatureInRole(sf, FeatureRole.PROPERTY)) {
 				Object fv = getSemanticElement().eGet(sf);
 				if (fv == null || (fv instanceof String && Util.isBlank((String) fv))) {
 					continue;
@@ -462,7 +479,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 				Object featureValue = featureValue(sf, fv, viewGenerator, progressMonitor);
 				if (featureValue != null) {
 					Row fRow = pTable.row(); 
-					fRow.header(Util.nameToLabel(sf.getName()));
+					fRow.header(featureLabel(sf)); 
 					fRow.cell(featureValue);
 				}
 			}
@@ -542,10 +559,14 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}
 		LabelImpl category = new LabelImpl();
 		category.setId(cf.getName());
-		category.setText(EmfUtil.getNasdanikaAnnotationDetail(cf, "label", Util.nameToLabel(cf.getName()))); 
-		category.setIcon(EmfUtil.getNasdanikaAnnotationDetail(cf, "icon"));		
+		category.setText(featureLabel(cf)); 
+		category.setIcon(featureIcon(cf));		
 		category.setId(parent.getId() + "-feature-category-" + cf.getName());
 		return category;
+	}
+
+	protected String featureIcon(EStructuralFeature feature) {
+		return EmfUtil.getNasdanikaAnnotationDetail(feature, "icon");
 	}
 
 	@Override

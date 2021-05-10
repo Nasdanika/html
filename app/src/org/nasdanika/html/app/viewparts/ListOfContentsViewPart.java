@@ -22,7 +22,7 @@ public class ListOfContentsViewPart extends TableOfContentsBaseViewPart {
 
 	public ListOfContentsViewPart(
 			String role, 
-			String header, 
+			Object header, 
 			boolean tooltip, 
 			int depth,
 			OrderedListType orderedListType) {
@@ -40,12 +40,13 @@ public class ListOfContentsViewPart extends TableOfContentsBaseViewPart {
 			return null;
 		}
 		Tag list = list(noDecoratorViewGenerator, action, 1, orderedListType == OrderedListType.ROTATE ? OrderedListType.NUMBER : orderedListType);
-		if (list == null || Util.isBlank(header)) {
+		Object headerVal = noDecoratorViewGenerator.processViewPart(header, progressMonitor);
+		if (list == null || headerVal == null || Util.isBlank(headerVal.toString())) {
 			return list;
 		}
 		int headerLevel = noDecoratorViewGenerator.get(SectionStyle.HEADER_LEVEL, Integer.class, 3);
 		HTMLFactory htmlFactory = noDecoratorViewGenerator.get(HTMLFactory.class);		
-		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, header), list);
+		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, headerVal), list);
 	}
 
 	/**

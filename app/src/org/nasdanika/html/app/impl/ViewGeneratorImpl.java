@@ -279,7 +279,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 	public JsTreeNode jsTreeNode(Action action, boolean ajax, BiFunction<Action, JsTreeNode, JsTreeNode> filter) {
 		JsTreeNode ret = jsTreeNode(action);
 		ret.disabled(action.isDisabled());
-		List<Entry<Label, List<Action>>> categories = action.getNavigationChildrenGroupedByCategory();
+		List<Entry<Label, List<Action>>> categories = action.getChildrenGroupedByCategory();
 		if (ajax) {
 			if (!categories.isEmpty()) {
 				ret.hasChildren();
@@ -287,7 +287,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 		} else {
 			for (Entry<Label, List<Action>> group: categories) {			
 				Label category = group.getKey();
-				List<Action> categoryActions = (List<Action>) group.getValue();
+				List<Action> categoryActions = group.getValue();
 				if (category == null || Util.isBlank(category.getText())) {
 					for (Action ca: categoryActions) {
 						JsTreeNode jsTreeNode = jsTreeNode(ca, ajax, filter);
@@ -297,13 +297,15 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 					}				
 				} else {
 					JsTreeNode categoryNode = jsTreeNode(category);
-					ret.children().add(categoryNode);
 					for (Action ca: categoryActions) {
 						JsTreeNode jsTreeNode = jsTreeNode(ca, ajax, filter);
 						if (jsTreeNode != null) {
 							categoryNode.children().add(jsTreeNode);
 						}
-					}				
+					}
+					if (!categoryNode.children().isEmpty()) {
+						ret.children().add(categoryNode);
+					}
 				}			
 			}
 		}

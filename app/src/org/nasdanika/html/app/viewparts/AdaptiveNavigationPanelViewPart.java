@@ -22,7 +22,7 @@ import org.nasdanika.html.bootstrap.TagBootstrapElement;
 
 /**
  * Uses {@link ACTION_GROUP} in the navigation panel if navigation panel actions do not have children and 
- * {@link JsTreeNavigationPanelViewPart} otherwise.
+ * {@link JsTreePanelViewPart} otherwise.
  * @author Pavel Vlasov
  *
  */
@@ -51,10 +51,12 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 	protected List<Action> navigationPanelActions;
 	protected Action activeAction;
 	private Style style;
+	private String role;
 
-	public AdaptiveNavigationPanelViewPart(List<Action> navigationPanelActions, Action activeAction, Style style) {
+	public AdaptiveNavigationPanelViewPart(List<Action> navigationPanelActions, Action activeAction, String role, Style style) {
 		this.navigationPanelActions = navigationPanelActions;
-		this.activeAction = activeAction;		
+		this.activeAction = activeAction;	
+		this.role = role;
 		this.style = style;
 	}
 	
@@ -64,9 +66,9 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 	 * @return
 	 */
 	protected ViewPart createActionsViewPart(List<Action> actions, boolean categorize) {				
-		boolean haveNavigationChildren = actions.stream().mapToInt(a -> a.getNavigationChildren().size()).sum() > 0;
-		if (haveNavigationChildren || (categorize && Util.groupByCategory(actions).size() > 1)) {
-			return new JsTreeNavigationPanelViewPart(actions, activeAction, categorize);			
+		boolean hasRoleChildren = actions.stream().mapToInt(a -> a.getChildrenByRole(role).size()).sum() > 0;
+		if (hasRoleChildren || (categorize && Util.groupByCategory(actions).size() > 1)) {
+			return new JsTreePanelViewPart(actions, activeAction, role, categorize);			
 		}
 
 		return new ViewPart() {
@@ -143,19 +145,19 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 			Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
 			for (Entry<Label, List<Action>> categoryGroup: categoryGroups) {
 				if (categoryGroup.getKey() == null) {
-					Predicate<Action> noNavigationChildrenPredicate = a -> a.getNavigationChildren().isEmpty();
+					Predicate<Action> noRoleChildrenPredicate = a -> a.getChildrenByRole(role).isEmpty();
 					// Actions without children in a category card
-					List<Action> noNavigationChildrenActions = categoryGroup.getValue().stream().filter(noNavigationChildrenPredicate).collect(Collectors.toList());
-					if (!noNavigationChildrenActions.isEmpty()) {
+					List<Action> noRoleChildrenActions = categoryGroup.getValue().stream().filter(noRoleChildrenPredicate).collect(Collectors.toList());
+					if (!noRoleChildrenActions.isEmpty()) {
 						Card categoryCard = createCategoryCard(categoryGroup.getKey(), viewGenerator);
-						addActionsViewToCard(categoryCard, createActionsViewPart(noNavigationChildrenActions, false).generate(viewGenerator, progressMonitor));
+						addActionsViewToCard(categoryCard, createActionsViewPart(noRoleChildrenActions, false).generate(viewGenerator, progressMonitor));
 						ret.content(categoryCard);
 					}					
 					
 					// Actions with children in their own cards					
-					for (Action ca: categoryGroup.getValue().stream().filter(noNavigationChildrenPredicate.negate()).collect(Collectors.toList())) {
+					for (Action ca: categoryGroup.getValue().stream().filter(noRoleChildrenPredicate.negate()).collect(Collectors.toList())) {
 						Card actionCard = createActionCard(ca, viewGenerator);
-						addActionsViewToCard(actionCard, createActionsViewPart(ca.getNavigationChildren(), true).generate(viewGenerator, progressMonitor));
+						addActionsViewToCard(actionCard, createActionsViewPart(ca.getChildrenByRole(role), true).generate(viewGenerator, progressMonitor));
 						ret.content(actionCard);						
 					}					
 				} else {

@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 public interface EStructuralFeatureViewAction<T extends EObject, F extends EStructuralFeature> extends ViewAction<T>  {
 
 	/**
-	 * @return the unerlying {@link EStructuralFeature}
+	 * @return the underlying {@link EStructuralFeature}
 	 */
 	F getEStructuralFeature();
 	

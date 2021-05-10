@@ -28,16 +28,18 @@ import org.nasdanika.html.jstree.JsTreeNode;
  * @author Pavel Vlasov
  *
  */
-public class JsTreeNavigationPanelViewPart implements ViewPart {
+public class JsTreePanelViewPart implements ViewPart {
 	
 	protected List<? extends Action> rootActions;
 	protected Action activeAction;
 	private String treeId;
 	private boolean categorize;
+	private String role;
 
-	public JsTreeNavigationPanelViewPart(List<? extends Action> rootActions, Action activeAction, boolean categorize) {
+	public JsTreePanelViewPart(List<? extends Action> rootActions, Action activeAction, String role, boolean categorize) {
 		this.rootActions = rootActions;
 		this.activeAction = activeAction;
+		this.role = role;
 		this.categorize = categorize;
 		
 		// Computing tree ID. If all navigation actions have the same parent or the same category then id is the parent/category id. Otherwise it is a base64 digest of action ID's.
@@ -131,15 +133,18 @@ public class JsTreeNavigationPanelViewPart implements ViewPart {
 	 * @return
 	 */
 	protected JsTreeNode filterNode(Action action, JsTreeNode node) {
-		if (action == activeAction) {
-			node.selected();
-		} else {
-			node.selected(Util.equalOrInPath(activeAction, action) && action.getNavigationChildren().isEmpty());
+		if (action.isInRole(role)) {
+			if (action == activeAction) {
+				node.selected();
+			} else {
+				node.selected(Util.equalOrInPath(activeAction, action) && action.getChildrenByRole(role).isEmpty());
+			}
+			if (node.children().isEmpty()) {
+				node.attribute("type", "leaf"); // Set node type to leaf if there are no children.
+			}
+			return node;
 		}
-		if (node.children().isEmpty()) {
-			node.attribute("type", "leaf"); // Set node type to leaf if there are no children.
-		}
-		return node;		
+		return null;
 	}
 	
 	/**
