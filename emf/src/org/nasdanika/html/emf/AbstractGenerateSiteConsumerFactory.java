@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -156,6 +157,7 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 			private MutableContext context;
 			private List<EObject> topLevelElements;
 			private ResourceSet resourceSet;
+			private Map<EObject, org.eclipse.emf.common.util.Diagnostic> diagnosticMap = new LinkedHashMap<>();
 			
 			/**
 			 * Loads resources, checks for unresolved proxies and diagnoses.
@@ -220,7 +222,9 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 					for (URI uri: resources) {
 						Resource engineeringResource = resourceSet.getResource(uri, true);
 						for (EObject e: engineeringResource.getContents()) {
-							ret.add(EmfUtil.wrap(diagnostician.validate(e, diagnosticContext)));
+							org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(e, diagnosticContext);
+							diagnosticMap.put(e, diagnostic);
+							ret.add(EmfUtil.wrap(diagnostic));
 							
 							if (isTopLevelElement(e)) {
 								topLevelElements.add(e);
@@ -236,11 +240,11 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 			public void execute(Action rootAction, ProgressMonitor progressMonitor) throws Exception {
 				Action principal;
 				if (topLevelElements != null && topLevelElements.size() == 1) {
-					resourceSet.getAdapterFactories().add(createAdapterFactory(rootAction, context));
+					resourceSet.getAdapterFactories().add(createAdapterFactory(rootAction, context, diagnosticMap));
 					principal = ViewAction.adaptToViewActionNonNull(topLevelElements.get(0));
 				} else {
 					principal = createPricipalAction(rootAction, topLevelElements);
-					resourceSet.getAdapterFactories().add(createAdapterFactory(principal, context));
+					resourceSet.getAdapterFactories().add(createAdapterFactory(principal, context, diagnosticMap));
 				}
 				rootAction.getChildren().add(principal);
 
@@ -315,7 +319,7 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 	 * @param context
 	 * @return
 	 */
-	protected abstract AdapterFactory createAdapterFactory(Action parent, Context context);
+	protected abstract AdapterFactory createAdapterFactory(Action parent, Context context, Map<EObject, org.eclipse.emf.common.util.Diagnostic> diagnosticMap);
 
 	/**
 	 * @param eObj element from {@link Resource}.getContents().
