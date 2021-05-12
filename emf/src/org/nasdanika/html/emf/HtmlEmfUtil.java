@@ -1,22 +1,29 @@
 package org.nasdanika.html.emf;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.ETypedElement;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marked;
 import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.html.OrderedListType;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewBuilder;
 import org.nasdanika.html.app.ViewGenerator;
+import org.nasdanika.html.app.impl.LabelImpl;
 import org.nasdanika.html.app.viewparts.ListOfActionsViewPart;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
@@ -72,24 +79,40 @@ public final class HtmlEmfUtil {
 	public static <T extends EObject> Table table(
 			Collection<T> elements,
 			Function<T, ViewBuilder> rowBuilderProvider,
-			BiFunction<T, EStructuralFeature, ViewBuilder> cellBuilderProvider, 
+			BiFunction<T, ETypedElement, ViewBuilder> cellBuilderProvider, 
 			ViewGenerator viewGenerator, 
 			ProgressMonitor progressMonitor,
-			EStructuralFeature... features) {
+			ETypedElement... dataSources) {
 		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
 		Table ret = bootstrapFactory.table().bordered();
 		Row header = ret.header().row().color(Color.INFO);
-		for (EStructuralFeature feature: features) {
-			header.header(Util.nameToLabel(feature.getName()));
+		for (ETypedElement dataSource: dataSources) {
+			String text = EmfUtil.getNasdanikaAnnotationDetail(dataSource, EmfUtil.LABEL_KEY, Util.nameToLabel(dataSource.getName()));
+			String icon = EmfUtil.getNasdanikaAnnotationDetail(dataSource, EmfUtil.ICON_KEY);
+			LabelImpl label = new LabelImpl();
+			label.setText(text);
+			label.setIcon(icon);
+			header.header(viewGenerator.label(label));
 		}
 		
 		for (T element: elements) {
 			Row row = ret.body().row();
-			for (EStructuralFeature feature: features) {
+			for (ETypedElement dataSource: dataSources) {
 				Cell cell = row.cell();
-				ViewBuilder cellBuilder = cellBuilderProvider == null ? null : cellBuilderProvider.apply(element, feature);
+				ViewBuilder cellBuilder = cellBuilderProvider == null ? null : cellBuilderProvider.apply(element, dataSource);
 				if (cellBuilder == null) {
-					Object value = element.eGet(feature);
+					Object value;
+					if (dataSource instanceof EStructuralFeature) {
+						value = element.eGet((EStructuralFeature) dataSource);
+					} else if (dataSource instanceof EOperation) {
+						try {
+							value = element.eInvoke((EOperation) dataSource, ECollections.emptyEList());
+						} catch (InvocationTargetException e) {
+							throw new ConfigurationException("Exception invoking " + dataSource, e, EObjectAdaptable.adaptTo(element, Marked.class));
+						}
+					} else {
+						throw new IllegalArgumentException("Unsupported cell data source: " + dataSource);						
+					}
 					if (value != null) {
 						if (value instanceof EObject) {
 							ViewAction<?> va = EObjectAdaptable.adaptTo((EObject) value, ViewAction.class);
@@ -111,6 +134,23 @@ public final class HtmlEmfUtil {
 			}
 		}
 		return ret;
+	}
+
+	public static Color getSeverityColor(int severity) {
+		switch (severity) {
+		case Diagnostic.OK:
+			return Color.SUCCESS;
+		case Diagnostic.CANCEL:
+			return Color.SECONDARY;
+		case Diagnostic.ERROR:
+			return Color.DANGER;
+		case Diagnostic.INFO:
+			return Color.INFO;
+		case Diagnostic.WARNING:
+			return Color.WARNING;
+		default:
+			return Color.PRIMARY;
+		}
 	}
 	
 

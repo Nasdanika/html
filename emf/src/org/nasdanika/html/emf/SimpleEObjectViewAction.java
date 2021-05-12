@@ -201,28 +201,11 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		return contentValue;
 	}
 	
-	protected Color getSeverityColor(int severity) {
-		switch (severity) {
-		case Diagnostic.OK:
-			return Color.SUCCESS;
-		case Diagnostic.CANCEL:
-			return Color.SECONDARY;
-		case Diagnostic.ERROR:
-			return Color.DANGER;
-		case Diagnostic.INFO:
-			return Color.INFO;
-		case Diagnostic.WARNING:
-			return Color.WARNING;
-		default:
-			return Color.PRIMARY;
-		}
-	}
-	
 	protected Object doGenerate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 		Fragment ret = bootstrapFactory.getHTMLFactory().fragment();
 		for (Diagnostic diagnostic: getDiagnostic()) {
-			ret.content(bootstrapFactory.alert(getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
+			ret.content(bootstrapFactory.alert(HtmlEmfUtil.getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
 		}
 		ret.content(propertiesTable(viewGenerator, progressMonitor));
 		Object diagram = generateDiagram();
@@ -281,7 +264,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			Object listOfActions = ViewAction.listOfViewActionsSorted(referenceValue(feature), viewGenerator.label(fl), false, true, 1);
 			Fragment ret = viewGenerator.getHTMLFactory().fragment(viewGenerator.processViewPart(listOfActions, progressMonitor));
 			for (Diagnostic diagnostic: getFeatureDiagnostic(feature)) {
-				ret.content(bootstrapFactory.alert(getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
+				ret.content(bootstrapFactory.alert(HtmlEmfUtil.getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
 			}			
 			return ret;
 		}
@@ -290,7 +273,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		ret.getHeader().toHTMLElement().content(featureLabel(feature));
 		ret.getBody().toHTMLElement().content(featureValue(feature, getSemanticElement().eGet(feature), viewGenerator, progressMonitor));
 		for (Diagnostic diagnostic: getFeatureDiagnostic(feature)) {
-			ret.getFooter().toHTMLElement().content(bootstrapFactory.alert(getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
+			ret.getFooter().toHTMLElement().content(bootstrapFactory.alert(HtmlEmfUtil.getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
 		}
 	
 		return ret.toString();
@@ -387,7 +370,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	}
 
 	protected String featureLabel(EStructuralFeature feature) {
-		return EmfUtil.getNasdanikaAnnotationDetail(feature, "label", Util.nameToLabel(feature.getName()));
+		return EmfUtil.getNasdanikaAnnotationDetail(feature, EmfUtil.LABEL_KEY, Util.nameToLabel(feature.getName()));
 	}
 		
 	protected boolean isFeatureInRole(EStructuralFeature feature, FeatureRole role) {
@@ -433,7 +416,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 
 	@Override
 	public String getIcon() {
-		return EmfUtil.getNasdanikaAnnotationDetail(getSemanticElement().eClass(), "icon");
+		return EmfUtil.getNasdanikaAnnotationDetail(getSemanticElement().eClass(), EmfUtil.ICON_KEY);
 	}
 
 	@Override
@@ -527,11 +510,14 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 				Object featureValue = featureValue(sf, fv, viewGenerator, progressMonitor);
 				if (featureValue != null || !featureDiagnostic.isEmpty()) {
 					Row fRow = pTable.row(); 
-					fRow.header(featureLabel(sf)); 
+					LabelImpl fl = new LabelImpl();
+					fl.setText(featureLabel(sf));
+					fl.setIcon(featureIcon(sf));					
+					fRow.header(viewGenerator.label(fl)); 
 					Cell valueCell = featureValue == null ? fRow.cell() : fRow.cell(featureValue);
 					
 					for (Diagnostic diagnostic: featureDiagnostic) {
-						valueCell.toHTMLElement().content(bootstrapFactory.alert(getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
+						valueCell.toHTMLElement().content(bootstrapFactory.alert(HtmlEmfUtil.getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
 					}
 				}
 			}
@@ -618,7 +604,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	}
 
 	protected String featureIcon(EStructuralFeature feature) {
-		return EmfUtil.getNasdanikaAnnotationDetail(feature, "icon");
+		return EmfUtil.getNasdanikaAnnotationDetail(feature, EmfUtil.ICON_KEY, EmfUtil.getNasdanikaAnnotationDetail(feature.getEType(), EmfUtil.ICON_KEY));
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.jsoup.Jsoup;
 import org.nasdanika.emf.AnnotationSource;
 import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.impl.Util;
@@ -27,12 +28,12 @@ public class ENamedElementLabel<T extends ENamedElement> extends AnnotationSourc
 
 	@Override
 	public String getIcon() {
-		return getAnnotation("icon");
+		return getAnnotation(EmfUtil.ICON_KEY);
 	}
 	
 	@Override
 	public String getText() {
-		String text = EObjectAdaptable.getResourceContext(modelElement).getString("label");
+		String text = EObjectAdaptable.getResourceContext(modelElement).getString(EmfUtil.LABEL_KEY);
 		if (text != null) {
 			return text;
 		}
