@@ -287,5 +287,12 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	public Modal modal() {
 		return new ModalImpl(this);
 	}
+
+	@Override
+	public TagBootstrapElement progressBar(int percentage) {
+		HTMLFactory htmlFactory = getHTMLFactory();						
+		Tag progressDiv = htmlFactory.div(percentage + "%").addClass("progress-bar").style().width(percentage + "%");
+		return wrap(htmlFactory.div(progressDiv).addClass("progress"));
+	}
 	
 }

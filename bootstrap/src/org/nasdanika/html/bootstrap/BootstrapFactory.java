@@ -84,6 +84,8 @@ public interface BootstrapFactory {
 	 */
 	Table table();
 	
+	TagBootstrapElement progressBar(int percentage);
+	
 	/**
 	 * 
 	 * @param label
