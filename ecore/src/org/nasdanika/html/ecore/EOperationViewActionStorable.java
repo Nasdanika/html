@@ -65,9 +65,7 @@ public class EOperationViewActionStorable extends ETypedElementViewActionStorabl
 				
 				parametersList.add(adaptChild(ep).store(base, progressMonitor));				
 			}
-			signatureBuilder.append("-").append(Hex.encodeHexString(md.digest()));
-			
-			children.add(parametersCategory);			
+			signatureBuilder.append("-").append(Hex.encodeHexString(md.digest()));			
 		}
 		
 		if (!children.isEmpty()) {

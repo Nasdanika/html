@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypeParameter;
@@ -341,6 +342,8 @@ public class EModelElementViewActionStorable<T extends EModelElement> extends EO
 			contextClassifier = (EClassifier) eObject;
 		} else if (eObject.eContainer() instanceof EClassifier) {
 			contextClassifier = (EClassifier) eObject.eContainer();
+		} else if (eObject.eContainer() instanceof EOperation) {
+			contextClassifier = (EClassifier) eObject.eContainer().eContainer();
 		}
 			
 		if (contextClassifier != null) {	
