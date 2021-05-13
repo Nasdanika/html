@@ -39,6 +39,8 @@ public class EModelElementViewActionStorable<T extends EModelElement> extends EO
 	static final String CONTENT_KEY = "content";
 
 	static final String APP_ACTION_KEY = "app-action";
+	
+	static final String APP_CATEGORY_KEY = "app-category";
 
 	public static final String ICONS_BASE = "https://www.nasdanika.org/resources/images/ecore/";
 		

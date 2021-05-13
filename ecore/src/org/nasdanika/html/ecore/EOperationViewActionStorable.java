@@ -4,6 +4,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +26,6 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.SectionStyle;
-import org.nasdanika.html.app.impl.LabelImpl;
 
 public class EOperationViewActionStorable extends ETypedElementViewActionStorable<EOperation> {
 
@@ -47,23 +49,21 @@ public class EOperationViewActionStorable extends ETypedElementViewActionStorabl
 		List<Object> children = new ArrayList<>();		
 		
 		if (!eObject.getEParameters().isEmpty()) {
+			Map<String,Object> parametersCategory = new LinkedHashMap<>();
+			children.add(Collections.singletonMap(APP_CATEGORY_KEY, parametersCategory));
+			parametersCategory.put("text", "Parameters");
+			Collection<Object> parametersList = new ArrayList<>();
+			parametersCategory.put("actions", parametersList);
+			
 			// Creating a digest of parameter types to make the id shorter.
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-			LabelImpl parametersCategory = new LabelImpl();
-			parametersCategory.setText("Parameters");
-			
-			@SuppressWarnings("unchecked")
-			Map<String, Map<String, Object>> pcData = (Map<String, Map<String, Object>>) parametersCategory.asStorable(l -> "app-category").store(base, progressMonitor);
-			List<Object> pList = new ArrayList<>();
-			put(pcData, "actions", pList);
 			
 			for (EParameter ep: eObject.getEParameters()) {
 				EClassifier type = ep.getEType();
 				String typeStr = type.eClass().getName() + "-" + encodeEPackage(type.getEPackage()) + "-" + type.getName() + ",";
 				md.update(typeStr.getBytes(StandardCharsets.UTF_8));
 				
-				pList.add(adaptChild(ep).store(base, progressMonitor));				
+				parametersList.add(adaptChild(ep).store(base, progressMonitor));				
 			}
 			signatureBuilder.append("-").append(Hex.encodeHexString(md.digest()));
 			

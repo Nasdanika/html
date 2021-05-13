@@ -119,7 +119,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 		
 		if (!eObject.getEAttributes().isEmpty()) {
 			Map<String,Object> attrsCategory = new LinkedHashMap<>();
-			children.add(Collections.singletonMap("app-category", attrsCategory));
+			children.add(Collections.singletonMap(APP_CATEGORY_KEY, attrsCategory));
 			attrsCategory.put("text", "Attributes");
 			Collection<Object> attrList = new ArrayList<>();
 			attrsCategory.put("actions", attrList);
@@ -130,7 +130,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 		
 		if (!eObject.getEReferences().isEmpty()) {
 			Map<String,Object> refsCategory = new LinkedHashMap<>();
-			children.add(Collections.singletonMap("app-category", refsCategory));
+			children.add(Collections.singletonMap(APP_CATEGORY_KEY, refsCategory));
 			refsCategory.put("text", "References");
 			Collection<Object> refList = new ArrayList<>();
 			refsCategory.put("actions", refList);
@@ -142,7 +142,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 		
 		if (!eObject.getEOperations().isEmpty()) {
 			Map<String,Object> opsCategory = new LinkedHashMap<>();
-			children.add(Collections.singletonMap("app-category", opsCategory));
+			children.add(Collections.singletonMap(APP_CATEGORY_KEY, opsCategory));
 			opsCategory.put("text", "Operations");
 			Collection<Object> opList = new ArrayList<>();
 			opsCategory.put("actions", opList);
