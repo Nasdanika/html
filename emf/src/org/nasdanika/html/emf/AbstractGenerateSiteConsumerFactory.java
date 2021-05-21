@@ -126,9 +126,11 @@ public abstract class AbstractGenerateSiteConsumerFactory implements ConsumerFac
 	 */
 	protected MutableContext forkContext(Context context, ProgressMonitor progressMonitor) {
 		MutableContext ret = context.fork();
-		String base = getBaseURI();
-		if (!Util.isBlank(base)) {
-			ret.put(Context.BASE_URI_PROPERTY, base);
+		if (context.get(Context.BASE_URI_PROPERTY) == null) {
+			String base = getBaseURI();
+			if (!Util.isBlank(base)) {
+				ret.put(Context.BASE_URI_PROPERTY, base);
+			}
 		}
 		
 		DiagramGenerator diagramGenerator = createDiagramGenerator(progressMonitor);
