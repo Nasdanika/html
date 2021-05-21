@@ -47,15 +47,12 @@ public class PathNavigationActionActivator implements NavigationActionActivator 
 	@Override
 	public String getUrl(String base) {
 		try {
-			URI uri = URI.createURI(String.join("", path));
-			
 			// Resolving against the context URI
 			Action navigationAncestor = getNavigationAncestor();
 			String ctx = navigationAncestor == null ? contextUri : ((NavigationActionActivator) navigationAncestor.getActivator()).getUrl(null);
+			URI ctxURI = Util.isBlank(ctx) ? null : URI.createURI(ctx);
+			URI uri = path.stream().map(e -> URI.createURI(e)).reduce(ctxURI, (c, s) -> c == null || c.isRelative() || !c.isHierarchical() ? s : s.resolve(c)); 
 			
-			if (!Util.isBlank(ctx)) {
-				uri = uri.resolve(URI.createURI(ctx));
-			}
 			// Relativising against the base
 			return (Util.isBlank(base) ? uri : uri.deresolve(URI.createURI(base), true, true, true)).toString();
 		} catch (Exception e) {
