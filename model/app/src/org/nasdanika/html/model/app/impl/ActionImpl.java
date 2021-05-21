@@ -633,7 +633,9 @@ public class ActionImpl extends LabelImpl implements Action {
 		
 		if (eIsSet(AppPackage.Literals.ACTION__LOCATION)) {
 			Context context = (Context) EcoreUtil.getRegisteredAdapter(this, Context.class);
-			return new PathNavigationActionActivator(this, context == null ? null : context.getString(Context.BASE_URI_PROPERTY), getLocation(), marked == null ? null : marked.getMarker()) {
+			String contextURI = context == null ? null : context.getString(Context.BASE_URI_PROPERTY);
+			String path = context == null ? getLocation() : context.interpolateToString(getLocation());
+			return new PathNavigationActionActivator(this, contextURI, path, marked == null ? null : marked.getMarker()) {
 				
 				@Override
 				public boolean inline() {
