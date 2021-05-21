@@ -8,7 +8,6 @@ public class EAttributeViewActionStorable extends EStructuralFeatureViewActionSt
 
 	public EAttributeViewActionStorable(EAttribute value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value, context, ePackagePathComputer);
-	}
-		
+	}	
 
 }

@@ -4,11 +4,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
@@ -21,17 +23,30 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
+import org.nasdanika.common.MarkdownHelper;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.emf.PlantUmlTextGenerator;
 import org.nasdanika.emf.PlantUmlTextGenerator.RelationshipDirection;
+import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.SectionStyle;
+import org.nasdanika.html.bootstrap.BootstrapFactory;
+import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.RowContainer.Row;
+import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
+import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.bootstrap.Text.Alignment;
+import org.nasdanika.html.bootstrap.Text.Weight;
 
 public class EClassViewActionStorable extends EClassifierViewActionStorable<EClass> {
 
@@ -117,10 +132,57 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 		
 		List<Object> children = new ArrayList<>();
 		
+		if (!eObject.isAbstract() && "true".equals(EmfUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.IS_LOADABLE, "true"))) {
+			Map<String,Object> loadData = new LinkedHashMap<>();
+//			loadData.put("icon", "fas fa-database");
+			loadData.put("id", "load-specification");
+			loadData.put("text", "Load specification");
+			loadData.put("role", Action.Role.SECTION);
+
+			List<Object> content = new ArrayList<>();
+			loadData.put(CONTENT_KEY, content);
+			
+			String loadDoc = EmfUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.LOAD_DOC);
+			if (!Util.isBlank(loadDoc)) {
+				content.add(interpolatedMarkdown(loadDoc));
+			}
+			
+			BootstrapFactory bootstrapFactory = BootstrapFactory.INSTANCE;
+			Table table = bootstrapFactory.table().bordered().striped();
+			table.header().headerRow("Key", "Type", "Homogenous", "Strict containment", "Description").background(Color.SECONDARY);			
+			
+			Predicate<EStructuralFeature> predicate = sf -> sf.isChangeable() && "true".equals(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, "true"));
+			Comparator<EStructuralFeature> comparator = (a,b) -> a.getName().compareTo(b.getName());
+			for (EStructuralFeature sf: eObject.getEAllStructuralFeatures().stream().filter(predicate).sorted(comparator).collect(Collectors.toList())) {
+				Row featureRow = table.body().row();
+				Cell keyCell = featureRow.cell(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, Util.camelToKebab(sf.getName())));
+				keyCell.text().monospace();
+				if ("true".equals(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_DEFAULT_FEATURE))) {
+					keyCell.text().weight(Weight.BOLD);
+				}
+
+				genericType(sf.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);				
+				
+				featureRow.cell(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENOUS, "")).text().alignment(Alignment.CENTER);
+				featureRow.cell(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_STRICT_CONTAINMENT, "")).text().alignment(Alignment.CENTER);
+				String featureDoc = EObjectAdaptable.getResourceContext(sf).getString("documentation", EcoreUtil.getDocumentation(sf));
+				if (Util.isBlank(featureDoc)) {
+					featureDoc = EmfUtil.getDocumentation(sf);
+				}
+				
+				String featureLoadDoc = EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_DOC, featureDoc);
+				featureRow.cell(Util.isBlank(featureLoadDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureLoadDoc));
+			};
+			content.add(table.toString());
+			
+			children.add(Collections.singletonMap(APP_ACTION_KEY, loadData));
+		}
+		
 		if (!eObject.getEAttributes().isEmpty()) {
 			Map<String,Object> attrsCategory = new LinkedHashMap<>();
 			children.add(Collections.singletonMap(APP_CATEGORY_KEY, attrsCategory));
 			attrsCategory.put("text", "Attributes");
+			attrsCategory.put("id", "attributes");
 			Collection<Object> attrList = new ArrayList<>();
 			attrsCategory.put("actions", attrList);
 			for (EStructuralFeature sf: eObject.getEAttributes().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
@@ -132,6 +194,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 			Map<String,Object> refsCategory = new LinkedHashMap<>();
 			children.add(Collections.singletonMap(APP_CATEGORY_KEY, refsCategory));
 			refsCategory.put("text", "References");
+			refsCategory.put("id", "references");
 			Collection<Object> refList = new ArrayList<>();
 			refsCategory.put("actions", refList);
 			
@@ -144,6 +207,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 			Map<String,Object> opsCategory = new LinkedHashMap<>();
 			children.add(Collections.singletonMap(APP_CATEGORY_KEY, opsCategory));
 			opsCategory.put("text", "Operations");
+			opsCategory.put("id", "operations");
 			Collection<Object> opList = new ArrayList<>();
 			opsCategory.put("actions", opList);
 			

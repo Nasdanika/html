@@ -13,5 +13,7 @@ engineering-module:
            status: nasdanika:issue-statuses/done
            description:
              exec-styled-markdown: "``Purum``-pum-pum."           
+     - name: YAML/load spec
+       description: All keys including inherited - changeable, take load-key annotation into account, load-doc annotation to override default description. Sort alphabetically. Table. Homogenous, strict containment, default feature.  
 
 
