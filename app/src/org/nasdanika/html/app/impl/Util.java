@@ -116,35 +116,41 @@ public final class Util {
 	 * @return A trigger tag to activate description modal or null if there is no description or it is the same as tooltip.
 	 */
 	public static Tag descriptionModal(ViewGenerator viewGenerator, Label label) {
+		return descriptionModal(viewGenerator, label, viewGenerator.getBodyContentConsumer());
+	}
+	
+	/**
+	 * @param viewGenerator
+	 * @param label
+	 * @return A trigger tag to activate description modal or null if there is no description or it is the same as tooltip.
+	 */
+	public static Tag descriptionModal(ViewGenerator viewGenerator, Label label, Consumer<? super Modal> modalConsumer) {		
 		// Description modal
 		String description = label.getDescription();
 		String tooltip = label.getTooltip();
-		if (!Util.isBlank(description) && !Jsoup.parse(description).text().equals(tooltip)) {
-			Consumer<Object> bcc = viewGenerator.getBodyContentConsumer();
-			if (bcc != null) {
-				BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
-				Modal descriptionModal = bootstrapFactory.modal();
-				descriptionModal.scrollable().size(Breakpoint.LARGE);
-				bcc.accept(descriptionModal);
-				TagBootstrapElement header = descriptionModal.getHeader();
-				header.background(Color.SECONDARY);
-				Tag headerTag = header.toHTMLElement();
-				String questionCircleIcon = "far fa-question-circle";
-				Tag modalTitle = viewGenerator.get(HTMLFactory.class).tag(TagName.h5, TagName.span.create().addClass(questionCircleIcon).style().margin().right("0.3em"), label.getText());
-				headerTag.content(modalTitle);
-				Button dismisser = bootstrapFactory.getHTMLFactory().button("x").addClass("close");
-				headerTag.content(dismisser);
-				descriptionModal.bindDismisser(dismisser);
-				
-				Tag trigger = bootstrapFactory.getHTMLFactory().tag(TagName.sup).addClass(questionCircleIcon).style("cursor", "pointer");
-				if (!Util.isBlank(tooltip)) {
-					trigger.attribute("title", tooltip);
-				}
-				descriptionModal.bindTrigger(trigger);
-				
-				descriptionModal.getBody().toHTMLElement().content(description);
-				return trigger;
+		if (modalConsumer != null && !Util.isBlank(description) && !Jsoup.parse(description).text().equals(tooltip)) {
+			BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
+			Modal descriptionModal = bootstrapFactory.modal();
+			descriptionModal.scrollable().size(Breakpoint.LARGE);
+			modalConsumer.accept(descriptionModal);
+			TagBootstrapElement header = descriptionModal.getHeader();
+			header.background(Color.SECONDARY);
+			Tag headerTag = header.toHTMLElement();
+			String questionCircleIcon = "far fa-question-circle";
+			Tag modalTitle = viewGenerator.get(HTMLFactory.class).tag(TagName.h5, TagName.span.create().addClass(questionCircleIcon).style().margin().right("0.3em"), label.getText());
+			headerTag.content(modalTitle);
+			Button dismisser = bootstrapFactory.getHTMLFactory().button("x").addClass("close");
+			headerTag.content(dismisser);
+			descriptionModal.bindDismisser(dismisser);
+			
+			Tag trigger = bootstrapFactory.getHTMLFactory().tag(TagName.sup).addClass(questionCircleIcon).style("cursor", "pointer");
+			if (!Util.isBlank(tooltip)) {
+				trigger.attribute("title", tooltip);
 			}
+			descriptionModal.bindTrigger(trigger);
+			
+			descriptionModal.getBody().toHTMLElement().content(description);
+			return trigger;
 		}
 		return null;
 	}
