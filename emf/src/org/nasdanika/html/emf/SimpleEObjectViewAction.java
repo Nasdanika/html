@@ -121,6 +121,16 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	}
 	
 	/**
+	 * Override to output diagnostic summary, e.g. a table or a list.
+	 * @param viewGenerator
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected Object diagnosticSummary(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		return null;
+	}	
+	
+	/**
 	 * @return Diagnostics for a {@link EStructuralFeature} of the semantic element. 
 	 * This implementation returns an empty list. 
 	 */
@@ -221,6 +231,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			ret.content(bootstrapFactory.alert(HtmlEmfUtil.getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
 		}
 		ret.content(propertiesTable(viewGenerator, progressMonitor));
+		ret.content(diagnosticSummary(viewGenerator, progressMonitor));
 		Object diagram = generateDiagram();
 		if (diagram != null) {
 			ret.content(diagram);
