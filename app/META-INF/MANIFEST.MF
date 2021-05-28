@@ -15,7 +15,8 @@ Require-Bundle: org.nasdanika.html;bundle-version="2.0.0";visibility:=reexport,
  org.apache.commons.commons-text,
  org.nasdanika.exec;visibility:=reexport,
  org.eclipse.emf.common;bundle-version="2.20.0",
- org.apache.commons.lang3;bundle-version="3.11.0"
+ org.apache.commons.lang3;bundle-version="3.11.0",
+ org.jsoup;bundle-version="1.13.1"
 Automatic-Module-Name: org.nasdanika.html.app
 Export-Package: org.nasdanika.html.app,
  org.nasdanika.html.app.factories,
