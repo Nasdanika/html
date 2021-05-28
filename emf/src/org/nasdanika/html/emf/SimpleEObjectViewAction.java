@@ -248,19 +248,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
 		
 		if (feature instanceof EReference) {
-			Label fl = new LabelImpl() {
-				
-				@Override
-				public String getText() {
-					return featureLabel(feature);
-				}
-				
-				@Override
-				public String getIcon() {
-					return featureIcon(feature);
-				}
-				
-			};
+			Label fl = featureLabel(feature);
 			Object listOfActions = ViewAction.listOfViewActionsSorted(referenceValue(feature), viewGenerator.label(fl), false, true, 1);
 			Fragment ret = viewGenerator.getHTMLFactory().fragment(viewGenerator.processViewPart(listOfActions, progressMonitor));
 			for (Diagnostic diagnostic: getFeatureDiagnostic(feature)) {
@@ -270,7 +258,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}
 		
 		Card ret = viewGenerator.getBootstrapFactory().card();
-		ret.getHeader().toHTMLElement().content(featureLabel(feature));
+		ret.getHeader().toHTMLElement().content(viewGenerator.label(featureLabel(feature)));
 		ret.getBody().toHTMLElement().content(featureValue(feature, getSemanticElement().eGet(feature), viewGenerator, progressMonitor));
 		for (Diagnostic diagnostic: getFeatureDiagnostic(feature)) {
 			ret.getFooter().toHTMLElement().content(bootstrapFactory.alert(HtmlEmfUtil.getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
@@ -360,17 +348,46 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			
 			featureSection.getRoles().add(Action.Role.SECTION); 
 			featureSection.setSectionStyle(SectionStyle.DEFAULT);
-			featureSection.setText(featureLabel(feature)); 		
+			featureSection.setText(featureLabelText(feature)); 		
 			featureSection.setIcon(featureIcon(feature));
+			featureSection.setDescription(featureDescription(feature));
 			featureSection.setActivator(new PathNavigationActionActivator(featureSection, ((NavigationActionActivator) getActivator()).getUrl(null), "#feature-" + feature.getName(), getMarker()));
 	
 			return Collections.singleton(featureSection);
 		}
 		return Collections.emptyList();
 	}
+	
+	protected LabelImpl featureLabel(EStructuralFeature feature) {
+		LabelImpl ret = new LabelImpl();
+		ret.setText(featureLabelText(feature));
+		ret.setIcon(featureIcon(feature));
+		String featureDescription = featureDescription(feature);
+		ret.setDescription(featureDescription);
+		if (!Util.isBlank(featureDescription)) {
+			ret.setTooltip(Util.firstPlainTextSentence(featureDescription, 50, 250));
+		}
+		
+		return ret;		
+	}
 
-	protected String featureLabel(EStructuralFeature feature) {
+	protected String featureLabelText(EStructuralFeature feature) {
 		return EmfUtil.getNasdanikaAnnotationDetail(feature, EmfUtil.LABEL_KEY, Util.nameToLabel(feature.getName()));
+	}
+	
+	protected String featureDescription(EStructuralFeature feature) {
+		String classSegment = Util.camelToKebab(feature.getEContainingClass().getName());
+		String featureSegment = Util.camelToKebab(feature.getName());
+		URL descriptionResource = getClass().getResource(classSegment + "--" + featureSegment + ".md");
+		if (descriptionResource == null) {
+			return null;
+		}
+		try {
+			String descriptionString = DefaultConverter.INSTANCE.toString(descriptionResource.openStream());
+			return getContext().get(MarkdownHelper.class, MarkdownHelper.INSTANCE).markdownToHtml(getContext().interpolateToString(descriptionString));
+		} catch (Exception e) {
+			return "Exception rendering description: " + e;
+		}
 	}
 		
 	protected boolean isFeatureInRole(EStructuralFeature feature, FeatureRole role) {
@@ -504,16 +521,16 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			if (isFeatureInRole(sf, FeatureRole.PROPERTY)) {
 				Collection<Diagnostic> featureDiagnostic = getFeatureDiagnostic(sf);
 				Object fv = getSemanticElement().eGet(sf);
-				if (featureDiagnostic.isEmpty() && (fv == null || (fv instanceof String && Util.isBlank((String) fv)))) {
+				if (featureDiagnostic.isEmpty() && isEmptyFeatureValue(sf, fv)) {
 					continue;
 				}
 				Object featureValue = featureValue(sf, fv, viewGenerator, progressMonitor);
 				if (featureValue != null || !featureDiagnostic.isEmpty()) {
 					Row fRow = pTable.row(); 
-					LabelImpl fl = new LabelImpl();
-					fl.setText(featureLabel(sf));
-					fl.setIcon(featureIcon(sf));					
-					fRow.header(viewGenerator.label(fl)); 
+					LabelImpl fl = featureLabel(sf);
+					Cell nameHeader = fRow.header(viewGenerator.label(fl));
+					nameHeader.toHTMLElement().content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, fl));
+					
 					Cell valueCell = featureValue == null ? fRow.cell() : fRow.cell(featureValue);
 					
 					for (Diagnostic diagnostic: featureDiagnostic) {
@@ -525,6 +542,26 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		
 		return pTable;
 	}	
+	
+	/**
+	 * Empty feature values are not shown in property tables unless there is a diagnostic to show.
+	 * This method returns true if value is null, an empty string, false for booleans, or zero for numbers.
+	 * @param feature
+	 * @param value
+	 * @return
+	 */
+	protected boolean isEmptyFeatureValue(EStructuralFeature feature, Object value) {
+		if (value == null) {
+			return true;
+		}
+		if (value instanceof String) {
+			return Util.isBlank((String) value);		
+		}
+		if (value instanceof Number) {
+			return ((Number) value).equals(0);
+		}
+		return Boolean.FALSE.equals(value);
+	}
 	
 	protected Object location(Marker marker, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		Context context = getContext();
@@ -595,10 +632,8 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		if (parent == null) {
 			return null;
 		}
-		LabelImpl category = new LabelImpl();
+		LabelImpl category = featureLabel(cf);
 		category.setId(cf.getName());
-		category.setText(featureLabel(cf)); 
-		category.setIcon(featureIcon(cf));		
 		category.setId(parent.getId() + "-feature-category-" + cf.getName());
 		return category;
 	}
