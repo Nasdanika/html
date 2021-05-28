@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -41,6 +42,7 @@ import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.LabelImpl;
 import org.nasdanika.html.app.impl.PathNavigationActionActivator;
+import org.nasdanika.html.app.impl.ViewGeneratorImpl;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Color;
@@ -184,6 +186,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	}
 	
 	protected Optional<Object> content;
+	protected List<Object> headContributions = new ArrayList<>();
 
 	/**
 	 * Delegates to doGenerate to perform content generation. Caches if isCacheContent() returns true.
@@ -191,13 +194,23 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		if (isCacheContent() && content != null) {
+			Consumer<Object> headContentConsumer = viewGenerator.getHeadContentConsumer();
+			if (headContentConsumer != null) {
+				headContributions.forEach(headContentConsumer);
+			}			
 			return content.isPresent() ? content.get() : null;
 		}
 		if (!isCacheContent()) {
 			return doGenerate(viewGenerator, progressMonitor);
 		}
-		Object contentValue = doGenerate(viewGenerator, progressMonitor);
+		Fragment contentValue = viewGenerator.getHTMLFactory().fragment();
+		ViewGeneratorImpl vg = new ViewGeneratorImpl(viewGenerator, headContributions::add, contentValue::content);
+		contentValue.content(doGenerate(vg, progressMonitor));
 		content = contentValue == null ? Optional.empty() : Optional.of(contentValue);
+		Consumer<Object> headContentConsumer = viewGenerator.getHeadContentConsumer();
+		if (headContentConsumer != null) {
+			headContributions.forEach(headContentConsumer);
+		}
 		return contentValue;
 	}
 	

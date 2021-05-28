@@ -8,4 +8,10 @@ engineering-module:
         DiagnosticAdapter takes Diagnostic in its constructor and filters by target on query (target may change).
         SimpleEObjectViewAction adapts target to DiagnosticSource and displays diagnostics with features and the object allowing to override how it is done - alerts, background, border, ...
         Duplicate - all diagnostics as a context action with respective color. A table with messages and links to sources if they are adaptable to ViewAction. 
+    - name: Feature description
+      status: nasdanika:issue-statuses/done
+      markdown-description: |+2
+        Similar to getDescription(). Use double dash to separate EClass name from feature name. E.g. ``engineered-element--issues.md``.
+        Use in feature actions. Rename ``getFeatureLabel()`` to ``getFeatureText()``, create ``Label getFeatureLabel()`` method returning a label with 
+        text, icon, and description. Question marks and description modals in sections - tabs, paragraphs, ... 
         
