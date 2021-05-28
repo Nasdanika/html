@@ -143,7 +143,7 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 
 	@Override
 	public Tag link(Action action) {
-		Tag ret = label(action, get(HTMLFactory.class).tag(TagName.a));
+		Tag ret = label(action, get(HTMLFactory.class).tag(TagName.a), false);
 		bindLink(action, ret);
 		return ret;
 	}
@@ -324,6 +324,11 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 
 	@Override
 	public void label(Label label, Consumer<Object> contentConsumer) {
+		label(label, contentConsumer, true);
+	}
+	
+	public void label(Label label, Consumer<Object> contentConsumer, boolean withHelpTrigger) {
+		
 		String tooltip = label.getTooltip();
 		if (!Util.isBlank(tooltip)) {
 			Tag span = get(HTMLFactory.class).span();
@@ -370,13 +375,21 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 //			getBootstrapFactory().wrap(badge)._float().right();
 		}
 		
-		// TODO - help content - tooltip, icon, modals, ...
-				
+		if (withHelpTrigger) {
+//			Tag helpTrigger = org.nasdanika.html.app.impl.Util.descriptionModal(this, label);
+//			if (helpTrigger != null) {
+//				contentConsumer.accept(helpTrigger);
+//			}
+		}
 	}
 	
 	@Override
 	public <H extends HTMLElement<?> & Container<?>> H label(Label label, H container) {
-		label(label, (Consumer<Object>) container::content);
+		return label(label, container, true);
+	}
+	
+	private <H extends HTMLElement<?> & Container<?>> H label(Label label, H container, boolean withHelpTrigger) {		
+		label(label, (Consumer<Object>) container::content, withHelpTrigger);
 		if (label instanceof Action) {
 			container.addClass("nsd-action");
 			container.attribute("data-nsd-action", ((Action) label).getId());

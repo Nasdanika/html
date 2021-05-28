@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
+import org.jsoup.Jsoup;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
@@ -118,7 +119,7 @@ public final class Util {
 		// Description modal
 		String description = label.getDescription();
 		String tooltip = label.getTooltip();
-		if (!Util.isBlank(description) && !description.equals(tooltip)) {
+		if (!Util.isBlank(description) && !Jsoup.parse(description).text().equals(tooltip)) {
 			Consumer<Object> bcc = viewGenerator.getBodyContentConsumer();
 			if (bcc != null) {
 				BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
@@ -129,8 +130,8 @@ public final class Util {
 				header.background(Color.SECONDARY);
 				Tag headerTag = header.toHTMLElement();
 				String questionCircleIcon = "far fa-question-circle";
-				Tag modalTitle = viewGenerator.get(HTMLFactory.class).tag(TagName.h5, TagName.span.create().addClass(questionCircleIcon), " ");
-				headerTag.content(viewGenerator.label(label, modalTitle));
+				Tag modalTitle = viewGenerator.get(HTMLFactory.class).tag(TagName.h5, TagName.span.create().addClass(questionCircleIcon).style().margin().right("0.3em"), label.getText());
+				headerTag.content(modalTitle);
 				Button dismisser = bootstrapFactory.getHTMLFactory().button("x").addClass("close");
 				headerTag.content(dismisser);
 				descriptionModal.bindDismisser(dismisser);
@@ -173,22 +174,22 @@ public final class Util {
 		MutableContext actionContext = context.fork();		
 		if (!active.isEmpty() && active.getActivator() instanceof NavigationActionActivator) {
 			NavigationActionActivator activator = (NavigationActionActivator) active.getActivator();
-			String actionURI = activator.getUrl(null);
-			actionContext.put(Context.BASE_URI_PROPERTY, actionURI);
-			actionContext.put("page-title", active.getText());
-			ApplicationBuilder builder = new ActionApplicationBuilder(actionContext, root, principal, active) {
-				
-				@Override
-				protected Style getNavigationPanelStyle() {
-					return navigationPanelStyle == null ? super.getNavigationPanelStyle() : navigationPanelStyle;
-				}
-				
-			};
-			Application app = org.nasdanika.common.Util.call(applicationSupplierFactory.create(actionContext), monitor, null);
-			builder.build(app, monitor);
-
-			String url = ((NavigationActionActivator) active.getActivator()).getUrl(null);
+			String url = activator.getUrl(null);
 			if (url != null && url.startsWith(base)) {	
+				String actionURI = activator.getUrl(null);
+				actionContext.put(Context.BASE_URI_PROPERTY, actionURI);
+				actionContext.put("page-title", active.getText());
+				ApplicationBuilder builder = new ActionApplicationBuilder(actionContext, root, principal, active) {
+					
+					@Override
+					protected Style getNavigationPanelStyle() {
+						return navigationPanelStyle == null ? super.getNavigationPanelStyle() : navigationPanelStyle;
+					}
+					
+				};
+				Application app = org.nasdanika.common.Util.call(applicationSupplierFactory.create(actionContext), monitor, null);
+				builder.build(app, monitor);
+
 				container.put(url.substring(base.length()), app.toString(), monitor);
 			}			
 		}		
