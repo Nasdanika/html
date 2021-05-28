@@ -177,30 +177,32 @@ public final class Util {
 			SupplierFactory<? extends Application> applicationSupplierFactory,
 			ProgressMonitor monitor) throws Exception {
 		
-		MutableContext actionContext = context.fork();		
-		if (!active.isEmpty() && active.getActivator() instanceof NavigationActionActivator) {
-			NavigationActionActivator activator = (NavigationActionActivator) active.getActivator();
-			String url = activator.getUrl(null);
-			if (url != null && url.startsWith(base)) {	
-				String actionURI = activator.getUrl(null);
-				actionContext.put(Context.BASE_URI_PROPERTY, actionURI);
-				actionContext.put("page-title", active.getText());
-				ApplicationBuilder builder = new ActionApplicationBuilder(actionContext, root, principal, active) {
-					
-					@Override
-					protected Style getNavigationPanelStyle() {
-						return navigationPanelStyle == null ? super.getNavigationPanelStyle() : navigationPanelStyle;
-					}
-					
-				};
-				Application app = org.nasdanika.common.Util.call(applicationSupplierFactory.create(actionContext), monitor, null);
-				builder.build(app, monitor);
-
-				container.put(url.substring(base.length()), app.toString(), monitor);
-			}			
-		}		
-		for (Action child: active.getChildren()) {
-			writeAction(root, principal, child, base, container, actionContext, navigationPanelStyle, applicationSupplierFactory, monitor);
+		if (active != null) {
+			MutableContext actionContext = context.fork();		
+			if (!active.isEmpty() && active.getActivator() instanceof NavigationActionActivator) {
+				NavigationActionActivator activator = (NavigationActionActivator) active.getActivator();
+				String url = activator.getUrl(null);
+				if (url != null && url.startsWith(base)) {	
+					String actionURI = activator.getUrl(null);
+					actionContext.put(Context.BASE_URI_PROPERTY, actionURI);
+					actionContext.put("page-title", active.getText());
+					ApplicationBuilder builder = new ActionApplicationBuilder(actionContext, root, principal, active) {
+						
+						@Override
+						protected Style getNavigationPanelStyle() {
+							return navigationPanelStyle == null ? super.getNavigationPanelStyle() : navigationPanelStyle;
+						}
+						
+					};
+					Application app = org.nasdanika.common.Util.call(applicationSupplierFactory.create(actionContext), monitor, null);
+					builder.build(app, monitor);
+	
+					container.put(url.substring(base.length()), app.toString(), monitor);
+				}			
+			}		
+			for (Action child: active.getChildren()) {
+				writeAction(root, principal, child, base, container, actionContext, navigationPanelStyle, applicationSupplierFactory, monitor);
+			}
 		}
 	}	
 
