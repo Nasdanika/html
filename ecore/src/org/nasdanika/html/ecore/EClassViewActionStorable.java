@@ -123,28 +123,15 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 			}
 			addContent(data, gstf.toString());
 		}
-
-		Map<String, Object> locConfig = new LinkedHashMap<>();
-		locConfig.put("tooltip", true);
-		locConfig.put("header", "Members");		
-		locConfig.put("role", Action.Role.SECTION);		
-		addContent(data, Collections.singletonMap("component-list-of-contents", locConfig));
 		
-		List<Object> children = new ArrayList<>();
-		
+		// Load specification
 		if (!eObject.isAbstract() && "true".equals(EmfUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.IS_LOADABLE, "true"))) {
-			Map<String,Object> loadData = new LinkedHashMap<>();
-//			loadData.put("icon", "fas fa-database");
-			loadData.put("id", "load-specification");
-			loadData.put("text", "Load specification");
-			loadData.put("role", Action.Role.SECTION);
-
-			List<Object> content = new ArrayList<>();
-			loadData.put(CONTENT_KEY, content);
+			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
+			Fragment gstf = htmlFactory.fragment(TagName.h3.create("Load specification"));
 			
 			String loadDoc = EmfUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.LOAD_DOC);
 			if (!Util.isBlank(loadDoc)) {
-				content.add(interpolatedMarkdown(loadDoc));
+				gstf.content(interpolatedMarkdown(loadDoc));
 			}
 			
 			BootstrapFactory bootstrapFactory = BootstrapFactory.INSTANCE;
@@ -157,7 +144,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 				Row featureRow = table.body().row();
 				Cell keyCell = featureRow.cell(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, Util.camelToKebab(sf.getName())));
 				keyCell.text().monospace();
-				if ("true".equals(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_DEFAULT_FEATURE))) {
+				if (EObjectLoader.isDefaultFeature(eObject, sf)) {
 					keyCell.text().weight(Weight.BOLD);
 				}
 
@@ -173,10 +160,18 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 				String featureLoadDoc = EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_DOC, featureDoc);
 				featureRow.cell(Util.isBlank(featureLoadDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureLoadDoc));
 			};
-			content.add(table.toString());
+			gstf.content(table);
 			
-			children.add(Collections.singletonMap(APP_ACTION_KEY, loadData));
+			addContent(data, gstf.toString());
 		}
+
+		Map<String, Object> locConfig = new LinkedHashMap<>();
+		locConfig.put("tooltip", true);
+		locConfig.put("header", "Members");		
+		locConfig.put("role", Action.Role.SECTION);		
+		addContent(data, Collections.singletonMap("component-list-of-contents", locConfig));
+		
+		List<Object> children = new ArrayList<>();
 		
 		if (!eObject.getEAttributes().isEmpty()) {
 			Map<String,Object> attrsCategory = new LinkedHashMap<>();

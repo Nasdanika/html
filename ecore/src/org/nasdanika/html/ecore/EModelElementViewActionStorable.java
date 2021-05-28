@@ -118,7 +118,11 @@ public class EModelElementViewActionStorable<T extends EModelElement> extends EO
 		if (Util.isBlank(markdown)) {
 			markdown = EmfUtil.getDocumentation(modelElement);
 		}
-		return Util.isBlank(markdown) ? null : context.computingContext().get(MarkdownHelper.class, MarkdownHelper.INSTANCE).firstPlainTextSentence(markdown);
+		if (Util.isBlank(markdown)) {
+			return null;
+		}
+		String ret = context.computingContext().get(MarkdownHelper.class, MarkdownHelper.INSTANCE).firstPlainTextSentence(markdown);
+		return String.join(" ", ret.split("\\R")); // Replacing new lines, shall they be in the first sentence, with spaces.		
 	}
 		
 	/**
