@@ -20,5 +20,15 @@ public class EStructuralFeatureViewActionImpl<T extends EObject, F extends EStru
 	public F getEStructuralFeature() {
 		return feature;
 	}
+	
+	@Override
+	public String getTooltip() {
+		String descr = getDescription();
+		if (!Util.isBlank(descr)) {
+			return Util.firstPlainTextSentence(descr, 50, 250);
+		}
+		
+		return null;
+	}
 
 }
