@@ -38,11 +38,11 @@ public interface ViewAction<T extends EObject> extends Action {
 	 */
 	T getSemanticElement();
 
-	static List<Action> adaptToViewActionNonNull(Collection<? extends EObject> c) {
+	static List<Action> adaptToViewActionsNonNull(Collection<? extends EObject> c) {
 		return c.stream().map(ViewAction::adaptToViewActionNonNull).collect(Collectors.toList());
 	}
 
-	static List<Action> adaptToViewActionNonNullSorted(Collection<? extends EObject> c) {
+	static List<Action> adaptToViewActionsNonNullSorted(Collection<? extends EObject> c) {
 		return c.stream().map(ViewAction::adaptToViewActionNonNull).sorted((a,b) -> a.getText().compareTo(b.getText())).collect(Collectors.toList());
 	}
 
@@ -50,14 +50,14 @@ public interface ViewAction<T extends EObject> extends Action {
 		if (elements.isEmpty()) {
 			return null;
 		}
-		return new ListOfActionsViewPart(adaptToViewActionNonNull(elements), header, tooltip, depth, OrderedListType.ROTATE);
+		return new ListOfActionsViewPart(adaptToViewActionsNonNull(elements), header, tooltip, depth, OrderedListType.ROTATE);
 	}
 
 	static Object listOfViewActionsSorted(Collection<? extends EObject> elements, Object header, boolean sort, boolean tooltip, int depth) { 
 		if (elements.isEmpty()) {
 			return null;
 		}
-		return new ListOfActionsViewPart(adaptToViewActionNonNullSorted(elements), header, tooltip, depth, OrderedListType.ROTATE);
+		return new ListOfActionsViewPart(adaptToViewActionsNonNullSorted(elements), header, tooltip, depth, OrderedListType.ROTATE);
 	}
 	
 }

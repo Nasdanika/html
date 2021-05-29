@@ -317,9 +317,9 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		ArrayList<Action> children = new ArrayList<Action>();
 		for (EStructuralFeature feature: getFeatures()) {
 			if (isFeatureInRole(feature, FeatureRole.ELEMENT_ACTIONS)) {				
-				children.addAll(ViewAction.adaptToViewActionNonNull(referenceValue(feature)));
+				children.addAll(ViewAction.adaptToViewActionsNonNull(referenceValue(feature)));
 			} else if (isFeatureInRole(feature, FeatureRole.ELEMENT_ACTIONS_SORTED)) {				
-				children.addAll(ViewAction.adaptToViewActionNonNullSorted(referenceValue(feature)));
+				children.addAll(ViewAction.adaptToViewActionsNonNullSorted(referenceValue(feature)));
 			}
 			if (isFeatureInRole(feature, FeatureRole.FEATURE_ACTIONS)) {				
 				Collection<Action> featureActions = featureActions(feature);
