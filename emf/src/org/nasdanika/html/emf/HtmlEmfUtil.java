@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypedElement;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.ConfigurationException;
@@ -78,6 +79,7 @@ public final class HtmlEmfUtil {
 
 	public static <T extends EObject> Table table(
 			Collection<T> elements,
+			Function<ETypedElement, ViewBuilder> headerBuilderProvider, 
 			Function<T, ViewBuilder> rowBuilderProvider,
 			BiFunction<T, ETypedElement, ViewBuilder> cellBuilderProvider, 
 			ViewGenerator viewGenerator, 
@@ -87,16 +89,34 @@ public final class HtmlEmfUtil {
 		Table ret = bootstrapFactory.table().bordered();
 		Row header = ret.header().row().color(Color.INFO);
 		for (ETypedElement dataSource: dataSources) {
-			String text = EmfUtil.getNasdanikaAnnotationDetail(dataSource, EmfUtil.LABEL_KEY, Util.nameToLabel(dataSource.getName()));
-			String icon = EmfUtil.getNasdanikaAnnotationDetail(dataSource, EmfUtil.ICON_KEY);
-			LabelImpl label = new LabelImpl();
-			label.setText(text);
-			label.setIcon(icon);
-			header.header(viewGenerator.label(label));
+			ViewBuilder headerBuilder = headerBuilderProvider == null ? null : headerBuilderProvider.apply(dataSource);
+			if (headerBuilder == null) {
+				String text = EmfUtil.getNasdanikaAnnotationDetail(dataSource, EmfUtil.LABEL_KEY, Util.nameToLabel(dataSource.getName()));
+				String icon = EmfUtil.getNasdanikaAnnotationDetail(dataSource, EmfUtil.ICON_KEY);
+				LabelImpl label = new LabelImpl();
+				label.setText(text);
+				label.setIcon(icon);
+				header.header(viewGenerator.label(label));
+			} else {
+				headerBuilder.build(header.header(), viewGenerator, progressMonitor);
+			}
 		}
 		
+		buildTable(ret, elements, rowBuilderProvider, cellBuilderProvider, viewGenerator, progressMonitor, dataSources);
+		return ret;
+	}
+
+	public static <T extends EObject> void buildTable(
+			Table table, 
+			Collection<T> elements,
+			Function<T, ViewBuilder> rowBuilderProvider, 
+			BiFunction<T, ETypedElement, ViewBuilder> cellBuilderProvider,
+			ViewGenerator viewGenerator, 
+			ProgressMonitor progressMonitor, 
+			ETypedElement... dataSources) {
+		
 		for (T element: elements) {
-			Row row = ret.body().row();
+			Row row = table.body().row();
 			for (ETypedElement dataSource: dataSources) {
 				Cell cell = row.cell();
 				ViewBuilder cellBuilder = cellBuilderProvider == null ? null : cellBuilderProvider.apply(element, dataSource);
@@ -104,6 +124,9 @@ public final class HtmlEmfUtil {
 					Object value;
 					if (dataSource instanceof EStructuralFeature) {
 						value = element.eGet((EStructuralFeature) dataSource);
+					} else if (dataSource == EcorePackage.Literals.EOBJECT___ECONTAINER) {
+						// A hack to get to the container.
+						value = element.eContainer();
 					} else if (dataSource instanceof EOperation) {
 						try {
 							value = element.eInvoke((EOperation) dataSource, ECollections.emptyEList());
@@ -133,7 +156,6 @@ public final class HtmlEmfUtil {
 				}
 			}
 		}
-		return ret;
 	}
 
 	public static Color getSeverityColor(int severity) {
