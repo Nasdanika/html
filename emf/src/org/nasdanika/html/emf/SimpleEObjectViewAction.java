@@ -695,10 +695,10 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		Marked marked = EObjectAdaptable.adaptTo(getSemanticElement(), Marked.class);
 		return marked == null ? null : marked.getMarker();
 	}
-
+	
 	@Override
 	public SectionStyle getSectionStyle() {
-		return SectionStyle.DEFAULT;
+		return getSectionChildren().size() > 1 ? SectionStyle.TAB : SectionStyle.DEFAULT;
 	}
 
 	@Override
