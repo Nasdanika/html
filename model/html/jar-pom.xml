@@ -4,7 +4,7 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2021.5.11</version>
+	    <version>2021.5.12</version>
 	    <relativePath>../../jar-pom.xml</relativePath>
 	  </parent>
 	<artifactId>model-html</artifactId>

@@ -290,7 +290,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	
 		return ret.toString();
 	}
-	
+
 	/**
 	 * Override to generate a diagram to be displayed on the top of the page.
 	 * @return
