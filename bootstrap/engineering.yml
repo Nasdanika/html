@@ -1,3 +1,7 @@
 engineering-module:
   name: Bootstrap
   path: bootstrap
+  issues:
+    - name: Updgrade to Bootstrap 5
+      markdown-description: "[Migration](https://getbootstrap.com/docs/5.0/migration/)"
+      effort: 40
