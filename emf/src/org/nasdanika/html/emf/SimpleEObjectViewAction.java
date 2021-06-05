@@ -355,7 +355,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 				return Collections.emptyList();
 			}			
 			
-			EStructuralFeatureViewActionImpl<T, EStructuralFeature> featureSection = new EStructuralFeatureViewActionImpl<T, EStructuralFeature>(getSemanticElement(), feature) {
+			EStructuralFeatureViewActionImpl<T, EStructuralFeature, SimpleEObjectViewAction<T>> featureSection = new EStructuralFeatureViewActionImpl<T, EStructuralFeature, SimpleEObjectViewAction<T>>(this, feature) {
 				
 				@Override
 				public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
@@ -372,9 +372,6 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			
 			featureSection.getRoles().add(Action.Role.SECTION); 
 			featureSection.setSectionStyle(SectionStyle.DEFAULT);
-			featureSection.setText(featureLabelText(feature)); 		
-			featureSection.setIcon(featureIcon(feature));
-			featureSection.setDescription(featureDescription(feature));
 			featureSection.setActivator(new PathNavigationActionActivator(featureSection, ((NavigationActionActivator) getActivator()).getUrl(null), "#feature-" + feature.getName(), getMarker()));
 	
 			return Collections.singleton(featureSection);
