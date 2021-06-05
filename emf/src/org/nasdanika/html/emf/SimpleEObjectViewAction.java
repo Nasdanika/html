@@ -90,7 +90,18 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		/**
 		 * Child actions for the feature, e.g. a section with action list
 		 */
-		FEATURE_ACTIONS
+		FEATURE_ACTIONS,
+		
+		/**
+		 * No role.
+		 */
+		NONE;
+		
+		public final String key;
+		
+		private FeatureRole() {
+			this.key = name().toLowerCase().replace('_', '-');
+		}
 		
 	}
 	
