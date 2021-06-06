@@ -65,7 +65,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	 * @author Pavel
 	 *
 	 */
-	protected enum FeatureRole {
+	public enum FeatureRole {
 		
 		/**
 		 * Feature is shown in the properties table.
@@ -97,10 +97,10 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		 */
 		NONE;
 		
-		public final String key;
+		public final String LITERAL;
 		
 		private FeatureRole() {
-			this.key = name().toLowerCase().replace('_', '-');
+			this.LITERAL = name().toLowerCase().replace('_', '-');
 		}
 		
 	}
@@ -390,24 +390,11 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		return Collections.emptyList();
 	}
 	
-	protected LabelImpl featureLabel(EStructuralFeature feature) {
-		LabelImpl ret = new LabelImpl();
-		ret.setText(featureLabelText(feature));
-		ret.setIcon(featureIcon(feature));
-		String featureDescription = featureDescription(feature);
-		ret.setDescription(featureDescription);
-		if (!Util.isBlank(featureDescription)) {
-			ret.setTooltip(Util.firstPlainTextSentence(featureDescription, 50, 250));
-		}
-		
-		return ret;		
-	}
-
-	protected String featureLabelText(EStructuralFeature feature) {
-		return EmfUtil.getNasdanikaAnnotationDetail(feature, EmfUtil.LABEL_KEY, Util.nameToLabel(feature.getName()));
-	}
-	
-	protected String featureDescription(EStructuralFeature feature) {
+	/**
+	 * Interpolation.
+	 */
+	@Override
+	public String featureDescription(EStructuralFeature feature) {
 		String classSegment = Util.camelToKebab(feature.getEContainingClass().getName());
 		String featureSegment = Util.camelToKebab(feature.getName());
 		URL descriptionResource = getClass().getResource(classSegment + "--" + featureSegment + ".md");
@@ -668,10 +655,6 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		category.setId(cf.getName());
 		category.setId(parent.getId() + "-feature-category-" + cf.getName());
 		return category;
-	}
-
-	protected String featureIcon(EStructuralFeature feature) {
-		return EmfUtil.getNasdanikaAnnotationDetail(feature, EmfUtil.ICON_KEY, EmfUtil.getNasdanikaAnnotationDetail(feature.getEType(), EmfUtil.ICON_KEY));
 	}
 
 	@Override

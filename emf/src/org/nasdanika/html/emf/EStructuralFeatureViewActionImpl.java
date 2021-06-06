@@ -3,12 +3,14 @@ package org.nasdanika.html.emf;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.Util;
+import org.nasdanika.common.persistence.Marked;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.impl.PathNavigationActionActivator;
 
-public class EStructuralFeatureViewActionImpl<T extends EObject, F extends EStructuralFeature, V extends SimpleEObjectViewAction<T>> extends ViewActionImpl<T> implements EStructuralFeatureViewAction<T,F> {
+public class EStructuralFeatureViewActionImpl<T extends EObject, F extends EStructuralFeature, V extends ViewAction<T>> extends ViewActionImpl<T> implements EStructuralFeatureViewAction<T,F> {
 	
 	private F feature;
 	private V semanticElementViewAction;
@@ -26,7 +28,13 @@ public class EStructuralFeatureViewActionImpl<T extends EObject, F extends EStru
 		
 		ActionActivator semanticElementViewActionActivator = semanticElementViewAction.getActivator();
 		if (semanticElementViewActionActivator instanceof NavigationActionActivator) {
-			setActivator(new PathNavigationActionActivator(this, ((NavigationActionActivator) semanticElementViewActionActivator).getUrl(null), feature.getName() + ".html", semanticElementViewAction.getMarker()));
+			Marked marked = EObjectAdaptable.adaptTo(getSemanticElement(), Marked.class);
+			setActivator(
+					new PathNavigationActionActivator(
+							this, 
+							((NavigationActionActivator) semanticElementViewActionActivator).getUrl(null), 
+							feature.getName() + ".html", 
+							marked == null ? null : marked.getMarker()));
 		}
 		setParent(semanticElementViewAction);
 	}	
