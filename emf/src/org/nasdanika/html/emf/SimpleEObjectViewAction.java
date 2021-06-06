@@ -187,10 +187,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 				}
 			}	
 		}		
-		if (getSemanticElement().eClass().getEReferences().stream().filter(EReference::isContainment).findAny().isPresent()) {
-			path.append("/index");
-		}
-		path.append(".html");				
+		path.append("/index.html");
 		return new PathNavigationActionActivator(this, contextUri, path.toString(), marked == null ? null : marked.getMarker());			
 	}
 	
@@ -651,8 +648,14 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		if (parent == null) {
 			return null;
 		}
+		if (parent instanceof ViewAction) {
+			return ((ViewAction<?>) parent).featureCategory(cf);
+		}
+		
 		LabelImpl category = featureLabel(cf);
-		category.setId(cf.getName());
+		if (category == null) {
+			return null;
+		}
 		category.setId(parent.getId() + "-feature-category-" + cf.getName());
 		return category;
 	}

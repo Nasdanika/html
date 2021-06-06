@@ -16,6 +16,7 @@ import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.html.OrderedListType;
 import org.nasdanika.html.app.Action;
+import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.impl.LabelImpl;
 import org.nasdanika.html.app.viewparts.ListOfActionsViewPart;
 
@@ -55,6 +56,12 @@ public interface ViewAction<T extends EObject> extends Action {
 		}
 		
 		return ret;		
+	}
+	
+	default Label featureCategory(EStructuralFeature feature) {
+		LabelImpl category =featureLabel(feature);
+		category.setId(getId() + "-feature-category-" + feature.getName());
+		return category;		
 	}
 
 	default String featureLabelText(EStructuralFeature feature) {
