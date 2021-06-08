@@ -35,10 +35,10 @@ public class PathNavigationActionActivator implements NavigationActionActivator 
 		return path;
 	}
 	
-	private Action getNavigationAncestor() {
+	private NavigationActionActivator getAncestorNavigationActivator() {
 		for (Action ancestor = action.getParent(); ancestor != null; ancestor = ancestor.getParent()) {
 			if (ancestor.getActivator() instanceof NavigationActionActivator) {
-				return ancestor;
+				return (NavigationActionActivator) ancestor.getActivator();
 			}
 		}		
 		return null;
@@ -48,8 +48,8 @@ public class PathNavigationActionActivator implements NavigationActionActivator 
 	public String getUrl(String base) {
 		try {
 			// Resolving against the context URI
-			Action navigationAncestor = getNavigationAncestor();
-			String ctx = navigationAncestor == null ? contextUri : ((NavigationActionActivator) navigationAncestor.getActivator()).getUrl(null);
+			NavigationActionActivator ancestorNavigationActivator = getAncestorNavigationActivator();
+			String ctx = ancestorNavigationActivator == null ? contextUri : ancestorNavigationActivator.getUrl(null);
 			URI ctxURI = Util.isBlank(ctx) ? null : URI.createURI(ctx);
 			URI uri = path.stream().map(e -> URI.createURI(e)).reduce(ctxURI, (c, s) -> c == null || c.isRelative() || !c.isHierarchical() ? s : s.resolve(c)); 
 			
