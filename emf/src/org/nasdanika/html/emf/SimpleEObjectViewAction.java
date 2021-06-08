@@ -186,13 +186,79 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 					path.append(localPath);
 				}
 			}	
-		}		
+		}
+		if (isInRole(Action.Role.SECTION)) {
+			NavigationActionActivator ancestorNavigationActivator = getAncestorNavigationActivator();
+			String fragment = path.toString().replace('/', '-');
+			if (ancestorNavigationActivator == null) {
+				return new PathNavigationActionActivator(this, contextUri, "#" + fragment, marked == null ? null : marked.getMarker());
+			}
+
+			return new NavigationActionActivator() {
+				
+				@Override
+				public String getUrl(String base) {
+					String ancestorUrl = ancestorNavigationActivator.getUrl(base);
+					if (ancestorUrl == null) {
+						return "#" + fragment;
+					}
+					return ancestorUrl + (ancestorUrl.contains("#") ? "-" : "#") + fragment ;
+				}
+			};
+		}
+
 		path.append("/index.html");
-		return new PathNavigationActionActivator(this, contextUri, path.toString(), marked == null ? null : marked.getMarker());			
+		return new PathNavigationActionActivator(this, contextUri, sectionPath(getParent()) + path.toString(), marked == null ? null : marked.getMarker());			
 	}
 	
+	/**
+	 * For non-section actions which are contained in section actions (e.g. context actions) 
+	 * computes section path to use a a path prefix.
+	 * @param action
+	 * @return Empty string if there are no sections, or a path ending with /
+	 */
+	public static String sectionPath(Action action) {
+		if (action != null && action.isInRole(Action.Role.SECTION)) {
+			StringBuilder path = new StringBuilder(sectionPath(action.getParent()));
+			if (action instanceof ViewAction) {
+				EObject actionSemanticElement = ((ViewAction<?>) action).getSemanticElement();
+				EReference eContainmentReference = actionSemanticElement.eContainmentFeature();
+				if (eContainmentReference != null) {
+					path.append(Util.camelToKebab(eContainmentReference.getName())).append("/");
+					if (eContainmentReference.isMany()) {
+						EObject eContainer = actionSemanticElement.eContainer();
+						if (eContainer != null) {
+							int index = ((List<?>) actionSemanticElement.eContainer().eGet(eContainmentReference)).indexOf(actionSemanticElement);
+							path.append(index);
+							path.append("/");			
+						}
+					}	
+					if (action instanceof EStructuralFeatureViewAction) {
+						path.append(((EStructuralFeatureViewAction<?, ?>) action).getEStructuralFeature().getName()).append("/");
+						if (action instanceof EStructuralFeatureElementViewAction) {
+							path.append(((EStructuralFeatureElementViewAction<?, ?, ?>) action).getElementIndex()).append("/");
+						}
+					}
+					return path.toString();
+				}
+			}			
+			return path.append(action.getId()).append("/").toString();
+		}
+		return "";
+	}
+	
+	private NavigationActionActivator getAncestorNavigationActivator() {
+		for (Action ancestor = getParent(); ancestor != null; ancestor = ancestor.getParent()) {
+			if (ancestor.getActivator() instanceof NavigationActionActivator) {
+				return (NavigationActionActivator) ancestor.getActivator();
+			}
+		}		
+		return null;
+	}	
+	
 	protected String getDefaultPath() {
-		return String.valueOf(((List<?>) getSemanticElement().eContainer().eGet(getSemanticElement().eContainmentFeature())).indexOf(this));
+		T theSemanticElement = getSemanticElement();
+		return String.valueOf(((List<?>) theSemanticElement.eContainer().eGet(theSemanticElement.eContainmentFeature())).indexOf(theSemanticElement));
 	}
 	
 	/**

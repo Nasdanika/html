@@ -33,7 +33,7 @@ public class EStructuralFeatureViewActionImpl<T extends EObject, F extends EStru
 					new PathNavigationActionActivator(
 							this, 
 							((NavigationActionActivator) semanticElementViewActionActivator).getUrl(null), 
-							feature.getName() + "/index.html", 
+							SimpleEObjectViewAction.sectionPath(semanticElementViewAction) + feature.getName() + "/index.html", 
 							marked == null ? null : marked.getMarker()));
 		}
 		setParent(semanticElementViewAction);
