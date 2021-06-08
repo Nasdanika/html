@@ -9,6 +9,18 @@ package org.nasdanika.html.app;
 public interface ActionActivator {
 	
 	/**
+	 * Activatory for actions which can only be displayed inline.
+	 */
+	ActionActivator INLINE_ACTIVATOR = new ActionActivator() {
+		
+		@Override
+		public boolean inline() {
+			return true;
+		}
+		
+	};
+	
+	/**
 	 * If this method returns true then action shall be inlined if possible, i.e. its content shall be rendered instead of a link.
 	 * @return
 	 */
