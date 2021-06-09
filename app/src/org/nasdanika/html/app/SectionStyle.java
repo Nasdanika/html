@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.html.Fragment;
-import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.viewparts.ActionCardViewPart;
 import org.nasdanika.html.app.viewparts.ActionGroupViewPart;
 import org.nasdanika.html.app.viewparts.ActionNavsViewPart;
@@ -142,7 +141,7 @@ public enum SectionStyle {
 				
 				@Override
 				public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-					Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();
+					Fragment contentFragment = viewGenerator.getHTMLFactory().fragment();
 					
 					ViewGenerator vg = viewGenerator.fork();
 					vg.put(HEADER_LEVEL, headerLevel);
