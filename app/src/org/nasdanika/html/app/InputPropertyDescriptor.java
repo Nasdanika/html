@@ -22,7 +22,7 @@ public interface InputPropertyDescriptor extends PropertyDescriptor, InputProper
 	 * @return
 	 */
 	default FormGroup formGroup(ViewGenerator viewGenerator, Object obj, Map<Breakpoint, Size> horizontalLabelWidths) {
-		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
+		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
 		InputBase<?> input = createEditControl(viewGenerator, obj);
 		return bootstrapFactory.formGroup(viewGenerator.label(this), input, getTooltip(), horizontalLabelWidths);
 	}

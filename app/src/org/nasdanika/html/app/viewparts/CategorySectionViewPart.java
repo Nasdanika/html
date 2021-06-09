@@ -11,7 +11,6 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
-import org.nasdanika.html.bootstrap.BootstrapFactory;
 
 /**
  * Generates a card from action and its section children.
@@ -54,7 +53,7 @@ public class CategorySectionViewPart implements ViewPart {
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
+		HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
 		Fragment ret = htmlFactory.fragment();
 		
 		int asl = sectionLevel;
@@ -69,7 +68,7 @@ public class CategorySectionViewPart implements ViewPart {
 			viewGenerator.label(category, hTag);
 			viewGenerator.decorate(hTag, category);
 			if (category.getColor() != null) {
-				viewGenerator.get(BootstrapFactory.class).wrap(hTag).background(category.getColor());
+				viewGenerator.getBootstrapFactory().wrap(hTag).background(category.getColor());
 			}
 			hTag.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, category));
 			ret.content(hTag);

@@ -26,7 +26,7 @@ public class DescriptorSetCardViewBuilder extends DescriptorSetConsumerViewBuild
 	
 	@Override
 	public void build(Object target, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
+		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
 		Card card = bootstrapFactory.card();
 		
 		Tag hTag = null;

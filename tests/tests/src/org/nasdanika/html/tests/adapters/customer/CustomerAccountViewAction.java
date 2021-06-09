@@ -79,7 +79,7 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 		// Reverse chronological order.
 		currentTransactions.sort((t1, t2) -> t2.getDate().compareTo(t1.getDate()));
 
-		Table currentTransactionsTable = viewGenerator.get(BootstrapFactory.class).table().bordered();
+		Table currentTransactionsTable = viewGenerator.getBootstrapFactory().table().bordered();
 		currentTransactionsTable.headerRow("Date", "Comment", "Debit", "Credit");
 		
 		for (Transaction<?> transaction: currentTransactions) {
@@ -95,7 +95,7 @@ public class CustomerAccountViewAction extends EObjectViewAction<CustomerAccount
 			}
 		}
 
-		return viewGenerator.get(HTMLFactory.class).fragment("Balance: ", target.getBalance(), "<h4>Current transactions</h4>", currentTransactionsTable);
+		return viewGenerator.getHTMLFactory().fragment("Balance: ", target.getBalance(), "<h4>Current transactions</h4>", currentTransactionsTable);
 	}
 	
 }

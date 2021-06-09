@@ -24,7 +24,7 @@ public class EditTableSingleValuePropertySourceViewPart extends TableSingleValue
 	 */
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
+		HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
 		Form form = htmlFactory.form();
 		form.content(super.generate(viewGenerator, progressMonitor));
 		// TODO - context (submit) actions.

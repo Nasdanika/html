@@ -26,7 +26,7 @@ public interface InputProperty extends Property {
 	
 	@Override
 	default InputBase<?> createEditControl(ViewGenerator viewGenerator, Object obj) {
-		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
+		HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
 		Object editValue = getEditValue(obj);		
 		InputBase<?> control = getInputType(obj).create(htmlFactory, editValue);
 		control.name(getPropertyName());

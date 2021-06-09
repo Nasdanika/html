@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.html.Fragment;
-import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
@@ -15,7 +14,6 @@ import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.bootstrap.ActionGroup;
-import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Navs;
@@ -59,7 +57,7 @@ public class ActionGroupViewPart implements ViewPart {
 		ViewGenerator viewGenerator = viewGen.fork();
 		viewGenerator.put(SectionStyle.HEADER_LEVEL, headerLevel);
 		
-		ActionGroup actionGroup = viewGenerator.get(BootstrapFactory.class).actionGroup(false);
+		ActionGroup actionGroup = viewGenerator.getBootstrapFactory().actionGroup(false);
 		
 		for (Entry<Label, List<Action>> categoryEntry: categories) {
 			Label category = categoryEntry.getKey(); 
@@ -72,7 +70,7 @@ public class ActionGroupViewPart implements ViewPart {
 					Fragment labelFragment = viewGenerator.labelFragment(section);
 					labelFragment.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, section));
 
-					Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+					Fragment contentFragment = viewGenerator.getHTMLFactory().fragment();	
 					contentFragment.content(ViewPartsUtil.sectionAnchor(section));						
 					
 					List<Action> contextChildren = section.getContextChildren();
@@ -97,7 +95,7 @@ public class ActionGroupViewPart implements ViewPart {
 				Fragment labelFragment = viewGenerator.labelFragment(category);
 				labelFragment.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, category));
 
-				Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+				Fragment contentFragment = viewGenerator.getHTMLFactory().fragment();	
 				if (category.getId() != null) {
 					contentFragment.content(TagName.a.create().attribute("name", category.getId()));						
 				}

@@ -48,7 +48,7 @@ public class ListOfActionsViewPart extends ListOfContentsViewPart {
 			return list;
 		}
 		int headerLevel = noDecoratorViewGenerator.get(SectionStyle.HEADER_LEVEL, Integer.class, 3);
-		HTMLFactory htmlFactory = noDecoratorViewGenerator.get(HTMLFactory.class);		
+		HTMLFactory htmlFactory = noDecoratorViewGenerator.getHTMLFactory();		
 		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, headerVal), list);
 	}	
 	

@@ -55,12 +55,12 @@ public class TableOfContentsViewPart extends TableOfContentsBaseViewPart {
 			return table;
 		}
 		int headerLevel = noDecoratorViewGenerator.get(SectionStyle.HEADER_LEVEL, Integer.class, 3);
-		HTMLFactory htmlFactory = noDecoratorViewGenerator.get(HTMLFactory.class);		
+		HTMLFactory htmlFactory = noDecoratorViewGenerator.getHTMLFactory();		
 		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, headerVal), table);
 	}
 
 	protected Table createTable(ViewGenerator noDecoratorViewGenerator) {
-		BootstrapFactory bootstrapFactory = noDecoratorViewGenerator.get(BootstrapFactory.class);
+		BootstrapFactory bootstrapFactory = noDecoratorViewGenerator.getBootstrapFactory();
 		Table table = bootstrapFactory.table();
 		table.bordered(bordered);
 		table.borderless(borderless);

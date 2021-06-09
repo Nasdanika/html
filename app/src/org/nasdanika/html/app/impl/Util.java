@@ -15,7 +15,6 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.resources.Container;
 import org.nasdanika.html.Button;
-import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
@@ -137,7 +136,7 @@ public final class Util {
 			header.background(Color.SECONDARY);
 			Tag headerTag = header.toHTMLElement();
 			String questionCircleIcon = "far fa-question-circle";
-			Tag modalTitle = viewGenerator.get(HTMLFactory.class).tag(TagName.h5, TagName.span.create().addClass(questionCircleIcon).style().margin().right("0.3em"), label.getText());
+			Tag modalTitle = viewGenerator.getHTMLFactory().tag(TagName.h5, TagName.span.create().addClass(questionCircleIcon).style().margin().right("0.3em"), label.getText());
 			headerTag.content(modalTitle);
 			Button dismisser = bootstrapFactory.getHTMLFactory().button("x").addClass("close");
 			headerTag.content(dismisser);

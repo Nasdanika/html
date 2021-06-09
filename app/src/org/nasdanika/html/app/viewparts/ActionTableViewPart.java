@@ -6,14 +6,12 @@ import java.util.Map.Entry;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.html.Fragment;
-import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.RowContainer.Row.Cell;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
-import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
@@ -47,12 +45,12 @@ public class ActionTableViewPart implements ViewPart {
 		ViewGenerator viewGenerator = viewGen.fork();
 		viewGenerator.put(SectionStyle.HEADER_LEVEL, headerLevel);
 
-		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
+		Fragment ret = viewGenerator.getHTMLFactory().fragment();
 		
 		for (Entry<Label, List<Action>> categoryEntry: categories) {
 			Label category = categoryEntry.getKey();
 			
-			org.nasdanika.html.bootstrap.Table table = viewGenerator.get(BootstrapFactory.class).table().bordered();
+			org.nasdanika.html.bootstrap.Table table = viewGenerator.getBootstrapFactory().table().bordered();
 			ret.content(table);
 									
 			if (category != null && !Util.isBlank(category.getText())) {
@@ -79,7 +77,7 @@ public class ActionTableViewPart implements ViewPart {
 				viewGenerator.label(section, sectionRowHeader);
 				sectionRowHeader.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, section));				
 				
-				Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+				Fragment contentFragment = viewGenerator.getHTMLFactory().fragment();	
 				contentFragment.content(ViewPartsUtil.sectionAnchor(section));						
 				
 				List<Action> contextChildren = section.getContextChildren();

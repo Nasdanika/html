@@ -57,7 +57,7 @@ public class ProgressEntryViewAction extends ActionImpl {
 		
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
+		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
 		Table infoTable = bootstrapFactory.table();
 		infoTable.toHTMLElement().style().width("auto");
 		if (progressEntry.getStart() > 0) {

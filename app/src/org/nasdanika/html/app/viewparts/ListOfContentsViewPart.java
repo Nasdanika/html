@@ -45,7 +45,7 @@ public class ListOfContentsViewPart extends TableOfContentsBaseViewPart {
 			return list;
 		}
 		int headerLevel = noDecoratorViewGenerator.get(SectionStyle.HEADER_LEVEL, Integer.class, 3);
-		HTMLFactory htmlFactory = noDecoratorViewGenerator.get(HTMLFactory.class);		
+		HTMLFactory htmlFactory = noDecoratorViewGenerator.getHTMLFactory();		
 		return htmlFactory.div(htmlFactory.tag("H"+headerLevel, headerVal), list);
 	}
 
@@ -66,7 +66,7 @@ public class ListOfContentsViewPart extends TableOfContentsBaseViewPart {
 			return null;
 		}
 
-		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);		
+		HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();		
 		Tag list = htmlFactory.tag(levelType == null ? TagName.ul : TagName.ol);
 		if (levelType != null) {
 			list.attribute("type", levelType.code);

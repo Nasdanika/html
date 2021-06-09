@@ -9,7 +9,6 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLElement;
-import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
@@ -19,7 +18,6 @@ import org.nasdanika.html.app.ScriptActionActivator;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.Util;
-import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Dropdown;
@@ -72,7 +70,7 @@ public class NavigationBarViewPart implements ViewPart {
 				for (Action ca: (List<Action>) categoryGroup.getValue()) {
 					hasContent = true;
 					// Children are ignored if activator is not null.
-					Fragment fragment = viewGenerator.get(HTMLFactory.class).fragment();
+					Fragment fragment = viewGenerator.getHTMLFactory().fragment();
 					viewGenerator.label(ca, (Consumer<Object>) fragment::content);
 					ActionActivator activator = ca.getActivator();
 					if (activator instanceof NavigationActionActivator) {
@@ -82,7 +80,7 @@ public class NavigationBarViewPart implements ViewPart {
 						}
 						viewGenerator.decorate(item, ca);
 //						if (ca.isFloatRight()) {
-//							viewGenerator.get(BootstrapFactory.class).wrap(item)._float().right();
+//							viewGenerator.getBootstrapFactory().wrap(item)._float().right();
 //						}
 					} else if (activator instanceof ScriptActionActivator) {
 						String code = ((ScriptActionActivator) activator).getCode();
@@ -92,14 +90,14 @@ public class NavigationBarViewPart implements ViewPart {
 						Tag item = navBar.item("#", Util.equalOrInPath(activeAction, ca), ca.isDisabled(), fragment).on(Event.click, code);
 						viewGenerator.decorate(item, ca);
 //						if (ca.isFloatRight()) {
-//							viewGenerator.get(BootstrapFactory.class).wrap(item)._float().right();
+//							viewGenerator.getBootstrapFactory().wrap(item)._float().right();
 //						}
 					} else if (ca.getChildren().isEmpty()) {
 						// As text
 						Tag item = navBar.navbarText(fragment);
 						viewGenerator.decorate(item, ca);
 //						if (ca.isFloatRight()) {
-//							viewGenerator.get(BootstrapFactory.class).wrap(item)._float().right();
+//							viewGenerator.getBootstrapFactory().wrap(item)._float().right();
 //						}						
 					} else {
 						Dropdown dropdown = navBar.dropdown(Util.equalOrInPath(activeAction, ca), fragment);
@@ -140,7 +138,7 @@ public class NavigationBarViewPart implements ViewPart {
 	 * @return
 	 */
 	protected Navbar createNavbar(ViewGenerator viewGenerator, HTMLElement<?> brand) {
-		return viewGenerator.get(BootstrapFactory.class).navbar(Breakpoint.LARGE, false, Color.LIGHT, brand);
+		return viewGenerator.getBootstrapFactory().navbar(Breakpoint.LARGE, false, Color.LIGHT, brand);
 	}
 	
 

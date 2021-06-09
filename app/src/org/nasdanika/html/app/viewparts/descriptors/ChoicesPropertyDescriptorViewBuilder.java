@@ -74,7 +74,7 @@ public class ChoicesPropertyDescriptorViewBuilder implements ViewBuilder {
 
 	@Override
 	public void build(Object container, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
+		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
 		Fragment description = bootstrapFactory.getHTMLFactory().fragment(StringEscapeUtils.escapeHtml4(descriptor.getDescription()));
 		
 		Status diagnosticStatus = null;
@@ -232,7 +232,7 @@ public class ChoicesPropertyDescriptorViewBuilder implements ViewBuilder {
 		if (choices == null) {
 			throw new IllegalArgumentException("drop-down shall be used for properties with choices");
 		}
-		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
+		HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
 		Object value = descriptor.get();
 		
 		Select select = htmlFactory.select();
@@ -282,7 +282,7 @@ public class ChoicesPropertyDescriptorViewBuilder implements ViewBuilder {
 		if (choices != null) {
 			throw new IllegalArgumentException(type + " shall be used for properties without choices");
 		}
-		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
+		HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
 		Object value = descriptor.get();
 		Input control = htmlFactory.input(type);
 		if (value != null) {
@@ -296,7 +296,7 @@ public class ChoicesPropertyDescriptorViewBuilder implements ViewBuilder {
 	}	
 	
 	protected HTMLElement<?> createTextAreaControl(ViewGenerator viewGenerator, Status diagnosticStatus, ProgressMonitor progressMonitor) {
-		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
+		HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
 		TextArea control = htmlFactory.textArea();
 		Object value = descriptor.get();
 		if (value != null) {

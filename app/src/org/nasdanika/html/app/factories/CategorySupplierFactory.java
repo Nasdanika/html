@@ -14,8 +14,8 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.impl.ActionImpl;
 import org.nasdanika.html.app.impl.Category;
-import org.nasdanika.html.app.impl.PathNavigationActionActivator;
 import org.nasdanika.html.app.impl.LabelImpl;
+import org.nasdanika.html.app.impl.PathNavigationActionActivator;
 
 public class CategorySupplierFactory extends LabelSupplierFactory<Category> {
 		

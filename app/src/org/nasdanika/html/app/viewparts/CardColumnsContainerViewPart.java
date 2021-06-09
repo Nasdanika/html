@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
@@ -33,7 +32,7 @@ public class CardColumnsContainerViewPart implements ViewPart {
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		Tag ret = viewGenerator.get(HTMLFactory.class).div();
+		Tag ret = viewGenerator.getHTMLFactory().div();
 		ret.addClass("card-columns");
 		int columnCount = cardColumns;
 		if (columnCount > 0 && columnCount != 3) {

@@ -56,7 +56,7 @@ public class CategoryCardViewPart implements ViewPart {
 		ViewGenerator viewGenerator = viewGen.fork();
 		viewGenerator.put(SectionStyle.HEADER_LEVEL, headerLevel);
 
-		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
+		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
 		HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
 		Card card = bootstrapFactory.card();
 		if (category != null) {
@@ -85,7 +85,7 @@ public class CategoryCardViewPart implements ViewPart {
 			Fragment labelFragment = viewGenerator.labelFragment(section);
 			labelFragment.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, section));
 
-			Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+			Fragment contentFragment = viewGenerator.getHTMLFactory().fragment();	
 			contentFragment.content(ViewPartsUtil.sectionAnchor(section));						
 			
 			List<Action> contextChildren = section.getContextChildren();

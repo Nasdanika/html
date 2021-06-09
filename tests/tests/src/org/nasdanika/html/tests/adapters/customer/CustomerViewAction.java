@@ -57,7 +57,7 @@ public class CustomerViewAction extends EObjectViewAction<Customer> {
 	
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		Table accountsTable = viewGenerator.get(BootstrapFactory.class).table().bordered();
+		Table accountsTable = viewGenerator.getBootstrapFactory().table().bordered();
 		accountsTable.headerRow("Account", "Balance");
 		for (CustomerAccount account: target.getAccounts()) {
 			Action accountViewAction = EObjectAdaptable.adaptTo(account, ViewAction.class);

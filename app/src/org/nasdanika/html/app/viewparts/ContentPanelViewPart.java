@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
-import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
@@ -78,7 +77,7 @@ public class ContentPanelViewPart implements ViewPart {
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-//		Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
+//		Fragment ret = viewGenerator.getHTMLFactory().fragment();
 //		boolean isContext = activeAction.isInRole(Action.Role.CONTEXT) || (activeAction.getParent() != null && activeAction.getParent().isInRole(Action.Role.CONTEXT));
 		
 		Action lastNonSection = /* isContext ? activeAction : */ lastNonSection();
@@ -113,7 +112,7 @@ public class ContentPanelViewPart implements ViewPart {
 			}
 		}
 				
-		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
+		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
 		Container contentContainer = bootstrapFactory.fluidContainer();
 		
 		if (showBreadcrumb) {
@@ -157,7 +156,7 @@ public class ContentPanelViewPart implements ViewPart {
 			// Page title, doesn't make much sense to show it for the root or principal actions - it would duplicate the header or the nav bar. 
 			ViewGenerator titleViewGenerator = viewGenerator.fork();
 			titleViewGenerator.put(Decorator.SELECTOR_KEY, "content-panel.title");			
-			Tag titleHeader = titleViewGenerator.get(HTMLFactory.class).tag(TagName.h2);
+			Tag titleHeader = titleViewGenerator.getHTMLFactory().tag(TagName.h2);
 			titleCol.content(titleViewGenerator.label(lastNonSection, titleHeader).addClass(CLASS_PREFIX+"header"));
 			
 			titleHeader.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, lastNonSection));
@@ -227,7 +226,7 @@ public class ContentPanelViewPart implements ViewPart {
 	}
 
 	protected Breadcrumb createBreadcrumb(ViewGenerator viewGenerator, Container contentContainer) {
-		Breadcrumb breadcrumb = viewGenerator.get(BootstrapFactory.class).breadcrumb();
+		Breadcrumb breadcrumb = viewGenerator.getBootstrapFactory().breadcrumb();
 		breadcrumb.margin().top(Breakpoint.DEFAULT, Size.S1);
 
 		contentContainer

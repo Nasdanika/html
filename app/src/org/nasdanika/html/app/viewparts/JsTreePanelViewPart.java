@@ -76,7 +76,7 @@ public class JsTreePanelViewPart implements ViewPart {
 	
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		HTMLFactory htmlFactory = viewGenerator.get(HTMLFactory.class);
+		HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
 		Tag container = htmlFactory.div().id(treeId);
 		JsTreeFactory jsTreeFactory = viewGenerator.get(JsTreeFactory.class);
 		List<JsTreeNode> roots = new ArrayList<>();

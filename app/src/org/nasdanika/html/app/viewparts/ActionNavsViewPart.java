@@ -56,7 +56,7 @@ public class ActionNavsViewPart  implements ViewPart {
 		ViewGenerator viewGenerator = viewGen.fork();
 		viewGenerator.put(SectionStyle.HEADER_LEVEL, headerLevel);
 
-		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
+		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
 		Card theCard = card ? bootstrapFactory.card() : null;  						
 		
 		Card.Navs navs = card ? theCard.asNavs() : bootstrapFactory.navs();
@@ -78,7 +78,7 @@ public class ActionNavsViewPart  implements ViewPart {
 					Fragment labelFragment = viewGenerator.labelFragment(section);
 					labelFragment.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, section));
 
-					Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+					Fragment contentFragment = viewGenerator.getHTMLFactory().fragment();	
 					contentFragment.content(ViewPartsUtil.sectionAnchor(section));						
 					
 					List<Action> contextChildren = section.getContextChildren();
@@ -102,7 +102,7 @@ public class ActionNavsViewPart  implements ViewPart {
 				Fragment labelFragment = viewGenerator.labelFragment(category);
 				labelFragment.content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, category));
 
-				Fragment contentFragment = viewGenerator.get(HTMLFactory.class).fragment();	
+				Fragment contentFragment = viewGenerator.getHTMLFactory().fragment();	
 				if (category.getId() != null) {
 					contentFragment.content(TagName.a.create().attribute("name", category.getId()));						
 				}

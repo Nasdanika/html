@@ -3,4 +3,6 @@ engineering-module:
   path: App
   issues:
      - name: Search with LunrJs
+     - name: Left and right content panels and sections
+       markdown-description: Borrow functionality from the content panel view part.
        

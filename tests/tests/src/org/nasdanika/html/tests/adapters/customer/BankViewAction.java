@@ -66,6 +66,6 @@ public class BankViewAction extends EObjectViewAction<Bank> {
 	 */
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		return viewGenerator.get(HTMLFactory.class).tokenSource().interpolate(getClass().getResource("BankHomePage.html"));
+		return viewGenerator.getHTMLFactory().tokenSource().interpolate(getClass().getResource("BankHomePage.html"));
 	}
 }

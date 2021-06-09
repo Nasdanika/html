@@ -7,14 +7,12 @@ import java.util.stream.Collectors;
 
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.Fragment;
-import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.impl.Util;
 import org.nasdanika.html.bootstrap.ActionGroup;
-import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Size;
@@ -75,7 +73,7 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 
 			@Override
 			public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-				ActionGroup actionGroup = viewGenerator.get(BootstrapFactory.class).actionGroup(true);			
+				ActionGroup actionGroup = viewGenerator.getBootstrapFactory().actionGroup(true);			
 				for (Action child: (List<Action>) actions) {
 					viewGenerator.add(actionGroup, child, Util.equalOrInPath(activeAction, child));
 				}
@@ -86,7 +84,7 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 	}
 	
 	protected Card createCategoryCard(Label category, ViewGenerator viewGenerator) {
-		Card categoryCard = viewGenerator.get(BootstrapFactory.class).card();
+		Card categoryCard = viewGenerator.getBootstrapFactory().card();
 		categoryCard.margin().top(Breakpoint.DEFAULT, Size.S1);
 
 		if (category != null) {
@@ -101,7 +99,7 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 	}
 	
 	protected Card createActionCard(Action action, ViewGenerator viewGenerator) {
-		Card actionCard = viewGenerator.get(BootstrapFactory.class).card();
+		Card actionCard = viewGenerator.getBootstrapFactory().card();
 		actionCard.margin().top(Breakpoint.DEFAULT, Size.S1);
 
 		if (action.getColor() != null) {
@@ -133,7 +131,7 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 			}
 							
 			// Put things in cards
-			Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
+			Fragment ret = viewGenerator.getHTMLFactory().fragment();
 			for (Entry<Label, List<Action>> categoryGroup: categoryGroups) {
 				Card categoryCard = createCategoryCard(categoryGroup.getKey(), viewGenerator);
 				addActionsViewToCard(categoryCard, createActionsViewPart(categoryGroup.getValue(), false).generate(viewGenerator, progressMonitor));
@@ -142,7 +140,7 @@ public class AdaptiveNavigationPanelViewPart implements ViewPart {
 			return ret;
 		}
 		case CARDS: {
-			Fragment ret = viewGenerator.get(HTMLFactory.class).fragment();
+			Fragment ret = viewGenerator.getHTMLFactory().fragment();
 			for (Entry<Label, List<Action>> categoryGroup: categoryGroups) {
 				if (categoryGroup.getKey() == null) {
 					Predicate<Action> noRoleChildrenPredicate = a -> a.getChildrenByRole(role).isEmpty();

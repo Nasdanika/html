@@ -8,7 +8,6 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.FieldContainer;
 import org.nasdanika.html.FieldSet;
 import org.nasdanika.html.Form;
-import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.InputPropertyDescriptor;
 import org.nasdanika.html.app.Label;
@@ -44,7 +43,7 @@ public abstract class EditFormSingleValuePropertySourceViewPart implements ViewP
 			return "";
 		}
 		
-		Form form = viewGenerator.get(HTMLFactory.class).form();		
+		Form form = viewGenerator.getHTMLFactory().form();		
 		for(Entry<Label, List<PropertyDescriptor>> descriptorGroup: Util.groupByCategory(propertySource.getPropertyDescriptors())) {
 			FieldContainer<?> fieldContainer;
 			Label category = descriptorGroup.getKey();

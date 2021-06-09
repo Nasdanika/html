@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.nasdanika.common.Context;
-import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Decorator;
@@ -12,10 +11,10 @@ import org.nasdanika.html.app.DecoratorProvider;
 import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.ViewPart;
 import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart;
+import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart.Style;
 import org.nasdanika.html.app.viewparts.ContentPanelViewPart;
 import org.nasdanika.html.app.viewparts.FooterViewPart;
 import org.nasdanika.html.app.viewparts.NavigationBarViewPart;
-import org.nasdanika.html.app.viewparts.AdaptiveNavigationPanelViewPart.Style;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Navs;
 
@@ -95,7 +94,7 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 			Navs navs = navsViewGenerator.categorizedLinkNavs(navigationChildren.subList(1, navigationChildren.size()), getActiveAction(), getHeaderNavTextColor());
 			navs._float().right();
 			
-			return viewGenerator.get(HTMLFactory.class).fragment(styleRootActionLink(viewGenerator, link), navs);
+			return viewGenerator.getHTMLFactory().fragment(styleRootActionLink(viewGenerator, link), navs);
 		};
 	}
 	
@@ -107,8 +106,8 @@ public abstract class AbstractActionApplicationBuilder extends ViewPartApplicati
 	protected Object styleRootActionLink(ViewGenerator viewGenerator, Tag link) {
 		return link;
 //		link.style().text().decoration().none();
-//		viewGenerator.get(BootstrapFactory.class).wrap(link).text().color(Color.DARK);
-//		return viewGenerator.get(BootstrapFactory.class).display(link, 4);
+//		viewGenerator.getBootstrapFactory().wrap(link).text().color(Color.DARK);
+//		return viewGenerator.getBootstrapFactory().display(link, 4);
 	}
 
 	/**

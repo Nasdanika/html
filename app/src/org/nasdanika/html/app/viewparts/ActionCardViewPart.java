@@ -44,7 +44,7 @@ public class ActionCardViewPart implements ViewPart {
 		ViewGenerator viewGenerator = viewGen.fork();
 		viewGenerator.put(SectionStyle.HEADER_LEVEL, headerLevel);
 		
-		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class);
+		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
 		Card card = bootstrapFactory.card();
 
 		HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
