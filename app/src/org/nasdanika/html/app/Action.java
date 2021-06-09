@@ -220,12 +220,14 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 			return null;
 		}
 		for (Action child: getChildren()) {
-			Object id = child.getId();
-			if (id != null && id.equals(path[0])) {
-				if (path.length == 1) {
-					return child;
+			if (child != null) {
+				Object id = child.getId();
+				if (id != null && id.equals(path[0])) {
+					if (path.length == 1) {
+						return child;
+					}
+					return child.getChildById(Arrays.copyOfRange(path, 1, path.length));
 				}
-				return child.getChildById(Arrays.copyOfRange(path, 1, path.length));
 			}
 		}		
 		return null;
@@ -331,9 +333,11 @@ public interface Action extends Label, ViewPart, Categorized, Adaptable {
 			return this;
 		}
 		for (Action child: getChildren()) {
-			Action found = child.find(predicate);
-			if (found != null) {
-				return found;
+			if (child != null) {
+				Action found = child.find(predicate);
+				if (found != null) {
+					return found;
+				}
 			}
 		}
 		return null;
