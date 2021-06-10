@@ -66,19 +66,21 @@ public final class Util {
 		List<T> uncategorized = new ArrayList<>();
 		List<Map.Entry<Label, List<T>>> ret = new ArrayList<>();
 		I: for (T item: items) {
-			Label category = item.getCategory();
-			if (category == null) {
-				uncategorized.add(item);
-			} else {
-				for (Entry<Label, List<T>> e: ret) {
-					if (equal(e.getKey(), category)) {
-						e.getValue().add(item);
-						continue I;
+			if (item != null) {
+				Label category = item.getCategory();
+				if (category == null) {
+					uncategorized.add(item);
+				} else {
+					for (Entry<Label, List<T>> e: ret) {
+						if (equal(e.getKey(), category)) {
+							e.getValue().add(item);
+							continue I;
+						}
 					}
+					List<T> ci = new ArrayList<>();
+					ci.add(item);
+					ret.add(new AbstractMap.SimpleEntry<Label, List<T>>(category, ci));
 				}
-				List<T> ci = new ArrayList<>();
-				ci.add(item);
-				ret.add(new AbstractMap.SimpleEntry<Label, List<T>>(category, ci));
 			}
 		}		
 		if (!uncategorized.isEmpty()) {

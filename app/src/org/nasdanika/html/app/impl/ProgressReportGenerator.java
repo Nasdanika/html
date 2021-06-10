@@ -61,36 +61,38 @@ public class ProgressReportGenerator {
 		}
 	}
 
-	protected void generate(Action action, org.nasdanika.common.resources.Container<Object> resourceConsumer, ProgressMonitor progressMonitor) {		
-		try (ProgressMonitor im = progressMonitor.split("Generating report for "+action.getText(), 100)) {
-			Application app = new BootstrapContainerRouterApplication(Theme.Default, true);
-
-			JsTreeFactory.INSTANCE.cdn(app.getHTMLPage());
-			FontAwesomeFactory.INSTANCE.cdn(app.getHTMLPage());
-			
-			ApplicationBuilder  applicationBuilder = new ActionApplicationBuilder(action) {
+	protected void generate(Action action, org.nasdanika.common.resources.Container<Object> resourceConsumer, ProgressMonitor progressMonitor) {	
+		if (action != null) {
+			try (ProgressMonitor im = progressMonitor.split("Generating report for "+action.getText(), 100)) {
+				Application app = new BootstrapContainerRouterApplication(Theme.Default, true);
+	
+				JsTreeFactory.INSTANCE.cdn(app.getHTMLPage());
+				FontAwesomeFactory.INSTANCE.cdn(app.getHTMLPage());
 				
-				@Override
-				protected ViewPart getNavigationPanelViewPart() {
-					return new JsTreePanelViewPart(getNavigationPanelActions(), getActiveAction(), Action.Role.NAVIGATION, true) {
-						@Override
-						protected void configureJsTree(JSONObject jsTree) {
-							JSONArray plugins = new JSONArray();
-							plugins.put("state");
-							jsTree.put("plugins", plugins);
-						}
-					};
-				}
+				ApplicationBuilder  applicationBuilder = new ActionApplicationBuilder(action) {
+					
+					@Override
+					protected ViewPart getNavigationPanelViewPart() {
+						return new JsTreePanelViewPart(getNavigationPanelActions(), getActiveAction(), Action.Role.NAVIGATION, true) {
+							@Override
+							protected void configureJsTree(JSONObject jsTree) {
+								JSONArray plugins = new JSONArray();
+								plugins.put("state");
+								jsTree.put("plugins", plugins);
+							}
+						};
+					}
+					
+				};
 				
-			};
-			
-			applicationBuilder.build(app, progressMonitor);
-			
-			resourceConsumer.put(action.getId()+".html", app, im);			
+				applicationBuilder.build(app, progressMonitor);
+				
+				resourceConsumer.put(action.getId()+".html", app, im);			
+			}
+			for (Action child: action.getChildren()) {
+				generate(child, resourceConsumer, progressMonitor);
+			}
 		}
-		for (Action child: action.getChildren()) {
-			generate(child, resourceConsumer, progressMonitor);
-		}		
 	}
 			
 }
