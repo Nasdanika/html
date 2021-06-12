@@ -3,7 +3,6 @@ package org.nasdanika.html.app.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.nasdanika.common.ProgressMonitor;
@@ -11,6 +10,7 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.Decorator;
 import org.nasdanika.html.app.Label;
+import org.nasdanika.html.app.MutableAction;
 import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.app.ViewGenerator;
 
@@ -19,7 +19,7 @@ import org.nasdanika.html.app.ViewGenerator;
  * @author Pavel Vlasov
  *
  */
-public class ActionImpl extends LabelImpl implements Action {
+public class ActionImpl extends LabelImpl implements MutableAction {
 	
 	private List<Action> children = new ArrayList<>();
 	private String confirmation;
@@ -54,6 +54,7 @@ public class ActionImpl extends LabelImpl implements Action {
 		return activator;
 	}
 	
+	@Override
 	public void setActivator(ActionActivator activator) {
 		this.activator = activator;
 	}
@@ -63,6 +64,7 @@ public class ActionImpl extends LabelImpl implements Action {
 		return category;
 	}
 	
+	@Override
 	public void setCategory(Label category) {
 		this.category = category;
 	}
@@ -71,6 +73,7 @@ public class ActionImpl extends LabelImpl implements Action {
 //		return new ActionImpl(cd);
 //	}
 
+	@Override
 	public void setParent(Action parent) {
 		this.parent = parent;
 	}
@@ -100,10 +103,12 @@ public class ActionImpl extends LabelImpl implements Action {
 		return parent;
 	}
 
+	@Override
 	public void setConfirmation(String confirmation) {
 		this.confirmation = confirmation;
 	}
 
+	@Override
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
 	}
@@ -111,13 +116,6 @@ public class ActionImpl extends LabelImpl implements Action {
 //	public void setFloatRight(boolean floatRight) {
 //		this.floatRight = floatRight;
 //	}
-	
-	@Override
-	public Map<String, Object> toMap() {
-		Map<String, Object> map = Action.super.toMap();
-		map.put("roles", roles);
-		return map;
-	}
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
@@ -134,6 +132,7 @@ public class ActionImpl extends LabelImpl implements Action {
 		return sectionStyle;
 	}
 	
+	@Override
 	public void setSectionStyle(SectionStyle sectionStyle) {
 		this.sectionStyle = sectionStyle;
 	}
@@ -143,6 +142,7 @@ public class ActionImpl extends LabelImpl implements Action {
 		return sectionColumns;
 	}
 	
+	@Override
 	public void setSectionColumns(int sectionColumns) {
 		this.sectionColumns = sectionColumns;
 	}

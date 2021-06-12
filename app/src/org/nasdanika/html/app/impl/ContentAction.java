@@ -1,7 +1,5 @@
 package org.nasdanika.html.app.impl;
 
-import java.util.Map;
-
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.app.ViewGenerator;
 
@@ -29,15 +27,6 @@ public class ContentAction extends ActionImpl {
 	
 	public String getContent() {
 		return content;
-	}
-	
-	@Override
-	public Map<String, Object> toMap() {
-		Map<String, Object> map = super.toMap();
-		if (getContent() != null) {
-			map.put("content", getContent());
-		}
-		return map;
 	}
 
 	@Override

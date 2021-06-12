@@ -1,8 +1,5 @@
 package org.nasdanika.html.app;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Something with unique ID.
  * @author Pavel Vlasov
@@ -18,17 +15,5 @@ public interface Identity {
 	 * @return
 	 */
 	Object getId();		
-		
-	/**
-	 * Stores action data into a map, which can then be stored as JSON or YAML or some other format.
-	 * @return
-	 */
-	default Map<String, Object> toMap() {
-		Map<String, Object> ret = new HashMap<>();
-		if (getId() != null) {
-			ret.put("id", getId());
-		}
-		return ret;
-	}
 	
 }

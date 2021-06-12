@@ -2,14 +2,14 @@ package org.nasdanika.html.app.impl;
 
 import java.util.Map;
 
-import org.nasdanika.html.app.Identity;
+import org.nasdanika.html.app.MutableIdentity;
 
 /**
  * Bean identity implementation
  * @author Pavel Vlasov
  *
  */
-public class IdentityImpl implements Identity {
+public class IdentityImpl implements MutableIdentity {
 	
 	private Object id;
 	
@@ -26,6 +26,7 @@ public class IdentityImpl implements Identity {
 		return id;
 	}
 
+	@Override
 	public void setId(Object id) {
 		this.id = id;
 	}
