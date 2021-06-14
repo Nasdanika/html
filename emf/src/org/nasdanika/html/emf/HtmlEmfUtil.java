@@ -20,7 +20,10 @@ import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marked;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.OrderedListType;
+import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.ViewBuilder;
 import org.nasdanika.html.app.ViewGenerator;
@@ -140,6 +143,29 @@ public final class HtmlEmfUtil {
 						if (value instanceof EObject) {
 							ViewAction<?> va = EObjectAdaptable.adaptTo((EObject) value, ViewAction.class);
 							cell.toHTMLElement().content(va == null ? value : viewGenerator.link(va));
+						} else if (value instanceof Collection) {
+							Collection<?> vc = (Collection<?>) value;
+							if (vc.size() == 1) {
+								Object elementValue = vc.iterator().next();
+								if (elementValue instanceof EObject) {
+									ViewAction<?> eva = EObjectAdaptable.adaptTo((EObject) elementValue, ViewAction.class);
+									cell.toHTMLElement().content(eva == null ? elementValue : viewGenerator.link(eva));
+								} else {
+									cell.toHTMLElement().content(elementValue);																
+								}
+							} else if (!vc.isEmpty()) {			
+								HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
+								Tag ol = htmlFactory.tag(TagName.ol);
+								cell.toHTMLElement().content(ol);
+								for (Object elementValue: (Iterable<?>) value) {
+									if (elementValue instanceof EObject) {
+										ViewAction<?> eva = EObjectAdaptable.adaptTo((EObject) elementValue, ViewAction.class);
+										ol.content(htmlFactory.tag(TagName.li, eva == null ? elementValue : viewGenerator.link(eva)));
+									} else {
+										ol.content(htmlFactory.tag(TagName.li, elementValue));
+									}
+								}
+							}
 						} else {
 							cell.toHTMLElement().content(value);							
 						}
