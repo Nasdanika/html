@@ -1,6 +1,10 @@
 engineering-product:
    name: HTML
    path: html
+   appearance:
+     features:
+       modules:
+         category: false
    modules:
       - html/engineering.yml
       - model/html/engineering.yml
