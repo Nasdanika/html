@@ -183,9 +183,8 @@ public final class Util {
 			if (!active.isEmpty() && active.getActivator() instanceof NavigationActionActivator) {
 				NavigationActionActivator activator = (NavigationActionActivator) active.getActivator();
 				String url = activator.getUrl(null);
-				if (url != null && url.startsWith(base)) {	
-					String actionURI = activator.getUrl(null);
-					actionContext.put(Context.BASE_URI_PROPERTY, actionURI);
+				if (url != null && url.startsWith(base) && !url.contains("#")) {	
+					actionContext.put(Context.BASE_URI_PROPERTY, url);
 					actionContext.put("page-title", active.getText());
 					ApplicationBuilder builder = new ActionApplicationBuilder(actionContext, root, principal, active) {
 						
