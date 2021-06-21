@@ -5,4 +5,6 @@ engineering-module:
      - name: Search with LunrJs
      - name: Left and right content panels and sections
        markdown-description: Borrow functionality from the content panel view part.
+     - name: float-left and float-right roles in addition to content-left and content-right
+       markdown-description: Would be useful for tables of content. Add support to where content left and right is used. Wrap into a div.
        
