@@ -1,5 +1,6 @@
 package org.nasdanika.html.emf;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,15 +11,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Converter;
@@ -36,6 +41,7 @@ import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.OrderedListType;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.app.Action;
@@ -47,6 +53,7 @@ import org.nasdanika.html.app.ViewGenerator;
 import org.nasdanika.html.app.impl.LabelImpl;
 import org.nasdanika.html.app.impl.PathNavigationActionActivator;
 import org.nasdanika.html.app.impl.ViewGeneratorImpl;
+import org.nasdanika.html.app.viewparts.ListOfActionsViewPart;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Card;
 import org.nasdanika.html.bootstrap.Color;
@@ -63,13 +70,13 @@ import org.nasdanika.html.bootstrap.Table;
 public abstract class SimpleEObjectViewAction<T extends EObject> implements ViewAction<T> {
 	
 	/**
-	 * Feature role determines where a feature is displayed in the UI.
-	 * Feature can be in zero or more roles. E.g. in ELEMENT_CHILD role to show elements in the 
+	 * Member role determines where a {@link EStructuralFeature} or {@link EOperation} is displayed in the UI.
+	 * Member can be in zero or more roles. E.g. in ELEMENT_CHILD role to show elements in the 
 	 * navigation panel and FEATURE_CHILD to show a summary as a section or CONTENT to show it in the content.
 	 * @author Pavel
 	 *
 	 */
-	public enum FeatureRole {
+	public enum MemberRole {
 		
 		/**
 		 * Feature is shown in the properties table.
@@ -92,10 +99,10 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		ELEMENT_ACTIONS_SORTED,
 		
 		/**
-		 * Child actions for the feature, e.g. a section with action list
+		 * Child actions for the member, e.g. a section with action list
 		 */
-		FEATURE_ACTIONS,
-		
+		ACTIONS,
+				
 		/**
 		 * No role.
 		 */
@@ -103,7 +110,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		
 		public final String LITERAL;
 		
-		private FeatureRole() {
+		private MemberRole() {
 			this.LITERAL = name().toLowerCase().replace('_', '-');
 		}
 		
@@ -238,7 +245,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 						}
 					}	
 					if (action instanceof EStructuralFeatureViewAction) {
-						path.append(((EStructuralFeatureViewAction<?, ?>) action).getEStructuralFeature().getName()).append("/");
+						path.append(((EStructuralFeatureViewAction<?, ?>) action).getETypedElement().getName()).append("/");
 						if (action instanceof EStructuralFeatureElementViewAction) {
 							path.append(((EStructuralFeatureElementViewAction<?, ?, ?>) action).getElementIndex()).append("/");
 						}
@@ -321,9 +328,9 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}
 		
 		// Contents
-		for (EStructuralFeature feature: getFeatures()) {
-			if (isFeatureInRole(feature,FeatureRole.CONTENT)) {
-				ret.content(featureContent(feature, viewGenerator, progressMonitor));
+		for (ETypedElement member: getMembers()) {
+			if (isMemberInRole(member, MemberRole.CONTENT)) {
+				ret.content(memberContent(member, viewGenerator, progressMonitor));
 			}
 		}				
 		
@@ -331,42 +338,65 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	}	
 	
 	/**
-	 * Returns features. This implementation returns all features not sorted.
+	 * Returns features and operations. This implementation returns all features not sorted.
 	 * Subclasses may filter and sort.
 	 * @return
 	 */
-	protected List<EStructuralFeature> getFeatures() {
-		return getSemanticElement().eClass().getEAllStructuralFeatures();
+	protected List<ETypedElement> getMembers() {
+		List<ETypedElement> ret = new ArrayList<>(getSemanticElement().eClass().getEAllStructuralFeatures());
+		ret.addAll(getSemanticElement().eClass().getEAllOperations());
+		return ret;
 	}
 	
 	/**
-	 * Generates content from a feature.
+	 * Generates content from a feature or operation.
 	 * @param ref
 	 * @param viewGenerator
 	 * @param progressMonitor
 	 * @return
 	 */
-	protected Object featureContent(EStructuralFeature feature, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+	protected Object memberContent(ETypedElement member, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
 		
-		if (feature instanceof EReference) {
-			Label fl = featureLabel(feature);
-			Object listOfActions = ViewAction.listOfViewActionsSorted(referenceValue(feature), viewGenerator.label(fl), false, true, 1);
+		if (member instanceof EReference) {
+			Label fl = memberLabel(member);
+			Object listOfActions = listOfMemberElementsViewActionsSorted(member, referenceValue((EReference) member), viewGenerator.label(fl), false, true, 1);
 			Fragment ret = viewGenerator.getHTMLFactory().fragment(viewGenerator.processViewPart(listOfActions, progressMonitor));
-			for (Diagnostic diagnostic: getFeatureDiagnostic(feature)) {
+			for (Diagnostic diagnostic: getFeatureDiagnostic((EReference) member)) {
 				ret.content(bootstrapFactory.alert(HtmlEmfUtil.getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
 			}			
 			return ret;
 		}
 		
 		Card ret = viewGenerator.getBootstrapFactory().card();
-		ret.getHeader().toHTMLElement().content(viewGenerator.label(featureLabel(feature)));
-		ret.getBody().toHTMLElement().content(featureValue(feature, getSemanticElement().eGet(feature), viewGenerator, progressMonitor));
-		for (Diagnostic diagnostic: getFeatureDiagnostic(feature)) {
-			ret.getFooter().toHTMLElement().content(bootstrapFactory.alert(HtmlEmfUtil.getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
+		ret.getHeader().toHTMLElement().content(viewGenerator.label(memberLabel(member)));
+		if (member instanceof EAttribute) {
+			ret.getBody().toHTMLElement().content(memberValue(member, getSemanticElement().eGet((EAttribute) member), viewGenerator, progressMonitor));
+			for (Diagnostic diagnostic: getFeatureDiagnostic((EAttribute) member)) {
+				ret.getFooter().toHTMLElement().content(bootstrapFactory.alert(HtmlEmfUtil.getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
+			}
+		} else {			
+			try {
+				ret.getBody().toHTMLElement().content(memberValue(member, getSemanticElement().eInvoke((EOperation) member, bind((EOperation) member)), viewGenerator, progressMonitor));
+			} catch (InvocationTargetException e) {
+				throw new ConfigurationException("Error invoking " + member + ": " + e.getMessage(), e, getMarker());
+			}			
 		}
 	
 		return ret.toString();
+	}
+
+	/**
+	 * Provides arguments for {@link EOperation}.
+	 * This implementation returns an empty list for no-arg operations and throws {@link UnsupportedOperationException} otherwise.
+	 * @param member
+	 * @return
+	 */
+	protected EList<?> bind(EOperation member) {
+		if (member.getEParameters().isEmpty()) {
+			return ECollections.emptyEList();
+		}
+		throw new UnsupportedOperationException("Override to supply arguments for " + member);
 	}
 
 	/**
@@ -393,14 +423,20 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 
 	protected List<Action> collectChildren() {
 		ArrayList<Action> children = new ArrayList<Action>();
-		for (EStructuralFeature feature: getFeatures()) {
-			if (isFeatureInRole(feature, FeatureRole.ELEMENT_ACTIONS)) {				
-				children.addAll(ViewAction.adaptToViewActionsNonNull(referenceValue(feature)));
-			} else if (isFeatureInRole(feature, FeatureRole.ELEMENT_ACTIONS_SORTED)) {				
-				children.addAll(ViewAction.adaptToViewActionsNonNullSorted(referenceValue(feature)));
+		for (ETypedElement member: getMembers()) {
+			if (isMemberInRole(member, MemberRole.ELEMENT_ACTIONS)) {				
+				Collection<Action> childrenActions = childrenActions(member);
+				if (childrenActions != null) {
+					children.addAll(childrenActions);
+				}
+			} else if (isMemberInRole(member, MemberRole.ELEMENT_ACTIONS_SORTED)) {				
+				Collection<Action> childrenActions = childrenActionsSorted(member);
+				if (childrenActions != null) {
+					children.addAll(childrenActions);
+				}
 			}
-			if (isFeatureInRole(feature, FeatureRole.FEATURE_ACTIONS)) {				
-				Collection<Action> featureActions = featureActions(feature);
+			if (isMemberInRole(member, MemberRole.ACTIONS)) {				
+				Collection<Action> featureActions = memberActions(member);
 				if (featureActions != null) {
 					featureActions.stream().filter(Objects::nonNull).forEach(children::add);
 				}
@@ -408,14 +444,51 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}
 		return children;
 	}
+	
+	@SuppressWarnings("unchecked")
+	protected Collection<Action> childrenActions(ETypedElement member) {
+		if (member instanceof EReference) {
+			return adaptMemberElementsToViewActionsNonNull(member, referenceValue((EReference) member));
+		}
+		if (member instanceof EOperation) {
+			try {
+				Object result = getSemanticElement().eInvoke((EOperation) member, bind((EOperation) member));
+				if (result == null) {
+					return Collections.emptyList();
+				}
+				if (result instanceof EObject) {
+					return adaptMemberElementsToViewActionsNonNull(member, Collections.singleton((EObject) result)); 
+				}
+				if (result instanceof Collection) {
+					return adaptMemberElementsToViewActionsNonNull(member, (Collection<EObject>) result); 					
+				}
+			} catch (InvocationTargetException e) {
+				throw new ConfigurationException("Error invoking " + member + ": " + e.getMessage(), e, getMarker());
+			}			
+		}
+		throw new UnsupportedOperationException("Override to implement not covered cases");
+	}
+
+	protected Collection<Action> childrenActionsSorted(ETypedElement member) {
+		Collection<Action> childrenActions = childrenActions(member);
+		if (childrenActions == null) {
+			return childrenActions;
+		}
+		List<Action> ret = new ArrayList<>(childrenActions);
+		ret.sort((a,b) -> a.getText().compareTo(b.getText()));
+		return ret;
+	}
 
 	/**
-	 * @param feature
+	 * @param reference
 	 * @return A collection of reference elements. Override to filter.
 	 */
 	@SuppressWarnings({ "unchecked"})
-	protected Collection<EObject> referenceValue(EStructuralFeature feature) {
-		return (Collection<EObject>) getSemanticElement().eGet(feature);
+	protected Collection<EObject> referenceValue(EReference reference) {
+		if (reference.isMany()) {
+			return (Collection<EObject>) getSemanticElement().eGet(reference);
+		}
+		return Collections.singleton((EObject) getSemanticElement().eGet(reference));
 	}	
 	
 	/**
@@ -423,48 +496,73 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	 * @return A collection of {@link Action} wrapping the feature. This implementation returns a singleton of list of actions section. May return null instead of an empty collection
 	 * The returned collection may contain null elements - they will be filtered out. 
 	 */
-	protected Collection<Action> featureActions(EStructuralFeature feature) {
-		if (feature.isDerived() || getSemanticElement().eIsSet(feature)) {
-			Object featureValue = getSemanticElement().eGet(feature);
-			if (featureValue == null) {
-				return Collections.emptyList();
-			}
-			if (featureValue instanceof Collection && ((Collection<?>) featureValue).isEmpty()) {
-				return Collections.emptyList();
-			}			
-			
-			EStructuralFeatureViewActionImpl<T, EStructuralFeature, SimpleEObjectViewAction<T>> featureSection = new EStructuralFeatureViewActionImpl<T, EStructuralFeature, SimpleEObjectViewAction<T>>(this, feature) {
+	protected Collection<Action> memberActions(ETypedElement member) {
+		if (member instanceof EStructuralFeature) {
+			EStructuralFeature feature = (EStructuralFeature) member;
+			if (feature.isDerived() || getSemanticElement().eIsSet(feature)) {
+				Object featureValue = getSemanticElement().eGet(feature);
+				if (featureValue == null) {
+					return Collections.emptyList();
+				}
+				if (featureValue instanceof Collection && ((Collection<?>) featureValue).isEmpty()) {
+					return Collections.emptyList();
+				}			
 				
-				@Override
-				public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-					if (feature instanceof EReference) {
-						@SuppressWarnings("unchecked")
-						Object listOfActions = ViewAction.listOfViewActionsSorted((Collection<EObject>) featureValue, null, false, true, 1);
-						return viewGenerator.processViewPart(listOfActions, progressMonitor);
+				EStructuralFeatureViewActionImpl<T, EStructuralFeature, SimpleEObjectViewAction<T>> featureSection = new EStructuralFeatureViewActionImpl<T, EStructuralFeature, SimpleEObjectViewAction<T>>(this, feature) {
+					
+					@Override
+					public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+						if (feature instanceof EReference) {
+							@SuppressWarnings("unchecked")
+							Object listOfActions = listOfMemberElementsViewActionsSorted(member, (Collection<EObject>) featureValue, null, false, true, 1);
+							return viewGenerator.processViewPart(listOfActions, progressMonitor);
+						}
+						
+						return memberValue(feature, featureValue, viewGenerator, progressMonitor);
 					}
 					
-					return featureValue(feature, featureValue, viewGenerator, progressMonitor);
-				}
+				};
 				
-			};
+				featureSection.getRoles().add(Action.Role.SECTION); 
+				featureSection.setSectionStyle(SectionStyle.DEFAULT);
+				featureSection.setActivator(new PathNavigationActionActivator(featureSection, ((NavigationActionActivator) getActivator()).getUrl(null), "#feature-" + feature.getName(), getMarker()));
+		
+				return Collections.singleton(featureSection);
+			}
 			
-			featureSection.getRoles().add(Action.Role.SECTION); 
-			featureSection.setSectionStyle(SectionStyle.DEFAULT);
-			featureSection.setActivator(new PathNavigationActionActivator(featureSection, ((NavigationActionActivator) getActivator()).getUrl(null), "#feature-" + feature.getName(), getMarker()));
-	
-			return Collections.singleton(featureSection);
+			return Collections.emptyList();
 		}
-		return Collections.emptyList();
+		
+		EOperationViewActionImpl<T, SimpleEObjectViewAction<T>> operationSection = new EOperationViewActionImpl<T, SimpleEObjectViewAction<T>>(this, (EOperation) member) {
+			
+			@Override
+			public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+				try {
+					Object result = getSemanticElement().eInvoke((EOperation) member, bind((EOperation) member));
+					return memberValue(member, result, viewGenerator, progressMonitor);
+				} catch (InvocationTargetException e) {
+					throw new ConfigurationException("Erroer invoking " + member + ": " + e.getMessage(), e, getMarker());
+				}			
+			}
+			
+		};
+		
+		operationSection.getRoles().add(Action.Role.SECTION); 
+		operationSection.setSectionStyle(SectionStyle.DEFAULT);
+		operationSection.setActivator(new PathNavigationActionActivator(operationSection, ((NavigationActionActivator) getActivator()).getUrl(null), "#operation-" + member.getName(), getMarker()));
+
+		return Collections.singleton(operationSection);
+		
 	}
 	
 	/**
 	 * Interpolation.
 	 */
 	@Override
-	public String featureDescription(EStructuralFeature feature) {
-		String classSegment = Util.camelToKebab(feature.getEContainingClass().getName());
-		String featureSegment = Util.camelToKebab(feature.getName());
-		URL descriptionResource = getClass().getResource(classSegment + "--" + featureSegment + ".md");
+	public String memberDescription(ETypedElement member) {
+		String classSegment = Util.camelToKebab(member instanceof EStructuralFeature ? ((EStructuralFeature) member).getEContainingClass().getName() : ((EOperation) member).getEContainingClass().getName()); // Just operation name, override to add support of signatures.  
+		String memberSegment = Util.camelToKebab(member.getName());
+		URL descriptionResource = getClass().getResource(classSegment + (member instanceof EStructuralFeature ? "--" : "---") + memberSegment + ".md");
 		if (descriptionResource == null) {
 			return null;
 		}
@@ -475,23 +573,26 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			return "Exception rendering description: " + e;
 		}
 	}
-		
-	protected boolean isFeatureInRole(EStructuralFeature feature, FeatureRole role) {
-		if (feature instanceof EAttribute) {
-			return role == FeatureRole.PROPERTY;
-		}
-		
-		EReference ref = (EReference) feature;
-		
-		if (ref.isMany()) {
-			if (ref.isContainment()) {
-				return role == FeatureRole.ELEMENT_ACTIONS_SORTED;
+	
+	protected boolean isMemberInRole(ETypedElement member, MemberRole role) {
+		if (member instanceof EAttribute) {
+			return role == MemberRole.PROPERTY;
+		} else if (member instanceof EReference) {
+			EReference ref = (EReference) member;
+			
+			if (ref.isMany()) {
+				if (ref.isContainment()) {
+					return role == MemberRole.ELEMENT_ACTIONS_SORTED;
+				}
+				return role == MemberRole.ACTIONS;
 			}
-			return role == FeatureRole.FEATURE_ACTIONS;
+			
+			return role == MemberRole.PROPERTY;
 		}
 		
-		return role == FeatureRole.PROPERTY;
+		return false; // EOperations are not invoked by default - shall be explicitly specified.
 	}
+	
 		
 	@Override
 	public boolean isDisabled() {
@@ -595,7 +696,8 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			ret.put("doc-uri", relativeDocUri);
 		}
 		
-		ret.put("embedded-image", (PropertyComputer) this::computeEmbeddedlmage);
+		ret.put("embedded-image", (PropertyComputer) this::computeEmbeddedImage);
+		ret.put("embedded-image-data", (PropertyComputer) this::computeEmbeddedImageData);
 		ret.put("include", (PropertyComputer) this::computeInclude);
 		ret.put("include-markdown", (PropertyComputer) this::computeIncludeMarkdown);
 		
@@ -603,20 +705,18 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <U> U computeEmbeddedlmage(Context context, String key, String path, Class<U> type) { 
+	protected <U> U computeEmbeddedImage(Context context, String key, String path, Class<U> type) { 
 		if (type == null || type == String.class) { 
 			int idx = path.indexOf("/"); 
 			if (idx == -1) { 
 				return null;
 			}
 			try {
-				StringBuilder imageTag = new StringBuilder("<img src=\"data: image/" + path.substring(0, idx) + ";base64, ");
+				StringBuilder imageTag = new StringBuilder("<img src=\"");
+				imageTag.append(computeEmbeddedImageData(context, key, path, type));
+				imageTag.append("\"/>"); 
 				String imagePath = path.substring(idx + 1).trim(); 
 				int spaceIdx = imagePath.indexOf(' ');
-				URL imageURL = resolve(spaceIdx == -1 ? imagePath : imagePath.substring(0, spaceIdx));
-				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE); 
-				byte[] imageBytes = converter.convert(imageURL.openStream(), byte[].class); 
-				imageTag.append(Base64.getEncoder().encodeToString(imageBytes)).append("\"/>"); 
 				if (spaceIdx == -1) {
 					return (U) imageTag.toString();
 				}
@@ -626,6 +726,29 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 				imageTable.row(imageTag);
 				imageTable.row(imagePath.substring(spaceIdx + 1)); 
 				return (U) imageTable.toString();
+			} catch (Exception e) {
+				throw new ConfigurationException("Error including '" + path +	": " + e, e, getMarker());
+			}
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <U> U computeEmbeddedImageData(Context context, String key, String path, Class<U> type) { 
+		if (type == null || type == String.class) { 
+			int idx = path.indexOf("/"); 
+			if (idx == -1) { 
+				return null;
+			}
+			try {
+				StringBuilder imageTag = new StringBuilder("data:image/" + path.substring(0, idx) + ";base64,");
+				String imagePath = path.substring(idx + 1).trim(); 
+				int spaceIdx = imagePath.indexOf(' ');
+				URL imageURL = resolve(spaceIdx == -1 ? imagePath : imagePath.substring(0, spaceIdx));
+				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE); 
+				byte[] imageBytes = converter.convert(imageURL.openStream(), byte[].class); 
+				imageTag.append(Base64.getEncoder().encodeToString(imageBytes)); 
+				return (U) imageTag.toString();
 			} catch (Exception e) {
 				throw new ConfigurationException("Error including '" + path +	": " + e, e, getMarker());
 			}
@@ -696,21 +819,30 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			locationRow.cell(location(marker, viewGenerator, progressMonitor));			
 		}
 		
-		for (EStructuralFeature sf: getFeatures()) {			
-			if (isFeatureInRole(sf, FeatureRole.PROPERTY)) {
-				Collection<Diagnostic> featureDiagnostic = getFeatureDiagnostic(sf);
-				Object fv = getSemanticElement().eGet(sf);
-				if (featureDiagnostic.isEmpty() && isEmptyFeatureValue(sf, fv)) {
+		for (ETypedElement member: getMembers()) {			
+			if (isMemberInRole(member, MemberRole.PROPERTY)) {
+				Collection<Diagnostic> featureDiagnostic = member instanceof EStructuralFeature ? getFeatureDiagnostic((EStructuralFeature) member) : Collections.emptyList();
+				Object mv;
+				if (member instanceof EStructuralFeature) {
+					mv = getSemanticElement().eGet((EStructuralFeature) member);
+				} else {
+					try {
+						mv = getSemanticElement().eInvoke((EOperation) member, bind((EOperation) member));
+					} catch (InvocationTargetException e) {
+						throw new ConfigurationException("Error invoking " + member + ": " + e.getMessage(), e, getMarker());
+					}			
+				}
+				if (featureDiagnostic.isEmpty() && isEmptyMemberValue(member, mv)) {
 					continue;
 				}
-				Object featureValue = featureValue(sf, fv, viewGenerator, progressMonitor);
-				if (featureValue != null || !featureDiagnostic.isEmpty()) {
+				Object memberValue = memberValue(member, mv, viewGenerator, progressMonitor);
+				if (memberValue != null || !featureDiagnostic.isEmpty()) {
 					Row fRow = pTable.row(); 
-					LabelImpl fl = featureLabel(sf);
+					LabelImpl fl = memberLabel(member);
 					Cell nameHeader = fRow.header(viewGenerator.label(fl));
 					nameHeader.toHTMLElement().content(org.nasdanika.html.app.impl.Util.descriptionModal(viewGenerator, fl));
 					
-					Cell valueCell = featureValue == null ? fRow.cell() : fRow.cell(featureValue);
+					Cell valueCell = memberValue == null ? fRow.cell() : fRow.cell(memberValue);
 					
 					for (Diagnostic diagnostic: featureDiagnostic) {
 						valueCell.toHTMLElement().content(bootstrapFactory.alert(HtmlEmfUtil.getSeverityColor(diagnostic.getSeverity()), StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
@@ -723,13 +855,13 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	}	
 	
 	/**
-	 * Empty feature values are not shown in property tables unless there is a diagnostic to show.
+	 * Empty member values are not shown in property tables unless there is a diagnostic to show.
 	 * This method returns true if value is null, an empty string, false for booleans, or zero for numbers.
-	 * @param feature
+	 * @param member
 	 * @param value
 	 * @return
 	 */
-	protected boolean isEmptyFeatureValue(EStructuralFeature feature, Object value) {
+	protected boolean isEmptyMemberValue(ETypedElement member, Object value) {
 		if (value == null) {
 			return true;
 		}
@@ -765,7 +897,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		return viewGenerator.getHTMLFactory().link(source.getLocation(), source.getText());
 	}
 	
-	protected Object featureValue(EStructuralFeature feature, Object value, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {		
+	protected Object memberValue(ETypedElement member, Object value, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {		
 		if (value instanceof EObject) {
 			Action va = EObjectAdaptable.adaptTo((EObject) value, ViewAction.class);
 			if (va != null) {
@@ -777,12 +909,12 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 				return null;
 			}
 			if (vc.size() == 1) {
-				return featureValue(feature, vc.iterator().next(), viewGenerator, progressMonitor);
+				return memberValue(member, vc.iterator().next(), viewGenerator, progressMonitor);
 			}			
 			HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
 			Tag ret = htmlFactory.tag(TagName.ol);
 			for (Object e: (Iterable<?>) value) {
-				ret.content(htmlFactory.tag(TagName.li, featureValue(feature, e, viewGenerator, progressMonitor)));
+				ret.content(htmlFactory.tag(TagName.li, memberValue(member, e, viewGenerator, progressMonitor)));
 			}
 			return ret;
 		}
@@ -804,7 +936,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		EObject ec = getSemanticElement().eContainer();
 		
 		// not exactly valid approach - should use isChildFeature of the container view action, but need to "peel" proxy for that.
-		if (ec == null || ec.eClass().getEAllReferences().stream().filter(r -> isFeatureInRole(r, FeatureRole.ELEMENT_ACTIONS) || isFeatureInRole(r, FeatureRole.ELEMENT_ACTIONS_SORTED)).count() == 1) {
+		if (ec == null || ec.eClass().getEAllReferences().stream().filter(r -> isMemberInRole(r, MemberRole.ELEMENT_ACTIONS) || isMemberInRole(r, MemberRole.ELEMENT_ACTIONS_SORTED)).count() == 1) {
 			return null;
 		}		
 		Action parent = getParent();
@@ -812,10 +944,10 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			return null;
 		}
 		if (parent instanceof ViewAction) {
-			return ((ViewAction<?>) parent).featureCategory(cf);
+			return ((ViewAction<?>) parent).memberCategory(cf);
 		}
 		
-		LabelImpl category = featureLabel(cf);
+		LabelImpl category = memberLabel(cf);
 		if (category == null) {
 			return null;
 		}
@@ -862,5 +994,27 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	public T getSemanticElement() {
 		return semanticElement;
 	}
+
+	protected List<Action> adaptMemberElementsToViewActionsNonNull(ETypedElement member, Collection<? extends EObject> elements) {
+		return elements.stream().map(ViewAction::adaptToViewActionNonNull).collect(Collectors.toList());
+	}
+
+	protected List<Action> adaptMemberElementsToViewActionsNonNullSorted(ETypedElement member, Collection<? extends EObject> elements) {
+		return elements.stream().map(ViewAction::adaptToViewActionNonNull).sorted((a,b) -> a.getText().compareTo(b.getText())).collect(Collectors.toList());
+	}
+
+	protected Object listOfMemberElementsViewActions(ETypedElement member, Collection<? extends EObject> elements, Object header, boolean sort, boolean tooltip, int depth) { 
+		if (elements.isEmpty()) {
+			return null;
+		}
+		return new ListOfActionsViewPart(adaptMemberElementsToViewActionsNonNull(member, elements), header, tooltip, depth, OrderedListType.ROTATE);
+	}
+
+	protected Object listOfMemberElementsViewActionsSorted(ETypedElement member, Collection<? extends EObject> elements, Object header, boolean sort, boolean tooltip, int depth) { 
+		if (elements.isEmpty()) {
+			return null;
+		}
+		return new ListOfActionsViewPart(adaptMemberElementsToViewActionsNonNullSorted(member, elements), header, tooltip, depth, OrderedListType.ROTATE);
+	}	
 	
 }

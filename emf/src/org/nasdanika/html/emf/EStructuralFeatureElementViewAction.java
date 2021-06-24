@@ -10,13 +10,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @param <T>
  * @param <F>
  */
-public interface EStructuralFeatureElementViewAction<T extends EObject, F extends EStructuralFeature, E> extends EStructuralFeatureViewAction<T,F>  {
-
-	/**
-	 * @return the underlying {@link EStructuralFeature}
-	 */
-	E getElement();
-	
-	int getElementIndex();
+public interface EStructuralFeatureElementViewAction<T extends EObject, F extends EStructuralFeature, E> extends EStructuralFeatureViewAction<T,F>, ETypedElementElementViewAction<T, F, E>  {
 	
 }

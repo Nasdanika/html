@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.ETypedElement;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.MarkdownHelper;
 import org.nasdanika.common.Util;
@@ -41,37 +43,37 @@ public interface ViewAction<T extends EObject> extends Action {
 		return ret;
 	}
 	
-	default String featureIcon(EStructuralFeature feature) {
-		return EmfUtil.getNasdanikaAnnotationDetail(feature, EmfUtil.ICON_KEY, EmfUtil.getNasdanikaAnnotationDetail(feature.getEType(), EmfUtil.ICON_KEY));
+	default String memberIcon(ETypedElement member) {
+		return EmfUtil.getNasdanikaAnnotationDetail(member, EmfUtil.ICON_KEY, EmfUtil.getNasdanikaAnnotationDetail(member.getEType(), EmfUtil.ICON_KEY));
 	}
 	
-	default LabelImpl featureLabel(EStructuralFeature feature) {
+	default LabelImpl memberLabel(ETypedElement member) {
 		LabelImpl ret = new LabelImpl();
-		ret.setText(featureLabelText(feature));
-		ret.setIcon(featureIcon(feature));
-		String featureDescription = featureDescription(feature);
-		ret.setDescription(featureDescription);
-		if (!Util.isBlank(featureDescription)) {
-			ret.setTooltip(Util.firstPlainTextSentence(featureDescription, 50, 250));
+		ret.setText(memberLabelText(member));
+		ret.setIcon(memberIcon(member));
+		String memberDescription = memberDescription(member);
+		ret.setDescription(memberDescription);
+		if (!Util.isBlank(memberDescription)) {
+			ret.setTooltip(Util.firstPlainTextSentence(memberDescription, 50, 250));
 		}
 		
 		return ret;		
 	}
 	
-	default Label featureCategory(EStructuralFeature feature) {
-		LabelImpl category =featureLabel(feature);
-		category.setId(getId() + "-feature-category-" + feature.getName());
+	default Label memberCategory(ETypedElement member) {
+		LabelImpl category = memberLabel(member);
+		category.setId(getId() + "-" + member.eClass().getName() + "-category-" + member.getName());
 		return category;		
 	}
 
-	default String featureLabelText(EStructuralFeature feature) {
-		return EmfUtil.getNasdanikaAnnotationDetail(feature, EmfUtil.LABEL_KEY, Util.nameToLabel(feature.getName()));
+	default String memberLabelText(ETypedElement member) {
+		return EmfUtil.getNasdanikaAnnotationDetail(member, EmfUtil.LABEL_KEY, Util.nameToLabel(member.getName()));
 	}
 	
-	default String featureDescription(EStructuralFeature feature) {
-		String classSegment = Util.camelToKebab(feature.getEContainingClass().getName());
-		String featureSegment = Util.camelToKebab(feature.getName());
-		URL descriptionResource = getClass().getResource(classSegment + "--" + featureSegment + ".md");
+	default String memberDescription(ETypedElement member) {		
+		String classSegment = Util.camelToKebab(member instanceof EStructuralFeature ? ((EStructuralFeature) member).getEContainingClass().getName() : ((EOperation) member).getEContainingClass().getName()); // Just operation name, override to add support of signatures.
+		String memberSegment = Util.camelToKebab(member.getName());
+		URL descriptionResource = getClass().getResource(classSegment + (member instanceof EStructuralFeature ? "--" : "---") + memberSegment + ".md");
 		if (descriptionResource == null) {
 			return null;
 		}
