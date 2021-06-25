@@ -33,7 +33,7 @@ public class ETypedElementViewActionImpl<T extends EObject, E extends ETypedElem
 					new PathNavigationActionActivator(
 							this, 
 							((NavigationActionActivator) semanticElementViewActionActivator).getUrl(null), 
-							SimpleEObjectViewAction.sectionPath(semanticElementViewAction) + typedElement.getName() + "/index.html", 
+							SimpleEObjectViewAction.sectionPath(semanticElementViewAction) + Util.camelToKebab(typedElement.eClass().getName()) + "/" + typedElement.getName() + "/index.html", 
 							marked == null ? null : marked.getMarker()));
 		}
 		setParent(semanticElementViewAction);
