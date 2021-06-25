@@ -593,8 +593,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}
 		
 		return false; // EOperations are not invoked by default - shall be explicitly specified.
-	}
-	
+	}	
 		
 	@Override
 	public boolean isDisabled() {
