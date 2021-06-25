@@ -5,17 +5,23 @@
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
 	    <version>2021.6.5</version>
-	    <relativePath>../jar-pom.xml</relativePath>
+	    <relativePath>..</relativePath>
 	  </parent>
-	<artifactId>echarts</artifactId>
+	<artifactId>emf</artifactId>
 	<packaging>jar</packaging>
-	<name>Nasdanika HTML ECharts</name>
-	<description>Classes for generating charts.</description>
+	<name>Nasdanika HTML EMF library</name>
+	<description>Classes for generating HTML Application UI from EMF classes.</description>
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
-			<artifactId>html</artifactId>
+			<artifactId>app</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.core</groupId>
+			<artifactId>emf</artifactId>
+			<version>${core.version}</version>
 		</dependency>
 	</dependencies>
 </project>
+
