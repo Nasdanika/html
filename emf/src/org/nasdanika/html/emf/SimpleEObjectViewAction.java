@@ -309,6 +309,16 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		return contentValue;
 	}
 	
+	/**
+	 * Override to generate content before description and member sections.
+	 * @param viewGenerator
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected Object generateHead(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
+		return null;
+	}
+	
 	protected Object doGenerate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		BootstrapFactory bootstrapFactory = viewGenerator.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 		Fragment ret = bootstrapFactory.getHTMLFactory().fragment();
@@ -317,9 +327,9 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}
 		ret.content(propertiesTable(viewGenerator, progressMonitor));
 		ret.content(diagnosticSummary(viewGenerator, progressMonitor));
-		Object diagram = generateDiagram();
-		if (diagram != null) {
-			ret.content(diagram);
+		Object head = generateHead(viewGenerator, progressMonitor);
+		if (head != null) {
+			ret.content(head);
 		}
 		
 		String description = getTargetDescription();
@@ -398,14 +408,6 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}
 		throw new UnsupportedOperationException("Override to supply arguments for " + member);
 	}
-
-	/**
-	 * Override to generate a diagram to be displayed on the top of the page.
-	 * @return
-	 */
-	protected Object generateDiagram() {
-		return null;
-	}
 	
 	protected List<Action> children;
 
@@ -422,7 +424,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	}
 
 	protected List<Action> collectChildren() {
-		ArrayList<Action> children = new ArrayList<Action>();
+		ArrayList<Action> children = new ArrayList<>();
 		for (ETypedElement member: getMembers()) {
 			if (isMemberInRole(member, MemberRole.ELEMENT_ACTIONS)) {				
 				Collection<Action> childrenActions = childrenActions(member);
@@ -514,7 +516,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 					public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 						if (feature instanceof EReference) {
 							@SuppressWarnings("unchecked")
-							Object listOfActions = listOfMemberElementsViewActionsSorted(member, (Collection<EObject>) featureValue, null, false, true, 1);
+							Object listOfActions = listOfMemberElementsViewActionsSorted(member, featureValue instanceof Collection ? (Collection<EObject>) featureValue : Collections.singleton((EObject) featureValue), null, false, true, 1);
 							return viewGenerator.processViewPart(listOfActions, progressMonitor);
 						}
 						
@@ -722,9 +724,9 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 				}
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				Table imageTable = bootstrapFactory.table(); 
-				imageTable.toHTMLElement().style( ).width( "auto"); 
+				imageTable.toHTMLElement().style().width( "auto"); 
 				imageTable.row(imageTag);
-				imageTable.row(imagePath.substring(spaceIdx + 1)); 
+				imageTable.row(imagePath.substring(spaceIdx + 1)).backgroundColor(Color.LIGHT); 
 				return (U) imageTable.toString();
 			} catch (Exception e) {
 				throw new ConfigurationException("Error including '" + path +	": " + e, e, getMarker());
