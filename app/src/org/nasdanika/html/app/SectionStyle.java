@@ -251,6 +251,5 @@ public enum SectionStyle {
 		}
 		throw new IllegalArgumentException("No breakpoint value for label "+label);
 	}
-	
-	
+		
 }

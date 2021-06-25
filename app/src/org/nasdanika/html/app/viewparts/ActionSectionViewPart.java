@@ -40,7 +40,6 @@ public class ActionSectionViewPart  implements ViewPart {
 
 	@Override
 	public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
-		
 		HTMLFactory htmlFactory = viewGenerator.getHTMLFactory();
 		Tag sectionDiv = htmlFactory.div();
 		sectionDiv.content(ViewPartsUtil.sectionAnchor(action));						
