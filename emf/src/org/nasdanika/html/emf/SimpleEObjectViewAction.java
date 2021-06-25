@@ -510,7 +510,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 					return Collections.emptyList();
 				}			
 				
-				EStructuralFeatureViewActionImpl<T, EStructuralFeature, SimpleEObjectViewAction<T>> featureSection = new EStructuralFeatureViewActionImpl<T, EStructuralFeature, SimpleEObjectViewAction<T>>(this, feature) {
+				EStructuralFeatureViewActionImpl<T, EStructuralFeature, SimpleEObjectViewAction<T>> featureAction = new EStructuralFeatureViewActionImpl<T, EStructuralFeature, SimpleEObjectViewAction<T>>(this, feature) {
 					
 					@Override
 					public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
@@ -523,19 +523,27 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 						return memberValue(feature, featureValue, viewGenerator, progressMonitor);
 					}
 					
+					@Override
+					public boolean isInRole(String role) {
+						return SimpleEObjectViewAction.this.isMemberActionInRole(member, role);
+					}
+					
 				};
 				
-				featureSection.getRoles().add(Action.Role.SECTION); 
-				featureSection.setSectionStyle(SectionStyle.DEFAULT);
-				featureSection.setActivator(new PathNavigationActionActivator(featureSection, ((NavigationActionActivator) getActivator()).getUrl(null), "#feature-" + feature.getName(), getMarker()));
+				featureAction.setSectionStyle(SectionStyle.DEFAULT);
+				if (featureAction.isInRole(Action.Role.SECTION)) {
+					featureAction.setActivator(new PathNavigationActionActivator(featureAction, ((NavigationActionActivator) getActivator()).getUrl(null), "#feature-" + member.getName(), getMarker()));
+				} else {
+					featureAction.setActivator(new PathNavigationActionActivator(featureAction, ((NavigationActionActivator) getActivator()).getUrl(null), "feature/" + member.getName() + ".html", getMarker()));
+				}				
 		
-				return Collections.singleton(featureSection);
+				return Collections.singleton(featureAction);
 			}
 			
 			return Collections.emptyList();
 		}
 		
-		EOperationViewActionImpl<T, SimpleEObjectViewAction<T>> operationSection = new EOperationViewActionImpl<T, SimpleEObjectViewAction<T>>(this, (EOperation) member) {
+		EOperationViewActionImpl<T, SimpleEObjectViewAction<T>> operationAction = new EOperationViewActionImpl<T, SimpleEObjectViewAction<T>>(this, (EOperation) member) {
 			
 			@Override
 			public Object generate(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
@@ -543,18 +551,31 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 					Object result = getSemanticElement().eInvoke((EOperation) member, bind((EOperation) member));
 					return memberValue(member, result, viewGenerator, progressMonitor);
 				} catch (InvocationTargetException e) {
-					throw new ConfigurationException("Erroer invoking " + member + ": " + e.getMessage(), e, getMarker());
+					throw new ConfigurationException("Error invoking " + member + ": " + e.getMessage(), e, getMarker());
 				}			
+			}
+			
+			@Override
+			public boolean isInRole(String role) {
+				return SimpleEObjectViewAction.this.isMemberActionInRole(member, role);
 			}
 			
 		};
 		
-		operationSection.getRoles().add(Action.Role.SECTION); 
-		operationSection.setSectionStyle(SectionStyle.DEFAULT);
-		operationSection.setActivator(new PathNavigationActionActivator(operationSection, ((NavigationActionActivator) getActivator()).getUrl(null), "#operation-" + member.getName(), getMarker()));
+		operationAction.setSectionStyle(SectionStyle.DEFAULT);
 
-		return Collections.singleton(operationSection);
+		if (operationAction.isInRole(Action.Role.SECTION)) {			
+			operationAction.setActivator(new PathNavigationActionActivator(operationAction, ((NavigationActionActivator) getActivator()).getUrl(null), "#operation-" + member.getName(), getMarker()));
+		} else {			
+			operationAction.setActivator(new PathNavigationActionActivator(operationAction, ((NavigationActionActivator) getActivator()).getUrl(null), "operation/" + member.getName() + ".html", getMarker()));
+		}				
+
+		return Collections.singleton(operationAction);
 		
+	}
+	
+	protected boolean isMemberActionInRole(ETypedElement member, String role) {
+		return Action.Role.SECTION.equals(role);
 	}
 	
 	/**
