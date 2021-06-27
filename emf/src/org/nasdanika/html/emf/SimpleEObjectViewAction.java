@@ -594,6 +594,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	 * The returned collection may contain null elements - they will be filtered out. 
 	 */
 	protected Collection<Action> memberActions(ETypedElement member) {
+		String memberTypeQualifier = Util.camelToKebab(member.eClass().getName());
 		if (member instanceof EStructuralFeature) {
 			EStructuralFeature feature = (EStructuralFeature) member;
 			if (feature.isDerived() || getSemanticElement().eIsSet(feature)) {
@@ -623,13 +624,18 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 						return SimpleEObjectViewAction.this.isMemberActionInRole(member, role);
 					}
 					
+					@Override
+					public boolean isEmpty() {
+						return false;
+					}
+					
 				};
 				
 				featureAction.setSectionStyle(SectionStyle.DEFAULT);
 				if (featureAction.isInRole(Action.Role.SECTION)) {
-					featureAction.setActivator(new PathNavigationActionActivator(featureAction, ((NavigationActionActivator) getActivator()).getUrl(null), "#feature-" + member.getName(), getMarker()));
+					featureAction.setActivator(new PathNavigationActionActivator(featureAction, ((NavigationActionActivator) getActivator()).getUrl(null), "#" + memberTypeQualifier + "-" + member.getName(), getMarker()));
 				} else {
-					featureAction.setActivator(new PathNavigationActionActivator(featureAction, ((NavigationActionActivator) getActivator()).getUrl(null), "feature/" + member.getName() + ".html", getMarker()));
+					featureAction.setActivator(new PathNavigationActionActivator(featureAction, ((NavigationActionActivator) getActivator()).getUrl(null), memberTypeQualifier + "/" + member.getName() + ".html", getMarker()));
 				}				
 		
 				return Collections.singleton(featureAction);
@@ -655,14 +661,19 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 				return SimpleEObjectViewAction.this.isMemberActionInRole(member, role);
 			}
 			
+			@Override
+			public boolean isEmpty() {
+				return false;
+			}
+			
 		};
 		
 		operationAction.setSectionStyle(SectionStyle.DEFAULT);
 
 		if (operationAction.isInRole(Action.Role.SECTION)) {			
-			operationAction.setActivator(new PathNavigationActionActivator(operationAction, ((NavigationActionActivator) getActivator()).getUrl(null), "#operation-" + member.getName(), getMarker()));
+			operationAction.setActivator(new PathNavigationActionActivator(operationAction, ((NavigationActionActivator) getActivator()).getUrl(null), "#" + memberTypeQualifier + "-" + member.getName(), getMarker()));
 		} else {			
-			operationAction.setActivator(new PathNavigationActionActivator(operationAction, ((NavigationActionActivator) getActivator()).getUrl(null), "operation/" + member.getName() + ".html", getMarker()));
+			operationAction.setActivator(new PathNavigationActionActivator(operationAction, ((NavigationActionActivator) getActivator()).getUrl(null), memberTypeQualifier + "/" + member.getName() + ".html", getMarker()));
 		}				
 
 		return Collections.singleton(operationAction);
