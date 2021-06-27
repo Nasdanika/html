@@ -369,7 +369,15 @@ public class ViewGeneratorImpl extends SimpleMutableContext implements ViewGener
 		}	
 		
 		if (!Util.isBlank(label.getNotification())) {
-			Tag badge = get(BootstrapFactory.class).badge(true, label.getColor() == Color.PRIMARY ? Color.SECONDARY : Color.PRIMARY, label.getNotification());
+			Color notificationColor = Color.PRIMARY;
+			if (label.getColor() == Color.PRIMARY) {
+				notificationColor = Color.SECONDARY;
+			} else if (label.getColor() == Color.DANGER) {
+				notificationColor = Color.DANGER;				
+			} else if (label.getColor() == Color.WARNING) {
+				notificationColor = Color.WARNING;				
+			} 
+			Tag badge = get(BootstrapFactory.class).badge(true, notificationColor, label.getNotification());
 			badge.style().margin().left("0.3em"); // TODO - also style-driven
 			contentConsumer.accept(badge);
 //			getBootstrapFactory().wrap(badge)._float().right();
