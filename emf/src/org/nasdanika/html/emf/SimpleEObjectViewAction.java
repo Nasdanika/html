@@ -70,6 +70,7 @@ import org.nasdanika.html.bootstrap.Table;
  */
 public abstract class SimpleEObjectViewAction<T extends EObject> implements ViewAction<T> {
 	
+	public static final String DOC_URI = "doc-uri";
 	public static final String PROPERTIES_TABLE_ACTION = "properties-table";
 	public static final String DIAGNOSTIC_SUMMARY_ACTION = "diagnostic-summary";
 	public static final String CONTENT_ROLE = "content";
@@ -821,11 +822,11 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			}
 		});
 		
-		Object targetDocUri = targetContext.get("doc-uri");
+		Object targetDocUri = targetContext.get(DOC_URI);
 		if (targetDocUri != null) {
 			URI docUri = URI.createURI(targetDocUri.toString());			
 			URI relativeDocUri = docUri.deresolve(thisUri, true, true, true);
-			ret.put("doc-uri", relativeDocUri);
+			ret.put(DOC_URI, relativeDocUri);
 		}
 		
 		ret.put("embedded-image", (PropertyComputer) this::computeEmbeddedImage);
