@@ -66,7 +66,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 		EList<EGenericType> eGenericSuperTypes = eObject.getEGenericSuperTypes();
 		if (!eGenericSuperTypes.isEmpty()) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
-			Fragment gstf = htmlFactory.fragment(TagName.h3.create("Supertypes"));
+			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create("Supertypes")).attribute("name", "supertypes"));
 
 			Tag list = TagName.ul.create();
 			gstf.content(list);
@@ -83,7 +83,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 		Collection<EClass> eSubTypes = getSubTypes(eObject).stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (!eSubTypes.isEmpty()) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
-			Fragment gstf = htmlFactory.fragment(TagName.h3.create("Subtypes"));
+			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create("Subtypes")).attribute("name", "subtypes"));
 
 			Tag list = TagName.ul.create();
 			gstf.content(list);
@@ -98,7 +98,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 		Collection<EClass> referrers = getReferrers().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (!referrers.isEmpty()) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
-			Fragment gstf = htmlFactory.fragment(TagName.h3.create("Referrers"));
+			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create("Referrers")).attribute("name", "referrers"));
 
 			Tag list = TagName.ul.create();
 			gstf.content(list);
@@ -113,7 +113,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (!uses.isEmpty()) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
-			Fragment gstf = htmlFactory.fragment(TagName.h3.create("Uses"));
+			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create("Uses")).attribute("name", "uses"));
 
 			Tag list = TagName.ul.create();
 			gstf.content(list);
@@ -127,7 +127,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 		// Load specification
 		if (!eObject.isAbstract() && "true".equals(EmfUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.IS_LOADABLE, "true"))) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
-			Fragment gstf = htmlFactory.fragment(TagName.h3.create("Load specification"));
+			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create("Load specification")).attribute("name", "load-specification"));
 			
 			String loadDoc = EmfUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.LOAD_DOC);
 			if (!Util.isBlank(loadDoc)) {
