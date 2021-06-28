@@ -463,7 +463,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}
 		return children;
 	}
-
+	
 	protected ActionImpl createDiagnosticSummaryAction() {
 		ActionImpl diagnosticSummaryAction = new ActionImpl() {
 			
@@ -484,17 +484,19 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			
 			@Override
 			public boolean isInRole(String role) {
-				return isActionInRole(DIAGNOSTIC_SUMMARY_ACTION, role, Action.Role.SECTION);
+				return isActionInRole(DIAGNOSTIC_SUMMARY_ACTION, role, HEAD_ROLE);
 			}
 			
 			@Override
 			public boolean isEmpty() {
-				return false;
+				return isInRole(CONTENT_ROLE) 
+						|| isInRole(Action.Role.SECTION)
+						|| isInRole(HEAD_ROLE);
 			}
 			
 		};
 		
-		if (diagnosticSummaryAction.isInRole(Action.Role.SECTION)) {
+		if (diagnosticSummaryAction.isInRole(Action.Role.SECTION) || diagnosticSummaryAction.isInRole(CONTENT_ROLE) || diagnosticSummaryAction.isInRole(HEAD_ROLE)) {
 			diagnosticSummaryAction.setActivator(new PathNavigationActionActivator(diagnosticSummaryAction, ((NavigationActionActivator) getActivator()).getUrl(null), "#actions-" + DIAGNOSTIC_SUMMARY_ACTION, getMarker()));
 		} else {
 			diagnosticSummaryAction.setActivator(new PathNavigationActionActivator(diagnosticSummaryAction, ((NavigationActionActivator) getActivator()).getUrl(null), "actions/" + DIAGNOSTIC_SUMMARY_ACTION + ".html", getMarker()));
@@ -528,12 +530,14 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			
 			@Override
 			public boolean isEmpty() {
-				return false;
+				return isInRole(CONTENT_ROLE) 
+						|| isInRole(Action.Role.SECTION)
+						|| isInRole(HEAD_ROLE);
 			}
 			
 		};
 		
-		if (propertiesTableAction.isInRole(Action.Role.SECTION)) {
+		if (propertiesTableAction.isInRole(Action.Role.SECTION) || propertiesTableAction.isInRole(HEAD_ROLE) || propertiesTableAction.isInRole(CONTENT_ROLE)) {
 			propertiesTableAction.setActivator(new PathNavigationActionActivator(propertiesTableAction, ((NavigationActionActivator) getActivator()).getUrl(null), "#actions-" + PROPERTIES_TABLE_ACTION, getMarker()));
 		} else {
 			propertiesTableAction.setActivator(new PathNavigationActionActivator(propertiesTableAction, ((NavigationActionActivator) getActivator()).getUrl(null), "actions/" + PROPERTIES_TABLE_ACTION + ".html", getMarker()));
