@@ -19,6 +19,8 @@ public class EParameterViewActionStorable extends ETypedElementViewActionStorabl
 	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
 		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
 		put(data, "role", Action.Role.SECTION);		
+		put(data, "href", EOperationViewActionStorable.eOperationHref(eObject.getEOperation(), this::encodeEPackage) + "--" + eObject.getName());
+		
 		return data;
 	}
 

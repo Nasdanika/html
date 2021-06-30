@@ -4,7 +4,7 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2021.6.6</version>
+	    <version>2021.6.7</version>
 	    <relativePath>..</relativePath>
 	  </parent>
 	<artifactId>html</artifactId>
@@ -21,17 +21,17 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.7</version>
+			<version>3.12.0</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-text</artifactId>
-		    <version>1.4</version>
+		    <version>1.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20190722</version>
+			<version>20210307</version>
 		</dependency>
 	</dependencies>
 </project>

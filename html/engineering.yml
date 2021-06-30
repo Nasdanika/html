@@ -1,4 +1,6 @@
 engineering-module:
   name: HTML
   path: html
+  issues:
+    - name: Expose existing docs via engineering site - exec loaders
                 

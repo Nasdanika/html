@@ -3,12 +3,14 @@ package org.nasdanika.html.ecore;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.common.util.EList;
@@ -41,11 +43,6 @@ public class EOperationViewActionStorable extends ETypedElementViewActionStorabl
 		
 		EClass eContainingClass = eObject.getEContainingClass();
 		
-		StringBuilder signatureBuilder = new StringBuilder(eObject.eClass().getName())
-				.append("-")
-				.append(eObject.getName());
-
-		
 		List<Object> children = new ArrayList<>();		
 		
 		if (!eObject.getEParameters().isEmpty()) {
@@ -65,21 +62,22 @@ public class EOperationViewActionStorable extends ETypedElementViewActionStorabl
 				
 				parametersList.add(adaptChild(ep).store(base, progressMonitor));				
 			}
-			signatureBuilder.append("-").append(Hex.encodeHexString(md.digest()));			
 		}
 		
 		if (!children.isEmpty()) {
 			put(data, "children", children);
 		}
 		
+		String signature = eOperationSignature(eObject, this::encodeEPackage);
+		
 		StringBuilder idBuilder = new StringBuilder(encodeEPackage(eContainingClass.getEPackage()))
 				.append("-")
 				.append(eContainingClass.getName())
 				.append("-")
-				.append(signatureBuilder);
+				.append(signature);
 		
 		put(data, "id", idBuilder.toString());
-		put(data, "href", eContainingClass.getName() + ".html#" + signatureBuilder);
+		put(data, "href", eContainingClass.getName() + ".html#" + signature);
 		
 		// Exceptions
 		EList<EGenericType> eGenericExceptions = eObject.getEGenericExceptions();
@@ -99,6 +97,31 @@ public class EOperationViewActionStorable extends ETypedElementViewActionStorabl
 		}				
 		
 		return data;
+	}
+	
+	public static String eOperationSignature(EOperation eOperation, Function<EPackage, String> ePackageEncoder) throws NoSuchAlgorithmException {		
+		StringBuilder signatureBuilder = new StringBuilder(eOperation.eClass().getName())
+				.append("-")
+				.append(eOperation.getName());
+		
+		if (!eOperation.getEParameters().isEmpty()) {
+			// Creating a digest of parameter types to make the id shorter.
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			
+			for (EParameter ep: eOperation.getEParameters()) {
+				EClassifier type = ep.getEType();
+				String typeStr = type.eClass().getName() + "-" + ePackageEncoder.apply(type.getEPackage()) + "-" + type.getName() + ",";
+				md.update(typeStr.getBytes(StandardCharsets.UTF_8));
+			}
+			signatureBuilder.append("-").append(Hex.encodeHexString(md.digest()));			
+		}
+
+		return signatureBuilder.toString();
+	}
+	
+	public static String eOperationHref(EOperation eOperation, Function<EPackage, String> ePackageEncoder) throws NoSuchAlgorithmException {		
+		EClass eContainingClass = eOperation.getEContainingClass();
+		return eContainingClass.getName() + ".html#" + eOperationSignature(eOperation, ePackageEncoder);
 	}
 		
 }
