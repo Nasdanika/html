@@ -1,3 +1,8 @@
 engineering-module:
   name: Knockout
   path: knockout
+  representations:
+    - representation-component-diagram: true
+  dependencies:
+    - nasdanika:modules/html/modules/html
+  

@@ -1,6 +1,11 @@
 engineering-module:
   name: EMF
   path: emf
+  representations:
+    - representation-component-diagram: true
+  dependencies:
+    - nasdanika:modules/html/modules/html
+    - nasdanika:modules/core/modules/emf
   issues:
     - name: Support of diagnostic to SimpleEObjectViewAction
       markdown-description: |+2

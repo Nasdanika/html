@@ -1,6 +1,15 @@
 engineering-module:
   name: App
-  path: App
+  path: app
+  representations:
+    - representation-component-diagram: true
+  dependencies:
+    - nasdanika:modules/html/modules/bootstrap
+    - nasdanika:modules/html/modules/jstree
+    - nasdanika:modules/html/modules/knockout
+    - nasdanika:modules/html/modules/fontawesome
+    - nasdanika:modules/html/modules/echarts
+    - nasdanika:modules/core/modules/exec
   issues:
      - name: Search with LunrJs
      - name: Left and right content panels and sections

@@ -1,6 +1,10 @@
 engineering-module:
   name: Ecore
   path: ecore
+  representations:
+    - representation-component-diagram: true
+  dependencies:
+    - nasdanika:modules/html/modules/emf
   issues:
      - name: Application model as output in addition to YAML
        increment: nasdanika:increments/2021/children/q2  

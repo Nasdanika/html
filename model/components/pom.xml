@@ -11,7 +11,6 @@
 	<packaging>jar</packaging>
 	<name>Nasdanika Components Model</name>
 	
-	
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>

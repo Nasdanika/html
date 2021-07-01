@@ -1,3 +1,9 @@
 engineering-module:
   name: Bootstrap Model
   path: models/bootstrap
+  representations:
+    - representation-component-diagram: true
+  dependencies:
+    - nasdanika:modules/html/modules/bootstrap
+    - nasdanika:modules/html/modules/models/html
+  

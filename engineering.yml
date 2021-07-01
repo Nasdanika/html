@@ -1,6 +1,8 @@
 engineering-product:
    name: HTML
    path: html
+   representations:
+     - representation-component-diagram: true
    appearance:
      features:
        modules:
