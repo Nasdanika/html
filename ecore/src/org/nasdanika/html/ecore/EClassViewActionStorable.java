@@ -136,7 +136,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 			
 			BootstrapFactory bootstrapFactory = BootstrapFactory.INSTANCE;
 			Table table = bootstrapFactory.table().bordered().striped();
-			table.header().headerRow("Key", "Type", "Homogenous", "Strict containment", "Description").background(Color.SECONDARY);			
+			table.header().headerRow("Key", "Type", "Homogenous", "Strict containment", "Exclusive with", "Description").background(Color.SECONDARY);			
 			
 			Predicate<EStructuralFeature> predicate = sf -> sf.isChangeable() && "true".equals(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, "true"));
 			Comparator<EStructuralFeature> comparator = (a,b) -> a.getName().compareTo(b.getName());
@@ -152,6 +152,20 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 				
 				featureRow.cell(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENOUS, "")).text().alignment(Alignment.CENTER);
 				featureRow.cell(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_STRICT_CONTAINMENT, "")).text().alignment(Alignment.CENTER);
+				
+				String exclusiveWithStr = EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.EXCLUSIVE_WITH);
+				String[] exclusiveWith = exclusiveWithStr == null ? new String[0] : exclusiveWithStr.split("\\s");
+				if (exclusiveWith.length == 0) {
+					featureRow.cell("");
+				} else {
+					Tag ul = TagName.ul.create();
+					for (String exw: exclusiveWith) {
+						ul.content(TagName.li.create(exw));
+					}
+					
+					featureRow.cell(ul).text().monospace();
+				}
+				
 				String featureDoc = EObjectAdaptable.getResourceContext(sf).getString("documentation", EcoreUtil.getDocumentation(sf));
 				if (Util.isBlank(featureDoc)) {
 					featureDoc = EmfUtil.getDocumentation(sf);
