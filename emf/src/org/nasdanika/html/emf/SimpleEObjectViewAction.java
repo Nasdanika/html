@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.ContextSupplier;
 import org.nasdanika.common.Converter;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.MarkdownHelper;
@@ -68,7 +69,7 @@ import org.nasdanika.html.bootstrap.Table;
  * @since 2015.4.3
  * @param <T>
  */
-public abstract class SimpleEObjectViewAction<T extends EObject> implements ViewAction<T> {
+public abstract class SimpleEObjectViewAction<T extends EObject> implements ViewAction<T>, ContextSupplier {
 	
 	public static final String DOC_URI = "doc-uri";
 	public static final String PROPERTIES_TABLE_ACTION = "properties-table";
@@ -798,7 +799,8 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	/**
 	 * @return Action context built from the resource set context plus link resolver and "base-uri" property containing relative URI's of the site root. 
 	 */
-	protected Context getContext() {
+	@Override
+	public Context getContext() {
 		URI thisUri = URI.createURI(((NavigationActionActivator) getActivator()).getUrl(null));
 		Context targetContext = EObjectAdaptable.adaptTo(getSemanticElement(), Context.class);
 		URI baseUri = URI.createURI(targetContext.get(Context.BASE_URI_PROPERTY).toString());
@@ -874,14 +876,14 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 				return null;
 			}
 			try {
-				StringBuilder imageTag = new StringBuilder("data:image/" + path.substring(0, idx) + ";base64,");
+				StringBuilder imageData = new StringBuilder("data:image/" + path.substring(0, idx) + ";base64,");
 				String imagePath = path.substring(idx + 1).trim(); 
 				int spaceIdx = imagePath.indexOf(' ');
 				URL imageURL = resolve(spaceIdx == -1 ? imagePath : imagePath.substring(0, spaceIdx));
 				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE); 
 				byte[] imageBytes = converter.convert(imageURL.openStream(), byte[].class); 
-				imageTag.append(Base64.getEncoder().encodeToString(imageBytes)); 
-				return (U) imageTag.toString();
+				imageData.append(Base64.getEncoder().encodeToString(imageBytes)); 
+				return (U) imageData.toString();
 			} catch (Exception e) {
 				throw new ConfigurationException("Error including '" + path +	": " + e, e, getMarker());
 			}
@@ -919,8 +921,6 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}
 		return null;
 	}
-
-	
 	
 	/**
 	 * Resolves URL relative to this resource URL.
@@ -937,8 +937,6 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		Resource resource = getSemanticElement().eResource();
 		return new URL(resource == null ? null : new URL(resource.getURI().toString()), url);
 	}
-
-
 	
 	protected Table	propertiesTable(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
 		BootstrapFactory bootstrapFactory = viewGenerator.getBootstrapFactory();
