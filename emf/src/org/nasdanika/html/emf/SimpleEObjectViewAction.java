@@ -3,11 +3,15 @@ package org.nasdanika.html.emf;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -62,6 +66,8 @@ import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
 import org.nasdanika.html.bootstrap.Table;
+
+import com.ibm.icu.util.Calendar;
 
 /**
  * Base class for ViewAction adapters which do not extend {@link EObjectSingleValuePropertySource} like {@link EObjectViewAction}.
@@ -950,7 +956,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			locationRow.cell(location(marker, viewGenerator, progressMonitor));			
 		}
 		
-		for (ETypedElement member: getMembers()) {			
+		for (ETypedElement member: getMembers()) {	
 			if (isMemberInRole(member, MemberRole.PROPERTY)) {
 				Collection<Diagnostic> featureDiagnostic = member instanceof EStructuralFeature ? getFeatureDiagnostic((EStructuralFeature) member) : Collections.emptyList();
 				Object mv;
@@ -1029,6 +1035,22 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	}
 	
 	protected Object memberValue(ETypedElement member, Object value, ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {		
+		if (value instanceof Instant) {
+			return memberValue(member, new Date(((Instant) value).toEpochMilli()), viewGenerator, progressMonitor);
+		}
+		
+		if (value instanceof Date) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime((Date) value);
+			String datePart = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault()).format((Date) value);
+			if (calendar.get(Calendar.HOUR_OF_DAY) == 0 && calendar.get(Calendar.MINUTE) == 0 && calendar.get(Calendar.SECOND) == 0) {
+				return datePart;
+			}
+			String timePart = DateFormat.getTimeInstance().format((Date) value);
+			return datePart + " " + timePart;
+			
+		}
+		
 		if (value instanceof EObject) {
 			Action va = EObjectAdaptable.adaptTo((EObject) value, ViewAction.class);
 			if (va != null) {
