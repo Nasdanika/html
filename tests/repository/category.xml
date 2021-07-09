@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/org.nasdanika.html.feature_2021.3.0.qualifier.jar" id="org.nasdanika.html.feature" version="2021.3.0.qualifier">
-      <category name="org.nasdanika.runtime"/>
-   </feature>
-   <category-def name="org.nasdanika.runtime" label="Runtime bundles"/>
-</site>

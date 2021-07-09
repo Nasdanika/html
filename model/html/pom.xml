@@ -4,12 +4,16 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2021.7.0</version>
+	    <version>2021.7.1</version>
 	    <relativePath>../..</relativePath>
 	  </parent>
 	<artifactId>model-html</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML Model</name>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+	</build>
 	
 	<dependencies>
 		<dependency>
