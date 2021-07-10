@@ -12,7 +12,9 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ProgressMonitor;
@@ -23,7 +25,30 @@ public class EPackageViewActionStorable extends ENamedElementViewActionStorable<
 
 	public EPackageViewActionStorable(EPackage value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value, context, ePackagePathComputer);
+//		dump(value, 0);
 	}
+	
+//	private static void dump(EPackage ePackage, int offset) {
+//		String prefix = "";
+//		for (int i = 0; i < offset; ++i) {
+//			prefix += "\t";
+//		}
+//		System.out.println(prefix + ePackage.getName());
+//		for (EPackage sp: ePackage.getESubpackages()) {
+//			dump(sp, offset + 1);
+//		}
+//		for (EClassifier ec: ePackage.getEClassifiers()) {
+//			System.out.println(prefix + "\t" + ec.getName());
+//			if (ec instanceof EClass) {
+//				for (EStructuralFeature sf: ((EClass) ec).getEStructuralFeatures()) {
+//					System.out.println(prefix + "\t\t" + sf.getName());
+//				}
+//				for (EOperation op: ((EClass) ec).getEOperations()) {
+//					System.out.println(prefix + "\t\t" + op.getName() + "()");
+//				}
+//			}
+//		}
+//	}
 	
 	@Override
 	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
