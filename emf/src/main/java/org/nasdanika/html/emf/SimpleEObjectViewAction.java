@@ -193,19 +193,25 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			};
 		}
 		
-		String contextUri = (String) EObjectAdaptable.adaptTo(getSemanticElement(), Context.class).get(Context.BASE_URI_PROPERTY);
+		Context semanticContextAdapter = EObjectAdaptable.adaptTo(getSemanticElement(), Context.class);
+		String contextUri = semanticContextAdapter == null ? null : (String) semanticContextAdapter.get(Context.BASE_URI_PROPERTY);
 		Marked marked = EObjectAdaptable.adaptTo(getSemanticElement(), Marked.class);
 		StringBuilder path = new StringBuilder();
 		EReference eContainmentReference = getSemanticElement().eContainmentFeature();
 		if (eContainmentReference == null) {
 			path.append(contextUri);
-			String resourcePath = resolveResourcePath(getSemanticElement().eResource());			
+			Resource semanticResource = getSemanticElement().eResource();
+			if (semanticResource == null) {
+				// Not contained and not in a resource - cannot create activator.
+				return null;
+			}
+			String resourcePath = resolveResourcePath(semanticResource);			
 			if (!Util.isBlank(resourcePath)) {
 				path.append(resourcePath);
 			}
-			EList<EObject> resourceContents = getSemanticElement().eResource().getContents();
+			EList<EObject> resourceContents = semanticResource.getContents();
 			if (resourceContents.size() > 1) {
-				if (Util.isBlank(localPath) && getSemanticElement().eResource() != null) {
+				if (Util.isBlank(localPath) && semanticResource != null) {
 					path.append(resourceContents.indexOf(getSemanticElement()));
 				} else {
 					path.append(localPath);
@@ -504,11 +510,14 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			
 		};
 		
-		if (diagnosticSummaryAction.isInRole(Action.Role.SECTION) || diagnosticSummaryAction.isInRole(CONTENT_ROLE) || diagnosticSummaryAction.isInRole(HEAD_ROLE)) {
-			diagnosticSummaryAction.setActivator(new PathNavigationActionActivator(diagnosticSummaryAction, ((NavigationActionActivator) getActivator()).getUrl(null), "#actions-" + DIAGNOSTIC_SUMMARY_ACTION, getMarker()));
-		} else {
-			diagnosticSummaryAction.setActivator(new PathNavigationActionActivator(diagnosticSummaryAction, ((NavigationActionActivator) getActivator()).getUrl(null), "actions/" + DIAGNOSTIC_SUMMARY_ACTION + ".html", getMarker()));
-		}				
+		ActionActivator activator = getActivator();
+		if (activator instanceof NavigationActionActivator) {
+			if (diagnosticSummaryAction.isInRole(Action.Role.SECTION) || diagnosticSummaryAction.isInRole(CONTENT_ROLE) || diagnosticSummaryAction.isInRole(HEAD_ROLE)) {
+				diagnosticSummaryAction.setActivator(new PathNavigationActionActivator(diagnosticSummaryAction, ((NavigationActionActivator) activator).getUrl(null), "#actions-" + DIAGNOSTIC_SUMMARY_ACTION, getMarker()));
+			} else {
+				diagnosticSummaryAction.setActivator(new PathNavigationActionActivator(diagnosticSummaryAction, ((NavigationActionActivator) activator).getUrl(null), "actions/" + DIAGNOSTIC_SUMMARY_ACTION + ".html", getMarker()));
+			}
+		}
 		
 		return diagnosticSummaryAction;
 	}
@@ -545,11 +554,14 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			
 		};
 		
-		if (propertiesTableAction.isInRole(Action.Role.SECTION) || propertiesTableAction.isInRole(HEAD_ROLE) || propertiesTableAction.isInRole(CONTENT_ROLE)) {
-			propertiesTableAction.setActivator(new PathNavigationActionActivator(propertiesTableAction, ((NavigationActionActivator) getActivator()).getUrl(null), "#actions-" + PROPERTIES_TABLE_ACTION, getMarker()));
-		} else {
-			propertiesTableAction.setActivator(new PathNavigationActionActivator(propertiesTableAction, ((NavigationActionActivator) getActivator()).getUrl(null), "actions/" + PROPERTIES_TABLE_ACTION + ".html", getMarker()));
-		}						
+		ActionActivator activator = getActivator();
+		if (activator instanceof NavigationActionActivator) {
+			if (propertiesTableAction.isInRole(Action.Role.SECTION) || propertiesTableAction.isInRole(HEAD_ROLE) || propertiesTableAction.isInRole(CONTENT_ROLE)) {
+				propertiesTableAction.setActivator(new PathNavigationActionActivator(propertiesTableAction, ((NavigationActionActivator) activator).getUrl(null), "#actions-" + PROPERTIES_TABLE_ACTION, getMarker()));
+			} else {
+				propertiesTableAction.setActivator(new PathNavigationActionActivator(propertiesTableAction, ((NavigationActionActivator) activator).getUrl(null), "actions/" + PROPERTIES_TABLE_ACTION + ".html", getMarker()));
+			}
+		}
 		
 		return propertiesTableAction;
 	}	
