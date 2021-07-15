@@ -181,82 +181,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	 */
 	@Override
 	public ActionActivator getActivator() {
-		String localPath = getTargetPath();
-		if (!Util.isBlank(localPath) && localPath.indexOf(':') > 1) {
-			// Absolute URI - treating as URL.
-			return new NavigationActionActivator() {
-				
-				@Override
-				public String getUrl(String base) {
-					return localPath;
-				}
-			};
-		}
-		
-		Context semanticContextAdapter = EObjectAdaptable.adaptTo(getSemanticElement(), Context.class);
-		String contextUri = semanticContextAdapter == null ? null : (String) semanticContextAdapter.get(Context.BASE_URI_PROPERTY);
-		Marked marked = EObjectAdaptable.adaptTo(getSemanticElement(), Marked.class);
-		StringBuilder path = new StringBuilder();
-		EReference eContainmentReference = getSemanticElement().eContainmentFeature();
-		if (eContainmentReference == null) {
-			path.append(contextUri);
-			Resource semanticResource = getSemanticElement().eResource();
-			if (semanticResource == null) {
-				// Not contained and not in a resource - cannot create activator.
-				return null;
-			}
-			String resourcePath = resolveResourcePath(semanticResource);			
-			if (!Util.isBlank(resourcePath)) {
-				path.append(resourcePath);
-			}
-			EList<EObject> resourceContents = semanticResource.getContents();
-			if (resourceContents.size() > 1) {
-				if (Util.isBlank(localPath) && semanticResource != null) {
-					path.append(resourceContents.indexOf(getSemanticElement()));
-				} else {
-					path.append(localPath);
-				}
-			} else if (path.toString().endsWith("/")) {
-				path.replace(path.length()-1, path.length(), "");
-			}
-		} else {
-			path.append(Util.camelToKebab(eContainmentReference.eClass().getName()));
-			path.append("/");
-			path.append(Util.camelToKebab(eContainmentReference.getName()));
-			if (eContainmentReference.isMany()) {
-				path.append("/");			
-				if (Util.isBlank(localPath)) {
-					EObject eContainer = getSemanticElement().eContainer();
-					if (eContainer != null) {
-						path.append(getDefaultPath());
-					}
-				} else {
-					path.append(localPath);
-				}
-			}	
-		}
-		if (isInRole(Action.Role.SECTION)) {
-			NavigationActionActivator ancestorNavigationActivator = getAncestorNavigationActivator();
-			String fragment = path.toString().replace('/', '-');
-			if (ancestorNavigationActivator == null) {
-				return new PathNavigationActionActivator(this, contextUri, "#" + fragment, marked == null ? null : marked.getMarker());
-			}
-
-			return new NavigationActionActivator() {
-				
-				@Override
-				public String getUrl(String base) {
-					String ancestorUrl = ancestorNavigationActivator.getUrl(base);
-					if (ancestorUrl == null) {
-						return "#" + fragment;
-					}
-					return ancestorUrl + (ancestorUrl.contains("#") ? "-" : "#") + fragment ;
-				}
-			};
-		}
-
-		path.append("/index.html");
-		return new PathNavigationActionActivator(this, contextUri, sectionPath(getParent()) + path.toString(), marked == null ? null : marked.getMarker());			
+		return EObjectAdaptable.adaptTo(getSemanticElement(), NavigationActionActivator.class);
 	}
 	
 	/**
@@ -294,21 +219,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		}
 		return "";
 	}
-	
-	private NavigationActionActivator getAncestorNavigationActivator() {
-		for (Action ancestor = getParent(); ancestor != null; ancestor = ancestor.getParent()) {
-			if (ancestor.getActivator() instanceof NavigationActionActivator) {
-				return (NavigationActionActivator) ancestor.getActivator();
-			}
-		}		
-		return null;
-	}	
-	
-	protected String getDefaultPath() {
-		T theSemanticElement = getSemanticElement();
-		return String.valueOf(((List<?>) theSemanticElement.eContainer().eGet(theSemanticElement.eContainmentFeature())).indexOf(theSemanticElement));
-	}
-	
+		
 	/**
 	 * Override to return false if generated content should not be cached.
 	 * @return
