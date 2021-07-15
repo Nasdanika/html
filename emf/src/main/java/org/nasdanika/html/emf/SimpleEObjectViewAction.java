@@ -1,12 +1,10 @@
 package org.nasdanika.html.emf;
 
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -32,7 +30,6 @@ import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ContextSupplier;
-import org.nasdanika.common.Converter;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.MarkdownHelper;
 import org.nasdanika.common.MutableContext;
@@ -179,6 +176,9 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		return Collections.emptyList();
 	}
 		
+	/**
+	 * TODO - extract into an adapter on its own.
+	 */
 	@Override
 	public ActionActivator getActivator() {
 		String localPath = getTargetPath();
@@ -815,6 +815,8 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 	}
 
 	/**
+	 * Computes and sets base URI and doc URI relative to the site root - base uri obtained from the target context.
+	 * TODO - extract into a {@link ViewGenerator} adapter relying on {@link ActionActivator} adapter. 
 	 * @return Action context built from the resource set context plus link resolver and "base-uri" property containing relative URI's of the site root. 
 	 */
 	@Override
@@ -849,111 +851,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 			ret.put(DOC_URI, relativeDocUri);
 		}
 		
-		ret.put("embedded-image", (PropertyComputer) this::computeEmbeddedImage);
-		ret.put("embedded-image-data", (PropertyComputer) this::computeEmbeddedImageData);
-		ret.put("include", (PropertyComputer) this::computeInclude);
-		ret.put("include-markdown", (PropertyComputer) this::computeIncludeMarkdown);
-		
 		return ret;
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected <U> U computeEmbeddedImage(Context context, String key, String path, Class<U> type) { 
-		if (type == null || type == String.class) { 
-			int idx = path.indexOf("/"); 
-			if (idx == -1) { 
-				return null;
-			}
-			try {
-				StringBuilder imageTag = new StringBuilder("<img src=\"");
-				imageTag.append(computeEmbeddedImageData(context, key, path, type));
-				imageTag.append("\"/>"); 
-				String imagePath = path.substring(idx + 1).trim(); 
-				int spaceIdx = imagePath.indexOf(' ');
-				if (spaceIdx == -1) {
-					return (U) imageTag.toString();
-				}
-				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
-				Table imageTable = bootstrapFactory.table(); 
-				imageTable.toHTMLElement().style().width( "auto"); 
-				imageTable.row(imageTag);
-				imageTable.row(imagePath.substring(spaceIdx + 1)).backgroundColor(Color.LIGHT); 
-				return (U) imageTable.toString();
-			} catch (Exception e) {
-				throw new ConfigurationException("Error including '" + path +	": " + e, e, getMarker());
-			}
-		}
-		return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected <U> U computeEmbeddedImageData(Context context, String key, String path, Class<U> type) { 
-		if (type == null || type == String.class) { 
-			int idx = path.indexOf("/"); 
-			if (idx == -1) { 
-				return null;
-			}
-			try {
-				StringBuilder imageData = new StringBuilder("data:image/" + path.substring(0, idx) + ";base64,");
-				String imagePath = path.substring(idx + 1).trim(); 
-				int spaceIdx = imagePath.indexOf(' ');
-				URL imageURL = resolve(spaceIdx == -1 ? imagePath : imagePath.substring(0, spaceIdx));
-				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE); 
-				byte[] imageBytes = converter.convert(imageURL.openStream(), byte[].class); 
-				imageData.append(Base64.getEncoder().encodeToString(imageBytes)); 
-				return (U) imageData.toString();
-			} catch (Exception e) {
-				throw new ConfigurationException("Error including '" + path +	": " + e, e, getMarker());
-			}
-		}
-		return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected <U> U computeInclude(Context context, String key, String path, Class<U> type) { 
-		if (type == null || type == String.class) { 
-			try {
-				URL includeURL = resolve(path);
-				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE);
-				String includeContent = converter.convert(includeURL.openStream(), String.class); 
-				return (U) context.interpolateToString(includeContent);
-			} catch (Exception e) {
-				throw new ConfigurationException("Error including + path +	" + e, e, getMarker());
-			}
-		}
-		return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected <U> U computeIncludeMarkdown(Context context, String key, String path, Class<U> type) { 
-		if (type == null || type == String.class) {
-			try {
-				URL includeURL = resolve(path);
-				Converter converter = context.get(Converter.class, DefaultConverter.INSTANCE);
-				String markdown = converter.convert(includeURL.openStream(), String.class);
-				String html = context.get(MarkdownHelper.class, MarkdownHelper.INSTANCE).markdownToHtml(markdown);
-				return (U) context. interpolateToString(html) ;
-			} catch (Exception e) {
-				throw new ConfigurationException("Error including + path +	" + e, e, getMarker());
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Resolves URL relative to this resource URL.
-	 */
-	protected URL resolve(String url) throws MalformedURLException {
-		Marker marker = getMarker(); 
-		if (marker != null) {
-			String location = marker.getLocation(); 
-			if (!Util.isBlank(location)) {
-				URL base = new URL(location); 
-				return new URL(base, url);
-			}
-		}
-		Resource resource = getSemanticElement().eResource();
-		return new URL(resource == null ? null : new URL(resource.getURI().toString()), url);
 	}
 	
 	protected Table	propertiesTable(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {
