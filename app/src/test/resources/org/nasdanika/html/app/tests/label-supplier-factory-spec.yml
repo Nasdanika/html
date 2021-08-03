@@ -1,8 +1,0 @@
-app-label: 
-   icon: fa fa-cog
-   text: Configuration
-   tooltip: Opens configuration dialog
-   color: ${color} 
-   description: 
-      exec-markdown:
-         exec-resource: label-description.md

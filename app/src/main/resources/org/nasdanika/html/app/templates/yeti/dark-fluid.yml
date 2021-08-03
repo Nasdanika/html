@@ -1,7 +1,0 @@
-app-application:
-   fluid: true
-   page:
-      theme: Yeti
-      head:
-         exec-interpolator:
-            exec-resource: ../dark-head.html  

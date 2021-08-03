@@ -72,7 +72,7 @@ import com.ibm.icu.util.Calendar;
  * @since 2015.4.3
  * @param <T>
  */
-public abstract class SimpleEObjectViewAction<T extends EObject> implements ViewAction<T>, ContextSupplier {
+public abstract class SimpleEObjectViewAction<T extends EObject> implements ViewAction<T> {
 	
 	public static final String DOC_URI = "doc-uri";
 	public static final String PROPERTIES_TABLE_ACTION = "properties-table";
@@ -723,46 +723,6 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 		} catch (Exception e) {
 			return "Exception rendering description: " + e;
 		}
-	}
-
-	/**
-	 * Computes and sets base URI and doc URI relative to the site root - base uri obtained from the target context.
-	 * TODO - extract into a {@link ViewGenerator} adapter relying on {@link ActionActivator} adapter. 
-	 * @return Action context built from the resource set context plus link resolver and "base-uri" property containing relative URI's of the site root. 
-	 */
-	@Override
-	public Context getContext() {
-		URI thisUri = URI.createURI(((NavigationActionActivator) getActivator()).getUrl(null));
-		Context targetContext = EObjectAdaptable.adaptTo(getSemanticElement(), Context.class);
-		URI baseUri = URI.createURI(targetContext.get(Context.BASE_URI_PROPERTY).toString());
-		URI relativeBaseUri = baseUri.deresolve(thisUri, true, true, true);
-		MutableContext ret = targetContext.fork();
-		ret.put(Context.BASE_URI_PROPERTY, relativeBaseUri);
-		
-		ret.put("link", new PropertyComputer() {
-			
-			@SuppressWarnings("unchecked")
-			@Override
-			public <U> U compute(Context context, String key, String path, Class<U> type) {
-				URI uri = URI.createURI(path);
-				EObject eObj = getSemanticElement().eResource().getResourceSet().getEObject(uri, false);
-				if (eObj == null) {
-					return null;
-				}
-
-				Action action = ViewAction.adaptToViewActionNonNull(eObj);
-				return (U) ((NavigationActionActivator) action.getActivator()).getUrl(thisUri.toString());
-			}
-		});
-		
-		Object targetDocUri = targetContext.get(DOC_URI);
-		if (targetDocUri != null) {
-			URI docUri = URI.createURI(targetDocUri.toString());			
-			URI relativeDocUri = docUri.deresolve(thisUri, true, true, true);
-			ret.put(DOC_URI, relativeDocUri);
-		}
-		
-		return ret;
 	}
 	
 	protected Table	propertiesTable(ViewGenerator viewGenerator, ProgressMonitor progressMonitor) {

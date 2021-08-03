@@ -141,14 +141,10 @@
 		<module>knockout</module>
 		<module>fontawesome</module>
 		<module>app</module>
+		<module>app.gen</module>
 		<module>echarts</module>
 		<module>emf</module>
 		<module>ecore</module>
-
-		<module>model/html</module>
-		<module>model/bootstrap</module>
-		<module>model/app</module>
-		<module>model/components</module>
 	</modules>	
 
 

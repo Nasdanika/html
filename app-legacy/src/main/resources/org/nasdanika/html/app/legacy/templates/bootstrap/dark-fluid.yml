@@ -1,0 +1,6 @@
+app-application:
+   fluid: true
+   page:
+      head:
+         exec-interpolator:
+            exec-resource: ../dark-head.html   

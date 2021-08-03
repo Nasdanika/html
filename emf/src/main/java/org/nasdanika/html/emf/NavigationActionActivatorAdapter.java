@@ -20,7 +20,7 @@ import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.NavigationActionActivator;
 
-public abstract class NavigationActionActivatorAdapter extends AdapterImpl implements NavigationActionActivator {
+public class NavigationActionActivatorAdapter extends AdapterImpl implements NavigationActionActivator {
 	
 	private LinkedList<String> path = new LinkedList<>(); 
 	private LinkedList<String> fragment = new LinkedList<>(); 	

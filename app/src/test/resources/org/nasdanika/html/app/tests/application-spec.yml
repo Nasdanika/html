@@ -1,8 +1,0 @@
-app-application:
-   fluid: false
-   page:
-      theme: Cerulean
-      head:
-         exec-resource: app-page-head.html   
-   footer:
-      appearance: info

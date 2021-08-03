@@ -1,0 +1,12 @@
+app-application:
+   page:
+      theme: Cerulean
+      head:
+         exec-interpolator:
+            exec-resource: ../dark-head.html   
+   appearance:
+      margin: 
+         size: 1
+         side: top
+      border: dark
+         

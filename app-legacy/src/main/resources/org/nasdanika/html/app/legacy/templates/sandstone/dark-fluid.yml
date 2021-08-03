@@ -1,0 +1,7 @@
+app-application:
+   fluid: true
+   page:
+      theme: Sandstone
+      head:
+         exec-interpolator:
+            exec-resource: ../dark-head.html  
