@@ -1,5 +1,6 @@
 package org.nasdanika.html.impl;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.text.StringEscapeUtils;
+import org.nasdanika.common.Adaptable;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
@@ -32,7 +34,7 @@ import org.nasdanika.html.TagName;
  *
  * @param <T>
  */
-public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLElement<T> {
+public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLElement<T>, Adaptable {
 
 
 	private static final String STYLE = "style";
@@ -514,6 +516,16 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 	public T setData(String key, Object data) {
 		properties.put(key, data);
 		return (T) this;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <TT> TT adaptTo(Class<TT> type) {
+		if (type == InputStream.class) {
+			String str = toString();
+			return (TT) new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8));
+		}
+		return Adaptable.super.adaptTo(type);
 	}
 		
 }

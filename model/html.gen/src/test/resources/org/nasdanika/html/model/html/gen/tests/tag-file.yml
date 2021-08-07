@@ -1,0 +1,13 @@
+resources-container:
+  name: my-container
+  contents:
+    - resources-file:
+        name: my-file.txt
+        contents:
+          html-tag:
+            name: h1
+            content:
+              content-text: Hello
+            attributes:
+              class:
+                content-text: row
