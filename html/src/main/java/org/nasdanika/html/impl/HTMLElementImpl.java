@@ -106,8 +106,8 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 		
 		if (!Arrays.asList(excluded).contains(STYLE)) {
 			StringBuilder styleBuilder = styles();
-			if (styleBuilder.length()>0) {
-				if (attributeBuilder.length()>0) {
+			if (styleBuilder.length() > 0) {
+				if (attributeBuilder.length() > 0) {
 					attributeBuilder.append(" ");
 				}
 				attributeBuilder.append(STYLE+"=\""+styleBuilder+"\"");				
@@ -170,7 +170,7 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 				styleBuilder.append(stringify(attributes.get(STYLE), 0));
 			}
 			for (Entry<String, Object> se: styles.entrySet()) {
-				if (styleBuilder.length()>0 && !styleBuilder.toString().endsWith(";")) {
+				if (styleBuilder.length() > 0 && !styleBuilder.toString().endsWith(";")) {
 					styleBuilder.append(";");
 				}
 				styleBuilder.append(se.getKey()+":"+stringify(se.getValue(), 0));
