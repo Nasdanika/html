@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika.html</groupId>
-	<version>2021.7.3</version>
+	<version>2021.8.0</version>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Nasdanika HTML Parent</name>
@@ -11,9 +11,7 @@
 	<url>https://nasdanika.org</url>
 		
 	<properties>
-		<siteDir>html/${project.version}</siteDir>
-		<!--<core.version>${project.version}</core.version>-->
-		<core.version>2021.7.3</core.version>
+		<core.version>2021.8.0</core.version>
 		<jacoco.version>0.8.7</jacoco.version>
 	</properties>	
 
@@ -140,11 +138,16 @@
 		<module>jstree</module>
 		<module>knockout</module>
 		<module>fontawesome</module>
-		<module>app</module>
-		<module>app.gen</module>
 		<module>echarts</module>
 		<module>emf</module>
 		<module>ecore</module>
+
+		<module>model/html</module>
+		<module>model/html.gen</module>
+		<module>model/bootstrap</module>
+		<module>model/bootstrap.gen</module>
+		<module>model/app</module>
+		<module>model/app.gen</module>
 	</modules>	
 
 

@@ -4,12 +4,12 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2021.7.3</version>
+	    <version>2021.8.0</version>
 	    <relativePath>..</relativePath>
 	  </parent>
-	<artifactId>app</artifactId>
+	<artifactId>app-legacy</artifactId>
 	<packaging>jar</packaging>
-	<name>Nasdanika HTML Application</name>
+	<name>Nasdanika HTML Application Legacy</name>
 	<description>Classes for generating HTML Application UI.</description>
 	<build>
 	    <plugins>

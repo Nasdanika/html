@@ -4,10 +4,10 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2021.7.3</version>
+	    <version>2021.8.0</version>
 	    <relativePath>../..</relativePath>
 	  </parent>
-	<artifactId>model-app</artifactId>
+	<artifactId>app-model</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML Application Model</name>
 
@@ -18,12 +18,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
-			<artifactId>app</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.nasdanika.html</groupId>
-			<artifactId>model-bootstrap</artifactId>
+			<artifactId>bootstrap-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
