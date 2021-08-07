@@ -1,0 +1,9 @@
+engineering-module:
+   name: HTML Generation Adapters
+   path: html-gen
+   representations:
+     - representation-component-diagram: true
+   dependencies:
+     - nasdanika:modules/html/modules/html
+     
+   
