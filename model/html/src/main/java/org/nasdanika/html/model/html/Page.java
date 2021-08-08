@@ -28,11 +28,8 @@ import org.nasdanika.exec.ModelElement;
  *   <li>{@link org.nasdanika.html.model.html.Page#getBuilders <em>Builders</em>}</li>
  *   <li>{@link org.nasdanika.html.model.html.Page#getLanguage <em>Language</em>}</li>
  *   <li>{@link org.nasdanika.html.model.html.Page#getName <em>Name</em>}</li>
- *   <li>{@link org.nasdanika.html.model.html.Page#isFontAwesome <em>Font Awesome</em>}</li>
- *   <li>{@link org.nasdanika.html.model.html.Page#isLineAwesome <em>Line Awesome</em>}</li>
- *   <li>{@link org.nasdanika.html.model.html.Page#isJsTree <em>Js Tree</em>}</li>
- *   <li>{@link org.nasdanika.html.model.html.Page#isGithubMarkdownCss <em>Github Markdown Css</em>}</li>
- *   <li>{@link org.nasdanika.html.model.html.Page#isHighlightJs <em>Highlight Js</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.html.Page#getStylesheets <em>Stylesheets</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.html.Page#getScripts <em>Scripts</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.html.HtmlPackage#getPage()
@@ -133,128 +130,33 @@ public interface Page extends ModelElement {
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Font Awesome</b></em>' attribute.
+	 * Returns the value of the '<em><b>Stylesheets</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * If this attribute is set to true [Font Awesome](https://fontawesome.com/) CDN stylesheet reference is added to the head.
+	 * Stylesheet URL's
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Font Awesome</em>' attribute.
-	 * @see #setFontAwesome(boolean)
-	 * @see org.nasdanika.html.model.html.HtmlPackage#getPage_FontAwesome()
+	 * @return the value of the '<em>Stylesheets</em>' attribute list.
+	 * @see org.nasdanika.html.model.html.HtmlPackage#getPage_Stylesheets()
 	 * @model
 	 * @generated
 	 */
-	boolean isFontAwesome();
+	EList<String> getStylesheets();
 
 	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.html.Page#isFontAwesome <em>Font Awesome</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Font Awesome</em>' attribute.
-	 * @see #isFontAwesome()
-	 * @generated
-	 */
-	void setFontAwesome(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Line Awesome</b></em>' attribute.
+	 * Returns the value of the '<em><b>Scripts</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * If this attribute is set to true [Line Awesome](https://icons8.com/line-awesome/) CDN stylesheet reference is added to the head.
+	 * Script URL's
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Line Awesome</em>' attribute.
-	 * @see #setLineAwesome(boolean)
-	 * @see org.nasdanika.html.model.html.HtmlPackage#getPage_LineAwesome()
+	 * @return the value of the '<em>Scripts</em>' attribute list.
+	 * @see org.nasdanika.html.model.html.HtmlPackage#getPage_Scripts()
 	 * @model
 	 * @generated
 	 */
-	boolean isLineAwesome();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.html.Page#isLineAwesome <em>Line Awesome</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Line Awesome</em>' attribute.
-	 * @see #isLineAwesome()
-	 * @generated
-	 */
-	void setLineAwesome(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Js Tree</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * If this attribute is set to true [jsTree](https://www.jstree.com/) CDN script and stylesheet references are added to the head.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Js Tree</em>' attribute.
-	 * @see #setJsTree(boolean)
-	 * @see org.nasdanika.html.model.html.HtmlPackage#getPage_JsTree()
-	 * @model
-	 * @generated
-	 */
-	boolean isJsTree();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.html.Page#isJsTree <em>Js Tree</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Js Tree</em>' attribute.
-	 * @see #isJsTree()
-	 * @generated
-	 */
-	void setJsTree(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Github Markdown Css</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * If this attribute is set to true [GitHub Markdown CSS](https://github.com/sindresorhus/github-markdown-css) CDN stylesheet reference is added to the head.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Github Markdown Css</em>' attribute.
-	 * @see #setGithubMarkdownCss(boolean)
-	 * @see org.nasdanika.html.model.html.HtmlPackage#getPage_GithubMarkdownCss()
-	 * @model
-	 * @generated
-	 */
-	boolean isGithubMarkdownCss();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.html.Page#isGithubMarkdownCss <em>Github Markdown Css</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Github Markdown Css</em>' attribute.
-	 * @see #isGithubMarkdownCss()
-	 * @generated
-	 */
-	void setGithubMarkdownCss(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Highlight Js</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * If this attribute is set to true [highlight.js](https://highlightjs.org/) CDN script and stylesheet references are added to the head as well as the initialization script in order to provide syntax highlighting in markdown fenced blocks.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Highlight Js</em>' attribute.
-	 * @see #setHighlightJs(boolean)
-	 * @see org.nasdanika.html.model.html.HtmlPackage#getPage_HighlightJs()
-	 * @model
-	 * @generated
-	 */
-	boolean isHighlightJs();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.html.Page#isHighlightJs <em>Highlight Js</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Highlight Js</em>' attribute.
-	 * @see #isHighlightJs()
-	 * @generated
-	 */
-	void setHighlightJs(boolean value);
+	EList<String> getScripts();
 
 } // Page

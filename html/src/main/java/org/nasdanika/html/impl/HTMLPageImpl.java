@@ -1,11 +1,16 @@
 package org.nasdanika.html.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
+import org.nasdanika.common.Adaptable;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 
-public class HTMLPageImpl implements HTMLPage {
+public class HTMLPageImpl implements HTMLPage, Adaptable {
 
 	private HTMLFactory factory;
 	private Tag html;
@@ -83,6 +88,16 @@ public class HTMLPageImpl implements HTMLPage {
 	@Override
 	public HTMLFactory getFactory() {
 		return factory;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <TT> TT adaptTo(Class<TT> type) {
+		if (type == InputStream.class) {
+			String str = toString();
+			return (TT) new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8));
+		}
+		return Adaptable.super.adaptTo(type);
 	}
 
 }

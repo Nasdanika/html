@@ -229,49 +229,22 @@ public interface HtmlPackage extends EPackage {
 	int PAGE__NAME = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
-	 * The feature id for the '<em><b>Font Awesome</b></em>' attribute.
+	 * The feature id for the '<em><b>Stylesheets</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__FONT_AWESOME = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 5;
+	int PAGE__STYLESHEETS = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
-	 * The feature id for the '<em><b>Line Awesome</b></em>' attribute.
+	 * The feature id for the '<em><b>Scripts</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__LINE_AWESOME = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 6;
-
-	/**
-	 * The feature id for the '<em><b>Js Tree</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PAGE__JS_TREE = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 7;
-
-	/**
-	 * The feature id for the '<em><b>Github Markdown Css</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PAGE__GITHUB_MARKDOWN_CSS = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 8;
-
-	/**
-	 * The feature id for the '<em><b>Highlight Js</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PAGE__HIGHLIGHT_JS = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 9;
+	int PAGE__SCRIPTS = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Page</em>' class.
@@ -280,7 +253,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_FEATURE_COUNT = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 10;
+	int PAGE_FEATURE_COUNT = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of operations of the '<em>Page</em>' class.
@@ -595,59 +568,26 @@ public interface HtmlPackage extends EPackage {
 	EAttribute getPage_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.html.Page#isFontAwesome <em>Font Awesome</em>}'.
+	 * Returns the meta object for the attribute list '{@link org.nasdanika.html.model.html.Page#getStylesheets <em>Stylesheets</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Font Awesome</em>'.
-	 * @see org.nasdanika.html.model.html.Page#isFontAwesome()
+	 * @return the meta object for the attribute list '<em>Stylesheets</em>'.
+	 * @see org.nasdanika.html.model.html.Page#getStylesheets()
 	 * @see #getPage()
 	 * @generated
 	 */
-	EAttribute getPage_FontAwesome();
+	EAttribute getPage_Stylesheets();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.html.Page#isLineAwesome <em>Line Awesome</em>}'.
+	 * Returns the meta object for the attribute list '{@link org.nasdanika.html.model.html.Page#getScripts <em>Scripts</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Line Awesome</em>'.
-	 * @see org.nasdanika.html.model.html.Page#isLineAwesome()
+	 * @return the meta object for the attribute list '<em>Scripts</em>'.
+	 * @see org.nasdanika.html.model.html.Page#getScripts()
 	 * @see #getPage()
 	 * @generated
 	 */
-	EAttribute getPage_LineAwesome();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.html.Page#isJsTree <em>Js Tree</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Js Tree</em>'.
-	 * @see org.nasdanika.html.model.html.Page#isJsTree()
-	 * @see #getPage()
-	 * @generated
-	 */
-	EAttribute getPage_JsTree();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.html.Page#isGithubMarkdownCss <em>Github Markdown Css</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Github Markdown Css</em>'.
-	 * @see org.nasdanika.html.model.html.Page#isGithubMarkdownCss()
-	 * @see #getPage()
-	 * @generated
-	 */
-	EAttribute getPage_GithubMarkdownCss();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.html.Page#isHighlightJs <em>Highlight Js</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Highlight Js</em>'.
-	 * @see org.nasdanika.html.model.html.Page#isHighlightJs()
-	 * @see #getPage()
-	 * @generated
-	 */
-	EAttribute getPage_HighlightJs();
+	EAttribute getPage_Scripts();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.html.Stylesheet <em>Stylesheet</em>}'.
@@ -829,44 +769,20 @@ public interface HtmlPackage extends EPackage {
 		EAttribute PAGE__NAME = eINSTANCE.getPage_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Font Awesome</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Stylesheets</b></em>' attribute list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute PAGE__FONT_AWESOME = eINSTANCE.getPage_FontAwesome();
+		EAttribute PAGE__STYLESHEETS = eINSTANCE.getPage_Stylesheets();
 
 		/**
-		 * The meta object literal for the '<em><b>Line Awesome</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Scripts</b></em>' attribute list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute PAGE__LINE_AWESOME = eINSTANCE.getPage_LineAwesome();
-
-		/**
-		 * The meta object literal for the '<em><b>Js Tree</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PAGE__JS_TREE = eINSTANCE.getPage_JsTree();
-
-		/**
-		 * The meta object literal for the '<em><b>Github Markdown Css</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PAGE__GITHUB_MARKDOWN_CSS = eINSTANCE.getPage_GithubMarkdownCss();
-
-		/**
-		 * The meta object literal for the '<em><b>Highlight Js</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PAGE__HIGHLIGHT_JS = eINSTANCE.getPage_HighlightJs();
+		EAttribute PAGE__SCRIPTS = eINSTANCE.getPage_Scripts();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.html.impl.StylesheetImpl <em>Stylesheet</em>}' class.

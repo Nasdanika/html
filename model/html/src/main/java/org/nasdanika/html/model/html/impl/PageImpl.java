@@ -32,11 +32,8 @@ import org.nasdanika.html.model.html.Page;
  *   <li>{@link org.nasdanika.html.model.html.impl.PageImpl#getBuilders <em>Builders</em>}</li>
  *   <li>{@link org.nasdanika.html.model.html.impl.PageImpl#getLanguage <em>Language</em>}</li>
  *   <li>{@link org.nasdanika.html.model.html.impl.PageImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.nasdanika.html.model.html.impl.PageImpl#isFontAwesome <em>Font Awesome</em>}</li>
- *   <li>{@link org.nasdanika.html.model.html.impl.PageImpl#isLineAwesome <em>Line Awesome</em>}</li>
- *   <li>{@link org.nasdanika.html.model.html.impl.PageImpl#isJsTree <em>Js Tree</em>}</li>
- *   <li>{@link org.nasdanika.html.model.html.impl.PageImpl#isGithubMarkdownCss <em>Github Markdown Css</em>}</li>
- *   <li>{@link org.nasdanika.html.model.html.impl.PageImpl#isHighlightJs <em>Highlight Js</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.html.impl.PageImpl#getStylesheets <em>Stylesheets</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.html.impl.PageImpl#getScripts <em>Scripts</em>}</li>
  * </ul>
  *
  * @generated
@@ -61,56 +58,6 @@ public class PageImpl extends ModelElementImpl implements Page {
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #isFontAwesome() <em>Font Awesome</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isFontAwesome()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean FONT_AWESOME_EDEFAULT = false;
-
-	/**
-	 * The default value of the '{@link #isLineAwesome() <em>Line Awesome</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isLineAwesome()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean LINE_AWESOME_EDEFAULT = false;
-
-	/**
-	 * The default value of the '{@link #isJsTree() <em>Js Tree</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isJsTree()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean JS_TREE_EDEFAULT = false;
-
-	/**
-	 * The default value of the '{@link #isGithubMarkdownCss() <em>Github Markdown Css</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isGithubMarkdownCss()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean GITHUB_MARKDOWN_CSS_EDEFAULT = false;
-
-	/**
-	 * The default value of the '{@link #isHighlightJs() <em>Highlight Js</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isHighlightJs()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean HIGHLIGHT_JS_EDEFAULT = false;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -209,9 +156,10 @@ public class PageImpl extends ModelElementImpl implements Page {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean isFontAwesome() {
-		return (Boolean)eDynamicGet(HtmlPackage.PAGE__FONT_AWESOME, HtmlPackage.Literals.PAGE__FONT_AWESOME, true, true);
+	public EList<String> getStylesheets() {
+		return (EList<String>)eDynamicGet(HtmlPackage.PAGE__STYLESHEETS, HtmlPackage.Literals.PAGE__STYLESHEETS, true, true);
 	}
 
 	/**
@@ -219,89 +167,10 @@ public class PageImpl extends ModelElementImpl implements Page {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public void setFontAwesome(boolean newFontAwesome) {
-		eDynamicSet(HtmlPackage.PAGE__FONT_AWESOME, HtmlPackage.Literals.PAGE__FONT_AWESOME, newFontAwesome);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean isLineAwesome() {
-		return (Boolean)eDynamicGet(HtmlPackage.PAGE__LINE_AWESOME, HtmlPackage.Literals.PAGE__LINE_AWESOME, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setLineAwesome(boolean newLineAwesome) {
-		eDynamicSet(HtmlPackage.PAGE__LINE_AWESOME, HtmlPackage.Literals.PAGE__LINE_AWESOME, newLineAwesome);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean isJsTree() {
-		return (Boolean)eDynamicGet(HtmlPackage.PAGE__JS_TREE, HtmlPackage.Literals.PAGE__JS_TREE, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setJsTree(boolean newJsTree) {
-		eDynamicSet(HtmlPackage.PAGE__JS_TREE, HtmlPackage.Literals.PAGE__JS_TREE, newJsTree);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean isGithubMarkdownCss() {
-		return (Boolean)eDynamicGet(HtmlPackage.PAGE__GITHUB_MARKDOWN_CSS, HtmlPackage.Literals.PAGE__GITHUB_MARKDOWN_CSS, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setGithubMarkdownCss(boolean newGithubMarkdownCss) {
-		eDynamicSet(HtmlPackage.PAGE__GITHUB_MARKDOWN_CSS, HtmlPackage.Literals.PAGE__GITHUB_MARKDOWN_CSS, newGithubMarkdownCss);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean isHighlightJs() {
-		return (Boolean)eDynamicGet(HtmlPackage.PAGE__HIGHLIGHT_JS, HtmlPackage.Literals.PAGE__HIGHLIGHT_JS, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setHighlightJs(boolean newHighlightJs) {
-		eDynamicSet(HtmlPackage.PAGE__HIGHLIGHT_JS, HtmlPackage.Literals.PAGE__HIGHLIGHT_JS, newHighlightJs);
+	public EList<String> getScripts() {
+		return (EList<String>)eDynamicGet(HtmlPackage.PAGE__SCRIPTS, HtmlPackage.Literals.PAGE__SCRIPTS, true, true);
 	}
 
 	/**
@@ -340,16 +209,10 @@ public class PageImpl extends ModelElementImpl implements Page {
 				return getLanguage();
 			case HtmlPackage.PAGE__NAME:
 				return getName();
-			case HtmlPackage.PAGE__FONT_AWESOME:
-				return isFontAwesome();
-			case HtmlPackage.PAGE__LINE_AWESOME:
-				return isLineAwesome();
-			case HtmlPackage.PAGE__JS_TREE:
-				return isJsTree();
-			case HtmlPackage.PAGE__GITHUB_MARKDOWN_CSS:
-				return isGithubMarkdownCss();
-			case HtmlPackage.PAGE__HIGHLIGHT_JS:
-				return isHighlightJs();
+			case HtmlPackage.PAGE__STYLESHEETS:
+				return getStylesheets();
+			case HtmlPackage.PAGE__SCRIPTS:
+				return getScripts();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -381,20 +244,13 @@ public class PageImpl extends ModelElementImpl implements Page {
 			case HtmlPackage.PAGE__NAME:
 				setName((String)newValue);
 				return;
-			case HtmlPackage.PAGE__FONT_AWESOME:
-				setFontAwesome((Boolean)newValue);
+			case HtmlPackage.PAGE__STYLESHEETS:
+				getStylesheets().clear();
+				getStylesheets().addAll((Collection<? extends String>)newValue);
 				return;
-			case HtmlPackage.PAGE__LINE_AWESOME:
-				setLineAwesome((Boolean)newValue);
-				return;
-			case HtmlPackage.PAGE__JS_TREE:
-				setJsTree((Boolean)newValue);
-				return;
-			case HtmlPackage.PAGE__GITHUB_MARKDOWN_CSS:
-				setGithubMarkdownCss((Boolean)newValue);
-				return;
-			case HtmlPackage.PAGE__HIGHLIGHT_JS:
-				setHighlightJs((Boolean)newValue);
+			case HtmlPackage.PAGE__SCRIPTS:
+				getScripts().clear();
+				getScripts().addAll((Collection<? extends String>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -423,20 +279,11 @@ public class PageImpl extends ModelElementImpl implements Page {
 			case HtmlPackage.PAGE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case HtmlPackage.PAGE__FONT_AWESOME:
-				setFontAwesome(FONT_AWESOME_EDEFAULT);
+			case HtmlPackage.PAGE__STYLESHEETS:
+				getStylesheets().clear();
 				return;
-			case HtmlPackage.PAGE__LINE_AWESOME:
-				setLineAwesome(LINE_AWESOME_EDEFAULT);
-				return;
-			case HtmlPackage.PAGE__JS_TREE:
-				setJsTree(JS_TREE_EDEFAULT);
-				return;
-			case HtmlPackage.PAGE__GITHUB_MARKDOWN_CSS:
-				setGithubMarkdownCss(GITHUB_MARKDOWN_CSS_EDEFAULT);
-				return;
-			case HtmlPackage.PAGE__HIGHLIGHT_JS:
-				setHighlightJs(HIGHLIGHT_JS_EDEFAULT);
+			case HtmlPackage.PAGE__SCRIPTS:
+				getScripts().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -460,16 +307,10 @@ public class PageImpl extends ModelElementImpl implements Page {
 				return LANGUAGE_EDEFAULT == null ? getLanguage() != null : !LANGUAGE_EDEFAULT.equals(getLanguage());
 			case HtmlPackage.PAGE__NAME:
 				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
-			case HtmlPackage.PAGE__FONT_AWESOME:
-				return isFontAwesome() != FONT_AWESOME_EDEFAULT;
-			case HtmlPackage.PAGE__LINE_AWESOME:
-				return isLineAwesome() != LINE_AWESOME_EDEFAULT;
-			case HtmlPackage.PAGE__JS_TREE:
-				return isJsTree() != JS_TREE_EDEFAULT;
-			case HtmlPackage.PAGE__GITHUB_MARKDOWN_CSS:
-				return isGithubMarkdownCss() != GITHUB_MARKDOWN_CSS_EDEFAULT;
-			case HtmlPackage.PAGE__HIGHLIGHT_JS:
-				return isHighlightJs() != HIGHLIGHT_JS_EDEFAULT;
+			case HtmlPackage.PAGE__STYLESHEETS:
+				return !getStylesheets().isEmpty();
+			case HtmlPackage.PAGE__SCRIPTS:
+				return !getScripts().isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

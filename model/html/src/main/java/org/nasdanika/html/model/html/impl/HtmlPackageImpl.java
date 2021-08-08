@@ -271,7 +271,7 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getPage_FontAwesome() {
+	public EAttribute getPage_Stylesheets() {
 		return (EAttribute)pageEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -281,38 +281,8 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getPage_LineAwesome() {
+	public EAttribute getPage_Scripts() {
 		return (EAttribute)pageEClass.getEStructuralFeatures().get(6);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getPage_JsTree() {
-		return (EAttribute)pageEClass.getEStructuralFeatures().get(7);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getPage_GithubMarkdownCss() {
-		return (EAttribute)pageEClass.getEStructuralFeatures().get(8);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getPage_HighlightJs() {
-		return (EAttribute)pageEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
@@ -417,11 +387,8 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 		createEReference(pageEClass, PAGE__BUILDERS);
 		createEAttribute(pageEClass, PAGE__LANGUAGE);
 		createEAttribute(pageEClass, PAGE__NAME);
-		createEAttribute(pageEClass, PAGE__FONT_AWESOME);
-		createEAttribute(pageEClass, PAGE__LINE_AWESOME);
-		createEAttribute(pageEClass, PAGE__JS_TREE);
-		createEAttribute(pageEClass, PAGE__GITHUB_MARKDOWN_CSS);
-		createEAttribute(pageEClass, PAGE__HIGHLIGHT_JS);
+		createEAttribute(pageEClass, PAGE__STYLESHEETS);
+		createEAttribute(pageEClass, PAGE__SCRIPTS);
 
 		stylesheetEClass = createEClass(STYLESHEET);
 
@@ -488,11 +455,8 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 		initEReference(getPage_Builders(), ecorePackage.getEObject(), null, "builders", null, 0, -1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPage_Language(), ecorePackage.getEString(), "language", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPage_Name(), ecorePackage.getEString(), "name", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPage_FontAwesome(), ecorePackage.getEBoolean(), "fontAwesome", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPage_LineAwesome(), ecorePackage.getEBoolean(), "lineAwesome", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPage_JsTree(), ecorePackage.getEBoolean(), "jsTree", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPage_GithubMarkdownCss(), ecorePackage.getEBoolean(), "githubMarkdownCss", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPage_HighlightJs(), ecorePackage.getEBoolean(), "highlightJs", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPage_Stylesheets(), ecorePackage.getEString(), "stylesheets", null, 0, -1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPage_Scripts(), ecorePackage.getEString(), "scripts", null, 0, -1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(stylesheetEClass, Stylesheet.class, "Stylesheet", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -591,34 +555,16 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 			   "documentation", "Page language - ``lang`` attribute."
 		   });
 		addAnnotation
-		  (getPage_FontAwesome(),
+		  (getPage_Stylesheets(),
 		   source,
 		   new String[] {
-			   "documentation", "If this attribute is set to true [Font Awesome](https://fontawesome.com/) CDN stylesheet reference is added to the head."
+			   "documentation", "Stylesheet URL\'s"
 		   });
 		addAnnotation
-		  (getPage_LineAwesome(),
+		  (getPage_Scripts(),
 		   source,
 		   new String[] {
-			   "documentation", "If this attribute is set to true [Line Awesome](https://icons8.com/line-awesome/) CDN stylesheet reference is added to the head."
-		   });
-		addAnnotation
-		  (getPage_JsTree(),
-		   source,
-		   new String[] {
-			   "documentation", "If this attribute is set to true [jsTree](https://www.jstree.com/) CDN script and stylesheet references are added to the head."
-		   });
-		addAnnotation
-		  (getPage_GithubMarkdownCss(),
-		   source,
-		   new String[] {
-			   "documentation", "If this attribute is set to true [GitHub Markdown CSS](https://github.com/sindresorhus/github-markdown-css) CDN stylesheet reference is added to the head."
-		   });
-		addAnnotation
-		  (getPage_HighlightJs(),
-		   source,
-		   new String[] {
-			   "documentation", "If this attribute is set to true [highlight.js](https://highlightjs.org/) CDN script and stylesheet references are added to the head as well as the initialization script in order to provide syntax highlighting in markdown fenced blocks."
+			   "documentation", "Script URL\'s"
 		   });
 		addAnnotation
 		  (stylesheetEClass,

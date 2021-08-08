@@ -22,11 +22,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Page/builders"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/language"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/fontAwesome"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/lineAwesome"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/jsTree"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/githubMarkdownCss"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/highlightJs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/stylesheets"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Page/scripts"/>
     </genClasses>
     <genClasses ecoreClass="html.ecore#//Stylesheet"/>
     <genClasses ecoreClass="html.ecore#//StylesheetReference">
