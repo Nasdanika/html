@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.nasdanika.html.model.app/src" creationIcons="false"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.nasdanika.html.model.app/src/main/java" creationIcons="false"
     creationSubmenus="true" modelPluginID="org.nasdanika.html.model.app" modelName="App"
     editPluginClass="org.nasdanika.html.model.app.provider.ModelEditPlugin" editorPluginClass="org.nasdanika.html.model.app.presentation.ModelEditorPlugin"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
     featureDelegation="Dynamic" complianceLevel="8.0" suppressGenModelAnnotations="false"
-    copyrightFields="false" usedGenPackages="../../org.nasdanika.html.model.bootstrap/model/bootstrap.genmodel#//bootstrap ../../org.nasdanika.html.model.html/model/html.genmodel#//html ../../org.nasdanika.ncore/model/ncore.genmodel#//ncore"
-    operationReflection="true" importOrganizing="true">
+    copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>app.ecore</foreignModel>
   <genPackages prefix="App" basePackage="org.nasdanika.html.model" disposableProviderFactory="true"
       ecorePackage="app.ecore#/">
-    <genDataTypes ecoreDataType="app.ecore#//Color"/>
-    <genDataTypes ecoreDataType="app.ecore#//SectionStyle"/>
-    <genClasses ecoreClass="app.ecore#//ILabel"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="app.ecore#//SectionStyle">
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//SectionStyle/Auto"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//SectionStyle/ActionGroup"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//SectionStyle/Card"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//SectionStyle/CardPill"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//SectionStyle/CardTab"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//SectionStyle/Header"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//SectionStyle/Pill"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//SectionStyle/Tab"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//SectionStyle/Table"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="app.ecore#//Color">
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Primary"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Secondary"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Success"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Info"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Warning"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Danger"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Light"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Dark"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Body"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Muted"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/White"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Black50"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/White50"/>
+    </genEnums>
     <genClasses ecoreClass="app.ecore#//Label">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/description"/>
@@ -22,24 +44,28 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/tooltip"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/outline"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/notification"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Label/apperance"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference app.ecore#//Label/children"/>
     </genClasses>
-    <genClasses ecoreClass="app.ecore#//Category">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Category/actions"/>
+    <genClasses ecoreClass="app.ecore#//Link">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/location"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/script"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/binding"/>
     </genClasses>
-    <genClasses ecoreClass="app.ecore#//IAction"/>
     <genClasses ecoreClass="app.ecore#//Action">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/role"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/sectionStyle"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/sectionColumns"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/location"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/script"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/binding"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/confirmation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/disabled"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/content"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/elements"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/inline"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/modal"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference app.ecore#//Action/content"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/sections"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/context"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/contentLeft"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/contentRight"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/floatLeft"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/floatRight"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

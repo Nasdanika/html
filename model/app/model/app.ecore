@@ -4,9 +4,7 @@
   <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
     <details key="documentation" value="Application model."/>
   </eAnnotations>
-  <eClassifiers xsi:type="ecore:EClass" name="ILabel" instanceClassName="org.nasdanika.html.app.Label"
-      abstract="true" interface="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Label" eSuperTypes="#//ILabel">
+  <eClassifiers xsi:type="ecore:EClass" name="Label">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Label is a base class for actions and categories."/>
     </eAnnotations>
@@ -53,52 +51,9 @@
         <details key="documentation" value="Notification to display next to the label. E.g. a number of new messages in an inbox."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="apperance" eType="ecore:EClass ../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//Appearance"
-        containment="true">
-      <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
-        <details key="strict-containment" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" eType="#//Label"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Category" abstract="true" eSuperTypes="#//Label">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Categories are used for grouping of its elements such as actions or properties. "/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="actions" lowerBound="1"
-        upperBound="-1" eType="#//Action" containment="true">
-      <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IAction" instanceClassName="org.nasdanika.html.app.Action"
-      abstract="true" interface="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//Label #//IAction">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Base class for concrete action classes - Action and Partition. These sub-classes are semantically equivalent and differ only in diagram representation - Action is represented by a node, Partition by a container node.&#xA;Action can be a child of another action or of an action category. It may contain content and action elements - abstract actions and action categories. It may also contain action mappings - logical names of actions referenced by this action's content."/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="sectionStyle"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="role" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        defaultValueLiteral="Navigation">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Action roles are used in &quot;wiring&quot; of actions into the generated Web UI.&#xA;&#xA;For the root action its children are displayed depending on their rolw as follows:&#xA;&#xA;* Navigation: &#xA;    * The first navigation child is called &quot;Principal&quot; and is displayed in the navbar brand. &#xA;    * The remaining navigation children are displayed in navs on the right in the header.&#xA;* Context children are displayed in the footer.&#xA;&#xA;For the principal action (the first navigation child of the root action):&#xA;&#xA;* Navigation actions are displayed in the navigation panel on the left.&#xA;* Context actions are displayed in the navbar.&#xA;&#xA;For other non-section actions navigation children are displayed in the navigation panel and context children are displayed in right-floating navs on the top of the content panel.&#xA;&#xA;Section actions are displayed as part of the content panel body of their parent. Their navigation children are treated as sections and display of their context children depends on the section style.&#xA;&#xA;Content left and Content right acitons are displayed on the left and right of the content body respectively.&#xA;&#xA;View and Edit actions are applicable for properties and property sources."/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sectionStyle" eType="#//SectionStyle"
-        defaultValueLiteral="AUTO">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Defines how to generate section children."/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sectionColumns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
-        defaultValueLiteral="3">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Applicable to section style &quot;Card&quot;. Defines how many columns shall be in a row of section cards."/>
-      </eAnnotations>
-    </eStructuralFeatures>
+  <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//Label">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Activator is either a URL if the activator type is Reference, or a script if the activator type is Script or Bind.&#xA;&#xA;The application generator generates a page for an action only if the activator type is Reference, the URL does not start with ``./`` and when resolved is relative to the base URI and below it. &#xA;Using ``./`` is a way to reference externally generated content. For example, create a hierarchy/federation of sites.&#xA;&#xA;For the reference activator type activator URL is resolved against the first ancestor action which also has reference activator type. If there is no such action, the URL is resolved against the base URI.&#xA;During generation action URL is de-resolved against the base URI to produce a relative resource/file path. &#xA;&#xA;``${{{base-uri}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. It might be useful it the parent URI is an absolute external URI.&#xA;``${{{base-uri}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{base-uri}}}index.html``."/>
@@ -114,6 +69,32 @@
         <details key="documentation" value="Activator is either a URL if the activator type is Reference, or a script if the activator type is Script or Bind.&#xA;&#xA;The application generator generates a page for an action only if the activator type is Reference, the URL does not start with ``./`` and when resolved is relative to the base URI and below it. &#xA;Using ``./`` is a way to reference externally generated content. For example, create a hierarchy/federation of sites.&#xA;&#xA;For the reference activator type activator URL is resolved against the first ancestor action which also has reference activator type. If there is no such action, the URL is resolved against the base URI.&#xA;During generation action URL is de-resolved against the base URI to produce a relative resource/file path. &#xA;&#xA;``${{{base-uri}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. It might be useful it the parent URI is an absolute external URI.&#xA;``${{{base-uri}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{base-uri}}}index.html``."/>
       </eAnnotations>
     </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//Link">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Base class for concrete action classes - Action and Partition. These sub-classes are semantically equivalent and differ only in diagram representation - Action is represented by a node, Partition by a container node.&#xA;Action can be a child of another action or of an action category. It may contain content and action elements - abstract actions and action categories. It may also contain action mappings - logical names of actions referenced by this action's content."/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="sectionStyle"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="role" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="Navigation">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Action roles are used in &quot;wiring&quot; of actions into the generated Web UI.&#xA;&#xA;For the root action its children are displayed depending on their rolw as follows:&#xA;&#xA;* Navigation: &#xA;    * The first navigation child is called &quot;Principal&quot; and is displayed in the navbar brand. &#xA;    * The remaining navigation children are displayed in navs on the right in the header.&#xA;* Context children are displayed in the footer.&#xA;&#xA;For the principal action (the first navigation child of the root action):&#xA;&#xA;* Navigation actions are displayed in the navigation panel on the left.&#xA;* Context actions are displayed in the navbar.&#xA;&#xA;For other non-section actions navigation children are displayed in the navigation panel and context children are displayed in right-floating navs on the top of the content panel.&#xA;&#xA;Section actions are displayed as part of the content panel body of their parent. Their navigation children are treated as sections and display of their context children depends on the section style.&#xA;&#xA;Content left and Content right acitons are displayed on the left and right of the content body respectively.&#xA;&#xA;View and Edit actions are applicable for properties and property sources."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sectionStyle" eType="#//SectionStyle"
+        defaultValueLiteral="Auto">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Defines how to generate section children."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sectionColumns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="3">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Applicable to section style &quot;Card&quot;. Defines how many columns shall be in a row of section cards."/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="confirmation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Confirmation to display in a confirmation dialog before action activation to give the user an opportunity to cancel the action. E.g. confirmation of deletion."/>
@@ -124,15 +105,47 @@
         <details key="documentation" value="If true, then action is displayed as disabled. "/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="content" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true">
-      <eAnnotations source="urn:org.nasdanika">
-        <details key="load-key" value="children"/>
-      </eAnnotations>
-    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="inline" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modal" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="content" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sections" upperBound="-1"
+        eType="#//Action" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" upperBound="-1"
+        eType="#//Label" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contentLeft" upperBound="-1"
+        eType="#//Label" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contentRight" upperBound="-1"
+        eType="#//Label" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="floatLeft" upperBound="-1"
+        eType="#//Label" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="floatRight" upperBound="-1"
+        eType="#//Label" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="Color" instanceClassName="org.nasdanika.html.bootstrap.Color"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="SectionStyle" instanceClassName="org.nasdanika.html.app.SectionStyle"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="SectionStyle">
+    <eLiterals name="Auto"/>
+    <eLiterals name="ActionGroup" value="1"/>
+    <eLiterals name="Card" value="2"/>
+    <eLiterals name="CardPill" value="3"/>
+    <eLiterals name="CardTab" value="4"/>
+    <eLiterals name="Header" value="5"/>
+    <eLiterals name="Pill" value="6"/>
+    <eLiterals name="Tab" value="7"/>
+    <eLiterals name="Table" value="8"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Color">
+    <eLiterals name="Primary"/>
+    <eLiterals name="Secondary" value="1"/>
+    <eLiterals name="Success" value="2"/>
+    <eLiterals name="Info" value="3"/>
+    <eLiterals name="Warning" value="4"/>
+    <eLiterals name="Danger" value="5"/>
+    <eLiterals name="Light" value="6"/>
+    <eLiterals name="Dark" value="7"/>
+    <eLiterals name="Body" value="8"/>
+    <eLiterals name="Muted" value="9"/>
+    <eLiterals name="White" value="10"/>
+    <eLiterals name="Black50" value="11"/>
+    <eLiterals name="White50" value="12"/>
+  </eClassifiers>
 </ecore:EPackage>

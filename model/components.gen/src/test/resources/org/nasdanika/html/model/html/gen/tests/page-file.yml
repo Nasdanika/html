@@ -1,0 +1,25 @@
+resources-container:
+  name: my-container
+  contents:
+    - resources-file:
+        name: my-page.html
+        contents:
+          html-page:
+            name: Test
+            language: EN
+            stylesheets: https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css 
+            scripts:
+              - https://code.jquery.com/jquery-3.5.1.slim.min.js
+              - https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js  
+            head:
+              - content-text: |+2
+                  <!-- Some comment -->  
+            body:
+              html-tag:
+                name: h1
+                content:
+                  content-text: Hello
+                attributes:
+                  class:
+                    content-text: row                   
+          

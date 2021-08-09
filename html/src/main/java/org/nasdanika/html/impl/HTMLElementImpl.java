@@ -207,6 +207,8 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 	public T attribute(String name, Object value) {
 		if (value==null) {
 			attributes.remove(name);
+		} else if (value instanceof InputStream || value instanceof Reader) {
+			attributes.put(name, stringify(value));			
 		} else {
 			attributes.put(name, value);
 		}
@@ -463,6 +465,8 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 					for (int i = 0; i < Array.getLength(c); ++i) {
 						content(Array.get(c, i));
 					}
+				} else if (c instanceof InputStream || c instanceof Reader) {
+					this.content.add(stringify(c));
 				} else {
 					this.content.add(c);
 				}

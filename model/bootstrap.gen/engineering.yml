@@ -1,0 +1,9 @@
+engineering-module:
+   name: Bootstrap Generation Adapters
+   path: bootstrap-gen
+   representations:
+     - representation-component-diagram: true
+   dependencies:
+     - nasdanika:modules/html/modules/bootstrap
+     
+   

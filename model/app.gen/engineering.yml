@@ -1,0 +1,9 @@
+engineering-module:
+   name: Application Generation Adapters
+   path: app-gen
+   representations:
+     - representation-component-diagram: true
+   dependencies:
+     - nasdanika:modules/html/modules/app
+     
+   
