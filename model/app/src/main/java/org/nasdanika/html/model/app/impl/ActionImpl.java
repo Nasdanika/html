@@ -5,13 +5,18 @@ package org.nasdanika.html.model.app.impl;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.util.InternalEList;
+
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.NavigationPanel;
+import org.nasdanika.html.model.app.SectionStyle;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,44 +26,32 @@ import org.nasdanika.html.model.app.AppPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getRole <em>Role</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getSectionStyle <em>Section Style</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getId <em>Id</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getSectionColumns <em>Section Columns</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getConfirmation <em>Confirmation</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isDisabled <em>Disabled</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getSectionStyle <em>Section Style</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getNavigation <em>Navigation</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getLeftNavigation <em>Left Navigation</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getRightNavigation <em>Right Navigation</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getFloatLeftNavigation <em>Float Left Navigation</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getFloatRightNavigation <em>Float Right Navigation</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getAnonymous <em>Anonymous</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getResources <em>Resources</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isInline <em>Inline</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isModal <em>Modal</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getContent <em>Content</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getSections <em>Sections</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getContext <em>Context</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getContentLeft <em>Content Left</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getContentRight <em>Content Right</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getFloatLeft <em>Float Left</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getFloatRight <em>Float Right</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ActionImpl extends LinkImpl implements Action {
 	/**
-	 * The default value of the '{@link #getRole() <em>Role</em>}' attribute.
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getRole()
+	 * @see #getId()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String ROLE_EDEFAULT = "Navigation";
-
-	/**
-	 * The default value of the '{@link #getSectionStyle() <em>Section Style</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getSectionStyle()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final org.nasdanika.html.model.app.SectionStyle SECTION_STYLE_EDEFAULT = org.nasdanika.html.model.app.SectionStyle.AUTO;
+	protected static final String ID_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getSectionColumns() <em>Section Columns</em>}' attribute.
@@ -71,24 +64,14 @@ public class ActionImpl extends LinkImpl implements Action {
 	protected static final int SECTION_COLUMNS_EDEFAULT = 3;
 
 	/**
-	 * The default value of the '{@link #getConfirmation() <em>Confirmation</em>}' attribute.
+	 * The default value of the '{@link #getSectionStyle() <em>Section Style</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getConfirmation()
+	 * @see #getSectionStyle()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String CONFIRMATION_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #isDisabled() <em>Disabled</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isDisabled()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean DISABLED_EDEFAULT = false;
+	protected static final SectionStyle SECTION_STYLE_EDEFAULT = SectionStyle.AUTO;
 
 	/**
 	 * The default value of the '{@link #isInline() <em>Inline</em>}' attribute.
@@ -135,8 +118,8 @@ public class ActionImpl extends LinkImpl implements Action {
 	 * @generated
 	 */
 	@Override
-	public String getRole() {
-		return (String)eDynamicGet(AppPackage.ACTION__ROLE, AppPackage.Literals.ACTION__ROLE, true, true);
+	public String getId() {
+		return (String)eDynamicGet(AppPackage.ACTION__ID, AppPackage.Literals.ACTION__ID, true, true);
 	}
 
 	/**
@@ -145,28 +128,8 @@ public class ActionImpl extends LinkImpl implements Action {
 	 * @generated
 	 */
 	@Override
-	public void setRole(String newRole) {
-		eDynamicSet(AppPackage.ACTION__ROLE, AppPackage.Literals.ACTION__ROLE, newRole);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public org.nasdanika.html.model.app.SectionStyle getSectionStyle() {
-		return (org.nasdanika.html.model.app.SectionStyle)eDynamicGet(AppPackage.ACTION__SECTION_STYLE, AppPackage.Literals.ACTION__SECTION_STYLE, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setSectionStyle(org.nasdanika.html.model.app.SectionStyle newSectionStyle) {
-		eDynamicSet(AppPackage.ACTION__SECTION_STYLE, AppPackage.Literals.ACTION__SECTION_STYLE, newSectionStyle);
+	public void setId(String newId) {
+		eDynamicSet(AppPackage.ACTION__ID, AppPackage.Literals.ACTION__ID, newId);
 	}
 
 	/**
@@ -195,8 +158,8 @@ public class ActionImpl extends LinkImpl implements Action {
 	 * @generated
 	 */
 	@Override
-	public String getConfirmation() {
-		return (String)eDynamicGet(AppPackage.ACTION__CONFIRMATION, AppPackage.Literals.ACTION__CONFIRMATION, true, true);
+	public SectionStyle getSectionStyle() {
+		return (SectionStyle)eDynamicGet(AppPackage.ACTION__SECTION_STYLE, AppPackage.Literals.ACTION__SECTION_STYLE, true, true);
 	}
 
 	/**
@@ -205,28 +168,8 @@ public class ActionImpl extends LinkImpl implements Action {
 	 * @generated
 	 */
 	@Override
-	public void setConfirmation(String newConfirmation) {
-		eDynamicSet(AppPackage.ACTION__CONFIRMATION, AppPackage.Literals.ACTION__CONFIRMATION, newConfirmation);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean isDisabled() {
-		return (Boolean)eDynamicGet(AppPackage.ACTION__DISABLED, AppPackage.Literals.ACTION__DISABLED, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setDisabled(boolean newDisabled) {
-		eDynamicSet(AppPackage.ACTION__DISABLED, AppPackage.Literals.ACTION__DISABLED, newDisabled);
+	public void setSectionStyle(SectionStyle newSectionStyle) {
+		eDynamicSet(AppPackage.ACTION__SECTION_STYLE, AppPackage.Literals.ACTION__SECTION_STYLE, newSectionStyle);
 	}
 
 	/**
@@ -236,8 +179,128 @@ public class ActionImpl extends LinkImpl implements Action {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList<EObject> getContent() {
-		return (EList<EObject>)eDynamicGet(AppPackage.ACTION__CONTENT, AppPackage.Literals.ACTION__CONTENT, true, true);
+	public EList<org.nasdanika.html.model.bootstrap.BootstrapElement> getNavigation() {
+		return (EList<org.nasdanika.html.model.bootstrap.BootstrapElement>)eDynamicGet(AppPackage.ACTION__NAVIGATION, AppPackage.Literals.ACTION__NAVIGATION, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NavigationPanel getLeftNavigation() {
+		return (NavigationPanel)eDynamicGet(AppPackage.ACTION__LEFT_NAVIGATION, AppPackage.Literals.ACTION__LEFT_NAVIGATION, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetLeftNavigation(NavigationPanel newLeftNavigation, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newLeftNavigation, AppPackage.ACTION__LEFT_NAVIGATION, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setLeftNavigation(NavigationPanel newLeftNavigation) {
+		eDynamicSet(AppPackage.ACTION__LEFT_NAVIGATION, AppPackage.Literals.ACTION__LEFT_NAVIGATION, newLeftNavigation);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NavigationPanel getRightNavigation() {
+		return (NavigationPanel)eDynamicGet(AppPackage.ACTION__RIGHT_NAVIGATION, AppPackage.Literals.ACTION__RIGHT_NAVIGATION, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetRightNavigation(NavigationPanel newRightNavigation, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newRightNavigation, AppPackage.ACTION__RIGHT_NAVIGATION, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setRightNavigation(NavigationPanel newRightNavigation) {
+		eDynamicSet(AppPackage.ACTION__RIGHT_NAVIGATION, AppPackage.Literals.ACTION__RIGHT_NAVIGATION, newRightNavigation);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NavigationPanel getFloatLeftNavigation() {
+		return (NavigationPanel)eDynamicGet(AppPackage.ACTION__FLOAT_LEFT_NAVIGATION, AppPackage.Literals.ACTION__FLOAT_LEFT_NAVIGATION, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetFloatLeftNavigation(NavigationPanel newFloatLeftNavigation, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newFloatLeftNavigation, AppPackage.ACTION__FLOAT_LEFT_NAVIGATION, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setFloatLeftNavigation(NavigationPanel newFloatLeftNavigation) {
+		eDynamicSet(AppPackage.ACTION__FLOAT_LEFT_NAVIGATION, AppPackage.Literals.ACTION__FLOAT_LEFT_NAVIGATION, newFloatLeftNavigation);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NavigationPanel getFloatRightNavigation() {
+		return (NavigationPanel)eDynamicGet(AppPackage.ACTION__FLOAT_RIGHT_NAVIGATION, AppPackage.Literals.ACTION__FLOAT_RIGHT_NAVIGATION, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetFloatRightNavigation(NavigationPanel newFloatRightNavigation, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newFloatRightNavigation, AppPackage.ACTION__FLOAT_RIGHT_NAVIGATION, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setFloatRightNavigation(NavigationPanel newFloatRightNavigation) {
+		eDynamicSet(AppPackage.ACTION__FLOAT_RIGHT_NAVIGATION, AppPackage.Literals.ACTION__FLOAT_RIGHT_NAVIGATION, newFloatRightNavigation);
 	}
 
 	/**
@@ -247,8 +310,8 @@ public class ActionImpl extends LinkImpl implements Action {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList<Action> getSections() {
-		return (EList<Action>)eDynamicGet(AppPackage.ACTION__SECTIONS, AppPackage.Literals.ACTION__SECTIONS, true, true);
+	public EList<Action> getAnonymous() {
+		return (EList<Action>)eDynamicGet(AppPackage.ACTION__ANONYMOUS, AppPackage.Literals.ACTION__ANONYMOUS, true, true);
 	}
 
 	/**
@@ -258,52 +321,8 @@ public class ActionImpl extends LinkImpl implements Action {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList<org.nasdanika.html.model.app.Label> getContext() {
-		return (EList<org.nasdanika.html.model.app.Label>)eDynamicGet(AppPackage.ACTION__CONTEXT, AppPackage.Literals.ACTION__CONTEXT, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public EList<org.nasdanika.html.model.app.Label> getContentLeft() {
-		return (EList<org.nasdanika.html.model.app.Label>)eDynamicGet(AppPackage.ACTION__CONTENT_LEFT, AppPackage.Literals.ACTION__CONTENT_LEFT, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public EList<org.nasdanika.html.model.app.Label> getContentRight() {
-		return (EList<org.nasdanika.html.model.app.Label>)eDynamicGet(AppPackage.ACTION__CONTENT_RIGHT, AppPackage.Literals.ACTION__CONTENT_RIGHT, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public EList<org.nasdanika.html.model.app.Label> getFloatLeft() {
-		return (EList<org.nasdanika.html.model.app.Label>)eDynamicGet(AppPackage.ACTION__FLOAT_LEFT, AppPackage.Literals.ACTION__FLOAT_LEFT, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public EList<org.nasdanika.html.model.app.Label> getFloatRight() {
-		return (EList<org.nasdanika.html.model.app.Label>)eDynamicGet(AppPackage.ACTION__FLOAT_RIGHT, AppPackage.Literals.ACTION__FLOAT_RIGHT, true, true);
+	public EList<org.nasdanika.exec.resources.Resource> getResources() {
+		return (EList<org.nasdanika.exec.resources.Resource>)eDynamicGet(AppPackage.ACTION__RESOURCES, AppPackage.Literals.ACTION__RESOURCES, true, true);
 	}
 
 	/**
@@ -354,20 +373,20 @@ public class ActionImpl extends LinkImpl implements Action {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case AppPackage.ACTION__CONTENT:
-				return ((InternalEList<?>)getContent()).basicRemove(otherEnd, msgs);
-			case AppPackage.ACTION__SECTIONS:
-				return ((InternalEList<?>)getSections()).basicRemove(otherEnd, msgs);
-			case AppPackage.ACTION__CONTEXT:
-				return ((InternalEList<?>)getContext()).basicRemove(otherEnd, msgs);
-			case AppPackage.ACTION__CONTENT_LEFT:
-				return ((InternalEList<?>)getContentLeft()).basicRemove(otherEnd, msgs);
-			case AppPackage.ACTION__CONTENT_RIGHT:
-				return ((InternalEList<?>)getContentRight()).basicRemove(otherEnd, msgs);
-			case AppPackage.ACTION__FLOAT_LEFT:
-				return ((InternalEList<?>)getFloatLeft()).basicRemove(otherEnd, msgs);
-			case AppPackage.ACTION__FLOAT_RIGHT:
-				return ((InternalEList<?>)getFloatRight()).basicRemove(otherEnd, msgs);
+			case AppPackage.ACTION__NAVIGATION:
+				return ((InternalEList<?>)getNavigation()).basicRemove(otherEnd, msgs);
+			case AppPackage.ACTION__LEFT_NAVIGATION:
+				return basicSetLeftNavigation(null, msgs);
+			case AppPackage.ACTION__RIGHT_NAVIGATION:
+				return basicSetRightNavigation(null, msgs);
+			case AppPackage.ACTION__FLOAT_LEFT_NAVIGATION:
+				return basicSetFloatLeftNavigation(null, msgs);
+			case AppPackage.ACTION__FLOAT_RIGHT_NAVIGATION:
+				return basicSetFloatRightNavigation(null, msgs);
+			case AppPackage.ACTION__ANONYMOUS:
+				return ((InternalEList<?>)getAnonymous()).basicRemove(otherEnd, msgs);
+			case AppPackage.ACTION__RESOURCES:
+				return ((InternalEList<?>)getResources()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -380,34 +399,30 @@ public class ActionImpl extends LinkImpl implements Action {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AppPackage.ACTION__ROLE:
-				return getRole();
-			case AppPackage.ACTION__SECTION_STYLE:
-				return getSectionStyle();
+			case AppPackage.ACTION__ID:
+				return getId();
 			case AppPackage.ACTION__SECTION_COLUMNS:
 				return getSectionColumns();
-			case AppPackage.ACTION__CONFIRMATION:
-				return getConfirmation();
-			case AppPackage.ACTION__DISABLED:
-				return isDisabled();
+			case AppPackage.ACTION__SECTION_STYLE:
+				return getSectionStyle();
+			case AppPackage.ACTION__NAVIGATION:
+				return getNavigation();
+			case AppPackage.ACTION__LEFT_NAVIGATION:
+				return getLeftNavigation();
+			case AppPackage.ACTION__RIGHT_NAVIGATION:
+				return getRightNavigation();
+			case AppPackage.ACTION__FLOAT_LEFT_NAVIGATION:
+				return getFloatLeftNavigation();
+			case AppPackage.ACTION__FLOAT_RIGHT_NAVIGATION:
+				return getFloatRightNavigation();
+			case AppPackage.ACTION__ANONYMOUS:
+				return getAnonymous();
+			case AppPackage.ACTION__RESOURCES:
+				return getResources();
 			case AppPackage.ACTION__INLINE:
 				return isInline();
 			case AppPackage.ACTION__MODAL:
 				return isModal();
-			case AppPackage.ACTION__CONTENT:
-				return getContent();
-			case AppPackage.ACTION__SECTIONS:
-				return getSections();
-			case AppPackage.ACTION__CONTEXT:
-				return getContext();
-			case AppPackage.ACTION__CONTENT_LEFT:
-				return getContentLeft();
-			case AppPackage.ACTION__CONTENT_RIGHT:
-				return getContentRight();
-			case AppPackage.ACTION__FLOAT_LEFT:
-				return getFloatLeft();
-			case AppPackage.ACTION__FLOAT_RIGHT:
-				return getFloatRight();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -421,54 +436,44 @@ public class ActionImpl extends LinkImpl implements Action {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AppPackage.ACTION__ROLE:
-				setRole((String)newValue);
-				return;
-			case AppPackage.ACTION__SECTION_STYLE:
-				setSectionStyle((org.nasdanika.html.model.app.SectionStyle)newValue);
+			case AppPackage.ACTION__ID:
+				setId((String)newValue);
 				return;
 			case AppPackage.ACTION__SECTION_COLUMNS:
 				setSectionColumns((Integer)newValue);
 				return;
-			case AppPackage.ACTION__CONFIRMATION:
-				setConfirmation((String)newValue);
+			case AppPackage.ACTION__SECTION_STYLE:
+				setSectionStyle((SectionStyle)newValue);
 				return;
-			case AppPackage.ACTION__DISABLED:
-				setDisabled((Boolean)newValue);
+			case AppPackage.ACTION__NAVIGATION:
+				getNavigation().clear();
+				getNavigation().addAll((Collection<? extends org.nasdanika.html.model.bootstrap.BootstrapElement>)newValue);
+				return;
+			case AppPackage.ACTION__LEFT_NAVIGATION:
+				setLeftNavigation((NavigationPanel)newValue);
+				return;
+			case AppPackage.ACTION__RIGHT_NAVIGATION:
+				setRightNavigation((NavigationPanel)newValue);
+				return;
+			case AppPackage.ACTION__FLOAT_LEFT_NAVIGATION:
+				setFloatLeftNavigation((NavigationPanel)newValue);
+				return;
+			case AppPackage.ACTION__FLOAT_RIGHT_NAVIGATION:
+				setFloatRightNavigation((NavigationPanel)newValue);
+				return;
+			case AppPackage.ACTION__ANONYMOUS:
+				getAnonymous().clear();
+				getAnonymous().addAll((Collection<? extends Action>)newValue);
+				return;
+			case AppPackage.ACTION__RESOURCES:
+				getResources().clear();
+				getResources().addAll((Collection<? extends org.nasdanika.exec.resources.Resource>)newValue);
 				return;
 			case AppPackage.ACTION__INLINE:
 				setInline((Boolean)newValue);
 				return;
 			case AppPackage.ACTION__MODAL:
 				setModal((Boolean)newValue);
-				return;
-			case AppPackage.ACTION__CONTENT:
-				getContent().clear();
-				getContent().addAll((Collection<? extends EObject>)newValue);
-				return;
-			case AppPackage.ACTION__SECTIONS:
-				getSections().clear();
-				getSections().addAll((Collection<? extends Action>)newValue);
-				return;
-			case AppPackage.ACTION__CONTEXT:
-				getContext().clear();
-				getContext().addAll((Collection<? extends org.nasdanika.html.model.app.Label>)newValue);
-				return;
-			case AppPackage.ACTION__CONTENT_LEFT:
-				getContentLeft().clear();
-				getContentLeft().addAll((Collection<? extends org.nasdanika.html.model.app.Label>)newValue);
-				return;
-			case AppPackage.ACTION__CONTENT_RIGHT:
-				getContentRight().clear();
-				getContentRight().addAll((Collection<? extends org.nasdanika.html.model.app.Label>)newValue);
-				return;
-			case AppPackage.ACTION__FLOAT_LEFT:
-				getFloatLeft().clear();
-				getFloatLeft().addAll((Collection<? extends org.nasdanika.html.model.app.Label>)newValue);
-				return;
-			case AppPackage.ACTION__FLOAT_RIGHT:
-				getFloatRight().clear();
-				getFloatRight().addAll((Collection<? extends org.nasdanika.html.model.app.Label>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -482,47 +487,41 @@ public class ActionImpl extends LinkImpl implements Action {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AppPackage.ACTION__ROLE:
-				setRole(ROLE_EDEFAULT);
-				return;
-			case AppPackage.ACTION__SECTION_STYLE:
-				setSectionStyle(SECTION_STYLE_EDEFAULT);
+			case AppPackage.ACTION__ID:
+				setId(ID_EDEFAULT);
 				return;
 			case AppPackage.ACTION__SECTION_COLUMNS:
 				setSectionColumns(SECTION_COLUMNS_EDEFAULT);
 				return;
-			case AppPackage.ACTION__CONFIRMATION:
-				setConfirmation(CONFIRMATION_EDEFAULT);
+			case AppPackage.ACTION__SECTION_STYLE:
+				setSectionStyle(SECTION_STYLE_EDEFAULT);
 				return;
-			case AppPackage.ACTION__DISABLED:
-				setDisabled(DISABLED_EDEFAULT);
+			case AppPackage.ACTION__NAVIGATION:
+				getNavigation().clear();
+				return;
+			case AppPackage.ACTION__LEFT_NAVIGATION:
+				setLeftNavigation((NavigationPanel)null);
+				return;
+			case AppPackage.ACTION__RIGHT_NAVIGATION:
+				setRightNavigation((NavigationPanel)null);
+				return;
+			case AppPackage.ACTION__FLOAT_LEFT_NAVIGATION:
+				setFloatLeftNavigation((NavigationPanel)null);
+				return;
+			case AppPackage.ACTION__FLOAT_RIGHT_NAVIGATION:
+				setFloatRightNavigation((NavigationPanel)null);
+				return;
+			case AppPackage.ACTION__ANONYMOUS:
+				getAnonymous().clear();
+				return;
+			case AppPackage.ACTION__RESOURCES:
+				getResources().clear();
 				return;
 			case AppPackage.ACTION__INLINE:
 				setInline(INLINE_EDEFAULT);
 				return;
 			case AppPackage.ACTION__MODAL:
 				setModal(MODAL_EDEFAULT);
-				return;
-			case AppPackage.ACTION__CONTENT:
-				getContent().clear();
-				return;
-			case AppPackage.ACTION__SECTIONS:
-				getSections().clear();
-				return;
-			case AppPackage.ACTION__CONTEXT:
-				getContext().clear();
-				return;
-			case AppPackage.ACTION__CONTENT_LEFT:
-				getContentLeft().clear();
-				return;
-			case AppPackage.ACTION__CONTENT_RIGHT:
-				getContentRight().clear();
-				return;
-			case AppPackage.ACTION__FLOAT_LEFT:
-				getFloatLeft().clear();
-				return;
-			case AppPackage.ACTION__FLOAT_RIGHT:
-				getFloatRight().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -536,36 +535,32 @@ public class ActionImpl extends LinkImpl implements Action {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AppPackage.ACTION__ROLE:
-				return ROLE_EDEFAULT == null ? getRole() != null : !ROLE_EDEFAULT.equals(getRole());
-			case AppPackage.ACTION__SECTION_STYLE:
-				return getSectionStyle() != SECTION_STYLE_EDEFAULT;
+			case AppPackage.ACTION__ID:
+				return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
 			case AppPackage.ACTION__SECTION_COLUMNS:
 				return getSectionColumns() != SECTION_COLUMNS_EDEFAULT;
-			case AppPackage.ACTION__CONFIRMATION:
-				return CONFIRMATION_EDEFAULT == null ? getConfirmation() != null : !CONFIRMATION_EDEFAULT.equals(getConfirmation());
-			case AppPackage.ACTION__DISABLED:
-				return isDisabled() != DISABLED_EDEFAULT;
+			case AppPackage.ACTION__SECTION_STYLE:
+				return getSectionStyle() != SECTION_STYLE_EDEFAULT;
+			case AppPackage.ACTION__NAVIGATION:
+				return !getNavigation().isEmpty();
+			case AppPackage.ACTION__LEFT_NAVIGATION:
+				return getLeftNavigation() != null;
+			case AppPackage.ACTION__RIGHT_NAVIGATION:
+				return getRightNavigation() != null;
+			case AppPackage.ACTION__FLOAT_LEFT_NAVIGATION:
+				return getFloatLeftNavigation() != null;
+			case AppPackage.ACTION__FLOAT_RIGHT_NAVIGATION:
+				return getFloatRightNavigation() != null;
+			case AppPackage.ACTION__ANONYMOUS:
+				return !getAnonymous().isEmpty();
+			case AppPackage.ACTION__RESOURCES:
+				return !getResources().isEmpty();
 			case AppPackage.ACTION__INLINE:
 				return isInline() != INLINE_EDEFAULT;
 			case AppPackage.ACTION__MODAL:
 				return isModal() != MODAL_EDEFAULT;
-			case AppPackage.ACTION__CONTENT:
-				return !getContent().isEmpty();
-			case AppPackage.ACTION__SECTIONS:
-				return !getSections().isEmpty();
-			case AppPackage.ACTION__CONTEXT:
-				return !getContext().isEmpty();
-			case AppPackage.ACTION__CONTENT_LEFT:
-				return !getContentLeft().isEmpty();
-			case AppPackage.ACTION__CONTENT_RIGHT:
-				return !getContentRight().isEmpty();
-			case AppPackage.ACTION__FLOAT_LEFT:
-				return !getFloatLeft().isEmpty();
-			case AppPackage.ACTION__FLOAT_RIGHT:
-				return !getFloatRight().isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
-	
+
 } //ActionImpl

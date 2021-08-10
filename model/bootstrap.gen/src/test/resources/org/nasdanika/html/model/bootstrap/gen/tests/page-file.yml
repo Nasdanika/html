@@ -1,0 +1,23 @@
+resources-container:
+  name: my-container
+  contents:
+    - resources-file:
+        name: my-page.html
+        contents:
+          bootstrap-page:
+            cdn: true
+            theme: Cerulean
+            name: Test
+            language: EN
+            head:
+              - content-text: |+2
+                  <!-- Some comment -->  
+            body:
+              html-tag:
+                name: h1
+                content:
+                  content-text: Hello
+                attributes:
+                  class:
+                    content-text: row                   
+          

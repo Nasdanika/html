@@ -9,6 +9,7 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 
+import org.nasdanika.exec.ModelElement;
 import org.nasdanika.html.model.bootstrap.Accordion;
 import org.nasdanika.html.model.bootstrap.ActionGroup;
 import org.nasdanika.html.model.bootstrap.ActionGroupItem;
@@ -17,7 +18,6 @@ import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.Badge;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
-import org.nasdanika.html.model.bootstrap.BootstrapPage;
 import org.nasdanika.html.model.bootstrap.Border;
 import org.nasdanika.html.model.bootstrap.Breadcrumb;
 import org.nasdanika.html.model.bootstrap.Button;
@@ -29,7 +29,6 @@ import org.nasdanika.html.model.bootstrap.Column;
 import org.nasdanika.html.model.bootstrap.ColumnWidth;
 import org.nasdanika.html.model.bootstrap.Container;
 import org.nasdanika.html.model.bootstrap.ContentActionGroupItem;
-import org.nasdanika.html.model.bootstrap.ContentTag;
 import org.nasdanika.html.model.bootstrap.Div;
 import org.nasdanika.html.model.bootstrap.Dropdown;
 import org.nasdanika.html.model.bootstrap.Form;
@@ -56,9 +55,6 @@ import org.nasdanika.html.model.bootstrap.Tooltip;
 
 import org.nasdanika.html.model.html.HtmlElement;
 import org.nasdanika.html.model.html.Page;
-
-import org.nasdanika.ncore.ModelElement;
-import org.nasdanika.ncore.NamedElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -121,8 +117,8 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 				return createBootstrapElementAdapter();
 			}
 			@Override
-			public Adapter caseBootstrapPage(BootstrapPage object) {
-				return createBootstrapPageAdapter();
+			public Adapter casePage(org.nasdanika.html.model.bootstrap.Page object) {
+				return createPageAdapter();
 			}
 			@Override
 			public Adapter caseAppearance(Appearance object) {
@@ -147,10 +143,6 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseTag(Tag object) {
 				return createTagAdapter();
-			}
-			@Override
-			public Adapter caseContentTag(ContentTag object) {
-				return createContentTagAdapter();
 			}
 			@Override
 			public Adapter caseDiv(Div object) {
@@ -301,24 +293,12 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 				return createHtmlElementAdapter();
 			}
 			@Override
-			public Adapter caseNamedElement(NamedElement object) {
-				return createNamedElementAdapter();
-			}
-			@Override
-			public Adapter casePage(Page object) {
-				return createPageAdapter();
+			public Adapter caseHtml_Page(Page object) {
+				return createHtml_PageAdapter();
 			}
 			@Override
 			public Adapter caseHtml_Tag(org.nasdanika.html.model.html.Tag object) {
 				return createHtml_TagAdapter();
-			}
-			@Override
-			public Adapter caseHtml_Container(org.nasdanika.html.model.html.Container object) {
-				return createHtml_ContainerAdapter();
-			}
-			@Override
-			public Adapter caseHtml_ContentTag(org.nasdanika.html.model.html.ContentTag object) {
-				return createHtml_ContentTagAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -351,20 +331,6 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createBootstrapElementAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.BootstrapPage <em>Page</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.nasdanika.html.model.bootstrap.BootstrapPage
-	 * @generated
-	 */
-	public Adapter createBootstrapPageAdapter() {
 		return null;
 	}
 
@@ -449,20 +415,6 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createTagAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.ContentTag <em>Content Tag</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.nasdanika.html.model.bootstrap.ContentTag
-	 * @generated
-	 */
-	public Adapter createContentTagAdapter() {
 		return null;
 	}
 
@@ -957,13 +909,13 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.nasdanika.ncore.ModelElement <em>Model Element</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.exec.ModelElement <em>Model Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.nasdanika.ncore.ModelElement
+	 * @see org.nasdanika.exec.ModelElement
 	 * @generated
 	 */
 	public Adapter createModelElementAdapter() {
@@ -985,20 +937,6 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.nasdanika.ncore.NamedElement <em>Named Element</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.nasdanika.ncore.NamedElement
-	 * @generated
-	 */
-	public Adapter createNamedElementAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.html.Page <em>Page</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -1006,6 +944,20 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
 	 * @see org.nasdanika.html.model.html.Page
+	 * @generated
+	 */
+	public Adapter createHtml_PageAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.Page <em>Page</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.bootstrap.Page
 	 * @generated
 	 */
 	public Adapter createPageAdapter() {
@@ -1023,34 +975,6 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createHtml_TagAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.html.Container <em>Container</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.nasdanika.html.model.html.Container
-	 * @generated
-	 */
-	public Adapter createHtml_ContainerAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.html.ContentTag <em>Content Tag</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.nasdanika.html.model.html.ContentTag
-	 * @generated
-	 */
-	public Adapter createHtml_ContentTagAdapter() {
 		return null;
 	}
 

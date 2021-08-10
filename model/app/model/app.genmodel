@@ -5,7 +5,8 @@
     editPluginClass="org.nasdanika.html.model.app.provider.ModelEditPlugin" editorPluginClass="org.nasdanika.html.model.app.presentation.ModelEditorPlugin"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
     featureDelegation="Dynamic" complianceLevel="8.0" suppressGenModelAnnotations="false"
-    copyrightFields="false" operationReflection="true" importOrganizing="true">
+    copyrightFields="false" usedGenPackages="../../org.nasdanika.html.model.bootstrap/model/bootstrap.genmodel#//bootstrap ../../org.nasdanika.html.model.html/model/html.genmodel#//html ../../org.nasdanika.exec/model/exec.genmodel#//exec"
+    operationReflection="true" importOrganizing="true">
   <foreignModel>app.ecore</foreignModel>
   <genPackages prefix="App" basePackage="org.nasdanika.html.model" disposableProviderFactory="true"
       ecorePackage="app.ecore#/">
@@ -35,10 +36,13 @@
       <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Black50"/>
       <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/White50"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="app.ecore#//NavigationPanelStyle">
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/Auto"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/Cards"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/Tree"/>
+    </genEnums>
     <genClasses ecoreClass="app.ecore#//Label">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/id"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/description"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/color"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/help"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/text"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/icon"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/tooltip"/>
@@ -50,22 +54,58 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/location"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/script"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/binding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/confirmation"/>
+    </genClasses>
+    <genClasses ecoreClass="app.ecore#//Page">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Page/header"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Page/navigationBar"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Page/navigationPanel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Page/contentPanel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Page/footer"/>
+    </genClasses>
+    <genClasses ecoreClass="app.ecore#//PagePart">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//PagePart/content"/>
+    </genClasses>
+    <genClasses ecoreClass="app.ecore#//Header">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Header/title"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Header/navigation"/>
+    </genClasses>
+    <genClasses ecoreClass="app.ecore#//NavigationBar">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//NavigationBar/brand"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//NavigationBar/items"/>
+    </genClasses>
+    <genClasses ecoreClass="app.ecore#//NavigationPanel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//NavigationPanel/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//NavigationPanel/items"/>
+    </genClasses>
+    <genClasses ecoreClass="app.ecore#//ContentPanel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/breadcrumb"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/title"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/navigation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/leftNavigation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/rightNavigation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/floatLeftNavigation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/floatRightNavigation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/sections"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ContentPanel/sectionColumns"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ContentPanel/sectionStyle"/>
+    </genClasses>
+    <genClasses ecoreClass="app.ecore#//Footer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Footer/items"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//Action">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/role"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/sectionStyle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/sectionColumns"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/confirmation"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/disabled"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/sectionStyle"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/navigation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/leftNavigation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/rightNavigation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/floatLeftNavigation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/floatRightNavigation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/anonymous"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/resources"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/inline"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/modal"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference app.ecore#//Action/content"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/sections"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/context"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/contentLeft"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/contentRight"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/floatLeft"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/floatRight"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

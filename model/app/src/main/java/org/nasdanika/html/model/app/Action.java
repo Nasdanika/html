@@ -3,8 +3,6 @@
 package org.nasdanika.html.model.app;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-
 
 /**
  * <!-- begin-user-doc -->
@@ -12,109 +10,56 @@ import org.eclipse.emf.ecore.EObject;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * Base class for concrete action classes - Action and Partition. These sub-classes are semantically equivalent and differ only in diagram representation - Action is represented by a node, Partition by a container node.
- * Action can be a child of another action or of an action category. It may contain content and action elements - abstract actions and action categories. It may also contain action mappings - logical names of actions referenced by this action's content.
+ * Actions form a hierarchy. Application pages are generated from actions. 
  * <!-- end-model-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.nasdanika.html.model.app.Action#getRole <em>Role</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getSectionStyle <em>Section Style</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getId <em>Id</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getSectionColumns <em>Section Columns</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getConfirmation <em>Confirmation</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#isDisabled <em>Disabled</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getSectionStyle <em>Section Style</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getNavigation <em>Navigation</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getLeftNavigation <em>Left Navigation</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getRightNavigation <em>Right Navigation</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getFloatLeftNavigation <em>Float Left Navigation</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getFloatRightNavigation <em>Float Right Navigation</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getAnonymous <em>Anonymous</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getResources <em>Resources</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#isInline <em>Inline</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#isModal <em>Modal</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getContent <em>Content</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getSections <em>Sections</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getContext <em>Context</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getContentLeft <em>Content Left</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getContentRight <em>Content Right</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getFloatLeft <em>Float Left</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getFloatRight <em>Float Right</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getAction()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='sectionStyle'"
+ * @model
  * @generated
  */
 public interface Action extends Link {
 	/**
-	 * Returns the value of the '<em><b>Role</b></em>' attribute.
-	 * The default value is <code>"Navigation"</code>.
+	 * Returns the value of the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Action roles are used in "wiring" of actions into the generated Web UI.
-	 * 
-	 * For the root action its children are displayed depending on their rolw as follows:
-	 * 
-	 * * Navigation: 
-	 *     * The first navigation child is called "Principal" and is displayed in the navbar brand. 
-	 *     * The remaining navigation children are displayed in navs on the right in the header.
-	 * * Context children are displayed in the footer.
-	 * 
-	 * For the principal action (the first navigation child of the root action):
-	 * 
-	 * * Navigation actions are displayed in the navigation panel on the left.
-	 * * Context actions are displayed in the navbar.
-	 * 
-	 * For other non-section actions navigation children are displayed in the navigation panel and context children are displayed in right-floating navs on the top of the content panel.
-	 * 
-	 * Section actions are displayed as part of the content panel body of their parent. Their navigation children are treated as sections and display of their context children depends on the section style.
-	 * 
-	 * Content left and Content right acitons are displayed on the left and right of the content body respectively.
-	 * 
-	 * View and Edit actions are applicable for properties and property sources.
+	 * Action unique ID for cross-referencing.
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Role</em>' attribute.
-	 * @see #setRole(String)
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Role()
-	 * @model default="Navigation"
+	 * @return the value of the '<em>Id</em>' attribute.
+	 * @see #setId(String)
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Id()
+	 * @model
 	 * @generated
 	 */
-	String getRole();
+	String getId();
 
 	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getRole <em>Role</em>}' attribute.
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getId <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Role</em>' attribute.
-	 * @see #getRole()
+	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * @see #getId()
 	 * @generated
 	 */
-	void setRole(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Section Style</b></em>' attribute.
-	 * The default value is <code>"Auto"</code>.
-	 * The literals are from the enumeration {@link org.nasdanika.html.model.app.SectionStyle}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Defines how to generate section children.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Section Style</em>' attribute.
-	 * @see org.nasdanika.html.model.app.SectionStyle
-	 * @see #setSectionStyle(org.nasdanika.html.model.app.SectionStyle)
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_SectionStyle()
-	 * @model default="Auto"
-	 * @generated
-	 */
-	org.nasdanika.html.model.app.SectionStyle getSectionStyle();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getSectionStyle <em>Section Style</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Section Style</em>' attribute.
-	 * @see org.nasdanika.html.model.app.SectionStyle
-	 * @see #getSectionStyle()
-	 * @generated
-	 */
-	void setSectionStyle(org.nasdanika.html.model.app.SectionStyle value);
+	void setId(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Section Columns</b></em>' attribute.
@@ -143,147 +88,194 @@ public interface Action extends Link {
 	void setSectionColumns(int value);
 
 	/**
-	 * Returns the value of the '<em><b>Confirmation</b></em>' attribute.
+	 * Returns the value of the '<em><b>Section Style</b></em>' attribute.
+	 * The default value is <code>"Auto"</code>.
+	 * The literals are from the enumeration {@link org.nasdanika.html.model.app.SectionStyle}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Confirmation to display in a confirmation dialog before action activation to give the user an opportunity to cancel the action. E.g. confirmation of deletion.
+	 * Defines how to generate section children.
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Confirmation</em>' attribute.
-	 * @see #setConfirmation(String)
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Confirmation()
-	 * @model
+	 * @return the value of the '<em>Section Style</em>' attribute.
+	 * @see org.nasdanika.html.model.app.SectionStyle
+	 * @see #setSectionStyle(SectionStyle)
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_SectionStyle()
+	 * @model default="Auto"
 	 * @generated
 	 */
-	String getConfirmation();
+	SectionStyle getSectionStyle();
 
 	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getConfirmation <em>Confirmation</em>}' attribute.
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getSectionStyle <em>Section Style</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Confirmation</em>' attribute.
-	 * @see #getConfirmation()
+	 * @param value the new value of the '<em>Section Style</em>' attribute.
+	 * @see org.nasdanika.html.model.app.SectionStyle
+	 * @see #getSectionStyle()
 	 * @generated
 	 */
-	void setConfirmation(String value);
+	void setSectionStyle(SectionStyle value);
 
 	/**
-	 * Returns the value of the '<em><b>Disabled</b></em>' attribute.
+	 * Returns the value of the '<em><b>Navigation</b></em>' containment reference list.
+	 * The list contents are of type {@link org.nasdanika.html.model.bootstrap.BootstrapElement}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * If true, then action is displayed as disabled. 
+	 * Navigation items are displayed in the footer the root action, in the navigation bar for the principal action, and in the content panel navigation bar for the active action.
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Disabled</em>' attribute.
-	 * @see #setDisabled(boolean)
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Disabled()
-	 * @model
-	 * @generated
-	 */
-	boolean isDisabled();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#isDisabled <em>Disabled</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Disabled</em>' attribute.
-	 * @see #isDisabled()
-	 * @generated
-	 */
-	void setDisabled(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Content</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Content</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Content()
+	 * @return the value of the '<em>Navigation</em>' containment reference list.
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Navigation()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<EObject> getContent();
+	EList<org.nasdanika.html.model.bootstrap.BootstrapElement> getNavigation();
 
 	/**
-	 * Returns the value of the '<em><b>Sections</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Left Navigation</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Left navigation panel
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Left Navigation</em>' containment reference.
+	 * @see #setLeftNavigation(NavigationPanel)
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_LeftNavigation()
+	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 * @generated
+	 */
+	NavigationPanel getLeftNavigation();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getLeftNavigation <em>Left Navigation</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Left Navigation</em>' containment reference.
+	 * @see #getLeftNavigation()
+	 * @generated
+	 */
+	void setLeftNavigation(NavigationPanel value);
+
+	/**
+	 * Returns the value of the '<em><b>Right Navigation</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Right navigation panel.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Right Navigation</em>' containment reference.
+	 * @see #setRightNavigation(NavigationPanel)
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_RightNavigation()
+	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 * @generated
+	 */
+	NavigationPanel getRightNavigation();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getRightNavigation <em>Right Navigation</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Right Navigation</em>' containment reference.
+	 * @see #getRightNavigation()
+	 * @generated
+	 */
+	void setRightNavigation(NavigationPanel value);
+
+	/**
+	 * Returns the value of the '<em><b>Float Left Navigation</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Float left navigation panel.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Float Left Navigation</em>' containment reference.
+	 * @see #setFloatLeftNavigation(NavigationPanel)
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_FloatLeftNavigation()
+	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 * @generated
+	 */
+	NavigationPanel getFloatLeftNavigation();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getFloatLeftNavigation <em>Float Left Navigation</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Float Left Navigation</em>' containment reference.
+	 * @see #getFloatLeftNavigation()
+	 * @generated
+	 */
+	void setFloatLeftNavigation(NavigationPanel value);
+
+	/**
+	 * Returns the value of the '<em><b>Float Right Navigation</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Float right navigation panel.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Float Right Navigation</em>' containment reference.
+	 * @see #setFloatRightNavigation(NavigationPanel)
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_FloatRightNavigation()
+	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 * @generated
+	 */
+	NavigationPanel getFloatRightNavigation();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getFloatRightNavigation <em>Float Right Navigation</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Float Right Navigation</em>' containment reference.
+	 * @see #getFloatRightNavigation()
+	 * @generated
+	 */
+	void setFloatRightNavigation(NavigationPanel value);
+
+	/**
+	 * Returns the value of the '<em><b>Anonymous</b></em>' containment reference list.
 	 * The list contents are of type {@link org.nasdanika.html.model.app.Action}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Sections</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Sections()
+	 * <!-- begin-model-doc -->
+	 * Actions which are not shown in the containing action UI, but for which pages are generated and can be explicitly referenced, e.g. from content. 
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Anonymous</em>' containment reference list.
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Anonymous()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<Action> getSections();
+	EList<Action> getAnonymous();
 
 	/**
-	 * Returns the value of the '<em><b>Context</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.app.Label}.
+	 * Returns the value of the '<em><b>Resources</b></em>' containment reference list.
+	 * The list contents are of type {@link org.nasdanika.exec.resources.Resource}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Context</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Context()
+	 * <!-- begin-model-doc -->
+	 * Resources referenced by the page. Resource names are resolved relative to the page location.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Resources</em>' containment reference list.
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Resources()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<Label> getContext();
-
-	/**
-	 * Returns the value of the '<em><b>Content Left</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.app.Label}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Content Left</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_ContentLeft()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<Label> getContentLeft();
-
-	/**
-	 * Returns the value of the '<em><b>Content Right</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.app.Label}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Content Right</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_ContentRight()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<Label> getContentRight();
-
-	/**
-	 * Returns the value of the '<em><b>Float Left</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.app.Label}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Float Left</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_FloatLeft()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<Label> getFloatLeft();
-
-	/**
-	 * Returns the value of the '<em><b>Float Right</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.app.Label}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Float Right</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_FloatRight()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<Label> getFloatRight();
+	EList<org.nasdanika.exec.resources.Resource> getResources();
 
 	/**
 	 * Returns the value of the '<em><b>Inline</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Inline action's content is displayed instead of an action link in navigation panels.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Inline</em>' attribute.
 	 * @see #setInline(boolean)
 	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Inline()
-	 * @model
+	 * @model annotation="urn:org.nasdanika exclusive-with='location binding script modal'"
 	 * @generated
 	 */
 	boolean isInline();
@@ -302,10 +294,13 @@ public interface Action extends Link {
 	 * Returns the value of the '<em><b>Modal</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Inline action's content is displayed in a modal dialog which opens on a click on the action's link.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Modal</em>' attribute.
 	 * @see #setModal(boolean)
 	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Modal()
-	 * @model
+	 * @model annotation="urn:org.nasdanika exclusive-with='location binding script inline'"
 	 * @generated
 	 */
 	boolean isModal();

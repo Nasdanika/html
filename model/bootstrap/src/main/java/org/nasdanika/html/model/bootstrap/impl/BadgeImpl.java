@@ -4,6 +4,7 @@ package org.nasdanika.html.model.bootstrap.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.bootstrap.Badge;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 
@@ -29,7 +30,7 @@ public class BadgeImpl extends DivImpl implements Badge {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String COLOR_EDEFAULT = null;
+	protected static final Color COLOR_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -56,8 +57,8 @@ public class BadgeImpl extends DivImpl implements Badge {
 	 * @generated
 	 */
 	@Override
-	public String getColor() {
-		return (String)eDynamicGet(BootstrapPackage.BADGE__COLOR, BootstrapPackage.Literals.BADGE__COLOR, true, true);
+	public Color getColor() {
+		return (Color)eDynamicGet(BootstrapPackage.BADGE__COLOR, BootstrapPackage.Literals.BADGE__COLOR, true, true);
 	}
 
 	/**
@@ -66,7 +67,7 @@ public class BadgeImpl extends DivImpl implements Badge {
 	 * @generated
 	 */
 	@Override
-	public void setColor(String newColor) {
+	public void setColor(Color newColor) {
 		eDynamicSet(BootstrapPackage.BADGE__COLOR, BootstrapPackage.Literals.BADGE__COLOR, newColor);
 	}
 
@@ -93,7 +94,7 @@ public class BadgeImpl extends DivImpl implements Badge {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case BootstrapPackage.BADGE__COLOR:
-				setColor((String)newValue);
+				setColor((Color)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

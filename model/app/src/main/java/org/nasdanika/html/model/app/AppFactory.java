@@ -40,6 +40,69 @@ public interface AppFactory extends EFactory {
 	Link createLink();
 
 	/**
+	 * Returns a new object of class '<em>Page</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Page</em>'.
+	 * @generated
+	 */
+	Page createPage();
+
+	/**
+	 * Returns a new object of class '<em>Page Part</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Page Part</em>'.
+	 * @generated
+	 */
+	PagePart createPagePart();
+
+	/**
+	 * Returns a new object of class '<em>Header</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Header</em>'.
+	 * @generated
+	 */
+	Header createHeader();
+
+	/**
+	 * Returns a new object of class '<em>Navigation Bar</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Navigation Bar</em>'.
+	 * @generated
+	 */
+	NavigationBar createNavigationBar();
+
+	/**
+	 * Returns a new object of class '<em>Navigation Panel</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Navigation Panel</em>'.
+	 * @generated
+	 */
+	NavigationPanel createNavigationPanel();
+
+	/**
+	 * Returns a new object of class '<em>Content Panel</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Content Panel</em>'.
+	 * @generated
+	 */
+	ContentPanel createContentPanel();
+
+	/**
+	 * Returns a new object of class '<em>Footer</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Footer</em>'.
+	 * @generated
+	 */
+	Footer createFooter();
+
+	/**
 	 * Returns a new object of class '<em>Action</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

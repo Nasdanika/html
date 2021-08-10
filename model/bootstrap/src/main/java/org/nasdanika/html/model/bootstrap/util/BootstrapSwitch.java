@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
 
+import org.nasdanika.exec.ModelElement;
 import org.nasdanika.html.model.bootstrap.Accordion;
 import org.nasdanika.html.model.bootstrap.ActionGroup;
 import org.nasdanika.html.model.bootstrap.ActionGroupItem;
@@ -15,7 +16,6 @@ import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.Badge;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
-import org.nasdanika.html.model.bootstrap.BootstrapPage;
 import org.nasdanika.html.model.bootstrap.Border;
 import org.nasdanika.html.model.bootstrap.Breadcrumb;
 import org.nasdanika.html.model.bootstrap.Button;
@@ -27,7 +27,6 @@ import org.nasdanika.html.model.bootstrap.Column;
 import org.nasdanika.html.model.bootstrap.ColumnWidth;
 import org.nasdanika.html.model.bootstrap.Container;
 import org.nasdanika.html.model.bootstrap.ContentActionGroupItem;
-import org.nasdanika.html.model.bootstrap.ContentTag;
 import org.nasdanika.html.model.bootstrap.Div;
 import org.nasdanika.html.model.bootstrap.Dropdown;
 import org.nasdanika.html.model.bootstrap.Form;
@@ -54,9 +53,6 @@ import org.nasdanika.html.model.bootstrap.Tooltip;
 
 import org.nasdanika.html.model.html.HtmlElement;
 import org.nasdanika.html.model.html.Page;
-
-import org.nasdanika.ncore.ModelElement;
-import org.nasdanika.ncore.NamedElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -123,12 +119,11 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case BootstrapPackage.BOOTSTRAP_PAGE: {
-				BootstrapPage bootstrapPage = (BootstrapPage)theEObject;
-				T result = caseBootstrapPage(bootstrapPage);
-				if (result == null) result = casePage(bootstrapPage);
-				if (result == null) result = caseNamedElement(bootstrapPage);
-				if (result == null) result = caseModelElement(bootstrapPage);
+			case BootstrapPackage.PAGE: {
+				org.nasdanika.html.model.bootstrap.Page page = (org.nasdanika.html.model.bootstrap.Page)theEObject;
+				T result = casePage(page);
+				if (result == null) result = caseHtml_Page(page);
+				if (result == null) result = caseModelElement(page);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -172,18 +167,6 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case BootstrapPackage.CONTENT_TAG: {
-				ContentTag contentTag = (ContentTag)theEObject;
-				T result = caseContentTag(contentTag);
-				if (result == null) result = caseHtml_ContentTag(contentTag);
-				if (result == null) result = caseBootstrapElement(contentTag);
-				if (result == null) result = caseHtml_Tag(contentTag);
-				if (result == null) result = caseHtml_Container(contentTag);
-				if (result == null) result = caseHtmlElement(contentTag);
-				if (result == null) result = caseModelElement(contentTag);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case BootstrapPackage.DIV: {
 				Div div = (Div)theEObject;
 				T result = caseDiv(div);
@@ -223,7 +206,6 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				ContentActionGroupItem contentActionGroupItem = (ContentActionGroupItem)theEObject;
 				T result = caseContentActionGroupItem(contentActionGroupItem);
 				if (result == null) result = caseActionGroupItem(contentActionGroupItem);
-				if (result == null) result = caseHtml_Container(contentActionGroupItem);
 				if (result == null) result = caseItem(contentActionGroupItem);
 				if (result == null) result = caseModelElement(contentActionGroupItem);
 				if (result == null) result = defaultCase(theEObject);
@@ -269,7 +251,6 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				Column column = (Column)theEObject;
 				T result = caseColumn(column);
 				if (result == null) result = caseBootstrapElement(column);
-				if (result == null) result = caseHtml_Container(column);
 				if (result == null) result = caseHtmlElement(column);
 				if (result == null) result = caseModelElement(column);
 				if (result == null) result = defaultCase(theEObject);
@@ -334,7 +315,6 @@ public class BootstrapSwitch<T> extends Switch<T> {
 			case BootstrapPackage.TABLE_CELL: {
 				TableCell tableCell = (TableCell)theEObject;
 				T result = caseTableCell(tableCell);
-				if (result == null) result = caseHtml_Container(tableCell);
 				if (result == null) result = caseBootstrapElement(tableCell);
 				if (result == null) result = caseHtmlElement(tableCell);
 				if (result == null) result = caseModelElement(tableCell);
@@ -503,7 +483,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseBootstrapPage(BootstrapPage object) {
+	public T casePage(org.nasdanika.html.model.bootstrap.Page object) {
 		return null;
 	}
 
@@ -594,21 +574,6 @@ public class BootstrapSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseTag(Tag object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Content Tag</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Content Tag</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseContentTag(ContentTag object) {
 		return null;
 	}
 
@@ -1168,21 +1133,6 @@ public class BootstrapSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Named Element</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseNamedElement(NamedElement object) {
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Page</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1193,7 +1143,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T casePage(Page object) {
+	public T caseHtml_Page(Page object) {
 		return null;
 	}
 
@@ -1209,36 +1159,6 @@ public class BootstrapSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseHtml_Tag(org.nasdanika.html.model.html.Tag object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Container</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Container</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseHtml_Container(org.nasdanika.html.model.html.Container object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Content Tag</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Content Tag</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseHtml_ContentTag(org.nasdanika.html.model.html.ContentTag object) {
 		return null;
 	}
 

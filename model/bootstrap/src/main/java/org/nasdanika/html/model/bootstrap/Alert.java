@@ -2,6 +2,8 @@
  */
 package org.nasdanika.html.model.bootstrap;
 
+import org.nasdanika.html.bootstrap.Color;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -25,12 +27,12 @@ public interface Alert extends Div {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Color</em>' attribute.
-	 * @see #setColor(String)
+	 * @see #setColor(Color)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getAlert_Color()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.Color"
 	 * @generated
 	 */
-	String getColor();
+	Color getColor();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Alert#getColor <em>Color</em>}' attribute.
@@ -40,6 +42,6 @@ public interface Alert extends Div {
 	 * @see #getColor()
 	 * @generated
 	 */
-	void setColor(String value);
+	void setColor(Color value);
 
 } // Alert

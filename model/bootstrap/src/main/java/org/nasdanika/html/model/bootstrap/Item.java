@@ -2,7 +2,8 @@
  */
 package org.nasdanika.html.model.bootstrap;
 
-import org.nasdanika.ncore.ModelElement;
+import org.nasdanika.exec.ModelElement;
+import org.nasdanika.html.bootstrap.Color;
 
 /**
  * <!-- begin-user-doc -->
@@ -86,12 +87,12 @@ public interface Item extends ModelElement {
 	 * Item Bootstrap color.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Color</em>' attribute.
-	 * @see #setColor(String)
+	 * @see #setColor(Color)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getItem_Color()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.Color"
 	 * @generated
 	 */
-	String getColor();
+	Color getColor();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Item#getColor <em>Color</em>}' attribute.
@@ -101,6 +102,6 @@ public interface Item extends ModelElement {
 	 * @see #getColor()
 	 * @generated
 	 */
-	void setColor(String value);
+	void setColor(Color value);
 
 } // Item

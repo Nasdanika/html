@@ -3,7 +3,6 @@
 package org.nasdanika.html.model.app.impl;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
 
@@ -15,9 +14,10 @@ import org.nasdanika.html.model.app.Label;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getId <em>Id</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getDescription <em>Description</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#isActive <em>Active</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#isDisabled <em>Disabled</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getColor <em>Color</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getHelp <em>Help</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getText <em>Text</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getIcon <em>Icon</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getTooltip <em>Tooltip</em>}</li>
@@ -28,26 +28,26 @@ import org.nasdanika.html.model.app.Label;
  *
  * @generated
  */
-public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
+public class LabelImpl extends org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl implements Label {
 	/**
-	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * The default value of the '{@link #isActive() <em>Active</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getId()
+	 * @see #isActive()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String ID_EDEFAULT = null;
+	protected static final boolean ACTIVE_EDEFAULT = false;
 
 	/**
-	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * The default value of the '{@link #isDisabled() <em>Disabled</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getDescription()
+	 * @see #isDisabled()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String DESCRIPTION_EDEFAULT = null;
+	protected static final boolean DISABLED_EDEFAULT = false;
 
 	/**
 	 * The default value of the '{@link #getColor() <em>Color</em>}' attribute.
@@ -57,7 +57,17 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final org.nasdanika.html.model.app.Color COLOR_EDEFAULT = org.nasdanika.html.model.app.Color.PRIMARY;
+	protected static final String COLOR_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getHelp() <em>Help</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getHelp()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String HELP_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getText() <em>Text</em>}' attribute.
@@ -134,8 +144,8 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	 * @generated
 	 */
 	@Override
-	protected int eStaticFeatureCount() {
-		return 0;
+	public boolean isActive() {
+		return (Boolean)eDynamicGet(AppPackage.LABEL__ACTIVE, org.nasdanika.html.model.bootstrap.BootstrapPackage.Literals.ITEM__ACTIVE, true, true);
 	}
 
 	/**
@@ -144,8 +154,8 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	 * @generated
 	 */
 	@Override
-	public String getId() {
-		return (String)eDynamicGet(AppPackage.LABEL__ID, AppPackage.Literals.LABEL__ID, true, true);
+	public void setActive(boolean newActive) {
+		eDynamicSet(AppPackage.LABEL__ACTIVE, org.nasdanika.html.model.bootstrap.BootstrapPackage.Literals.ITEM__ACTIVE, newActive);
 	}
 
 	/**
@@ -154,8 +164,8 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	 * @generated
 	 */
 	@Override
-	public void setId(String newId) {
-		eDynamicSet(AppPackage.LABEL__ID, AppPackage.Literals.LABEL__ID, newId);
+	public boolean isDisabled() {
+		return (Boolean)eDynamicGet(AppPackage.LABEL__DISABLED, org.nasdanika.html.model.bootstrap.BootstrapPackage.Literals.ITEM__DISABLED, true, true);
 	}
 
 	/**
@@ -164,8 +174,8 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	 * @generated
 	 */
 	@Override
-	public org.nasdanika.html.model.app.Color getColor() {
-		return (org.nasdanika.html.model.app.Color)eDynamicGet(AppPackage.LABEL__COLOR, AppPackage.Literals.LABEL__COLOR, true, true);
+	public void setDisabled(boolean newDisabled) {
+		eDynamicSet(AppPackage.LABEL__DISABLED, org.nasdanika.html.model.bootstrap.BootstrapPackage.Literals.ITEM__DISABLED, newDisabled);
 	}
 
 	/**
@@ -174,8 +184,38 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	 * @generated
 	 */
 	@Override
-	public void setColor(org.nasdanika.html.model.app.Color newColor) {
-		eDynamicSet(AppPackage.LABEL__COLOR, AppPackage.Literals.LABEL__COLOR, newColor);
+	public String getColor() {
+		return (String)eDynamicGet(AppPackage.LABEL__COLOR, org.nasdanika.html.model.bootstrap.BootstrapPackage.Literals.ITEM__COLOR, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setColor(String newColor) {
+		eDynamicSet(AppPackage.LABEL__COLOR, org.nasdanika.html.model.bootstrap.BootstrapPackage.Literals.ITEM__COLOR, newColor);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String getHelp() {
+		return (String)eDynamicGet(AppPackage.LABEL__HELP, AppPackage.Literals.LABEL__HELP, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setHelp(String newHelp) {
+		eDynamicSet(AppPackage.LABEL__HELP, AppPackage.Literals.LABEL__HELP, newHelp);
 	}
 
 	/**
@@ -284,8 +324,8 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	 * @generated
 	 */
 	@Override
-	public Label getChildren() {
-		return (Label)eDynamicGet(AppPackage.LABEL__CHILDREN, AppPackage.Literals.LABEL__CHILDREN, true, true);
+	public org.nasdanika.html.model.bootstrap.BootstrapElement getChildren() {
+		return (org.nasdanika.html.model.bootstrap.BootstrapElement)eDynamicGet(AppPackage.LABEL__CHILDREN, AppPackage.Literals.LABEL__CHILDREN, true, true);
 	}
 
 	/**
@@ -293,8 +333,8 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Label basicGetChildren() {
-		return (Label)eDynamicGet(AppPackage.LABEL__CHILDREN, AppPackage.Literals.LABEL__CHILDREN, false, true);
+	public org.nasdanika.html.model.bootstrap.BootstrapElement basicGetChildren() {
+		return (org.nasdanika.html.model.bootstrap.BootstrapElement)eDynamicGet(AppPackage.LABEL__CHILDREN, AppPackage.Literals.LABEL__CHILDREN, false, true);
 	}
 
 	/**
@@ -303,28 +343,8 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	 * @generated
 	 */
 	@Override
-	public void setChildren(Label newChildren) {
+	public void setChildren(org.nasdanika.html.model.bootstrap.BootstrapElement newChildren) {
 		eDynamicSet(AppPackage.LABEL__CHILDREN, AppPackage.Literals.LABEL__CHILDREN, newChildren);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getDescription() {
-		return (String)eDynamicGet(AppPackage.LABEL__DESCRIPTION, AppPackage.Literals.LABEL__DESCRIPTION, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setDescription(String newDescription) {
-		eDynamicSet(AppPackage.LABEL__DESCRIPTION, AppPackage.Literals.LABEL__DESCRIPTION, newDescription);
 	}
 
 	/**
@@ -335,12 +355,14 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AppPackage.LABEL__ID:
-				return getId();
-			case AppPackage.LABEL__DESCRIPTION:
-				return getDescription();
+			case AppPackage.LABEL__ACTIVE:
+				return isActive();
+			case AppPackage.LABEL__DISABLED:
+				return isDisabled();
 			case AppPackage.LABEL__COLOR:
 				return getColor();
+			case AppPackage.LABEL__HELP:
+				return getHelp();
 			case AppPackage.LABEL__TEXT:
 				return getText();
 			case AppPackage.LABEL__ICON:
@@ -366,14 +388,17 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AppPackage.LABEL__ID:
-				setId((String)newValue);
+			case AppPackage.LABEL__ACTIVE:
+				setActive((Boolean)newValue);
 				return;
-			case AppPackage.LABEL__DESCRIPTION:
-				setDescription((String)newValue);
+			case AppPackage.LABEL__DISABLED:
+				setDisabled((Boolean)newValue);
 				return;
 			case AppPackage.LABEL__COLOR:
-				setColor((org.nasdanika.html.model.app.Color)newValue);
+				setColor((String)newValue);
+				return;
+			case AppPackage.LABEL__HELP:
+				setHelp((String)newValue);
 				return;
 			case AppPackage.LABEL__TEXT:
 				setText((String)newValue);
@@ -391,7 +416,7 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 				setNotification((String)newValue);
 				return;
 			case AppPackage.LABEL__CHILDREN:
-				setChildren((Label)newValue);
+				setChildren((org.nasdanika.html.model.bootstrap.BootstrapElement)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -405,14 +430,17 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AppPackage.LABEL__ID:
-				setId(ID_EDEFAULT);
+			case AppPackage.LABEL__ACTIVE:
+				setActive(ACTIVE_EDEFAULT);
 				return;
-			case AppPackage.LABEL__DESCRIPTION:
-				setDescription(DESCRIPTION_EDEFAULT);
+			case AppPackage.LABEL__DISABLED:
+				setDisabled(DISABLED_EDEFAULT);
 				return;
 			case AppPackage.LABEL__COLOR:
 				setColor(COLOR_EDEFAULT);
+				return;
+			case AppPackage.LABEL__HELP:
+				setHelp(HELP_EDEFAULT);
 				return;
 			case AppPackage.LABEL__TEXT:
 				setText(TEXT_EDEFAULT);
@@ -430,7 +458,7 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 				setNotification(NOTIFICATION_EDEFAULT);
 				return;
 			case AppPackage.LABEL__CHILDREN:
-				setChildren((Label)null);
+				setChildren((org.nasdanika.html.model.bootstrap.BootstrapElement)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -444,12 +472,14 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AppPackage.LABEL__ID:
-				return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
-			case AppPackage.LABEL__DESCRIPTION:
-				return DESCRIPTION_EDEFAULT == null ? getDescription() != null : !DESCRIPTION_EDEFAULT.equals(getDescription());
+			case AppPackage.LABEL__ACTIVE:
+				return isActive() != ACTIVE_EDEFAULT;
+			case AppPackage.LABEL__DISABLED:
+				return isDisabled() != DISABLED_EDEFAULT;
 			case AppPackage.LABEL__COLOR:
-				return getColor() != COLOR_EDEFAULT;
+				return COLOR_EDEFAULT == null ? getColor() != null : !COLOR_EDEFAULT.equals(getColor());
+			case AppPackage.LABEL__HELP:
+				return HELP_EDEFAULT == null ? getHelp() != null : !HELP_EDEFAULT.equals(getHelp());
 			case AppPackage.LABEL__TEXT:
 				return TEXT_EDEFAULT == null ? getText() != null : !TEXT_EDEFAULT.equals(getText());
 			case AppPackage.LABEL__ICON:
@@ -464,6 +494,42 @@ public class LabelImpl extends MinimalEObjectImpl.Container implements Label {
 				return basicGetChildren() != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+		if (baseClass == org.nasdanika.html.model.bootstrap.Item.class) {
+			switch (derivedFeatureID) {
+				case AppPackage.LABEL__ACTIVE: return org.nasdanika.html.model.bootstrap.BootstrapPackage.ITEM__ACTIVE;
+				case AppPackage.LABEL__DISABLED: return org.nasdanika.html.model.bootstrap.BootstrapPackage.ITEM__DISABLED;
+				case AppPackage.LABEL__COLOR: return org.nasdanika.html.model.bootstrap.BootstrapPackage.ITEM__COLOR;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == org.nasdanika.html.model.bootstrap.Item.class) {
+			switch (baseFeatureID) {
+				case org.nasdanika.html.model.bootstrap.BootstrapPackage.ITEM__ACTIVE: return AppPackage.LABEL__ACTIVE;
+				case org.nasdanika.html.model.bootstrap.BootstrapPackage.ITEM__DISABLED: return AppPackage.LABEL__DISABLED;
+				case org.nasdanika.html.model.bootstrap.BootstrapPackage.ITEM__COLOR: return AppPackage.LABEL__COLOR;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 } //LabelImpl

@@ -4,9 +4,9 @@ package org.nasdanika.html.model.bootstrap;
 
 import org.eclipse.emf.common.util.EList;
 
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EObject;
-
-import org.nasdanika.ncore.AbstractEntry;
+import org.nasdanika.html.bootstrap.Color;
 
 /**
  * <!-- begin-user-doc -->
@@ -43,12 +43,12 @@ public interface Appearance extends EObject {
 	 * Bootstrap color for background.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Background</em>' attribute.
-	 * @see #setBackground(String)
+	 * @see #setBackground(Color)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getAppearance_Background()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.Color"
 	 * @generated
 	 */
-	String getBackground();
+	Color getBackground();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Appearance#getBackground <em>Background</em>}' attribute.
@@ -58,11 +58,12 @@ public interface Appearance extends EObject {
 	 * @see #getBackground()
 	 * @generated
 	 */
-	void setBackground(String value);
+	void setBackground(Color value);
 
 	/**
-	 * Returns the value of the '<em><b>Attributes</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.ncore.AbstractEntry}.
+	 * Returns the value of the '<em><b>Attributes</b></em>' map.
+	 * The key is of type {@link java.lang.String},
+	 * and the value is of type {@link org.eclipse.emf.ecore.EObject},
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -98,12 +99,12 @@ public interface Appearance extends EObject {
 	 * * List values are contcatenated wtih space as a separator.
 	 * 
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Attributes</em>' containment reference list.
+	 * @return the value of the '<em>Attributes</em>' map.
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getAppearance_Attributes()
-	 * @model containment="true"
+	 * @model mapType="org.nasdanika.exec.Property&lt;org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EObject&gt;"
 	 * @generated
 	 */
-	EList<AbstractEntry> getAttributes();
+	EMap<String, EObject> getAttributes();
 
 	/**
 	 * Returns the value of the '<em><b>Border</b></em>' containment reference list.

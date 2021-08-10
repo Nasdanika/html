@@ -58,6 +58,13 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 		switch (eClass.getClassifierID()) {
 			case AppPackage.LABEL: return createLabel();
 			case AppPackage.LINK: return createLink();
+			case AppPackage.PAGE: return createPage();
+			case AppPackage.PAGE_PART: return createPagePart();
+			case AppPackage.HEADER: return createHeader();
+			case AppPackage.NAVIGATION_BAR: return createNavigationBar();
+			case AppPackage.NAVIGATION_PANEL: return createNavigationPanel();
+			case AppPackage.CONTENT_PANEL: return createContentPanel();
+			case AppPackage.FOOTER: return createFooter();
 			case AppPackage.ACTION: return createAction();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -76,6 +83,8 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 				return createSectionStyleFromString(eDataType, initialValue);
 			case AppPackage.COLOR:
 				return createColorFromString(eDataType, initialValue);
+			case AppPackage.NAVIGATION_PANEL_STYLE:
+				return createNavigationPanelStyleFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -93,6 +102,8 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 				return convertSectionStyleToString(eDataType, instanceValue);
 			case AppPackage.COLOR:
 				return convertColorToString(eDataType, instanceValue);
+			case AppPackage.NAVIGATION_PANEL_STYLE:
+				return convertNavigationPanelStyleToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -126,6 +137,83 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * @generated
 	 */
 	@Override
+	public Page createPage() {
+		PageImpl page = new PageImpl();
+		return page;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public PagePart createPagePart() {
+		PagePartImpl pagePart = new PagePartImpl();
+		return pagePart;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Header createHeader() {
+		HeaderImpl header = new HeaderImpl();
+		return header;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NavigationBar createNavigationBar() {
+		NavigationBarImpl navigationBar = new NavigationBarImpl();
+		return navigationBar;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NavigationPanel createNavigationPanel() {
+		NavigationPanelImpl navigationPanel = new NavigationPanelImpl();
+		return navigationPanel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public ContentPanel createContentPanel() {
+		ContentPanelImpl contentPanel = new ContentPanelImpl();
+		return contentPanel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Footer createFooter() {
+		FooterImpl footer = new FooterImpl();
+		return footer;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Action createAction() {
 		ActionImpl action = new ActionImpl();
 		return action;
@@ -136,8 +224,8 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public org.nasdanika.html.model.app.Color createColorFromString(EDataType eDataType, String initialValue) {
-		org.nasdanika.html.model.app.Color result = org.nasdanika.html.model.app.Color.get(initialValue);
+	public Color createColorFromString(EDataType eDataType, String initialValue) {
+		Color result = Color.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
@@ -156,8 +244,28 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public org.nasdanika.html.model.app.SectionStyle createSectionStyleFromString(EDataType eDataType, String initialValue) {
-		org.nasdanika.html.model.app.SectionStyle result = org.nasdanika.html.model.app.SectionStyle.get(initialValue);
+	public NavigationPanelStyle createNavigationPanelStyleFromString(EDataType eDataType, String initialValue) {
+		NavigationPanelStyle result = NavigationPanelStyle.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertNavigationPanelStyleToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public SectionStyle createSectionStyleFromString(EDataType eDataType, String initialValue) {
+		SectionStyle result = SectionStyle.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}

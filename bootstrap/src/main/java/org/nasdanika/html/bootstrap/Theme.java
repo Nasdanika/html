@@ -9,7 +9,7 @@ import org.nasdanika.html.HTMLPage;
  */
 public enum Theme {
 	/** Default Bootstrap theme **/
-	Default("https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"),
+	Default("https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"),
 	/** Bootswatch theme **/
 	Cerulean,
 	/** Bootswatch theme **/

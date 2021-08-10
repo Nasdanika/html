@@ -6,6 +6,8 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Spacing;
 
@@ -38,7 +40,7 @@ public class SpacingImpl extends MinimalEObjectImpl.Container implements Spacing
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String SIZE_EDEFAULT = null;
+	protected static final Size SIZE_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getBreakpoint() <em>Breakpoint</em>}' attribute.
@@ -48,7 +50,7 @@ public class SpacingImpl extends MinimalEObjectImpl.Container implements Spacing
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String BREAKPOINT_EDEFAULT = null;
+	protected static final Breakpoint BREAKPOINT_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #isTop() <em>Top</em>}' attribute.
@@ -145,8 +147,8 @@ public class SpacingImpl extends MinimalEObjectImpl.Container implements Spacing
 	 * @generated
 	 */
 	@Override
-	public String getSize() {
-		return (String)eDynamicGet(BootstrapPackage.SPACING__SIZE, BootstrapPackage.Literals.SPACING__SIZE, true, true);
+	public Size getSize() {
+		return (Size)eDynamicGet(BootstrapPackage.SPACING__SIZE, BootstrapPackage.Literals.SPACING__SIZE, true, true);
 	}
 
 	/**
@@ -155,7 +157,7 @@ public class SpacingImpl extends MinimalEObjectImpl.Container implements Spacing
 	 * @generated
 	 */
 	@Override
-	public void setSize(String newSize) {
+	public void setSize(Size newSize) {
 		eDynamicSet(BootstrapPackage.SPACING__SIZE, BootstrapPackage.Literals.SPACING__SIZE, newSize);
 	}
 
@@ -165,8 +167,8 @@ public class SpacingImpl extends MinimalEObjectImpl.Container implements Spacing
 	 * @generated
 	 */
 	@Override
-	public String getBreakpoint() {
-		return (String)eDynamicGet(BootstrapPackage.SPACING__BREAKPOINT, BootstrapPackage.Literals.SPACING__BREAKPOINT, true, true);
+	public Breakpoint getBreakpoint() {
+		return (Breakpoint)eDynamicGet(BootstrapPackage.SPACING__BREAKPOINT, BootstrapPackage.Literals.SPACING__BREAKPOINT, true, true);
 	}
 
 	/**
@@ -175,7 +177,7 @@ public class SpacingImpl extends MinimalEObjectImpl.Container implements Spacing
 	 * @generated
 	 */
 	@Override
-	public void setBreakpoint(String newBreakpoint) {
+	public void setBreakpoint(Breakpoint newBreakpoint) {
 		eDynamicSet(BootstrapPackage.SPACING__BREAKPOINT, BootstrapPackage.Literals.SPACING__BREAKPOINT, newBreakpoint);
 	}
 
@@ -336,10 +338,10 @@ public class SpacingImpl extends MinimalEObjectImpl.Container implements Spacing
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case BootstrapPackage.SPACING__SIZE:
-				setSize((String)newValue);
+				setSize((Size)newValue);
 				return;
 			case BootstrapPackage.SPACING__BREAKPOINT:
-				setBreakpoint((String)newValue);
+				setBreakpoint((Breakpoint)newValue);
 				return;
 			case BootstrapPackage.SPACING__TOP:
 				setTop((Boolean)newValue);

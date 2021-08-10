@@ -68,6 +68,10 @@ public class AppSwitch<T> extends Switch<T> {
 			case AppPackage.LABEL: {
 				Label label = (Label)theEObject;
 				T result = caseLabel(label);
+				if (result == null) result = caseBootstrapElement(label);
+				if (result == null) result = caseItem(label);
+				if (result == null) result = caseHtmlElement(label);
+				if (result == null) result = caseModelElement(label);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -75,6 +79,78 @@ public class AppSwitch<T> extends Switch<T> {
 				Link link = (Link)theEObject;
 				T result = caseLink(link);
 				if (result == null) result = caseLabel(link);
+				if (result == null) result = caseBootstrapElement(link);
+				if (result == null) result = caseItem(link);
+				if (result == null) result = caseHtmlElement(link);
+				if (result == null) result = caseModelElement(link);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.PAGE: {
+				Page page = (Page)theEObject;
+				T result = casePage(page);
+				if (result == null) result = caseBootstrapElement(page);
+				if (result == null) result = caseHtmlElement(page);
+				if (result == null) result = caseModelElement(page);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.PAGE_PART: {
+				PagePart pagePart = (PagePart)theEObject;
+				T result = casePagePart(pagePart);
+				if (result == null) result = caseBootstrapElement(pagePart);
+				if (result == null) result = caseHtmlElement(pagePart);
+				if (result == null) result = caseModelElement(pagePart);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.HEADER: {
+				Header header = (Header)theEObject;
+				T result = caseHeader(header);
+				if (result == null) result = casePagePart(header);
+				if (result == null) result = caseBootstrapElement(header);
+				if (result == null) result = caseHtmlElement(header);
+				if (result == null) result = caseModelElement(header);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.NAVIGATION_BAR: {
+				NavigationBar navigationBar = (NavigationBar)theEObject;
+				T result = caseNavigationBar(navigationBar);
+				if (result == null) result = casePagePart(navigationBar);
+				if (result == null) result = caseBootstrapElement(navigationBar);
+				if (result == null) result = caseHtmlElement(navigationBar);
+				if (result == null) result = caseModelElement(navigationBar);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.NAVIGATION_PANEL: {
+				NavigationPanel navigationPanel = (NavigationPanel)theEObject;
+				T result = caseNavigationPanel(navigationPanel);
+				if (result == null) result = casePagePart(navigationPanel);
+				if (result == null) result = caseBootstrapElement(navigationPanel);
+				if (result == null) result = caseHtmlElement(navigationPanel);
+				if (result == null) result = caseModelElement(navigationPanel);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.CONTENT_PANEL: {
+				ContentPanel contentPanel = (ContentPanel)theEObject;
+				T result = caseContentPanel(contentPanel);
+				if (result == null) result = casePagePart(contentPanel);
+				if (result == null) result = caseBootstrapElement(contentPanel);
+				if (result == null) result = caseHtmlElement(contentPanel);
+				if (result == null) result = caseModelElement(contentPanel);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AppPackage.FOOTER: {
+				Footer footer = (Footer)theEObject;
+				T result = caseFooter(footer);
+				if (result == null) result = casePagePart(footer);
+				if (result == null) result = caseBootstrapElement(footer);
+				if (result == null) result = caseHtmlElement(footer);
+				if (result == null) result = caseModelElement(footer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -83,6 +159,10 @@ public class AppSwitch<T> extends Switch<T> {
 				T result = caseAction(action);
 				if (result == null) result = caseLink(action);
 				if (result == null) result = caseLabel(action);
+				if (result == null) result = caseBootstrapElement(action);
+				if (result == null) result = caseItem(action);
+				if (result == null) result = caseHtmlElement(action);
+				if (result == null) result = caseModelElement(action);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -121,6 +201,111 @@ public class AppSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Page</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Page</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePage(Page object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Page Part</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Page Part</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePagePart(PagePart object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Header</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Header</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseHeader(Header object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Navigation Bar</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Navigation Bar</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNavigationBar(NavigationBar object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Navigation Panel</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Navigation Panel</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNavigationPanel(NavigationPanel object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Content Panel</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Content Panel</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseContentPanel(ContentPanel object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Footer</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Footer</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseFooter(Footer object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Action</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -132,6 +317,66 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseAction(Action object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Model Element</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Model Element</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseModelElement(org.nasdanika.exec.ModelElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Element</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseHtmlElement(org.nasdanika.html.model.html.HtmlElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Element</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseBootstrapElement(org.nasdanika.html.model.bootstrap.BootstrapElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Item</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Item</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseItem(org.nasdanika.html.model.bootstrap.Item object) {
 		return null;
 	}
 

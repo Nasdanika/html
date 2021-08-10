@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.TableCell;
 import org.nasdanika.html.model.bootstrap.TableRow;
@@ -41,7 +42,7 @@ public class TableRowImpl extends BootstrapElementImpl implements TableRow {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String COLOR_EDEFAULT = null;
+	protected static final Color COLOR_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getBackground() <em>Background</em>}' attribute.
@@ -51,7 +52,7 @@ public class TableRowImpl extends BootstrapElementImpl implements TableRow {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String BACKGROUND_EDEFAULT = null;
+	protected static final Color BACKGROUND_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -89,8 +90,8 @@ public class TableRowImpl extends BootstrapElementImpl implements TableRow {
 	 * @generated
 	 */
 	@Override
-	public String getColor() {
-		return (String)eDynamicGet(BootstrapPackage.TABLE_ROW__COLOR, BootstrapPackage.Literals.TABLE_ROW__COLOR, true, true);
+	public Color getColor() {
+		return (Color)eDynamicGet(BootstrapPackage.TABLE_ROW__COLOR, BootstrapPackage.Literals.TABLE_ROW__COLOR, true, true);
 	}
 
 	/**
@@ -99,7 +100,7 @@ public class TableRowImpl extends BootstrapElementImpl implements TableRow {
 	 * @generated
 	 */
 	@Override
-	public void setColor(String newColor) {
+	public void setColor(Color newColor) {
 		eDynamicSet(BootstrapPackage.TABLE_ROW__COLOR, BootstrapPackage.Literals.TABLE_ROW__COLOR, newColor);
 	}
 
@@ -109,8 +110,8 @@ public class TableRowImpl extends BootstrapElementImpl implements TableRow {
 	 * @generated
 	 */
 	@Override
-	public String getBackground() {
-		return (String)eDynamicGet(BootstrapPackage.TABLE_ROW__BACKGROUND, BootstrapPackage.Literals.TABLE_ROW__BACKGROUND, true, true);
+	public Color getBackground() {
+		return (Color)eDynamicGet(BootstrapPackage.TABLE_ROW__BACKGROUND, BootstrapPackage.Literals.TABLE_ROW__BACKGROUND, true, true);
 	}
 
 	/**
@@ -119,7 +120,7 @@ public class TableRowImpl extends BootstrapElementImpl implements TableRow {
 	 * @generated
 	 */
 	@Override
-	public void setBackground(String newBackground) {
+	public void setBackground(Color newBackground) {
 		eDynamicSet(BootstrapPackage.TABLE_ROW__BACKGROUND, BootstrapPackage.Literals.TABLE_ROW__BACKGROUND, newBackground);
 	}
 
@@ -169,10 +170,10 @@ public class TableRowImpl extends BootstrapElementImpl implements TableRow {
 				getCells().addAll((Collection<? extends TableCell>)newValue);
 				return;
 			case BootstrapPackage.TABLE_ROW__COLOR:
-				setColor((String)newValue);
+				setColor((Color)newValue);
 				return;
 			case BootstrapPackage.TABLE_ROW__BACKGROUND:
-				setBackground((String)newValue);
+				setBackground((Color)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

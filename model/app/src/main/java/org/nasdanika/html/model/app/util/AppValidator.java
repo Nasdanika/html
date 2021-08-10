@@ -55,6 +55,14 @@ public class AppValidator extends EObjectValidator {
 	protected static final int DIAGNOSTIC_CODE_COUNT = GENERATED_DIAGNOSTIC_CODE_COUNT;
 
 	/**
+	 * The cached base package validator.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected org.nasdanika.html.model.bootstrap.util.BootstrapValidator bootstrapValidator;
+
+	/**
 	 * Creates an instance of the switch.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -62,6 +70,7 @@ public class AppValidator extends EObjectValidator {
 	 */
 	public AppValidator() {
 		super();
+		bootstrapValidator = org.nasdanika.html.model.bootstrap.util.BootstrapValidator.INSTANCE;
 	}
 
 	/**
@@ -88,12 +97,28 @@ public class AppValidator extends EObjectValidator {
 				return validateLabel((Label)value, diagnostics, context);
 			case AppPackage.LINK:
 				return validateLink((Link)value, diagnostics, context);
+			case AppPackage.PAGE:
+				return validatePage((Page)value, diagnostics, context);
+			case AppPackage.PAGE_PART:
+				return validatePagePart((PagePart)value, diagnostics, context);
+			case AppPackage.HEADER:
+				return validateHeader((Header)value, diagnostics, context);
+			case AppPackage.NAVIGATION_BAR:
+				return validateNavigationBar((NavigationBar)value, diagnostics, context);
+			case AppPackage.NAVIGATION_PANEL:
+				return validateNavigationPanel((NavigationPanel)value, diagnostics, context);
+			case AppPackage.CONTENT_PANEL:
+				return validateContentPanel((ContentPanel)value, diagnostics, context);
+			case AppPackage.FOOTER:
+				return validateFooter((Footer)value, diagnostics, context);
 			case AppPackage.ACTION:
 				return validateAction((Action)value, diagnostics, context);
 			case AppPackage.SECTION_STYLE:
-				return validateSectionStyle((org.nasdanika.html.model.app.SectionStyle)value, diagnostics, context);
+				return validateSectionStyle((SectionStyle)value, diagnostics, context);
 			case AppPackage.COLOR:
-				return validateColor((org.nasdanika.html.model.app.Color)value, diagnostics, context);
+				return validateColor((Color)value, diagnostics, context);
+			case AppPackage.NAVIGATION_PANEL_STYLE:
+				return validateNavigationPanelStyle((NavigationPanelStyle)value, diagnostics, context);
 			default:
 				return true;
 		}
@@ -115,6 +140,7 @@ public class AppValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(label, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(label, diagnostics, context);
 		if (result || diagnostics != null) result &= validateLabel_color(label, diagnostics, context);
+		if (result || diagnostics != null) result &= bootstrapValidator.validateItem_activeAndDisabled(label, diagnostics, context);
 		return result;
 	}
 
@@ -125,7 +151,8 @@ public class AppValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateLabel_color(Label label, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		// TODO implement the constraint
+		// TODO override the constraint, if desired
+		// -> uncomment the scaffolding
 		// -> specify the condition that violates the constraint
 		// -> verify the diagnostic details, including severity, code, and message
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -143,7 +170,7 @@ public class AppValidator extends EObjectValidator {
 			}
 			return false;
 		}
-		return true;
+		return bootstrapValidator.validateItem_color(label, diagnostics, context);
 	}
 
 	/**
@@ -162,7 +189,71 @@ public class AppValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(link, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(link, diagnostics, context);
 		if (result || diagnostics != null) result &= validateLabel_color(link, diagnostics, context);
+		if (result || diagnostics != null) result &= bootstrapValidator.validateItem_activeAndDisabled(link, diagnostics, context);
 		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validatePage(Page page, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(page, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validatePagePart(PagePart pagePart, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(pagePart, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateHeader(Header header, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(header, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateNavigationBar(NavigationBar navigationBar, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(navigationBar, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateNavigationPanel(NavigationPanel navigationPanel, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(navigationPanel, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateContentPanel(ContentPanel contentPanel, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(contentPanel, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateFooter(Footer footer, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(footer, diagnostics, context);
 	}
 
 	/**
@@ -181,35 +272,16 @@ public class AppValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(action, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(action, diagnostics, context);
 		if (result || diagnostics != null) result &= validateLabel_color(action, diagnostics, context);
-		if (result || diagnostics != null) result &= validateAction_sectionStyle(action, diagnostics, context);
+		if (result || diagnostics != null) result &= bootstrapValidator.validateItem_activeAndDisabled(action, diagnostics, context);
 		return result;
 	}
 
 	/**
-	 * Validates the sectionStyle constraint of '<em>Action</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateAction_sectionStyle(Action action, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		// TODO implement the constraint
-		// -> specify the condition that violates the constraint
-		// -> verify the diagnostic details, including severity, code, and message
-		// Ensure that you remove @generated or mark it @generated NOT
-		if (false) {
-			if (diagnostics != null) {
-				diagnostics.add
-					(createDiagnostic
-						(Diagnostic.ERROR,
-						 DIAGNOSTIC_SOURCE,
-						 0,
-						 "_UI_GenericConstraint_diagnostic",
-						 new Object[] { "sectionStyle", getObjectLabel(action, context) },
-						 new Object[] { action },
-						 context));
-			}
-			return false;
-		}
+	public boolean validateSectionStyle(SectionStyle sectionStyle, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return true;
 	}
 
@@ -218,7 +290,7 @@ public class AppValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateSectionStyle(org.nasdanika.html.model.app.SectionStyle sectionStyle, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateColor(Color color, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return true;
 	}
 
@@ -227,7 +299,7 @@ public class AppValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateColor(org.nasdanika.html.model.app.Color color, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateNavigationPanelStyle(NavigationPanelStyle navigationPanelStyle, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return true;
 	}
 

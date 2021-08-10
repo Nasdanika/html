@@ -4,12 +4,21 @@ package org.nasdanika.html.model.bootstrap.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EValidator;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import org.nasdanika.exec.ExecPackage;
+import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Size;
+import org.nasdanika.html.bootstrap.Text.Alignment;
+import org.nasdanika.html.bootstrap.Text.Transform;
+import org.nasdanika.html.bootstrap.Text.Weight;
+import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.model.bootstrap.Accordion;
 import org.nasdanika.html.model.bootstrap.ActionGroup;
 import org.nasdanika.html.model.bootstrap.ActionGroupItem;
@@ -19,7 +28,6 @@ import org.nasdanika.html.model.bootstrap.Badge;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
-import org.nasdanika.html.model.bootstrap.BootstrapPage;
 import org.nasdanika.html.model.bootstrap.Border;
 import org.nasdanika.html.model.bootstrap.Breadcrumb;
 import org.nasdanika.html.model.bootstrap.Button;
@@ -30,7 +38,6 @@ import org.nasdanika.html.model.bootstrap.Collapse;
 import org.nasdanika.html.model.bootstrap.Column;
 import org.nasdanika.html.model.bootstrap.ColumnWidth;
 import org.nasdanika.html.model.bootstrap.ContentActionGroupItem;
-import org.nasdanika.html.model.bootstrap.ContentTag;
 import org.nasdanika.html.model.bootstrap.Div;
 import org.nasdanika.html.model.bootstrap.Dropdown;
 import org.nasdanika.html.model.bootstrap.Form;
@@ -42,6 +49,7 @@ import org.nasdanika.html.model.bootstrap.ListGroup;
 import org.nasdanika.html.model.bootstrap.Modal;
 import org.nasdanika.html.model.bootstrap.Navbar;
 import org.nasdanika.html.model.bootstrap.Navs;
+import org.nasdanika.html.model.bootstrap.Page;
 import org.nasdanika.html.model.bootstrap.Row;
 import org.nasdanika.html.model.bootstrap.Spacing;
 import org.nasdanika.html.model.bootstrap.Table;
@@ -58,8 +66,6 @@ import org.nasdanika.html.model.bootstrap.Tooltip;
 import org.nasdanika.html.model.bootstrap.util.BootstrapValidator;
 
 import org.nasdanika.html.model.html.HtmlPackage;
-
-import org.nasdanika.ncore.NcorePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -80,7 +86,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass bootstrapPageEClass = null;
+	private EClass pageEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -123,13 +129,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	private EClass tagEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass contentTagEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -377,6 +376,55 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	private EClass accordionEClass = null;
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType themeEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType colorEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType sizeEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType breakpointEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType textAlignmentEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType textTransformEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType textWeightEDataType = null;
+
+	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -425,7 +473,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		// Initialize simple dependencies
 		HtmlPackage.eINSTANCE.eClass();
-		NcorePackage.eINSTANCE.eClass();
+		ExecPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theBootstrapPackage.createPackageContents();
@@ -477,8 +525,8 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	@Override
-	public EClass getBootstrapPage() {
-		return bootstrapPageEClass;
+	public EClass getPage() {
+		return pageEClass;
 	}
 
 	/**
@@ -487,8 +535,8 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	@Override
-	public EAttribute getBootstrapPage_Cdn() {
-		return (EAttribute)bootstrapPageEClass.getEStructuralFeatures().get(0);
+	public EAttribute getPage_Cdn() {
+		return (EAttribute)pageEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -497,8 +545,8 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	@Override
-	public EAttribute getBootstrapPage_Theme() {
-		return (EAttribute)bootstrapPageEClass.getEStructuralFeatures().get(1);
+	public EAttribute getPage_Theme() {
+		return (EAttribute)pageEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -867,16 +915,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	@Override
-	public EClass getContentTag() {
-		return contentTagEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EClass getDiv() {
 		return divEClass;
 	}
@@ -969,6 +1007,16 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	@Override
 	public EClass getContentActionGroupItem() {
 		return contentActionGroupItemEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getContentActionGroupItem_Content() {
+		return (EReference)contentActionGroupItemEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1099,6 +1147,16 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	@Override
 	public EReference getColumn_Width() {
 		return (EReference)columnEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getColumn_Content() {
+		return (EReference)columnEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -1377,6 +1435,16 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	@Override
+	public EReference getTableCell_Content() {
+		return (EReference)tableCellEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getCard() {
 		return cardEClass;
 	}
@@ -1627,6 +1695,76 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	@Override
+	public EDataType getTheme() {
+		return themeEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EDataType getColor() {
+		return colorEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EDataType getSize() {
+		return sizeEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EDataType getBreakpoint() {
+		return breakpointEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EDataType getTextAlignment() {
+		return textAlignmentEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EDataType getTextTransform() {
+		return textTransformEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EDataType getTextWeight() {
+		return textWeightEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public BootstrapFactory getBootstrapFactory() {
 		return (BootstrapFactory)getEFactoryInstance();
 	}
@@ -1653,9 +1791,9 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		bootstrapElementEClass = createEClass(BOOTSTRAP_ELEMENT);
 		createEReference(bootstrapElementEClass, BOOTSTRAP_ELEMENT__APPEARANCE);
 
-		bootstrapPageEClass = createEClass(BOOTSTRAP_PAGE);
-		createEAttribute(bootstrapPageEClass, BOOTSTRAP_PAGE__CDN);
-		createEAttribute(bootstrapPageEClass, BOOTSTRAP_PAGE__THEME);
+		pageEClass = createEClass(PAGE);
+		createEAttribute(pageEClass, PAGE__CDN);
+		createEAttribute(pageEClass, PAGE__THEME);
 
 		appearanceEClass = createEClass(APPEARANCE);
 		createEAttribute(appearanceEClass, APPEARANCE__BACKGROUND);
@@ -1699,8 +1837,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		tagEClass = createEClass(TAG);
 
-		contentTagEClass = createEClass(CONTENT_TAG);
-
 		divEClass = createEClass(DIV);
 
 		itemEClass = createEClass(ITEM);
@@ -1715,6 +1851,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		createEAttribute(linkActionGroupItemEClass, LINK_ACTION_GROUP_ITEM__URL);
 
 		contentActionGroupItemEClass = createEClass(CONTENT_ACTION_GROUP_ITEM);
+		createEReference(contentActionGroupItemEClass, CONTENT_ACTION_GROUP_ITEM__CONTENT);
 
 		actionGroupEClass = createEClass(ACTION_GROUP);
 		createEAttribute(actionGroupEClass, ACTION_GROUP__FLUSH);
@@ -1733,6 +1870,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		columnEClass = createEClass(COLUMN);
 		createEReference(columnEClass, COLUMN__WIDTH);
+		createEReference(columnEClass, COLUMN__CONTENT);
 
 		tableRowContainerEClass = createEClass(TABLE_ROW_CONTAINER);
 		createEReference(tableRowContainerEClass, TABLE_ROW_CONTAINER__ROWS);
@@ -1767,6 +1905,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		createEAttribute(tableCellEClass, TABLE_CELL__ROW_SPAN);
 		createEAttribute(tableCellEClass, TABLE_CELL__COLOR);
 		createEAttribute(tableCellEClass, TABLE_CELL__BACKGROUND);
+		createEReference(tableCellEClass, TABLE_CELL__CONTENT);
 
 		cardEClass = createEClass(CARD);
 		createEReference(cardEClass, CARD__HEADER);
@@ -1810,6 +1949,15 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		modalEClass = createEClass(MODAL);
 
 		accordionEClass = createEClass(ACCORDION);
+
+		// Create data types
+		themeEDataType = createEDataType(THEME);
+		colorEDataType = createEDataType(COLOR);
+		sizeEDataType = createEDataType(SIZE);
+		breakpointEDataType = createEDataType(BREAKPOINT);
+		textAlignmentEDataType = createEDataType(TEXT_ALIGNMENT);
+		textTransformEDataType = createEDataType(TEXT_TRANSFORM);
+		textWeightEDataType = createEDataType(TEXT_WEIGHT);
 	}
 
 	/**
@@ -1837,7 +1985,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		// Obtain other dependent packages
 		HtmlPackage theHtmlPackage = (HtmlPackage)EPackage.Registry.INSTANCE.getEPackage(HtmlPackage.eNS_URI);
-		NcorePackage theNcorePackage = (NcorePackage)EPackage.Registry.INSTANCE.getEPackage(NcorePackage.eNS_URI);
+		ExecPackage theExecPackage = (ExecPackage)EPackage.Registry.INSTANCE.getEPackage(ExecPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -1845,29 +1993,24 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		// Add supertypes to classes
 		bootstrapElementEClass.getESuperTypes().add(theHtmlPackage.getHtmlElement());
-		bootstrapPageEClass.getESuperTypes().add(theHtmlPackage.getPage());
+		pageEClass.getESuperTypes().add(theHtmlPackage.getPage());
 		tagEClass.getESuperTypes().add(theHtmlPackage.getTag());
 		tagEClass.getESuperTypes().add(this.getBootstrapElement());
-		contentTagEClass.getESuperTypes().add(theHtmlPackage.getContentTag());
-		contentTagEClass.getESuperTypes().add(this.getBootstrapElement());
 		divEClass.getESuperTypes().add(this.getTag());
-		itemEClass.getESuperTypes().add(theNcorePackage.getModelElement());
+		itemEClass.getESuperTypes().add(theExecPackage.getModelElement());
 		actionGroupItemEClass.getESuperTypes().add(this.getItem());
 		linkActionGroupItemEClass.getESuperTypes().add(this.getActionGroupItem());
 		contentActionGroupItemEClass.getESuperTypes().add(this.getActionGroupItem());
-		contentActionGroupItemEClass.getESuperTypes().add(theHtmlPackage.getContainer());
 		actionGroupEClass.getESuperTypes().add(this.getDiv());
 		containerEClass.getESuperTypes().add(this.getBootstrapElement());
 		rowEClass.getESuperTypes().add(this.getBootstrapElement());
 		columnEClass.getESuperTypes().add(this.getBootstrapElement());
-		columnEClass.getESuperTypes().add(theHtmlPackage.getContainer());
 		tableRowContainerEClass.getESuperTypes().add(this.getBootstrapElement());
 		tableSectionEClass.getESuperTypes().add(this.getTableRowContainer());
 		tableHeaderEClass.getESuperTypes().add(this.getTableSection());
 		tableEClass.getESuperTypes().add(this.getTableRowContainer());
 		tableEClass.getESuperTypes().add(this.getTableConfiguration());
 		tableRowEClass.getESuperTypes().add(this.getBootstrapElement());
-		tableCellEClass.getESuperTypes().add(theHtmlPackage.getContainer());
 		tableCellEClass.getESuperTypes().add(this.getBootstrapElement());
 		cardEClass.getESuperTypes().add(this.getDiv());
 		alertEClass.getESuperTypes().add(this.getDiv());
@@ -1878,13 +2021,13 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		initEClass(bootstrapElementEClass, BootstrapElement.class, "BootstrapElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getBootstrapElement_Appearance(), this.getAppearance(), null, "appearance", null, 0, 1, BootstrapElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(bootstrapPageEClass, BootstrapPage.class, "BootstrapPage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getBootstrapPage_Cdn(), ecorePackage.getEBoolean(), "cdn", "true", 0, 1, BootstrapPage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBootstrapPage_Theme(), ecorePackage.getEString(), "theme", null, 0, 1, BootstrapPage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(pageEClass, Page.class, "Page", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPage_Cdn(), ecorePackage.getEBoolean(), "cdn", "true", 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPage_Theme(), this.getTheme(), "theme", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(appearanceEClass, Appearance.class, "Appearance", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getAppearance_Background(), ecorePackage.getEString(), "background", null, 0, 1, Appearance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAppearance_Attributes(), theNcorePackage.getAbstractEntry(), null, "attributes", null, 0, -1, Appearance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAppearance_Background(), this.getColor(), "background", null, 0, 1, Appearance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAppearance_Attributes(), theExecPackage.getProperty(), null, "attributes", null, 0, -1, Appearance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAppearance_Border(), this.getBorder(), null, "border", null, 0, 4, Appearance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAppearance_Margin(), this.getSpacing(), null, "margin", null, 0, -1, Appearance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAppearance_Padding(), this.getSpacing(), null, "padding", null, 0, -1, Appearance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1892,15 +2035,15 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		initEReference(getAppearance_Float(), this.getFloat(), null, "Float", null, 0, -1, Appearance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(borderEClass, Border.class, "Border", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getBorder_Color(), ecorePackage.getEString(), "color", null, 1, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBorder_Color(), this.getColor(), "color", null, 1, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBorder_Top(), ecorePackage.getEBoolean(), "top", "true", 0, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBorder_Bottom(), ecorePackage.getEBoolean(), "bottom", "true", 0, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBorder_Left(), ecorePackage.getEBoolean(), "left", "true", 0, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBorder_Right(), ecorePackage.getEBoolean(), "right", "true", 0, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(spacingEClass, Spacing.class, "Spacing", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getSpacing_Size(), ecorePackage.getEString(), "size", null, 1, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getSpacing_Breakpoint(), ecorePackage.getEString(), "breakpoint", null, 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSpacing_Size(), this.getSize(), "size", null, 1, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSpacing_Breakpoint(), this.getBreakpoint(), "breakpoint", null, 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getSpacing_Top(), ecorePackage.getEBoolean(), "top", "true", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getSpacing_Bottom(), ecorePackage.getEBoolean(), "bottom", "true", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getSpacing_Left(), ecorePackage.getEBoolean(), "left", "true", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1909,10 +2052,10 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		initEAttribute(getSpacing_Y(), ecorePackage.getEBoolean(), "y", "false", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(textEClass, Text.class, "Text", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getText_Alignment(), ecorePackage.getEString(), "alignment", null, 0, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getText_Color(), ecorePackage.getEString(), "color", null, 0, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getText_Transform(), ecorePackage.getEString(), "transform", null, 0, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getText_Weight(), ecorePackage.getEString(), "weight", null, 0, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getText_Alignment(), this.getTextAlignment(), "alignment", null, 0, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getText_Color(), this.getColor(), "color", null, 0, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getText_Transform(), this.getTextTransform(), "transform", null, 0, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getText_Weight(), this.getTextWeight(), "weight", null, 0, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getText_Monospace(), ecorePackage.getEBoolean(), "monospace", null, 0, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getText_Italic(), ecorePackage.getEBoolean(), "italic", null, 0, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getText_Nowrap(), ecorePackage.getEBoolean(), "nowrap", null, 0, 1, Text.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1924,14 +2067,12 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		initEClass(tagEClass, Tag.class, "Tag", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(contentTagEClass, ContentTag.class, "ContentTag", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
 		initEClass(divEClass, Div.class, "Div", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(itemEClass, Item.class, "Item", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getItem_Active(), ecorePackage.getEBoolean(), "active", null, 0, 1, Item.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getItem_Disabled(), ecorePackage.getEBoolean(), "disabled", null, 0, 1, Item.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getItem_Color(), ecorePackage.getEString(), "color", null, 0, 1, Item.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getItem_Color(), this.getColor(), "color", null, 0, 1, Item.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(actionGroupItemEClass, ActionGroupItem.class, "ActionGroupItem", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getActionGroupItem_Name(), ecorePackage.getEObject(), null, "name", null, 0, -1, ActionGroupItem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1940,6 +2081,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		initEAttribute(getLinkActionGroupItem_Url(), ecorePackage.getEString(), "url", null, 1, 1, LinkActionGroupItem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(contentActionGroupItemEClass, ContentActionGroupItem.class, "ContentActionGroupItem", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getContentActionGroupItem_Content(), ecorePackage.getEObject(), null, "content", null, 0, -1, ContentActionGroupItem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(actionGroupEClass, ActionGroup.class, "ActionGroup", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getActionGroup_Flush(), ecorePackage.getEBoolean(), "flush", null, 0, 1, ActionGroup.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1958,6 +2100,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		initEClass(columnEClass, Column.class, "Column", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getColumn_Width(), this.getColumnWidth(), null, "width", null, 0, -1, Column.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getColumn_Content(), ecorePackage.getEObject(), null, "content", null, 0, -1, Column.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(tableRowContainerEClass, TableRowContainer.class, "TableRowContainer", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTableRowContainer_Rows(), this.getTableRow(), null, "rows", null, 0, -1, TableRowContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1983,15 +2126,16 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		initEClass(tableRowEClass, TableRow.class, "TableRow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTableRow_Cells(), this.getTableCell(), null, "cells", null, 0, -1, TableRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTableRow_Color(), ecorePackage.getEString(), "color", null, 0, 1, TableRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTableRow_Background(), ecorePackage.getEString(), "background", null, 0, 1, TableRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTableRow_Color(), this.getColor(), "color", null, 0, 1, TableRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTableRow_Background(), this.getColor(), "background", null, 0, 1, TableRow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(tableCellEClass, TableCell.class, "TableCell", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getTableCell_Header(), ecorePackage.getEBoolean(), "header", null, 0, 1, TableCell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTableCell_ColSpan(), ecorePackage.getEInt(), "colSpan", null, 0, 1, TableCell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTableCell_RowSpan(), ecorePackage.getEInt(), "rowSpan", null, 0, 1, TableCell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTableCell_Color(), ecorePackage.getEString(), "color", null, 0, 1, TableCell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTableCell_Background(), ecorePackage.getEString(), "background", null, 0, 1, TableCell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTableCell_Color(), this.getColor(), "color", null, 0, 1, TableCell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTableCell_Background(), this.getColor(), "background", null, 0, 1, TableCell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTableCell_Content(), ecorePackage.getEObject(), null, "content", null, 0, -1, TableCell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(cardEClass, Card.class, "Card", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getCard_Header(), this.getDiv(), null, "header", null, 0, 1, Card.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1999,15 +2143,15 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		initEReference(getCard_Footer(), this.getDiv(), null, "footer", null, 0, 1, Card.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(alertEClass, Alert.class, "Alert", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getAlert_Color(), ecorePackage.getEString(), "color", null, 0, 1, Alert.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAlert_Color(), this.getColor(), "color", null, 0, 1, Alert.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(badgeEClass, Badge.class, "Badge", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getBadge_Color(), ecorePackage.getEString(), "color", null, 0, 1, Badge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBadge_Color(), this.getColor(), "color", null, 0, 1, Badge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(breadcrumbEClass, Breadcrumb.class, "Breadcrumb", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(buttonEClass, Button.class, "Button", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getButton_Color(), ecorePackage.getEString(), "color", null, 0, 1, Button.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getButton_Color(), this.getColor(), "color", null, 0, 1, Button.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getButton_Outline(), ecorePackage.getEBoolean(), "outline", null, 0, 1, Button.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(buttonGroupEClass, ButtonGroup.class, "ButtonGroup", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2035,6 +2179,15 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		initEClass(modalEClass, Modal.class, "Modal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(accordionEClass, Accordion.class, "Accordion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		// Initialize data types
+		initEDataType(themeEDataType, Theme.class, "Theme", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(colorEDataType, Color.class, "Color", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(sizeEDataType, Size.class, "Size", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(breakpointEDataType, Breakpoint.class, "Breakpoint", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(textAlignmentEDataType, Alignment.class, "TextAlignment", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(textTransformEDataType, Transform.class, "TextTransform", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(textWeightEDataType, Weight.class, "TextWeight", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -2075,19 +2228,19 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 			   "documentation", "Customizes appearance of Bootstrap element."
 		   });
 		addAnnotation
-		  (bootstrapPageEClass,
+		  (pageEClass,
 		   source,
 		   new String[] {
 			   "documentation", "HTML page with bootstrap elements in the head - meta, stylesheets, and scripts.\n\n[Overview video](https://www.youtube.com/watch?v=Q6u6hL10xXA) in Russian."
 		   });
 		addAnnotation
-		  (getBootstrapPage_Cdn(),
+		  (getPage_Cdn(),
 		   source,
 		   new String[] {
 			   "documentation", "If this attribute is true (default) then a generated page contains stylesheet and script elements pointing to Bootstrap CDN (Content Delivery Network)."
 		   });
 		addAnnotation
-		  (getBootstrapPage_Theme(),
+		  (getPage_Theme(),
 		   source,
 		   new String[] {
 			   "documentation", "Bootstrap [theme](https://www.nasdanika.org/master/products/html/apidocs/org.nasdanika.html.bootstrap/apidocs/org/nasdanika/html/bootstrap/Theme.html). This attribute is applicable only if CDN is set to true. In this case Bootstrap stylesheets added to the page point to a specific theme."
@@ -2309,12 +2462,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 			   "documentation", "HTML tag with Bootstrap appearance"
 		   });
 		addAnnotation
-		  (contentTagEClass,
-		   source,
-		   new String[] {
-			   "documentation", "HTML tag with content and Bootstrap appearance"
-		   });
-		addAnnotation
 		  (divEClass,
 		   source,
 		   new String[] {
@@ -2373,6 +2520,12 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		   source,
 		   new String[] {
 			   "documentation", "Action Group Item with content. Click on the item shows the content in the content container."
+		   });
+		addAnnotation
+		  (getContentActionGroupItem_Content(),
+		   source,
+		   new String[] {
+			   "documentation", "Container content. \n\nContent elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content."
 		   });
 		addAnnotation
 		  (actionGroupEClass,
@@ -2451,6 +2604,12 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		   source,
 		   new String[] {
 			   "documentation", "Column widths for different breakpoints."
+		   });
+		addAnnotation
+		  (getColumn_Content(),
+		   source,
+		   new String[] {
+			   "documentation", "Container content. \n\nContent elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content."
 		   });
 		addAnnotation
 		  (tableRowContainerEClass,
@@ -2615,6 +2774,12 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 			   "documentation", "Cell background color. Displays differently from \"Color\". Can also be specified via appearance."
 		   });
 		addAnnotation
+		  (getTableCell_Content(),
+		   source,
+		   new String[] {
+			   "documentation", "Container content. \n\nContent elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content."
+		   });
+		addAnnotation
 		  (cardEClass,
 		   source,
 		   new String[] {
@@ -2655,7 +2820,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	protected void createEcoreAnnotations() {
 		String source = "http://www.eclipse.org/emf/2002/Ecore";
 		addAnnotation
-		  (bootstrapPageEClass,
+		  (pageEClass,
 		   source,
 		   new String[] {
 			   "constraints", "theme"

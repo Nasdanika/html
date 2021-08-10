@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Border;
 
@@ -35,7 +36,7 @@ public class BorderImpl extends MinimalEObjectImpl.Container implements Border {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String COLOR_EDEFAULT = null;
+	protected static final Color COLOR_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #isTop() <em>Top</em>}' attribute.
@@ -112,8 +113,8 @@ public class BorderImpl extends MinimalEObjectImpl.Container implements Border {
 	 * @generated
 	 */
 	@Override
-	public String getColor() {
-		return (String)eDynamicGet(BootstrapPackage.BORDER__COLOR, BootstrapPackage.Literals.BORDER__COLOR, true, true);
+	public Color getColor() {
+		return (Color)eDynamicGet(BootstrapPackage.BORDER__COLOR, BootstrapPackage.Literals.BORDER__COLOR, true, true);
 	}
 
 	/**
@@ -122,7 +123,7 @@ public class BorderImpl extends MinimalEObjectImpl.Container implements Border {
 	 * @generated
 	 */
 	@Override
-	public void setColor(String newColor) {
+	public void setColor(Color newColor) {
 		eDynamicSet(BootstrapPackage.BORDER__COLOR, BootstrapPackage.Literals.BORDER__COLOR, newColor);
 	}
 
@@ -237,7 +238,7 @@ public class BorderImpl extends MinimalEObjectImpl.Container implements Border {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case BootstrapPackage.BORDER__COLOR:
-				setColor((String)newValue);
+				setColor((Color)newValue);
 				return;
 			case BootstrapPackage.BORDER__TOP:
 				setTop((Boolean)newValue);

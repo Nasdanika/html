@@ -3,6 +3,8 @@
 package org.nasdanika.html.model.bootstrap;
 
 import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Size;
 
 /**
  * <!-- begin-user-doc -->
@@ -40,12 +42,12 @@ public interface Spacing extends EObject {
 	 * Spacing size - from 0 to 5 or auto.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Size</em>' attribute.
-	 * @see #setSize(String)
+	 * @see #setSize(Size)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getSpacing_Size()
-	 * @model required="true"
+	 * @model dataType="org.nasdanika.html.model.bootstrap.Size" required="true"
 	 * @generated
 	 */
-	String getSize();
+	Size getSize();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Spacing#getSize <em>Size</em>}' attribute.
@@ -55,7 +57,7 @@ public interface Spacing extends EObject {
 	 * @see #getSize()
 	 * @generated
 	 */
-	void setSize(String value);
+	void setSize(Size value);
 
 	/**
 	 * Returns the value of the '<em><b>Breakpoint</b></em>' attribute.
@@ -65,12 +67,12 @@ public interface Spacing extends EObject {
 	 * Spacing breakpoint.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Breakpoint</em>' attribute.
-	 * @see #setBreakpoint(String)
+	 * @see #setBreakpoint(Breakpoint)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getSpacing_Breakpoint()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.Breakpoint"
 	 * @generated
 	 */
-	String getBreakpoint();
+	Breakpoint getBreakpoint();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Spacing#getBreakpoint <em>Breakpoint</em>}' attribute.
@@ -80,7 +82,7 @@ public interface Spacing extends EObject {
 	 * @see #getBreakpoint()
 	 * @generated
 	 */
-	void setBreakpoint(String value);
+	void setBreakpoint(Breakpoint value);
 
 	/**
 	 * Returns the value of the '<em><b>Top</b></em>' attribute.

@@ -3,6 +3,10 @@
 package org.nasdanika.html.model.bootstrap;
 
 import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Text.Alignment;
+import org.nasdanika.html.bootstrap.Text.Transform;
+import org.nasdanika.html.bootstrap.Text.Weight;
 
 /**
  * <!-- begin-user-doc -->
@@ -40,12 +44,12 @@ public interface Text extends EObject {
 	 * Text alignment.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Alignment</em>' attribute.
-	 * @see #setAlignment(String)
+	 * @see #setAlignment(Alignment)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getText_Alignment()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.TextAlignment"
 	 * @generated
 	 */
-	String getAlignment();
+	Alignment getAlignment();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Text#getAlignment <em>Alignment</em>}' attribute.
@@ -55,7 +59,7 @@ public interface Text extends EObject {
 	 * @see #getAlignment()
 	 * @generated
 	 */
-	void setAlignment(String value);
+	void setAlignment(Alignment value);
 
 	/**
 	 * Returns the value of the '<em><b>Color</b></em>' attribute.
@@ -65,12 +69,12 @@ public interface Text extends EObject {
 	 * Text bootstrap color.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Color</em>' attribute.
-	 * @see #setColor(String)
+	 * @see #setColor(Color)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getText_Color()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.Color"
 	 * @generated
 	 */
-	String getColor();
+	Color getColor();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Text#getColor <em>Color</em>}' attribute.
@@ -80,7 +84,7 @@ public interface Text extends EObject {
 	 * @see #getColor()
 	 * @generated
 	 */
-	void setColor(String value);
+	void setColor(Color value);
 
 	/**
 	 * Returns the value of the '<em><b>Transform</b></em>' attribute.
@@ -90,12 +94,12 @@ public interface Text extends EObject {
 	 * Text case transformation.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Transform</em>' attribute.
-	 * @see #setTransform(String)
+	 * @see #setTransform(Transform)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getText_Transform()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.TextTransform"
 	 * @generated
 	 */
-	String getTransform();
+	Transform getTransform();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Text#getTransform <em>Transform</em>}' attribute.
@@ -105,7 +109,7 @@ public interface Text extends EObject {
 	 * @see #getTransform()
 	 * @generated
 	 */
-	void setTransform(String value);
+	void setTransform(Transform value);
 
 	/**
 	 * Returns the value of the '<em><b>Weight</b></em>' attribute.
@@ -115,12 +119,12 @@ public interface Text extends EObject {
 	 * Text weight.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Weight</em>' attribute.
-	 * @see #setWeight(String)
+	 * @see #setWeight(Weight)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getText_Weight()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.TextWeight"
 	 * @generated
 	 */
-	String getWeight();
+	Weight getWeight();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Text#getWeight <em>Weight</em>}' attribute.
@@ -130,7 +134,7 @@ public interface Text extends EObject {
 	 * @see #getWeight()
 	 * @generated
 	 */
-	void setWeight(String value);
+	void setWeight(Weight value);
 
 	/**
 	 * Returns the value of the '<em><b>Monospace</b></em>' attribute.

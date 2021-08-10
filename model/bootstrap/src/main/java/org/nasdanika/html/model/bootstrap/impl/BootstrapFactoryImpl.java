@@ -3,6 +3,7 @@
 package org.nasdanika.html.model.bootstrap.impl;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -10,6 +11,13 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
+import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Size;
+import org.nasdanika.html.bootstrap.Text.Alignment;
+import org.nasdanika.html.bootstrap.Text.Transform;
+import org.nasdanika.html.bootstrap.Text.Weight;
+import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.model.bootstrap.Accordion;
 import org.nasdanika.html.model.bootstrap.ActionGroup;
 import org.nasdanika.html.model.bootstrap.Alert;
@@ -17,7 +25,6 @@ import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.Badge;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
-import org.nasdanika.html.model.bootstrap.BootstrapPage;
 import org.nasdanika.html.model.bootstrap.Border;
 import org.nasdanika.html.model.bootstrap.Breadcrumb;
 import org.nasdanika.html.model.bootstrap.Button;
@@ -28,7 +35,6 @@ import org.nasdanika.html.model.bootstrap.Collapse;
 import org.nasdanika.html.model.bootstrap.Column;
 import org.nasdanika.html.model.bootstrap.ColumnWidth;
 import org.nasdanika.html.model.bootstrap.ContentActionGroupItem;
-import org.nasdanika.html.model.bootstrap.ContentTag;
 import org.nasdanika.html.model.bootstrap.Div;
 import org.nasdanika.html.model.bootstrap.Dropdown;
 import org.nasdanika.html.model.bootstrap.Form;
@@ -39,6 +45,7 @@ import org.nasdanika.html.model.bootstrap.ListGroup;
 import org.nasdanika.html.model.bootstrap.Modal;
 import org.nasdanika.html.model.bootstrap.Navbar;
 import org.nasdanika.html.model.bootstrap.Navs;
+import org.nasdanika.html.model.bootstrap.Page;
 import org.nasdanika.html.model.bootstrap.Row;
 import org.nasdanika.html.model.bootstrap.Spacing;
 import org.nasdanika.html.model.bootstrap.Table;
@@ -94,14 +101,13 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case BootstrapPackage.BOOTSTRAP_PAGE: return createBootstrapPage();
+			case BootstrapPackage.PAGE: return createPage();
 			case BootstrapPackage.APPEARANCE: return createAppearance();
 			case BootstrapPackage.BORDER: return createBorder();
 			case BootstrapPackage.SPACING: return createSpacing();
 			case BootstrapPackage.TEXT: return createText();
 			case BootstrapPackage.FLOAT: return createFloat();
 			case BootstrapPackage.TAG: return createTag();
-			case BootstrapPackage.CONTENT_TAG: return createContentTag();
 			case BootstrapPackage.DIV: return createDiv();
 			case BootstrapPackage.LINK_ACTION_GROUP_ITEM: return createLinkActionGroupItem();
 			case BootstrapPackage.CONTENT_ACTION_GROUP_ITEM: return createContentActionGroupItem();
@@ -144,9 +150,63 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 	 * @generated
 	 */
 	@Override
-	public BootstrapPage createBootstrapPage() {
-		BootstrapPageImpl bootstrapPage = new BootstrapPageImpl();
-		return bootstrapPage;
+	public Object createFromString(EDataType eDataType, String initialValue) {
+		switch (eDataType.getClassifierID()) {
+			case BootstrapPackage.THEME:
+				return createThemeFromString(eDataType, initialValue);
+			case BootstrapPackage.COLOR:
+				return createColorFromString(eDataType, initialValue);
+			case BootstrapPackage.SIZE:
+				return createSizeFromString(eDataType, initialValue);
+			case BootstrapPackage.BREAKPOINT:
+				return createBreakpointFromString(eDataType, initialValue);
+			case BootstrapPackage.TEXT_ALIGNMENT:
+				return createTextAlignmentFromString(eDataType, initialValue);
+			case BootstrapPackage.TEXT_TRANSFORM:
+				return createTextTransformFromString(eDataType, initialValue);
+			case BootstrapPackage.TEXT_WEIGHT:
+				return createTextWeightFromString(eDataType, initialValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String convertToString(EDataType eDataType, Object instanceValue) {
+		switch (eDataType.getClassifierID()) {
+			case BootstrapPackage.THEME:
+				return convertThemeToString(eDataType, instanceValue);
+			case BootstrapPackage.COLOR:
+				return convertColorToString(eDataType, instanceValue);
+			case BootstrapPackage.SIZE:
+				return convertSizeToString(eDataType, instanceValue);
+			case BootstrapPackage.BREAKPOINT:
+				return convertBreakpointToString(eDataType, instanceValue);
+			case BootstrapPackage.TEXT_ALIGNMENT:
+				return convertTextAlignmentToString(eDataType, instanceValue);
+			case BootstrapPackage.TEXT_TRANSFORM:
+				return convertTextTransformToString(eDataType, instanceValue);
+			case BootstrapPackage.TEXT_WEIGHT:
+				return convertTextWeightToString(eDataType, instanceValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Page createPage() {
+		PageImpl page = new PageImpl();
+		return page;
 	}
 
 	/**
@@ -213,17 +273,6 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 	public Tag createTag() {
 		TagImpl tag = new TagImpl();
 		return tag;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public ContentTag createContentTag() {
-		ContentTagImpl contentTag = new ContentTagImpl();
-		return contentTag;
 	}
 
 	/**
@@ -565,6 +614,132 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 	public Accordion createAccordion() {
 		AccordionImpl accordion = new AccordionImpl();
 		return accordion;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Theme createThemeFromString(EDataType eDataType, String initialValue) {
+		return (Theme)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertThemeToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Color createColorFromString(EDataType eDataType, String initialValue) {
+		return (Color)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertColorToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Size createSizeFromString(EDataType eDataType, String initialValue) {
+		return (Size)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertSizeToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Breakpoint createBreakpointFromString(EDataType eDataType, String initialValue) {
+		return (Breakpoint)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertBreakpointToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Alignment createTextAlignmentFromString(EDataType eDataType, String initialValue) {
+		return (Alignment)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertTextAlignmentToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Transform createTextTransformFromString(EDataType eDataType, String initialValue) {
+		return (Transform)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertTextTransformToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Weight createTextWeightFromString(EDataType eDataType, String initialValue) {
+		return (Weight)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertTextWeightToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

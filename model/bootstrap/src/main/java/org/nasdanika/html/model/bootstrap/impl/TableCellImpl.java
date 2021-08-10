@@ -2,22 +2,18 @@
  */
 package org.nasdanika.html.model.bootstrap.impl;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.nasdanika.html.model.bootstrap.Appearance;
-import org.nasdanika.html.model.bootstrap.BootstrapElement;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.TableCell;
-
-import org.nasdanika.html.model.html.HtmlElement;
-
-import org.nasdanika.html.model.html.impl.ContainerImpl;
-
-import org.nasdanika.ncore.ModelElement;
-import org.nasdanika.ncore.NcorePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,39 +23,17 @@ import org.nasdanika.ncore.NcorePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#getTitle <em>Title</em>}</li>
- *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#getDescription <em>Description</em>}</li>
- *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#getAppearance <em>Appearance</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#isHeader <em>Header</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#getColSpan <em>Col Span</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#getRowSpan <em>Row Span</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#getColor <em>Color</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#getBackground <em>Background</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#getContent <em>Content</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class TableCellImpl extends ContainerImpl implements TableCell {
-	/**
-	 * The default value of the '{@link #getTitle() <em>Title</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTitle()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String TITLE_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDescription()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String DESCRIPTION_EDEFAULT = null;
-
+public class TableCellImpl extends BootstrapElementImpl implements TableCell {
 	/**
 	 * The default value of the '{@link #isHeader() <em>Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -98,7 +72,7 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String COLOR_EDEFAULT = null;
+	protected static final Color COLOR_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getBackground() <em>Background</em>}' attribute.
@@ -108,7 +82,7 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String BACKGROUND_EDEFAULT = null;
+	protected static final Color BACKGROUND_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -127,76 +101,6 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 	@Override
 	protected EClass eStaticClass() {
 		return BootstrapPackage.Literals.TABLE_CELL;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getTitle() {
-		return (String)eDynamicGet(BootstrapPackage.TABLE_CELL__TITLE, NcorePackage.Literals.MODEL_ELEMENT__TITLE, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setTitle(String newTitle) {
-		eDynamicSet(BootstrapPackage.TABLE_CELL__TITLE, NcorePackage.Literals.MODEL_ELEMENT__TITLE, newTitle);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getDescription() {
-		return (String)eDynamicGet(BootstrapPackage.TABLE_CELL__DESCRIPTION, NcorePackage.Literals.MODEL_ELEMENT__DESCRIPTION, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setDescription(String newDescription) {
-		eDynamicSet(BootstrapPackage.TABLE_CELL__DESCRIPTION, NcorePackage.Literals.MODEL_ELEMENT__DESCRIPTION, newDescription);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Appearance getAppearance() {
-		return (Appearance)eDynamicGet(BootstrapPackage.TABLE_CELL__APPEARANCE, BootstrapPackage.Literals.BOOTSTRAP_ELEMENT__APPEARANCE, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetAppearance(Appearance newAppearance, NotificationChain msgs) {
-		msgs = eDynamicInverseAdd((InternalEObject)newAppearance, BootstrapPackage.TABLE_CELL__APPEARANCE, msgs);
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setAppearance(Appearance newAppearance) {
-		eDynamicSet(BootstrapPackage.TABLE_CELL__APPEARANCE, BootstrapPackage.Literals.BOOTSTRAP_ELEMENT__APPEARANCE, newAppearance);
 	}
 
 	/**
@@ -265,8 +169,8 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 	 * @generated
 	 */
 	@Override
-	public String getColor() {
-		return (String)eDynamicGet(BootstrapPackage.TABLE_CELL__COLOR, BootstrapPackage.Literals.TABLE_CELL__COLOR, true, true);
+	public Color getColor() {
+		return (Color)eDynamicGet(BootstrapPackage.TABLE_CELL__COLOR, BootstrapPackage.Literals.TABLE_CELL__COLOR, true, true);
 	}
 
 	/**
@@ -275,7 +179,7 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 	 * @generated
 	 */
 	@Override
-	public void setColor(String newColor) {
+	public void setColor(Color newColor) {
 		eDynamicSet(BootstrapPackage.TABLE_CELL__COLOR, BootstrapPackage.Literals.TABLE_CELL__COLOR, newColor);
 	}
 
@@ -285,8 +189,8 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 	 * @generated
 	 */
 	@Override
-	public String getBackground() {
-		return (String)eDynamicGet(BootstrapPackage.TABLE_CELL__BACKGROUND, BootstrapPackage.Literals.TABLE_CELL__BACKGROUND, true, true);
+	public Color getBackground() {
+		return (Color)eDynamicGet(BootstrapPackage.TABLE_CELL__BACKGROUND, BootstrapPackage.Literals.TABLE_CELL__BACKGROUND, true, true);
 	}
 
 	/**
@@ -295,8 +199,19 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 	 * @generated
 	 */
 	@Override
-	public void setBackground(String newBackground) {
+	public void setBackground(Color newBackground) {
 		eDynamicSet(BootstrapPackage.TABLE_CELL__BACKGROUND, BootstrapPackage.Literals.TABLE_CELL__BACKGROUND, newBackground);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public EList<EObject> getContent() {
+		return (EList<EObject>)eDynamicGet(BootstrapPackage.TABLE_CELL__CONTENT, BootstrapPackage.Literals.TABLE_CELL__CONTENT, true, true);
 	}
 
 	/**
@@ -307,8 +222,8 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case BootstrapPackage.TABLE_CELL__APPEARANCE:
-				return basicSetAppearance(null, msgs);
+			case BootstrapPackage.TABLE_CELL__CONTENT:
+				return ((InternalEList<?>)getContent()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -321,12 +236,6 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case BootstrapPackage.TABLE_CELL__TITLE:
-				return getTitle();
-			case BootstrapPackage.TABLE_CELL__DESCRIPTION:
-				return getDescription();
-			case BootstrapPackage.TABLE_CELL__APPEARANCE:
-				return getAppearance();
 			case BootstrapPackage.TABLE_CELL__HEADER:
 				return isHeader();
 			case BootstrapPackage.TABLE_CELL__COL_SPAN:
@@ -337,6 +246,8 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 				return getColor();
 			case BootstrapPackage.TABLE_CELL__BACKGROUND:
 				return getBackground();
+			case BootstrapPackage.TABLE_CELL__CONTENT:
+				return getContent();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -346,18 +257,10 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case BootstrapPackage.TABLE_CELL__TITLE:
-				setTitle((String)newValue);
-				return;
-			case BootstrapPackage.TABLE_CELL__DESCRIPTION:
-				setDescription((String)newValue);
-				return;
-			case BootstrapPackage.TABLE_CELL__APPEARANCE:
-				setAppearance((Appearance)newValue);
-				return;
 			case BootstrapPackage.TABLE_CELL__HEADER:
 				setHeader((Boolean)newValue);
 				return;
@@ -368,10 +271,14 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 				setRowSpan((Integer)newValue);
 				return;
 			case BootstrapPackage.TABLE_CELL__COLOR:
-				setColor((String)newValue);
+				setColor((Color)newValue);
 				return;
 			case BootstrapPackage.TABLE_CELL__BACKGROUND:
-				setBackground((String)newValue);
+				setBackground((Color)newValue);
+				return;
+			case BootstrapPackage.TABLE_CELL__CONTENT:
+				getContent().clear();
+				getContent().addAll((Collection<? extends EObject>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -385,15 +292,6 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case BootstrapPackage.TABLE_CELL__TITLE:
-				setTitle(TITLE_EDEFAULT);
-				return;
-			case BootstrapPackage.TABLE_CELL__DESCRIPTION:
-				setDescription(DESCRIPTION_EDEFAULT);
-				return;
-			case BootstrapPackage.TABLE_CELL__APPEARANCE:
-				setAppearance((Appearance)null);
-				return;
 			case BootstrapPackage.TABLE_CELL__HEADER:
 				setHeader(HEADER_EDEFAULT);
 				return;
@@ -409,6 +307,9 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 			case BootstrapPackage.TABLE_CELL__BACKGROUND:
 				setBackground(BACKGROUND_EDEFAULT);
 				return;
+			case BootstrapPackage.TABLE_CELL__CONTENT:
+				getContent().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -421,12 +322,6 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case BootstrapPackage.TABLE_CELL__TITLE:
-				return TITLE_EDEFAULT == null ? getTitle() != null : !TITLE_EDEFAULT.equals(getTitle());
-			case BootstrapPackage.TABLE_CELL__DESCRIPTION:
-				return DESCRIPTION_EDEFAULT == null ? getDescription() != null : !DESCRIPTION_EDEFAULT.equals(getDescription());
-			case BootstrapPackage.TABLE_CELL__APPEARANCE:
-				return getAppearance() != null;
 			case BootstrapPackage.TABLE_CELL__HEADER:
 				return isHeader() != HEADER_EDEFAULT;
 			case BootstrapPackage.TABLE_CELL__COL_SPAN:
@@ -437,64 +332,10 @@ public class TableCellImpl extends ContainerImpl implements TableCell {
 				return COLOR_EDEFAULT == null ? getColor() != null : !COLOR_EDEFAULT.equals(getColor());
 			case BootstrapPackage.TABLE_CELL__BACKGROUND:
 				return BACKGROUND_EDEFAULT == null ? getBackground() != null : !BACKGROUND_EDEFAULT.equals(getBackground());
+			case BootstrapPackage.TABLE_CELL__CONTENT:
+				return !getContent().isEmpty();
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == ModelElement.class) {
-			switch (derivedFeatureID) {
-				case BootstrapPackage.TABLE_CELL__TITLE: return NcorePackage.MODEL_ELEMENT__TITLE;
-				case BootstrapPackage.TABLE_CELL__DESCRIPTION: return NcorePackage.MODEL_ELEMENT__DESCRIPTION;
-				default: return -1;
-			}
-		}
-		if (baseClass == HtmlElement.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == BootstrapElement.class) {
-			switch (derivedFeatureID) {
-				case BootstrapPackage.TABLE_CELL__APPEARANCE: return BootstrapPackage.BOOTSTRAP_ELEMENT__APPEARANCE;
-				default: return -1;
-			}
-		}
-		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == ModelElement.class) {
-			switch (baseFeatureID) {
-				case NcorePackage.MODEL_ELEMENT__TITLE: return BootstrapPackage.TABLE_CELL__TITLE;
-				case NcorePackage.MODEL_ELEMENT__DESCRIPTION: return BootstrapPackage.TABLE_CELL__DESCRIPTION;
-				default: return -1;
-			}
-		}
-		if (baseClass == HtmlElement.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == BootstrapElement.class) {
-			switch (baseFeatureID) {
-				case BootstrapPackage.BOOTSTRAP_ELEMENT__APPEARANCE: return BootstrapPackage.TABLE_CELL__APPEARANCE;
-				default: return -1;
-			}
-		}
-		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 } //TableCellImpl

@@ -4,6 +4,7 @@ package org.nasdanika.html.model.bootstrap.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.bootstrap.Alert;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 
@@ -29,7 +30,7 @@ public class AlertImpl extends DivImpl implements Alert {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String COLOR_EDEFAULT = null;
+	protected static final Color COLOR_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -56,8 +57,8 @@ public class AlertImpl extends DivImpl implements Alert {
 	 * @generated
 	 */
 	@Override
-	public String getColor() {
-		return (String)eDynamicGet(BootstrapPackage.ALERT__COLOR, BootstrapPackage.Literals.ALERT__COLOR, true, true);
+	public Color getColor() {
+		return (Color)eDynamicGet(BootstrapPackage.ALERT__COLOR, BootstrapPackage.Literals.ALERT__COLOR, true, true);
 	}
 
 	/**
@@ -66,7 +67,7 @@ public class AlertImpl extends DivImpl implements Alert {
 	 * @generated
 	 */
 	@Override
-	public void setColor(String newColor) {
+	public void setColor(Color newColor) {
 		eDynamicSet(BootstrapPackage.ALERT__COLOR, BootstrapPackage.Literals.ALERT__COLOR, newColor);
 	}
 
@@ -93,7 +94,7 @@ public class AlertImpl extends DivImpl implements Alert {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case BootstrapPackage.ALERT__COLOR:
-				setColor((String)newValue);
+				setColor((Color)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

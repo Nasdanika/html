@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.nasdanika.html.model.bootstrap/src/main/java" creationIcons="false"
-    creationSubmenus="true" modelPluginID="org.nasdanika.html.model.bootstrap" modelName="Bootstrap"
-    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
-    featureDelegation="Dynamic" complianceLevel="8.0" suppressGenModelAnnotations="false"
-    copyrightFields="false" providerRootExtendsClass="org.nasdanika.emf.edit.NasdanikaItemProviderAdapter"
-    usedGenPackages="../../org.nasdanika.html.model.html/model/html.genmodel#//html ../../org.nasdanika.ncore/model/ncore.genmodel#//ncore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.nasdanika.html.model.bootstrap/src/main/java"
+    creationIcons="false" creationSubmenus="true" modelPluginID="org.nasdanika.html.model.bootstrap"
+    modelName="Bootstrap" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" featureDelegation="Dynamic" complianceLevel="8.0"
+    suppressGenModelAnnotations="false" copyrightFields="false" providerRootExtendsClass="org.nasdanika.emf.edit.NasdanikaItemProviderAdapter"
+    usedGenPackages="../../org.nasdanika.html.model.html/model/html.genmodel#//html ../../org.nasdanika.exec/model/exec.genmodel#//exec"
     operationReflection="true" importOrganizing="true">
   <foreignModel>bootstrap.ecore</foreignModel>
   <genPackages prefix="Bootstrap" basePackage="org.nasdanika.html.model" disposableProviderFactory="true"
       ecorePackage="bootstrap.ecore#/">
+    <genDataTypes ecoreDataType="bootstrap.ecore#//Theme"/>
+    <genDataTypes ecoreDataType="bootstrap.ecore#//Color"/>
+    <genDataTypes ecoreDataType="bootstrap.ecore#//Size"/>
+    <genDataTypes ecoreDataType="bootstrap.ecore#//Breakpoint"/>
+    <genDataTypes ecoreDataType="bootstrap.ecore#//TextAlignment"/>
+    <genDataTypes ecoreDataType="bootstrap.ecore#//TextTransform"/>
+    <genDataTypes ecoreDataType="bootstrap.ecore#//TextWeight"/>
     <genClasses ecoreClass="bootstrap.ecore#//BootstrapElement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//BootstrapElement/appearance"/>
     </genClasses>
-    <genClasses ecoreClass="bootstrap.ecore#//BootstrapPage">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//BootstrapPage/cdn"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//BootstrapPage/theme"/>
+    <genClasses ecoreClass="bootstrap.ecore#//Page">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Page/cdn"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Page/theme"/>
     </genClasses>
     <genClasses ecoreClass="bootstrap.ecore#//Appearance">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Appearance/background"/>
@@ -58,7 +65,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Float/breakpoint"/>
     </genClasses>
     <genClasses ecoreClass="bootstrap.ecore#//Tag"/>
-    <genClasses ecoreClass="bootstrap.ecore#//ContentTag"/>
     <genClasses ecoreClass="bootstrap.ecore#//Div"/>
     <genClasses image="false" ecoreClass="bootstrap.ecore#//Item">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Item/active"/>
@@ -71,7 +77,9 @@
     <genClasses ecoreClass="bootstrap.ecore#//LinkActionGroupItem">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//LinkActionGroupItem/url"/>
     </genClasses>
-    <genClasses ecoreClass="bootstrap.ecore#//ContentActionGroupItem"/>
+    <genClasses ecoreClass="bootstrap.ecore#//ContentActionGroupItem">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//ContentActionGroupItem/content"/>
+    </genClasses>
     <genClasses ecoreClass="bootstrap.ecore#//ActionGroup">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//ActionGroup/flush"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//ActionGroup/items"/>
@@ -89,6 +97,7 @@
     </genClasses>
     <genClasses ecoreClass="bootstrap.ecore#//Column">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Column/width"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Column/content"/>
     </genClasses>
     <genClasses ecoreClass="bootstrap.ecore#//TableRowContainer">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//TableRowContainer/rows"/>
@@ -122,6 +131,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//TableCell/rowSpan"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//TableCell/color"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//TableCell/background"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//TableCell/content"/>
     </genClasses>
     <genClasses ecoreClass="bootstrap.ecore#//Card">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Card/header"/>

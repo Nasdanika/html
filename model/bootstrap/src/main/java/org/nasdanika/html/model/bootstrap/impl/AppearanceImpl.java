@@ -8,20 +8,22 @@ import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Border;
 import org.nasdanika.html.model.bootstrap.Spacing;
 import org.nasdanika.html.model.bootstrap.Text;
-
-import org.nasdanika.ncore.AbstractEntry;
 
 /**
  * <!-- begin-user-doc -->
@@ -51,7 +53,7 @@ public class AppearanceImpl extends MinimalEObjectImpl.Container implements Appe
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String BACKGROUND_EDEFAULT = null;
+	protected static final Color BACKGROUND_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -88,8 +90,8 @@ public class AppearanceImpl extends MinimalEObjectImpl.Container implements Appe
 	 * @generated
 	 */
 	@Override
-	public String getBackground() {
-		return (String)eDynamicGet(BootstrapPackage.APPEARANCE__BACKGROUND, BootstrapPackage.Literals.APPEARANCE__BACKGROUND, true, true);
+	public Color getBackground() {
+		return (Color)eDynamicGet(BootstrapPackage.APPEARANCE__BACKGROUND, BootstrapPackage.Literals.APPEARANCE__BACKGROUND, true, true);
 	}
 
 	/**
@@ -98,7 +100,7 @@ public class AppearanceImpl extends MinimalEObjectImpl.Container implements Appe
 	 * @generated
 	 */
 	@Override
-	public void setBackground(String newBackground) {
+	public void setBackground(Color newBackground) {
 		eDynamicSet(BootstrapPackage.APPEARANCE__BACKGROUND, BootstrapPackage.Literals.APPEARANCE__BACKGROUND, newBackground);
 	}
 
@@ -109,8 +111,8 @@ public class AppearanceImpl extends MinimalEObjectImpl.Container implements Appe
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList<AbstractEntry> getAttributes() {
-		return (EList<AbstractEntry>)eDynamicGet(BootstrapPackage.APPEARANCE__ATTRIBUTES, BootstrapPackage.Literals.APPEARANCE__ATTRIBUTES, true, true);
+	public EMap<String, EObject> getAttributes() {
+		return (EMap<String, EObject>)eDynamicGet(BootstrapPackage.APPEARANCE__ATTRIBUTES, BootstrapPackage.Literals.APPEARANCE__ATTRIBUTES, true, true);
 	}
 
 	/**
@@ -222,7 +224,8 @@ public class AppearanceImpl extends MinimalEObjectImpl.Container implements Appe
 			case BootstrapPackage.APPEARANCE__BACKGROUND:
 				return getBackground();
 			case BootstrapPackage.APPEARANCE__ATTRIBUTES:
-				return getAttributes();
+				if (coreType) return getAttributes();
+				else return getAttributes().map();
 			case BootstrapPackage.APPEARANCE__BORDER:
 				return getBorder();
 			case BootstrapPackage.APPEARANCE__MARGIN:
@@ -247,11 +250,10 @@ public class AppearanceImpl extends MinimalEObjectImpl.Container implements Appe
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case BootstrapPackage.APPEARANCE__BACKGROUND:
-				setBackground((String)newValue);
+				setBackground((Color)newValue);
 				return;
 			case BootstrapPackage.APPEARANCE__ATTRIBUTES:
-				getAttributes().clear();
-				getAttributes().addAll((Collection<? extends AbstractEntry>)newValue);
+				((EStructuralFeature.Setting)getAttributes()).set(newValue);
 				return;
 			case BootstrapPackage.APPEARANCE__BORDER:
 				getBorder().clear();

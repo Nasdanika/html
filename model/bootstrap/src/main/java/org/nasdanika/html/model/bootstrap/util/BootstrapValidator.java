@@ -11,7 +11,14 @@ import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.EObjectValidator;
-
+import org.nasdanika.emf.DiagnosticHelper;
+import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Size;
+import org.nasdanika.html.bootstrap.Text.Alignment;
+import org.nasdanika.html.bootstrap.Text.Transform;
+import org.nasdanika.html.bootstrap.Text.Weight;
+import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.model.bootstrap.Accordion;
 import org.nasdanika.html.model.bootstrap.ActionGroup;
 import org.nasdanika.html.model.bootstrap.ActionGroupItem;
@@ -20,7 +27,6 @@ import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.Badge;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
-import org.nasdanika.html.model.bootstrap.BootstrapPage;
 import org.nasdanika.html.model.bootstrap.Border;
 import org.nasdanika.html.model.bootstrap.Breadcrumb;
 import org.nasdanika.html.model.bootstrap.Button;
@@ -32,7 +38,6 @@ import org.nasdanika.html.model.bootstrap.Column;
 import org.nasdanika.html.model.bootstrap.ColumnWidth;
 import org.nasdanika.html.model.bootstrap.Container;
 import org.nasdanika.html.model.bootstrap.ContentActionGroupItem;
-import org.nasdanika.html.model.bootstrap.ContentTag;
 import org.nasdanika.html.model.bootstrap.Div;
 import org.nasdanika.html.model.bootstrap.Dropdown;
 import org.nasdanika.html.model.bootstrap.Form;
@@ -44,6 +49,7 @@ import org.nasdanika.html.model.bootstrap.ListGroup;
 import org.nasdanika.html.model.bootstrap.Modal;
 import org.nasdanika.html.model.bootstrap.Navbar;
 import org.nasdanika.html.model.bootstrap.Navs;
+import org.nasdanika.html.model.bootstrap.Page;
 import org.nasdanika.html.model.bootstrap.Row;
 import org.nasdanika.html.model.bootstrap.Spacing;
 import org.nasdanika.html.model.bootstrap.Table;
@@ -142,8 +148,8 @@ public class BootstrapValidator extends EObjectValidator {
 		switch (classifierID) {
 			case BootstrapPackage.BOOTSTRAP_ELEMENT:
 				return validateBootstrapElement((BootstrapElement)value, diagnostics, context);
-			case BootstrapPackage.BOOTSTRAP_PAGE:
-				return validateBootstrapPage((BootstrapPage)value, diagnostics, context);
+			case BootstrapPackage.PAGE:
+				return validatePage((Page)value, diagnostics, context);
 			case BootstrapPackage.APPEARANCE:
 				return validateAppearance((Appearance)value, diagnostics, context);
 			case BootstrapPackage.BORDER:
@@ -156,8 +162,6 @@ public class BootstrapValidator extends EObjectValidator {
 				return validateFloat((org.nasdanika.html.model.bootstrap.Float)value, diagnostics, context);
 			case BootstrapPackage.TAG:
 				return validateTag((Tag)value, diagnostics, context);
-			case BootstrapPackage.CONTENT_TAG:
-				return validateContentTag((ContentTag)value, diagnostics, context);
 			case BootstrapPackage.DIV:
 				return validateDiv((Div)value, diagnostics, context);
 			case BootstrapPackage.ITEM:
@@ -228,6 +232,20 @@ public class BootstrapValidator extends EObjectValidator {
 				return validateModal((Modal)value, diagnostics, context);
 			case BootstrapPackage.ACCORDION:
 				return validateAccordion((Accordion)value, diagnostics, context);
+			case BootstrapPackage.THEME:
+				return validateTheme((Theme)value, diagnostics, context);
+			case BootstrapPackage.COLOR:
+				return validateColor((Color)value, diagnostics, context);
+			case BootstrapPackage.SIZE:
+				return validateSize((Size)value, diagnostics, context);
+			case BootstrapPackage.BREAKPOINT:
+				return validateBreakpoint((Breakpoint)value, diagnostics, context);
+			case BootstrapPackage.TEXT_ALIGNMENT:
+				return validateTextAlignment((Alignment)value, diagnostics, context);
+			case BootstrapPackage.TEXT_TRANSFORM:
+				return validateTextTransform((Transform)value, diagnostics, context);
+			case BootstrapPackage.TEXT_WEIGHT:
+				return validateTextWeight((Weight)value, diagnostics, context);
 			default:
 				return true;
 		}
@@ -247,17 +265,17 @@ public class BootstrapValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateBootstrapPage(BootstrapPage bootstrapPage, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		if (!validate_NoCircularContainment(bootstrapPage, diagnostics, context)) return false;
-		boolean result = validate_EveryMultiplicityConforms(bootstrapPage, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(bootstrapPage, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(bootstrapPage, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(bootstrapPage, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryProxyResolves(bootstrapPage, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_UniqueID(bootstrapPage, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryKeyUnique(bootstrapPage, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(bootstrapPage, diagnostics, context);
-		if (result || diagnostics != null) result &= validateBootstrapPage_theme(bootstrapPage, diagnostics, context);
+	public boolean validatePage(Page page, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		if (!validate_NoCircularContainment(page, diagnostics, context)) return false;
+		boolean result = validate_EveryMultiplicityConforms(page, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(page, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(page, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(page, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryProxyResolves(page, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_UniqueID(page, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryKeyUnique(page, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(page, diagnostics, context);
+		if (result || diagnostics != null) result &= validatePage_theme(page, diagnostics, context);
 		return result;
 	}
 
@@ -265,26 +283,13 @@ public class BootstrapValidator extends EObjectValidator {
 	 * Validates the theme constraint of '<em>Page</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
-	public boolean validateBootstrapPage_theme(BootstrapPage bootstrapPage, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		// TODO implement the constraint
-		// -> specify the condition that violates the constraint
-		// -> verify the diagnostic details, including severity, code, and message
-		// Ensure that you remove @generated or mark it @generated NOT
-		if (false) {
-			if (diagnostics != null) {
-				diagnostics.add
-					(createDiagnostic
-						(Diagnostic.ERROR,
-						 DIAGNOSTIC_SOURCE,
-						 0,
-						 "_UI_GenericConstraint_diagnostic",
-						 new Object[] { "theme", getObjectLabel(bootstrapPage, context) },
-						 new Object[] { bootstrapPage },
-						 context));
-			}
-			return false;
+	public boolean validatePage_theme(Page page, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		if (diagnostics != null && !page.isCdn() && page.getTheme() != null) {
+			DiagnosticHelper helper = new DiagnosticHelper(diagnostics, DIAGNOSTIC_SOURCE, 0, page);
+			helper.error("Theme can only be specified with cdn set to 'true'", BootstrapPackage.Literals.PAGE__THEME);					
+			return helper.isSuccess();
 		}
 		return true;
 	}
@@ -656,25 +661,6 @@ public class BootstrapValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(tag, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(tag, diagnostics, context);
 		if (result || diagnostics != null) result &= htmlValidator.validateTag_attributes(tag, diagnostics, context);
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean validateContentTag(ContentTag contentTag, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		if (!validate_NoCircularContainment(contentTag, diagnostics, context)) return false;
-		boolean result = validate_EveryMultiplicityConforms(contentTag, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(contentTag, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(contentTag, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(contentTag, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryProxyResolves(contentTag, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_UniqueID(contentTag, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryKeyUnique(contentTag, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(contentTag, diagnostics, context);
-		if (result || diagnostics != null) result &= htmlValidator.validateTag_attributes(contentTag, diagnostics, context);
 		return result;
 	}
 
@@ -1218,6 +1204,69 @@ public class BootstrapValidator extends EObjectValidator {
 	 */
 	public boolean validateAccordion(Accordion accordion, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(accordion, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateTheme(Theme theme, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateColor(Color color, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateSize(Size size, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateBreakpoint(Breakpoint breakpoint, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateTextAlignment(Alignment textAlignment, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateTextTransform(Transform textTransform, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateTextWeight(Weight textWeight, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return true;
 	}
 
 	/**

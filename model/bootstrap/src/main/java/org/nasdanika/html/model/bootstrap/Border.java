@@ -3,6 +3,7 @@
 package org.nasdanika.html.model.bootstrap;
 
 import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.html.bootstrap.Color;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,12 +38,12 @@ public interface Border extends EObject {
 	 * Border bootstrap color.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Color</em>' attribute.
-	 * @see #setColor(String)
+	 * @see #setColor(Color)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getBorder_Color()
-	 * @model required="true"
+	 * @model dataType="org.nasdanika.html.model.bootstrap.Color" required="true"
 	 * @generated
 	 */
-	String getColor();
+	Color getColor();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Border#getColor <em>Color</em>}' attribute.
@@ -52,7 +53,7 @@ public interface Border extends EObject {
 	 * @see #getColor()
 	 * @generated
 	 */
-	void setColor(String value);
+	void setColor(Color value);
 
 	/**
 	 * Returns the value of the '<em><b>Top</b></em>' attribute.

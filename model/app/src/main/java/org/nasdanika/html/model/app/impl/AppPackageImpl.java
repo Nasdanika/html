@@ -13,8 +13,18 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.Color;
+import org.nasdanika.html.model.app.ContentPanel;
+import org.nasdanika.html.model.app.Footer;
+import org.nasdanika.html.model.app.Header;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
+import org.nasdanika.html.model.app.NavigationBar;
+import org.nasdanika.html.model.app.NavigationPanel;
+import org.nasdanika.html.model.app.NavigationPanelStyle;
+import org.nasdanika.html.model.app.Page;
+import org.nasdanika.html.model.app.PagePart;
+import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.app.util.AppValidator;
 
 /**
@@ -43,6 +53,55 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass pageEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass pagePartEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass headerEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass navigationBarEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass navigationPanelEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass contentPanelEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass footerEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass actionEClass = null;
 
 	/**
@@ -58,6 +117,13 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	private EEnum colorEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum navigationPanelStyleEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -106,6 +172,11 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		isInited = true;
 
+		// Initialize simple dependencies
+		org.nasdanika.html.model.bootstrap.BootstrapPackage.eINSTANCE.eClass();
+		org.nasdanika.html.model.html.HtmlPackage.eINSTANCE.eClass();
+		org.nasdanika.exec.ExecPackage.eINSTANCE.eClass();
+
 		// Create package meta-data objects
 		theAppPackage.createPackageContents();
 
@@ -146,7 +217,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLabel_Id() {
+	public EAttribute getLabel_Help() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -156,18 +227,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLabel_Color() {
-		return (EAttribute)labelEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EAttribute getLabel_Text() {
-		return (EAttribute)labelEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)labelEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -177,7 +238,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EAttribute getLabel_Icon() {
-		return (EAttribute)labelEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)labelEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -187,7 +248,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EAttribute getLabel_Tooltip() {
-		return (EAttribute)labelEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)labelEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -197,7 +258,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EAttribute getLabel_Outline() {
-		return (EAttribute)labelEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)labelEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -207,7 +268,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EAttribute getLabel_Notification() {
-		return (EAttribute)labelEClass.getEStructuralFeatures().get(7);
+		return (EAttribute)labelEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -217,7 +278,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EReference getLabel_Children() {
-		return (EReference)labelEClass.getEStructuralFeatures().get(8);
+		return (EReference)labelEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -266,8 +327,308 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLabel_Description() {
-		return (EAttribute)labelEClass.getEStructuralFeatures().get(1);
+	public EAttribute getLink_Confirmation() {
+		return (EAttribute)linkEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getPage() {
+		return pageEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getPage_Header() {
+		return (EReference)pageEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getPage_NavigationBar() {
+		return (EReference)pageEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getPage_NavigationPanel() {
+		return (EReference)pageEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getPage_ContentPanel() {
+		return (EReference)pageEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getPage_Footer() {
+		return (EReference)pageEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getPagePart() {
+		return pagePartEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getPagePart_Content() {
+		return (EReference)pagePartEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getHeader() {
+		return headerEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getHeader_Title() {
+		return (EReference)headerEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getHeader_Navigation() {
+		return (EReference)headerEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getNavigationBar() {
+		return navigationBarEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getNavigationBar_Brand() {
+		return (EReference)navigationBarEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getNavigationBar_Items() {
+		return (EReference)navigationBarEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getNavigationPanel() {
+		return navigationPanelEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getNavigationPanel_Style() {
+		return (EAttribute)navigationPanelEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getNavigationPanel_Items() {
+		return (EReference)navigationPanelEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getContentPanel() {
+		return contentPanelEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getContentPanel_Title() {
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getContentPanel_Navigation() {
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getContentPanel_Breadcrumb() {
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getContentPanel_LeftNavigation() {
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getContentPanel_RightNavigation() {
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getContentPanel_FloatLeftNavigation() {
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getContentPanel_FloatRightNavigation() {
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getContentPanel_Sections() {
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getContentPanel_SectionColumns() {
+		return (EAttribute)contentPanelEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getContentPanel_SectionStyle() {
+		return (EAttribute)contentPanelEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getFooter() {
+		return footerEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getFooter_Items() {
+		return (EReference)footerEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -286,7 +647,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getAction_Role() {
+	public EAttribute getAction_Id() {
 		return (EAttribute)actionEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -296,7 +657,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getAction_SectionStyle() {
+	public EAttribute getAction_SectionColumns() {
 		return (EAttribute)actionEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -306,7 +667,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getAction_SectionColumns() {
+	public EAttribute getAction_SectionStyle() {
 		return (EAttribute)actionEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -316,8 +677,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getAction_Confirmation() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(3);
+	public EReference getAction_Navigation() {
+		return (EReference)actionEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -326,8 +687,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getAction_Disabled() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(4);
+	public EReference getAction_LeftNavigation() {
+		return (EReference)actionEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -336,7 +697,27 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_Content() {
+	public EReference getAction_RightNavigation() {
+		return (EReference)actionEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getAction_FloatLeftNavigation() {
+		return (EReference)actionEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getAction_FloatRightNavigation() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -346,7 +727,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_Sections() {
+	public EReference getAction_Anonymous() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -356,7 +737,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_Context() {
+	public EReference getAction_Resources() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(9);
 	}
 
@@ -366,48 +747,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_ContentLeft() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(10);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EReference getAction_ContentRight() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(11);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EReference getAction_FloatLeft() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(12);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EReference getAction_FloatRight() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(13);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EAttribute getAction_Inline() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(10);
 	}
 
 	/**
@@ -417,7 +758,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EAttribute getAction_Modal() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
@@ -428,6 +769,16 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	@Override
 	public EEnum getColor() {
 		return colorEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EEnum getNavigationPanelStyle() {
+		return navigationPanelStyleEEnum;
 	}
 
 	/**
@@ -470,9 +821,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		// Create classes and their features
 		labelEClass = createEClass(LABEL);
-		createEAttribute(labelEClass, LABEL__ID);
-		createEAttribute(labelEClass, LABEL__DESCRIPTION);
-		createEAttribute(labelEClass, LABEL__COLOR);
+		createEAttribute(labelEClass, LABEL__HELP);
 		createEAttribute(labelEClass, LABEL__TEXT);
 		createEAttribute(labelEClass, LABEL__ICON);
 		createEAttribute(labelEClass, LABEL__TOOLTIP);
@@ -484,26 +833,63 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(linkEClass, LINK__LOCATION);
 		createEAttribute(linkEClass, LINK__SCRIPT);
 		createEAttribute(linkEClass, LINK__BINDING);
+		createEAttribute(linkEClass, LINK__CONFIRMATION);
+
+		pageEClass = createEClass(PAGE);
+		createEReference(pageEClass, PAGE__HEADER);
+		createEReference(pageEClass, PAGE__NAVIGATION_BAR);
+		createEReference(pageEClass, PAGE__NAVIGATION_PANEL);
+		createEReference(pageEClass, PAGE__CONTENT_PANEL);
+		createEReference(pageEClass, PAGE__FOOTER);
+
+		pagePartEClass = createEClass(PAGE_PART);
+		createEReference(pagePartEClass, PAGE_PART__CONTENT);
+
+		headerEClass = createEClass(HEADER);
+		createEReference(headerEClass, HEADER__TITLE);
+		createEReference(headerEClass, HEADER__NAVIGATION);
+
+		navigationBarEClass = createEClass(NAVIGATION_BAR);
+		createEReference(navigationBarEClass, NAVIGATION_BAR__BRAND);
+		createEReference(navigationBarEClass, NAVIGATION_BAR__ITEMS);
+
+		navigationPanelEClass = createEClass(NAVIGATION_PANEL);
+		createEAttribute(navigationPanelEClass, NAVIGATION_PANEL__STYLE);
+		createEReference(navigationPanelEClass, NAVIGATION_PANEL__ITEMS);
+
+		contentPanelEClass = createEClass(CONTENT_PANEL);
+		createEReference(contentPanelEClass, CONTENT_PANEL__BREADCRUMB);
+		createEReference(contentPanelEClass, CONTENT_PANEL__TITLE);
+		createEReference(contentPanelEClass, CONTENT_PANEL__NAVIGATION);
+		createEReference(contentPanelEClass, CONTENT_PANEL__LEFT_NAVIGATION);
+		createEReference(contentPanelEClass, CONTENT_PANEL__RIGHT_NAVIGATION);
+		createEReference(contentPanelEClass, CONTENT_PANEL__FLOAT_LEFT_NAVIGATION);
+		createEReference(contentPanelEClass, CONTENT_PANEL__FLOAT_RIGHT_NAVIGATION);
+		createEReference(contentPanelEClass, CONTENT_PANEL__SECTIONS);
+		createEAttribute(contentPanelEClass, CONTENT_PANEL__SECTION_COLUMNS);
+		createEAttribute(contentPanelEClass, CONTENT_PANEL__SECTION_STYLE);
+
+		footerEClass = createEClass(FOOTER);
+		createEReference(footerEClass, FOOTER__ITEMS);
 
 		actionEClass = createEClass(ACTION);
-		createEAttribute(actionEClass, ACTION__ROLE);
-		createEAttribute(actionEClass, ACTION__SECTION_STYLE);
+		createEAttribute(actionEClass, ACTION__ID);
 		createEAttribute(actionEClass, ACTION__SECTION_COLUMNS);
-		createEAttribute(actionEClass, ACTION__CONFIRMATION);
-		createEAttribute(actionEClass, ACTION__DISABLED);
+		createEAttribute(actionEClass, ACTION__SECTION_STYLE);
+		createEReference(actionEClass, ACTION__NAVIGATION);
+		createEReference(actionEClass, ACTION__LEFT_NAVIGATION);
+		createEReference(actionEClass, ACTION__RIGHT_NAVIGATION);
+		createEReference(actionEClass, ACTION__FLOAT_LEFT_NAVIGATION);
+		createEReference(actionEClass, ACTION__FLOAT_RIGHT_NAVIGATION);
+		createEReference(actionEClass, ACTION__ANONYMOUS);
+		createEReference(actionEClass, ACTION__RESOURCES);
 		createEAttribute(actionEClass, ACTION__INLINE);
 		createEAttribute(actionEClass, ACTION__MODAL);
-		createEReference(actionEClass, ACTION__CONTENT);
-		createEReference(actionEClass, ACTION__SECTIONS);
-		createEReference(actionEClass, ACTION__CONTEXT);
-		createEReference(actionEClass, ACTION__CONTENT_LEFT);
-		createEReference(actionEClass, ACTION__CONTENT_RIGHT);
-		createEReference(actionEClass, ACTION__FLOAT_LEFT);
-		createEReference(actionEClass, ACTION__FLOAT_RIGHT);
 
 		// Create enums
 		sectionStyleEEnum = createEEnum(SECTION_STYLE);
 		colorEEnum = createEEnum(COLOR);
+		navigationPanelStyleEEnum = createEEnum(NAVIGATION_PANEL_STYLE);
 	}
 
 	/**
@@ -529,73 +915,125 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		setNsPrefix(eNS_PREFIX);
 		setNsURI(eNS_URI);
 
+		// Obtain other dependent packages
+		org.nasdanika.html.model.bootstrap.BootstrapPackage theBootstrapPackage = (org.nasdanika.html.model.bootstrap.BootstrapPackage)EPackage.Registry.INSTANCE.getEPackage(org.nasdanika.html.model.bootstrap.BootstrapPackage.eNS_URI);
+		org.nasdanika.exec.resources.ResourcesPackage theResourcesPackage = (org.nasdanika.exec.resources.ResourcesPackage)EPackage.Registry.INSTANCE.getEPackage(org.nasdanika.exec.resources.ResourcesPackage.eNS_URI);
+
 		// Create type parameters
 
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		labelEClass.getESuperTypes().add(theBootstrapPackage.getBootstrapElement());
+		labelEClass.getESuperTypes().add(theBootstrapPackage.getItem());
 		linkEClass.getESuperTypes().add(this.getLabel());
+		pageEClass.getESuperTypes().add(theBootstrapPackage.getBootstrapElement());
+		pagePartEClass.getESuperTypes().add(theBootstrapPackage.getBootstrapElement());
+		headerEClass.getESuperTypes().add(this.getPagePart());
+		navigationBarEClass.getESuperTypes().add(this.getPagePart());
+		navigationPanelEClass.getESuperTypes().add(this.getPagePart());
+		contentPanelEClass.getESuperTypes().add(this.getPagePart());
+		footerEClass.getESuperTypes().add(this.getPagePart());
 		actionEClass.getESuperTypes().add(this.getLink());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(labelEClass, Label.class, "Label", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getLabel_Id(), ecorePackage.getEString(), "id", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getLabel_Description(), ecorePackage.getEString(), "description", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getLabel_Color(), this.getColor(), "color", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getLabel_Help(), ecorePackage.getEString(), "help", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Text(), ecorePackage.getEString(), "text", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Icon(), ecorePackage.getEString(), "icon", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Tooltip(), ecorePackage.getEString(), "tooltip", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Outline(), ecorePackage.getEBoolean(), "outline", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Notification(), ecorePackage.getEString(), "notification", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getLabel_Children(), this.getLabel(), null, "children", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLabel_Children(), theBootstrapPackage.getBootstrapElement(), null, "children", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(linkEClass, Link.class, "Link", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getLink_Location(), ecorePackage.getEString(), "location", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Script(), ecorePackage.getEString(), "script", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Binding(), ecorePackage.getEString(), "binding", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getLink_Confirmation(), ecorePackage.getEString(), "confirmation", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(pageEClass, Page.class, "Page", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPage_Header(), this.getHeader(), null, "header", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPage_NavigationBar(), this.getNavigationBar(), null, "navigationBar", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPage_NavigationPanel(), this.getNavigationPanel(), null, "navigationPanel", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPage_ContentPanel(), this.getContentPanel(), null, "contentPanel", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPage_Footer(), this.getFooter(), null, "footer", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(pagePartEClass, PagePart.class, "PagePart", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPagePart_Content(), ecorePackage.getEObject(), null, "content", null, 0, -1, PagePart.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(headerEClass, Header.class, "Header", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getHeader_Title(), this.getLabel(), null, "title", null, 0, 1, Header.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getHeader_Navigation(), theBootstrapPackage.getBootstrapElement(), null, "navigation", null, 0, -1, Header.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(navigationBarEClass, NavigationBar.class, "NavigationBar", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getNavigationBar_Brand(), this.getLabel(), null, "brand", null, 0, 1, NavigationBar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNavigationBar_Items(), theBootstrapPackage.getBootstrapElement(), null, "items", null, 0, -1, NavigationBar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(navigationPanelEClass, NavigationPanel.class, "NavigationPanel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getNavigationPanel_Style(), this.getNavigationPanelStyle(), "style", "Auto", 0, 1, NavigationPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNavigationPanel_Items(), theBootstrapPackage.getBootstrapElement(), null, "items", null, 0, -1, NavigationPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(contentPanelEClass, ContentPanel.class, "ContentPanel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getContentPanel_Breadcrumb(), this.getLabel(), null, "breadcrumb", null, 0, -1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContentPanel_Title(), this.getLabel(), null, "title", null, 0, 1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContentPanel_Navigation(), theBootstrapPackage.getBootstrapElement(), null, "navigation", null, 0, -1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContentPanel_LeftNavigation(), this.getNavigationPanel(), null, "leftNavigation", null, 0, 1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContentPanel_RightNavigation(), this.getNavigationPanel(), null, "rightNavigation", null, 0, 1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContentPanel_FloatLeftNavigation(), this.getNavigationPanel(), null, "floatLeftNavigation", null, 0, 1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContentPanel_FloatRightNavigation(), this.getNavigationPanel(), null, "floatRightNavigation", null, 0, 1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContentPanel_Sections(), this.getContentPanel(), null, "sections", null, 0, -1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getContentPanel_SectionColumns(), ecorePackage.getEInt(), "sectionColumns", "3", 0, 1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getContentPanel_SectionStyle(), this.getSectionStyle(), "sectionStyle", "Auto", 0, 1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(footerEClass, Footer.class, "Footer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getFooter_Items(), theBootstrapPackage.getBootstrapElement(), null, "items", null, 0, -1, Footer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(actionEClass, Action.class, "Action", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getAction_Role(), ecorePackage.getEString(), "role", "Navigation", 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAction_SectionStyle(), this.getSectionStyle(), "sectionStyle", "Auto", 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_Id(), ecorePackage.getEString(), "id", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_SectionColumns(), ecorePackage.getEInt(), "sectionColumns", "3", 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAction_Confirmation(), ecorePackage.getEString(), "confirmation", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAction_Disabled(), ecorePackage.getEBoolean(), "disabled", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_SectionStyle(), this.getSectionStyle(), "sectionStyle", "Auto", 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Navigation(), theBootstrapPackage.getBootstrapElement(), null, "navigation", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_LeftNavigation(), this.getNavigationPanel(), null, "leftNavigation", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_RightNavigation(), this.getNavigationPanel(), null, "rightNavigation", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_FloatLeftNavigation(), this.getNavigationPanel(), null, "floatLeftNavigation", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_FloatRightNavigation(), this.getNavigationPanel(), null, "floatRightNavigation", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Anonymous(), this.getAction(), null, "anonymous", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Resources(), theResourcesPackage.getResource(), null, "resources", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Inline(), ecorePackage.getEBoolean(), "inline", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Modal(), ecorePackage.getEBoolean(), "modal", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_Content(), ecorePackage.getEObject(), null, "content", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_Sections(), this.getAction(), null, "sections", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_Context(), this.getLabel(), null, "context", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_ContentLeft(), this.getLabel(), null, "contentLeft", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_ContentRight(), this.getLabel(), null, "contentRight", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_FloatLeft(), this.getLabel(), null, "floatLeft", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_FloatRight(), this.getLabel(), null, "floatRight", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
-		initEEnum(sectionStyleEEnum, org.nasdanika.html.model.app.SectionStyle.class, "SectionStyle");
-		addEEnumLiteral(sectionStyleEEnum, org.nasdanika.html.model.app.SectionStyle.AUTO);
-		addEEnumLiteral(sectionStyleEEnum, org.nasdanika.html.model.app.SectionStyle.ACTION_GROUP);
-		addEEnumLiteral(sectionStyleEEnum, org.nasdanika.html.model.app.SectionStyle.CARD);
-		addEEnumLiteral(sectionStyleEEnum, org.nasdanika.html.model.app.SectionStyle.CARD_PILL);
-		addEEnumLiteral(sectionStyleEEnum, org.nasdanika.html.model.app.SectionStyle.CARD_TAB);
-		addEEnumLiteral(sectionStyleEEnum, org.nasdanika.html.model.app.SectionStyle.HEADER);
-		addEEnumLiteral(sectionStyleEEnum, org.nasdanika.html.model.app.SectionStyle.PILL);
-		addEEnumLiteral(sectionStyleEEnum, org.nasdanika.html.model.app.SectionStyle.TAB);
-		addEEnumLiteral(sectionStyleEEnum, org.nasdanika.html.model.app.SectionStyle.TABLE);
+		initEEnum(sectionStyleEEnum, SectionStyle.class, "SectionStyle");
+		addEEnumLiteral(sectionStyleEEnum, SectionStyle.AUTO);
+		addEEnumLiteral(sectionStyleEEnum, SectionStyle.ACTION_GROUP);
+		addEEnumLiteral(sectionStyleEEnum, SectionStyle.CARD);
+		addEEnumLiteral(sectionStyleEEnum, SectionStyle.CARD_PILL);
+		addEEnumLiteral(sectionStyleEEnum, SectionStyle.CARD_TAB);
+		addEEnumLiteral(sectionStyleEEnum, SectionStyle.HEADER);
+		addEEnumLiteral(sectionStyleEEnum, SectionStyle.PILL);
+		addEEnumLiteral(sectionStyleEEnum, SectionStyle.TAB);
+		addEEnumLiteral(sectionStyleEEnum, SectionStyle.TABLE);
 
-		initEEnum(colorEEnum, org.nasdanika.html.model.app.Color.class, "Color");
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.PRIMARY);
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.SECONDARY);
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.SUCCESS);
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.INFO);
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.WARNING);
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.DANGER);
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.LIGHT);
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.DARK);
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.BODY);
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.MUTED);
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.WHITE);
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.BLACK50);
-		addEEnumLiteral(colorEEnum, org.nasdanika.html.model.app.Color.WHITE50);
+		initEEnum(colorEEnum, Color.class, "Color");
+		addEEnumLiteral(colorEEnum, Color.PRIMARY);
+		addEEnumLiteral(colorEEnum, Color.SECONDARY);
+		addEEnumLiteral(colorEEnum, Color.SUCCESS);
+		addEEnumLiteral(colorEEnum, Color.INFO);
+		addEEnumLiteral(colorEEnum, Color.WARNING);
+		addEEnumLiteral(colorEEnum, Color.DANGER);
+		addEEnumLiteral(colorEEnum, Color.LIGHT);
+		addEEnumLiteral(colorEEnum, Color.DARK);
+		addEEnumLiteral(colorEEnum, Color.BODY);
+		addEEnumLiteral(colorEEnum, Color.MUTED);
+		addEEnumLiteral(colorEEnum, Color.WHITE);
+		addEEnumLiteral(colorEEnum, Color.BLACK50);
+		addEEnumLiteral(colorEEnum, Color.WHITE50);
+
+		initEEnum(navigationPanelStyleEEnum, NavigationPanelStyle.class, "NavigationPanelStyle");
+		addEEnumLiteral(navigationPanelStyleEEnum, NavigationPanelStyle.AUTO);
+		addEEnumLiteral(navigationPanelStyleEEnum, NavigationPanelStyle.CARDS);
+		addEEnumLiteral(navigationPanelStyleEEnum, NavigationPanelStyle.TREE);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -605,6 +1043,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createGenModelAnnotations();
 		// http://www.eclipse.org/emf/2002/Ecore
 		createEcoreAnnotations();
+		// urn:org.nasdanika
+		createUrnorgAnnotations();
 	}
 
 	/**
@@ -625,25 +1065,13 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		  (labelEClass,
 		   source,
 		   new String[] {
-			   "documentation", "Label is a base class for actions and categories."
+			   "documentation", "Label is a text and an icon with a tooltip, notification badge, and help dialog. Labels can have children. Label is a base class for Link."
 		   });
 		addAnnotation
-		  (getLabel_Id(),
+		  (getLabel_Help(),
 		   source,
 		   new String[] {
-			   "documentation", "Notification to display next to the label. E.g. a number of new messages in an inbox."
-		   });
-		addAnnotation
-		  (getLabel_Description(),
-		   source,
-		   new String[] {
-			   "documentation", "Notification to display next to the label. E.g. a number of new messages in an inbox."
-		   });
-		addAnnotation
-		  (getLabel_Color(),
-		   source,
-		   new String[] {
-			   "documentation", "Label bootstrap color."
+			   "documentation", "Label help text to display in a modal dialog activated by a click on a question mark icon next to the label."
 		   });
 		addAnnotation
 		  (getLabel_Text(),
@@ -676,40 +1104,220 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Notification to display next to the label. E.g. a number of new messages in an inbox."
 		   });
 		addAnnotation
+		  (getLabel_Children(),
+		   source,
+		   new String[] {
+			   "documentation", "Label children to build UI elements like trees, lists, navigation bars and drop-downs."
+		   });
+		addAnnotation
 		  (getLink_Location(),
 		   source,
 		   new String[] {
-			   "documentation", "Activator is either a URL if the activator type is Reference, or a script if the activator type is Script or Bind.\n\nThe application generator generates a page for an action only if the activator type is Reference, the URL does not start with ``./`` and when resolved is relative to the base URI and below it. \nUsing ``./`` is a way to reference externally generated content. For example, create a hierarchy/federation of sites.\n\nFor the reference activator type activator URL is resolved against the first ancestor action which also has reference activator type. If there is no such action, the URL is resolved against the base URI.\nDuring generation action URL is de-resolved against the base URI to produce a relative resource/file path. \n\n``${{{base-uri}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. It might be useful it the parent URI is an absolute external URI.\n``${{{base-uri}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{base-uri}}}index.html``."
+			   "documentation", "Link URL relative to the ancestor URL or ``base-uri``.\n\n``${{{base-uri}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. \nIt might be useful it the parent URI is an absolute external URI.\n``${{{base-uri}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{base-uri}}}index.html``."
 		   });
 		addAnnotation
 		  (getLink_Script(),
 		   source,
 		   new String[] {
-			   "documentation", "Activator is either a URL if the activator type is Reference, or a script if the activator type is Script or Bind.\n\nThe application generator generates a page for an action only if the activator type is Reference, the URL does not start with ``./`` and when resolved is relative to the base URI and below it. \nUsing ``./`` is a way to reference externally generated content. For example, create a hierarchy/federation of sites.\n\nFor the reference activator type activator URL is resolved against the first ancestor action which also has reference activator type. If there is no such action, the URL is resolved against the base URI.\nDuring generation action URL is de-resolved against the base URI to produce a relative resource/file path. \n\n``${{{base-uri}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. It might be useful it the parent URI is an absolute external URI.\n``${{{base-uri}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{base-uri}}}index.html``."
+			   "documentation", "Script to execute on link click (activation)."
 		   });
 		addAnnotation
 		  (getLink_Binding(),
 		   source,
 		   new String[] {
-			   "documentation", "Activator is either a URL if the activator type is Reference, or a script if the activator type is Script or Bind.\n\nThe application generator generates a page for an action only if the activator type is Reference, the URL does not start with ``./`` and when resolved is relative to the base URI and below it. \nUsing ``./`` is a way to reference externally generated content. For example, create a hierarchy/federation of sites.\n\nFor the reference activator type activator URL is resolved against the first ancestor action which also has reference activator type. If there is no such action, the URL is resolved against the base URI.\nDuring generation action URL is de-resolved against the base URI to produce a relative resource/file path. \n\n``${{{base-uri}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. It might be useful it the parent URI is an absolute external URI.\n``${{{base-uri}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{base-uri}}}index.html``."
+			   "documentation", "JavaScript which performs binding of the link action."
+		   });
+		addAnnotation
+		  (getLink_Confirmation(),
+		   source,
+		   new String[] {
+			   "documentation", "Confirmation to display in a confirmation dialog before action activation to give the user an opportunity to cancel the action. E.g. confirmation of deletion."
+		   });
+		addAnnotation
+		  (pageEClass,
+		   source,
+		   new String[] {
+			   "documentation", "Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer."
+		   });
+		addAnnotation
+		  (getPage_Header(),
+		   source,
+		   new String[] {
+			   "documentation", "Page header is displayed on the top of the page."
+		   });
+		addAnnotation
+		  (getPage_NavigationBar(),
+		   source,
+		   new String[] {
+			   "documentation", "Navigation bar is displayed below the header."
+		   });
+		addAnnotation
+		  (getPage_NavigationPanel(),
+		   source,
+		   new String[] {
+			   "documentation", "Navigation panel is positioned on the left of the content panel below the navigation bar."
+		   });
+		addAnnotation
+		  (getPage_ContentPanel(),
+		   source,
+		   new String[] {
+			   "documentation", "Content panel is positioned on the right of the navigation panel below the navigation bar."
+		   });
+		addAnnotation
+		  (pagePartEClass,
+		   source,
+		   new String[] {
+			   "documentation", "Base class for page parts."
+		   });
+		addAnnotation
+		  (getPagePart_Content(),
+		   source,
+		   new String[] {
+			   "documentation", "Custom content to display in the part."
+		   });
+		addAnnotation
+		  (headerEClass,
+		   source,
+		   new String[] {
+			   "documentation", "Page header has a title on the left and a navigation bar on the right."
+		   });
+		addAnnotation
+		  (getHeader_Title(),
+		   source,
+		   new String[] {
+			   "documentation", "Header title displayed on the left."
+		   });
+		addAnnotation
+		  (getHeader_Navigation(),
+		   source,
+		   new String[] {
+			   "documentation", "Navigation bar elements. Typically links, but can contain custom content, e.g. inline forms."
+		   });
+		addAnnotation
+		  (navigationBarEClass,
+		   source,
+		   new String[] {
+			   "documentation", "Navigation bar has a brand and navigation items."
+		   });
+		addAnnotation
+		  (getNavigationBar_Brand(),
+		   source,
+		   new String[] {
+			   "documentation", "Brand label displayed on the left."
+		   });
+		addAnnotation
+		  (getNavigationBar_Items(),
+		   source,
+		   new String[] {
+			   "documentation", "Navigation items. Typically links, but may contain custom content."
+		   });
+		addAnnotation
+		  (navigationPanelEClass,
+		   source,
+		   new String[] {
+			   "documentation", "Navigation panel contains navigation items. Supports several styles."
+		   });
+		addAnnotation
+		  (getNavigationPanel_Style(),
+		   source,
+		   new String[] {
+			   "documentation", "Panel style"
+		   });
+		addAnnotation
+		  (getNavigationPanel_Items(),
+		   source,
+		   new String[] {
+			   "documentation", "Navigation items. Typically labels and links, but may contain custom content."
+		   });
+		addAnnotation
+		  (contentPanelEClass,
+		   source,
+		   new String[] {
+			   "documentation", "Content panel displays the primary page conent and can have a navigation bar and several navigation panels."
+		   });
+		addAnnotation
+		  (getContentPanel_Breadcrumb(),
+		   source,
+		   new String[] {
+			   "documentation", "Breadcrumb items. Displayed on the top of the content panel."
+		   });
+		addAnnotation
+		  (getContentPanel_Title(),
+		   source,
+		   new String[] {
+			   "documentation", "Content title"
+		   });
+		addAnnotation
+		  (getContentPanel_Navigation(),
+		   source,
+		   new String[] {
+			   "documentation", "Navigation items are displayed to the right of the title below the breadcrumb bar."
+		   });
+		addAnnotation
+		  (getContentPanel_LeftNavigation(),
+		   source,
+		   new String[] {
+			   "documentation", "Navigation panel to display on the left of the content."
+		   });
+		addAnnotation
+		  (getContentPanel_RightNavigation(),
+		   source,
+		   new String[] {
+			   "documentation", "Navigation panel to display on the right of the content."
+		   });
+		addAnnotation
+		  (getContentPanel_FloatLeftNavigation(),
+		   source,
+		   new String[] {
+			   "documentation", "Navigation panel which float to the left of the content."
+		   });
+		addAnnotation
+		  (getContentPanel_FloatRightNavigation(),
+		   source,
+		   new String[] {
+			   "documentation", "Navigation panel which floats to the right of the content."
+		   });
+		addAnnotation
+		  (getContentPanel_Sections(),
+		   source,
+		   new String[] {
+			   "documentation", "Content sections."
+		   });
+		addAnnotation
+		  (getContentPanel_SectionColumns(),
+		   source,
+		   new String[] {
+			   "documentation", "Applicable to section style \"Card\". Defines how many columns shall be in a row of section cards."
+		   });
+		addAnnotation
+		  (getContentPanel_SectionStyle(),
+		   source,
+		   new String[] {
+			   "documentation", "Defines how to generate section children."
+		   });
+		addAnnotation
+		  (footerEClass,
+		   source,
+		   new String[] {
+			   "documentation", "Footer is displayed below the navigation and content panels."
+		   });
+		addAnnotation
+		  (getFooter_Items(),
+		   source,
+		   new String[] {
+			   "documentation", "Footer navigation items."
 		   });
 		addAnnotation
 		  (actionEClass,
 		   source,
 		   new String[] {
-			   "documentation", "Base class for concrete action classes - Action and Partition. These sub-classes are semantically equivalent and differ only in diagram representation - Action is represented by a node, Partition by a container node.\nAction can be a child of another action or of an action category. It may contain content and action elements - abstract actions and action categories. It may also contain action mappings - logical names of actions referenced by this action\'s content."
+			   "documentation", "Actions form a hierarchy. Application pages are generated from actions. "
 		   });
 		addAnnotation
-		  (getAction_Role(),
+		  (getAction_Id(),
 		   source,
 		   new String[] {
-			   "documentation", "Action roles are used in \"wiring\" of actions into the generated Web UI.\n\nFor the root action its children are displayed depending on their rolw as follows:\n\n* Navigation: \n    * The first navigation child is called \"Principal\" and is displayed in the navbar brand. \n    * The remaining navigation children are displayed in navs on the right in the header.\n* Context children are displayed in the footer.\n\nFor the principal action (the first navigation child of the root action):\n\n* Navigation actions are displayed in the navigation panel on the left.\n* Context actions are displayed in the navbar.\n\nFor other non-section actions navigation children are displayed in the navigation panel and context children are displayed in right-floating navs on the top of the content panel.\n\nSection actions are displayed as part of the content panel body of their parent. Their navigation children are treated as sections and display of their context children depends on the section style.\n\nContent left and Content right acitons are displayed on the left and right of the content body respectively.\n\nView and Edit actions are applicable for properties and property sources."
-		   });
-		addAnnotation
-		  (getAction_SectionStyle(),
-		   source,
-		   new String[] {
-			   "documentation", "Defines how to generate section children."
+			   "documentation", "Action unique ID for cross-referencing."
 		   });
 		addAnnotation
 		  (getAction_SectionColumns(),
@@ -718,16 +1326,64 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Applicable to section style \"Card\". Defines how many columns shall be in a row of section cards."
 		   });
 		addAnnotation
-		  (getAction_Confirmation(),
+		  (getAction_SectionStyle(),
 		   source,
 		   new String[] {
-			   "documentation", "Confirmation to display in a confirmation dialog before action activation to give the user an opportunity to cancel the action. E.g. confirmation of deletion."
+			   "documentation", "Defines how to generate section children."
 		   });
 		addAnnotation
-		  (getAction_Disabled(),
+		  (getAction_Navigation(),
 		   source,
 		   new String[] {
-			   "documentation", "If true, then action is displayed as disabled. "
+			   "documentation", "Navigation items are displayed in the footer the root action, in the navigation bar for the principal action, and in the content panel navigation bar for the active action."
+		   });
+		addAnnotation
+		  (getAction_LeftNavigation(),
+		   source,
+		   new String[] {
+			   "documentation", "Left navigation panel"
+		   });
+		addAnnotation
+		  (getAction_RightNavigation(),
+		   source,
+		   new String[] {
+			   "documentation", "Right navigation panel."
+		   });
+		addAnnotation
+		  (getAction_FloatLeftNavigation(),
+		   source,
+		   new String[] {
+			   "documentation", "Float left navigation panel."
+		   });
+		addAnnotation
+		  (getAction_FloatRightNavigation(),
+		   source,
+		   new String[] {
+			   "documentation", "Float right navigation panel."
+		   });
+		addAnnotation
+		  (getAction_Anonymous(),
+		   source,
+		   new String[] {
+			   "documentation", "Actions which are not shown in the containing action UI, but for which pages are generated and can be explicitly referenced, e.g. from content. "
+		   });
+		addAnnotation
+		  (getAction_Resources(),
+		   source,
+		   new String[] {
+			   "documentation", "Resources referenced by the page. Resource names are resolved relative to the page location."
+		   });
+		addAnnotation
+		  (getAction_Inline(),
+		   source,
+		   new String[] {
+			   "documentation", "Inline action\'s content is displayed instead of an action link in navigation panels."
+		   });
+		addAnnotation
+		  (getAction_Modal(),
+		   source,
+		   new String[] {
+			   "documentation", "Inline action\'s content is displayed in a modal dialog which opens on a click on the action\'s link."
 		   });
 	}
 
@@ -745,11 +1401,123 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   new String[] {
 			   "constraints", "color"
 		   });
+	}
+
+	/**
+	 * Initializes the annotations for <b>urn:org.nasdanika</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createUrnorgAnnotations() {
+		String source = "urn:org.nasdanika";
 		addAnnotation
-		  (actionEClass,
+		  (getLink_Location(),
 		   source,
 		   new String[] {
-			   "constraints", "sectionStyle"
+			   "exclusive-with", "script binding"
+		   });
+		addAnnotation
+		  (getLink_Script(),
+		   source,
+		   new String[] {
+			   "exclusive-with", "location binding"
+		   });
+		addAnnotation
+		  (getLink_Binding(),
+		   source,
+		   new String[] {
+			   "exclusive-with", "script location"
+		   });
+		addAnnotation
+		  (getPage_Header(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getPage_NavigationBar(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getPage_NavigationPanel(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getPage_ContentPanel(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getPage_Footer(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getContentPanel_LeftNavigation(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getContentPanel_RightNavigation(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getContentPanel_FloatLeftNavigation(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getContentPanel_FloatRightNavigation(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getAction_LeftNavigation(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getAction_RightNavigation(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getAction_FloatLeftNavigation(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getAction_FloatRightNavigation(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getAction_Inline(),
+		   source,
+		   new String[] {
+			   "exclusive-with", "location binding script modal"
+		   });
+		addAnnotation
+		  (getAction_Modal(),
+		   source,
+		   new String[] {
+			   "exclusive-with", "location binding script inline"
 		   });
 	}
 

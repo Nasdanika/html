@@ -4,10 +4,10 @@ package org.nasdanika.html.model.bootstrap.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.nasdanika.exec.impl.ModelElementImpl;
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Item;
-
-import org.nasdanika.ncore.impl.ModelElementImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -53,7 +53,7 @@ public abstract class ItemImpl extends ModelElementImpl implements Item {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String COLOR_EDEFAULT = null;
+	protected static final Color COLOR_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -120,8 +120,8 @@ public abstract class ItemImpl extends ModelElementImpl implements Item {
 	 * @generated
 	 */
 	@Override
-	public String getColor() {
-		return (String)eDynamicGet(BootstrapPackage.ITEM__COLOR, BootstrapPackage.Literals.ITEM__COLOR, true, true);
+	public Color getColor() {
+		return (Color)eDynamicGet(BootstrapPackage.ITEM__COLOR, BootstrapPackage.Literals.ITEM__COLOR, true, true);
 	}
 
 	/**
@@ -130,7 +130,7 @@ public abstract class ItemImpl extends ModelElementImpl implements Item {
 	 * @generated
 	 */
 	@Override
-	public void setColor(String newColor) {
+	public void setColor(Color newColor) {
 		eDynamicSet(BootstrapPackage.ITEM__COLOR, BootstrapPackage.Literals.ITEM__COLOR, newColor);
 	}
 
@@ -167,7 +167,7 @@ public abstract class ItemImpl extends ModelElementImpl implements Item {
 				setDisabled((Boolean)newValue);
 				return;
 			case BootstrapPackage.ITEM__COLOR:
-				setColor((String)newValue);
+				setColor((Color)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

@@ -2,7 +2,9 @@
  */
 package org.nasdanika.html.model.bootstrap;
 
-import org.nasdanika.html.model.html.Container;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.html.bootstrap.Color;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,13 +24,14 @@ import org.nasdanika.html.model.html.Container;
  *   <li>{@link org.nasdanika.html.model.bootstrap.TableCell#getRowSpan <em>Row Span</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.TableCell#getColor <em>Color</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.TableCell#getBackground <em>Background</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.bootstrap.TableCell#getContent <em>Content</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTableCell()
  * @model
  * @generated
  */
-public interface TableCell extends Container, BootstrapElement {
+public interface TableCell extends BootstrapElement {
 	/**
 	 * Returns the value of the '<em><b>Header</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -112,12 +115,12 @@ public interface TableCell extends Container, BootstrapElement {
 	 * Cell color.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Color</em>' attribute.
-	 * @see #setColor(String)
+	 * @see #setColor(Color)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTableCell_Color()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.Color"
 	 * @generated
 	 */
-	String getColor();
+	Color getColor();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.TableCell#getColor <em>Color</em>}' attribute.
@@ -127,7 +130,7 @@ public interface TableCell extends Container, BootstrapElement {
 	 * @see #getColor()
 	 * @generated
 	 */
-	void setColor(String value);
+	void setColor(Color value);
 
 	/**
 	 * Returns the value of the '<em><b>Background</b></em>' attribute.
@@ -137,12 +140,12 @@ public interface TableCell extends Container, BootstrapElement {
 	 * Cell background color. Displays differently from "Color". Can also be specified via appearance.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Background</em>' attribute.
-	 * @see #setBackground(String)
+	 * @see #setBackground(Color)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTableCell_Background()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.Color"
 	 * @generated
 	 */
-	String getBackground();
+	Color getBackground();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.TableCell#getBackground <em>Background</em>}' attribute.
@@ -152,6 +155,23 @@ public interface TableCell extends Container, BootstrapElement {
 	 * @see #getBackground()
 	 * @generated
 	 */
-	void setBackground(String value);
+	void setBackground(Color value);
+
+	/**
+	 * Returns the value of the '<em><b>Content</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Container content. 
+	 * 
+	 * Content elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Content</em>' containment reference list.
+	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTableCell_Content()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<EObject> getContent();
 
 } // TableCell

@@ -18,6 +18,7 @@ import org.nasdanika.html.model.app.Link;
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getLocation <em>Location</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getScript <em>Script</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getBinding <em>Binding</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getConfirmation <em>Confirmation</em>}</li>
  * </ul>
  *
  * @generated
@@ -52,6 +53,16 @@ public class LinkImpl extends LabelImpl implements Link {
 	 * @ordered
 	 */
 	protected static final String BINDING_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getConfirmation() <em>Confirmation</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConfirmation()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CONFIRMATION_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -138,6 +149,26 @@ public class LinkImpl extends LabelImpl implements Link {
 	 * @generated
 	 */
 	@Override
+	public String getConfirmation() {
+		return (String)eDynamicGet(AppPackage.LINK__CONFIRMATION, AppPackage.Literals.LINK__CONFIRMATION, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setConfirmation(String newConfirmation) {
+		eDynamicSet(AppPackage.LINK__CONFIRMATION, AppPackage.Literals.LINK__CONFIRMATION, newConfirmation);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AppPackage.LINK__LOCATION:
@@ -146,6 +177,8 @@ public class LinkImpl extends LabelImpl implements Link {
 				return getScript();
 			case AppPackage.LINK__BINDING:
 				return getBinding();
+			case AppPackage.LINK__CONFIRMATION:
+				return getConfirmation();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -166,6 +199,9 @@ public class LinkImpl extends LabelImpl implements Link {
 				return;
 			case AppPackage.LINK__BINDING:
 				setBinding((String)newValue);
+				return;
+			case AppPackage.LINK__CONFIRMATION:
+				setConfirmation((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -188,6 +224,9 @@ public class LinkImpl extends LabelImpl implements Link {
 			case AppPackage.LINK__BINDING:
 				setBinding(BINDING_EDEFAULT);
 				return;
+			case AppPackage.LINK__CONFIRMATION:
+				setConfirmation(CONFIRMATION_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -206,6 +245,8 @@ public class LinkImpl extends LabelImpl implements Link {
 				return SCRIPT_EDEFAULT == null ? getScript() != null : !SCRIPT_EDEFAULT.equals(getScript());
 			case AppPackage.LINK__BINDING:
 				return BINDING_EDEFAULT == null ? getBinding() != null : !BINDING_EDEFAULT.equals(getBinding());
+			case AppPackage.LINK__CONFIRMATION:
+				return CONFIRMATION_EDEFAULT == null ? getConfirmation() != null : !CONFIRMATION_EDEFAULT.equals(getConfirmation());
 		}
 		return super.eIsSet(featureID);
 	}

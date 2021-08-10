@@ -28,7 +28,7 @@ public interface BootstrapFactory extends EFactory {
 	 * @return a new object of class '<em>Page</em>'.
 	 * @generated
 	 */
-	BootstrapPage createBootstrapPage();
+	Page createPage();
 
 	/**
 	 * Returns a new object of class '<em>Appearance</em>'.
@@ -83,15 +83,6 @@ public interface BootstrapFactory extends EFactory {
 	 * @generated
 	 */
 	Tag createTag();
-
-	/**
-	 * Returns a new object of class '<em>Content Tag</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Content Tag</em>'.
-	 * @generated
-	 */
-	ContentTag createContentTag();
 
 	/**
 	 * Returns a new object of class '<em>Div</em>'.

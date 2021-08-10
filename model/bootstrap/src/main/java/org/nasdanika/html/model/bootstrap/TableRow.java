@@ -3,6 +3,7 @@
 package org.nasdanika.html.model.bootstrap;
 
 import org.eclipse.emf.common.util.EList;
+import org.nasdanika.html.bootstrap.Color;
 
 /**
  * <!-- begin-user-doc -->
@@ -50,12 +51,12 @@ public interface TableRow extends BootstrapElement {
 	 * Row color.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Color</em>' attribute.
-	 * @see #setColor(String)
+	 * @see #setColor(Color)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTableRow_Color()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.Color"
 	 * @generated
 	 */
-	String getColor();
+	Color getColor();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.TableRow#getColor <em>Color</em>}' attribute.
@@ -65,7 +66,7 @@ public interface TableRow extends BootstrapElement {
 	 * @see #getColor()
 	 * @generated
 	 */
-	void setColor(String value);
+	void setColor(Color value);
 
 	/**
 	 * Returns the value of the '<em><b>Background</b></em>' attribute.
@@ -75,12 +76,12 @@ public interface TableRow extends BootstrapElement {
 	 * Row background color. Displays differently from "Color". Can also be specified via appearance.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Background</em>' attribute.
-	 * @see #setBackground(String)
+	 * @see #setBackground(Color)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTableRow_Background()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.Color"
 	 * @generated
 	 */
-	String getBackground();
+	Color getBackground();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.TableRow#getBackground <em>Background</em>}' attribute.
@@ -90,6 +91,6 @@ public interface TableRow extends BootstrapElement {
 	 * @see #getBackground()
 	 * @generated
 	 */
-	void setBackground(String value);
+	void setBackground(Color value);
 
 } // TableRow

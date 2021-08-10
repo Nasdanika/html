@@ -15,7 +15,9 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BootstrapPage" eSuperTypes="../../org.nasdanika.html.model.html/model/html.ecore#//Page">
+  <eClassifiers xsi:type="ecore:EDataType" name="Theme" instanceClassName="org.nasdanika.html.bootstrap.Theme"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Color" instanceClassName="org.nasdanika.html.bootstrap.Color"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Page" eSuperTypes="../../org.nasdanika.html.model.html/model/html.ecore#//Page">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="HTML page with bootstrap elements in the head - meta, stylesheets, and scripts.&#xA;&#xA;[Overview video](https://www.youtube.com/watch?v=Q6u6hL10xXA) in Russian."/>
     </eAnnotations>
@@ -28,7 +30,7 @@
         <details key="documentation" value="If this attribute is true (default) then a generated page contains stylesheet and script elements pointing to Bootstrap CDN (Content Delivery Network)."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="theme" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="theme" eType="#//Theme">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Bootstrap [theme](https://www.nasdanika.org/master/products/html/apidocs/org.nasdanika.html.bootstrap/apidocs/org/nasdanika/html/bootstrap/Theme.html). This attribute is applicable only if CDN is set to true. In this case Bootstrap stylesheets added to the page point to a specific theme."/>
       </eAnnotations>
@@ -41,13 +43,13 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
       <details key="constraints" value="border_overlap background attributes"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="background" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="background" eType="#//Color">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Bootstrap color for background."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
-        eType="ecore:EClass ../../org.nasdanika.ncore/model/ncore.ecore#//AbstractEntry"
+        eType="ecore:EClass ../../org.nasdanika.exec/model/exec.ecore#//Property"
         containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="HTML element (tag) attributes.&#xA;&#xA;## Interpolation&#xA;&#xA;Attribute values are interpolated, i.e. tokens in the form of ``${token name[|default value]}`` are replaced with the contextual values or default values, if any. Examples:&#xA;&#xA;* ``${my-style}`` - Token without a default value.&#xA;* ``${font-weight|bold}`` - Token with a default value.&#xA;&#xA;## Regular attributes&#xA;&#xA;For all top-level entries except ``class``, ``style``, and ``data`` attribute value is produced by converting the value to string for scalars and to JSON string for lists and maps. &#xA;For attributes which do not start with ``data-`` a warning is issued if the value is not a scalar, i.e. a list or a map.&#xA;&#xA;## Class&#xA;&#xA;For class attribute its value is formed by concantenating elements using space as a separator. If elements are hierarchical then class name is formed by concatenation with a dash (``-``) as a separator.&#xA;&#xA;## Data&#xA;&#xA;If value of ``data`` attbibute is a map then keys of that map get concatenated with ``data`` using dash (``-``) as a separator, them same applies to nested maps. Non-map values become attribute values - scalars are converted to string, lists are converted to JSON string.&#xA;&#xA;## Style&#xA;&#xA;Style can be defined as a string, list or map. If style is defined as a list, all list values are concatenated with a space as a separator - it is a convent way for long unstructured definitions.&#xA;&#xA;If style value is a map then the value and its contained map values are processed in the following fashion:&#xA;&#xA;* Keys are concatenated with dash as a separator.&#xA;* List values are contcatenated wtih space as a separator.&#xA;"/>
@@ -110,7 +112,7 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Border configuration specifies border location and color."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" lowerBound="1" eType="#//Color">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Border bootstrap color."/>
       </eAnnotations>
@@ -140,6 +142,8 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Size" instanceClassName="org.nasdanika.html.bootstrap.Size"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Breakpoint" instanceClassName="org.nasdanika.html.bootstrap.Breakpoint"/>
   <eClassifiers xsi:type="ecore:EClass" name="Spacing">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
       <details key="constraints" value="size breakpoint"/>
@@ -147,12 +151,12 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Spacing - padding or margin. Specifies size, location, and breakpoint."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" lowerBound="1" eType="#//Size">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Spacing size - from 0 to 5 or auto."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="breakpoint" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="breakpoint" eType="#//Breakpoint">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Spacing breakpoint."/>
       </eAnnotations>
@@ -194,6 +198,9 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="TextAlignment" instanceClassName="org.nasdanika.html.bootstrap.Text.Alignment"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="TextTransform" instanceClassName="org.nasdanika.html.bootstrap.Text.Transform"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="TextWeight" instanceClassName="org.nasdanika.html.bootstrap.Text.Weight"/>
   <eClassifiers xsi:type="ecore:EClass" name="Text">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
       <details key="constraints" value="attributes"/>
@@ -201,22 +208,22 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Text styling."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alignment" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alignment" eType="#//TextAlignment">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Text alignment."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Text bootstrap color."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="transform" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="transform" eType="#//TextTransform">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Text case transformation."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="weight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="weight" eType="#//TextWeight">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Text weight."/>
       </eAnnotations>
@@ -265,17 +272,12 @@
       <details key="documentation" value="HTML tag with Bootstrap appearance"/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ContentTag" eSuperTypes="../../org.nasdanika.html.model.html/model/html.ecore#//ContentTag #//BootstrapElement">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="HTML tag with content and Bootstrap appearance"/>
-    </eAnnotations>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Div" eSuperTypes="#//Tag">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="HTML DIV with bootstrap styling"/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Item" abstract="true" eSuperTypes="../../org.nasdanika.ncore/model/ncore.ecore#//ModelElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Item" abstract="true" eSuperTypes="../../org.nasdanika.exec/model/exec.ecore#//ModelElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Base class for model elements which can be active, disabled, and have color."/>
     </eAnnotations>
@@ -292,7 +294,7 @@
         <details key="documentation" value="Indicates that the item is disabled and cannot be activated/selected."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Item Bootstrap color."/>
       </eAnnotations>
@@ -319,10 +321,16 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ContentActionGroupItem" eSuperTypes="#//ActionGroupItem ../../org.nasdanika.html.model.html/model/html.ecore#//Container">
+  <eClassifiers xsi:type="ecore:EClass" name="ContentActionGroupItem" eSuperTypes="#//ActionGroupItem">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Action Group Item with content. Click on the item shows the content in the content container."/>
     </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="content" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Container content. &#xA;&#xA;Content elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActionGroup" eSuperTypes="#//Div">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -386,7 +394,7 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Column" eSuperTypes="#//BootstrapElement ../../org.nasdanika.html.model.html/model/html.ecore#//Container">
+  <eClassifiers xsi:type="ecore:EClass" name="Column" eSuperTypes="#//BootstrapElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Container row column."/>
     </eAnnotations>
@@ -394,6 +402,12 @@
         eType="#//ColumnWidth" containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Column widths for different breakpoints."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="content" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Container content. &#xA;&#xA;Content elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -497,18 +511,18 @@
         <details key="documentation" value="Table row cells."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Row color."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="background" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="background" eType="#//Color">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Row background color. Displays differently from &quot;Color&quot;. Can also be specified via appearance."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TableCell" eSuperTypes="../../org.nasdanika.html.model.html/model/html.ecore#//Container #//BootstrapElement">
+  <eClassifiers xsi:type="ecore:EClass" name="TableCell" eSuperTypes="#//BootstrapElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Table cell - regular or header."/>
     </eAnnotations>
@@ -527,14 +541,20 @@
         <details key="documentation" value="Row span for the cell."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Cell color."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="background" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="background" eType="#//Color">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Cell background color. Displays differently from &quot;Color&quot;. Can also be specified via appearance."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="content" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Container content. &#xA;&#xA;Content elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -562,17 +582,17 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Alert" eSuperTypes="#//Div">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Badge" eSuperTypes="#//Div">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Breadcrumb"/>
   <eClassifiers xsi:type="ecore:EClass" name="Button" eSuperTypes="#//Div">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="TODO - size - enum? Block, active, disabled."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="outline" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ButtonGroup"/>

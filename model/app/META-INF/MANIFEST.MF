@@ -7,13 +7,32 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: org.nasdanika.html.model.app,
+Export-Package: bootstrap,
+ bootstrap.impl,
+ bootstrap.util,
+ content,
+ content.impl,
+ content.util,
+ exec,
+ exec.content,
+ exec.content.impl,
+ exec.content.util,
+ exec.impl,
+ exec.resources,
+ exec.resources.impl,
+ exec.resources.util,
+ exec.util,
+ html,
+ html.impl,
+ html.util,
+ org.nasdanika.html.model.app,
  org.nasdanika.html.model.app.impl,
  org.nasdanika.html.model.app.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.nasdanika.html.model.bootstrap;bundle-version="2021.4.0";visibility:=reexport,
  org.nasdanika.html.model.html;visibility:=reexport,
+ org.nasdanika.exec;visibility:=reexport,
  org.nasdanika.ncore;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: org.nasdanika.html.model.app

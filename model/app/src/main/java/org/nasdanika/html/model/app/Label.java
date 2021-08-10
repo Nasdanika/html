@@ -2,24 +2,20 @@
  */
 package org.nasdanika.html.model.app;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Label</b></em>'.
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * Label is a base class for actions and categories.
+ * Label is a text and an icon with a tooltip, notification badge, and help dialog. Labels can have children. Label is a base class for Link.
  * <!-- end-model-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.nasdanika.html.model.app.Label#getId <em>Id</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Label#getDescription <em>Description</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Label#getColor <em>Color</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getText <em>Text</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getIcon <em>Icon</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getTooltip <em>Tooltip</em>}</li>
@@ -32,59 +28,31 @@ import org.eclipse.emf.ecore.EObject;
  * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='color'"
  * @generated
  */
-public interface Label extends EObject {
+public interface Label extends org.nasdanika.html.model.bootstrap.BootstrapElement, org.nasdanika.html.model.bootstrap.Item {
 	/**
-	 * Returns the value of the '<em><b>Id</b></em>' attribute.
+	 * Returns the value of the '<em><b>Help</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Notification to display next to the label. E.g. a number of new messages in an inbox.
+	 * Label help text to display in a modal dialog activated by a click on a question mark icon next to the label.
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Id</em>' attribute.
-	 * @see #setId(String)
-	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Id()
+	 * @return the value of the '<em>Help</em>' attribute.
+	 * @see #setHelp(String)
+	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Help()
 	 * @model
 	 * @generated
 	 */
-	String getId();
+	String getHelp();
 
 	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getId <em>Id</em>}' attribute.
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Id</em>' attribute.
-	 * @see #getId()
+	 * @param value the new value of the '<em>Help</em>' attribute.
+	 * @see #getHelp()
 	 * @generated
 	 */
-	void setId(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Color</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.nasdanika.html.model.app.Color}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Label bootstrap color.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Color</em>' attribute.
-	 * @see org.nasdanika.html.model.app.Color
-	 * @see #setColor(org.nasdanika.html.model.app.Color)
-	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Color()
-	 * @model
-	 * @generated
-	 */
-	org.nasdanika.html.model.app.Color getColor();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getColor <em>Color</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Color</em>' attribute.
-	 * @see org.nasdanika.html.model.app.Color
-	 * @see #getColor()
-	 * @generated
-	 */
-	void setColor(org.nasdanika.html.model.app.Color value);
+	void setHelp(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Text</b></em>' attribute.
@@ -215,13 +183,16 @@ public interface Label extends EObject {
 	 * Returns the value of the '<em><b>Children</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Label children to build UI elements like trees, lists, navigation bars and drop-downs.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Children</em>' reference.
-	 * @see #setChildren(Label)
+	 * @see #setChildren(org.nasdanika.html.model.bootstrap.BootstrapElement)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Children()
 	 * @model
 	 * @generated
 	 */
-	Label getChildren();
+	org.nasdanika.html.model.bootstrap.BootstrapElement getChildren();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getChildren <em>Children</em>}' reference.
@@ -231,31 +202,6 @@ public interface Label extends EObject {
 	 * @see #getChildren()
 	 * @generated
 	 */
-	void setChildren(Label value);
-
-	/**
-	 * Returns the value of the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Notification to display next to the label. E.g. a number of new messages in an inbox.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Description</em>' attribute.
-	 * @see #setDescription(String)
-	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Description()
-	 * @model
-	 * @generated
-	 */
-	String getDescription();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getDescription <em>Description</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Description</em>' attribute.
-	 * @see #getDescription()
-	 * @generated
-	 */
-	void setDescription(String value);
+	void setChildren(org.nasdanika.html.model.bootstrap.BootstrapElement value);
 
 } // Label

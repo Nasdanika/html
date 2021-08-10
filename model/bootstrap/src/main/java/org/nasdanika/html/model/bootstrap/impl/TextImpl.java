@@ -6,6 +6,10 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.bootstrap.Text.Alignment;
+import org.nasdanika.html.bootstrap.Text.Transform;
+import org.nasdanika.html.bootstrap.Text.Weight;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Text;
 
@@ -38,7 +42,7 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String ALIGNMENT_EDEFAULT = null;
+	protected static final Alignment ALIGNMENT_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getColor() <em>Color</em>}' attribute.
@@ -48,7 +52,7 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String COLOR_EDEFAULT = null;
+	protected static final Color COLOR_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getTransform() <em>Transform</em>}' attribute.
@@ -58,7 +62,7 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String TRANSFORM_EDEFAULT = null;
+	protected static final Transform TRANSFORM_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getWeight() <em>Weight</em>}' attribute.
@@ -68,7 +72,7 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String WEIGHT_EDEFAULT = null;
+	protected static final Weight WEIGHT_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #isMonospace() <em>Monospace</em>}' attribute.
@@ -145,8 +149,8 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	 * @generated
 	 */
 	@Override
-	public String getAlignment() {
-		return (String)eDynamicGet(BootstrapPackage.TEXT__ALIGNMENT, BootstrapPackage.Literals.TEXT__ALIGNMENT, true, true);
+	public Alignment getAlignment() {
+		return (Alignment)eDynamicGet(BootstrapPackage.TEXT__ALIGNMENT, BootstrapPackage.Literals.TEXT__ALIGNMENT, true, true);
 	}
 
 	/**
@@ -155,7 +159,7 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	 * @generated
 	 */
 	@Override
-	public void setAlignment(String newAlignment) {
+	public void setAlignment(Alignment newAlignment) {
 		eDynamicSet(BootstrapPackage.TEXT__ALIGNMENT, BootstrapPackage.Literals.TEXT__ALIGNMENT, newAlignment);
 	}
 
@@ -165,8 +169,8 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	 * @generated
 	 */
 	@Override
-	public String getColor() {
-		return (String)eDynamicGet(BootstrapPackage.TEXT__COLOR, BootstrapPackage.Literals.TEXT__COLOR, true, true);
+	public Color getColor() {
+		return (Color)eDynamicGet(BootstrapPackage.TEXT__COLOR, BootstrapPackage.Literals.TEXT__COLOR, true, true);
 	}
 
 	/**
@@ -175,7 +179,7 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	 * @generated
 	 */
 	@Override
-	public void setColor(String newColor) {
+	public void setColor(Color newColor) {
 		eDynamicSet(BootstrapPackage.TEXT__COLOR, BootstrapPackage.Literals.TEXT__COLOR, newColor);
 	}
 
@@ -185,8 +189,8 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	 * @generated
 	 */
 	@Override
-	public String getTransform() {
-		return (String)eDynamicGet(BootstrapPackage.TEXT__TRANSFORM, BootstrapPackage.Literals.TEXT__TRANSFORM, true, true);
+	public Transform getTransform() {
+		return (Transform)eDynamicGet(BootstrapPackage.TEXT__TRANSFORM, BootstrapPackage.Literals.TEXT__TRANSFORM, true, true);
 	}
 
 	/**
@@ -195,7 +199,7 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	 * @generated
 	 */
 	@Override
-	public void setTransform(String newTransform) {
+	public void setTransform(Transform newTransform) {
 		eDynamicSet(BootstrapPackage.TEXT__TRANSFORM, BootstrapPackage.Literals.TEXT__TRANSFORM, newTransform);
 	}
 
@@ -205,8 +209,8 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	 * @generated
 	 */
 	@Override
-	public String getWeight() {
-		return (String)eDynamicGet(BootstrapPackage.TEXT__WEIGHT, BootstrapPackage.Literals.TEXT__WEIGHT, true, true);
+	public Weight getWeight() {
+		return (Weight)eDynamicGet(BootstrapPackage.TEXT__WEIGHT, BootstrapPackage.Literals.TEXT__WEIGHT, true, true);
 	}
 
 	/**
@@ -215,7 +219,7 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	 * @generated
 	 */
 	@Override
-	public void setWeight(String newWeight) {
+	public void setWeight(Weight newWeight) {
 		eDynamicSet(BootstrapPackage.TEXT__WEIGHT, BootstrapPackage.Literals.TEXT__WEIGHT, newWeight);
 	}
 
@@ -336,16 +340,16 @@ public class TextImpl extends MinimalEObjectImpl.Container implements Text {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case BootstrapPackage.TEXT__ALIGNMENT:
-				setAlignment((String)newValue);
+				setAlignment((Alignment)newValue);
 				return;
 			case BootstrapPackage.TEXT__COLOR:
-				setColor((String)newValue);
+				setColor((Color)newValue);
 				return;
 			case BootstrapPackage.TEXT__TRANSFORM:
-				setTransform((String)newValue);
+				setTransform((Transform)newValue);
 				return;
 			case BootstrapPackage.TEXT__WEIGHT:
-				setWeight((String)newValue);
+				setWeight((Weight)newValue);
 				return;
 			case BootstrapPackage.TEXT__MONOSPACE:
 				setMonospace((Boolean)newValue);
