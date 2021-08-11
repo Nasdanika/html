@@ -9,6 +9,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -88,8 +89,8 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList<org.nasdanika.html.model.bootstrap.BootstrapElement> getItems() {
-		return (EList<org.nasdanika.html.model.bootstrap.BootstrapElement>)eDynamicGet(AppPackage.NAVIGATION_PANEL__ITEMS, AppPackage.Literals.NAVIGATION_PANEL__ITEMS, true, true);
+	public EList<EObject> getItems() {
+		return (EList<EObject>)eDynamicGet(AppPackage.NAVIGATION_PANEL__ITEMS, AppPackage.Literals.NAVIGATION_PANEL__ITEMS, true, true);
 	}
 
 	/**
@@ -136,7 +137,7 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 				return;
 			case AppPackage.NAVIGATION_PANEL__ITEMS:
 				getItems().clear();
-				getItems().addAll((Collection<? extends org.nasdanika.html.model.bootstrap.BootstrapElement>)newValue);
+				getItems().addAll((Collection<? extends EObject>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

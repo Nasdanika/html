@@ -3,6 +3,7 @@
 package org.nasdanika.html.model.app;
 
 import org.eclipse.emf.common.util.EList;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -38,6 +39,6 @@ public interface Footer extends PagePart {
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<org.nasdanika.html.model.bootstrap.BootstrapElement> getItems();
+	EList<BootstrapElement> getItems();
 
 } // Footer

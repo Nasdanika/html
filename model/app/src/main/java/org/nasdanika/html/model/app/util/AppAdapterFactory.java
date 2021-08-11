@@ -8,7 +8,11 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.exec.ModelElement;
 import org.nasdanika.html.model.app.*;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
+import org.nasdanika.html.model.bootstrap.Item;
+import org.nasdanika.html.model.html.HtmlElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -107,19 +111,19 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 				return createActionAdapter();
 			}
 			@Override
-			public Adapter caseModelElement(org.nasdanika.exec.ModelElement object) {
+			public Adapter caseModelElement(ModelElement object) {
 				return createModelElementAdapter();
 			}
 			@Override
-			public Adapter caseHtmlElement(org.nasdanika.html.model.html.HtmlElement object) {
+			public Adapter caseHtmlElement(HtmlElement object) {
 				return createHtmlElementAdapter();
 			}
 			@Override
-			public Adapter caseBootstrapElement(org.nasdanika.html.model.bootstrap.BootstrapElement object) {
+			public Adapter caseBootstrapElement(BootstrapElement object) {
 				return createBootstrapElementAdapter();
 			}
 			@Override
-			public Adapter caseItem(org.nasdanika.html.model.bootstrap.Item object) {
+			public Adapter caseItem(Item object) {
 				return createItemAdapter();
 			}
 			@Override

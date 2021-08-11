@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.EObjectValidator;
 import org.nasdanika.html.model.app.*;
+import org.nasdanika.html.model.bootstrap.util.BootstrapValidator;
 
 /**
  * <!-- begin-user-doc -->
@@ -60,7 +61,7 @@ public class AppValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected org.nasdanika.html.model.bootstrap.util.BootstrapValidator bootstrapValidator;
+	protected BootstrapValidator bootstrapValidator;
 
 	/**
 	 * Creates an instance of the switch.
@@ -70,7 +71,7 @@ public class AppValidator extends EObjectValidator {
 	 */
 	public AppValidator() {
 		super();
-		bootstrapValidator = org.nasdanika.html.model.bootstrap.util.BootstrapValidator.INSTANCE;
+		bootstrapValidator = BootstrapValidator.INSTANCE;
 	}
 
 	/**

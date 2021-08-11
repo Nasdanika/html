@@ -14,6 +14,7 @@ import org.nasdanika.html.model.app.Header;
 import org.nasdanika.html.model.app.NavigationBar;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.Page;
+import org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,7 +33,7 @@ import org.nasdanika.html.model.app.Page;
  *
  * @generated
  */
-public class PageImpl extends org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl implements Page {
+public class PageImpl extends BootstrapElementImpl implements Page {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

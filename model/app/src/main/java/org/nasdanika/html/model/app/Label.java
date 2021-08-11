@@ -2,6 +2,9 @@
  */
 package org.nasdanika.html.model.app;
 
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
+import org.nasdanika.html.model.bootstrap.Item;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Label</b></em>'.
@@ -28,7 +31,7 @@ package org.nasdanika.html.model.app;
  * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='color'"
  * @generated
  */
-public interface Label extends org.nasdanika.html.model.bootstrap.BootstrapElement, org.nasdanika.html.model.bootstrap.Item {
+public interface Label extends BootstrapElement, Item {
 	/**
 	 * Returns the value of the '<em><b>Help</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -187,12 +190,12 @@ public interface Label extends org.nasdanika.html.model.bootstrap.BootstrapEleme
 	 * Label children to build UI elements like trees, lists, navigation bars and drop-downs.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Children</em>' reference.
-	 * @see #setChildren(org.nasdanika.html.model.bootstrap.BootstrapElement)
+	 * @see #setChildren(BootstrapElement)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Children()
 	 * @model
 	 * @generated
 	 */
-	org.nasdanika.html.model.bootstrap.BootstrapElement getChildren();
+	BootstrapElement getChildren();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getChildren <em>Children</em>}' reference.
@@ -202,6 +205,6 @@ public interface Label extends org.nasdanika.html.model.bootstrap.BootstrapEleme
 	 * @see #getChildren()
 	 * @generated
 	 */
-	void setChildren(org.nasdanika.html.model.bootstrap.BootstrapElement value);
+	void setChildren(BootstrapElement value);
 
 } // Label

@@ -18,6 +18,7 @@ import org.nasdanika.html.model.app.ContentPanel;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.SectionStyle;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -118,8 +119,8 @@ public class ContentPanelImpl extends PagePartImpl implements ContentPanel {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList<org.nasdanika.html.model.bootstrap.BootstrapElement> getNavigation() {
-		return (EList<org.nasdanika.html.model.bootstrap.BootstrapElement>)eDynamicGet(AppPackage.CONTENT_PANEL__NAVIGATION, AppPackage.Literals.CONTENT_PANEL__NAVIGATION, true, true);
+	public EList<BootstrapElement> getNavigation() {
+		return (EList<BootstrapElement>)eDynamicGet(AppPackage.CONTENT_PANEL__NAVIGATION, AppPackage.Literals.CONTENT_PANEL__NAVIGATION, true, true);
 	}
 
 	/**
@@ -386,7 +387,7 @@ public class ContentPanelImpl extends PagePartImpl implements ContentPanel {
 				return;
 			case AppPackage.CONTENT_PANEL__NAVIGATION:
 				getNavigation().clear();
-				getNavigation().addAll((Collection<? extends org.nasdanika.html.model.bootstrap.BootstrapElement>)newValue);
+				getNavigation().addAll((Collection<? extends BootstrapElement>)newValue);
 				return;
 			case AppPackage.CONTENT_PANEL__LEFT_NAVIGATION:
 				setLeftNavigation((NavigationPanel)newValue);

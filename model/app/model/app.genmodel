@@ -97,6 +97,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/sectionColumns"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/sectionStyle"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/content"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/navigation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/leftNavigation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/rightNavigation"/>

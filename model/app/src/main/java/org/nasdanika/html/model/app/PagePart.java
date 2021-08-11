@@ -5,6 +5,7 @@ package org.nasdanika.html.model.app;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +27,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface PagePart extends org.nasdanika.html.model.bootstrap.BootstrapElement {
+public interface PagePart extends BootstrapElement {
 	/**
 	 * Returns the value of the '<em><b>Content</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.

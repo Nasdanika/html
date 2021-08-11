@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Header;
 import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -88,8 +89,8 @@ public class HeaderImpl extends PagePartImpl implements Header {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList<org.nasdanika.html.model.bootstrap.BootstrapElement> getNavigation() {
-		return (EList<org.nasdanika.html.model.bootstrap.BootstrapElement>)eDynamicGet(AppPackage.HEADER__NAVIGATION, AppPackage.Literals.HEADER__NAVIGATION, true, true);
+	public EList<BootstrapElement> getNavigation() {
+		return (EList<BootstrapElement>)eDynamicGet(AppPackage.HEADER__NAVIGATION, AppPackage.Literals.HEADER__NAVIGATION, true, true);
 	}
 
 	/**
@@ -138,7 +139,7 @@ public class HeaderImpl extends PagePartImpl implements Header {
 				return;
 			case AppPackage.HEADER__NAVIGATION:
 				getNavigation().clear();
-				getNavigation().addAll((Collection<? extends org.nasdanika.html.model.bootstrap.BootstrapElement>)newValue);
+				getNavigation().addAll((Collection<? extends BootstrapElement>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

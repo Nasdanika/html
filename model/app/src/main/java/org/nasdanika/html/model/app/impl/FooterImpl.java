@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Footer;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -56,8 +57,8 @@ public class FooterImpl extends PagePartImpl implements Footer {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList<org.nasdanika.html.model.bootstrap.BootstrapElement> getItems() {
-		return (EList<org.nasdanika.html.model.bootstrap.BootstrapElement>)eDynamicGet(AppPackage.FOOTER__ITEMS, AppPackage.Literals.FOOTER__ITEMS, true, true);
+	public EList<BootstrapElement> getItems() {
+		return (EList<BootstrapElement>)eDynamicGet(AppPackage.FOOTER__ITEMS, AppPackage.Literals.FOOTER__ITEMS, true, true);
 	}
 
 	/**
@@ -99,7 +100,7 @@ public class FooterImpl extends PagePartImpl implements Footer {
 		switch (featureID) {
 			case AppPackage.FOOTER__ITEMS:
 				getItems().clear();
-				getItems().addAll((Collection<? extends org.nasdanika.html.model.bootstrap.BootstrapElement>)newValue);
+				getItems().addAll((Collection<? extends BootstrapElement>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

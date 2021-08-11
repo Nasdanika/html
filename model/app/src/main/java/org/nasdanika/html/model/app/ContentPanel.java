@@ -3,6 +3,7 @@
 package org.nasdanika.html.model.app;
 
 import org.eclipse.emf.common.util.EList;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -72,7 +73,7 @@ public interface ContentPanel extends PagePart {
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<org.nasdanika.html.model.bootstrap.BootstrapElement> getNavigation();
+	EList<BootstrapElement> getNavigation();
 
 	/**
 	 * Returns the value of the '<em><b>Breadcrumb</b></em>' containment reference list.

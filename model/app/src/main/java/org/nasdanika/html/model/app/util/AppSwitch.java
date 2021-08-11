@@ -6,7 +6,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
+import org.nasdanika.exec.ModelElement;
 import org.nasdanika.html.model.app.*;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
+import org.nasdanika.html.model.bootstrap.Item;
+import org.nasdanika.html.model.html.HtmlElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -331,7 +335,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseModelElement(org.nasdanika.exec.ModelElement object) {
+	public T caseModelElement(ModelElement object) {
 		return null;
 	}
 
@@ -346,7 +350,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseHtmlElement(org.nasdanika.html.model.html.HtmlElement object) {
+	public T caseHtmlElement(HtmlElement object) {
 		return null;
 	}
 
@@ -361,7 +365,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseBootstrapElement(org.nasdanika.html.model.bootstrap.BootstrapElement object) {
+	public T caseBootstrapElement(BootstrapElement object) {
 		return null;
 	}
 
@@ -376,7 +380,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseItem(org.nasdanika.html.model.bootstrap.Item object) {
+	public T caseItem(Item object) {
 		return null;
 	}
 

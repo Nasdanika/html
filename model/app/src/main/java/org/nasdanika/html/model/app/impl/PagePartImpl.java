@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.PagePart;
+import org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +31,7 @@ import org.nasdanika.html.model.app.PagePart;
  *
  * @generated
  */
-public class PagePartImpl extends org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl implements PagePart {
+public class PagePartImpl extends BootstrapElementImpl implements PagePart {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.NavigationBar;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -88,8 +89,8 @@ public class NavigationBarImpl extends PagePartImpl implements NavigationBar {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList<org.nasdanika.html.model.bootstrap.BootstrapElement> getItems() {
-		return (EList<org.nasdanika.html.model.bootstrap.BootstrapElement>)eDynamicGet(AppPackage.NAVIGATION_BAR__ITEMS, AppPackage.Literals.NAVIGATION_BAR__ITEMS, true, true);
+	public EList<BootstrapElement> getItems() {
+		return (EList<BootstrapElement>)eDynamicGet(AppPackage.NAVIGATION_BAR__ITEMS, AppPackage.Literals.NAVIGATION_BAR__ITEMS, true, true);
 	}
 
 	/**
@@ -138,7 +139,7 @@ public class NavigationBarImpl extends PagePartImpl implements NavigationBar {
 				return;
 			case AppPackage.NAVIGATION_BAR__ITEMS:
 				getItems().clear();
-				getItems().addAll((Collection<? extends org.nasdanika.html.model.bootstrap.BootstrapElement>)newValue);
+				getItems().addAll((Collection<? extends BootstrapElement>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

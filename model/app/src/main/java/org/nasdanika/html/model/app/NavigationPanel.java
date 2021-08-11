@@ -3,6 +3,7 @@
 package org.nasdanika.html.model.app;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -57,7 +58,7 @@ public interface NavigationPanel extends PagePart {
 
 	/**
 	 * Returns the value of the '<em><b>Items</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.bootstrap.BootstrapElement}.
+	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -68,6 +69,6 @@ public interface NavigationPanel extends PagePart {
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<org.nasdanika.html.model.bootstrap.BootstrapElement> getItems();
+	EList<EObject> getItems();
 
 } // NavigationPanel

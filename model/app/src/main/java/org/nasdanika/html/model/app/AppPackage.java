@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -77,7 +78,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__DESCRIPTION = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT__DESCRIPTION;
+	int LABEL__DESCRIPTION = BootstrapPackage.BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -86,7 +87,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__APPEARANCE = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT__APPEARANCE;
+	int LABEL__APPEARANCE = BootstrapPackage.BOOTSTRAP_ELEMENT__APPEARANCE;
 
 	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
@@ -95,7 +96,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__ACTIVE = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+	int LABEL__ACTIVE = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Disabled</b></em>' attribute.
@@ -104,7 +105,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__DISABLED = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+	int LABEL__DISABLED = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Color</b></em>' attribute.
@@ -113,7 +114,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__COLOR = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
+	int LABEL__COLOR = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Help</b></em>' attribute.
@@ -122,7 +123,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__HELP = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
+	int LABEL__HELP = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Text</b></em>' attribute.
@@ -131,7 +132,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__TEXT = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 4;
+	int LABEL__TEXT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Icon</b></em>' attribute.
@@ -140,7 +141,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__ICON = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
+	int LABEL__ICON = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Tooltip</b></em>' attribute.
@@ -149,7 +150,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__TOOLTIP = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 6;
+	int LABEL__TOOLTIP = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Outline</b></em>' attribute.
@@ -158,7 +159,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__OUTLINE = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 7;
+	int LABEL__OUTLINE = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Notification</b></em>' attribute.
@@ -167,7 +168,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__NOTIFICATION = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 8;
+	int LABEL__NOTIFICATION = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Children</b></em>' reference.
@@ -176,7 +177,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__CHILDREN = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 9;
+	int LABEL__CHILDREN = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of structural features of the '<em>Label</em>' class.
@@ -185,7 +186,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL_FEATURE_COUNT = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 10;
+	int LABEL_FEATURE_COUNT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of operations of the '<em>Label</em>' class.
@@ -194,7 +195,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL_OPERATION_COUNT = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
+	int LABEL_OPERATION_COUNT = BootstrapPackage.BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.LinkImpl <em>Link</em>}' class.
@@ -385,7 +386,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__DESCRIPTION = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT__DESCRIPTION;
+	int PAGE__DESCRIPTION = BootstrapPackage.BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -394,7 +395,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__APPEARANCE = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT__APPEARANCE;
+	int PAGE__APPEARANCE = BootstrapPackage.BOOTSTRAP_ELEMENT__APPEARANCE;
 
 	/**
 	 * The feature id for the '<em><b>Header</b></em>' containment reference.
@@ -403,7 +404,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__HEADER = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+	int PAGE__HEADER = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Navigation Bar</b></em>' containment reference.
@@ -412,7 +413,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__NAVIGATION_BAR = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+	int PAGE__NAVIGATION_BAR = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Navigation Panel</b></em>' containment reference.
@@ -421,7 +422,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__NAVIGATION_PANEL = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
+	int PAGE__NAVIGATION_PANEL = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Content Panel</b></em>' containment reference.
@@ -430,7 +431,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__CONTENT_PANEL = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
+	int PAGE__CONTENT_PANEL = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Footer</b></em>' containment reference.
@@ -439,7 +440,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__FOOTER = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 4;
+	int PAGE__FOOTER = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Page</em>' class.
@@ -448,7 +449,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_FEATURE_COUNT = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
+	int PAGE_FEATURE_COUNT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Page</em>' class.
@@ -457,7 +458,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_OPERATION_COUNT = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
+	int PAGE_OPERATION_COUNT = BootstrapPackage.BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.PagePartImpl <em>Page Part</em>}' class.
@@ -476,7 +477,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_PART__DESCRIPTION = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT__DESCRIPTION;
+	int PAGE_PART__DESCRIPTION = BootstrapPackage.BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -485,7 +486,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_PART__APPEARANCE = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT__APPEARANCE;
+	int PAGE_PART__APPEARANCE = BootstrapPackage.BOOTSTRAP_ELEMENT__APPEARANCE;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
@@ -494,7 +495,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_PART__CONTENT = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+	int PAGE_PART__CONTENT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Page Part</em>' class.
@@ -503,7 +504,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_PART_FEATURE_COUNT = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+	int PAGE_PART_FEATURE_COUNT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Page Part</em>' class.
@@ -512,7 +513,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_PART_OPERATION_COUNT = org.nasdanika.html.model.bootstrap.BootstrapPackage.BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
+	int PAGE_PART_OPERATION_COUNT = BootstrapPackage.BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.HeaderImpl <em>Header</em>}' class.
@@ -1124,13 +1125,22 @@ public interface AppPackage extends EPackage {
 	int ACTION__SECTION_STYLE = LINK_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__CONTENT = LINK_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Navigation</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__NAVIGATION = LINK_FEATURE_COUNT + 3;
+	int ACTION__NAVIGATION = LINK_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Left Navigation</b></em>' containment reference.
@@ -1139,7 +1149,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__LEFT_NAVIGATION = LINK_FEATURE_COUNT + 4;
+	int ACTION__LEFT_NAVIGATION = LINK_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Right Navigation</b></em>' containment reference.
@@ -1148,7 +1158,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 5;
+	int ACTION__RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Float Left Navigation</b></em>' containment reference.
@@ -1157,7 +1167,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__FLOAT_LEFT_NAVIGATION = LINK_FEATURE_COUNT + 6;
+	int ACTION__FLOAT_LEFT_NAVIGATION = LINK_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Float Right Navigation</b></em>' containment reference.
@@ -1166,7 +1176,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__FLOAT_RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 7;
+	int ACTION__FLOAT_RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Anonymous</b></em>' containment reference list.
@@ -1175,7 +1185,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__ANONYMOUS = LINK_FEATURE_COUNT + 8;
+	int ACTION__ANONYMOUS = LINK_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Resources</b></em>' containment reference list.
@@ -1184,7 +1194,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__RESOURCES = LINK_FEATURE_COUNT + 9;
+	int ACTION__RESOURCES = LINK_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Inline</b></em>' attribute.
@@ -1193,7 +1203,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__INLINE = LINK_FEATURE_COUNT + 10;
+	int ACTION__INLINE = LINK_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Modal</b></em>' attribute.
@@ -1202,7 +1212,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__MODAL = LINK_FEATURE_COUNT + 11;
+	int ACTION__MODAL = LINK_FEATURE_COUNT + 12;
 
 	/**
 	 * The number of structural features of the '<em>Action</em>' class.
@@ -1211,7 +1221,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_FEATURE_COUNT = LINK_FEATURE_COUNT + 12;
+	int ACTION_FEATURE_COUNT = LINK_FEATURE_COUNT + 13;
 
 	/**
 	 * The number of operations of the '<em>Action</em>' class.
@@ -1762,6 +1772,17 @@ public interface AppPackage extends EPackage {
 	EAttribute getAction_SectionStyle();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.Action#getContent <em>Content</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Content</em>'.
+	 * @see org.nasdanika.html.model.app.Action#getContent()
+	 * @see #getAction()
+	 * @generated
+	 */
+	EReference getAction_Content();
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.Action#getNavigation <em>Navigation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2308,6 +2329,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ACTION__SECTION_STYLE = eINSTANCE.getAction_SectionStyle();
+
+		/**
+		 * The meta object literal for the '<em><b>Content</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ACTION__CONTENT = eINSTANCE.getAction_Content();
 
 		/**
 		 * The meta object literal for the '<em><b>Navigation</b></em>' containment reference list feature.

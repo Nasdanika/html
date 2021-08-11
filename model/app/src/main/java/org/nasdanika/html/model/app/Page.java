@@ -2,6 +2,8 @@
  */
 package org.nasdanika.html.model.app;
 
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Page</b></em>'.
@@ -26,7 +28,7 @@ package org.nasdanika.html.model.app;
  * @model
  * @generated
  */
-public interface Page extends org.nasdanika.html.model.bootstrap.BootstrapElement {
+public interface Page extends BootstrapElement {
 	/**
 	 * Returns the value of the '<em><b>Header</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
