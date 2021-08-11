@@ -351,8 +351,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getPage_Header() {
-		return (EReference)pageEClass.getEStructuralFeatures().get(0);
+	public EAttribute getPage_Fluid() {
+		return (EAttribute)pageEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -361,7 +361,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getPage_NavigationBar() {
+	public EReference getPage_Header() {
 		return (EReference)pageEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -371,7 +371,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getPage_NavigationPanel() {
+	public EReference getPage_NavigationBar() {
 		return (EReference)pageEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -381,7 +381,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getPage_ContentPanel() {
+	public EReference getPage_NavigationPanel() {
 		return (EReference)pageEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -391,8 +391,28 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getPage_Footer() {
+	public EReference getPage_ContentPanel() {
 		return (EReference)pageEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getPage_Footer() {
+		return (EReference)pageEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getPage_ContentRowAppearance() {
+		return (EReference)pageEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -850,11 +870,13 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(linkEClass, LINK__CONFIRMATION);
 
 		pageEClass = createEClass(PAGE);
+		createEAttribute(pageEClass, PAGE__FLUID);
 		createEReference(pageEClass, PAGE__HEADER);
 		createEReference(pageEClass, PAGE__NAVIGATION_BAR);
 		createEReference(pageEClass, PAGE__NAVIGATION_PANEL);
 		createEReference(pageEClass, PAGE__CONTENT_PANEL);
 		createEReference(pageEClass, PAGE__FOOTER);
+		createEReference(pageEClass, PAGE__CONTENT_ROW_APPEARANCE);
 
 		pagePartEClass = createEClass(PAGE_PART);
 		createEReference(pagePartEClass, PAGE_PART__CONTENT);
@@ -968,11 +990,13 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getLink_Confirmation(), ecorePackage.getEString(), "confirmation", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(pageEClass, Page.class, "Page", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPage_Fluid(), ecorePackage.getEBoolean(), "fluid", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPage_Header(), this.getHeader(), null, "header", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPage_NavigationBar(), this.getNavigationBar(), null, "navigationBar", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPage_NavigationPanel(), this.getNavigationPanel(), null, "navigationPanel", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPage_ContentPanel(), this.getContentPanel(), null, "contentPanel", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPage_Footer(), this.getFooter(), null, "footer", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPage_ContentRowAppearance(), theBootstrapPackage.getAppearance(), null, "contentRowAppearance", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(pagePartEClass, PagePart.class, "PagePart", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPagePart_Content(), ecorePackage.getEObject(), null, "content", null, 0, -1, PagePart.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1477,6 +1501,12 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   });
 		addAnnotation
 		  (getPage_Footer(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getPage_ContentRowAppearance(),
 		   source,
 		   new String[] {
 			   "homogenous", "true"

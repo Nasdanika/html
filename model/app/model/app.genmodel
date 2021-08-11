@@ -57,11 +57,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/confirmation"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//Page">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Page/fluid"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Page/header"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Page/navigationBar"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Page/navigationPanel"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Page/contentPanel"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Page/footer"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Page/contentRowAppearance"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//PagePart">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//PagePart/content"/>

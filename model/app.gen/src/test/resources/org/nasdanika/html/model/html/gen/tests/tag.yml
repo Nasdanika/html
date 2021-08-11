@@ -1,7 +1,0 @@
-html-tag:
-  name: h1
-  content:
-    content-text: Hello
-  attributes:
-    class:
-      content-text: row

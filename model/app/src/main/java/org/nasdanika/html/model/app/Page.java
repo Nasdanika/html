@@ -2,6 +2,7 @@
  */
 package org.nasdanika.html.model.app;
 
+import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
 /**
@@ -17,11 +18,13 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.nasdanika.html.model.app.Page#isFluid <em>Fluid</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Page#getHeader <em>Header</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Page#getNavigationBar <em>Navigation Bar</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Page#getNavigationPanel <em>Navigation Panel</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Page#getContentPanel <em>Content Panel</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Page#getFooter <em>Footer</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Page#getContentRowAppearance <em>Content Row Appearance</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getPage()
@@ -29,6 +32,28 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  * @generated
  */
 public interface Page extends BootstrapElement {
+	/**
+	 * Returns the value of the '<em><b>Fluid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Fluid</em>' attribute.
+	 * @see #setFluid(boolean)
+	 * @see org.nasdanika.html.model.app.AppPackage#getPage_Fluid()
+	 * @model
+	 * @generated
+	 */
+	boolean isFluid();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Page#isFluid <em>Fluid</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Fluid</em>' attribute.
+	 * @see #isFluid()
+	 * @generated
+	 */
+	void setFluid(boolean value);
+
 	/**
 	 * Returns the value of the '<em><b>Header</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -155,5 +180,28 @@ public interface Page extends BootstrapElement {
 	 * @generated
 	 */
 	void setFooter(Footer value);
+
+	/**
+	 * Returns the value of the '<em><b>Content Row Appearance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Content Row Appearance</em>' containment reference.
+	 * @see #setContentRowAppearance(Appearance)
+	 * @see org.nasdanika.html.model.app.AppPackage#getPage_ContentRowAppearance()
+	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 * @generated
+	 */
+	Appearance getContentRowAppearance();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Page#getContentRowAppearance <em>Content Row Appearance</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Content Row Appearance</em>' containment reference.
+	 * @see #getContentRowAppearance()
+	 * @generated
+	 */
+	void setContentRowAppearance(Appearance value);
 
 } // Page

@@ -398,13 +398,22 @@ public interface AppPackage extends EPackage {
 	int PAGE__APPEARANCE = BootstrapPackage.BOOTSTRAP_ELEMENT__APPEARANCE;
 
 	/**
+	 * The feature id for the '<em><b>Fluid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__FLUID = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Header</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__HEADER = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+	int PAGE__HEADER = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Navigation Bar</b></em>' containment reference.
@@ -413,7 +422,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__NAVIGATION_BAR = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+	int PAGE__NAVIGATION_BAR = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Navigation Panel</b></em>' containment reference.
@@ -422,7 +431,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__NAVIGATION_PANEL = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
+	int PAGE__NAVIGATION_PANEL = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Content Panel</b></em>' containment reference.
@@ -431,7 +440,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__CONTENT_PANEL = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
+	int PAGE__CONTENT_PANEL = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Footer</b></em>' containment reference.
@@ -440,7 +449,16 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__FOOTER = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 4;
+	int PAGE__FOOTER = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Content Row Appearance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__CONTENT_ROW_APPEARANCE = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Page</em>' class.
@@ -449,7 +467,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_FEATURE_COUNT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
+	int PAGE_FEATURE_COUNT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of operations of the '<em>Page</em>' class.
@@ -1416,6 +1434,17 @@ public interface AppPackage extends EPackage {
 	EClass getPage();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Page#isFluid <em>Fluid</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Fluid</em>'.
+	 * @see org.nasdanika.html.model.app.Page#isFluid()
+	 * @see #getPage()
+	 * @generated
+	 */
+	EAttribute getPage_Fluid();
+
+	/**
 	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.Page#getHeader <em>Header</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1469,6 +1498,17 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getPage_Footer();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.Page#getContentRowAppearance <em>Content Row Appearance</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Content Row Appearance</em>'.
+	 * @see org.nasdanika.html.model.app.Page#getContentRowAppearance()
+	 * @see #getPage()
+	 * @generated
+	 */
+	EReference getPage_ContentRowAppearance();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.PagePart <em>Page Part</em>}'.
@@ -2053,6 +2093,14 @@ public interface AppPackage extends EPackage {
 		EClass PAGE = eINSTANCE.getPage();
 
 		/**
+		 * The meta object literal for the '<em><b>Fluid</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PAGE__FLUID = eINSTANCE.getPage_Fluid();
+
+		/**
 		 * The meta object literal for the '<em><b>Header</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2091,6 +2139,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EReference PAGE__FOOTER = eINSTANCE.getPage_Footer();
+
+		/**
+		 * The meta object literal for the '<em><b>Content Row Appearance</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PAGE__CONTENT_ROW_APPEARANCE = eINSTANCE.getPage_ContentRowAppearance();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.PagePartImpl <em>Page Part</em>}' class.

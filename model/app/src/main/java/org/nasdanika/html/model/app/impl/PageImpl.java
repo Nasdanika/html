@@ -14,6 +14,7 @@ import org.nasdanika.html.model.app.Header;
 import org.nasdanika.html.model.app.NavigationBar;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.Page;
+import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl;
 
 /**
@@ -24,16 +25,28 @@ import org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.nasdanika.html.model.app.impl.PageImpl#isFluid <em>Fluid</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.PageImpl#getHeader <em>Header</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.PageImpl#getNavigationBar <em>Navigation Bar</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.PageImpl#getNavigationPanel <em>Navigation Panel</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.PageImpl#getContentPanel <em>Content Panel</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.PageImpl#getFooter <em>Footer</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.PageImpl#getContentRowAppearance <em>Content Row Appearance</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class PageImpl extends BootstrapElementImpl implements Page {
+	/**
+	 * The default value of the '{@link #isFluid() <em>Fluid</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isFluid()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean FLUID_EDEFAULT = false;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -51,6 +64,26 @@ public class PageImpl extends BootstrapElementImpl implements Page {
 	@Override
 	protected EClass eStaticClass() {
 		return AppPackage.Literals.PAGE;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isFluid() {
+		return (Boolean)eDynamicGet(AppPackage.PAGE__FLUID, AppPackage.Literals.PAGE__FLUID, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setFluid(boolean newFluid) {
+		eDynamicSet(AppPackage.PAGE__FLUID, AppPackage.Literals.PAGE__FLUID, newFluid);
 	}
 
 	/**
@@ -209,6 +242,36 @@ public class PageImpl extends BootstrapElementImpl implements Page {
 	 * @generated
 	 */
 	@Override
+	public Appearance getContentRowAppearance() {
+		return (Appearance)eDynamicGet(AppPackage.PAGE__CONTENT_ROW_APPEARANCE, AppPackage.Literals.PAGE__CONTENT_ROW_APPEARANCE, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetContentRowAppearance(Appearance newContentRowAppearance, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newContentRowAppearance, AppPackage.PAGE__CONTENT_ROW_APPEARANCE, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setContentRowAppearance(Appearance newContentRowAppearance) {
+		eDynamicSet(AppPackage.PAGE__CONTENT_ROW_APPEARANCE, AppPackage.Literals.PAGE__CONTENT_ROW_APPEARANCE, newContentRowAppearance);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AppPackage.PAGE__HEADER:
@@ -221,6 +284,8 @@ public class PageImpl extends BootstrapElementImpl implements Page {
 				return basicSetContentPanel(null, msgs);
 			case AppPackage.PAGE__FOOTER:
 				return basicSetFooter(null, msgs);
+			case AppPackage.PAGE__CONTENT_ROW_APPEARANCE:
+				return basicSetContentRowAppearance(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -233,6 +298,8 @@ public class PageImpl extends BootstrapElementImpl implements Page {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AppPackage.PAGE__FLUID:
+				return isFluid();
 			case AppPackage.PAGE__HEADER:
 				return getHeader();
 			case AppPackage.PAGE__NAVIGATION_BAR:
@@ -243,6 +310,8 @@ public class PageImpl extends BootstrapElementImpl implements Page {
 				return getContentPanel();
 			case AppPackage.PAGE__FOOTER:
 				return getFooter();
+			case AppPackage.PAGE__CONTENT_ROW_APPEARANCE:
+				return getContentRowAppearance();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -255,6 +324,9 @@ public class PageImpl extends BootstrapElementImpl implements Page {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AppPackage.PAGE__FLUID:
+				setFluid((Boolean)newValue);
+				return;
 			case AppPackage.PAGE__HEADER:
 				setHeader((Header)newValue);
 				return;
@@ -270,6 +342,9 @@ public class PageImpl extends BootstrapElementImpl implements Page {
 			case AppPackage.PAGE__FOOTER:
 				setFooter((Footer)newValue);
 				return;
+			case AppPackage.PAGE__CONTENT_ROW_APPEARANCE:
+				setContentRowAppearance((Appearance)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -282,6 +357,9 @@ public class PageImpl extends BootstrapElementImpl implements Page {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AppPackage.PAGE__FLUID:
+				setFluid(FLUID_EDEFAULT);
+				return;
 			case AppPackage.PAGE__HEADER:
 				setHeader((Header)null);
 				return;
@@ -297,6 +375,9 @@ public class PageImpl extends BootstrapElementImpl implements Page {
 			case AppPackage.PAGE__FOOTER:
 				setFooter((Footer)null);
 				return;
+			case AppPackage.PAGE__CONTENT_ROW_APPEARANCE:
+				setContentRowAppearance((Appearance)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -309,6 +390,8 @@ public class PageImpl extends BootstrapElementImpl implements Page {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AppPackage.PAGE__FLUID:
+				return isFluid() != FLUID_EDEFAULT;
 			case AppPackage.PAGE__HEADER:
 				return getHeader() != null;
 			case AppPackage.PAGE__NAVIGATION_BAR:
@@ -319,6 +402,8 @@ public class PageImpl extends BootstrapElementImpl implements Page {
 				return getContentPanel() != null;
 			case AppPackage.PAGE__FOOTER:
 				return getFooter() != null;
+			case AppPackage.PAGE__CONTENT_ROW_APPEARANCE:
+				return getContentRowAppearance() != null;
 		}
 		return super.eIsSet(featureID);
 	}
