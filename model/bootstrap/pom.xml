@@ -11,10 +11,6 @@
 	<packaging>jar</packaging>
 	<name>Nasdanika Bootstrap Model</name>
 
-	<build>
-		<sourceDirectory>src</sourceDirectory>
-	</build>
-	
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
