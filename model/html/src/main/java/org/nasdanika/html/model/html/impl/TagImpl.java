@@ -6,11 +6,8 @@ import java.util.Collection;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.EMap;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -27,7 +24,6 @@ import org.nasdanika.html.model.html.Tag;
  * </p>
  * <ul>
  *   <li>{@link org.nasdanika.html.model.html.impl.TagImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.nasdanika.html.model.html.impl.TagImpl#getAttributes <em>Attributes</em>}</li>
  *   <li>{@link org.nasdanika.html.model.html.impl.TagImpl#getContent <em>Content</em>}</li>
  * </ul>
  *
@@ -90,17 +86,6 @@ public class TagImpl extends HtmlElementImpl implements Tag {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public EMap<String, EObject> getAttributes() {
-		return (EMap<String, EObject>)eDynamicGet(HtmlPackage.TAG__ATTRIBUTES, HtmlPackage.Literals.TAG__ATTRIBUTES, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
 	public EList<EObject> getContent() {
 		return (EList<EObject>)eDynamicGet(HtmlPackage.TAG__CONTENT, HtmlPackage.Literals.TAG__CONTENT, true, true);
 	}
@@ -113,8 +98,6 @@ public class TagImpl extends HtmlElementImpl implements Tag {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case HtmlPackage.TAG__ATTRIBUTES:
-				return ((InternalEList<?>)getAttributes()).basicRemove(otherEnd, msgs);
 			case HtmlPackage.TAG__CONTENT:
 				return ((InternalEList<?>)getContent()).basicRemove(otherEnd, msgs);
 		}
@@ -131,9 +114,6 @@ public class TagImpl extends HtmlElementImpl implements Tag {
 		switch (featureID) {
 			case HtmlPackage.TAG__NAME:
 				return getName();
-			case HtmlPackage.TAG__ATTRIBUTES:
-				if (coreType) return getAttributes();
-				else return getAttributes().map();
 			case HtmlPackage.TAG__CONTENT:
 				return getContent();
 		}
@@ -151,9 +131,6 @@ public class TagImpl extends HtmlElementImpl implements Tag {
 		switch (featureID) {
 			case HtmlPackage.TAG__NAME:
 				setName((String)newValue);
-				return;
-			case HtmlPackage.TAG__ATTRIBUTES:
-				((EStructuralFeature.Setting)getAttributes()).set(newValue);
 				return;
 			case HtmlPackage.TAG__CONTENT:
 				getContent().clear();
@@ -174,9 +151,6 @@ public class TagImpl extends HtmlElementImpl implements Tag {
 			case HtmlPackage.TAG__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case HtmlPackage.TAG__ATTRIBUTES:
-				getAttributes().clear();
-				return;
 			case HtmlPackage.TAG__CONTENT:
 				getContent().clear();
 				return;
@@ -194,8 +168,6 @@ public class TagImpl extends HtmlElementImpl implements Tag {
 		switch (featureID) {
 			case HtmlPackage.TAG__NAME:
 				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
-			case HtmlPackage.TAG__ATTRIBUTES:
-				return !getAttributes().isEmpty();
 			case HtmlPackage.TAG__CONTENT:
 				return !getContent().isEmpty();
 		}

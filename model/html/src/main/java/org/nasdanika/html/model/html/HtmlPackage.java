@@ -83,13 +83,22 @@ public interface HtmlPackage extends EPackage {
 	int HTML_ELEMENT__DESCRIPTION = ExecPackage.MODEL_ELEMENT__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HTML_ELEMENT__ATTRIBUTES = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT_FEATURE_COUNT = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+	int HTML_ELEMENT_FEATURE_COUNT = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Element</em>' class.
@@ -120,6 +129,15 @@ public interface HtmlPackage extends EPackage {
 	int TAG__DESCRIPTION = HTML_ELEMENT__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TAG__ATTRIBUTES = HTML_ELEMENT__ATTRIBUTES;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -129,22 +147,13 @@ public interface HtmlPackage extends EPackage {
 	int TAG__NAME = HTML_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Attributes</b></em>' map.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TAG__ATTRIBUTES = HTML_ELEMENT_FEATURE_COUNT + 1;
-
-	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TAG__CONTENT = HTML_ELEMENT_FEATURE_COUNT + 2;
+	int TAG__CONTENT = HTML_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Tag</em>' class.
@@ -153,7 +162,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TAG_FEATURE_COUNT = HTML_ELEMENT_FEATURE_COUNT + 3;
+	int TAG_FEATURE_COUNT = HTML_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Tag</em>' class.
@@ -460,6 +469,17 @@ public interface HtmlPackage extends EPackage {
 	EClass getHtmlElement();
 
 	/**
+	 * Returns the meta object for the map '{@link org.nasdanika.html.model.html.HtmlElement#getAttributes <em>Attributes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the map '<em>Attributes</em>'.
+	 * @see org.nasdanika.html.model.html.HtmlElement#getAttributes()
+	 * @see #getHtmlElement()
+	 * @generated
+	 */
+	EReference getHtmlElement_Attributes();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.html.Tag <em>Tag</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -479,17 +499,6 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getTag_Name();
-
-	/**
-	 * Returns the meta object for the map '{@link org.nasdanika.html.model.html.Tag#getAttributes <em>Attributes</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the map '<em>Attributes</em>'.
-	 * @see org.nasdanika.html.model.html.Tag#getAttributes()
-	 * @see #getTag()
-	 * @generated
-	 */
-	EReference getTag_Attributes();
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.html.Tag#getContent <em>Content</em>}'.
@@ -685,6 +694,14 @@ public interface HtmlPackage extends EPackage {
 		EClass HTML_ELEMENT = eINSTANCE.getHtmlElement();
 
 		/**
+		 * The meta object literal for the '<em><b>Attributes</b></em>' map feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference HTML_ELEMENT__ATTRIBUTES = eINSTANCE.getHtmlElement_Attributes();
+
+		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.html.impl.TagImpl <em>Tag</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -701,14 +718,6 @@ public interface HtmlPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TAG__NAME = eINSTANCE.getTag_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Attributes</b></em>' map feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference TAG__ATTRIBUTES = eINSTANCE.getTag_Attributes();
 
 		/**
 		 * The meta object literal for the '<em><b>Content</b></em>' containment reference list feature.

@@ -113,6 +113,9 @@ public class PageSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 	@Override
 	public Supplier<Tag> create(Context context) throws Exception {
 		Page page = (Page) getTarget();
+		
+		
+		
 		ListCompoundSupplierFactory<Object> headFactory = new ListCompoundSupplierFactory<>("Head");
 		for (EObject he: page.getHead()) {
 			headFactory.add(Objects.requireNonNull(EObjectAdaptable.adaptToSupplierFactory(he, Object.class), "Cannot to adapt to SupplierFactory: " + he));

@@ -10,10 +10,11 @@
   <foreignModel>html.ecore</foreignModel>
   <genPackages prefix="Html" basePackage="org.nasdanika.html.model" disposableProviderFactory="true"
       ecorePackage="html.ecore#/">
-    <genClasses ecoreClass="html.ecore#//HtmlElement"/>
+    <genClasses ecoreClass="html.ecore#//HtmlElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//HtmlElement/attributes"/>
+    </genClasses>
     <genClasses ecoreClass="html.ecore#//Tag">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Tag/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Tag/attributes"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Tag/content"/>
     </genClasses>
     <genClasses ecoreClass="html.ecore#//Page">
