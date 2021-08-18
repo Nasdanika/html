@@ -2,7 +2,6 @@ package org.nasdanika.html.model.html.gen;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
@@ -25,16 +24,24 @@ public abstract class HtmlElementSupplierFactoryAdapter<M extends org.nasdanika.
 		return type == SupplierFactory.class;
 	}
 	
-	protected Function<T, T> createApplyAttributesFunction(Context context) throws Exception {
+	/**
+	 * Creates a function which configures the element and returns it.
+	 * This implementation applies attributes. Override to implement additional configuration.
+	 * You may chain configuration functions with <code>.then</code>
+	 * @param context
+	 * @return
+	 * @throws Exception
+	 */
+	protected Function<T, T> createConfigureFunction(Context context) throws Exception {
 		MapCompoundSupplierFactory<String,Object> attributesFactory = new MapCompoundSupplierFactory<>("Attributes");
 		for (Entry<String, EObject> ae: getTarget().getAttributes()) {
 			EObject value = ae.getValue();
-			attributesFactory.put(ae.getKey(), Objects.requireNonNull(EObjectAdaptable.adaptToSupplierFactory(value, Object.class), "Cannot to adapt to SupplierFactory: " + value));			
+			attributesFactory.put(ae.getKey(), EObjectAdaptable.adaptToSupplierFactoryNonNull(value, Object.class));			
 		}
-		return attributesFactory.<T>asFunctionFactory().then(this::doCcreateApplyAttributesFunction).create(context);
+		return attributesFactory.<T>asFunctionFactory().then(this::createApplyAttributesFunction).create(context);
 	}
 	
-	private Function<BiSupplier<T, Map<String, Object>>, T> doCcreateApplyAttributesFunction(Context context) {
+	private Function<BiSupplier<T, Map<String, Object>>, T> createApplyAttributesFunction(Context context) {
 		return new Function<BiSupplier<T,Map<String,Object>>, T>() {
 			
 			@Override

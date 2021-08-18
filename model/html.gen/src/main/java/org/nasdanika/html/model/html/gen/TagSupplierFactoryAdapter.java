@@ -1,9 +1,7 @@
 package org.nasdanika.html.model.html.gen;
 
 import java.util.List;
-import java.util.Objects;
 
-import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.ListCompoundSupplierFactory;
@@ -47,13 +45,8 @@ public class TagSupplierFactoryAdapter extends HtmlElementSupplierFactoryAdapter
 	
 	@Override
 	public Supplier<org.nasdanika.html.Tag> create(Context context) throws Exception {
-		org.nasdanika.html.model.html.Tag tag = getTarget();
-		ListCompoundSupplierFactory<Object> contentFactory = new ListCompoundSupplierFactory<>("Content");
-		for (EObject ce: tag.getContent()) {
-			contentFactory.add(Objects.requireNonNull(EObjectAdaptable.adaptToSupplierFactory(ce, Object.class), "Cannot to adapt to SupplierFactory: " + ce));
-		}		
-				
-		return contentFactory.then(this::createTagFunction).then(this::createApplyAttributesFunction).create(context);
+		ListCompoundSupplierFactory<Object> contentFactory = new ListCompoundSupplierFactory<>("Content", EObjectAdaptable.adaptToSupplierFactoryNonNull(getTarget().getContent(), Object.class));				
+		return contentFactory.then(this::createTagFunction).then(this::createConfigureFunction).create(context);
 	}	
 
 }
