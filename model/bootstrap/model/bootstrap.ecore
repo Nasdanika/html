@@ -102,6 +102,7 @@
       <eAnnotations source="urn:org.nasdanika">
         <details key="homogenous" value="true"/>
         <details key="strict-containment" value="true"/>
+        <details key="load-key" value="float"/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>

@@ -191,7 +191,7 @@ public interface Appearance extends EObject {
 	 * @return the value of the '<em>Float</em>' containment reference list.
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getAppearance_Float()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"
+	 *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true' load-key='float'"
 	 * @generated
 	 */
 	EList<org.nasdanika.html.model.bootstrap.Float> getFloat();

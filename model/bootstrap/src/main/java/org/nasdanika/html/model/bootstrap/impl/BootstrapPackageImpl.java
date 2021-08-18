@@ -2915,7 +2915,8 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		   source,
 		   new String[] {
 			   "homogenous", "true",
-			   "strict-containment", "true"
+			   "strict-containment", "true",
+			   "load-key", "float"
 		   });
 	}
 
