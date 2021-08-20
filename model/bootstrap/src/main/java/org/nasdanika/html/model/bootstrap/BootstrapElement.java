@@ -36,6 +36,7 @@ public interface BootstrapElement extends HtmlElement {
 	 * @see #setAppearance(Appearance)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getBootstrapElement_Appearance()
 	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"
 	 * @generated
 	 */
 	Appearance getAppearance();

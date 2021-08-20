@@ -41,6 +41,7 @@ public interface Border extends EObject {
 	 * @see #setColor(Color)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getBorder_Color()
 	 * @model dataType="org.nasdanika.html.model.bootstrap.Color" required="true"
+	 *        annotation="urn:org.nasdanika default-feature='true'"
 	 * @generated
 	 */
 	Color getColor();
@@ -57,7 +58,7 @@ public interface Border extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Top</b></em>' attribute.
-	 * The default value is <code>"true"</code>.
+	 * The default value is <code>"false"</code>.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -66,7 +67,7 @@ public interface Border extends EObject {
 	 * @return the value of the '<em>Top</em>' attribute.
 	 * @see #setTop(boolean)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getBorder_Top()
-	 * @model default="true"
+	 * @model default="false"
 	 * @generated
 	 */
 	boolean isTop();
@@ -83,7 +84,7 @@ public interface Border extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Bottom</b></em>' attribute.
-	 * The default value is <code>"true"</code>.
+	 * The default value is <code>"false"</code>.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -92,7 +93,7 @@ public interface Border extends EObject {
 	 * @return the value of the '<em>Bottom</em>' attribute.
 	 * @see #setBottom(boolean)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getBorder_Bottom()
-	 * @model default="true"
+	 * @model default="false"
 	 * @generated
 	 */
 	boolean isBottom();
@@ -109,7 +110,7 @@ public interface Border extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Left</b></em>' attribute.
-	 * The default value is <code>"true"</code>.
+	 * The default value is <code>"false"</code>.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -118,7 +119,7 @@ public interface Border extends EObject {
 	 * @return the value of the '<em>Left</em>' attribute.
 	 * @see #setLeft(boolean)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getBorder_Left()
-	 * @model default="true"
+	 * @model default="false"
 	 * @generated
 	 */
 	boolean isLeft();
@@ -135,7 +136,7 @@ public interface Border extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Right</b></em>' attribute.
-	 * The default value is <code>"true"</code>.
+	 * The default value is <code>"false"</code>.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -144,7 +145,7 @@ public interface Border extends EObject {
 	 * @return the value of the '<em>Right</em>' attribute.
 	 * @see #setRight(boolean)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getBorder_Right()
-	 * @model default="true"
+	 * @model default="false"
 	 * @generated
 	 */
 	boolean isRight();

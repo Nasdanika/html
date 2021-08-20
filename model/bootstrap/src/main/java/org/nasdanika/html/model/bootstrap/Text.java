@@ -72,6 +72,7 @@ public interface Text extends EObject {
 	 * @see #setColor(Color)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getText_Color()
 	 * @model dataType="org.nasdanika.html.model.bootstrap.Color"
+	 *        annotation="urn:org.nasdanika default-feature='true'"
 	 * @generated
 	 */
 	Color getColor();

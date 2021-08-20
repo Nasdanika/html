@@ -60,7 +60,7 @@ public class SpacingImpl extends MinimalEObjectImpl.Container implements Spacing
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean TOP_EDEFAULT = true;
+	protected static final boolean TOP_EDEFAULT = false;
 
 	/**
 	 * The default value of the '{@link #isBottom() <em>Bottom</em>}' attribute.
@@ -70,7 +70,7 @@ public class SpacingImpl extends MinimalEObjectImpl.Container implements Spacing
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean BOTTOM_EDEFAULT = true;
+	protected static final boolean BOTTOM_EDEFAULT = false;
 
 	/**
 	 * The default value of the '{@link #isLeft() <em>Left</em>}' attribute.
@@ -80,7 +80,7 @@ public class SpacingImpl extends MinimalEObjectImpl.Container implements Spacing
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean LEFT_EDEFAULT = true;
+	protected static final boolean LEFT_EDEFAULT = false;
 
 	/**
 	 * The default value of the '{@link #isRight() <em>Right</em>}' attribute.
@@ -90,7 +90,7 @@ public class SpacingImpl extends MinimalEObjectImpl.Container implements Spacing
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean RIGHT_EDEFAULT = true;
+	protected static final boolean RIGHT_EDEFAULT = false;
 
 	/**
 	 * The default value of the '{@link #isX() <em>X</em>}' attribute.

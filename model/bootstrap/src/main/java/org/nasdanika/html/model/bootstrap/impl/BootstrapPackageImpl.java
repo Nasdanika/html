@@ -2036,18 +2036,18 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		initEClass(borderEClass, Border.class, "Border", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBorder_Color(), this.getColor(), "color", null, 1, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBorder_Top(), ecorePackage.getEBoolean(), "top", "true", 0, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBorder_Bottom(), ecorePackage.getEBoolean(), "bottom", "true", 0, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBorder_Left(), ecorePackage.getEBoolean(), "left", "true", 0, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBorder_Right(), ecorePackage.getEBoolean(), "right", "true", 0, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBorder_Top(), ecorePackage.getEBoolean(), "top", "false", 0, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBorder_Bottom(), ecorePackage.getEBoolean(), "bottom", "false", 0, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBorder_Left(), ecorePackage.getEBoolean(), "left", "false", 0, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBorder_Right(), ecorePackage.getEBoolean(), "right", "false", 0, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(spacingEClass, Spacing.class, "Spacing", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getSpacing_Size(), this.getSize(), "size", null, 1, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getSpacing_Breakpoint(), this.getBreakpoint(), "breakpoint", null, 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getSpacing_Top(), ecorePackage.getEBoolean(), "top", "true", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getSpacing_Bottom(), ecorePackage.getEBoolean(), "bottom", "true", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getSpacing_Left(), ecorePackage.getEBoolean(), "left", "true", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getSpacing_Right(), ecorePackage.getEBoolean(), "right", "true", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSpacing_Top(), ecorePackage.getEBoolean(), "top", "false", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSpacing_Bottom(), ecorePackage.getEBoolean(), "bottom", "false", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSpacing_Left(), ecorePackage.getEBoolean(), "left", "false", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSpacing_Right(), ecorePackage.getEBoolean(), "right", "false", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getSpacing_X(), ecorePackage.getEBoolean(), "x", "false", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getSpacing_Y(), ecorePackage.getEBoolean(), "y", "false", 0, 1, Spacing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2063,7 +2063,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		initEClass(floatEClass, org.nasdanika.html.model.bootstrap.Float.class, "Float", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getFloat_Side(), ecorePackage.getEString(), "side", null, 1, 1, org.nasdanika.html.model.bootstrap.Float.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getFloat_Breakpoint(), ecorePackage.getEString(), "breakpoint", null, 0, 1, org.nasdanika.html.model.bootstrap.Float.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getFloat_Breakpoint(), this.getBreakpoint(), "breakpoint", null, 0, 1, org.nasdanika.html.model.bootstrap.Float.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(tagEClass, Tag.class, "Tag", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2195,10 +2195,10 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		// Create annotations
 		// http://www.eclipse.org/emf/2002/GenModel
 		createGenModelAnnotations();
-		// http://www.eclipse.org/emf/2002/Ecore
-		createEcoreAnnotations();
 		// urn:org.nasdanika
 		createUrnorgAnnotations();
+		// http://www.eclipse.org/emf/2002/Ecore
+		createEcoreAnnotations();
 	}
 
 	/**
@@ -2447,7 +2447,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		  (getFloat_Side(),
 		   source,
 		   new String[] {
-			   "documentation", "Side to float to."
+			   "documentation", "Side to float to. ``left``, ``right``, or ``none``."
 		   });
 		addAnnotation
 		  (getFloat_Breakpoint(),
@@ -2883,6 +2883,13 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	protected void createUrnorgAnnotations() {
 		String source = "urn:org.nasdanika";
 		addAnnotation
+		  (getBootstrapElement_Appearance(),
+		   source,
+		   new String[] {
+			   "homogenous", "true",
+			   "strict-containment", "true"
+		   });
+		addAnnotation
 		  (getAppearance_Border(),
 		   source,
 		   new String[] {
@@ -2917,6 +2924,30 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 			   "homogenous", "true",
 			   "strict-containment", "true",
 			   "load-key", "float"
+		   });
+		addAnnotation
+		  (getBorder_Color(),
+		   source,
+		   new String[] {
+			   "default-feature", "true"
+		   });
+		addAnnotation
+		  (getSpacing_Size(),
+		   source,
+		   new String[] {
+			   "default-feature", "true"
+		   });
+		addAnnotation
+		  (getText_Color(),
+		   source,
+		   new String[] {
+			   "default-feature", "true"
+		   });
+		addAnnotation
+		  (getFloat_Side(),
+		   source,
+		   new String[] {
+			   "default-feature", "true"
 		   });
 	}
 

@@ -3,6 +3,7 @@
 package org.nasdanika.html.model.bootstrap;
 
 import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.html.bootstrap.Breakpoint;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,12 +32,13 @@ public interface Float extends EObject {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Side to float to.
+	 * Side to float to. ``left``, ``right``, or ``none``.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Side</em>' attribute.
 	 * @see #setSide(String)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getFloat_Side()
 	 * @model required="true"
+	 *        annotation="urn:org.nasdanika default-feature='true'"
 	 * @generated
 	 */
 	String getSide();
@@ -59,12 +61,12 @@ public interface Float extends EObject {
 	 * Breakpoint.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Breakpoint</em>' attribute.
-	 * @see #setBreakpoint(String)
+	 * @see #setBreakpoint(Breakpoint)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getFloat_Breakpoint()
-	 * @model
+	 * @model dataType="org.nasdanika.html.model.bootstrap.Breakpoint"
 	 * @generated
 	 */
-	String getBreakpoint();
+	Breakpoint getBreakpoint();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Float#getBreakpoint <em>Breakpoint</em>}' attribute.
@@ -74,6 +76,6 @@ public interface Float extends EObject {
 	 * @see #getBreakpoint()
 	 * @generated
 	 */
-	void setBreakpoint(String value);
+	void setBreakpoint(Breakpoint value);
 
 } // Float

@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
+import org.nasdanika.common.FunctionFactory;
 import org.nasdanika.common.MapCompoundSupplierFactory;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
@@ -38,10 +39,11 @@ public abstract class HtmlElementSupplierFactoryAdapter<M extends org.nasdanika.
 			EObject value = ae.getValue();
 			attributesFactory.put(ae.getKey(), EObjectAdaptable.adaptToSupplierFactoryNonNull(value, Object.class));			
 		}
-		return attributesFactory.<T>asFunctionFactory().then(this::createApplyAttributesFunction).create(context);
+		FunctionFactory<BiSupplier<T, Map<String, Object>>, T> applyAttributesFunctionFactory = HtmlElementSupplierFactoryAdapter::createApplyAttributesFunction;
+		return attributesFactory.<T>asFunctionFactory().then(applyAttributesFunctionFactory).create(context);
 	}
 	
-	private Function<BiSupplier<T, Map<String, Object>>, T> createApplyAttributesFunction(Context context) {
+	public static <T extends org.nasdanika.html.HTMLElement<?>> Function<BiSupplier<T, Map<String, Object>>, T> createApplyAttributesFunction(Context context) {
 		return new Function<BiSupplier<T,Map<String,Object>>, T>() {
 			
 			@Override

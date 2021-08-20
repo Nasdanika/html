@@ -35,7 +35,16 @@ public class BootstrapAdapterFactory extends HtmlAdapterFactory {
 					BootstrapPackage.Literals.APPEARANCE, 
 					Util.getConsumerFactoryClass(htmlElementClass), 
 					classLoader, 
-					AppearanceConsumerFactoryAdapter::new));		
+					AppearanceConsumerFactoryAdapter::new));
+		
+		
+		registerAdapterFactory(
+				new FunctionAdapterFactory<SupplierFactory<org.nasdanika.html.Tag>, org.nasdanika.html.model.bootstrap.Tag>(
+					BootstrapPackage.Literals.TAG, 
+					Util.getSupplierFactoryClass(org.nasdanika.html.Tag.class), 
+					classLoader, 
+					TagSupplierFactoryAdapter::new));		
+		
 	}
 	
 }

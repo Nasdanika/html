@@ -46,7 +46,7 @@ public class BorderImpl extends MinimalEObjectImpl.Container implements Border {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean TOP_EDEFAULT = true;
+	protected static final boolean TOP_EDEFAULT = false;
 
 	/**
 	 * The default value of the '{@link #isBottom() <em>Bottom</em>}' attribute.
@@ -56,7 +56,7 @@ public class BorderImpl extends MinimalEObjectImpl.Container implements Border {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean BOTTOM_EDEFAULT = true;
+	protected static final boolean BOTTOM_EDEFAULT = false;
 
 	/**
 	 * The default value of the '{@link #isLeft() <em>Left</em>}' attribute.
@@ -66,7 +66,7 @@ public class BorderImpl extends MinimalEObjectImpl.Container implements Border {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean LEFT_EDEFAULT = true;
+	protected static final boolean LEFT_EDEFAULT = false;
 
 	/**
 	 * The default value of the '{@link #isRight() <em>Right</em>}' attribute.
@@ -76,7 +76,7 @@ public class BorderImpl extends MinimalEObjectImpl.Container implements Border {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean RIGHT_EDEFAULT = true;
+	protected static final boolean RIGHT_EDEFAULT = false;
 
 	/**
 	 * <!-- begin-user-doc -->

@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 
 /**
@@ -41,7 +42,7 @@ public class FloatImpl extends MinimalEObjectImpl.Container implements org.nasda
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String BREAKPOINT_EDEFAULT = null;
+	protected static final Breakpoint BREAKPOINT_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -98,8 +99,8 @@ public class FloatImpl extends MinimalEObjectImpl.Container implements org.nasda
 	 * @generated
 	 */
 	@Override
-	public String getBreakpoint() {
-		return (String)eDynamicGet(BootstrapPackage.FLOAT__BREAKPOINT, BootstrapPackage.Literals.FLOAT__BREAKPOINT, true, true);
+	public Breakpoint getBreakpoint() {
+		return (Breakpoint)eDynamicGet(BootstrapPackage.FLOAT__BREAKPOINT, BootstrapPackage.Literals.FLOAT__BREAKPOINT, true, true);
 	}
 
 	/**
@@ -108,7 +109,7 @@ public class FloatImpl extends MinimalEObjectImpl.Container implements org.nasda
 	 * @generated
 	 */
 	@Override
-	public void setBreakpoint(String newBreakpoint) {
+	public void setBreakpoint(Breakpoint newBreakpoint) {
 		eDynamicSet(BootstrapPackage.FLOAT__BREAKPOINT, BootstrapPackage.Literals.FLOAT__BREAKPOINT, newBreakpoint);
 	}
 
@@ -140,7 +141,7 @@ public class FloatImpl extends MinimalEObjectImpl.Container implements org.nasda
 				setSide((String)newValue);
 				return;
 			case BootstrapPackage.FLOAT__BREAKPOINT:
-				setBreakpoint((String)newValue);
+				setBreakpoint((Breakpoint)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

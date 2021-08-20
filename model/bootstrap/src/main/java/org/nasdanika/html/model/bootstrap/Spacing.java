@@ -45,6 +45,7 @@ public interface Spacing extends EObject {
 	 * @see #setSize(Size)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getSpacing_Size()
 	 * @model dataType="org.nasdanika.html.model.bootstrap.Size" required="true"
+	 *        annotation="urn:org.nasdanika default-feature='true'"
 	 * @generated
 	 */
 	Size getSize();
@@ -86,7 +87,7 @@ public interface Spacing extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Top</b></em>' attribute.
-	 * The default value is <code>"true"</code>.
+	 * The default value is <code>"false"</code>.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -95,7 +96,7 @@ public interface Spacing extends EObject {
 	 * @return the value of the '<em>Top</em>' attribute.
 	 * @see #setTop(boolean)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getSpacing_Top()
-	 * @model default="true"
+	 * @model default="false"
 	 * @generated
 	 */
 	boolean isTop();
@@ -112,7 +113,7 @@ public interface Spacing extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Bottom</b></em>' attribute.
-	 * The default value is <code>"true"</code>.
+	 * The default value is <code>"false"</code>.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -121,7 +122,7 @@ public interface Spacing extends EObject {
 	 * @return the value of the '<em>Bottom</em>' attribute.
 	 * @see #setBottom(boolean)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getSpacing_Bottom()
-	 * @model default="true"
+	 * @model default="false"
 	 * @generated
 	 */
 	boolean isBottom();
@@ -138,7 +139,7 @@ public interface Spacing extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Left</b></em>' attribute.
-	 * The default value is <code>"true"</code>.
+	 * The default value is <code>"false"</code>.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -147,7 +148,7 @@ public interface Spacing extends EObject {
 	 * @return the value of the '<em>Left</em>' attribute.
 	 * @see #setLeft(boolean)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getSpacing_Left()
-	 * @model default="true"
+	 * @model default="false"
 	 * @generated
 	 */
 	boolean isLeft();
@@ -164,7 +165,7 @@ public interface Spacing extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Right</b></em>' attribute.
-	 * The default value is <code>"true"</code>.
+	 * The default value is <code>"false"</code>.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -173,7 +174,7 @@ public interface Spacing extends EObject {
 	 * @return the value of the '<em>Right</em>' attribute.
 	 * @see #setRight(boolean)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getSpacing_Right()
-	 * @model default="true"
+	 * @model default="false"
 	 * @generated
 	 */
 	boolean isRight();

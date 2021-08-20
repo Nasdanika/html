@@ -10,9 +10,9 @@ import org.nasdanika.common.Supplier;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.HTMLFactory;
 
-public class TagSupplierFactoryAdapter extends HtmlElementSupplierFactoryAdapter<org.nasdanika.html.model.html.Tag, org.nasdanika.html.Tag> {
+public class TagSupplierFactoryAdapter<T extends org.nasdanika.html.model.html.Tag> extends HtmlElementSupplierFactoryAdapter<T, org.nasdanika.html.Tag> {
 	
-	public TagSupplierFactoryAdapter(org.nasdanika.html.model.html.Tag tag) {
+	public TagSupplierFactoryAdapter(T tag) {
 		super(tag);
 	}
 	
