@@ -40,8 +40,8 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 		return type == SupplierFactory.class;
 	}
 		
-	protected Supplier<BiSupplier<Map<EStructuralFeature, BootstrapElement<?,?>>, HTMLElement<?>>> createContainerSupplier(Context context) {
-		return new Supplier<BiSupplier<Map<EStructuralFeature, BootstrapElement<?,?>>, HTMLElement<?>>>() {
+	protected Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>> createContainerSupplier(Context context) {
+		return new Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>>() {
 
 			@Override
 			public double size() {
@@ -54,56 +54,56 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 			}
 
 			@Override
-			public BiSupplier<Map<EStructuralFeature, BootstrapElement<?,?>>, HTMLElement<?>> execute(ProgressMonitor progressMonitor) throws Exception {
+			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>> execute(ProgressMonitor progressMonitor) throws Exception {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				Page semanticElement = (Page) getTarget();
 				Container container = semanticElement.isFluid() ? bootstrapFactory.fluidContainer() : bootstrapFactory.container();
 				
-				Map<EStructuralFeature, BootstrapElement<?,?>> parts = new LinkedHashMap<>();
+				Map<EStructuralFeature, HTMLElement<?>> parts = new LinkedHashMap<>();
 				
 				if (semanticElement.getHeader() != null) {
 					Col header = container.row().col();				
 					header.toHTMLElement().addClass("nsd-app-header");					
-					parts.put(AppPackage.Literals.PAGE__HEADER, header);
+					parts.put(AppPackage.Literals.PAGE__HEADER, header.toHTMLElement());
 				}
 				
 				if (semanticElement.getNavigationBar() != null) {
 					Col navigationBar =  container.row().col();
 					navigationBar.toHTMLElement().addClass("nsd-app-navbar");
-					parts.put(AppPackage.Literals.PAGE__NAVIGATION_BAR, navigationBar);
+					parts.put(AppPackage.Literals.PAGE__NAVIGATION_BAR, navigationBar.toHTMLElement());
 				}
 
 				if (semanticElement.getNavigationPanel() != null || semanticElement.getContentPanel() != null) {
 					Row contentRow = container.row();
 					contentRow.toHTMLElement().addClass("nsd-app-content-row");
-					parts.put(AppPackage.Literals.PAGE__CONTENT_ROW_APPEARANCE, contentRow);
+					parts.put(AppPackage.Literals.PAGE__CONTENT_ROW_APPEARANCE, contentRow.toHTMLElement());
 
 					if (semanticElement.getNavigationPanel() != null) {
 						Col navigationPanel = contentRow.col();
 						navigationPanel.toHTMLElement().addClass("nsd-app-navigation-panel");
-						parts.put(AppPackage.Literals.PAGE__NAVIGATION_PANEL, navigationPanel);
+						parts.put(AppPackage.Literals.PAGE__NAVIGATION_PANEL, navigationPanel.toHTMLElement());
 					}
 				
 					if (semanticElement.getContentPanel() != null) {
 						Col contentPanel = contentRow.col();
 						contentPanel.toHTMLElement().addClass("nsd-app-content-panel");
-						parts.put(AppPackage.Literals.PAGE__CONTENT_PANEL, contentPanel);
+						parts.put(AppPackage.Literals.PAGE__CONTENT_PANEL, contentPanel.toHTMLElement());
 					}
 				}
 
 				if (semanticElement.getFooter() != null) {
 					Col footer =  container.row().col();
 					footer.toHTMLElement().addClass("nsd-app-footer");
-					parts.put(AppPackage.Literals.PAGE__FOOTER, footer);
+					parts.put(AppPackage.Literals.PAGE__FOOTER, footer.toHTMLElement());
 				}
 				
 				Tag containerTag = container.toHTMLElement();
 				containerTag.addClass("nsd-app-container");
 				
-				return new BiSupplier<Map<EStructuralFeature,BootstrapElement<?,?>>, HTMLElement<?>>() {
+				return new BiSupplier<Map<EStructuralFeature,HTMLElement<?>>, HTMLElement<?>>() {
 
 					@Override
-					public Map<EStructuralFeature, BootstrapElement<?,?>> getFirst() {
+					public Map<EStructuralFeature, HTMLElement<?>> getFirst() {
 						return parts;
 					}
 
@@ -119,36 +119,36 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 	
 	@Override
 	public Supplier<HTMLElement<?>> createElementSupplier(Context context) throws Exception {
-		MapCompoundConsumerFactory<EStructuralFeature, BootstrapElement<?,?>> partsFactory = new MapCompoundConsumerFactory<>("Page parts");
+		MapCompoundConsumerFactory<EStructuralFeature, HTMLElement<?>> partsFactory = new MapCompoundConsumerFactory<>("Page parts");
 		Page semanticElement = (Page) getTarget();
 		
 		Header header = semanticElement.getHeader();
 		if (header != null) {
-			partsFactory.put(AppPackage.Literals.PAGE__HEADER, EObjectAdaptable.adaptToConsumerFactoryNonNull(header, BootstrapElement.class));			
+			partsFactory.put(AppPackage.Literals.PAGE__HEADER, EObjectAdaptable.adaptToConsumerFactoryNonNull(header, HTMLElement.class));			
 		}
 		NavigationBar navigationBar = semanticElement.getNavigationBar();
 		if (navigationBar != null) {
-			partsFactory.put(AppPackage.Literals.PAGE__NAVIGATION_BAR, EObjectAdaptable.adaptToConsumerFactoryNonNull(navigationBar, BootstrapElement.class));			
+			partsFactory.put(AppPackage.Literals.PAGE__NAVIGATION_BAR, EObjectAdaptable.adaptToConsumerFactoryNonNull(navigationBar, HTMLElement.class));			
 		}
 		Appearance conentRowAppearance = semanticElement.getContentRowAppearance();
 		if (conentRowAppearance != null) {
-			partsFactory.put(AppPackage.Literals.PAGE__CONTENT_ROW_APPEARANCE, EObjectAdaptable.adaptToConsumerFactoryNonNull(conentRowAppearance, BootstrapElement.class));			
+			partsFactory.put(AppPackage.Literals.PAGE__CONTENT_ROW_APPEARANCE, EObjectAdaptable.adaptToConsumerFactoryNonNull(conentRowAppearance, HTMLElement.class));			
 		}
 		NavigationPanel navigationPanel = semanticElement.getNavigationPanel();
 		if (navigationPanel != null) {
-			partsFactory.put(AppPackage.Literals.PAGE__NAVIGATION_PANEL, EObjectAdaptable.adaptToConsumerFactoryNonNull(navigationPanel, BootstrapElement.class));			
+			partsFactory.put(AppPackage.Literals.PAGE__NAVIGATION_PANEL, EObjectAdaptable.adaptToConsumerFactoryNonNull(navigationPanel, HTMLElement.class));			
 		}
 		ContentPanel contentPanel = semanticElement.getContentPanel();
 		if (contentPanel != null) {
-			partsFactory.put(AppPackage.Literals.PAGE__CONTENT_PANEL, EObjectAdaptable.adaptToConsumerFactoryNonNull(contentPanel, BootstrapElement.class));			
+			partsFactory.put(AppPackage.Literals.PAGE__CONTENT_PANEL, EObjectAdaptable.adaptToConsumerFactoryNonNull(contentPanel, HTMLElement.class));			
 		}
 		Footer footer = semanticElement.getFooter();
 		if (footer != null) {
-			partsFactory.put(AppPackage.Literals.PAGE__FOOTER, EObjectAdaptable.adaptToConsumerFactoryNonNull(footer, BootstrapElement.class));			
+			partsFactory.put(AppPackage.Literals.PAGE__FOOTER, EObjectAdaptable.adaptToConsumerFactoryNonNull(footer, HTMLElement.class));			
 		}	
 		
-		SupplierFactory<BiSupplier<Map<EStructuralFeature, BootstrapElement<?,?>>, HTMLElement<?>>> containerSupplierFactory = this::createContainerSupplier;		
-		FunctionFactory<BiSupplier<Map<EStructuralFeature, BootstrapElement<?,?>>, HTMLElement<?>>, HTMLElement<?>> partsFunctionFactory = partsFactory.asBiSupplierFunctionFactory();
+		SupplierFactory<BiSupplier<Map<EStructuralFeature,HTMLElement<?>>, HTMLElement<?>>> containerSupplierFactory = this::createContainerSupplier;		
+		FunctionFactory<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>, HTMLElement<?>> partsFunctionFactory = partsFactory.asBiSupplierFunctionFactory();
 		return containerSupplierFactory.then(partsFunctionFactory).create(context);
 	}	
 	
