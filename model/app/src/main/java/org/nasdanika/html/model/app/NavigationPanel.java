@@ -2,9 +2,6 @@
  */
 package org.nasdanika.html.model.app;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Navigation Panel</b></em>'.
@@ -19,7 +16,6 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.NavigationPanel#getStyle <em>Style</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.NavigationPanel#getItems <em>Items</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getNavigationPanel()
@@ -55,20 +51,5 @@ public interface NavigationPanel extends PagePart {
 	 * @generated
 	 */
 	void setStyle(NavigationPanelStyle value);
-
-	/**
-	 * Returns the value of the '<em><b>Items</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Navigation items. Typically labels and links, but may contain custom content.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Items</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getNavigationPanel_Items()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<EObject> getItems();
 
 } // NavigationPanel

@@ -81,6 +81,24 @@ public interface AppPackage extends EPackage {
 	int LABEL__DESCRIPTION = BootstrapPackage.BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__ATTRIBUTES = BootstrapPackage.BOOTSTRAP_ELEMENT__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__CONTENT = BootstrapPackage.BOOTSTRAP_ELEMENT__CONTENT;
+
+	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -215,6 +233,24 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK__DESCRIPTION = LABEL__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__ATTRIBUTES = LABEL__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__CONTENT = LABEL__CONTENT;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -389,6 +425,24 @@ public interface AppPackage extends EPackage {
 	int PAGE__DESCRIPTION = BootstrapPackage.BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__ATTRIBUTES = BootstrapPackage.BOOTSTRAP_ELEMENT__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__CONTENT = BootstrapPackage.BOOTSTRAP_ELEMENT__CONTENT;
+
+	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -498,6 +552,24 @@ public interface AppPackage extends EPackage {
 	int PAGE_PART__DESCRIPTION = BootstrapPackage.BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE_PART__ATTRIBUTES = BootstrapPackage.BOOTSTRAP_ELEMENT__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE_PART__CONTENT = BootstrapPackage.BOOTSTRAP_ELEMENT__CONTENT;
+
+	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -507,13 +579,13 @@ public interface AppPackage extends EPackage {
 	int PAGE_PART__APPEARANCE = BootstrapPackage.BOOTSTRAP_ELEMENT__APPEARANCE;
 
 	/**
-	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Items</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_PART__CONTENT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+	int PAGE_PART__ITEMS = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Page Part</em>' class.
@@ -553,13 +625,13 @@ public interface AppPackage extends EPackage {
 	int HEADER__DESCRIPTION = PAGE_PART__DESCRIPTION;
 
 	/**
-	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HEADER__APPEARANCE = PAGE_PART__APPEARANCE;
+	int HEADER__ATTRIBUTES = PAGE_PART__ATTRIBUTES;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
@@ -571,6 +643,24 @@ public interface AppPackage extends EPackage {
 	int HEADER__CONTENT = PAGE_PART__CONTENT;
 
 	/**
+	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HEADER__APPEARANCE = PAGE_PART__APPEARANCE;
+
+	/**
+	 * The feature id for the '<em><b>Items</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HEADER__ITEMS = PAGE_PART__ITEMS;
+
+	/**
 	 * The feature id for the '<em><b>Title</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -580,22 +670,13 @@ public interface AppPackage extends EPackage {
 	int HEADER__TITLE = PAGE_PART_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Navigation</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int HEADER__NAVIGATION = PAGE_PART_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Header</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HEADER_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 2;
+	int HEADER_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Header</em>' class.
@@ -626,13 +707,13 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_BAR__DESCRIPTION = PAGE_PART__DESCRIPTION;
 
 	/**
-	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_BAR__APPEARANCE = PAGE_PART__APPEARANCE;
+	int NAVIGATION_BAR__ATTRIBUTES = PAGE_PART__ATTRIBUTES;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
@@ -644,6 +725,24 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_BAR__CONTENT = PAGE_PART__CONTENT;
 
 	/**
+	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_BAR__APPEARANCE = PAGE_PART__APPEARANCE;
+
+	/**
+	 * The feature id for the '<em><b>Items</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_BAR__ITEMS = PAGE_PART__ITEMS;
+
+	/**
 	 * The feature id for the '<em><b>Brand</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -653,22 +752,13 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_BAR__BRAND = PAGE_PART_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Items</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int NAVIGATION_BAR__ITEMS = PAGE_PART_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Navigation Bar</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_BAR_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 2;
+	int NAVIGATION_BAR_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Navigation Bar</em>' class.
@@ -699,13 +789,13 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL__DESCRIPTION = PAGE_PART__DESCRIPTION;
 
 	/**
-	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_PANEL__APPEARANCE = PAGE_PART__APPEARANCE;
+	int NAVIGATION_PANEL__ATTRIBUTES = PAGE_PART__ATTRIBUTES;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
@@ -717,6 +807,24 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL__CONTENT = PAGE_PART__CONTENT;
 
 	/**
+	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_PANEL__APPEARANCE = PAGE_PART__APPEARANCE;
+
+	/**
+	 * The feature id for the '<em><b>Items</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_PANEL__ITEMS = PAGE_PART__ITEMS;
+
+	/**
 	 * The feature id for the '<em><b>Style</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -726,22 +834,13 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL__STYLE = PAGE_PART_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Items</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int NAVIGATION_PANEL__ITEMS = PAGE_PART_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Navigation Panel</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_PANEL_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 2;
+	int NAVIGATION_PANEL_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Navigation Panel</em>' class.
@@ -772,13 +871,13 @@ public interface AppPackage extends EPackage {
 	int CONTENT_PANEL__DESCRIPTION = PAGE_PART__DESCRIPTION;
 
 	/**
-	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_PANEL__APPEARANCE = PAGE_PART__APPEARANCE;
+	int CONTENT_PANEL__ATTRIBUTES = PAGE_PART__ATTRIBUTES;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
@@ -788,6 +887,24 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_PANEL__CONTENT = PAGE_PART__CONTENT;
+
+	/**
+	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_PANEL__APPEARANCE = PAGE_PART__APPEARANCE;
+
+	/**
+	 * The feature id for the '<em><b>Items</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_PANEL__ITEMS = PAGE_PART__ITEMS;
 
 	/**
 	 * The feature id for the '<em><b>Breadcrumb</b></em>' containment reference list.
@@ -808,22 +925,13 @@ public interface AppPackage extends EPackage {
 	int CONTENT_PANEL__TITLE = PAGE_PART_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Navigation</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONTENT_PANEL__NAVIGATION = PAGE_PART_FEATURE_COUNT + 2;
-
-	/**
 	 * The feature id for the '<em><b>Left Navigation</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_PANEL__LEFT_NAVIGATION = PAGE_PART_FEATURE_COUNT + 3;
+	int CONTENT_PANEL__LEFT_NAVIGATION = PAGE_PART_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Right Navigation</b></em>' containment reference.
@@ -832,7 +940,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_PANEL__RIGHT_NAVIGATION = PAGE_PART_FEATURE_COUNT + 4;
+	int CONTENT_PANEL__RIGHT_NAVIGATION = PAGE_PART_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Float Left Navigation</b></em>' containment reference.
@@ -841,7 +949,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_PANEL__FLOAT_LEFT_NAVIGATION = PAGE_PART_FEATURE_COUNT + 5;
+	int CONTENT_PANEL__FLOAT_LEFT_NAVIGATION = PAGE_PART_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Float Right Navigation</b></em>' containment reference.
@@ -850,7 +958,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_PANEL__FLOAT_RIGHT_NAVIGATION = PAGE_PART_FEATURE_COUNT + 6;
+	int CONTENT_PANEL__FLOAT_RIGHT_NAVIGATION = PAGE_PART_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Sections</b></em>' containment reference list.
@@ -859,7 +967,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_PANEL__SECTIONS = PAGE_PART_FEATURE_COUNT + 7;
+	int CONTENT_PANEL__SECTIONS = PAGE_PART_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Section Columns</b></em>' attribute.
@@ -868,7 +976,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_PANEL__SECTION_COLUMNS = PAGE_PART_FEATURE_COUNT + 8;
+	int CONTENT_PANEL__SECTION_COLUMNS = PAGE_PART_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Section Style</b></em>' attribute.
@@ -877,7 +985,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_PANEL__SECTION_STYLE = PAGE_PART_FEATURE_COUNT + 9;
+	int CONTENT_PANEL__SECTION_STYLE = PAGE_PART_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Content Panel</em>' class.
@@ -886,7 +994,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_PANEL_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 10;
+	int CONTENT_PANEL_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of operations of the '<em>Content Panel</em>' class.
@@ -917,13 +1025,13 @@ public interface AppPackage extends EPackage {
 	int FOOTER__DESCRIPTION = PAGE_PART__DESCRIPTION;
 
 	/**
-	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FOOTER__APPEARANCE = PAGE_PART__APPEARANCE;
+	int FOOTER__ATTRIBUTES = PAGE_PART__ATTRIBUTES;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
@@ -935,13 +1043,22 @@ public interface AppPackage extends EPackage {
 	int FOOTER__CONTENT = PAGE_PART__CONTENT;
 
 	/**
+	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FOOTER__APPEARANCE = PAGE_PART__APPEARANCE;
+
+	/**
 	 * The feature id for the '<em><b>Items</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FOOTER__ITEMS = PAGE_PART_FEATURE_COUNT + 0;
+	int FOOTER__ITEMS = PAGE_PART__ITEMS;
 
 	/**
 	 * The number of structural features of the '<em>Footer</em>' class.
@@ -950,7 +1067,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FOOTER_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 1;
+	int FOOTER_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Footer</em>' class.
@@ -979,6 +1096,24 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION__DESCRIPTION = LINK__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__ATTRIBUTES = LINK__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__CONTENT = LINK__CONTENT;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -1143,22 +1278,13 @@ public interface AppPackage extends EPackage {
 	int ACTION__SECTION_STYLE = LINK_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION__CONTENT = LINK_FEATURE_COUNT + 3;
-
-	/**
 	 * The feature id for the '<em><b>Navigation</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__NAVIGATION = LINK_FEATURE_COUNT + 4;
+	int ACTION__NAVIGATION = LINK_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Left Navigation</b></em>' containment reference.
@@ -1167,7 +1293,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__LEFT_NAVIGATION = LINK_FEATURE_COUNT + 5;
+	int ACTION__LEFT_NAVIGATION = LINK_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Right Navigation</b></em>' containment reference.
@@ -1176,7 +1302,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 6;
+	int ACTION__RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Float Left Navigation</b></em>' containment reference.
@@ -1185,7 +1311,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__FLOAT_LEFT_NAVIGATION = LINK_FEATURE_COUNT + 7;
+	int ACTION__FLOAT_LEFT_NAVIGATION = LINK_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Float Right Navigation</b></em>' containment reference.
@@ -1194,7 +1320,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__FLOAT_RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 8;
+	int ACTION__FLOAT_RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Anonymous</b></em>' containment reference list.
@@ -1203,7 +1329,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__ANONYMOUS = LINK_FEATURE_COUNT + 9;
+	int ACTION__ANONYMOUS = LINK_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Resources</b></em>' containment reference list.
@@ -1212,7 +1338,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__RESOURCES = LINK_FEATURE_COUNT + 10;
+	int ACTION__RESOURCES = LINK_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Inline</b></em>' attribute.
@@ -1221,7 +1347,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__INLINE = LINK_FEATURE_COUNT + 11;
+	int ACTION__INLINE = LINK_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Modal</b></em>' attribute.
@@ -1230,7 +1356,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__MODAL = LINK_FEATURE_COUNT + 12;
+	int ACTION__MODAL = LINK_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of structural features of the '<em>Action</em>' class.
@@ -1239,7 +1365,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_FEATURE_COUNT = LINK_FEATURE_COUNT + 13;
+	int ACTION_FEATURE_COUNT = LINK_FEATURE_COUNT + 12;
 
 	/**
 	 * The number of operations of the '<em>Action</em>' class.
@@ -1521,15 +1647,15 @@ public interface AppPackage extends EPackage {
 	EClass getPagePart();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.PagePart#getContent <em>Content</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.PagePart#getItems <em>Items</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Content</em>'.
-	 * @see org.nasdanika.html.model.app.PagePart#getContent()
+	 * @return the meta object for the containment reference list '<em>Items</em>'.
+	 * @see org.nasdanika.html.model.app.PagePart#getItems()
 	 * @see #getPagePart()
 	 * @generated
 	 */
-	EReference getPagePart_Content();
+	EReference getPagePart_Items();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.Header <em>Header</em>}'.
@@ -1553,17 +1679,6 @@ public interface AppPackage extends EPackage {
 	EReference getHeader_Title();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.Header#getNavigation <em>Navigation</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Navigation</em>'.
-	 * @see org.nasdanika.html.model.app.Header#getNavigation()
-	 * @see #getHeader()
-	 * @generated
-	 */
-	EReference getHeader_Navigation();
-
-	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.NavigationBar <em>Navigation Bar</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1583,17 +1698,6 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getNavigationBar_Brand();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.NavigationBar#getItems <em>Items</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Items</em>'.
-	 * @see org.nasdanika.html.model.app.NavigationBar#getItems()
-	 * @see #getNavigationBar()
-	 * @generated
-	 */
-	EReference getNavigationBar_Items();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.NavigationPanel <em>Navigation Panel</em>}'.
@@ -1617,17 +1721,6 @@ public interface AppPackage extends EPackage {
 	EAttribute getNavigationPanel_Style();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.NavigationPanel#getItems <em>Items</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Items</em>'.
-	 * @see org.nasdanika.html.model.app.NavigationPanel#getItems()
-	 * @see #getNavigationPanel()
-	 * @generated
-	 */
-	EReference getNavigationPanel_Items();
-
-	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ContentPanel <em>Content Panel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1647,17 +1740,6 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getContentPanel_Title();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.ContentPanel#getNavigation <em>Navigation</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Navigation</em>'.
-	 * @see org.nasdanika.html.model.app.ContentPanel#getNavigation()
-	 * @see #getContentPanel()
-	 * @generated
-	 */
-	EReference getContentPanel_Navigation();
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.ContentPanel#getBreadcrumb <em>Breadcrumb</em>}'.
@@ -1758,17 +1840,6 @@ public interface AppPackage extends EPackage {
 	EClass getFooter();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.Footer#getItems <em>Items</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Items</em>'.
-	 * @see org.nasdanika.html.model.app.Footer#getItems()
-	 * @see #getFooter()
-	 * @generated
-	 */
-	EReference getFooter_Items();
-
-	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.Action <em>Action</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1810,17 +1881,6 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getAction_SectionStyle();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.Action#getContent <em>Content</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Content</em>'.
-	 * @see org.nasdanika.html.model.app.Action#getContent()
-	 * @see #getAction()
-	 * @generated
-	 */
-	EReference getAction_Content();
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.Action#getNavigation <em>Navigation</em>}'.
@@ -2159,12 +2219,12 @@ public interface AppPackage extends EPackage {
 		EClass PAGE_PART = eINSTANCE.getPagePart();
 
 		/**
-		 * The meta object literal for the '<em><b>Content</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Items</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference PAGE_PART__CONTENT = eINSTANCE.getPagePart_Content();
+		EReference PAGE_PART__ITEMS = eINSTANCE.getPagePart_Items();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.HeaderImpl <em>Header</em>}' class.
@@ -2185,14 +2245,6 @@ public interface AppPackage extends EPackage {
 		EReference HEADER__TITLE = eINSTANCE.getHeader_Title();
 
 		/**
-		 * The meta object literal for the '<em><b>Navigation</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference HEADER__NAVIGATION = eINSTANCE.getHeader_Navigation();
-
-		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.NavigationBarImpl <em>Navigation Bar</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2209,14 +2261,6 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EReference NAVIGATION_BAR__BRAND = eINSTANCE.getNavigationBar_Brand();
-
-		/**
-		 * The meta object literal for the '<em><b>Items</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference NAVIGATION_BAR__ITEMS = eINSTANCE.getNavigationBar_Items();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl <em>Navigation Panel</em>}' class.
@@ -2237,14 +2281,6 @@ public interface AppPackage extends EPackage {
 		EAttribute NAVIGATION_PANEL__STYLE = eINSTANCE.getNavigationPanel_Style();
 
 		/**
-		 * The meta object literal for the '<em><b>Items</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference NAVIGATION_PANEL__ITEMS = eINSTANCE.getNavigationPanel_Items();
-
-		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ContentPanelImpl <em>Content Panel</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2261,14 +2297,6 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CONTENT_PANEL__TITLE = eINSTANCE.getContentPanel_Title();
-
-		/**
-		 * The meta object literal for the '<em><b>Navigation</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CONTENT_PANEL__NAVIGATION = eINSTANCE.getContentPanel_Navigation();
 
 		/**
 		 * The meta object literal for the '<em><b>Breadcrumb</b></em>' containment reference list feature.
@@ -2345,14 +2373,6 @@ public interface AppPackage extends EPackage {
 		EClass FOOTER = eINSTANCE.getFooter();
 
 		/**
-		 * The meta object literal for the '<em><b>Items</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference FOOTER__ITEMS = eINSTANCE.getFooter_Items();
-
-		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ActionImpl <em>Action</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2385,14 +2405,6 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ACTION__SECTION_STYLE = eINSTANCE.getAction_SectionStyle();
-
-		/**
-		 * The meta object literal for the '<em><b>Content</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ACTION__CONTENT = eINSTANCE.getAction_Content();
 
 		/**
 		 * The meta object literal for the '<em><b>Navigation</b></em>' containment reference list feature.

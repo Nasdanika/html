@@ -2,9 +2,6 @@
  */
 package org.nasdanika.html.model.app;
 
-import org.eclipse.emf.common.util.EList;
-import org.nasdanika.html.model.bootstrap.BootstrapElement;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Navigation Bar</b></em>'.
@@ -19,7 +16,6 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  * </p>
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.NavigationBar#getBrand <em>Brand</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.NavigationBar#getItems <em>Items</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getNavigationBar()
@@ -51,20 +47,5 @@ public interface NavigationBar extends PagePart {
 	 * @generated
 	 */
 	void setBrand(Label value);
-
-	/**
-	 * Returns the value of the '<em><b>Items</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.bootstrap.BootstrapElement}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Navigation items. Typically links, but may contain custom content.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Items</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getNavigationBar_Items()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<BootstrapElement> getItems();
 
 } // NavigationBar

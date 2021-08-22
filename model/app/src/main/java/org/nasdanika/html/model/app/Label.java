@@ -28,7 +28,7 @@ import org.nasdanika.html.model.bootstrap.Item;
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getLabel()
- * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='color'"
+ * @model
  * @generated
  */
 public interface Label extends BootstrapElement, Item {

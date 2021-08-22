@@ -92,6 +92,15 @@ public interface BootstrapPackage extends EPackage {
 	int BOOTSTRAP_ELEMENT__ATTRIBUTES = HtmlPackage.HTML_ELEMENT__ATTRIBUTES;
 
 	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOTSTRAP_ELEMENT__CONTENT = HtmlPackage.HTML_ELEMENT__CONTENT;
+
+	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -675,15 +684,6 @@ public interface BootstrapPackage extends EPackage {
 	int TAG__ATTRIBUTES = HtmlPackage.TAG__ATTRIBUTES;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TAG__NAME = HtmlPackage.TAG__NAME;
-
-	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -691,6 +691,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TAG__CONTENT = HtmlPackage.TAG__CONTENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TAG__NAME = HtmlPackage.TAG__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -748,15 +757,6 @@ public interface BootstrapPackage extends EPackage {
 	int DIV__ATTRIBUTES = TAG__ATTRIBUTES;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DIV__NAME = TAG__NAME;
-
-	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -764,6 +764,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int DIV__CONTENT = TAG__CONTENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DIV__NAME = TAG__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -1122,15 +1131,6 @@ public interface BootstrapPackage extends EPackage {
 	int ACTION_GROUP__ATTRIBUTES = DIV__ATTRIBUTES;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION_GROUP__NAME = DIV__NAME;
-
-	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1138,6 +1138,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION_GROUP__CONTENT = DIV__CONTENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_GROUP__NAME = DIV__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -1213,6 +1222,15 @@ public interface BootstrapPackage extends EPackage {
 	int CONTAINER__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
 
 	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER__CONTENT = BOOTSTRAP_ELEMENT__CONTENT;
+
+	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1284,6 +1302,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ROW__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROW__CONTENT = BOOTSTRAP_ELEMENT__CONTENT;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -1396,6 +1423,15 @@ public interface BootstrapPackage extends EPackage {
 	int COLUMN__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
 
 	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COLUMN__CONTENT = BOOTSTRAP_ELEMENT__CONTENT;
+
+	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1414,22 +1450,13 @@ public interface BootstrapPackage extends EPackage {
 	int COLUMN__WIDTH = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COLUMN__CONTENT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Column</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COLUMN_FEATURE_COUNT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
+	int COLUMN_FEATURE_COUNT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Column</em>' class.
@@ -1467,6 +1494,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_ROW_CONTAINER__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_ROW_CONTAINER__CONTENT = BOOTSTRAP_ELEMENT__CONTENT;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -1533,6 +1569,15 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_SECTION__ATTRIBUTES = TABLE_ROW_CONTAINER__ATTRIBUTES;
 
 	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_SECTION__CONTENT = TABLE_ROW_CONTAINER__CONTENT;
+
+	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1595,6 +1640,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_HEADER__ATTRIBUTES = TABLE_SECTION__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_HEADER__CONTENT = TABLE_SECTION__CONTENT;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -1761,6 +1815,15 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE__ATTRIBUTES = TABLE_ROW_CONTAINER__ATTRIBUTES;
 
 	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE__CONTENT = TABLE_ROW_CONTAINER__CONTENT;
+
+	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1906,6 +1969,15 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_ROW__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
 
 	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_ROW__CONTENT = BOOTSTRAP_ELEMENT__CONTENT;
+
+	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1988,6 +2060,15 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_CELL__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
 
 	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_CELL__CONTENT = BOOTSTRAP_ELEMENT__CONTENT;
+
+	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2042,22 +2123,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_CELL__BACKGROUND = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
-	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TABLE_CELL__CONTENT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
-
-	/**
 	 * The number of structural features of the '<em>Table Cell</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_CELL_FEATURE_COUNT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 6;
+	int TABLE_CELL_FEATURE_COUNT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Table Cell</em>' class.
@@ -2097,15 +2169,6 @@ public interface BootstrapPackage extends EPackage {
 	int CARD__ATTRIBUTES = DIV__ATTRIBUTES;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CARD__NAME = DIV__NAME;
-
-	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2113,6 +2176,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int CARD__CONTENT = DIV__CONTENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CARD__NAME = DIV__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -2197,15 +2269,6 @@ public interface BootstrapPackage extends EPackage {
 	int ALERT__ATTRIBUTES = DIV__ATTRIBUTES;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ALERT__NAME = DIV__NAME;
-
-	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2213,6 +2276,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ALERT__CONTENT = DIV__CONTENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ALERT__NAME = DIV__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -2279,15 +2351,6 @@ public interface BootstrapPackage extends EPackage {
 	int BADGE__ATTRIBUTES = DIV__ATTRIBUTES;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BADGE__NAME = DIV__NAME;
-
-	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2295,6 +2358,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int BADGE__CONTENT = DIV__CONTENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__NAME = DIV__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -2389,15 +2461,6 @@ public interface BootstrapPackage extends EPackage {
 	int BUTTON__ATTRIBUTES = DIV__ATTRIBUTES;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BUTTON__NAME = DIV__NAME;
-
-	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2405,6 +2468,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int BUTTON__CONTENT = DIV__CONTENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BUTTON__NAME = DIV__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
@@ -3585,17 +3657,6 @@ public interface BootstrapPackage extends EPackage {
 	EReference getColumn_Width();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.bootstrap.Column#getContent <em>Content</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Content</em>'.
-	 * @see org.nasdanika.html.model.bootstrap.Column#getContent()
-	 * @see #getColumn()
-	 * @generated
-	 */
-	EReference getColumn_Content();
-
-	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.bootstrap.TableRowContainer <em>Table Row Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3884,17 +3945,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getTableCell_Background();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.bootstrap.TableCell#getContent <em>Content</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Content</em>'.
-	 * @see org.nasdanika.html.model.bootstrap.TableCell#getContent()
-	 * @see #getTableCell()
-	 * @generated
-	 */
-	EReference getTableCell_Content();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.bootstrap.Card <em>Card</em>}'.
@@ -4810,14 +4860,6 @@ public interface BootstrapPackage extends EPackage {
 		EReference COLUMN__WIDTH = eINSTANCE.getColumn_Width();
 
 		/**
-		 * The meta object literal for the '<em><b>Content</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference COLUMN__CONTENT = eINSTANCE.getColumn_Content();
-
-		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.bootstrap.impl.TableRowContainerImpl <em>Table Row Container</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -5046,14 +5088,6 @@ public interface BootstrapPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TABLE_CELL__BACKGROUND = eINSTANCE.getTableCell_Background();
-
-		/**
-		 * The meta object literal for the '<em><b>Content</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference TABLE_CELL__CONTENT = eINSTANCE.getTableCell_Content();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.bootstrap.impl.CardImpl <em>Card</em>}' class.

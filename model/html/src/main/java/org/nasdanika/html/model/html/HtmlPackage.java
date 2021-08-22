@@ -92,13 +92,22 @@ public interface HtmlPackage extends EPackage {
 	int HTML_ELEMENT__ATTRIBUTES = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HTML_ELEMENT__CONTENT = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT_FEATURE_COUNT = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+	int HTML_ELEMENT_FEATURE_COUNT = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Element</em>' class.
@@ -138,6 +147,15 @@ public interface HtmlPackage extends EPackage {
 	int TAG__ATTRIBUTES = HTML_ELEMENT__ATTRIBUTES;
 
 	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TAG__CONTENT = HTML_ELEMENT__CONTENT;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -147,22 +165,13 @@ public interface HtmlPackage extends EPackage {
 	int TAG__NAME = HTML_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TAG__CONTENT = HTML_ELEMENT_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Tag</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TAG_FEATURE_COUNT = HTML_ELEMENT_FEATURE_COUNT + 2;
+	int TAG_FEATURE_COUNT = HTML_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Tag</em>' class.
@@ -480,6 +489,17 @@ public interface HtmlPackage extends EPackage {
 	EReference getHtmlElement_Attributes();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.html.HtmlElement#getContent <em>Content</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Content</em>'.
+	 * @see org.nasdanika.html.model.html.HtmlElement#getContent()
+	 * @see #getHtmlElement()
+	 * @generated
+	 */
+	EReference getHtmlElement_Content();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.html.Tag <em>Tag</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -499,17 +519,6 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getTag_Name();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.html.Tag#getContent <em>Content</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Content</em>'.
-	 * @see org.nasdanika.html.model.html.Tag#getContent()
-	 * @see #getTag()
-	 * @generated
-	 */
-	EReference getTag_Content();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.html.Page <em>Page</em>}'.
@@ -702,6 +711,14 @@ public interface HtmlPackage extends EPackage {
 		EReference HTML_ELEMENT__ATTRIBUTES = eINSTANCE.getHtmlElement_Attributes();
 
 		/**
+		 * The meta object literal for the '<em><b>Content</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference HTML_ELEMENT__CONTENT = eINSTANCE.getHtmlElement_Content();
+
+		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.html.impl.TagImpl <em>Tag</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -718,14 +735,6 @@ public interface HtmlPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TAG__NAME = eINSTANCE.getTag_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Content</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference TAG__CONTENT = eINSTANCE.getTag_Content();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.html.impl.PageImpl <em>Page</em>}' class.

@@ -66,24 +66,20 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Page/contentRowAppearance"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//PagePart">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//PagePart/content"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//PagePart/items"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//Header">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Header/title"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Header/navigation"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//NavigationBar">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//NavigationBar/brand"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//NavigationBar/items"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//NavigationPanel">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//NavigationPanel/style"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//NavigationPanel/items"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//ContentPanel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/breadcrumb"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/title"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/navigation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/leftNavigation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/rightNavigation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/floatLeftNavigation"/>
@@ -92,14 +88,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ContentPanel/sectionColumns"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//ContentPanel/sectionStyle"/>
     </genClasses>
-    <genClasses ecoreClass="app.ecore#//Footer">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Footer/items"/>
-    </genClasses>
+    <genClasses ecoreClass="app.ecore#//Footer"/>
     <genClasses ecoreClass="app.ecore#//Action">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/sectionColumns"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/sectionStyle"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/content"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/navigation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/leftNavigation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/rightNavigation"/>

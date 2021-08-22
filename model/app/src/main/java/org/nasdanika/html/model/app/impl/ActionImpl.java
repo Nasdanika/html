@@ -9,7 +9,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -32,7 +31,6 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getId <em>Id</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getSectionColumns <em>Section Columns</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getSectionStyle <em>Section Style</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getContent <em>Content</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getNavigation <em>Navigation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getLeftNavigation <em>Left Navigation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getRightNavigation <em>Right Navigation</em>}</li>
@@ -174,17 +172,6 @@ public class ActionImpl extends LinkImpl implements Action {
 	@Override
 	public void setSectionStyle(SectionStyle newSectionStyle) {
 		eDynamicSet(AppPackage.ACTION__SECTION_STYLE, AppPackage.Literals.ACTION__SECTION_STYLE, newSectionStyle);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public EList<EObject> getContent() {
-		return (EList<EObject>)eDynamicGet(AppPackage.ACTION__CONTENT, AppPackage.Literals.ACTION__CONTENT, true, true);
 	}
 
 	/**
@@ -388,8 +375,6 @@ public class ActionImpl extends LinkImpl implements Action {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case AppPackage.ACTION__CONTENT:
-				return ((InternalEList<?>)getContent()).basicRemove(otherEnd, msgs);
 			case AppPackage.ACTION__NAVIGATION:
 				return ((InternalEList<?>)getNavigation()).basicRemove(otherEnd, msgs);
 			case AppPackage.ACTION__LEFT_NAVIGATION:
@@ -422,8 +407,6 @@ public class ActionImpl extends LinkImpl implements Action {
 				return getSectionColumns();
 			case AppPackage.ACTION__SECTION_STYLE:
 				return getSectionStyle();
-			case AppPackage.ACTION__CONTENT:
-				return getContent();
 			case AppPackage.ACTION__NAVIGATION:
 				return getNavigation();
 			case AppPackage.ACTION__LEFT_NAVIGATION:
@@ -463,10 +446,6 @@ public class ActionImpl extends LinkImpl implements Action {
 				return;
 			case AppPackage.ACTION__SECTION_STYLE:
 				setSectionStyle((SectionStyle)newValue);
-				return;
-			case AppPackage.ACTION__CONTENT:
-				getContent().clear();
-				getContent().addAll((Collection<? extends EObject>)newValue);
 				return;
 			case AppPackage.ACTION__NAVIGATION:
 				getNavigation().clear();
@@ -519,9 +498,6 @@ public class ActionImpl extends LinkImpl implements Action {
 			case AppPackage.ACTION__SECTION_STYLE:
 				setSectionStyle(SECTION_STYLE_EDEFAULT);
 				return;
-			case AppPackage.ACTION__CONTENT:
-				getContent().clear();
-				return;
 			case AppPackage.ACTION__NAVIGATION:
 				getNavigation().clear();
 				return;
@@ -567,8 +543,6 @@ public class ActionImpl extends LinkImpl implements Action {
 				return getSectionColumns() != SECTION_COLUMNS_EDEFAULT;
 			case AppPackage.ACTION__SECTION_STYLE:
 				return getSectionStyle() != SECTION_STYLE_EDEFAULT;
-			case AppPackage.ACTION__CONTENT:
-				return !getContent().isEmpty();
 			case AppPackage.ACTION__NAVIGATION:
 				return !getNavigation().isEmpty();
 			case AppPackage.ACTION__LEFT_NAVIGATION:

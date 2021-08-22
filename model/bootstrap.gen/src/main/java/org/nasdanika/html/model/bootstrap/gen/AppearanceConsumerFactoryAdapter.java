@@ -5,11 +5,13 @@ import java.util.Map.Entry;
 
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.FunctionFactory;
+import org.nasdanika.common.ListCompoundSupplierFactory;
 import org.nasdanika.common.MapCompoundSupplierFactory;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.HTMLElement;
@@ -27,7 +29,8 @@ import org.nasdanika.html.model.bootstrap.Border;
 import org.nasdanika.html.model.bootstrap.Float;
 import org.nasdanika.html.model.bootstrap.Spacing;
 import org.nasdanika.html.model.bootstrap.Text;
-import org.nasdanika.html.model.html.gen.HtmlElementSupplierFactoryAdapter;
+import org.nasdanika.html.model.html.HtmlPackage;
+import org.nasdanika.html.model.html.gen.HtmlElementAdapter;
 
 public class AppearanceConsumerFactoryAdapter extends AdapterImpl implements ConsumerFactory<HTMLElement<?>> {
 	
@@ -203,15 +206,23 @@ public class AppearanceConsumerFactoryAdapter extends AdapterImpl implements Con
 	
 	@Override
 	public Consumer<HTMLElement<?>> create(Context context) throws Exception {
-		
 		MapCompoundSupplierFactory<String,Object> attributesFactory = new MapCompoundSupplierFactory<>("Attributes");
 		for (Entry<String, EObject> ae: getTarget().getAttributes()) {
 			EObject value = ae.getValue();
 			attributesFactory.put(ae.getKey(), EObjectAdaptable.adaptToSupplierFactoryNonNull(value, Object.class));			
 		}
-		FunctionFactory<BiSupplier<HTMLElement<?>, Map<String, Object>>, HTMLElement<?>> applyAttributesFunctionFactory = HtmlElementSupplierFactoryAdapter::createApplyAttributesFunction;
-		return attributesFactory.<HTMLElement<?>>asFunctionFactory()
-			.then(applyAttributesFunctionFactory)
+		
+		ListCompoundSupplierFactory<Object> contentFactory = new ListCompoundSupplierFactory<>("Content"); // Empty				
+		
+		MapCompoundSupplierFactory<EStructuralFeature,Object> configurationFactory = new MapCompoundSupplierFactory<>("Attributes and Content");
+		configurationFactory.put(HtmlPackage.Literals.HTML_ELEMENT__ATTRIBUTES, attributesFactory);
+		configurationFactory.put(HtmlPackage.Literals.HTML_ELEMENT__CONTENT, contentFactory);
+		
+		FunctionFactory<HTMLElement<?>, BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>>> configurationFunctionFactory = configurationFactory.asFunctionFactory();
+		FunctionFactory<BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>>, HTMLElement<?>> applyAttributesAndContentFunctionFactory = HtmlElementAdapter::createApplyAttributesAndContentFunction;		
+		
+		return configurationFunctionFactory
+			.then(applyAttributesAndContentFunctionFactory)
 			.create(context)
 			.then(Consumer.fromConsumer(backgroundBuilder, "Background", 1).asFunction())
 			.then(Consumer.fromConsumer(borderBuilder, "Border", 1).asFunction())

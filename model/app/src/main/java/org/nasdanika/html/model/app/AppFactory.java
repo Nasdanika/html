@@ -49,15 +49,6 @@ public interface AppFactory extends EFactory {
 	Page createPage();
 
 	/**
-	 * Returns a new object of class '<em>Page Part</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Page Part</em>'.
-	 * @generated
-	 */
-	PagePart createPagePart();
-
-	/**
 	 * Returns a new object of class '<em>Header</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

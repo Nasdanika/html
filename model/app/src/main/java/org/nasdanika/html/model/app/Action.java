@@ -3,7 +3,6 @@
 package org.nasdanika.html.model.app;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.exec.resources.Resource;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
@@ -23,7 +22,6 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  *   <li>{@link org.nasdanika.html.model.app.Action#getId <em>Id</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getSectionColumns <em>Section Columns</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getSectionStyle <em>Section Style</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#getContent <em>Content</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getNavigation <em>Navigation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getLeftNavigation <em>Left Navigation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getRightNavigation <em>Right Navigation</em>}</li>
@@ -119,21 +117,6 @@ public interface Action extends Link {
 	 * @generated
 	 */
 	void setSectionStyle(SectionStyle value);
-
-	/**
-	 * Returns the value of the '<em><b>Content</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Action content.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Content</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Content()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<EObject> getContent();
 
 	/**
 	 * Returns the value of the '<em><b>Navigation</b></em>' containment reference list.

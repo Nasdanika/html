@@ -8,9 +8,6 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Label is a text and an icon with a tooltip, notification badge, and help dialog. Labels can have children. Label is a base class for Link."/>
     </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="color"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="help" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Label help text to display in a modal dialog activated by a click on a question mark icon next to the label."/>
@@ -106,7 +103,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Page" eSuperTypes="../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//BootstrapElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer."/>
+      <details key="documentation" value="Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer. Page extends Tag, but ``name`` attribute shall not be used - it defaults to ``div``."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fluid" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="header" eType="#//Header"
@@ -158,14 +155,15 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PagePart" eSuperTypes="../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//BootstrapElement">
+  <eClassifiers xsi:type="ecore:EClass" name="PagePart" abstract="true" eSuperTypes="../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//BootstrapElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Base class for page parts."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="content" upperBound="-1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="items" upperBound="-1"
+        eType="ecore:EClass ../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//BootstrapElement"
+        containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Custom content to display in the part."/>
+        <details key="documentation" value="Navigation items."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -179,13 +177,6 @@
         <details key="documentation" value="Header title displayed on the left."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="navigation" upperBound="-1"
-        eType="ecore:EClass ../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//BootstrapElement"
-        containment="true">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Navigation bar elements. Typically links, but can contain custom content, e.g. inline forms."/>
-      </eAnnotations>
-    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NavigationBar" eSuperTypes="#//PagePart">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -197,13 +188,6 @@
         <details key="documentation" value="Brand label displayed on the left."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="items" upperBound="-1"
-        eType="ecore:EClass ../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//BootstrapElement"
-        containment="true">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Navigation items. Typically links, but may contain custom content."/>
-      </eAnnotations>
-    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NavigationPanel" eSuperTypes="#//PagePart">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -213,12 +197,6 @@
         defaultValueLiteral="Auto">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Panel style"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="items" upperBound="-1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Navigation items. Typically labels and links, but may contain custom content."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -236,13 +214,6 @@
         containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Content title"/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="navigation" upperBound="-1"
-        eType="ecore:EClass ../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//BootstrapElement"
-        containment="true">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Navigation items are displayed to the right of the title below the breadcrumb bar."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="leftNavigation" eType="#//NavigationPanel"
@@ -304,13 +275,6 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Footer is displayed below the navigation and content panels."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="items" upperBound="-1"
-        eType="ecore:EClass ../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//BootstrapElement"
-        containment="true">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Footer navigation items."/>
-      </eAnnotations>
-    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="NavigationPanelStyle">
     <eLiterals name="Auto"/>
@@ -336,12 +300,6 @@
         defaultValueLiteral="Auto">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Defines how to generate section children."/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="content" upperBound="-1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Action content."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="navigation" upperBound="-1"

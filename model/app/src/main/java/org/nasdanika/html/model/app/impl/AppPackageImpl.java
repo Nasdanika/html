@@ -7,8 +7,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EValidator;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.resources.ResourcesPackage;
@@ -27,7 +25,6 @@ import org.nasdanika.html.model.app.NavigationPanelStyle;
 import org.nasdanika.html.model.app.Page;
 import org.nasdanika.html.model.app.PagePart;
 import org.nasdanika.html.model.app.SectionStyle;
-import org.nasdanika.html.model.app.util.AppValidator;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 
@@ -186,16 +183,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		// Initialize created meta-data
 		theAppPackage.initializePackageContents();
-
-		// Register package validator
-		EValidator.Registry.INSTANCE.put
-			(theAppPackage,
-			 new EValidator.Descriptor() {
-				 @Override
-				 public EValidator getEValidator() {
-					 return AppValidator.INSTANCE;
-				 }
-			 });
 
 		// Mark meta-data to indicate it can't be changed
 		theAppPackage.freeze();
@@ -431,7 +418,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getPagePart_Content() {
+	public EReference getPagePart_Items() {
 		return (EReference)pagePartEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -461,16 +448,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getHeader_Navigation() {
-		return (EReference)headerEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EClass getNavigationBar() {
 		return navigationBarEClass;
 	}
@@ -483,16 +460,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	@Override
 	public EReference getNavigationBar_Brand() {
 		return (EReference)navigationBarEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EReference getNavigationBar_Items() {
-		return (EReference)navigationBarEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -521,16 +488,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getNavigationPanel_Items() {
-		return (EReference)navigationPanelEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EClass getContentPanel() {
 		return contentPanelEClass;
 	}
@@ -551,16 +508,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getContentPanel_Navigation() {
-		return (EReference)contentPanelEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EReference getContentPanel_Breadcrumb() {
 		return (EReference)contentPanelEClass.getEStructuralFeatures().get(0);
 	}
@@ -572,7 +519,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EReference getContentPanel_LeftNavigation() {
-		return (EReference)contentPanelEClass.getEStructuralFeatures().get(3);
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -582,7 +529,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EReference getContentPanel_RightNavigation() {
-		return (EReference)contentPanelEClass.getEStructuralFeatures().get(4);
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -592,7 +539,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EReference getContentPanel_FloatLeftNavigation() {
-		return (EReference)contentPanelEClass.getEStructuralFeatures().get(5);
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -602,7 +549,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EReference getContentPanel_FloatRightNavigation() {
-		return (EReference)contentPanelEClass.getEStructuralFeatures().get(6);
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -612,7 +559,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EReference getContentPanel_Sections() {
-		return (EReference)contentPanelEClass.getEStructuralFeatures().get(7);
+		return (EReference)contentPanelEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -622,7 +569,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EAttribute getContentPanel_SectionColumns() {
-		return (EAttribute)contentPanelEClass.getEStructuralFeatures().get(8);
+		return (EAttribute)contentPanelEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -632,7 +579,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EAttribute getContentPanel_SectionStyle() {
-		return (EAttribute)contentPanelEClass.getEStructuralFeatures().get(9);
+		return (EAttribute)contentPanelEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -643,16 +590,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	@Override
 	public EClass getFooter() {
 		return footerEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EReference getFooter_Items() {
-		return (EReference)footerEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -701,7 +638,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_Content() {
+	public EReference getAction_Navigation() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -711,7 +648,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_Navigation() {
+	public EReference getAction_LeftNavigation() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -721,7 +658,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_LeftNavigation() {
+	public EReference getAction_RightNavigation() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -731,7 +668,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_RightNavigation() {
+	public EReference getAction_FloatLeftNavigation() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -741,7 +678,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_FloatLeftNavigation() {
+	public EReference getAction_FloatRightNavigation() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -751,7 +688,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_FloatRightNavigation() {
+	public EReference getAction_Anonymous() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -761,7 +698,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_Anonymous() {
+	public EReference getAction_Resources() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(9);
 	}
 
@@ -771,18 +708,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_Resources() {
-		return (EReference)actionEClass.getEStructuralFeatures().get(10);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EAttribute getAction_Inline() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(11);
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(10);
 	}
 
 	/**
@@ -792,7 +719,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EAttribute getAction_Modal() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(12);
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
@@ -879,24 +806,20 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEReference(pageEClass, PAGE__CONTENT_ROW_APPEARANCE);
 
 		pagePartEClass = createEClass(PAGE_PART);
-		createEReference(pagePartEClass, PAGE_PART__CONTENT);
+		createEReference(pagePartEClass, PAGE_PART__ITEMS);
 
 		headerEClass = createEClass(HEADER);
 		createEReference(headerEClass, HEADER__TITLE);
-		createEReference(headerEClass, HEADER__NAVIGATION);
 
 		navigationBarEClass = createEClass(NAVIGATION_BAR);
 		createEReference(navigationBarEClass, NAVIGATION_BAR__BRAND);
-		createEReference(navigationBarEClass, NAVIGATION_BAR__ITEMS);
 
 		navigationPanelEClass = createEClass(NAVIGATION_PANEL);
 		createEAttribute(navigationPanelEClass, NAVIGATION_PANEL__STYLE);
-		createEReference(navigationPanelEClass, NAVIGATION_PANEL__ITEMS);
 
 		contentPanelEClass = createEClass(CONTENT_PANEL);
 		createEReference(contentPanelEClass, CONTENT_PANEL__BREADCRUMB);
 		createEReference(contentPanelEClass, CONTENT_PANEL__TITLE);
-		createEReference(contentPanelEClass, CONTENT_PANEL__NAVIGATION);
 		createEReference(contentPanelEClass, CONTENT_PANEL__LEFT_NAVIGATION);
 		createEReference(contentPanelEClass, CONTENT_PANEL__RIGHT_NAVIGATION);
 		createEReference(contentPanelEClass, CONTENT_PANEL__FLOAT_LEFT_NAVIGATION);
@@ -906,13 +829,11 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(contentPanelEClass, CONTENT_PANEL__SECTION_STYLE);
 
 		footerEClass = createEClass(FOOTER);
-		createEReference(footerEClass, FOOTER__ITEMS);
 
 		actionEClass = createEClass(ACTION);
 		createEAttribute(actionEClass, ACTION__ID);
 		createEAttribute(actionEClass, ACTION__SECTION_COLUMNS);
 		createEAttribute(actionEClass, ACTION__SECTION_STYLE);
-		createEReference(actionEClass, ACTION__CONTENT);
 		createEReference(actionEClass, ACTION__NAVIGATION);
 		createEReference(actionEClass, ACTION__LEFT_NAVIGATION);
 		createEReference(actionEClass, ACTION__RIGHT_NAVIGATION);
@@ -998,25 +919,21 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEReference(getPage_Footer(), this.getFooter(), null, "footer", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPage_ContentRowAppearance(), theBootstrapPackage.getAppearance(), null, "contentRowAppearance", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(pagePartEClass, PagePart.class, "PagePart", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPagePart_Content(), ecorePackage.getEObject(), null, "content", null, 0, -1, PagePart.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(pagePartEClass, PagePart.class, "PagePart", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPagePart_Items(), theBootstrapPackage.getBootstrapElement(), null, "items", null, 0, -1, PagePart.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(headerEClass, Header.class, "Header", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getHeader_Title(), this.getLabel(), null, "title", null, 0, 1, Header.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getHeader_Navigation(), theBootstrapPackage.getBootstrapElement(), null, "navigation", null, 0, -1, Header.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(navigationBarEClass, NavigationBar.class, "NavigationBar", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getNavigationBar_Brand(), this.getLabel(), null, "brand", null, 0, 1, NavigationBar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getNavigationBar_Items(), theBootstrapPackage.getBootstrapElement(), null, "items", null, 0, -1, NavigationBar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(navigationPanelEClass, NavigationPanel.class, "NavigationPanel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNavigationPanel_Style(), this.getNavigationPanelStyle(), "style", "Auto", 0, 1, NavigationPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getNavigationPanel_Items(), ecorePackage.getEObject(), null, "items", null, 0, -1, NavigationPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(contentPanelEClass, ContentPanel.class, "ContentPanel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getContentPanel_Breadcrumb(), this.getLabel(), null, "breadcrumb", null, 0, -1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getContentPanel_Title(), this.getLabel(), null, "title", null, 0, 1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getContentPanel_Navigation(), theBootstrapPackage.getBootstrapElement(), null, "navigation", null, 0, -1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getContentPanel_LeftNavigation(), this.getNavigationPanel(), null, "leftNavigation", null, 0, 1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getContentPanel_RightNavigation(), this.getNavigationPanel(), null, "rightNavigation", null, 0, 1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getContentPanel_FloatLeftNavigation(), this.getNavigationPanel(), null, "floatLeftNavigation", null, 0, 1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1026,13 +943,11 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getContentPanel_SectionStyle(), this.getSectionStyle(), "sectionStyle", "Auto", 0, 1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(footerEClass, Footer.class, "Footer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getFooter_Items(), theBootstrapPackage.getBootstrapElement(), null, "items", null, 0, -1, Footer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(actionEClass, Action.class, "Action", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAction_Id(), ecorePackage.getEString(), "id", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_SectionColumns(), ecorePackage.getEInt(), "sectionColumns", "3", 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_SectionStyle(), this.getSectionStyle(), "sectionStyle", "Auto", 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_Content(), ecorePackage.getEObject(), null, "content", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_Navigation(), theBootstrapPackage.getBootstrapElement(), null, "navigation", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_LeftNavigation(), this.getNavigationPanel(), null, "leftNavigation", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_RightNavigation(), this.getNavigationPanel(), null, "rightNavigation", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1081,8 +996,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		// Create annotations
 		// http://www.eclipse.org/emf/2002/GenModel
 		createGenModelAnnotations();
-		// http://www.eclipse.org/emf/2002/Ecore
-		createEcoreAnnotations();
 		// urn:org.nasdanika
 		createUrnorgAnnotations();
 	}
@@ -1177,7 +1090,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		  (pageEClass,
 		   source,
 		   new String[] {
-			   "documentation", "Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer."
+			   "documentation", "Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer. Page extends Tag, but ``name`` attribute shall not be used - it defaults to ``div``."
 		   });
 		addAnnotation
 		  (getPage_Header(),
@@ -1210,10 +1123,10 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Base class for page parts."
 		   });
 		addAnnotation
-		  (getPagePart_Content(),
+		  (getPagePart_Items(),
 		   source,
 		   new String[] {
-			   "documentation", "Custom content to display in the part."
+			   "documentation", "Navigation items."
 		   });
 		addAnnotation
 		  (headerEClass,
@@ -1228,12 +1141,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Header title displayed on the left."
 		   });
 		addAnnotation
-		  (getHeader_Navigation(),
-		   source,
-		   new String[] {
-			   "documentation", "Navigation bar elements. Typically links, but can contain custom content, e.g. inline forms."
-		   });
-		addAnnotation
 		  (navigationBarEClass,
 		   source,
 		   new String[] {
@@ -1246,12 +1153,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Brand label displayed on the left."
 		   });
 		addAnnotation
-		  (getNavigationBar_Items(),
-		   source,
-		   new String[] {
-			   "documentation", "Navigation items. Typically links, but may contain custom content."
-		   });
-		addAnnotation
 		  (navigationPanelEClass,
 		   source,
 		   new String[] {
@@ -1262,12 +1163,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   source,
 		   new String[] {
 			   "documentation", "Panel style"
-		   });
-		addAnnotation
-		  (getNavigationPanel_Items(),
-		   source,
-		   new String[] {
-			   "documentation", "Navigation items. Typically labels and links, but may contain custom content."
 		   });
 		addAnnotation
 		  (contentPanelEClass,
@@ -1286,12 +1181,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   source,
 		   new String[] {
 			   "documentation", "Content title"
-		   });
-		addAnnotation
-		  (getContentPanel_Navigation(),
-		   source,
-		   new String[] {
-			   "documentation", "Navigation items are displayed to the right of the title below the breadcrumb bar."
 		   });
 		addAnnotation
 		  (getContentPanel_LeftNavigation(),
@@ -1342,12 +1231,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Footer is displayed below the navigation and content panels."
 		   });
 		addAnnotation
-		  (getFooter_Items(),
-		   source,
-		   new String[] {
-			   "documentation", "Footer navigation items."
-		   });
-		addAnnotation
 		  (actionEClass,
 		   source,
 		   new String[] {
@@ -1370,12 +1253,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   source,
 		   new String[] {
 			   "documentation", "Defines how to generate section children."
-		   });
-		addAnnotation
-		  (getAction_Content(),
-		   source,
-		   new String[] {
-			   "documentation", "Action content."
 		   });
 		addAnnotation
 		  (getAction_Navigation(),
@@ -1430,22 +1307,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   source,
 		   new String[] {
 			   "documentation", "Inline action\'s content is displayed in a modal dialog which opens on a click on the action\'s link."
-		   });
-	}
-
-	/**
-	 * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/Ecore</b>.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void createEcoreAnnotations() {
-		String source = "http://www.eclipse.org/emf/2002/Ecore";
-		addAnnotation
-		  (labelEClass,
-		   source,
-		   new String[] {
-			   "constraints", "color"
 		   });
 	}
 

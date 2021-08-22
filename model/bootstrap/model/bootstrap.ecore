@@ -421,12 +421,6 @@
         <details key="documentation" value="Column widths for different breakpoints."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="content" upperBound="-1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Container content. &#xA;&#xA;Content elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content."/>
-      </eAnnotations>
-    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TableRowContainer" abstract="true" eSuperTypes="#//BootstrapElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -566,12 +560,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="background" eType="#//Color">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Cell background color. Displays differently from &quot;Color&quot;. Can also be specified via appearance."/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="content" upperBound="-1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Container content. &#xA;&#xA;Content elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>

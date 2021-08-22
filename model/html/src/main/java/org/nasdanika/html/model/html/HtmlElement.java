@@ -2,6 +2,7 @@
  */
 package org.nasdanika.html.model.html;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.exec.ModelElement;
@@ -20,6 +21,7 @@ import org.nasdanika.exec.ModelElement;
  * </p>
  * <ul>
  *   <li>{@link org.nasdanika.html.model.html.HtmlElement#getAttributes <em>Attributes</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.html.HtmlElement#getContent <em>Content</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.html.HtmlPackage#getHtmlElement()
@@ -73,4 +75,21 @@ public interface HtmlElement extends ModelElement {
 	 * @generated
 	 */
 	EMap<String, EObject> getAttributes();
+
+	/**
+	 * Returns the value of the '<em><b>Content</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Container content. 
+	 * 
+	 * Content elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Content</em>' containment reference list.
+	 * @see org.nasdanika.html.model.html.HtmlPackage#getHtmlElement_Content()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<EObject> getContent();
 } // HtmlElement

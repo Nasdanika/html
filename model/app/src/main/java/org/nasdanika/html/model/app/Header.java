@@ -2,9 +2,6 @@
  */
 package org.nasdanika.html.model.app;
 
-import org.eclipse.emf.common.util.EList;
-import org.nasdanika.html.model.bootstrap.BootstrapElement;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Header</b></em>'.
@@ -19,7 +16,6 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  * </p>
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.Header#getTitle <em>Title</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Header#getNavigation <em>Navigation</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getHeader()
@@ -51,20 +47,5 @@ public interface Header extends PagePart {
 	 * @generated
 	 */
 	void setTitle(Label value);
-
-	/**
-	 * Returns the value of the '<em><b>Navigation</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.bootstrap.BootstrapElement}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Navigation bar elements. Typically links, but can contain custom content, e.g. inline forms.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Navigation</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getHeader_Navigation()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<BootstrapElement> getNavigation();
 
 } // Header

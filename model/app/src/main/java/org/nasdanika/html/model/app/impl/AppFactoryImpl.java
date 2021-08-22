@@ -59,7 +59,6 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 			case AppPackage.LABEL: return createLabel();
 			case AppPackage.LINK: return createLink();
 			case AppPackage.PAGE: return createPage();
-			case AppPackage.PAGE_PART: return createPagePart();
 			case AppPackage.HEADER: return createHeader();
 			case AppPackage.NAVIGATION_BAR: return createNavigationBar();
 			case AppPackage.NAVIGATION_PANEL: return createNavigationPanel();
@@ -140,17 +139,6 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	public Page createPage() {
 		PageImpl page = new PageImpl();
 		return page;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public PagePart createPagePart() {
-		PagePartImpl pagePart = new PagePartImpl();
-		return pagePart;
 	}
 
 	/**

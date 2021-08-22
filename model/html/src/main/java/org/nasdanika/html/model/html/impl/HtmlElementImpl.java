@@ -2,7 +2,9 @@
  */
 package org.nasdanika.html.model.html.impl;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EClass;
 
@@ -24,6 +26,7 @@ import org.nasdanika.html.model.html.HtmlPackage;
  * </p>
  * <ul>
  *   <li>{@link org.nasdanika.html.model.html.impl.HtmlElementImpl#getAttributes <em>Attributes</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.html.impl.HtmlElementImpl#getContent <em>Content</em>}</li>
  * </ul>
  *
  * @generated
@@ -64,11 +67,24 @@ public abstract class HtmlElementImpl extends ModelElementImpl implements HtmlEl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public EList<EObject> getContent() {
+		return (EList<EObject>)eDynamicGet(HtmlPackage.HTML_ELEMENT__CONTENT, HtmlPackage.Literals.HTML_ELEMENT__CONTENT, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case HtmlPackage.HTML_ELEMENT__ATTRIBUTES:
 				return ((InternalEList<?>)getAttributes()).basicRemove(otherEnd, msgs);
+			case HtmlPackage.HTML_ELEMENT__CONTENT:
+				return ((InternalEList<?>)getContent()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -84,6 +100,8 @@ public abstract class HtmlElementImpl extends ModelElementImpl implements HtmlEl
 			case HtmlPackage.HTML_ELEMENT__ATTRIBUTES:
 				if (coreType) return getAttributes();
 				else return getAttributes().map();
+			case HtmlPackage.HTML_ELEMENT__CONTENT:
+				return getContent();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -93,11 +111,16 @@ public abstract class HtmlElementImpl extends ModelElementImpl implements HtmlEl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case HtmlPackage.HTML_ELEMENT__ATTRIBUTES:
 				((EStructuralFeature.Setting)getAttributes()).set(newValue);
+				return;
+			case HtmlPackage.HTML_ELEMENT__CONTENT:
+				getContent().clear();
+				getContent().addAll((Collection<? extends EObject>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -114,6 +137,9 @@ public abstract class HtmlElementImpl extends ModelElementImpl implements HtmlEl
 			case HtmlPackage.HTML_ELEMENT__ATTRIBUTES:
 				getAttributes().clear();
 				return;
+			case HtmlPackage.HTML_ELEMENT__CONTENT:
+				getContent().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -128,6 +154,8 @@ public abstract class HtmlElementImpl extends ModelElementImpl implements HtmlEl
 		switch (featureID) {
 			case HtmlPackage.HTML_ELEMENT__ATTRIBUTES:
 				return !getAttributes().isEmpty();
+			case HtmlPackage.HTML_ELEMENT__CONTENT:
+				return !getContent().isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

@@ -2,15 +2,7 @@
  */
 package org.nasdanika.html.model.bootstrap.impl;
 
-import java.util.Collection;
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.util.InternalEList;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.TableCell;
@@ -28,7 +20,6 @@ import org.nasdanika.html.model.bootstrap.TableCell;
  *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#getRowSpan <em>Row Span</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#getColor <em>Color</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#getBackground <em>Background</em>}</li>
- *   <li>{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl#getContent <em>Content</em>}</li>
  * </ul>
  *
  * @generated
@@ -208,31 +199,6 @@ public class TableCellImpl extends BootstrapElementImpl implements TableCell {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public EList<EObject> getContent() {
-		return (EList<EObject>)eDynamicGet(BootstrapPackage.TABLE_CELL__CONTENT, BootstrapPackage.Literals.TABLE_CELL__CONTENT, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case BootstrapPackage.TABLE_CELL__CONTENT:
-				return ((InternalEList<?>)getContent()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -246,8 +212,6 @@ public class TableCellImpl extends BootstrapElementImpl implements TableCell {
 				return getColor();
 			case BootstrapPackage.TABLE_CELL__BACKGROUND:
 				return getBackground();
-			case BootstrapPackage.TABLE_CELL__CONTENT:
-				return getContent();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -276,10 +240,6 @@ public class TableCellImpl extends BootstrapElementImpl implements TableCell {
 			case BootstrapPackage.TABLE_CELL__BACKGROUND:
 				setBackground((Color)newValue);
 				return;
-			case BootstrapPackage.TABLE_CELL__CONTENT:
-				getContent().clear();
-				getContent().addAll((Collection<? extends EObject>)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -307,9 +267,6 @@ public class TableCellImpl extends BootstrapElementImpl implements TableCell {
 			case BootstrapPackage.TABLE_CELL__BACKGROUND:
 				setBackground(BACKGROUND_EDEFAULT);
 				return;
-			case BootstrapPackage.TABLE_CELL__CONTENT:
-				getContent().clear();
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -332,8 +289,6 @@ public class TableCellImpl extends BootstrapElementImpl implements TableCell {
 				return COLOR_EDEFAULT == null ? getColor() != null : !COLOR_EDEFAULT.equals(getColor());
 			case BootstrapPackage.TABLE_CELL__BACKGROUND:
 				return BACKGROUND_EDEFAULT == null ? getBackground() != null : !BACKGROUND_EDEFAULT.equals(getBackground());
-			case BootstrapPackage.TABLE_CELL__CONTENT:
-				return !getContent().isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

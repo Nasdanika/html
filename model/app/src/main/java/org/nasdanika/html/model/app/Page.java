@@ -11,7 +11,7 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer.
+ * Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer. Page extends Tag, but ``name`` attribute shall not be used - it defaults to ``div``.
  * <!-- end-model-doc -->
  *
  * <p>

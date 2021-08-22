@@ -1155,16 +1155,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	@Override
-	public EReference getColumn_Content() {
-		return (EReference)columnEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EClass getTableRowContainer() {
 		return tableRowContainerEClass;
 	}
@@ -1427,16 +1417,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	@Override
 	public EAttribute getTableCell_Background() {
 		return (EAttribute)tableCellEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EReference getTableCell_Content() {
-		return (EReference)tableCellEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -1870,7 +1850,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		columnEClass = createEClass(COLUMN);
 		createEReference(columnEClass, COLUMN__WIDTH);
-		createEReference(columnEClass, COLUMN__CONTENT);
 
 		tableRowContainerEClass = createEClass(TABLE_ROW_CONTAINER);
 		createEReference(tableRowContainerEClass, TABLE_ROW_CONTAINER__ROWS);
@@ -1905,7 +1884,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		createEAttribute(tableCellEClass, TABLE_CELL__ROW_SPAN);
 		createEAttribute(tableCellEClass, TABLE_CELL__COLOR);
 		createEAttribute(tableCellEClass, TABLE_CELL__BACKGROUND);
-		createEReference(tableCellEClass, TABLE_CELL__CONTENT);
 
 		cardEClass = createEClass(CARD);
 		createEReference(cardEClass, CARD__HEADER);
@@ -2100,7 +2078,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		initEClass(columnEClass, Column.class, "Column", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getColumn_Width(), this.getColumnWidth(), null, "width", null, 0, -1, Column.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getColumn_Content(), ecorePackage.getEObject(), null, "content", null, 0, -1, Column.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(tableRowContainerEClass, TableRowContainer.class, "TableRowContainer", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTableRowContainer_Rows(), this.getTableRow(), null, "rows", null, 0, -1, TableRowContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2135,7 +2112,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		initEAttribute(getTableCell_RowSpan(), ecorePackage.getEInt(), "rowSpan", null, 0, 1, TableCell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTableCell_Color(), this.getColor(), "color", null, 0, 1, TableCell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTableCell_Background(), this.getColor(), "background", null, 0, 1, TableCell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getTableCell_Content(), ecorePackage.getEObject(), null, "content", null, 0, -1, TableCell.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(cardEClass, Card.class, "Card", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getCard_Header(), this.getDiv(), null, "header", null, 0, 1, Card.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2606,12 +2582,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 			   "documentation", "Column widths for different breakpoints."
 		   });
 		addAnnotation
-		  (getColumn_Content(),
-		   source,
-		   new String[] {
-			   "documentation", "Container content. \n\nContent elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content."
-		   });
-		addAnnotation
 		  (tableRowContainerEClass,
 		   source,
 		   new String[] {
@@ -2772,12 +2742,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		   source,
 		   new String[] {
 			   "documentation", "Cell background color. Displays differently from \"Color\". Can also be specified via appearance."
-		   });
-		addAnnotation
-		  (getTableCell_Content(),
-		   source,
-		   new String[] {
-			   "documentation", "Container content. \n\nContent elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content."
 		   });
 		addAnnotation
 		  (cardEClass,

@@ -2,8 +2,6 @@
  */
 package org.nasdanika.html.model.bootstrap;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.html.bootstrap.Color;
 
 /**
@@ -24,7 +22,6 @@ import org.nasdanika.html.bootstrap.Color;
  *   <li>{@link org.nasdanika.html.model.bootstrap.TableCell#getRowSpan <em>Row Span</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.TableCell#getColor <em>Color</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.TableCell#getBackground <em>Background</em>}</li>
- *   <li>{@link org.nasdanika.html.model.bootstrap.TableCell#getContent <em>Content</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTableCell()
@@ -156,22 +153,5 @@ public interface TableCell extends BootstrapElement {
 	 * @generated
 	 */
 	void setBackground(Color value);
-
-	/**
-	 * Returns the value of the '<em><b>Content</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Container content. 
-	 * 
-	 * Content elements are adapted to ${javadoc/org.nasdanika.common.SupplierFactory} for generation of HTML content.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Content</em>' containment reference list.
-	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTableCell_Content()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<EObject> getContent();
 
 } // TableCell

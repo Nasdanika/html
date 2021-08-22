@@ -3,7 +3,6 @@
 package org.nasdanika.html.model.app;
 
 import org.eclipse.emf.common.util.EList;
-import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -20,7 +19,6 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.ContentPanel#getBreadcrumb <em>Breadcrumb</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.ContentPanel#getTitle <em>Title</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.ContentPanel#getNavigation <em>Navigation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.ContentPanel#getLeftNavigation <em>Left Navigation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.ContentPanel#getRightNavigation <em>Right Navigation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.ContentPanel#getFloatLeftNavigation <em>Float Left Navigation</em>}</li>
@@ -59,21 +57,6 @@ public interface ContentPanel extends PagePart {
 	 * @generated
 	 */
 	void setTitle(Label value);
-
-	/**
-	 * Returns the value of the '<em><b>Navigation</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.bootstrap.BootstrapElement}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Navigation items are displayed to the right of the title below the breadcrumb bar.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Navigation</em>' containment reference list.
-	 * @see org.nasdanika.html.model.app.AppPackage#getContentPanel_Navigation()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<BootstrapElement> getNavigation();
 
 	/**
 	 * Returns the value of the '<em><b>Breadcrumb</b></em>' containment reference list.

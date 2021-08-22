@@ -18,7 +18,6 @@ import org.nasdanika.html.model.app.ContentPanel;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.SectionStyle;
-import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +29,6 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.impl.ContentPanelImpl#getBreadcrumb <em>Breadcrumb</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ContentPanelImpl#getTitle <em>Title</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ContentPanelImpl#getNavigation <em>Navigation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ContentPanelImpl#getLeftNavigation <em>Left Navigation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ContentPanelImpl#getRightNavigation <em>Right Navigation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ContentPanelImpl#getFloatLeftNavigation <em>Float Left Navigation</em>}</li>
@@ -110,17 +108,6 @@ public class ContentPanelImpl extends PagePartImpl implements ContentPanel {
 	@Override
 	public void setTitle(Label newTitle) {
 		eDynamicSet(AppPackage.CONTENT_PANEL__TITLE, AppPackage.Literals.CONTENT_PANEL__TITLE, newTitle);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public EList<BootstrapElement> getNavigation() {
-		return (EList<BootstrapElement>)eDynamicGet(AppPackage.CONTENT_PANEL__NAVIGATION, AppPackage.Literals.CONTENT_PANEL__NAVIGATION, true, true);
 	}
 
 	/**
@@ -321,8 +308,6 @@ public class ContentPanelImpl extends PagePartImpl implements ContentPanel {
 				return ((InternalEList<?>)getBreadcrumb()).basicRemove(otherEnd, msgs);
 			case AppPackage.CONTENT_PANEL__TITLE:
 				return basicSetTitle(null, msgs);
-			case AppPackage.CONTENT_PANEL__NAVIGATION:
-				return ((InternalEList<?>)getNavigation()).basicRemove(otherEnd, msgs);
 			case AppPackage.CONTENT_PANEL__LEFT_NAVIGATION:
 				return basicSetLeftNavigation(null, msgs);
 			case AppPackage.CONTENT_PANEL__RIGHT_NAVIGATION:
@@ -349,8 +334,6 @@ public class ContentPanelImpl extends PagePartImpl implements ContentPanel {
 				return getBreadcrumb();
 			case AppPackage.CONTENT_PANEL__TITLE:
 				return getTitle();
-			case AppPackage.CONTENT_PANEL__NAVIGATION:
-				return getNavigation();
 			case AppPackage.CONTENT_PANEL__LEFT_NAVIGATION:
 				return getLeftNavigation();
 			case AppPackage.CONTENT_PANEL__RIGHT_NAVIGATION:
@@ -384,10 +367,6 @@ public class ContentPanelImpl extends PagePartImpl implements ContentPanel {
 				return;
 			case AppPackage.CONTENT_PANEL__TITLE:
 				setTitle((Label)newValue);
-				return;
-			case AppPackage.CONTENT_PANEL__NAVIGATION:
-				getNavigation().clear();
-				getNavigation().addAll((Collection<? extends BootstrapElement>)newValue);
 				return;
 			case AppPackage.CONTENT_PANEL__LEFT_NAVIGATION:
 				setLeftNavigation((NavigationPanel)newValue);
@@ -429,9 +408,6 @@ public class ContentPanelImpl extends PagePartImpl implements ContentPanel {
 			case AppPackage.CONTENT_PANEL__TITLE:
 				setTitle((Label)null);
 				return;
-			case AppPackage.CONTENT_PANEL__NAVIGATION:
-				getNavigation().clear();
-				return;
 			case AppPackage.CONTENT_PANEL__LEFT_NAVIGATION:
 				setLeftNavigation((NavigationPanel)null);
 				return;
@@ -469,8 +445,6 @@ public class ContentPanelImpl extends PagePartImpl implements ContentPanel {
 				return !getBreadcrumb().isEmpty();
 			case AppPackage.CONTENT_PANEL__TITLE:
 				return getTitle() != null;
-			case AppPackage.CONTENT_PANEL__NAVIGATION:
-				return !getNavigation().isEmpty();
 			case AppPackage.CONTENT_PANEL__LEFT_NAVIGATION:
 				return getLeftNavigation() != null;
 			case AppPackage.CONTENT_PANEL__RIGHT_NAVIGATION:

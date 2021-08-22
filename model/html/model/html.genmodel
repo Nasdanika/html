@@ -12,10 +12,10 @@
       ecorePackage="html.ecore#/">
     <genClasses ecoreClass="html.ecore#//HtmlElement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//HtmlElement/attributes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//HtmlElement/content"/>
     </genClasses>
     <genClasses ecoreClass="html.ecore#//Tag">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute html.ecore#//Tag/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Tag/content"/>
     </genClasses>
     <genClasses ecoreClass="html.ecore#//Page">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference html.ecore#//Page/head"/>

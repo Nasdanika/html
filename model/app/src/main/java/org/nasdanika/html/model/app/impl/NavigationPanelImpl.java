@@ -2,18 +2,7 @@
  */
 package org.nasdanika.html.model.app.impl;
 
-import java.util.Collection;
-
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.util.InternalEList;
-
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.NavigationPanelStyle;
@@ -27,7 +16,6 @@ import org.nasdanika.html.model.app.NavigationPanelStyle;
  * </p>
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getStyle <em>Style</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getItems <em>Items</em>}</li>
  * </ul>
  *
  * @generated
@@ -87,38 +75,11 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public EList<EObject> getItems() {
-		return (EList<EObject>)eDynamicGet(AppPackage.NAVIGATION_PANEL__ITEMS, AppPackage.Literals.NAVIGATION_PANEL__ITEMS, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case AppPackage.NAVIGATION_PANEL__ITEMS:
-				return ((InternalEList<?>)getItems()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AppPackage.NAVIGATION_PANEL__STYLE:
 				return getStyle();
-			case AppPackage.NAVIGATION_PANEL__ITEMS:
-				return getItems();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -135,10 +96,6 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 			case AppPackage.NAVIGATION_PANEL__STYLE:
 				setStyle((NavigationPanelStyle)newValue);
 				return;
-			case AppPackage.NAVIGATION_PANEL__ITEMS:
-				getItems().clear();
-				getItems().addAll((Collection<? extends EObject>)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -154,9 +111,6 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 			case AppPackage.NAVIGATION_PANEL__STYLE:
 				setStyle(STYLE_EDEFAULT);
 				return;
-			case AppPackage.NAVIGATION_PANEL__ITEMS:
-				getItems().clear();
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -171,8 +125,6 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 		switch (featureID) {
 			case AppPackage.NAVIGATION_PANEL__STYLE:
 				return getStyle() != STYLE_EDEFAULT;
-			case AppPackage.NAVIGATION_PANEL__ITEMS:
-				return !getItems().isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
