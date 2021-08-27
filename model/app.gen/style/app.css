@@ -1,0 +1,19 @@
+.nsd-label-icon {
+    height:0.8em;
+    margin-bottom:0.2em;
+    margin-right:0.3em;
+}
+.nsd-label-notification {
+    margin-left:0.3em;
+}
+.nsd-app-content-row {
+    min-height: 25rem;
+}
+.nsd-root-action {
+    text-decoration: none;
+}
+@media print {
+  div.nsd-app-navigation-panel {
+    display: none;
+  }
+}
