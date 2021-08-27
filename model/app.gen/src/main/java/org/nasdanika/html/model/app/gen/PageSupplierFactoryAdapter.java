@@ -34,11 +34,6 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 	public PageSupplierFactoryAdapter(Page page) {
 		super(page);
 	}
-	
-	@Override
-	public boolean isAdapterForType(Object type) {
-		return type == SupplierFactory.class;
-	}
 		
 	protected Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>> createContainerSupplier(Context context) {
 		return new Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>>() {
@@ -56,7 +51,7 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 			@Override
 			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>> execute(ProgressMonitor progressMonitor) throws Exception {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
-				Page semanticElement = (Page) getTarget();
+				Page semanticElement = getTarget();
 				Container container = semanticElement.isFluid() ? bootstrapFactory.fluidContainer() : bootstrapFactory.container();
 				
 				Map<EStructuralFeature, HTMLElement<?>> parts = new LinkedHashMap<>();
@@ -151,106 +146,5 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 		FunctionFactory<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>, HTMLElement<?>> partsFunctionFactory = partsFactory.asBiSupplierFunctionFactory();
 		return containerSupplierFactory.then(partsFunctionFactory).create(context);
 	}	
-	
-	
-// --- TODO: TO CSS ---
-//	
-//	/**
-//	 * Override to configure container. This implementation sets border color to DEFAULt and top margin to 1.
-//	 * @param container
-//	 */
-//	protected void configureContainer(Container container) {
-//		Consumer<Object> configurator = getConfigurator(Section.Container);
-//		if (configurator == null) {
-//			container.border(Color.DEFAULT).margin().top(Breakpoint.DEFAULT, Size.S1);		
-//		} else {
-//			configurator.accept(container);
-//		}
-//	}
-//	
-//	/**
-//	 * Override to configure header. This implementation sets background color to PRIMARY.
-//	 * @param header
-//	 */
-//	protected void configureHeader(Col header) {
-//		Consumer<Object> configurator = getConfigurator(Section.Header);
-//		if (configurator == null) {
-//			header.width(Breakpoint.DEFAULT, Size.NONE);
-//			header.background(Color.PRIMARY);
-//		} else {
-//			configurator.accept(header);
-//		}
-//	}
-//	
-//	/**
-//	 * Override to configure navigation bar. This implementation sets background color to LIGHT,
-//	 * text color to dark.
-//	 * @param navigationBar
-//	 */
-//	protected void configureNavigationBar(Col navigationBar) {
-//		Consumer<Object> configurator = getConfigurator(Section.NavigationBar);
-//		if (configurator == null) {
-//			navigationBar.background(Color.LIGHT).text().color(Color.DARK);		
-//			navigationBar.width(Breakpoint.DEFAULT, Size.NONE);
-//		} else {
-//			configurator.accept(navigationBar);
-//		}
-//	}
-//	
-//	/**
-//	 * Override to configure content row. This implementation sets min height to 30em.
-//	 * @param contentRow
-//	 */
-//	protected void configureContentRow(Row contentRow) {
-//		Consumer<Object> configurator = getConfigurator(Section.ContentRow);
-//		if (configurator == null) {
-//			contentRow.toHTMLElement().style("min-height", "30em");		
-//		} else {
-//			configurator.accept(contentRow);
-//		}
-//	}
-//	
-//	/**
-//	 * Override to configure navigation panel.
-//	 * This method sets auto-width.
-//	 * @param navigationPanel
-//	 */
-//	protected void configureNavigationPanel(Col navigationPanel) {
-//		Consumer<Object> configurator = getConfigurator(Section.NavigationPanel);
-//		if (configurator == null) {
-//			navigationPanel.width(Breakpoint.DEFAULT, Size.AUTO);
-//		} else {
-//			configurator.accept(navigationPanel);
-//		}
-//	}
-//	
-//	/**
-//	 * Override to configure content panel. This implementation sets left border color to DEFAULT
-//	 * @param contentPanel
-//	 */
-//	protected void configureConentPanel(Col contentPanel) {
-//		Consumer<Object> configurator = getConfigurator(Section.ContentPanel);
-//		if (configurator == null) {
-//			contentPanel.border(Color.DEFAULT, Placement.LEFT);		
-//			contentPanel.width(Breakpoint.DEFAULT, Size.NONE);
-//		} else {
-//			configurator.accept(contentPanel);
-//		}
-//	}
-//	
-//	/**
-//	 * Override to configure footer. 
-//	 * This implementation sets background color to SECONDARY and text alignment to CENTER.
-//	 * @param footer
-//	 */
-//	protected void configureFooter(Col footer) {
-//		Consumer<Object> configurator = getConfigurator(Section.Footer);
-//		if (configurator == null) {
-//			footer.background(Color.SECONDARY).text().alignment(Alignment.CENTER);
-//			footer.width(Breakpoint.DEFAULT, Size.NONE);		
-//		} else {
-//			configurator.accept(footer);
-//		}
-//	}	
 	
 }

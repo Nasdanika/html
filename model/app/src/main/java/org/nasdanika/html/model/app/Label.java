@@ -67,7 +67,7 @@ public interface Label extends BootstrapElement, Item {
 	 * @return the value of the '<em>Text</em>' attribute.
 	 * @see #setText(String)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Text()
-	 * @model
+	 * @model annotation="urn:org.nasdanika default-feature='true'"
 	 * @generated
 	 */
 	String getText();

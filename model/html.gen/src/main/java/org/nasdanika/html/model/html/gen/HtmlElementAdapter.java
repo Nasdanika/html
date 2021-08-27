@@ -46,7 +46,7 @@ public abstract class HtmlElementAdapter<M extends org.nasdanika.html.model.html
 			attributesFactory.put(ae.getKey(), EObjectAdaptable.adaptToSupplierFactoryNonNull(value, Object.class));			
 		}
 		
-		ListCompoundSupplierFactory<Object> contentFactory = new ListCompoundSupplierFactory<>("Content", EObjectAdaptable.adaptToSupplierFactoryNonNull(getTarget().getContent(), Object.class));				
+		ListCompoundSupplierFactory<Object> contentFactory = new ListCompoundSupplierFactory<>("Content", EObjectAdaptable.adaptToSupplierFactoryNonNull(getContent(), Object.class));				
 		
 		MapCompoundSupplierFactory<EStructuralFeature,Object> configurationFactory = new MapCompoundSupplierFactory<>("Attributes and Content");
 		configurationFactory.put(HtmlPackage.Literals.HTML_ELEMENT__ATTRIBUTES, attributesFactory);
@@ -55,6 +55,14 @@ public abstract class HtmlElementAdapter<M extends org.nasdanika.html.model.html
 		FunctionFactory<BiSupplier<T, Map<EStructuralFeature, Object>>, T> applyAttributesAndContentFunctionFactory = HtmlElementAdapter::createApplyAttributesAndContentFunction;
 		FunctionFactory<T, BiSupplier<T, Map<EStructuralFeature, Object>>> configurationFunctionFactory = configurationFactory.asFunctionFactory();
 		return configurationFunctionFactory.then(applyAttributesAndContentFunctionFactory).create(context);
+	}
+
+	/**
+	 * This implementation returns target content. Override to customize.
+	 * @return
+	 */
+	protected List<EObject> getContent() {
+		return getTarget().getContent();
 	}
 	
 	public static <T extends org.nasdanika.html.HTMLElement<?>> Function<BiSupplier<T, Map<EStructuralFeature, Object>>, T> createApplyAttributesAndContentFunction(Context context) {

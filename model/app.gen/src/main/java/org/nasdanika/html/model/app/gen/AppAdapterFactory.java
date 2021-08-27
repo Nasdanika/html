@@ -8,6 +8,7 @@ import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.ContentPanel;
 import org.nasdanika.html.model.app.Footer;
 import org.nasdanika.html.model.app.Header;
+import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.NavigationBar;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.Page;
@@ -29,6 +30,13 @@ public class AppAdapterFactory extends BootstrapAdapterFactory {
 					(Class) SupplierFactory.class, 
 					classLoader, 
 					PageSupplierFactoryAdapter::new));
+		
+		registerAdapterFactory(
+				new FunctionAdapterFactory<SupplierFactory<HTMLElement<?>>, Label>(
+					AppPackage.Literals.LABEL, 
+					(Class) SupplierFactory.class, 
+					classLoader, 
+					LabelSupplierFactoryAdapter::new));
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, ContentPanel>(

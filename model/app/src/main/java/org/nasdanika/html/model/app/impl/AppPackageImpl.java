@@ -1319,6 +1319,12 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	protected void createUrnorgAnnotations() {
 		String source = "urn:org.nasdanika";
 		addAnnotation
+		  (getLabel_Text(),
+		   source,
+		   new String[] {
+			   "default-feature", "true"
+		   });
+		addAnnotation
 		  (getLink_Location(),
 		   source,
 		   new String[] {

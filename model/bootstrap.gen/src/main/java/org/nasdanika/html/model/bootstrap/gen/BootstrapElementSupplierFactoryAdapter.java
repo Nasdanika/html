@@ -21,7 +21,7 @@ public abstract class BootstrapElementSupplierFactoryAdapter<M extends org.nasda
 			return super.createConfigureFunction(context);
 		}
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		ConsumerFactory<HTMLElement<?>> appearanceConsumerFactory = (ConsumerFactory) EObjectAdaptable.adaptToConsumerFactoryNonNull(getTarget(), org.nasdanika.html.HTMLElement.class);
+		ConsumerFactory<HTMLElement<?>> appearanceConsumerFactory = (ConsumerFactory) EObjectAdaptable.adaptToConsumerFactoryNonNull(appearance, org.nasdanika.html.HTMLElement.class);
 		return super.createConfigureFunction(context).then(appearanceConsumerFactory.asFunctionFactory().create(context));
 	}
 
