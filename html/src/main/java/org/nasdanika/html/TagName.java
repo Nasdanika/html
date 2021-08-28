@@ -90,7 +90,7 @@ public enum TagName {
 	select(true),
 	small,
 	source,
-	span(true),
+	span(true, false),
 	strong,
 	style,
 	sub,
@@ -113,11 +113,12 @@ public enum TagName {
 	video,
 	wbr;
 	
-	private boolean paired;
+	public final boolean paired;
 	
-	public boolean isPaired() {
-		return paired;
-	}
+	/**
+	 * If true the tag content can be formatted by indenting contained tags.
+	 */
+	public final boolean indent;
 	
 	/**
 	 * Creates tag with {@link HTMLFactory}.INSTANCE.
@@ -129,10 +130,16 @@ public enum TagName {
 	}
 	
 	private TagName() {
+		this(false);
 	}
 	
 	private TagName(boolean paired) {
+		this(paired, true);
+	}
+	
+	private TagName(boolean paired, boolean indent) {
 		this.paired = paired;
+		this.indent = indent;
 	}
 	
 }

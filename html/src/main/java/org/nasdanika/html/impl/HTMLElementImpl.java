@@ -377,9 +377,11 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 	}
 	
 	public static StringBuilder indent(StringBuilder stringBuilder, int indent) {
-		stringBuilder.append(System.lineSeparator());
-		for (int i=0; i<indent; ++i) {
-			stringBuilder.append("  ");
+		if (indent != -1) {
+			stringBuilder.append(System.lineSeparator());
+			for (int i=0; i<indent; ++i) {
+				stringBuilder.append("  ");
+			}
 		}
 		return stringBuilder;
 	}
@@ -423,7 +425,7 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 		
 		StringBuilder contentBuilder = new StringBuilder(); 
 		for (Object c: theContent) {
-			contentBuilder.append(stringify(c, indent+1));
+			contentBuilder.append(stringify(c, indent == -1 ? indent : indent+1));
 			if (!(c instanceof Markup)) {
 				hasNonUIElementContent = true;
 			}
@@ -442,7 +444,7 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 	private boolean forceEndTag() {
 		for (TagName tagName: TagName.values()) {
 			if (tagName.name().equalsIgnoreCase(this.tagName)) {
-				return tagName.isPaired();
+				return tagName.paired;
 			}
 		}
 		return false;

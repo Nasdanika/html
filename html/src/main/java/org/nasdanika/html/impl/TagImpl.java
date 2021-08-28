@@ -33,5 +33,15 @@ class TagImpl extends HTMLElementImpl<Tag> implements Tag {
 	public boolean is(TagName tagName) {
 		return getTagName().equalsIgnoreCase(tagName.name());
 	}
+	
+	@Override
+	public String produce(int indent) {
+		for (TagName tagName: TagName.values()) {
+			if (tagName.name().equalsIgnoreCase(getTagName())) {
+				return super.produce(tagName.indent ? indent : -1); 
+			}
+		}
+		return super.produce(indent);
+	}
 
 }
