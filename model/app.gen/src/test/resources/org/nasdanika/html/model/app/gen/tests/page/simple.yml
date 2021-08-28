@@ -51,7 +51,17 @@ resources-container:
                         icon: fa fa-cog
                         text: Hello
                         tooltip: A friendly app
-                        help: Some info to show in the dialog.
+                        help: 
+                          header:
+                            content:
+                              content-text: Very informative indeed!
+                            appearance:
+                              background: LIGHT                              
+                          body:
+                            content:
+                              content-text: Extensive description...
+                          size: large
+                          centered: true                             
                         notification: 33
                 footer:
                   content:

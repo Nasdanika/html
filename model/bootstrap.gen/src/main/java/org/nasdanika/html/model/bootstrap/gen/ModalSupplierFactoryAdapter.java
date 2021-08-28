@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Consumer;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.FunctionFactory;
@@ -16,9 +17,12 @@ import org.nasdanika.common.Util;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.common.persistence.Marked;
 import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.Button;
 import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Modal;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 
@@ -121,7 +125,34 @@ public class ModalSupplierFactoryAdapter extends BootstrapElementSupplierFactory
 		
 		SupplierFactory<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>> modalSupplierFactory = this::createModalSupplier;
 		FunctionFactory<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>, org.nasdanika.html.bootstrap.Modal> partsFunctionFactory = partsFactory.asBiSupplierFunctionFactory();
-		return modalSupplierFactory.then(partsFunctionFactory).create(context);
+		
+		@SuppressWarnings("resource")
+		Consumer<org.nasdanika.html.bootstrap.Modal> dismisserBinder = new Consumer<org.nasdanika.html.bootstrap.Modal>() {
+
+			@Override
+			public double size() {
+				return 1;
+			}
+
+			@Override
+			public String name() {
+				return "Binding dismisser";
+			}
+
+			@Override
+			public void execute(org.nasdanika.html.bootstrap.Modal modal, ProgressMonitor progressMonitor) throws Exception {
+				Button dismisser = context.get(HTMLFactory.class, HTMLFactory.INSTANCE).button("x").addClass("close");
+				modal.getHeader().toHTMLElement().content(dismisser);
+				modal.bindDismisser(dismisser);					
+			}
+			
+		};
+		
+		Supplier<Modal> modalSupplier = modalSupplierFactory.then(partsFunctionFactory).create(context);
+		if (semanticElement.isDismisser() && header != null) {
+			return modalSupplier.then(dismisserBinder.asFunction());
+		}
+		return modalSupplier;
 	}
 
 }

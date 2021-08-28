@@ -3026,22 +3026,19 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		  (getModal_Header(),
 		   source,
 		   new String[] {
-			   "homogenous", "true",
-			   "strict-containment", "true"
+			   "homogenous", "true"
 		   });
 		addAnnotation
 		  (getModal_Body(),
 		   source,
 		   new String[] {
-			   "homogenous", "true",
-			   "strict-containment", "true"
+			   "homogenous", "true"
 		   });
 		addAnnotation
 		  (getModal_Footer(),
 		   source,
 		   new String[] {
-			   "homogenous", "true",
-			   "strict-containment", "true"
+			   "homogenous", "true"
 		   });
 	}
 

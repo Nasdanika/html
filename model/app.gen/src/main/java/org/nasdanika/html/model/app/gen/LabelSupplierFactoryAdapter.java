@@ -1,20 +1,19 @@
 package org.nasdanika.html.model.app.gen;
 
 import org.nasdanika.common.Context;
+import org.nasdanika.common.Function;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
-import org.nasdanika.html.Button;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Color;
-import org.nasdanika.html.bootstrap.Modal;
-import org.nasdanika.html.bootstrap.TagBootstrapElement;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.bootstrap.gen.BootstrapElementSupplierFactoryAdapter;
 
@@ -26,7 +25,7 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 		
 	@Override
 	public Supplier<HTMLElement<?>> createHTMLElementSupplier(Context context) throws Exception {
-		return new Supplier<HTMLElement<?>>() {
+		Function<Tag, HTMLElement<?>> labelFunction = new Function<Tag, HTMLElement<?>>() {
 
 			@Override
 			public double size() {
@@ -35,11 +34,11 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 
 			@Override
 			public String name() {
-				return "Container";
+				return "Label";
 			}
 
 			@Override
-			public HTMLElement<?> execute(ProgressMonitor progressMonitor) throws Exception {
+			public HTMLElement<?> execute(Tag help, ProgressMonitor progressMonitor) throws Exception {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				Label semanticElement = getTarget();
 				
@@ -49,6 +48,10 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 				String tooltip = semanticElement.getTooltip();
 				if (!Util.isBlank(tooltip)) {
 					container.attribute("title", tooltip);
+				}
+				
+				if (help != null) {
+					container.accept(help);
 				}
 				
 				String icon = semanticElement.getIcon();
@@ -93,28 +96,16 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 					container.accept(badge);
 				}
 
-				String help = context.interpolateToString(semanticElement.getHelp());
-				if (!Util.isBlank(help)) {
-					Modal descriptionModal = bootstrapFactory.modal();
-					descriptionModal.scrollable().size(Breakpoint.LARGE);
-					TagBootstrapElement header = descriptionModal.getHeader();
-					header.background(Color.SECONDARY);
-					Tag headerTag = header.toHTMLElement();
-					String questionCircleIcon = "far fa-question-circle";
-					Tag modalTitle = htmlFactory.tag(TagName.h5, TagName.span.create().addClass(questionCircleIcon).style().margin().right("0.3em"), context.interpolateToString(semanticElement.getText()));
-					headerTag.content(modalTitle);
-					
-					Button dismisser = bootstrapFactory.getHTMLFactory().button("x").addClass("close");
-					headerTag.content(dismisser);
-					descriptionModal.bindDismisser(dismisser);					
-					descriptionModal.getBody().toHTMLElement().content(help);
-					container.accept(descriptionModal);
-					
-					Tag trigger = bootstrapFactory.getHTMLFactory().tag(TagName.sup).addClass(questionCircleIcon, "nsd-label-help").style("cursor", "pointer");
+				if (help != null) {
+					Tag trigger = bootstrapFactory.getHTMLFactory().tag(TagName.sup).addClass("far fa-question-circle", "nsd-label-help").style("cursor", "pointer");
 					if (!Util.isBlank(tooltip)) {
 						trigger.attribute("title", tooltip);
 					}
-					descriptionModal.bindTrigger(trigger);
+					if (help.getId() == null) {
+						help.id(htmlFactory.nextId());
+					}
+					trigger.attribute("data-toggle", "modal");
+					trigger.attribute("data-target", "#" + help.getId());
 					container.accept(trigger);
 				}
 				
@@ -122,6 +113,12 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 			}
 			
 		};
+		
+		M semanticElement = getTarget();
+		org.nasdanika.html.model.bootstrap.Modal help = semanticElement.getHelp();
+		SupplierFactory<Tag> helpFactory = help == null ? SupplierFactory.empty() : EObjectAdaptable.adaptToSupplierFactory(help, Tag.class);
+		
+		return helpFactory.create(context).then(labelFunction);
 	}
 	
 	/**

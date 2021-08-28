@@ -297,7 +297,6 @@
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
         <details key="homogenous" value="true"/>
-        <details key="strict-containment" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//BootstrapElement"
@@ -307,7 +306,6 @@
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
         <details key="homogenous" value="true"/>
-        <details key="strict-containment" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="footer" eType="#//BootstrapElement"
@@ -317,7 +315,6 @@
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
         <details key="homogenous" value="true"/>
-        <details key="strict-containment" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="dismisser" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"

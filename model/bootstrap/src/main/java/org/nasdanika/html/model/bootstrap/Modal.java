@@ -37,7 +37,7 @@ public interface Modal extends BootstrapElement {
 	 * @see #setHeader(BootstrapElement)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getModal_Header()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
 	 * @generated
 	 */
 	BootstrapElement getHeader();
@@ -63,7 +63,7 @@ public interface Modal extends BootstrapElement {
 	 * @see #setBody(BootstrapElement)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getModal_Body()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
 	 * @generated
 	 */
 	BootstrapElement getBody();
@@ -89,7 +89,7 @@ public interface Modal extends BootstrapElement {
 	 * @see #setFooter(BootstrapElement)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getModal_Footer()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true' strict-containment='true'"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
 	 * @generated
 	 */
 	BootstrapElement getFooter();

@@ -135,22 +135,13 @@ public interface AppPackage extends EPackage {
 	int LABEL__COLOR = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Help</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LABEL__HELP = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
-
-	/**
 	 * The feature id for the '<em><b>Text</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__TEXT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 4;
+	int LABEL__TEXT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Icon</b></em>' attribute.
@@ -159,7 +150,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__ICON = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
+	int LABEL__ICON = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Tooltip</b></em>' attribute.
@@ -168,7 +159,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__TOOLTIP = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 6;
+	int LABEL__TOOLTIP = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Outline</b></em>' attribute.
@@ -177,7 +168,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__OUTLINE = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 7;
+	int LABEL__OUTLINE = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Notification</b></em>' attribute.
@@ -186,7 +177,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__NOTIFICATION = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 8;
+	int LABEL__NOTIFICATION = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Children</b></em>' reference.
@@ -195,7 +186,16 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__CHILDREN = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 9;
+	int LABEL__CHILDREN = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Help</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__HELP = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of structural features of the '<em>Label</em>' class.
@@ -289,15 +289,6 @@ public interface AppPackage extends EPackage {
 	int LINK__COLOR = LABEL__COLOR;
 
 	/**
-	 * The feature id for the '<em><b>Help</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LINK__HELP = LABEL__HELP;
-
-	/**
 	 * The feature id for the '<em><b>Text</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -350,6 +341,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK__CHILDREN = LABEL__CHILDREN;
+
+	/**
+	 * The feature id for the '<em><b>Help</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__HELP = LABEL__HELP;
 
 	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
@@ -1152,15 +1152,6 @@ public interface AppPackage extends EPackage {
 	int ACTION__COLOR = LINK__COLOR;
 
 	/**
-	 * The feature id for the '<em><b>Help</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION__HELP = LINK__HELP;
-
-	/**
 	 * The feature id for the '<em><b>Text</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1213,6 +1204,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION__CHILDREN = LINK__CHILDREN;
+
+	/**
+	 * The feature id for the '<em><b>Help</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__HELP = LINK__HELP;
 
 	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
@@ -1419,15 +1419,15 @@ public interface AppPackage extends EPackage {
 	EClass getLabel();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Help</em>'.
+	 * @return the meta object for the containment reference '<em>Help</em>'.
 	 * @see org.nasdanika.html.model.app.Label#getHelp()
 	 * @see #getLabel()
 	 * @generated
 	 */
-	EAttribute getLabel_Help();
+	EReference getLabel_Help();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Label#getText <em>Text</em>}'.
@@ -2045,12 +2045,12 @@ public interface AppPackage extends EPackage {
 		EClass LABEL = eINSTANCE.getLabel();
 
 		/**
-		 * The meta object literal for the '<em><b>Help</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Help</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute LABEL__HELP = eINSTANCE.getLabel_Help();
+		EReference LABEL__HELP = eINSTANCE.getLabel_Help();
 
 		/**
 		 * The meta object literal for the '<em><b>Text</b></em>' attribute feature.

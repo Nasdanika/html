@@ -4,6 +4,7 @@ package org.nasdanika.html.model.app;
 
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.Item;
+import org.nasdanika.html.model.bootstrap.Modal;
 
 /**
  * <!-- begin-user-doc -->
@@ -18,13 +19,13 @@ import org.nasdanika.html.model.bootstrap.Item;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getText <em>Text</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getIcon <em>Icon</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getTooltip <em>Tooltip</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#isOutline <em>Outline</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getNotification <em>Notification</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getChildren <em>Children</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getLabel()
@@ -33,29 +34,30 @@ import org.nasdanika.html.model.bootstrap.Item;
  */
 public interface Label extends BootstrapElement, Item {
 	/**
-	 * Returns the value of the '<em><b>Help</b></em>' attribute.
+	 * Returns the value of the '<em><b>Help</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Label help text to display in a modal dialog activated by a click on a question mark icon next to the label.
+	 * Help modal.
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Help</em>' attribute.
-	 * @see #setHelp(String)
+	 * @return the value of the '<em>Help</em>' containment reference.
+	 * @see #setHelp(Modal)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Help()
-	 * @model
+	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
 	 * @generated
 	 */
-	String getHelp();
+	Modal getHelp();
 
 	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}' attribute.
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Help</em>' attribute.
+	 * @param value the new value of the '<em>Help</em>' containment reference.
 	 * @see #getHelp()
 	 * @generated
 	 */
-	void setHelp(String value);
+	void setHelp(Modal value);
 
 	/**
 	 * Returns the value of the '<em><b>Text</b></em>' attribute.

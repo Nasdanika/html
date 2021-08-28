@@ -2,13 +2,16 @@
  */
 package org.nasdanika.html.model.app.impl;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Item;
+import org.nasdanika.html.model.bootstrap.Modal;
 import org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl;
 
 /**
@@ -22,13 +25,13 @@ import org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl;
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#isActive <em>Active</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#isDisabled <em>Disabled</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getColor <em>Color</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getHelp <em>Help</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getText <em>Text</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getIcon <em>Icon</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getTooltip <em>Tooltip</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#isOutline <em>Outline</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getNotification <em>Notification</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getChildren <em>Children</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getHelp <em>Help</em>}</li>
  * </ul>
  *
  * @generated
@@ -63,16 +66,6 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 * @ordered
 	 */
 	protected static final Color COLOR_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getHelp() <em>Help</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getHelp()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String HELP_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getText() <em>Text</em>}' attribute.
@@ -209,8 +202,18 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 * @generated
 	 */
 	@Override
-	public String getHelp() {
-		return (String)eDynamicGet(AppPackage.LABEL__HELP, AppPackage.Literals.LABEL__HELP, true, true);
+	public Modal getHelp() {
+		return (Modal)eDynamicGet(AppPackage.LABEL__HELP, AppPackage.Literals.LABEL__HELP, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetHelp(Modal newHelp, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newHelp, AppPackage.LABEL__HELP, msgs);
+		return msgs;
 	}
 
 	/**
@@ -219,8 +222,22 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 * @generated
 	 */
 	@Override
-	public void setHelp(String newHelp) {
+	public void setHelp(Modal newHelp) {
 		eDynamicSet(AppPackage.LABEL__HELP, AppPackage.Literals.LABEL__HELP, newHelp);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case AppPackage.LABEL__HELP:
+				return basicSetHelp(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -366,8 +383,6 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return isDisabled();
 			case AppPackage.LABEL__COLOR:
 				return getColor();
-			case AppPackage.LABEL__HELP:
-				return getHelp();
 			case AppPackage.LABEL__TEXT:
 				return getText();
 			case AppPackage.LABEL__ICON:
@@ -381,6 +396,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 			case AppPackage.LABEL__CHILDREN:
 				if (resolve) return getChildren();
 				return basicGetChildren();
+			case AppPackage.LABEL__HELP:
+				return getHelp();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -402,9 +419,6 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 			case AppPackage.LABEL__COLOR:
 				setColor((Color)newValue);
 				return;
-			case AppPackage.LABEL__HELP:
-				setHelp((String)newValue);
-				return;
 			case AppPackage.LABEL__TEXT:
 				setText((String)newValue);
 				return;
@@ -422,6 +436,9 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return;
 			case AppPackage.LABEL__CHILDREN:
 				setChildren((BootstrapElement)newValue);
+				return;
+			case AppPackage.LABEL__HELP:
+				setHelp((Modal)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -444,9 +461,6 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 			case AppPackage.LABEL__COLOR:
 				setColor(COLOR_EDEFAULT);
 				return;
-			case AppPackage.LABEL__HELP:
-				setHelp(HELP_EDEFAULT);
-				return;
 			case AppPackage.LABEL__TEXT:
 				setText(TEXT_EDEFAULT);
 				return;
@@ -464,6 +478,9 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return;
 			case AppPackage.LABEL__CHILDREN:
 				setChildren((BootstrapElement)null);
+				return;
+			case AppPackage.LABEL__HELP:
+				setHelp((Modal)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -483,8 +500,6 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return isDisabled() != DISABLED_EDEFAULT;
 			case AppPackage.LABEL__COLOR:
 				return COLOR_EDEFAULT == null ? getColor() != null : !COLOR_EDEFAULT.equals(getColor());
-			case AppPackage.LABEL__HELP:
-				return HELP_EDEFAULT == null ? getHelp() != null : !HELP_EDEFAULT.equals(getHelp());
 			case AppPackage.LABEL__TEXT:
 				return TEXT_EDEFAULT == null ? getText() != null : !TEXT_EDEFAULT.equals(getText());
 			case AppPackage.LABEL__ICON:
@@ -497,6 +512,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return NOTIFICATION_EDEFAULT == null ? getNotification() != null : !NOTIFICATION_EDEFAULT.equals(getNotification());
 			case AppPackage.LABEL__CHILDREN:
 				return basicGetChildren() != null;
+			case AppPackage.LABEL__HELP:
+				return getHelp() != null;
 		}
 		return super.eIsSet(featureID);
 	}
