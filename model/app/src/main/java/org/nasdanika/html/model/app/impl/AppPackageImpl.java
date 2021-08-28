@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.resources.ResourcesPackage;
@@ -25,6 +26,7 @@ import org.nasdanika.html.model.app.NavigationPanelStyle;
 import org.nasdanika.html.model.app.Page;
 import org.nasdanika.html.model.app.PagePart;
 import org.nasdanika.html.model.app.SectionStyle;
+import org.nasdanika.html.model.app.util.AppValidator;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 
@@ -184,6 +186,16 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		// Initialize created meta-data
 		theAppPackage.initializePackageContents();
 
+		// Register package validator
+		EValidator.Registry.INSTANCE.put
+			(theAppPackage,
+			 new EValidator.Descriptor() {
+				 @Override
+				 public EValidator getEValidator() {
+					 return AppValidator.INSTANCE;
+				 }
+			 });
+
 		// Mark meta-data to indicate it can't be changed
 		theAppPackage.freeze();
 
@@ -308,8 +320,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLink_Binding() {
-		return (EAttribute)linkEClass.getEStructuralFeatures().get(2);
+	public EReference getLink_Modal() {
+		return (EReference)linkEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -718,7 +730,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getAction_Modal() {
+	public EAttribute getAction_ModalActivator() {
 		return (EAttribute)actionEClass.getEStructuralFeatures().get(11);
 	}
 
@@ -793,7 +805,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		linkEClass = createEClass(LINK);
 		createEAttribute(linkEClass, LINK__LOCATION);
 		createEAttribute(linkEClass, LINK__SCRIPT);
-		createEAttribute(linkEClass, LINK__BINDING);
+		createEReference(linkEClass, LINK__MODAL);
 		createEAttribute(linkEClass, LINK__CONFIRMATION);
 
 		pageEClass = createEClass(PAGE);
@@ -842,7 +854,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEReference(actionEClass, ACTION__ANONYMOUS);
 		createEReference(actionEClass, ACTION__RESOURCES);
 		createEAttribute(actionEClass, ACTION__INLINE);
-		createEAttribute(actionEClass, ACTION__MODAL);
+		createEAttribute(actionEClass, ACTION__MODAL_ACTIVATOR);
 
 		// Create enums
 		sectionStyleEEnum = createEEnum(SECTION_STYLE);
@@ -907,7 +919,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEClass(linkEClass, Link.class, "Link", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getLink_Location(), ecorePackage.getEString(), "location", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Script(), ecorePackage.getEString(), "script", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getLink_Binding(), ecorePackage.getEString(), "binding", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLink_Modal(), theBootstrapPackage.getModal(), null, "modal", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Confirmation(), ecorePackage.getEString(), "confirmation", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(pageEClass, Page.class, "Page", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -956,7 +968,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEReference(getAction_Anonymous(), this.getAction(), null, "anonymous", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_Resources(), theResourcesPackage.getResource(), null, "resources", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Inline(), ecorePackage.getEBoolean(), "inline", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAction_Modal(), ecorePackage.getEBoolean(), "modal", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_ModalActivator(), ecorePackage.getEBoolean(), "modalActivator", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(sectionStyleEEnum, SectionStyle.class, "SectionStyle");
@@ -998,6 +1010,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createGenModelAnnotations();
 		// urn:org.nasdanika
 		createUrnorgAnnotations();
+		// http://www.eclipse.org/emf/2002/Ecore
+		createEcoreAnnotations();
 	}
 
 	/**
@@ -1075,10 +1089,10 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Script to execute on link click (activation)."
 		   });
 		addAnnotation
-		  (getLink_Binding(),
+		  (getLink_Modal(),
 		   source,
 		   new String[] {
-			   "documentation", "JavaScript which performs binding of the link action."
+			   "documentation", "Modal which opens on link activation."
 		   });
 		addAnnotation
 		  (getLink_Confirmation(),
@@ -1303,7 +1317,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Inline action\'s content is displayed instead of an action link in navigation panels."
 		   });
 		addAnnotation
-		  (getAction_Modal(),
+		  (getAction_ModalActivator(),
 		   source,
 		   new String[] {
 			   "documentation", "Inline action\'s content is displayed in a modal dialog which opens on a click on the action\'s link."
@@ -1334,19 +1348,20 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		  (getLink_Location(),
 		   source,
 		   new String[] {
-			   "exclusive-with", "script binding"
+			   "exclusive-with", "script modal"
 		   });
 		addAnnotation
 		  (getLink_Script(),
 		   source,
 		   new String[] {
-			   "exclusive-with", "location binding"
+			   "exclusive-with", "location modal"
 		   });
 		addAnnotation
-		  (getLink_Binding(),
+		  (getLink_Modal(),
 		   source,
 		   new String[] {
-			   "exclusive-with", "script location"
+			   "homogenous", "true",
+			   "exclusive-with", "location script"
 		   });
 		addAnnotation
 		  (getPage_Header(),
@@ -1439,10 +1454,26 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "exclusive-with", "location binding script modal"
 		   });
 		addAnnotation
-		  (getAction_Modal(),
+		  (getAction_ModalActivator(),
 		   source,
 		   new String[] {
 			   "exclusive-with", "location binding script inline"
+		   });
+	}
+
+	/**
+	 * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/Ecore</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createEcoreAnnotations() {
+		String source = "http://www.eclipse.org/emf/2002/Ecore";
+		addAnnotation
+		  (linkEClass,
+		   source,
+		   new String[] {
+			   "constraints", "activator"
 		   });
 	}
 

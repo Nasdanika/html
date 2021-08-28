@@ -2,10 +2,13 @@
  */
 package org.nasdanika.html.model.app.impl;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.InternalEObject;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Link;
+import org.nasdanika.html.model.bootstrap.Modal;
 
 /**
  * <!-- begin-user-doc -->
@@ -17,7 +20,7 @@ import org.nasdanika.html.model.app.Link;
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getLocation <em>Location</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getScript <em>Script</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getBinding <em>Binding</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getModal <em>Modal</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getConfirmation <em>Confirmation</em>}</li>
  * </ul>
  *
@@ -43,16 +46,6 @@ public class LinkImpl extends LabelImpl implements Link {
 	 * @ordered
 	 */
 	protected static final String SCRIPT_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getBinding() <em>Binding</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getBinding()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String BINDING_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getConfirmation() <em>Confirmation</em>}' attribute.
@@ -129,8 +122,18 @@ public class LinkImpl extends LabelImpl implements Link {
 	 * @generated
 	 */
 	@Override
-	public String getBinding() {
-		return (String)eDynamicGet(AppPackage.LINK__BINDING, AppPackage.Literals.LINK__BINDING, true, true);
+	public Modal getModal() {
+		return (Modal)eDynamicGet(AppPackage.LINK__MODAL, AppPackage.Literals.LINK__MODAL, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetModal(Modal newModal, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newModal, AppPackage.LINK__MODAL, msgs);
+		return msgs;
 	}
 
 	/**
@@ -139,8 +142,8 @@ public class LinkImpl extends LabelImpl implements Link {
 	 * @generated
 	 */
 	@Override
-	public void setBinding(String newBinding) {
-		eDynamicSet(AppPackage.LINK__BINDING, AppPackage.Literals.LINK__BINDING, newBinding);
+	public void setModal(Modal newModal) {
+		eDynamicSet(AppPackage.LINK__MODAL, AppPackage.Literals.LINK__MODAL, newModal);
 	}
 
 	/**
@@ -169,14 +172,28 @@ public class LinkImpl extends LabelImpl implements Link {
 	 * @generated
 	 */
 	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case AppPackage.LINK__MODAL:
+				return basicSetModal(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AppPackage.LINK__LOCATION:
 				return getLocation();
 			case AppPackage.LINK__SCRIPT:
 				return getScript();
-			case AppPackage.LINK__BINDING:
-				return getBinding();
+			case AppPackage.LINK__MODAL:
+				return getModal();
 			case AppPackage.LINK__CONFIRMATION:
 				return getConfirmation();
 		}
@@ -197,8 +214,8 @@ public class LinkImpl extends LabelImpl implements Link {
 			case AppPackage.LINK__SCRIPT:
 				setScript((String)newValue);
 				return;
-			case AppPackage.LINK__BINDING:
-				setBinding((String)newValue);
+			case AppPackage.LINK__MODAL:
+				setModal((Modal)newValue);
 				return;
 			case AppPackage.LINK__CONFIRMATION:
 				setConfirmation((String)newValue);
@@ -221,8 +238,8 @@ public class LinkImpl extends LabelImpl implements Link {
 			case AppPackage.LINK__SCRIPT:
 				setScript(SCRIPT_EDEFAULT);
 				return;
-			case AppPackage.LINK__BINDING:
-				setBinding(BINDING_EDEFAULT);
+			case AppPackage.LINK__MODAL:
+				setModal((Modal)null);
 				return;
 			case AppPackage.LINK__CONFIRMATION:
 				setConfirmation(CONFIRMATION_EDEFAULT);
@@ -243,8 +260,8 @@ public class LinkImpl extends LabelImpl implements Link {
 				return LOCATION_EDEFAULT == null ? getLocation() != null : !LOCATION_EDEFAULT.equals(getLocation());
 			case AppPackage.LINK__SCRIPT:
 				return SCRIPT_EDEFAULT == null ? getScript() != null : !SCRIPT_EDEFAULT.equals(getScript());
-			case AppPackage.LINK__BINDING:
-				return BINDING_EDEFAULT == null ? getBinding() != null : !BINDING_EDEFAULT.equals(getBinding());
+			case AppPackage.LINK__MODAL:
+				return getModal() != null;
 			case AppPackage.LINK__CONFIRMATION:
 				return CONFIRMATION_EDEFAULT == null ? getConfirmation() != null : !CONFIRMATION_EDEFAULT.equals(getConfirmation());
 		}

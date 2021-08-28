@@ -30,7 +30,7 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  *   <li>{@link org.nasdanika.html.model.app.Action#getAnonymous <em>Anonymous</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getResources <em>Resources</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#isInline <em>Inline</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Action#isModal <em>Modal</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#isModalActivator <em>Modal Activator</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getAction()
@@ -293,28 +293,28 @@ public interface Action extends Link {
 	void setInline(boolean value);
 
 	/**
-	 * Returns the value of the '<em><b>Modal</b></em>' attribute.
+	 * Returns the value of the '<em><b>Modal Activator</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * Inline action's content is displayed in a modal dialog which opens on a click on the action's link.
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Modal</em>' attribute.
-	 * @see #setModal(boolean)
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Modal()
+	 * @return the value of the '<em>Modal Activator</em>' attribute.
+	 * @see #setModalActivator(boolean)
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_ModalActivator()
 	 * @model annotation="urn:org.nasdanika exclusive-with='location binding script inline'"
 	 * @generated
 	 */
-	boolean isModal();
+	boolean isModalActivator();
 
 	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#isModal <em>Modal</em>}' attribute.
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#isModalActivator <em>Modal Activator</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Modal</em>' attribute.
-	 * @see #isModal()
+	 * @param value the new value of the '<em>Modal Activator</em>' attribute.
+	 * @see #isModalActivator()
 	 * @generated
 	 */
-	void setModal(boolean value);
+	void setModalActivator(boolean value);
 
 } // Action

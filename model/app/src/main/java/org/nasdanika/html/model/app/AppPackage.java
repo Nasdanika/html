@@ -370,13 +370,13 @@ public interface AppPackage extends EPackage {
 	int LINK__SCRIPT = LABEL_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Binding</b></em>' attribute.
+	 * The feature id for the '<em><b>Modal</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK__BINDING = LABEL_FEATURE_COUNT + 2;
+	int LINK__MODAL = LABEL_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Confirmation</b></em>' attribute.
@@ -1233,13 +1233,13 @@ public interface AppPackage extends EPackage {
 	int ACTION__SCRIPT = LINK__SCRIPT;
 
 	/**
-	 * The feature id for the '<em><b>Binding</b></em>' attribute.
+	 * The feature id for the '<em><b>Modal</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__BINDING = LINK__BINDING;
+	int ACTION__MODAL = LINK__MODAL;
 
 	/**
 	 * The feature id for the '<em><b>Confirmation</b></em>' attribute.
@@ -1350,13 +1350,13 @@ public interface AppPackage extends EPackage {
 	int ACTION__INLINE = LINK_FEATURE_COUNT + 10;
 
 	/**
-	 * The feature id for the '<em><b>Modal</b></em>' attribute.
+	 * The feature id for the '<em><b>Modal Activator</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__MODAL = LINK_FEATURE_COUNT + 11;
+	int ACTION__MODAL_ACTIVATOR = LINK_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of structural features of the '<em>Action</em>' class.
@@ -1528,15 +1528,15 @@ public interface AppPackage extends EPackage {
 	EAttribute getLink_Script();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Link#getBinding <em>Binding</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.Link#getModal <em>Modal</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Binding</em>'.
-	 * @see org.nasdanika.html.model.app.Link#getBinding()
+	 * @return the meta object for the containment reference '<em>Modal</em>'.
+	 * @see org.nasdanika.html.model.app.Link#getModal()
 	 * @see #getLink()
 	 * @generated
 	 */
-	EAttribute getLink_Binding();
+	EReference getLink_Modal();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Link#getConfirmation <em>Confirmation</em>}'.
@@ -1971,15 +1971,15 @@ public interface AppPackage extends EPackage {
 	EAttribute getAction_Inline();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Action#isModal <em>Modal</em>}'.
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Action#isModalActivator <em>Modal Activator</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Modal</em>'.
-	 * @see org.nasdanika.html.model.app.Action#isModal()
+	 * @return the meta object for the attribute '<em>Modal Activator</em>'.
+	 * @see org.nasdanika.html.model.app.Action#isModalActivator()
 	 * @see #getAction()
 	 * @generated
 	 */
-	EAttribute getAction_Modal();
+	EAttribute getAction_ModalActivator();
 
 	/**
 	 * Returns the meta object for enum '{@link org.nasdanika.html.model.app.Color <em>Color</em>}'.
@@ -2127,12 +2127,12 @@ public interface AppPackage extends EPackage {
 		EAttribute LINK__SCRIPT = eINSTANCE.getLink_Script();
 
 		/**
-		 * The meta object literal for the '<em><b>Binding</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Modal</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute LINK__BINDING = eINSTANCE.getLink_Binding();
+		EReference LINK__MODAL = eINSTANCE.getLink_Modal();
 
 		/**
 		 * The meta object literal for the '<em><b>Confirmation</b></em>' attribute feature.
@@ -2471,12 +2471,12 @@ public interface AppPackage extends EPackage {
 		EAttribute ACTION__INLINE = eINSTANCE.getAction_Inline();
 
 		/**
-		 * The meta object literal for the '<em><b>Modal</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Modal Activator</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute ACTION__MODAL = eINSTANCE.getAction_Modal();
+		EAttribute ACTION__MODAL_ACTIVATOR = eINSTANCE.getAction_ModalActivator();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.Color <em>Color</em>}' enum.

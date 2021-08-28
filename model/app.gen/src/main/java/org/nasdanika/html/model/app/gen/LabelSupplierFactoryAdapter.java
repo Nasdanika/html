@@ -1,10 +1,13 @@
 package org.nasdanika.html.model.app.gen;
 
+import java.util.Map;
+
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
+import org.nasdanika.common.MapCompoundSupplierFactory;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
-import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.HTMLElement;
@@ -14,6 +17,7 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.bootstrap.gen.BootstrapElementSupplierFactoryAdapter;
 
@@ -25,7 +29,7 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 		
 	@Override
 	public Supplier<HTMLElement<?>> createHTMLElementSupplier(Context context) throws Exception {
-		Function<Tag, HTMLElement<?>> labelFunction = new Function<Tag, HTMLElement<?>>() {
+		Function<Map<EStructuralFeature, Tag>, HTMLElement<?>> labelFunction = new Function<Map<EStructuralFeature, Tag>, HTMLElement<?>>() {
 
 			@Override
 			public double size() {
@@ -38,7 +42,7 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 			}
 
 			@Override
-			public HTMLElement<?> execute(Tag help, ProgressMonitor progressMonitor) throws Exception {
+			public HTMLElement<?> execute(Map<EStructuralFeature, Tag> features, ProgressMonitor progressMonitor) throws Exception {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				Label semanticElement = getTarget();
 				
@@ -50,6 +54,7 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 					container.attribute("title", tooltip);
 				}
 				
+				Tag help = features.get(AppPackage.Literals.LABEL__HELP);
 				if (help != null) {
 					container.accept(help);
 				}
@@ -72,7 +77,7 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 					container.accept(iconTag);
 				}		
 					
-				Tag text = text(context, progressMonitor);
+				Tag text = features.get(AppPackage.Literals.LABEL__TEXT);
 				if (text != null) {
 					if (color == null) {
 						container.accept(text);
@@ -114,11 +119,17 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 			
 		};
 		
+		MapCompoundSupplierFactory<EStructuralFeature, Tag> featuresFactory = new MapCompoundSupplierFactory<>("Features");
+		
 		M semanticElement = getTarget();
 		org.nasdanika.html.model.bootstrap.Modal help = semanticElement.getHelp();
-		SupplierFactory<Tag> helpFactory = help == null ? SupplierFactory.empty() : EObjectAdaptable.adaptToSupplierFactory(help, Tag.class);
+		if (help != null) {
+			featuresFactory.put(AppPackage.Literals.LABEL__HELP, EObjectAdaptable.adaptToSupplierFactoryNonNull(help, Tag.class));
+		}
 		
-		return helpFactory.create(context).then(labelFunction);
+		featuresFactory.put(AppPackage.Literals.LABEL__TEXT, this::createTextSupplier);
+		
+		return featuresFactory.create(context).then(labelFunction);
 	}
 	
 	/**
@@ -126,10 +137,28 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 	 * @param context
 	 * @param progressMonitor
 	 * @return
+	 * @throws Exception 
 	 */
-	protected Tag text(Context context, ProgressMonitor progressMonitor) {
-		HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
-		return htmlFactory.span(context.interpolateToString(getTarget().getText()));
+	protected Supplier<Tag> createTextSupplier(Context context) throws Exception {
+		return new Supplier<Tag>() {
+
+			@Override
+			public double size() {
+				return 1;
+			}
+
+			@Override
+			public String name() {
+				return "Label text";
+			}
+
+			@Override
+			public Tag execute(ProgressMonitor progressMonitor) throws Exception {
+				HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
+				return htmlFactory.span(context.interpolateToString(getTarget().getText()));
+			}
+			
+		};
 	}
 	
 }

@@ -63,6 +63,25 @@ resources-container:
                           size: large
                           centered: true                             
                         notification: 33
+                    - app-link:
+                        text: Location link (href)
+                        location: https://nasdanika.org
+                    - app-link:
+                        text: Location link with confirmation
+                        location: https://nasdanika.org
+                        confirmation: Are you sure?
+                    - app-link:
+                        text: Script link
+                        script: alert("Here I am")
+                    - app-link:
+                        text: Modal link
+                        modal: 
+                          header:
+                            content:
+                              content-text: Info
+                          body:
+                            content:
+                              content-text: Here we go!
                 footer:
                   content:
                     content-text: Footer

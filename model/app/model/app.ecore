@@ -52,12 +52,15 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//Label">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="activator"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Link URL relative to the ancestor URL or ``base-uri``.&#xA;&#xA;``${{{base-uri}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. &#xA;It might be useful it the parent URI is an absolute external URI.&#xA;``${{{base-uri}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{base-uri}}}index.html``."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="exclusive-with" value="script binding"/>
+        <details key="exclusive-with" value="script modal"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="script" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
@@ -65,15 +68,17 @@
         <details key="documentation" value="Script to execute on link click (activation)."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="exclusive-with" value="location binding"/>
+        <details key="exclusive-with" value="location modal"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="binding" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modal" eType="ecore:EClass ../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//Modal"
+        containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="JavaScript which performs binding of the link action."/>
+        <details key="documentation" value="Modal which opens on link activation."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="exclusive-with" value="script location"/>
+        <details key="homogenous" value="true"/>
+        <details key="exclusive-with" value="location script"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="confirmation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
@@ -373,7 +378,7 @@
         <details key="exclusive-with" value="location binding script modal"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modal" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modalActivator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Inline action's content is displayed in a modal dialog which opens on a click on the action's link."/>
       </eAnnotations>

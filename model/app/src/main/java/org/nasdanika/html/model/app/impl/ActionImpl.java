@@ -39,7 +39,7 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getAnonymous <em>Anonymous</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getResources <em>Resources</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isInline <em>Inline</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isModal <em>Modal</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#isModalActivator <em>Modal Activator</em>}</li>
  * </ul>
  *
  * @generated
@@ -86,14 +86,14 @@ public class ActionImpl extends LinkImpl implements Action {
 	protected static final boolean INLINE_EDEFAULT = false;
 
 	/**
-	 * The default value of the '{@link #isModal() <em>Modal</em>}' attribute.
+	 * The default value of the '{@link #isModalActivator() <em>Modal Activator</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isModal()
+	 * @see #isModalActivator()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MODAL_EDEFAULT = false;
+	protected static final boolean MODAL_ACTIVATOR_EDEFAULT = false;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -353,8 +353,8 @@ public class ActionImpl extends LinkImpl implements Action {
 	 * @generated
 	 */
 	@Override
-	public boolean isModal() {
-		return (Boolean)eDynamicGet(AppPackage.ACTION__MODAL, AppPackage.Literals.ACTION__MODAL, true, true);
+	public boolean isModalActivator() {
+		return (Boolean)eDynamicGet(AppPackage.ACTION__MODAL_ACTIVATOR, AppPackage.Literals.ACTION__MODAL_ACTIVATOR, true, true);
 	}
 
 	/**
@@ -363,8 +363,8 @@ public class ActionImpl extends LinkImpl implements Action {
 	 * @generated
 	 */
 	@Override
-	public void setModal(boolean newModal) {
-		eDynamicSet(AppPackage.ACTION__MODAL, AppPackage.Literals.ACTION__MODAL, newModal);
+	public void setModalActivator(boolean newModalActivator) {
+		eDynamicSet(AppPackage.ACTION__MODAL_ACTIVATOR, AppPackage.Literals.ACTION__MODAL_ACTIVATOR, newModalActivator);
 	}
 
 	/**
@@ -423,8 +423,8 @@ public class ActionImpl extends LinkImpl implements Action {
 				return getResources();
 			case AppPackage.ACTION__INLINE:
 				return isInline();
-			case AppPackage.ACTION__MODAL:
-				return isModal();
+			case AppPackage.ACTION__MODAL_ACTIVATOR:
+				return isModalActivator();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -474,8 +474,8 @@ public class ActionImpl extends LinkImpl implements Action {
 			case AppPackage.ACTION__INLINE:
 				setInline((Boolean)newValue);
 				return;
-			case AppPackage.ACTION__MODAL:
-				setModal((Boolean)newValue);
+			case AppPackage.ACTION__MODAL_ACTIVATOR:
+				setModalActivator((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -522,8 +522,8 @@ public class ActionImpl extends LinkImpl implements Action {
 			case AppPackage.ACTION__INLINE:
 				setInline(INLINE_EDEFAULT);
 				return;
-			case AppPackage.ACTION__MODAL:
-				setModal(MODAL_EDEFAULT);
+			case AppPackage.ACTION__MODAL_ACTIVATOR:
+				setModalActivator(MODAL_ACTIVATOR_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -559,8 +559,8 @@ public class ActionImpl extends LinkImpl implements Action {
 				return !getResources().isEmpty();
 			case AppPackage.ACTION__INLINE:
 				return isInline() != INLINE_EDEFAULT;
-			case AppPackage.ACTION__MODAL:
-				return isModal() != MODAL_EDEFAULT;
+			case AppPackage.ACTION__MODAL_ACTIVATOR:
+				return isModalActivator() != MODAL_ACTIVATOR_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

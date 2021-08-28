@@ -2,6 +2,8 @@
  */
 package org.nasdanika.html.model.app;
 
+import org.nasdanika.html.model.bootstrap.Modal;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -14,12 +16,12 @@ package org.nasdanika.html.model.app;
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.Link#getLocation <em>Location</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Link#getScript <em>Script</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Link#getBinding <em>Binding</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Link#getModal <em>Modal</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Link#getConfirmation <em>Confirmation</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getLink()
- * @model
+ * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='activator'"
  * @generated
  */
 public interface Link extends Label {
@@ -37,7 +39,7 @@ public interface Link extends Label {
 	 * @return the value of the '<em>Location</em>' attribute.
 	 * @see #setLocation(String)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Location()
-	 * @model annotation="urn:org.nasdanika exclusive-with='script binding'"
+	 * @model annotation="urn:org.nasdanika exclusive-with='script modal'"
 	 * @generated
 	 */
 	String getLocation();
@@ -62,7 +64,7 @@ public interface Link extends Label {
 	 * @return the value of the '<em>Script</em>' attribute.
 	 * @see #setScript(String)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Script()
-	 * @model annotation="urn:org.nasdanika exclusive-with='location binding'"
+	 * @model annotation="urn:org.nasdanika exclusive-with='location modal'"
 	 * @generated
 	 */
 	String getScript();
@@ -78,29 +80,30 @@ public interface Link extends Label {
 	void setScript(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Binding</b></em>' attribute.
+	 * Returns the value of the '<em><b>Modal</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * JavaScript which performs binding of the link action.
+	 * Modal which opens on link activation.
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Binding</em>' attribute.
-	 * @see #setBinding(String)
-	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Binding()
-	 * @model annotation="urn:org.nasdanika exclusive-with='script location'"
+	 * @return the value of the '<em>Modal</em>' containment reference.
+	 * @see #setModal(Modal)
+	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Modal()
+	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true' exclusive-with='location script'"
 	 * @generated
 	 */
-	String getBinding();
+	Modal getModal();
 
 	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Link#getBinding <em>Binding</em>}' attribute.
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Link#getModal <em>Modal</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Binding</em>' attribute.
-	 * @see #getBinding()
+	 * @param value the new value of the '<em>Modal</em>' containment reference.
+	 * @see #getModal()
 	 * @generated
 	 */
-	void setBinding(String value);
+	void setModal(Modal value);
 
 	/**
 	 * Returns the value of the '<em><b>Confirmation</b></em>' attribute.

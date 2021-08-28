@@ -53,7 +53,7 @@
     <genClasses ecoreClass="app.ecore#//Link">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/location"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/script"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/binding"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Link/modal"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/confirmation"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//Page">
@@ -101,7 +101,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/anonymous"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Action/resources"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/inline"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/modal"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/modalActivator"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
