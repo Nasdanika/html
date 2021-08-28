@@ -113,7 +113,7 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 	}
 	
 	@Override
-	public Supplier<HTMLElement<?>> createElementSupplier(Context context) throws Exception {
+	public Supplier<HTMLElement<?>> createHTMLElementSupplier(Context context) throws Exception {
 		MapCompoundConsumerFactory<EStructuralFeature, HTMLElement<?>> partsFactory = new MapCompoundConsumerFactory<>("Page parts");
 		Page semanticElement = (Page) getTarget();
 		

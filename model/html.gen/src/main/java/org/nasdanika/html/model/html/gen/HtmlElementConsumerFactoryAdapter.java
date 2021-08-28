@@ -48,7 +48,8 @@ public class HtmlElementConsumerFactoryAdapter<M extends org.nasdanika.html.mode
 	@Override
 	public Consumer<T> create(Context context) throws Exception {
 		FunctionFactory<T,T> configureFunctionFactory = this::createConfigureFunction;
-		return configureFunctionFactory.then(this::createConsumer).create(context);
+		ConsumerFactory<T> consumerFactory = this::createConsumer;
+		return configureFunctionFactory.then(consumerFactory).create(context);
 	}		
 
 }

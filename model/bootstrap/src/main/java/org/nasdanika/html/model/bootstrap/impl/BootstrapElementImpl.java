@@ -26,7 +26,7 @@ import org.nasdanika.html.model.html.impl.HtmlElementImpl;
  *
  * @generated
  */
-public abstract class BootstrapElementImpl extends HtmlElementImpl implements BootstrapElement {
+public class BootstrapElementImpl extends HtmlElementImpl implements BootstrapElement {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

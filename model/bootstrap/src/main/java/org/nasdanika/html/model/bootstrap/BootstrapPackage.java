@@ -736,7 +736,454 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getDiv()
 	 * @generated
 	 */
-	int DIV = 8;
+	int DIV = 9;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ItemImpl <em>Item</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ItemImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getItem()
+	 * @generated
+	 */
+	int ITEM = 10;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ActionGroupItemImpl <em>Action Group Item</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ActionGroupItemImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getActionGroupItem()
+	 * @generated
+	 */
+	int ACTION_GROUP_ITEM = 11;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.LinkActionGroupItemImpl <em>Link Action Group Item</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.LinkActionGroupItemImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getLinkActionGroupItem()
+	 * @generated
+	 */
+	int LINK_ACTION_GROUP_ITEM = 12;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ContentActionGroupItemImpl <em>Content Action Group Item</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ContentActionGroupItemImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getContentActionGroupItem()
+	 * @generated
+	 */
+	int CONTENT_ACTION_GROUP_ITEM = 13;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ActionGroupImpl <em>Action Group</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ActionGroupImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getActionGroup()
+	 * @generated
+	 */
+	int ACTION_GROUP = 14;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ContainerImpl <em>Container</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ContainerImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getContainer()
+	 * @generated
+	 */
+	int CONTAINER = 15;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.RowImpl <em>Row</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.RowImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getRow()
+	 * @generated
+	 */
+	int ROW = 16;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ColumnWidthImpl <em>Column Width</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ColumnWidthImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getColumnWidth()
+	 * @generated
+	 */
+	int COLUMN_WIDTH = 17;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ColumnImpl <em>Column</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ColumnImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getColumn()
+	 * @generated
+	 */
+	int COLUMN = 18;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TableRowContainerImpl <em>Table Row Container</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.TableRowContainerImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTableRowContainer()
+	 * @generated
+	 */
+	int TABLE_ROW_CONTAINER = 19;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TableSectionImpl <em>Table Section</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.TableSectionImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTableSection()
+	 * @generated
+	 */
+	int TABLE_SECTION = 20;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TableHeaderImpl <em>Table Header</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.TableHeaderImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTableHeader()
+	 * @generated
+	 */
+	int TABLE_HEADER = 21;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.TableConfiguration <em>Table Configuration</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.TableConfiguration
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTableConfiguration()
+	 * @generated
+	 */
+	int TABLE_CONFIGURATION = 22;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TableImpl <em>Table</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.TableImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTable()
+	 * @generated
+	 */
+	int TABLE = 23;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TableRowImpl <em>Table Row</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.TableRowImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTableRow()
+	 * @generated
+	 */
+	int TABLE_ROW = 24;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl <em>Table Cell</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.TableCellImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTableCell()
+	 * @generated
+	 */
+	int TABLE_CELL = 25;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.CardImpl <em>Card</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.CardImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getCard()
+	 * @generated
+	 */
+	int CARD = 26;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.AlertImpl <em>Alert</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.AlertImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getAlert()
+	 * @generated
+	 */
+	int ALERT = 27;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.BadgeImpl <em>Badge</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.BadgeImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getBadge()
+	 * @generated
+	 */
+	int BADGE = 28;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.BreadcrumbImpl <em>Breadcrumb</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.BreadcrumbImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getBreadcrumb()
+	 * @generated
+	 */
+	int BREADCRUMB = 29;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ButtonImpl <em>Button</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ButtonImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getButton()
+	 * @generated
+	 */
+	int BUTTON = 30;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ButtonGroupImpl <em>Button Group</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ButtonGroupImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getButtonGroup()
+	 * @generated
+	 */
+	int BUTTON_GROUP = 31;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ButtonToolbarImpl <em>Button Toolbar</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ButtonToolbarImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getButtonToolbar()
+	 * @generated
+	 */
+	int BUTTON_TOOLBAR = 32;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.DropdownImpl <em>Dropdown</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.DropdownImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getDropdown()
+	 * @generated
+	 */
+	int DROPDOWN = 33;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.FormImpl <em>Form</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.FormImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getForm()
+	 * @generated
+	 */
+	int FORM = 34;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ListGroupImpl <em>List Group</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ListGroupImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getListGroup()
+	 * @generated
+	 */
+	int LIST_GROUP = 35;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.NavsImpl <em>Navs</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.NavsImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getNavs()
+	 * @generated
+	 */
+	int NAVS = 36;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.NavbarImpl <em>Navbar</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.NavbarImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getNavbar()
+	 * @generated
+	 */
+	int NAVBAR = 37;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TooltipImpl <em>Tooltip</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.TooltipImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTooltip()
+	 * @generated
+	 */
+	int TOOLTIP = 38;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.InputGroupImpl <em>Input Group</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.InputGroupImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getInputGroup()
+	 * @generated
+	 */
+	int INPUT_GROUP = 39;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.FormGroupImpl <em>Form Group</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.FormGroupImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getFormGroup()
+	 * @generated
+	 */
+	int FORM_GROUP = 40;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.CollapseImpl <em>Collapse</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.CollapseImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getCollapse()
+	 * @generated
+	 */
+	int COLLAPSE = 41;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ModalImpl <em>Modal</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.ModalImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getModal()
+	 * @generated
+	 */
+	int MODAL = 8;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__ATTRIBUTES = BOOTSTRAP_ELEMENT__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__CONTENT = BOOTSTRAP_ELEMENT__CONTENT;
+
+	/**
+	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__APPEARANCE = BOOTSTRAP_ELEMENT__APPEARANCE;
+
+	/**
+	 * The feature id for the '<em><b>Header</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__HEADER = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Body</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__BODY = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Footer</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__FOOTER = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Dismisser</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__DISMISSER = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Scrollable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__SCROLLABLE = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Centered</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__CENTERED = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Size</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__SIZE = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 6;
+
+	/**
+	 * The number of structural features of the '<em>Modal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL_FEATURE_COUNT = BOOTSTRAP_ELEMENT_FEATURE_COUNT + 7;
+
+	/**
+	 * The number of operations of the '<em>Modal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -802,16 +1249,6 @@ public interface BootstrapPackage extends EPackage {
 	int DIV_OPERATION_COUNT = TAG_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ItemImpl <em>Item</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.ItemImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getItem()
-	 * @generated
-	 */
-	int ITEM = 9;
-
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -864,16 +1301,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ITEM_OPERATION_COUNT = ExecPackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ActionGroupItemImpl <em>Action Group Item</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.ActionGroupItemImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getActionGroupItem()
-	 * @generated
-	 */
-	int ACTION_GROUP_ITEM = 10;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -937,16 +1364,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION_GROUP_ITEM_OPERATION_COUNT = ITEM_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.LinkActionGroupItemImpl <em>Link Action Group Item</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.LinkActionGroupItemImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getLinkActionGroupItem()
-	 * @generated
-	 */
-	int LINK_ACTION_GROUP_ITEM = 11;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1021,16 +1438,6 @@ public interface BootstrapPackage extends EPackage {
 	int LINK_ACTION_GROUP_ITEM_OPERATION_COUNT = ACTION_GROUP_ITEM_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ContentActionGroupItemImpl <em>Content Action Group Item</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.ContentActionGroupItemImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getContentActionGroupItem()
-	 * @generated
-	 */
-	int CONTENT_ACTION_GROUP_ITEM = 12;
-
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1101,16 +1508,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_ACTION_GROUP_ITEM_OPERATION_COUNT = ACTION_GROUP_ITEM_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ActionGroupImpl <em>Action Group</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.ActionGroupImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getActionGroup()
-	 * @generated
-	 */
-	int ACTION_GROUP = 13;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1194,16 +1591,6 @@ public interface BootstrapPackage extends EPackage {
 	int ACTION_GROUP_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ContainerImpl <em>Container</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.ContainerImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getContainer()
-	 * @generated
-	 */
-	int CONTAINER = 14;
-
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1276,16 +1663,6 @@ public interface BootstrapPackage extends EPackage {
 	int CONTAINER_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.RowImpl <em>Row</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.RowImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getRow()
-	 * @generated
-	 */
-	int ROW = 15;
-
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1349,16 +1726,6 @@ public interface BootstrapPackage extends EPackage {
 	int ROW_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ColumnWidthImpl <em>Column Width</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.ColumnWidthImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getColumnWidth()
-	 * @generated
-	 */
-	int COLUMN_WIDTH = 16;
-
-	/**
 	 * The feature id for the '<em><b>Breakpoint</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1393,16 +1760,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int COLUMN_WIDTH_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ColumnImpl <em>Column</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.ColumnImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getColumn()
-	 * @generated
-	 */
-	int COLUMN = 17;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1468,16 +1825,6 @@ public interface BootstrapPackage extends EPackage {
 	int COLUMN_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TableRowContainerImpl <em>Table Row Container</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.TableRowContainerImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTableRowContainer()
-	 * @generated
-	 */
-	int TABLE_ROW_CONTAINER = 18;
-
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1541,16 +1888,6 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_ROW_CONTAINER_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TableSectionImpl <em>Table Section</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.TableSectionImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTableSection()
-	 * @generated
-	 */
-	int TABLE_SECTION = 19;
-
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1612,16 +1949,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_SECTION_OPERATION_COUNT = TABLE_ROW_CONTAINER_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TableHeaderImpl <em>Table Header</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.TableHeaderImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTableHeader()
-	 * @generated
-	 */
-	int TABLE_HEADER = 20;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1705,16 +2032,6 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_HEADER_OPERATION_COUNT = TABLE_SECTION_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.TableConfiguration <em>Table Configuration</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.TableConfiguration
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTableConfiguration()
-	 * @generated
-	 */
-	int TABLE_CONFIGURATION = 21;
-
-	/**
 	 * The feature id for the '<em><b>Dark</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1785,16 +2102,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_CONFIGURATION_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TableImpl <em>Table</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.TableImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTable()
-	 * @generated
-	 */
-	int TABLE = 22;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1941,16 +2248,6 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_OPERATION_COUNT = TABLE_ROW_CONTAINER_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TableRowImpl <em>Table Row</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.TableRowImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTableRow()
-	 * @generated
-	 */
-	int TABLE_ROW = 23;
-
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2030,16 +2327,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_ROW_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TableCellImpl <em>Table Cell</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.TableCellImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTableCell()
-	 * @generated
-	 */
-	int TABLE_CELL = 24;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2141,16 +2428,6 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_CELL_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.CardImpl <em>Card</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.CardImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getCard()
-	 * @generated
-	 */
-	int CARD = 25;
-
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2241,16 +2518,6 @@ public interface BootstrapPackage extends EPackage {
 	int CARD_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.AlertImpl <em>Alert</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.AlertImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getAlert()
-	 * @generated
-	 */
-	int ALERT = 26;
-
-	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2321,16 +2588,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ALERT_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.BadgeImpl <em>Badge</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.BadgeImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getBadge()
-	 * @generated
-	 */
-	int BADGE = 27;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2405,16 +2662,6 @@ public interface BootstrapPackage extends EPackage {
 	int BADGE_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.BreadcrumbImpl <em>Breadcrumb</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.BreadcrumbImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getBreadcrumb()
-	 * @generated
-	 */
-	int BREADCRUMB = 28;
-
-	/**
 	 * The number of structural features of the '<em>Breadcrumb</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2431,16 +2678,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int BREADCRUMB_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ButtonImpl <em>Button</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.ButtonImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getButton()
-	 * @generated
-	 */
-	int BUTTON = 29;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2524,16 +2761,6 @@ public interface BootstrapPackage extends EPackage {
 	int BUTTON_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ButtonGroupImpl <em>Button Group</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.ButtonGroupImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getButtonGroup()
-	 * @generated
-	 */
-	int BUTTON_GROUP = 30;
-
-	/**
 	 * The number of structural features of the '<em>Button Group</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2550,16 +2777,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int BUTTON_GROUP_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ButtonToolbarImpl <em>Button Toolbar</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.ButtonToolbarImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getButtonToolbar()
-	 * @generated
-	 */
-	int BUTTON_TOOLBAR = 31;
 
 	/**
 	 * The number of structural features of the '<em>Button Toolbar</em>' class.
@@ -2580,16 +2797,6 @@ public interface BootstrapPackage extends EPackage {
 	int BUTTON_TOOLBAR_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.DropdownImpl <em>Dropdown</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.DropdownImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getDropdown()
-	 * @generated
-	 */
-	int DROPDOWN = 32;
-
-	/**
 	 * The number of structural features of the '<em>Dropdown</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2606,16 +2813,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int DROPDOWN_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.FormImpl <em>Form</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.FormImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getForm()
-	 * @generated
-	 */
-	int FORM = 33;
 
 	/**
 	 * The number of structural features of the '<em>Form</em>' class.
@@ -2636,16 +2833,6 @@ public interface BootstrapPackage extends EPackage {
 	int FORM_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ListGroupImpl <em>List Group</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.ListGroupImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getListGroup()
-	 * @generated
-	 */
-	int LIST_GROUP = 34;
-
-	/**
 	 * The number of structural features of the '<em>List Group</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2662,16 +2849,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int LIST_GROUP_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.NavsImpl <em>Navs</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.NavsImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getNavs()
-	 * @generated
-	 */
-	int NAVS = 35;
 
 	/**
 	 * The number of structural features of the '<em>Navs</em>' class.
@@ -2692,16 +2869,6 @@ public interface BootstrapPackage extends EPackage {
 	int NAVS_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.NavbarImpl <em>Navbar</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.NavbarImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getNavbar()
-	 * @generated
-	 */
-	int NAVBAR = 36;
-
-	/**
 	 * The number of structural features of the '<em>Navbar</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2718,16 +2885,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int NAVBAR_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.TooltipImpl <em>Tooltip</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.TooltipImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTooltip()
-	 * @generated
-	 */
-	int TOOLTIP = 37;
 
 	/**
 	 * The number of structural features of the '<em>Tooltip</em>' class.
@@ -2748,16 +2905,6 @@ public interface BootstrapPackage extends EPackage {
 	int TOOLTIP_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.InputGroupImpl <em>Input Group</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.InputGroupImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getInputGroup()
-	 * @generated
-	 */
-	int INPUT_GROUP = 38;
-
-	/**
 	 * The number of structural features of the '<em>Input Group</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2774,16 +2921,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int INPUT_GROUP_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.FormGroupImpl <em>Form Group</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.FormGroupImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getFormGroup()
-	 * @generated
-	 */
-	int FORM_GROUP = 39;
 
 	/**
 	 * The number of structural features of the '<em>Form Group</em>' class.
@@ -2804,16 +2941,6 @@ public interface BootstrapPackage extends EPackage {
 	int FORM_GROUP_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.CollapseImpl <em>Collapse</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.CollapseImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getCollapse()
-	 * @generated
-	 */
-	int COLLAPSE = 40;
-
-	/**
 	 * The number of structural features of the '<em>Collapse</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2830,34 +2957,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int COLLAPSE_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.ModalImpl <em>Modal</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.bootstrap.impl.ModalImpl
-	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getModal()
-	 * @generated
-	 */
-	int MODAL = 41;
-
-	/**
-	 * The number of structural features of the '<em>Modal</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODAL_FEATURE_COUNT = 0;
-
-	/**
-	 * The number of operations of the '<em>Modal</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODAL_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.AccordionImpl <em>Accordion</em>}' class.
@@ -4194,6 +4293,83 @@ public interface BootstrapPackage extends EPackage {
 	EClass getModal();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.bootstrap.Modal#getHeader <em>Header</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Header</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Modal#getHeader()
+	 * @see #getModal()
+	 * @generated
+	 */
+	EReference getModal_Header();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.bootstrap.Modal#getBody <em>Body</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Body</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Modal#getBody()
+	 * @see #getModal()
+	 * @generated
+	 */
+	EReference getModal_Body();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.bootstrap.Modal#getFooter <em>Footer</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Footer</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Modal#getFooter()
+	 * @see #getModal()
+	 * @generated
+	 */
+	EReference getModal_Footer();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.Modal#isDismisser <em>Dismisser</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Dismisser</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Modal#isDismisser()
+	 * @see #getModal()
+	 * @generated
+	 */
+	EAttribute getModal_Dismisser();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.Modal#isScrollable <em>Scrollable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Scrollable</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Modal#isScrollable()
+	 * @see #getModal()
+	 * @generated
+	 */
+	EAttribute getModal_Scrollable();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.Modal#isCentered <em>Centered</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Centered</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Modal#isCentered()
+	 * @see #getModal()
+	 * @generated
+	 */
+	EAttribute getModal_Centered();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.Modal#getSize <em>Size</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Size</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Modal#getSize()
+	 * @see #getModal()
+	 * @generated
+	 */
+	EAttribute getModal_Size();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.bootstrap.Accordion <em>Accordion</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5314,6 +5490,62 @@ public interface BootstrapPackage extends EPackage {
 		 * @generated
 		 */
 		EClass MODAL = eINSTANCE.getModal();
+
+		/**
+		 * The meta object literal for the '<em><b>Header</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MODAL__HEADER = eINSTANCE.getModal_Header();
+
+		/**
+		 * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MODAL__BODY = eINSTANCE.getModal_Body();
+
+		/**
+		 * The meta object literal for the '<em><b>Footer</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MODAL__FOOTER = eINSTANCE.getModal_Footer();
+
+		/**
+		 * The meta object literal for the '<em><b>Dismisser</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MODAL__DISMISSER = eINSTANCE.getModal_Dismisser();
+
+		/**
+		 * The meta object literal for the '<em><b>Scrollable</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MODAL__SCROLLABLE = eINSTANCE.getModal_Scrollable();
+
+		/**
+		 * The meta object literal for the '<em><b>Centered</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MODAL__CENTERED = eINSTANCE.getModal_Centered();
+
+		/**
+		 * The meta object literal for the '<em><b>Size</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MODAL__SIZE = eINSTANCE.getModal_Size();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.bootstrap.impl.AccordionImpl <em>Accordion</em>}' class.

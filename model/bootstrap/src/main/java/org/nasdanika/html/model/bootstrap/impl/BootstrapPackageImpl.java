@@ -1665,6 +1665,76 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	@Override
+	public EReference getModal_Header() {
+		return (EReference)modalEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getModal_Body() {
+		return (EReference)modalEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getModal_Footer() {
+		return (EReference)modalEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getModal_Dismisser() {
+		return (EAttribute)modalEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getModal_Scrollable() {
+		return (EAttribute)modalEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getModal_Centered() {
+		return (EAttribute)modalEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getModal_Size() {
+		return (EAttribute)modalEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getAccordion() {
 		return accordionEClass;
 	}
@@ -1817,6 +1887,15 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		tagEClass = createEClass(TAG);
 
+		modalEClass = createEClass(MODAL);
+		createEReference(modalEClass, MODAL__HEADER);
+		createEReference(modalEClass, MODAL__BODY);
+		createEReference(modalEClass, MODAL__FOOTER);
+		createEAttribute(modalEClass, MODAL__DISMISSER);
+		createEAttribute(modalEClass, MODAL__SCROLLABLE);
+		createEAttribute(modalEClass, MODAL__CENTERED);
+		createEAttribute(modalEClass, MODAL__SIZE);
+
 		divEClass = createEClass(DIV);
 
 		itemEClass = createEClass(ITEM);
@@ -1924,8 +2003,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		collapseEClass = createEClass(COLLAPSE);
 
-		modalEClass = createEClass(MODAL);
-
 		accordionEClass = createEClass(ACCORDION);
 
 		// Create data types
@@ -1974,6 +2051,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		pageEClass.getESuperTypes().add(theHtmlPackage.getPage());
 		tagEClass.getESuperTypes().add(theHtmlPackage.getTag());
 		tagEClass.getESuperTypes().add(this.getBootstrapElement());
+		modalEClass.getESuperTypes().add(this.getBootstrapElement());
 		divEClass.getESuperTypes().add(this.getTag());
 		itemEClass.getESuperTypes().add(theExecPackage.getModelElement());
 		actionGroupItemEClass.getESuperTypes().add(this.getItem());
@@ -1996,7 +2074,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		buttonEClass.getESuperTypes().add(this.getDiv());
 
 		// Initialize classes, features, and operations; add parameters
-		initEClass(bootstrapElementEClass, BootstrapElement.class, "BootstrapElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(bootstrapElementEClass, BootstrapElement.class, "BootstrapElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getBootstrapElement_Appearance(), this.getAppearance(), null, "appearance", null, 0, 1, BootstrapElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(pageEClass, Page.class, "Page", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2044,6 +2122,15 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		initEAttribute(getFloat_Breakpoint(), this.getBreakpoint(), "breakpoint", null, 0, 1, org.nasdanika.html.model.bootstrap.Float.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(tagEClass, Tag.class, "Tag", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(modalEClass, Modal.class, "Modal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getModal_Header(), this.getBootstrapElement(), null, "header", null, 0, 1, Modal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModal_Body(), this.getBootstrapElement(), null, "body", null, 0, 1, Modal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModal_Footer(), this.getBootstrapElement(), null, "footer", null, 0, 1, Modal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getModal_Dismisser(), ecorePackage.getEBoolean(), "dismisser", "true", 0, 1, Modal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getModal_Scrollable(), ecorePackage.getEBoolean(), "scrollable", null, 0, 1, Modal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getModal_Centered(), ecorePackage.getEBoolean(), "centered", null, 0, 1, Modal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getModal_Size(), ecorePackage.getEString(), "size", "", 0, 1, Modal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(divEClass, Div.class, "Div", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2151,8 +2238,6 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		initEClass(formGroupEClass, FormGroup.class, "FormGroup", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(collapseEClass, Collapse.class, "Collapse", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(modalEClass, Modal.class, "Modal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(accordionEClass, Accordion.class, "Accordion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2436,6 +2521,30 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		   source,
 		   new String[] {
 			   "documentation", "HTML tag with Bootstrap appearance"
+		   });
+		addAnnotation
+		  (getModal_Header(),
+		   source,
+		   new String[] {
+			   "documentation", "Modal header content and appearance."
+		   });
+		addAnnotation
+		  (getModal_Body(),
+		   source,
+		   new String[] {
+			   "documentation", "Modal body content and appearance."
+		   });
+		addAnnotation
+		  (getModal_Footer(),
+		   source,
+		   new String[] {
+			   "documentation", "Modal footer content and appearance."
+		   });
+		addAnnotation
+		  (getModal_Size(),
+		   source,
+		   new String[] {
+			   "documentation", "Modal size - ``small``, ``large``, or ``extra-large``."
 		   });
 		addAnnotation
 		  (divEClass,
@@ -2912,6 +3021,27 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		   source,
 		   new String[] {
 			   "default-feature", "true"
+		   });
+		addAnnotation
+		  (getModal_Header(),
+		   source,
+		   new String[] {
+			   "homogenous", "true",
+			   "strict-containment", "true"
+		   });
+		addAnnotation
+		  (getModal_Body(),
+		   source,
+		   new String[] {
+			   "homogenous", "true",
+			   "strict-containment", "true"
+		   });
+		addAnnotation
+		  (getModal_Footer(),
+		   source,
+		   new String[] {
+			   "homogenous", "true",
+			   "strict-containment", "true"
 		   });
 	}
 

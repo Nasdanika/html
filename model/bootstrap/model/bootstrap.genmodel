@@ -65,6 +65,15 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Float/breakpoint"/>
     </genClasses>
     <genClasses ecoreClass="bootstrap.ecore#//Tag"/>
+    <genClasses ecoreClass="bootstrap.ecore#//Modal">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Modal/header"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Modal/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Modal/footer"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Modal/dismisser"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Modal/scrollable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Modal/centered"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Modal/size"/>
+    </genClasses>
     <genClasses ecoreClass="bootstrap.ecore#//Div"/>
     <genClasses image="false" ecoreClass="bootstrap.ecore#//Item">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Item/active"/>
@@ -159,7 +168,6 @@
     <genClasses ecoreClass="bootstrap.ecore#//InputGroup"/>
     <genClasses ecoreClass="bootstrap.ecore#//FormGroup"/>
     <genClasses ecoreClass="bootstrap.ecore#//Collapse"/>
-    <genClasses ecoreClass="bootstrap.ecore#//Modal"/>
     <genClasses ecoreClass="bootstrap.ecore#//Accordion"/>
   </genPackages>
 </genmodel:GenModel>

@@ -8,7 +8,7 @@ import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.html.gen.HtmlElementConsumerFactoryAdapter;
 
-public abstract class BootstrapElementConsumerFactoryAdapter<M extends org.nasdanika.html.model.bootstrap.BootstrapElement, T extends org.nasdanika.html.bootstrap.BootstrapElement<?,?>> extends HtmlElementConsumerFactoryAdapter<M, org.nasdanika.html.HTMLElement<?>> {
+public class BootstrapElementConsumerFactoryAdapter<M extends org.nasdanika.html.model.bootstrap.BootstrapElement, T extends org.nasdanika.html.bootstrap.BootstrapElement<?,?>> extends HtmlElementConsumerFactoryAdapter<M, org.nasdanika.html.HTMLElement<?>> {
 	
 	public BootstrapElementConsumerFactoryAdapter(M bootstrapElement) {
 		super(bootstrapElement);
@@ -17,12 +17,13 @@ public abstract class BootstrapElementConsumerFactoryAdapter<M extends org.nasda
 	@Override
 	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {
 		Appearance appearance = getTarget().getAppearance();
+		Function<HTMLElement<?>, HTMLElement<?>> configureFunction = super.createConfigureFunction(context);
 		if (appearance == null) {
-			return super.createConfigureFunction(context);
+			return configureFunction;
 		}
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		ConsumerFactory<HTMLElement<?>> appearanceConsumerFactory = (ConsumerFactory) EObjectAdaptable.adaptToConsumerFactoryNonNull(getTarget(), org.nasdanika.html.HTMLElement.class);
-		return super.createConfigureFunction(context).then(appearanceConsumerFactory.asFunctionFactory().create(context));
+		ConsumerFactory<HTMLElement<?>> appearanceConsumerFactory = (ConsumerFactory) EObjectAdaptable.adaptToConsumerFactoryNonNull(appearance, org.nasdanika.html.HTMLElement.class);
+		return configureFunction.then(appearanceConsumerFactory.asFunctionFactory().create(context));
 	}
 
 }

@@ -23,6 +23,7 @@ import org.nasdanika.html.model.bootstrap.ActionGroup;
 import org.nasdanika.html.model.bootstrap.Alert;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.Badge;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Border;
@@ -101,6 +102,7 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
+			case BootstrapPackage.BOOTSTRAP_ELEMENT: return createBootstrapElement();
 			case BootstrapPackage.PAGE: return createPage();
 			case BootstrapPackage.APPEARANCE: return createAppearance();
 			case BootstrapPackage.BORDER: return createBorder();
@@ -108,6 +110,7 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 			case BootstrapPackage.TEXT: return createText();
 			case BootstrapPackage.FLOAT: return createFloat();
 			case BootstrapPackage.TAG: return createTag();
+			case BootstrapPackage.MODAL: return createModal();
 			case BootstrapPackage.DIV: return createDiv();
 			case BootstrapPackage.LINK_ACTION_GROUP_ITEM: return createLinkActionGroupItem();
 			case BootstrapPackage.CONTENT_ACTION_GROUP_ITEM: return createContentActionGroupItem();
@@ -137,7 +140,6 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 			case BootstrapPackage.INPUT_GROUP: return createInputGroup();
 			case BootstrapPackage.FORM_GROUP: return createFormGroup();
 			case BootstrapPackage.COLLAPSE: return createCollapse();
-			case BootstrapPackage.MODAL: return createModal();
 			case BootstrapPackage.ACCORDION: return createAccordion();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -196,6 +198,17 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public BootstrapElement createBootstrapElement() {
+		BootstrapElementImpl bootstrapElement = new BootstrapElementImpl();
+		return bootstrapElement;
 	}
 
 	/**

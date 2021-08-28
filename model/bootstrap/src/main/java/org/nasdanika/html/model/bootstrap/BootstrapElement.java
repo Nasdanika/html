@@ -21,7 +21,7 @@ import org.nasdanika.html.model.html.HtmlElement;
  * </ul>
  *
  * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getBootstrapElement()
- * @model abstract="true"
+ * @model
  * @generated
  */
 public interface BootstrapElement extends HtmlElement {

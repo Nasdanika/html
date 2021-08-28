@@ -167,6 +167,15 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case BootstrapPackage.MODAL: {
+				Modal modal = (Modal)theEObject;
+				T result = caseModal(modal);
+				if (result == null) result = caseBootstrapElement(modal);
+				if (result == null) result = caseHtmlElement(modal);
+				if (result == null) result = caseModelElement(modal);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case BootstrapPackage.DIV: {
 				Div div = (Div)theEObject;
 				T result = caseDiv(div);
@@ -438,12 +447,6 @@ public class BootstrapSwitch<T> extends Switch<T> {
 			case BootstrapPackage.COLLAPSE: {
 				Collapse collapse = (Collapse)theEObject;
 				T result = caseCollapse(collapse);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case BootstrapPackage.MODAL: {
-				Modal modal = (Modal)theEObject;
-				T result = caseModal(modal);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}

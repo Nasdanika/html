@@ -145,6 +145,10 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 				return createTagAdapter();
 			}
 			@Override
+			public Adapter caseModal(Modal object) {
+				return createModalAdapter();
+			}
+			@Override
 			public Adapter caseDiv(Div object) {
 				return createDivAdapter();
 			}
@@ -275,10 +279,6 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseCollapse(Collapse object) {
 				return createCollapseAdapter();
-			}
-			@Override
-			public Adapter caseModal(Modal object) {
-				return createModalAdapter();
 			}
 			@Override
 			public Adapter caseAccordion(Accordion object) {

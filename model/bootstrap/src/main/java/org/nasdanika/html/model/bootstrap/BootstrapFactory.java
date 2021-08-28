@@ -22,6 +22,15 @@ public interface BootstrapFactory extends EFactory {
 	BootstrapFactory eINSTANCE = org.nasdanika.html.model.bootstrap.impl.BootstrapFactoryImpl.init();
 
 	/**
+	 * Returns a new object of class '<em>Element</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Element</em>'.
+	 * @generated
+	 */
+	BootstrapElement createBootstrapElement();
+
+	/**
 	 * Returns a new object of class '<em>Page</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

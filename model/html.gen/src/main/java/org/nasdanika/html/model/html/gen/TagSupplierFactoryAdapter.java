@@ -11,7 +11,7 @@ public class TagSupplierFactoryAdapter<T extends org.nasdanika.html.model.html.T
 		super(tag);
 	}
 	
-	protected Supplier<org.nasdanika.html.Tag> createElementSupplier(Context context) {
+	protected Supplier<org.nasdanika.html.Tag> createHTMLElementSupplier(Context context) {
 		return new Supplier<org.nasdanika.html.Tag>() {
 			
 			@Override

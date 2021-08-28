@@ -162,6 +162,8 @@ public class BootstrapValidator extends EObjectValidator {
 				return validateFloat((org.nasdanika.html.model.bootstrap.Float)value, diagnostics, context);
 			case BootstrapPackage.TAG:
 				return validateTag((Tag)value, diagnostics, context);
+			case BootstrapPackage.MODAL:
+				return validateModal((Modal)value, diagnostics, context);
 			case BootstrapPackage.DIV:
 				return validateDiv((Div)value, diagnostics, context);
 			case BootstrapPackage.ITEM:
@@ -228,8 +230,6 @@ public class BootstrapValidator extends EObjectValidator {
 				return validateFormGroup((FormGroup)value, diagnostics, context);
 			case BootstrapPackage.COLLAPSE:
 				return validateCollapse((Collapse)value, diagnostics, context);
-			case BootstrapPackage.MODAL:
-				return validateModal((Modal)value, diagnostics, context);
 			case BootstrapPackage.ACCORDION:
 				return validateAccordion((Accordion)value, diagnostics, context);
 			case BootstrapPackage.THEME:

@@ -7,6 +7,7 @@ import org.nasdanika.emf.FunctionAdapterFactory;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.model.bootstrap.Appearance;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Page;
 import org.nasdanika.html.model.html.gen.HtmlAdapterFactory;
@@ -30,6 +31,7 @@ public class BootstrapAdapterFactory extends HtmlAdapterFactory {
 						
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		Class<HTMLElement<?>> htmlElementClass = (Class) HTMLElement.class;
+		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, Appearance>(
 					BootstrapPackage.Literals.APPEARANCE, 
@@ -37,13 +39,27 @@ public class BootstrapAdapterFactory extends HtmlAdapterFactory {
 					classLoader, 
 					AppearanceConsumerFactoryAdapter::new));
 		
-		
+		registerAdapterFactory(
+				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, BootstrapElement>(
+					BootstrapPackage.Literals.BOOTSTRAP_ELEMENT, 
+					Util.getConsumerFactoryClass(htmlElementClass), 
+					classLoader, 
+					BootstrapElementConsumerFactoryAdapter::new));
+				
+				
 		registerAdapterFactory(
 				new FunctionAdapterFactory<SupplierFactory<org.nasdanika.html.Tag>, org.nasdanika.html.model.bootstrap.Tag>(
 					BootstrapPackage.Literals.TAG, 
 					Util.getSupplierFactoryClass(org.nasdanika.html.Tag.class), 
 					classLoader, 
 					TagSupplierFactoryAdapter::new));		
+		
+		registerAdapterFactory(
+				new FunctionAdapterFactory<SupplierFactory<HTMLElement<?>>, org.nasdanika.html.model.bootstrap.Modal>(
+					BootstrapPackage.Literals.MODAL, 
+					Util.getSupplierFactoryClass(htmlElementClass), 
+					classLoader, 
+					ModalSupplierFactoryAdapter::new));		
 		
 	}
 	

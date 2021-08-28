@@ -25,7 +25,7 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 	}
 		
 	@Override
-	public Supplier<HTMLElement<?>> createElementSupplier(Context context) throws Exception {
+	public Supplier<HTMLElement<?>> createHTMLElementSupplier(Context context) throws Exception {
 		return new Supplier<HTMLElement<?>>() {
 
 			@Override
@@ -69,14 +69,13 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 					container.accept(iconTag);
 				}		
 					
-				Object text = text(context, progressMonitor);
+				Tag text = text(context, progressMonitor);
 				if (text != null) {
 					if (color == null) {
 						container.accept(text);
 					} else {						
-						Tag textTag = text instanceof Tag ? (Tag) text : htmlFactory.span(text);
-						bootstrapFactory.wrap(textTag).text().color(color);
-						container.accept(textTag);
+						bootstrapFactory.wrap(text).text().color(color);
+						container.accept(text);
 					}
 				}	
 				
@@ -90,7 +89,6 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 						notificationColor = Color.WARNING;				
 					} 
 					Tag badge = bootstrapFactory.badge(true, notificationColor, semanticElement.getNotification());
-					badge.style().margin().left("0.3em"); // TODO - also style-driven
 					badge.addClass("nsd-label-notification");
 					container.accept(badge);
 				}
@@ -112,7 +110,7 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 					descriptionModal.getBody().toHTMLElement().content(help);
 					container.accept(descriptionModal);
 					
-					Tag trigger = bootstrapFactory.getHTMLFactory().tag(TagName.sup).addClass(questionCircleIcon).style("cursor", "pointer");
+					Tag trigger = bootstrapFactory.getHTMLFactory().tag(TagName.sup).addClass(questionCircleIcon, "nsd-label-help").style("cursor", "pointer");
 					if (!Util.isBlank(tooltip)) {
 						trigger.attribute("title", tooltip);
 					}
@@ -132,8 +130,9 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 	 * @param progressMonitor
 	 * @return
 	 */
-	protected Object text(Context context, ProgressMonitor progressMonitor) {
-		return context.interpolateToString(getTarget().getText());
+	protected Tag text(Context context, ProgressMonitor progressMonitor) {
+		HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
+		return htmlFactory.span(context.interpolateToString(getTarget().getText()));
 	}
 	
 }

@@ -20,11 +20,11 @@ public abstract class HtmlElementSupplierFactoryAdapter<M extends org.nasdanika.
 	 * @param context
 	 * @return
 	 */
-	protected abstract Supplier<T> createElementSupplier(Context context) throws Exception;
+	protected abstract Supplier<T> createHTMLElementSupplier(Context context) throws Exception;
 	
 	@Override
 	public Supplier<T> create(Context context) throws Exception {
-		SupplierFactory<T> elementSupplierFactory = this::createElementSupplier;
+		SupplierFactory<T> elementSupplierFactory = this::createHTMLElementSupplier;
 		return elementSupplierFactory.then(this::createConfigureFunction).create(context);
 	}	
 	
