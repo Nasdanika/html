@@ -6,11 +6,11 @@ import java.util.Collection;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.PagePart;
-import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl;
 
 /**
@@ -53,8 +53,8 @@ public abstract class PagePartImpl extends BootstrapElementImpl implements PageP
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList<BootstrapElement> getItems() {
-		return (EList<BootstrapElement>)eDynamicGet(AppPackage.PAGE_PART__ITEMS, AppPackage.Literals.PAGE_PART__ITEMS, true, true);
+	public EList<EObject> getItems() {
+		return (EList<EObject>)eDynamicGet(AppPackage.PAGE_PART__ITEMS, AppPackage.Literals.PAGE_PART__ITEMS, true, true);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public abstract class PagePartImpl extends BootstrapElementImpl implements PageP
 		switch (featureID) {
 			case AppPackage.PAGE_PART__ITEMS:
 				getItems().clear();
-				getItems().addAll((Collection<? extends BootstrapElement>)newValue);
+				getItems().addAll((Collection<? extends EObject>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

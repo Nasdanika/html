@@ -2,6 +2,8 @@
  */
 package org.nasdanika.html.model.app;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.Item;
 import org.nasdanika.html.model.bootstrap.Modal;
@@ -185,28 +187,18 @@ public interface Label extends BootstrapElement, Item {
 	void setNotification(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Children</b></em>' reference.
+	 * Returns the value of the '<em><b>Children</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * Label children to build UI elements like trees, lists, navigation bars and drop-downs.
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Children</em>' reference.
-	 * @see #setChildren(BootstrapElement)
+	 * @return the value of the '<em>Children</em>' containment reference list.
 	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Children()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
-	BootstrapElement getChildren();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getChildren <em>Children</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Children</em>' reference.
-	 * @see #getChildren()
-	 * @generated
-	 */
-	void setChildren(BootstrapElement value);
+	EList<EObject> getChildren();
 
 } // Label

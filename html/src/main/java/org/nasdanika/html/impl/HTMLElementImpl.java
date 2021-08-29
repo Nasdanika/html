@@ -498,7 +498,7 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 	}
 	
 	private Object data;
-	private Map<String, Object> properties = new HashMap<>();
+	private Map<Object, Object> properties = new HashMap<>();
 	
 	@Override
 	public Object getData() {
@@ -513,13 +513,13 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 	}
 	
 	@Override
-	public Object getData(String key) {
+	public Object getData(Object key) {
 		return properties.get(key);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public T setData(String key, Object data) {
+	public T setData(Object key, Object data) {
 		properties.put(key, data);
 		return (T) this;
 	}

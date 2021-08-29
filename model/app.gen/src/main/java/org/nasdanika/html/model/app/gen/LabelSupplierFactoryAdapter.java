@@ -1,13 +1,18 @@
 package org.nasdanika.html.model.app.gen;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
+import org.nasdanika.common.ListCompoundSupplierFactory;
 import org.nasdanika.common.MapCompoundSupplierFactory;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.HTMLElement;
@@ -29,7 +34,7 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 		
 	@Override
 	public Supplier<HTMLElement<?>> createHTMLElementSupplier(Context context) throws Exception {
-		Function<Map<EStructuralFeature, Tag>, HTMLElement<?>> labelFunction = new Function<Map<EStructuralFeature, Tag>, HTMLElement<?>>() {
+		Function<Map<EStructuralFeature, Object>, HTMLElement<?>> labelFunction = new Function<Map<EStructuralFeature, Object>, HTMLElement<?>>() {
 
 			@Override
 			public double size() {
@@ -42,52 +47,15 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 			}
 
 			@Override
-			public HTMLElement<?> execute(Map<EStructuralFeature, Tag> features, ProgressMonitor progressMonitor) throws Exception {
+			public HTMLElement<?> execute(Map<EStructuralFeature, Object> features, ProgressMonitor progressMonitor) throws Exception {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
-				Label semanticElement = getTarget();
-				
-				HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
-				Tag container = htmlFactory.span();
-				
-				String tooltip = semanticElement.getTooltip();
-				if (!Util.isBlank(tooltip)) {
-					container.attribute("title", tooltip);
-				}
-				
-				Tag help = features.get(AppPackage.Literals.LABEL__HELP);
-				if (help != null) {
-					container.accept(help);
-				}
-				
-				String icon = semanticElement.getIcon();
-				Color color = semanticElement.getColor();
-				if (!Util.isBlank(icon)) {
-					Tag iconTag;
-					if (icon.contains("/")) {
-						// Image
-						iconTag = htmlFactory.tag(TagName.img).attribute("src", icon); //.style().height("1em");
-					} else {
-						// Class
-						iconTag = htmlFactory.span().addClass(icon);
-						if (color != null) {
-							bootstrapFactory.wrap(iconTag).text().color(color);
-						}						
-					}
-					iconTag.addClass("nsd-label-icon");
-					container.accept(iconTag);
-				}		
 					
-				Tag text = features.get(AppPackage.Literals.LABEL__TEXT);
-				if (text != null) {
-					if (color == null) {
-						container.accept(text);
-					} else {						
-						bootstrapFactory.wrap(text).text().color(color);
-						container.accept(text);
-					}
-				}	
+				Tag ret = (Tag) features.get(AppPackage.Literals.LABEL__TEXT);
 				
-				if (!Util.isBlank(semanticElement.getNotification())) {
+				Label semanticElement = getTarget();
+				Color color = semanticElement.getColor();								
+				String notification = semanticElement.getNotification();
+				if (!Util.isBlank(notification)) {
 					Color notificationColor = Color.PRIMARY;
 					if (color == Color.PRIMARY) {
 						notificationColor = Color.SECONDARY;
@@ -96,30 +64,54 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 					} else if (color == Color.WARNING) {
 						notificationColor = Color.WARNING;				
 					} 
-					Tag badge = bootstrapFactory.badge(true, notificationColor, semanticElement.getNotification());
+					Tag badge = bootstrapFactory.badge(true, notificationColor, notification);
 					badge.addClass("nsd-label-notification");
-					container.accept(badge);
+					ret.accept(badge);
 				}
-
+				
+				String tooltip = semanticElement.getTooltip();
+				if (!Util.isBlank(tooltip)) {
+					ret.attribute("title", tooltip);
+				}				
+				
+				Tag help = (Tag) features.get(AppPackage.Literals.LABEL__HELP);
 				if (help != null) {
+					@SuppressWarnings("unchecked")
+					List<Object> pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);
+					pageBody.add(help);
+					
 					Tag trigger = bootstrapFactory.getHTMLFactory().tag(TagName.sup).addClass("far fa-question-circle", "nsd-label-help").style("cursor", "pointer");
 					if (!Util.isBlank(tooltip)) {
 						trigger.attribute("title", tooltip);
 					}
 					if (help.getId() == null) {
-						help.id(htmlFactory.nextId());
+						help.id(bootstrapFactory.getHTMLFactory().nextId());
 					}
 					trigger.attribute("data-toggle", "modal");
 					trigger.attribute("data-target", "#" + help.getId());
-					container.accept(trigger);
+					
+					if (TagName.span.name().equalsIgnoreCase(ret.getTagName())) {
+						ret.accept(trigger);
+					} else {
+						ret = bootstrapFactory.getHTMLFactory().span(ret, trigger);
+					}
 				}
 				
-				return container;
+				ret.setData(semanticElement);
+				
+				/**
+				 * Storing feature data to use downstream.
+				 */
+				for (Entry<EStructuralFeature, Object> fe: features.entrySet()) {
+					ret.setData(fe.getKey(), fe.getValue());
+				}
+				
+				return ret;
 			}
 			
 		};
 		
-		MapCompoundSupplierFactory<EStructuralFeature, Tag> featuresFactory = new MapCompoundSupplierFactory<>("Features");
+		MapCompoundSupplierFactory<EStructuralFeature, Object> featuresFactory = new MapCompoundSupplierFactory<>("Features");
 		
 		M semanticElement = getTarget();
 		org.nasdanika.html.model.bootstrap.Modal help = semanticElement.getHelp();
@@ -127,7 +119,13 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 			featuresFactory.put(AppPackage.Literals.LABEL__HELP, EObjectAdaptable.adaptToSupplierFactoryNonNull(help, Tag.class));
 		}
 		
-		featuresFactory.put(AppPackage.Literals.LABEL__TEXT, this::createTextSupplier);
+		List<EObject> children = semanticElement.getChildren();
+		if (!children.isEmpty()) {
+			featuresFactory.put(AppPackage.Literals.LABEL__CHILDREN, new ListCompoundSupplierFactory<>("Children", EObjectAdaptable.adaptToSupplierFactoryNonNull(children, Object.class)));			
+		}
+		
+		SupplierFactory<Tag> textSupplierFactory = this::createTextAndIconSupplier;
+		featuresFactory.put(AppPackage.Literals.LABEL__TEXT, textSupplierFactory);
 		
 		return featuresFactory.create(context).then(labelFunction);
 	}
@@ -139,9 +137,9 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 	 * @return
 	 * @throws Exception 
 	 */
-	protected Supplier<Tag> createTextSupplier(Context context) throws Exception {
-		return new Supplier<Tag>() {
-
+	protected Supplier<Tag> createTextAndIconSupplier(Context context) throws Exception {
+		Function<Tag,Tag> textAndIconFunction = new Function<Tag, Tag>() {
+				
 			@Override
 			public double size() {
 				return 1;
@@ -149,16 +147,70 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 
 			@Override
 			public String name() {
-				return "Label text";
+				return "Label text and icon";
 			}
 
 			@Override
-			public Tag execute(ProgressMonitor progressMonitor) throws Exception {
+			public Tag execute(Tag modal, ProgressMonitor progressMonitor) throws Exception {
+				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
-				return htmlFactory.span(context.interpolateToString(getTarget().getText()));
+				Label semanticElement = getTarget();
+				
+				String text = context.interpolateToString(getTarget().getText());
+				String icon = semanticElement.getIcon();
+				Tag iconTag = null;
+				if (icon != null) {
+					if (icon.contains("/")) {
+						// Image
+						iconTag = htmlFactory.tag(TagName.img).attribute("src", icon); //.style().height("1em");
+					} else {
+						// Class
+						iconTag = htmlFactory.span().addClass(icon);
+					}
+				}
+				
+				Tag ret = createTextAndIconTag(iconTag, text, modal, context, progressMonitor);
+
+				Color color = semanticElement.getColor();				
+				if (color != null) {
+					bootstrapFactory.wrap(ret).text().color(color);
+				}						
+				return ret;
 			}
 			
 		};
+		
+		return getModalFactory().create(context).then(textAndIconFunction);				
 	}
+	
+	/**
+	 * @param icon Icon
+	 * @param text text
+	 * @param modal Modal for binding to links, not applicalbe to labels.
+	 * @param context
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected Tag createTextAndIconTag(Tag icon, String text, Tag modal, Context context, ProgressMonitor progressMonitor) {
+		if (Util.isBlank(text)) {
+			return icon;
+		}
+		HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
+		if (icon == null) {
+			return htmlFactory.span(text);
+		}
+		
+		icon.addClass("nsd-app-label-icon");
+		return htmlFactory.span(icon, text);	
+	}
+	
+	/**
+	 * For links. Placing here to simplify code. This implementation returns empty supplier.
+	 * @return
+	 */
+	protected SupplierFactory<Tag> getModalFactory() {
+		return SupplierFactory.empty();
+	}
+	
 	
 }

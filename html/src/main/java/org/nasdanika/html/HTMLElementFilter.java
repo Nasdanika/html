@@ -147,7 +147,7 @@ public class HTMLElementFilter<T extends HTMLElement<T>> implements HTMLElement<
 	}
 	
 	@Override
-	public Object getData(String key) {
+	public Object getData(Object key) {
 		return target.getData(key);
 	}
 	
@@ -160,7 +160,7 @@ public class HTMLElementFilter<T extends HTMLElement<T>> implements HTMLElement<
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public T setData(String key, Object data) {
+	public T setData(Object key, Object data) {
 		target.setData(key, data);
 		return (T) this;
 	}

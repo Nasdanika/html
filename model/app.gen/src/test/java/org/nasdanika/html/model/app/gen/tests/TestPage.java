@@ -5,16 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.File;
 
 import org.junit.Test;
-import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.resources.BinaryEntity;
 import org.nasdanika.common.resources.BinaryEntityContainer;
-import org.nasdanika.common.resources.EphemeralBinaryEntityContainer;
 import org.nasdanika.common.resources.FileSystemContainer;
-import org.nasdanika.html.HTMLPage;
 
 /**
  * Tests of descriptor view parts and wizards.
@@ -44,7 +41,25 @@ public class TestPage extends TestBase {
 		BinaryEntity file = myContainer.get("simple.html", progressMonitor);
 		assertThat(file).isNotNull();
 		assertThat(file.exists(progressMonitor)).isTrue();
-//		assertThat(DefaultConverter.INSTANCE.toString(file.getState(progressMonitor))).contains(H1_HELLO);
+	}
+	
+	@Test
+	public void testItems() throws Exception {	
+		BinaryEntityContainer container = new FileSystemContainer(new File("target/test-outputs/page"));
+		Diagnostic generationDiagnostic = generate(
+				"page/items.yml",
+				container,
+				diagnostic -> {
+					assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
+				});
+		
+		assertThat(generationDiagnostic.getStatus()).isEqualTo(Status.SUCCESS);
+		
+		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+		
+		BinaryEntity file = container.get("items.html", progressMonitor);
+		assertThat(file).isNotNull();
+		assertThat(file.exists(progressMonitor)).isTrue();
 	}
 	
 }

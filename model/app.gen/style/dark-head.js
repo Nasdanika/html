@@ -2,6 +2,7 @@ $(document).ready( function() {
     $('.nsd-app-header').addClass(['bg-dark', 'text-light']);
     $('.nsd-app-header .nav-link').addClass('text-light');
     $('.nsd-app-header-title').addClass(['display-4', 'text-light']);
+    $('.nsd-app-header-navs').addClass('float-right');
 
     $('.nsd-app-navbar').addClass(['bg-light', 'p-0']);
 

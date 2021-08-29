@@ -3,6 +3,7 @@
 package org.nasdanika.html.model.app;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
 /**
@@ -29,7 +30,7 @@ public interface PagePart extends BootstrapElement {
 
 	/**
 	 * Returns the value of the '<em><b>Items</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.bootstrap.BootstrapElement}.
+	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -40,6 +41,6 @@ public interface PagePart extends BootstrapElement {
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<BootstrapElement> getItems();
+	EList<EObject> getItems();
 
 } // PagePart

@@ -21,6 +21,8 @@ import org.nasdanika.html.model.bootstrap.gen.BootstrapAdapterFactory;
  */
 public class AppAdapterFactory extends BootstrapAdapterFactory {
 	
+	public static AppAdapterFactory INSTANCE = new AppAdapterFactory();
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public AppAdapterFactory() {
 		ClassLoader classLoader = getClassLoader();

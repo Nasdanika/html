@@ -163,14 +163,14 @@ public interface HTMLElement<T extends HTMLElement<T>> extends Producer, Markup 
 	 * @param data
 	 * @return this UI element.
 	 */
-	T setData(String key, Object data);
+	T setData(Object key, Object data);
 	
 	/**
 	 * Returns the application defined property of the UI element with the specified name, or null if it has not been set.
 	 * @param Key
 	 * @return
 	 */
-	Object getData(String key);
+	Object getData(Object key);
 	
 	/**
 	 * @return Element content.

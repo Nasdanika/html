@@ -180,7 +180,7 @@ public interface AppPackage extends EPackage {
 	int LABEL__NOTIFICATION = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
-	 * The feature id for the '<em><b>Children</b></em>' reference.
+	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -334,7 +334,7 @@ public interface AppPackage extends EPackage {
 	int LINK__NOTIFICATION = LABEL__NOTIFICATION;
 
 	/**
-	 * The feature id for the '<em><b>Children</b></em>' reference.
+	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1197,7 +1197,7 @@ public interface AppPackage extends EPackage {
 	int ACTION__NOTIFICATION = LINK__NOTIFICATION;
 
 	/**
-	 * The feature id for the '<em><b>Children</b></em>' reference.
+	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1485,10 +1485,10 @@ public interface AppPackage extends EPackage {
 	EAttribute getLabel_Notification();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.nasdanika.html.model.app.Label#getChildren <em>Children</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.Label#getChildren <em>Children</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Children</em>'.
+	 * @return the meta object for the containment reference list '<em>Children</em>'.
 	 * @see org.nasdanika.html.model.app.Label#getChildren()
 	 * @see #getLabel()
 	 * @generated
@@ -2093,7 +2093,7 @@ public interface AppPackage extends EPackage {
 		EAttribute LABEL__NOTIFICATION = eINSTANCE.getLabel_Notification();
 
 		/**
-		 * The meta object literal for the '<em><b>Children</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Children</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

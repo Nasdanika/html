@@ -1,5 +1,6 @@
 package org.nasdanika.html.model.html.gen;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -8,6 +9,7 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.ListCompoundConsumerFactory;
 import org.nasdanika.common.ListCompoundSupplierFactory;
+import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.SupplierFactory;
@@ -18,6 +20,9 @@ import org.nasdanika.html.model.html.Page;
 
 public class PageSupplierFactoryAdapter extends AdapterImpl implements SupplierFactory<HTMLPage> {
 	
+	public static final String PAGE_BODY_PROPERTY = "page/body";
+	public static final String PAGE_HEAD_PROPERTY = "page/head";
+
 	public PageSupplierFactoryAdapter(Page page) {
 		setTarget(page);
 	}
@@ -57,6 +62,12 @@ public class PageSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 				for (Object he: headAndBody.getFirst()) {
 					ret.head(he);
 				}
+				for (Object he: context.get(PAGE_HEAD_PROPERTY, List.class)) {
+					ret.head(he);
+				}
+				for (Object be: context.get(PAGE_BODY_PROPERTY, List.class)) {
+					ret.head(be);
+				}
 				for (Object be: headAndBody.getSecond()) {
 					ret.body(be);
 				}
@@ -69,10 +80,13 @@ public class PageSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 	@Override
 	public Supplier<HTMLPage> create(Context context) throws Exception {
 		Page page = (Page) getTarget();
+		MutableContext mc = context.fork();
+		mc.put(PAGE_HEAD_PROPERTY, new ArrayList<>());
+		mc.put(PAGE_BODY_PROPERTY, new ArrayList<>());
 		ListCompoundSupplierFactory<Object> headFactory = new ListCompoundSupplierFactory<>("Head", EObjectAdaptable.adaptToSupplierFactoryNonNull(page.getHead(), Object.class));
 		ListCompoundSupplierFactory<Object> bodyFactory = new ListCompoundSupplierFactory<>("Body", EObjectAdaptable.adaptToSupplierFactoryNonNull(page.getBody(), Object.class));		
 		ListCompoundConsumerFactory<HTMLPage> buildFactory = new ListCompoundConsumerFactory<>("Builders", EObjectAdaptable.adaptToConsumerFactoryNonNull(page.getBuilders(), HTMLPage.class));		
-		return headFactory.then(bodyFactory.asFunctionFactory()).then(this::createPageFunction).then(buildFactory.asFunctionFactory()).create(context);
+		return headFactory.then(bodyFactory.asFunctionFactory()).then(this::createPageFunction).then(buildFactory.asFunctionFactory()).create(mc);
 	}	
 
 }

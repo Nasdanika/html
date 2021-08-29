@@ -36,7 +36,7 @@ public class PageSupplierFactoryAdapter extends org.nasdanika.html.model.html.ge
 			
 			@Override
 			public String name() {
-				return "HTML Page";
+				return "Bootstrap Page";
 			}
 			
 			@Override
@@ -55,6 +55,12 @@ public class PageSupplierFactoryAdapter extends org.nasdanika.html.model.html.ge
 				}				
 				for (Object he: headAndBody.getFirst()) {
 					ret.head(he);
+				}
+				for (Object he: context.get(PAGE_HEAD_PROPERTY, List.class)) {
+					ret.head(he);
+				}
+				for (Object be: context.get(PAGE_BODY_PROPERTY, List.class)) {
+					ret.head(be);
 				}
 				for (Object be: headAndBody.getSecond()) {
 					ret.body(be);

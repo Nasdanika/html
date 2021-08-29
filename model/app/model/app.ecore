@@ -36,7 +36,8 @@
         <details key="documentation" value="Notification to display next to the label. E.g. a number of new messages in an inbox."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="children" eType="ecore:EClass ../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//BootstrapElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Label children to build UI elements like trees, lists, navigation bars and drop-downs."/>
       </eAnnotations>
@@ -172,8 +173,7 @@
       <details key="documentation" value="Base class for page parts."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="items" upperBound="-1"
-        eType="ecore:EClass ../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//BootstrapElement"
-        containment="true">
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Navigation items."/>
       </eAnnotations>

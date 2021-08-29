@@ -2,13 +2,16 @@
  */
 package org.nasdanika.html.model.app.impl;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
-import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Item;
 import org.nasdanika.html.model.bootstrap.Modal;
@@ -234,6 +237,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case AppPackage.LABEL__CHILDREN:
+				return ((InternalEList<?>)getChildren()).basicRemove(otherEnd, msgs);
 			case AppPackage.LABEL__HELP:
 				return basicSetHelp(null, msgs);
 		}
@@ -345,28 +350,10 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public BootstrapElement getChildren() {
-		return (BootstrapElement)eDynamicGet(AppPackage.LABEL__CHILDREN, AppPackage.Literals.LABEL__CHILDREN, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public BootstrapElement basicGetChildren() {
-		return (BootstrapElement)eDynamicGet(AppPackage.LABEL__CHILDREN, AppPackage.Literals.LABEL__CHILDREN, false, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setChildren(BootstrapElement newChildren) {
-		eDynamicSet(AppPackage.LABEL__CHILDREN, AppPackage.Literals.LABEL__CHILDREN, newChildren);
+	public EList<EObject> getChildren() {
+		return (EList<EObject>)eDynamicGet(AppPackage.LABEL__CHILDREN, AppPackage.Literals.LABEL__CHILDREN, true, true);
 	}
 
 	/**
@@ -394,8 +381,7 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 			case AppPackage.LABEL__NOTIFICATION:
 				return getNotification();
 			case AppPackage.LABEL__CHILDREN:
-				if (resolve) return getChildren();
-				return basicGetChildren();
+				return getChildren();
 			case AppPackage.LABEL__HELP:
 				return getHelp();
 		}
@@ -407,6 +393,7 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -435,7 +422,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				setNotification((String)newValue);
 				return;
 			case AppPackage.LABEL__CHILDREN:
-				setChildren((BootstrapElement)newValue);
+				getChildren().clear();
+				getChildren().addAll((Collection<? extends EObject>)newValue);
 				return;
 			case AppPackage.LABEL__HELP:
 				setHelp((Modal)newValue);
@@ -477,7 +465,7 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				setNotification(NOTIFICATION_EDEFAULT);
 				return;
 			case AppPackage.LABEL__CHILDREN:
-				setChildren((BootstrapElement)null);
+				getChildren().clear();
 				return;
 			case AppPackage.LABEL__HELP:
 				setHelp((Modal)null);
@@ -511,7 +499,7 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 			case AppPackage.LABEL__NOTIFICATION:
 				return NOTIFICATION_EDEFAULT == null ? getNotification() != null : !NOTIFICATION_EDEFAULT.equals(getNotification());
 			case AppPackage.LABEL__CHILDREN:
-				return basicGetChildren() != null;
+				return !getChildren().isEmpty();
 			case AppPackage.LABEL__HELP:
 				return getHelp() != null;
 		}
