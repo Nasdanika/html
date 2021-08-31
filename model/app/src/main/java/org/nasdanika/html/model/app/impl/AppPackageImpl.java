@@ -14,7 +14,6 @@ import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
-import org.nasdanika.html.model.app.Color;
 import org.nasdanika.html.model.app.ContentPanel;
 import org.nasdanika.html.model.app.Footer;
 import org.nasdanika.html.model.app.Header;
@@ -113,13 +112,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	private EEnum sectionStyleEEnum = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EEnum colorEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -480,6 +472,36 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
+	public EAttribute getNavigationBar_Dark() {
+		return (EAttribute)navigationBarEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getNavigationBar_Expand() {
+		return (EAttribute)navigationBarEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getNavigationBar_Background() {
+		return (EAttribute)navigationBarEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getNavigationPanel() {
 		return navigationPanelEClass;
 	}
@@ -740,16 +762,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EEnum getColor() {
-		return colorEEnum;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EEnum getNavigationPanelStyle() {
 		return navigationPanelStyleEEnum;
 	}
@@ -825,6 +837,9 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		navigationBarEClass = createEClass(NAVIGATION_BAR);
 		createEReference(navigationBarEClass, NAVIGATION_BAR__BRAND);
+		createEAttribute(navigationBarEClass, NAVIGATION_BAR__DARK);
+		createEAttribute(navigationBarEClass, NAVIGATION_BAR__EXPAND);
+		createEAttribute(navigationBarEClass, NAVIGATION_BAR__BACKGROUND);
 
 		navigationPanelEClass = createEClass(NAVIGATION_PANEL);
 		createEAttribute(navigationPanelEClass, NAVIGATION_PANEL__STYLE);
@@ -858,7 +873,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		// Create enums
 		sectionStyleEEnum = createEEnum(SECTION_STYLE);
-		colorEEnum = createEEnum(COLOR);
 		navigationPanelStyleEEnum = createEEnum(NAVIGATION_PANEL_STYLE);
 	}
 
@@ -939,6 +953,9 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		initEClass(navigationBarEClass, NavigationBar.class, "NavigationBar", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getNavigationBar_Brand(), this.getLabel(), null, "brand", null, 0, 1, NavigationBar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNavigationBar_Dark(), ecorePackage.getEBoolean(), "dark", null, 0, 1, NavigationBar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNavigationBar_Expand(), theBootstrapPackage.getBreakpoint(), "expand", "LARGE", 0, 1, NavigationBar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNavigationBar_Background(), theBootstrapPackage.getColor(), "background", null, 0, 1, NavigationBar.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(navigationPanelEClass, NavigationPanel.class, "NavigationPanel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNavigationPanel_Style(), this.getNavigationPanelStyle(), "style", "Auto", 0, 1, NavigationPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -981,21 +998,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		addEEnumLiteral(sectionStyleEEnum, SectionStyle.PILL);
 		addEEnumLiteral(sectionStyleEEnum, SectionStyle.TAB);
 		addEEnumLiteral(sectionStyleEEnum, SectionStyle.TABLE);
-
-		initEEnum(colorEEnum, Color.class, "Color");
-		addEEnumLiteral(colorEEnum, Color.PRIMARY);
-		addEEnumLiteral(colorEEnum, Color.SECONDARY);
-		addEEnumLiteral(colorEEnum, Color.SUCCESS);
-		addEEnumLiteral(colorEEnum, Color.INFO);
-		addEEnumLiteral(colorEEnum, Color.WARNING);
-		addEEnumLiteral(colorEEnum, Color.DANGER);
-		addEEnumLiteral(colorEEnum, Color.LIGHT);
-		addEEnumLiteral(colorEEnum, Color.DARK);
-		addEEnumLiteral(colorEEnum, Color.BODY);
-		addEEnumLiteral(colorEEnum, Color.MUTED);
-		addEEnumLiteral(colorEEnum, Color.WHITE);
-		addEEnumLiteral(colorEEnum, Color.BLACK50);
-		addEEnumLiteral(colorEEnum, Color.WHITE50);
 
 		initEEnum(navigationPanelStyleEEnum, NavigationPanelStyle.class, "NavigationPanelStyle");
 		addEEnumLiteral(navigationPanelStyleEEnum, NavigationPanelStyle.AUTO);

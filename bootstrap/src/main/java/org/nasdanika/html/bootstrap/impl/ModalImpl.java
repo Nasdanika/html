@@ -66,6 +66,14 @@ public class ModalImpl extends WrappingBootstrapElementImpl<Tag, Modal> implemen
 		trigger.attribute("data-toggle", "modal");
 		trigger.attribute("data-target", "#" + htmlElement.getId());
 	}
+	
+	@Override
+	public String activatorScript() {
+		if (htmlElement.getId() == null) {
+			htmlElement.id(getFactory().getHTMLFactory().nextId());
+		}
+		return "jQuery('#" + htmlElement.getId() + "').modal('show')";
+	}
 
 	@Override
 	public void bindDismisser(HTMLElement<?> dismisser) {

@@ -21,21 +21,6 @@
       <genEnumLiterals ecoreEnumLiteral="app.ecore#//SectionStyle/Tab"/>
       <genEnumLiterals ecoreEnumLiteral="app.ecore#//SectionStyle/Table"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="app.ecore#//Color">
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Primary"/>
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Secondary"/>
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Success"/>
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Info"/>
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Warning"/>
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Danger"/>
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Light"/>
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Dark"/>
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Body"/>
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Muted"/>
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/White"/>
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/Black50"/>
-      <genEnumLiterals ecoreEnumLiteral="app.ecore#//Color/White50"/>
-    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="app.ecore#//NavigationPanelStyle">
       <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/Auto"/>
       <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/Cards"/>
@@ -73,6 +58,9 @@
     </genClasses>
     <genClasses ecoreClass="app.ecore#//NavigationBar">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//NavigationBar/brand"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//NavigationBar/dark"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//NavigationBar/expand"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//NavigationBar/background"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//NavigationPanel">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//NavigationPanel/style"/>

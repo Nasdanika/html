@@ -26,9 +26,9 @@ import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.bootstrap.gen.BootstrapElementSupplierFactoryAdapter;
 
-public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapElementSupplierFactoryAdapter<M, BootstrapElement<?,?>> {
+public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapElementSupplierFactoryAdapter<M, BootstrapElement<?,?>> {
 	
-	public LabelSupplierFactoryAdapter(M label) {
+	public LabelTagSupplierFactoryAdapter(M label) {
 		super(label);
 	}
 		
@@ -75,17 +75,18 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 				}				
 				
 				Tag help = (Tag) features.get(AppPackage.Literals.LABEL__HELP);
+				HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
 				if (help != null) {
 					@SuppressWarnings("unchecked")
 					List<Object> pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);
 					pageBody.add(help);
 					
-					Tag trigger = bootstrapFactory.getHTMLFactory().tag(TagName.sup).addClass("far fa-question-circle", "nsd-label-help").style("cursor", "pointer");
+					Tag trigger = htmlFactory.tag(TagName.sup).addClass("far fa-question-circle", "nsd-label-help").style("cursor", "pointer");
 					if (!Util.isBlank(tooltip)) {
 						trigger.attribute("title", tooltip);
 					}
 					if (help.getId() == null) {
-						help.id(bootstrapFactory.getHTMLFactory().nextId());
+						help.id(htmlFactory.nextId());
 					}
 					trigger.attribute("data-toggle", "modal");
 					trigger.attribute("data-target", "#" + help.getId());
@@ -93,7 +94,7 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 					if (TagName.span.name().equalsIgnoreCase(ret.getTagName())) {
 						ret.accept(trigger);
 					} else {
-						ret = bootstrapFactory.getHTMLFactory().span(ret, trigger);
+						ret = htmlFactory.span(ret, trigger);
 					}
 				}
 				
@@ -106,7 +107,48 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 					ret.setData(fe.getKey(), fe.getValue());
 				}
 				
-				return ret;
+				@SuppressWarnings("unchecked")
+				List<Object> children = (List<Object>) features.get(AppPackage.Literals.LABEL__CHILDREN);
+				if (children == null || semanticElement.eContainer() instanceof Label) {				
+					return ret;
+				}
+				
+				// Navigation drop-down
+				Tag dropdown = htmlFactory.tag(TagName.li).addClass("dropdown");
+				ret.addClass("nav-link", "dropdown-toggle").attribute("role", "button");
+				ret.attribute("data-toggle", "dropdown");
+				dropdown.accept(ret);
+								
+				Tag dropdownMenu = htmlFactory.div().addClass("dropdown-menu");
+				dropdown.accept(dropdownMenu);				
+				addDropdownItems(dropdownMenu, children);
+				
+				return dropdown;
+			}
+			
+			@SuppressWarnings("unchecked")
+			private void addDropdownItems(Tag dropdownMenu, List<Object> items) {
+				for (Object item: items) {					
+					dropdownMenu.accept(item);
+					if (item instanceof Tag) {
+						Tag itemTag = (Tag) item;
+						switch (itemTag.getTagName().toLowerCase()) {
+						case "a": 
+							itemTag.addClass("dropdown-item");
+							break;
+						case "div": 
+							itemTag.addClass("dropdown-divider");
+							break;
+						case "h6": 
+							itemTag.addClass("dropdown-header");
+							break;
+						}
+						List<Object> children = (List<Object>) itemTag.getData(AppPackage.Literals.LABEL__CHILDREN);
+						if (children != null) {
+							addDropdownItems(dropdownMenu, children);
+						}					
+					}
+				}
 			}
 			
 		};
@@ -174,7 +216,8 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 				Color color = semanticElement.getColor();				
 				if (color != null) {
 					bootstrapFactory.wrap(ret).text().color(color);
-				}						
+				}	
+												
 				return ret;
 			}
 			
@@ -192,16 +235,30 @@ public class LabelSupplierFactoryAdapter<M extends Label> extends BootstrapEleme
 	 * @return
 	 */
 	protected Tag createTextAndIconTag(Tag icon, String text, Tag modal, Context context, ProgressMonitor progressMonitor) {
-		if (Util.isBlank(text)) {
-			return icon;
-		}
 		HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
+		TagName tagName;
+		if (getTarget().getChildren().isEmpty()) {
+			tagName = TagName.span; // A regular label.
+		} else {
+			// Drop-down activator or drop-down header if contained in a label
+			tagName = getTarget().eContainer() instanceof Label ? TagName.h6 : TagName.a;
+		}
+		
+		if (Util.isBlank(text)) {
+			if (icon == null) {
+				// Drop-down divider
+				return htmlFactory.div();
+			}
+			
+			// Wrap into a header for drop-down headers
+			return tagName == TagName.h6 ? htmlFactory.tag(tagName, icon) : icon;
+		}
 		if (icon == null) {
-			return htmlFactory.span(text);
+			return htmlFactory.tag(tagName, text);
 		}
 		
 		icon.addClass("nsd-app-label-icon");
-		return htmlFactory.span(icon, text);	
+		return htmlFactory.tag(tagName, icon, text);	
 	}
 	
 	/**

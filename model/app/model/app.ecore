@@ -99,21 +99,6 @@
     <eLiterals name="Tab" value="7"/>
     <eLiterals name="Table" value="8"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="Color">
-    <eLiterals name="Primary"/>
-    <eLiterals name="Secondary" value="1"/>
-    <eLiterals name="Success" value="2"/>
-    <eLiterals name="Info" value="3"/>
-    <eLiterals name="Warning" value="4"/>
-    <eLiterals name="Danger" value="5"/>
-    <eLiterals name="Light" value="6"/>
-    <eLiterals name="Dark" value="7"/>
-    <eLiterals name="Body" value="8"/>
-    <eLiterals name="Muted" value="9"/>
-    <eLiterals name="White" value="10"/>
-    <eLiterals name="Black50" value="11"/>
-    <eLiterals name="White50" value="12"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Page" eSuperTypes="../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//BootstrapElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Application page consisting of several parts - header, navigation bar, navigation panel, content panel, and footer. Page extends Tag, but ``name`` attribute shall not be used - it defaults to ``div``."/>
@@ -200,6 +185,10 @@
         <details key="documentation" value="Brand label displayed on the left."/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dark" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expand" eType="ecore:EDataType ../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//Breakpoint"
+        defaultValueLiteral="LARGE"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="background" eType="ecore:EDataType ../../org.nasdanika.html.model.bootstrap/model/bootstrap.ecore#//Color"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NavigationPanel" eSuperTypes="#//PagePart">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

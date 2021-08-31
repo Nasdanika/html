@@ -752,13 +752,40 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_BAR__BRAND = PAGE_PART_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Dark</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_BAR__DARK = PAGE_PART_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Expand</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_BAR__EXPAND = PAGE_PART_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Background</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_BAR__BACKGROUND = PAGE_PART_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Navigation Bar</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_BAR_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 1;
+	int NAVIGATION_BAR_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Navigation Bar</em>' class.
@@ -1377,17 +1404,6 @@ public interface AppPackage extends EPackage {
 	int ACTION_OPERATION_COUNT = LINK_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.app.Color <em>Color</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.app.Color
-	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getColor()
-	 * @generated
-	 */
-	int COLOR = 11;
-
-
-	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1395,7 +1411,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getNavigationPanelStyle()
 	 * @generated
 	 */
-	int NAVIGATION_PANEL_STYLE = 12;
+	int NAVIGATION_PANEL_STYLE = 11;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.SectionStyle <em>Section Style</em>}' enum.
@@ -1700,6 +1716,39 @@ public interface AppPackage extends EPackage {
 	EReference getNavigationBar_Brand();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.NavigationBar#isDark <em>Dark</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Dark</em>'.
+	 * @see org.nasdanika.html.model.app.NavigationBar#isDark()
+	 * @see #getNavigationBar()
+	 * @generated
+	 */
+	EAttribute getNavigationBar_Dark();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.NavigationBar#getExpand <em>Expand</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Expand</em>'.
+	 * @see org.nasdanika.html.model.app.NavigationBar#getExpand()
+	 * @see #getNavigationBar()
+	 * @generated
+	 */
+	EAttribute getNavigationBar_Expand();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.NavigationBar#getBackground <em>Background</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Background</em>'.
+	 * @see org.nasdanika.html.model.app.NavigationBar#getBackground()
+	 * @see #getNavigationBar()
+	 * @generated
+	 */
+	EAttribute getNavigationBar_Background();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.NavigationPanel <em>Navigation Panel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1982,16 +2031,6 @@ public interface AppPackage extends EPackage {
 	EAttribute getAction_ModalActivator();
 
 	/**
-	 * Returns the meta object for enum '{@link org.nasdanika.html.model.app.Color <em>Color</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Color</em>'.
-	 * @see org.nasdanika.html.model.app.Color
-	 * @generated
-	 */
-	EEnum getColor();
-
-	/**
 	 * Returns the meta object for enum '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2263,6 +2302,30 @@ public interface AppPackage extends EPackage {
 		EReference NAVIGATION_BAR__BRAND = eINSTANCE.getNavigationBar_Brand();
 
 		/**
+		 * The meta object literal for the '<em><b>Dark</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NAVIGATION_BAR__DARK = eINSTANCE.getNavigationBar_Dark();
+
+		/**
+		 * The meta object literal for the '<em><b>Expand</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NAVIGATION_BAR__EXPAND = eINSTANCE.getNavigationBar_Expand();
+
+		/**
+		 * The meta object literal for the '<em><b>Background</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NAVIGATION_BAR__BACKGROUND = eINSTANCE.getNavigationBar_Background();
+
+		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl <em>Navigation Panel</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2477,16 +2540,6 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ACTION__MODAL_ACTIVATOR = eINSTANCE.getAction_ModalActivator();
-
-		/**
-		 * The meta object literal for the '{@link org.nasdanika.html.model.app.Color <em>Color</em>}' enum.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.nasdanika.html.model.app.Color
-		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getColor()
-		 * @generated
-		 */
-		EEnum COLOR = eINSTANCE.getColor();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}' enum.

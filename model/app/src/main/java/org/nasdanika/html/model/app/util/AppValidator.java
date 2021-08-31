@@ -119,8 +119,6 @@ public class AppValidator extends EObjectValidator {
 				return validateAction((Action)value, diagnostics, context);
 			case AppPackage.SECTION_STYLE:
 				return validateSectionStyle((SectionStyle)value, diagnostics, context);
-			case AppPackage.COLOR:
-				return validateColor((Color)value, diagnostics, context);
 			case AppPackage.NAVIGATION_PANEL_STYLE:
 				return validateNavigationPanelStyle((NavigationPanelStyle)value, diagnostics, context);
 			default:
@@ -287,15 +285,6 @@ public class AppValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateSectionStyle(SectionStyle sectionStyle, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		return true;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean validateColor(Color color, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return true;
 	}
 

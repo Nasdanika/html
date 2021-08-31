@@ -35,18 +35,18 @@ public class AppAdapterFactory extends BootstrapAdapterFactory {
 					PageSupplierFactoryAdapter::new));
 		
 		registerAdapterFactory(
-				new FunctionAdapterFactory<SupplierFactory<HTMLElement<?>>, Label>(
+				new FunctionAdapterFactory<SupplierFactory.Provider, Label>(
 					AppPackage.Literals.LABEL, 
-					(Class) SupplierFactory.class, 
+					SupplierFactory.Provider.class, 
 					classLoader, 
-					LabelSupplierFactoryAdapter::new));
+					LabelSupplierFactoryProviderAdapter::new));
 		
 		registerAdapterFactory(
-				new FunctionAdapterFactory<SupplierFactory<HTMLElement<?>>, Link>(
+				new FunctionAdapterFactory<SupplierFactory.Provider, Link>(
 					AppPackage.Literals.LINK, 
-					(Class) SupplierFactory.class, 
+					SupplierFactory.Provider.class, 
 					classLoader, 
-					LinkSupplierFactoryAdapter::new));
+					LinkSupplierFactoryProviderAdapter::new));
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, ContentPanel>(

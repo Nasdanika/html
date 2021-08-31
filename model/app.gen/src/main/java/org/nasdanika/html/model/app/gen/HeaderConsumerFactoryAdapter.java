@@ -36,7 +36,7 @@ public class HeaderConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter
 		Label title = getTarget().getTitle();
 		if (title != null) {
 			Label cTitle = EcoreUtil.copy(title);
-			cTitle.eAdapters().add(AppAdapterFactory.INSTANCE.adapt(cTitle, SupplierFactory.class));
+			cTitle.eAdapters().add(AppAdapterFactory.INSTANCE.adapt(cTitle, SupplierFactory.Provider.class));
 			
 			Appearance titleAppearance = org.nasdanika.html.model.bootstrap.BootstrapFactory.eINSTANCE.createAppearance();
 			titleAppearance.eAdapters().add(AppAdapterFactory.INSTANCE.adapt(titleAppearance, ConsumerFactory.class));
@@ -67,14 +67,11 @@ public class HeaderConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter
 			
 			@Override
 			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, List<Object>> input, ProgressMonitor progressMonitor) throws Exception {
-				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
-				Navs navs = Util.navs(input.getSecond(), bootstrapFactory);
-				navs.toHTMLElement().addClass("nsd-app-header-navs");
-				
-				navs.item("Test", "Grum");
-				
-				((Tag) input.getFirst()).content(navs);				
-				return input.getFirst();
+				Tag ret = (Tag) input.getFirst();
+				Tag navs = Util.navs(input.getSecond(), context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE));
+				navs.addClass("nsd-app-header-navs");
+				ret.content(navs);				
+				return ret;
 			}
 		};
 	}

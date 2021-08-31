@@ -20,10 +20,11 @@ resources-container:
               app-page:
                 header:
                   title:
-                    app-label:
+                    app-link:
                       icon: fa fa-cog
                       text: Test Application
                       tooltip: A friendly app
+                      location: https://nasdanika.org
                   content:
                     - content-text: Header
                     - app-label: 

@@ -35,6 +35,11 @@ public interface Modal extends BootstrapElement<Tag, Modal> {
 	 * @param trigger
 	 */
 	void bindTrigger(HTMLElement<?> trigger);
+	
+	/**
+	 * @return Javascript code to show this modal.
+	 */
+	String activatorScript();
 
 	/**
 	 * Adds data-dismiss="modal" attributes to the dismisser. 

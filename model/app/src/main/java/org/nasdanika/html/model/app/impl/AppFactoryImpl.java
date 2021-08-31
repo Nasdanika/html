@@ -80,8 +80,6 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 		switch (eDataType.getClassifierID()) {
 			case AppPackage.SECTION_STYLE:
 				return createSectionStyleFromString(eDataType, initialValue);
-			case AppPackage.COLOR:
-				return createColorFromString(eDataType, initialValue);
 			case AppPackage.NAVIGATION_PANEL_STYLE:
 				return createNavigationPanelStyleFromString(eDataType, initialValue);
 			default:
@@ -99,8 +97,6 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 		switch (eDataType.getClassifierID()) {
 			case AppPackage.SECTION_STYLE:
 				return convertSectionStyleToString(eDataType, instanceValue);
-			case AppPackage.COLOR:
-				return convertColorToString(eDataType, instanceValue);
 			case AppPackage.NAVIGATION_PANEL_STYLE:
 				return convertNavigationPanelStyleToString(eDataType, instanceValue);
 			default:
@@ -205,26 +201,6 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	public Action createAction() {
 		ActionImpl action = new ActionImpl();
 		return action;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Color createColorFromString(EDataType eDataType, String initialValue) {
-		Color result = Color.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertColorToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
 	}
 
 	/**
