@@ -66,7 +66,7 @@ public class PageSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 					ret.head(he);
 				}
 				for (Object be: context.get(PAGE_BODY_PROPERTY, List.class)) {
-					ret.head(be);
+					ret.body(be);
 				}
 				for (Object be: headAndBody.getSecond()) {
 					ret.body(be);

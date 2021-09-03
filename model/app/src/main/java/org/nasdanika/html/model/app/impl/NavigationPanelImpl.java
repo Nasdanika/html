@@ -16,6 +16,7 @@ import org.nasdanika.html.model.app.NavigationPanelStyle;
  * </p>
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getStyle <em>Style</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getId <em>Id</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,6 +31,16 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 	 * @ordered
 	 */
 	protected static final NavigationPanelStyle STYLE_EDEFAULT = NavigationPanelStyle.AUTO;
+
+	/**
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ID_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -76,10 +87,32 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 	 * @generated
 	 */
 	@Override
+	public String getId() {
+		return (String)eDynamicGet(AppPackage.NAVIGATION_PANEL__ID, AppPackage.Literals.NAVIGATION_PANEL__ID, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setId(String newId) {
+		eDynamicSet(AppPackage.NAVIGATION_PANEL__ID, AppPackage.Literals.NAVIGATION_PANEL__ID, newId);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AppPackage.NAVIGATION_PANEL__STYLE:
 				return getStyle();
+			case AppPackage.NAVIGATION_PANEL__ID:
+				return getId();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -96,6 +129,9 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 			case AppPackage.NAVIGATION_PANEL__STYLE:
 				setStyle((NavigationPanelStyle)newValue);
 				return;
+			case AppPackage.NAVIGATION_PANEL__ID:
+				setId((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -111,6 +147,9 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 			case AppPackage.NAVIGATION_PANEL__STYLE:
 				setStyle(STYLE_EDEFAULT);
 				return;
+			case AppPackage.NAVIGATION_PANEL__ID:
+				setId(ID_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -125,6 +164,8 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 		switch (featureID) {
 			case AppPackage.NAVIGATION_PANEL__STYLE:
 				return getStyle() != STYLE_EDEFAULT;
+			case AppPackage.NAVIGATION_PANEL__ID:
+				return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
 		}
 		return super.eIsSet(featureID);
 	}

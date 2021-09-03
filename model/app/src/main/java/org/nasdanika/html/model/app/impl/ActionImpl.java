@@ -28,7 +28,6 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getId <em>Id</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getSectionColumns <em>Section Columns</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getSectionStyle <em>Section Style</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.ActionImpl#getNavigation <em>Navigation</em>}</li>
@@ -45,16 +44,6 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  * @generated
  */
 public class ActionImpl extends LinkImpl implements Action {
-	/**
-	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getId()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ID_EDEFAULT = null;
-
 	/**
 	 * The default value of the '{@link #getSectionColumns() <em>Section Columns</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -112,26 +101,6 @@ public class ActionImpl extends LinkImpl implements Action {
 	@Override
 	protected EClass eStaticClass() {
 		return AppPackage.Literals.ACTION;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getId() {
-		return (String)eDynamicGet(AppPackage.ACTION__ID, AppPackage.Literals.ACTION__ID, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setId(String newId) {
-		eDynamicSet(AppPackage.ACTION__ID, AppPackage.Literals.ACTION__ID, newId);
 	}
 
 	/**
@@ -401,8 +370,6 @@ public class ActionImpl extends LinkImpl implements Action {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AppPackage.ACTION__ID:
-				return getId();
 			case AppPackage.ACTION__SECTION_COLUMNS:
 				return getSectionColumns();
 			case AppPackage.ACTION__SECTION_STYLE:
@@ -438,9 +405,6 @@ public class ActionImpl extends LinkImpl implements Action {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AppPackage.ACTION__ID:
-				setId((String)newValue);
-				return;
 			case AppPackage.ACTION__SECTION_COLUMNS:
 				setSectionColumns((Integer)newValue);
 				return;
@@ -489,9 +453,6 @@ public class ActionImpl extends LinkImpl implements Action {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AppPackage.ACTION__ID:
-				setId(ID_EDEFAULT);
-				return;
 			case AppPackage.ACTION__SECTION_COLUMNS:
 				setSectionColumns(SECTION_COLUMNS_EDEFAULT);
 				return;
@@ -537,8 +498,6 @@ public class ActionImpl extends LinkImpl implements Action {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AppPackage.ACTION__ID:
-				return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
 			case AppPackage.ACTION__SECTION_COLUMNS:
 				return getSectionColumns() != SECTION_COLUMNS_EDEFAULT;
 			case AppPackage.ACTION__SECTION_STYLE:

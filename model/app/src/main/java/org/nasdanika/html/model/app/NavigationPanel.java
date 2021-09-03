@@ -16,6 +16,7 @@ package org.nasdanika.html.model.app;
  * </p>
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.NavigationPanel#getStyle <em>Style</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.NavigationPanel#getId <em>Id</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getNavigationPanel()
@@ -51,5 +52,30 @@ public interface NavigationPanel extends PagePart {
 	 * @generated
 	 */
 	void setStyle(NavigationPanelStyle value);
+
+	/**
+	 * Returns the value of the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * ID for jsTree to store state between pages, e.g. expaned nodes.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Id</em>' attribute.
+	 * @see #setId(String)
+	 * @see org.nasdanika.html.model.app.AppPackage#getNavigationPanel_Id()
+	 * @model
+	 * @generated
+	 */
+	String getId();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.NavigationPanel#getId <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * @see #getId()
+	 * @generated
+	 */
+	void setId(String value);
 
 } // NavigationPanel

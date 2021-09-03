@@ -5,10 +5,10 @@ $(document).ready( function() {
     $('.nsd-app-header-navs').addClass('float-right');
 
     $('.nsd-app-navbar').addClass(['bg-secondary', 'p-0']);
+    $('.nsd-app-navbar .navbar').addClass('mb-0');
 
     $('.nsd-app-navigation-panel').removeClass('col'); 
     $('.nsd-app-navigation-panel').addClass(['col-auto', 'border-right', 'border-secondary', 'pb-1']); 
-    $('.nsd-app-content-panel').addClass('p-1');
     $('.nsd-app-footer').addClass(['bg-secondary', 'text-primary', 'text-center']);
-    $('.nsd-app-footer .nsd-footer-action').addClass('font-italic');
+    $('.nsd-app-footer .nsd-app-footer-navs').addClass('justify-content-center');            
 });

@@ -19,7 +19,7 @@ class JsTreeNodeImpl implements JsTreeNode {
 	private Map<String, Object> aAttributes = new HashMap<>();
 	private Map<String, Object> liAttributes = new HashMap<>();	
 	private Object data;
-	private Map<String, Object> properties = new HashMap<>();
+	private Map<Object, Object> properties = new HashMap<>();
 	private List<JsTreeNode> children = new ArrayList<>();			
 	private boolean selected;
 	private boolean opened;
@@ -186,12 +186,12 @@ class JsTreeNodeImpl implements JsTreeNode {
 	}
 	
 	@Override
-	public Object getData(String key) {
+	public Object getData(Object key) {
 		return properties.get(key);
 	}
 	
 	@Override
-	public JsTreeNode setData(String key, Object data) {
+	public JsTreeNode setData(Object key, Object data) {
 		properties.put(key, data);
 		return this;
 	}

@@ -27,28 +27,6 @@ public class NavigationBarConsumerFactoryAdapter extends PagePartConsumerFactory
 		super(navigationBar);
 	}
 	
-//	@Override
-//	protected List<EObject> getContent() {		
-//		List<EObject> ret = new ArrayList<>();
-//		Label title = getTarget().getTitle();
-//		if (title != null) {
-//			Label cTitle = EcoreUtil.copy(title);
-//			cTitle.eAdapters().add(AppAdapterFactory.INSTANCE.adapt(cTitle, SupplierFactory.Provider.class));
-//			
-//			Appearance titleAppearance = org.nasdanika.html.model.bootstrap.BootstrapFactory.eINSTANCE.createAppearance();
-//			titleAppearance.eAdapters().add(AppAdapterFactory.INSTANCE.adapt(titleAppearance, ConsumerFactory.class));
-//			cTitle.setAppearance(titleAppearance);
-//			
-//			Text cText = ContentFactory.eINSTANCE.createText();
-//			cText.eAdapters().add(AppAdapterFactory.INSTANCE.adapt(cText, SupplierFactory.class));
-//			cText.setContent("nsd-app-header-title");
-//			titleAppearance.getAttributes().put("class", cText);
-//			ret.add(cTitle);
-//		}
-//		ret.addAll(super.getContent());		
-//		return ret;
-//	}
-	
 	private Function<BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>>, HTMLElement<?>> createNavbarFunction(Context context) {
 		return new Function<BiSupplier<HTMLElement<?>,Map<EStructuralFeature, Object>>, HTMLElement<?>>() {
 			
@@ -107,5 +85,4 @@ public class NavigationBarConsumerFactoryAdapter extends PagePartConsumerFactory
 		return super.createConfigureFunction(context).then(featuresFunction).then(createNavbarFunction(context));
 	}
 	
-
 }

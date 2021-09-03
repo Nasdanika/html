@@ -119,7 +119,7 @@ public interface JsTreeNode {
 	 * @param data
 	 * @return this UI element.
 	 */
-	JsTreeNode setData(String key, Object data);
+	JsTreeNode setData(Object key, Object data);
 	
 	/**
 	 * If this method is invoked and children collection is empty then toJSON outputs children:true, which can be used in Ajax lazy loading.
@@ -132,7 +132,7 @@ public interface JsTreeNode {
 	 * @param Key
 	 * @return
 	 */
-	Object getData(String key);
+	Object getData(Object key);
 	
 	
 }

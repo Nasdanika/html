@@ -2,6 +2,7 @@ package org.nasdanika.html.model.app.gen;
 
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.html.jstree.JsTreeNode;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.html.Tag;
 
@@ -24,7 +25,9 @@ public class LabelSupplierFactoryProviderAdapter<M extends Label> extends Adapte
 		}
 		// TODO Card
 		
-		// TODO JsTreeNode
+		if (type.isAssignableFrom(JsTreeNode.class)) {
+			return (SupplierFactory<T>) new LabelJsTreeNodeSupplierFactoryAdapter<>((M) getTarget());
+		}
 		
 		return null;
 	}

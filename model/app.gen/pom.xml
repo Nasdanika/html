@@ -48,6 +48,11 @@
 			<version>${core.version}</version>
 		</dependency>	
 		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>jstree</artifactId>
+			<version>${project.version}</version>
+		</dependency>	
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>

@@ -9,4 +9,6 @@ engineering-module:
   issues:
      - name: Ability to inherit action hierarchies and override specific actions
        description: Override by ID. Children will have to be derived and will need "ownChildren" reference with "children" load key.
+     - name: Label context list of labels.
+       description: If present use JsTree context menu in the tree and on the page - find how it is done in the old server code on GitHub.
   

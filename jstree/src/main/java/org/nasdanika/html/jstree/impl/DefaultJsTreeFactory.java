@@ -75,10 +75,16 @@ public class DefaultJsTreeFactory implements JsTreeFactory {
 
 	@Override
 	public Tag bind(String selector, Object jsTree, Object filter) {
+		StringBuilder code = new StringBuilder("$(document).ready( function() {").append(System.lineSeparator());
+	
 		if (filter == null) {
-			return htmlFactory.nonEmptyTag(TagName.script, "$('"+selector+"').jstree("+jsTree+");");
+			code.append("$('"+selector+"').jstree("+jsTree+");");
+		} else {				
+			code.append("$('"+selector+"').jstree(function(tree) { " + filter + " return tree; }(" + jsTree + "));");
 		}
-		return htmlFactory.nonEmptyTag(TagName.script, "$('"+selector+"').jstree(function(tree) { " + filter + " return tree; }(" + jsTree + "));");
+		
+		code.append(System.lineSeparator()).append("});");
+		return htmlFactory.nonEmptyTag(TagName.script, code.toString());
 	}
 
 	@Override

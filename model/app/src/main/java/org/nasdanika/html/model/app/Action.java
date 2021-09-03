@@ -19,7 +19,6 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.nasdanika.html.model.app.Action#getId <em>Id</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getSectionColumns <em>Section Columns</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getSectionStyle <em>Section Style</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getNavigation <em>Navigation</em>}</li>
@@ -38,31 +37,6 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  * @generated
  */
 public interface Action extends Link {
-	/**
-	 * Returns the value of the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Action unique ID for cross-referencing.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Id</em>' attribute.
-	 * @see #setId(String)
-	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Id()
-	 * @model
-	 * @generated
-	 */
-	String getId();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Action#getId <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Id</em>' attribute.
-	 * @see #getId()
-	 * @generated
-	 */
-	void setId(String value);
-
 	/**
 	 * Returns the value of the '<em><b>Section Columns</b></em>' attribute.
 	 * The default value is <code>"3"</code>.

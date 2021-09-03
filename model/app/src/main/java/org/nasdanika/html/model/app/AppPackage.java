@@ -198,13 +198,22 @@ public interface AppPackage extends EPackage {
 	int LABEL__HELP = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 9;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__ID = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 10;
+
+	/**
 	 * The number of structural features of the '<em>Label</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL_FEATURE_COUNT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 10;
+	int LABEL_FEATURE_COUNT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of operations of the '<em>Label</em>' class.
@@ -350,6 +359,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK__HELP = LABEL__HELP;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__ID = LABEL__ID;
 
 	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
@@ -861,13 +879,22 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL__STYLE = PAGE_PART_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_PANEL__ID = PAGE_PART_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Navigation Panel</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_PANEL_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 1;
+	int NAVIGATION_PANEL_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Navigation Panel</em>' class.
@@ -1242,6 +1269,15 @@ public interface AppPackage extends EPackage {
 	int ACTION__HELP = LINK__HELP;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__ID = LINK__ID;
+
+	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1278,22 +1314,13 @@ public interface AppPackage extends EPackage {
 	int ACTION__CONFIRMATION = LINK__CONFIRMATION;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION__ID = LINK_FEATURE_COUNT + 0;
-
-	/**
 	 * The feature id for the '<em><b>Section Columns</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__SECTION_COLUMNS = LINK_FEATURE_COUNT + 1;
+	int ACTION__SECTION_COLUMNS = LINK_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Section Style</b></em>' attribute.
@@ -1302,7 +1329,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__SECTION_STYLE = LINK_FEATURE_COUNT + 2;
+	int ACTION__SECTION_STYLE = LINK_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Navigation</b></em>' containment reference list.
@@ -1311,7 +1338,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__NAVIGATION = LINK_FEATURE_COUNT + 3;
+	int ACTION__NAVIGATION = LINK_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Left Navigation</b></em>' containment reference.
@@ -1320,7 +1347,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__LEFT_NAVIGATION = LINK_FEATURE_COUNT + 4;
+	int ACTION__LEFT_NAVIGATION = LINK_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Right Navigation</b></em>' containment reference.
@@ -1329,7 +1356,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 5;
+	int ACTION__RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Float Left Navigation</b></em>' containment reference.
@@ -1338,7 +1365,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__FLOAT_LEFT_NAVIGATION = LINK_FEATURE_COUNT + 6;
+	int ACTION__FLOAT_LEFT_NAVIGATION = LINK_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Float Right Navigation</b></em>' containment reference.
@@ -1347,7 +1374,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__FLOAT_RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 7;
+	int ACTION__FLOAT_RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Anonymous</b></em>' containment reference list.
@@ -1356,7 +1383,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__ANONYMOUS = LINK_FEATURE_COUNT + 8;
+	int ACTION__ANONYMOUS = LINK_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Resources</b></em>' containment reference list.
@@ -1365,7 +1392,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__RESOURCES = LINK_FEATURE_COUNT + 9;
+	int ACTION__RESOURCES = LINK_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Inline</b></em>' attribute.
@@ -1374,7 +1401,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__INLINE = LINK_FEATURE_COUNT + 10;
+	int ACTION__INLINE = LINK_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Modal Activator</b></em>' attribute.
@@ -1383,7 +1410,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__MODAL_ACTIVATOR = LINK_FEATURE_COUNT + 11;
+	int ACTION__MODAL_ACTIVATOR = LINK_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Action</em>' class.
@@ -1392,7 +1419,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_FEATURE_COUNT = LINK_FEATURE_COUNT + 12;
+	int ACTION_FEATURE_COUNT = LINK_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of operations of the '<em>Action</em>' class.
@@ -1444,6 +1471,17 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getLabel_Help();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Label#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see org.nasdanika.html.model.app.Label#getId()
+	 * @see #getLabel()
+	 * @generated
+	 */
+	EAttribute getLabel_Id();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Label#getText <em>Text</em>}'.
@@ -1770,6 +1808,17 @@ public interface AppPackage extends EPackage {
 	EAttribute getNavigationPanel_Style();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.NavigationPanel#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see org.nasdanika.html.model.app.NavigationPanel#getId()
+	 * @see #getNavigationPanel()
+	 * @generated
+	 */
+	EAttribute getNavigationPanel_Id();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ContentPanel <em>Content Panel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1897,17 +1946,6 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getAction();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Action#getId <em>Id</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see org.nasdanika.html.model.app.Action#getId()
-	 * @see #getAction()
-	 * @generated
-	 */
-	EAttribute getAction_Id();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Action#getSectionColumns <em>Section Columns</em>}'.
@@ -2090,6 +2128,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EReference LABEL__HELP = eINSTANCE.getLabel_Help();
+
+		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LABEL__ID = eINSTANCE.getLabel_Id();
 
 		/**
 		 * The meta object literal for the '<em><b>Text</b></em>' attribute feature.
@@ -2344,6 +2390,14 @@ public interface AppPackage extends EPackage {
 		EAttribute NAVIGATION_PANEL__STYLE = eINSTANCE.getNavigationPanel_Style();
 
 		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NAVIGATION_PANEL__ID = eINSTANCE.getNavigationPanel_Id();
+
+		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ContentPanelImpl <em>Content Panel</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2444,14 +2498,6 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EClass ACTION = eINSTANCE.getAction();
-
-		/**
-		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute ACTION__ID = eINSTANCE.getAction_Id();
 
 		/**
 		 * The meta object literal for the '<em><b>Section Columns</b></em>' attribute feature.

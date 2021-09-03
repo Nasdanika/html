@@ -62,4 +62,23 @@ public class TestPage extends TestBase {
 		assertThat(file.exists(progressMonitor)).isTrue();
 	}
 	
+	@Test
+	public void testNavPanelCards() throws Exception {	
+		BinaryEntityContainer container = new FileSystemContainer(new File("target/test-outputs/page"));
+		Diagnostic generationDiagnostic = generate(
+				"page/nav-panel-cards.yml",
+				container,
+				diagnostic -> {
+					assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
+				});
+		
+		assertThat(generationDiagnostic.getStatus()).isEqualTo(Status.SUCCESS);
+		
+		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+		
+		BinaryEntity file = container.get("nav-panel-cards.html", progressMonitor);
+		assertThat(file).isNotNull();
+		assertThat(file.exists(progressMonitor)).isTrue();
+	}
+	
 }

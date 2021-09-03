@@ -1,10 +1,10 @@
 resources-file:
-  name: items.html
+  name: nav-panel-cards.html
   contents:
     bootstrap-page:
       cdn: true
       theme: Cerulean
-      name: Test Items
+      name: Test Navigation Panel Cards
       language: EN
       stylesheets: 
         - ../../../style/app.css 
@@ -36,7 +36,6 @@ resources-file:
                   disabled: true  
               - app-label:
                   text: Plain label item
-              - content-text: Inline text
               - app-label:
                   icon: fa fa-user 
                   text: Drop-down
@@ -47,7 +46,6 @@ resources-file:
                         text: Child link
                         active: true
                         location: https://www.nasdanika.org
-                    - content-text: Child inline text
                     - app-label: Child label
                     - app-label:
                         icon: fa fa-user 
@@ -57,7 +55,6 @@ resources-file:
                               icon: fa fa-cog
                               text: Section child link
                               location: https://www.nasdanika.org
-                          - content-text: Section child inline text
                           - app-label: Section child label
                     - app-label:
                         children:
@@ -65,7 +62,6 @@ resources-file:
                               text: Partition child link
                               location: https://www.nasdanika.org
                               disabled: true
-                          - content-text: Partition child inline text
                           - app-label: Partition child label
           navigation-bar:
             brand:
@@ -111,46 +107,90 @@ resources-file:
                               location: https://www.nasdanika.org
                               disabled: true
           navigation-panel:
+            style: CARDS
             items:
               - app-link:
                   icon: fa fa-cog
-                  text: Settings
-                  location: https://www.nasdanika.org
-                  children:  
-                    - app-link:
-                        text: Sub-settings
-                        location: https://www.nasdanika.org
-              - app-link:
-                  icon: fa fa-cog
-                  text: Disabled
+                  text: Disabled 1
                   location: https://www.nasdanika.org
                   disabled: true  
               - app-label:
-                  text: Plain label item
+                  text: Plain label item 2
+              - app-link:
+                  icon: fa fa-cog
+                  text: Disabled 3
+                  location: https://www.nasdanika.org
+                  disabled: true  
+              - app-label:
+                  text: Plain label item 4
+              - app-link:
+                  icon: fa fa-cog
+                  text: Settings 5
+                  location: https://www.nasdanika.org
+                  children:  
+                    - app-link:
+                        text: Sub-settings 5.1
+                        location: https://www.nasdanika.org
+                        active: true
+                    - app-link:
+                        text: Sub-settings 6
+                        location: https://www.nasdanika.org
+              - app-link:
+                  icon: fa fa-cog
+                  text: Disabled 7
+                  location: https://www.nasdanika.org
+                  disabled: true  
+              - app-link:
+                  icon: fa fa-cog
+                  text: Disabled 8
+                  location: https://www.nasdanika.org
+                  disabled: true  
+              - app-label:
+                  text: Plain label item 9
+              - app-label:
+                  text: Plain label item 10
               - app-label:
                   icon: fa fa-user 
-                  text: Drop-down
+                  text: Drop-down 11
                   children:
                     - app-link:
                         icon: fa fa-cog
-                        text: Child link
+                        text: Child link 12
                         location: https://www.nasdanika.org
-                        active: true
-                    - app-label:
-                        icon: fa fa-user 
-                        text: Section
                         children:
                           - app-link:
                               icon: fa fa-cog
-                              text: Section child link
+                              text: Child link 12.1
                               location: https://www.nasdanika.org
-                    - app-label:
-                        text: Partition
-                        children:
+                              active: true
                           - app-link:
-                              text: Partition child link
+                              icon: fa fa-user 
+                              text: Section 12.2
                               location: https://www.nasdanika.org
-                              disabled: true
+                          - app-link:
+                              text: Partition 12.3
+                              location: https://www.nasdanika.org
+                    - app-link:
+                        icon: fa fa-user 
+                        text: Section 13
+                        location: https://www.nasdanika.org
+                    - app-link:
+                        text: Partition 14
+                        location: https://www.nasdanika.org
+              - app-link:
+                  icon: fa fa-cog
+                  text: Disabled 15
+                  location: https://www.nasdanika.org
+                  disabled: true  
+              - app-label:
+                  text: Plain label item 16
+              - app-link:
+                  icon: fa fa-cog
+                  text: Active 17
+                  location: https://www.nasdanika.org
+                  active: true  
+              - app-label:
+                  text: Plain label item 18
           content-panel:
             content:
               - content-text: Content panel
@@ -197,38 +237,6 @@ resources-file:
                       content:
                         content-text: Here we go!
           footer:
-            items:
-              - app-link:
-                  icon: fa fa-cog
-                  text: Settings
-                  location: https://www.nasdanika.org
-                  active: true  
-              - app-link:
-                  icon: fa fa-cog
-                  text: Disabled
-                  location: https://www.nasdanika.org
-                  disabled: true  
-              - app-label:
-                  icon: fa fa-user 
-                  text: Drop-down
-                  children:
-                    - app-link:
-                        icon: fa fa-cog
-                        text: Child link
-                        active: true
-                        location: https://www.nasdanika.org
-                    - app-label:
-                        icon: fa fa-user 
-                        text: Section
-                        children:
-                          - app-link:
-                              icon: fa fa-cog
-                              text: Section child link
-                              location: https://www.nasdanika.org
-                    - app-label:
-                        children:
-                          - app-link:
-                              text: Partition child link
-                              location: https://www.nasdanika.org
-                              disabled: true
+            content:
+              content-text: Footer
 

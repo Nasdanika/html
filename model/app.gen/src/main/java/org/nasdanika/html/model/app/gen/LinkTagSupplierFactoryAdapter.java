@@ -44,25 +44,24 @@ public class LinkTagSupplierFactoryAdapter<M extends Link> extends LabelTagSuppl
 				@SuppressWarnings("unchecked")
 				List<Object> pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);
 				pageBody.add(modal);
-			}				
-			
-			String location = semanticElement.getLocation();
-			String confirmation = context.interpolateToString(semanticElement.getConfirmation());
-			if (!Util.isBlank(location)) {
-				anchor.attribute("href", context.interpolateToString(location));
-				if (!Util.isBlank(confirmation)) {
-					anchor.on(Event.click, "return confirm('" + confirmation + "');");
+			} else {							
+				String location = context.interpolateToString(semanticElement.getLocation());
+				String confirmation = context.interpolateToString(semanticElement.getConfirmation());
+				if (!Util.isBlank(location)) {
+					anchor.attribute("href", location);
+					if (!Util.isBlank(confirmation)) {
+						anchor.on(Event.click, "return confirm('" + confirmation + "');");
+					}
+				} else { 
+					String script = context.interpolateToString(semanticElement.getScript());
+					if (!Util.isBlank(script)) {
+						if (!Util.isBlank(confirmation)) {
+							script = "if (confirm('" + confirmation + "')) { "+ script +" } return false;";
+						}
+						anchor.on(Event.click, script);
+						anchor.style("cursor", "pointer");
+					}
 				}
-			} 
-			
-			String script = semanticElement.getScript();
-			if (!Util.isBlank(script)) {
-				String code = context.interpolateToString(script);
-				if (!Util.isBlank(confirmation)) {
-					code = "if (confirm('" + confirmation + "')) { "+ code +" } return false;";
-				}
-				anchor.on(Event.click, code);
-				anchor.style("cursor", "pointer");
 			}
 		}
 		

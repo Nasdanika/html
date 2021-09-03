@@ -97,7 +97,32 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 						ret = htmlFactory.span(ret, trigger);
 					}
 				}
+								
+				@SuppressWarnings("unchecked")
+				List<Object> children = (List<Object>) features.get(AppPackage.Literals.LABEL__CHILDREN);
+				if (children == null || semanticElement.eContainer() instanceof Label) {				
+					setData(ret, semanticElement, features);
+					return ret;
+				}
 				
+				// Navigation drop-down
+				Tag dropdown = htmlFactory.tag(TagName.li).addClass("dropdown");
+				ret
+					.addClass("nav-link", "dropdown-toggle")
+					.attribute("role", "button")
+					.attribute("data-toggle", "dropdown");
+				
+				dropdown.accept(ret);
+								
+				Tag dropdownMenu = htmlFactory.div().addClass("dropdown-menu");
+				dropdown.accept(dropdownMenu);				
+				addDropdownItems(dropdownMenu, children);
+				
+				setData(dropdown, semanticElement, features);				
+				return dropdown;
+			}
+
+			protected void setData(Tag ret, Label semanticElement, Map<EStructuralFeature, Object> features) {
 				ret.setData(semanticElement);
 				
 				/**
@@ -106,24 +131,6 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 				for (Entry<EStructuralFeature, Object> fe: features.entrySet()) {
 					ret.setData(fe.getKey(), fe.getValue());
 				}
-				
-				@SuppressWarnings("unchecked")
-				List<Object> children = (List<Object>) features.get(AppPackage.Literals.LABEL__CHILDREN);
-				if (children == null || semanticElement.eContainer() instanceof Label) {				
-					return ret;
-				}
-				
-				// Navigation drop-down
-				Tag dropdown = htmlFactory.tag(TagName.li).addClass("dropdown");
-				ret.addClass("nav-link", "dropdown-toggle").attribute("role", "button");
-				ret.attribute("data-toggle", "dropdown");
-				dropdown.accept(ret);
-								
-				Tag dropdownMenu = htmlFactory.div().addClass("dropdown-menu");
-				dropdown.accept(dropdownMenu);				
-				addDropdownItems(dropdownMenu, children);
-				
-				return dropdown;
 			}
 			
 			@SuppressWarnings("unchecked")
@@ -268,6 +275,5 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 	protected SupplierFactory<Tag> getModalFactory() {
 		return SupplierFactory.empty();
 	}
-	
-	
+		
 }

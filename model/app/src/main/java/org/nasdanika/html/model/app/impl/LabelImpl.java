@@ -3,6 +3,8 @@
 package org.nasdanika.html.model.app.impl;
 
 import java.util.Collection;
+import java.util.UUID;
+
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -35,6 +37,7 @@ import org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl;
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getNotification <em>Notification</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getChildren <em>Children</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getHelp <em>Help</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getId <em>Id</em>}</li>
  * </ul>
  *
  * @generated
@@ -121,12 +124,23 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	protected static final String NOTIFICATION_EDEFAULT = null;
 
 	/**
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @see #getId()
 	 * @generated
+	 * @ordered
+	 */
+	protected static final String ID_EDEFAULT = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	protected LabelImpl() {
 		super();
+		setId(UUID.randomUUID().toString());
 	}
 
 	/**
@@ -227,6 +241,26 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	@Override
 	public void setHelp(Modal newHelp) {
 		eDynamicSet(AppPackage.LABEL__HELP, AppPackage.Literals.LABEL__HELP, newHelp);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String getId() {
+		return (String)eDynamicGet(AppPackage.LABEL__ID, AppPackage.Literals.LABEL__ID, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setId(String newId) {
+		eDynamicSet(AppPackage.LABEL__ID, AppPackage.Literals.LABEL__ID, newId);
 	}
 
 	/**
@@ -384,6 +418,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return getChildren();
 			case AppPackage.LABEL__HELP:
 				return getHelp();
+			case AppPackage.LABEL__ID:
+				return getId();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -428,6 +464,9 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 			case AppPackage.LABEL__HELP:
 				setHelp((Modal)newValue);
 				return;
+			case AppPackage.LABEL__ID:
+				setId((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -470,6 +509,9 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 			case AppPackage.LABEL__HELP:
 				setHelp((Modal)null);
 				return;
+			case AppPackage.LABEL__ID:
+				setId(ID_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -502,6 +544,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return !getChildren().isEmpty();
 			case AppPackage.LABEL__HELP:
 				return getHelp() != null;
+			case AppPackage.LABEL__ID:
+				return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
 		}
 		return super.eIsSet(featureID);
 	}

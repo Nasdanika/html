@@ -94,5 +94,5 @@ public final class Util {
 		content.accept(navs);
 		return navbar;
 	}
-		
+			
 }
