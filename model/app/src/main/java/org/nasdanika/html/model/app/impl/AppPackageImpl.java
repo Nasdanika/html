@@ -1444,6 +1444,12 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "homogenous", "true"
 		   });
 		addAnnotation
+		  (getContentPanel_Sections(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
 		  (getAction_LeftNavigation(),
 		   source,
 		   new String[] {

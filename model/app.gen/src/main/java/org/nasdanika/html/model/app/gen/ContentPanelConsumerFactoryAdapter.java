@@ -26,7 +26,6 @@ import org.nasdanika.html.bootstrap.Breadcrumb;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Container.Row;
-import org.nasdanika.html.bootstrap.Container.Row.Col;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Size;
 import org.nasdanika.html.model.app.AppPackage;
@@ -66,6 +65,23 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 				Tag ret = (Tag) input.getFirst();
 				
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
+				Map<EStructuralFeature, HTMLElement<?>> navigationPanels = new LinkedHashMap<>();
+				
+				// Floating navs - left and right
+				if (getTarget().getFloatLeftNavigation() != null) {
+					Tag floatLeftNavigation = bootstrapFactory.getHTMLFactory().div();
+					floatLeftNavigation.addClass("nsd-app-content-panel-float-left-navigation");
+					ret.accept(floatLeftNavigation);
+					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__FLOAT_LEFT_NAVIGATION, floatLeftNavigation);
+				}
+				if (getTarget().getFloatRightNavigation() != null) {
+					Tag floatRightNavigation = bootstrapFactory.getHTMLFactory().div();
+					floatRightNavigation.addClass("nsd-app-content-panel-float-right-navigation");
+					ret.accept(floatRightNavigation);
+					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__FLOAT_RIGHT_NAVIGATION, floatRightNavigation);
+				}
+				
+				
 				Container container = bootstrapFactory.fluidContainer();
 				ret.accept(container.toHTMLElement());
 				
@@ -89,7 +105,6 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 				}								
 				
 				Tag title = (Tag) input.getSecond().get(AppPackage.Literals.CONTENT_PANEL__TITLE);
-				@SuppressWarnings("unchecked")
 				List<Object> items = (List<Object>) input.getSecond().get(AppPackage.Literals.PAGE_PART__ITEMS);
 				if (title != null || items != null) {
 					Row titleAndItemsRow = container.row();
@@ -107,10 +122,7 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 					}
 				}
 				
-				Map<EStructuralFeature, HTMLElement<?>> navigationPanels = new LinkedHashMap<>();
-				
-				Row contentRow = container.row();
-				
+				Row contentRow = container.row();				
 				contentRow.toHTMLElement().addClass("nsd-app-content-panel-content-row");
 				
 				// Content nav left
@@ -124,20 +136,6 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 				Container contentFloatsAndSectionsContainer = bootstrapFactory.fluidContainer();
 				contentCol.accept(contentFloatsAndSectionsContainer);
 				Tag ownContentCol = contentFloatsAndSectionsContainer.row().col().toHTMLElement();				
-
-				// Floating navs - left and right
-				if (getTarget().getFloatLeftNavigation() != null) {
-					Tag floatLeftNavigation = bootstrapFactory.getHTMLFactory().div();
-					floatLeftNavigation.addClass("nsd-app-content-panel-float-left-navigation");
-					ownContentCol.accept(floatLeftNavigation);
-					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__FLOAT_LEFT_NAVIGATION, floatLeftNavigation);
-				}
-				if (getTarget().getFloatRightNavigation() != null) {
-					Tag floatRightNavigation = bootstrapFactory.getHTMLFactory().div();
-					floatRightNavigation.addClass("nsd-app-content-panel-float-right-navigation");
-					ownContentCol.accept(floatRightNavigation);
-					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__FLOAT_RIGHT_NAVIGATION, floatRightNavigation);
-				}
 				
 				List<Object> content = (List<Object>) input.getSecond().get(HtmlPackage.Literals.HTML_ELEMENT__CONTENT);
 				if (content != null) {
@@ -149,7 +147,7 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 				for (ContentPanel section: getTarget().getSections()) {
 					// TODO section style etc. Rows with columns for now.
 					
-					Tag sectionCol = container.row().col().toHTMLElement();
+					Tag sectionCol = contentFloatsAndSectionsContainer.row().col().toHTMLElement();
 					sectionCol.setData(section);
 					sections.add(sectionCol);
 				}				

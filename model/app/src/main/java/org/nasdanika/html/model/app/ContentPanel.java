@@ -188,6 +188,7 @@ public interface ContentPanel extends PagePart {
 	 * @return the value of the '<em>Sections</em>' containment reference list.
 	 * @see org.nasdanika.html.model.app.AppPackage#getContentPanel_Sections()
 	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
 	 * @generated
 	 */
 	EList<ContentPanel> getSections();
