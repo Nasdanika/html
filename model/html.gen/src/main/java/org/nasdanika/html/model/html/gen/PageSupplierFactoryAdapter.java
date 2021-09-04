@@ -7,7 +7,7 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
-import org.nasdanika.common.ListCompoundConsumerFactory;
+import org.nasdanika.common.CollectionCompoundConsumerFactory;
 import org.nasdanika.common.ListCompoundSupplierFactory;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
@@ -85,7 +85,7 @@ public class PageSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 		mc.put(PAGE_BODY_PROPERTY, new ArrayList<>());
 		ListCompoundSupplierFactory<Object> headFactory = new ListCompoundSupplierFactory<>("Head", EObjectAdaptable.adaptToSupplierFactoryNonNull(page.getHead(), Object.class));
 		ListCompoundSupplierFactory<Object> bodyFactory = new ListCompoundSupplierFactory<>("Body", EObjectAdaptable.adaptToSupplierFactoryNonNull(page.getBody(), Object.class));		
-		ListCompoundConsumerFactory<HTMLPage> buildFactory = new ListCompoundConsumerFactory<>("Builders", EObjectAdaptable.adaptToConsumerFactoryNonNull(page.getBuilders(), HTMLPage.class));		
+		CollectionCompoundConsumerFactory<HTMLPage> buildFactory = new CollectionCompoundConsumerFactory<>("Builders", EObjectAdaptable.adaptToConsumerFactoryNonNull(page.getBuilders(), HTMLPage.class));		
 		return headFactory.then(bodyFactory.asFunctionFactory()).then(this::createPageFunction).then(buildFactory.asFunctionFactory()).create(mc);
 	}	
 

@@ -11,11 +11,13 @@ resources-file:
         - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css
         - https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.11/themes/default/style.min.css
       scripts:
+        - ../../../style/common.js 
         - ../../../style/dark-head.js 
         - ../../../style/non-fluid.js 
         - https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.11/jstree.min.js        
       body:
         app-page:
+          fluid: true
           header:
             title:
               app-link:
@@ -152,6 +154,213 @@ resources-file:
                               location: https://www.nasdanika.org
                               disabled: true
           content-panel:
+            title:
+              app-label:
+                icon: fa fa-user
+                text: Content
+                tooltip: Home page
+            items:
+              - app-link:
+                  icon: fa fa-cog
+                  text: Plain link item
+                  location: https://www.nasdanika.org
+                  active: true  
+              - app-link:
+                  icon: fa fa-cog
+                  text: Disabled link item
+                  location: https://www.nasdanika.org
+                  disabled: true  
+              - app-label:
+                  icon: fa fa-user 
+                  text: Drop-down
+                  color: DANGER
+                  children:
+                    - app-link:
+                        icon: fa fa-cog
+                        text: Child link
+                        active: true
+                        location: https://www.nasdanika.org
+                    - app-label:
+                        icon: fa fa-user 
+                        text: Section
+                        children:
+                          - app-link:
+                              icon: fa fa-cog
+                              text: Section child link
+                              location: https://www.nasdanika.org
+                    - app-label:
+                        children:
+                          - app-link:
+                              text: Partition child link
+                              location: https://www.nasdanika.org
+                              disabled: true
+            breadcrumb:
+              - app-link:
+                  icon: fa fa-cog
+                  text: Plain link item
+                  location: https://www.nasdanika.org
+                  active: true  
+              - app-link:
+                  icon: fa fa-cog
+                  text: Disabled link item
+                  location: https://www.nasdanika.org
+                  disabled: true  
+              - app-label:
+                  icon: fa fa-user 
+                  text: Drop-down
+                  active: true
+            left-navigation:
+              style: CARDS
+              items:
+                - app-link:
+                    icon: fa fa-cog
+                    text: Plain link item
+                    location: https://www.nasdanika.org
+                    active: true  
+                - app-link:
+                    icon: fa fa-cog
+                    text: Disabled link item
+                    location: https://www.nasdanika.org
+                    disabled: true  
+                - app-label:
+                    icon: fa fa-user 
+                    text: Drop-down
+                    color: DANGER
+                    children:
+                      - app-link:
+                          icon: fa fa-cog
+                          text: Child link
+                          active: true
+                          location: https://www.nasdanika.org
+                      - app-label:
+                          icon: fa fa-user 
+                          text: Section
+                          children:
+                            - app-link:
+                                icon: fa fa-cog
+                                text: Section child link
+                                location: https://www.nasdanika.org
+                      - app-label:
+                          text: Partition
+                          children:
+                            - app-link:
+                                text: Partition child link
+                                location: https://www.nasdanika.org
+                                disabled: true            
+            right-navigation:
+              items:
+                - app-link:
+                    icon: fa fa-cog
+                    text: Plain link item
+                    location: https://www.nasdanika.org
+                    active: true  
+                - app-link:
+                    icon: fa fa-cog
+                    text: Disabled link item
+                    location: https://www.nasdanika.org
+                    disabled: true  
+                - app-label:
+                    icon: fa fa-user 
+                    text: Drop-down
+                    color: DANGER
+                    children:
+                      - app-link:
+                          icon: fa fa-cog
+                          text: Child link
+                          active: true
+                          location: https://www.nasdanika.org
+                      - app-label:
+                          icon: fa fa-user 
+                          text: Section
+                          children:
+                            - app-link:
+                                icon: fa fa-cog
+                                text: Section child link
+                                location: https://www.nasdanika.org
+                      - app-label:
+                          text: Partition
+                          children:
+                            - app-link:
+                                text: Partition child link
+                                location: https://www.nasdanika.org
+                                disabled: true            
+            float-left-navigation:
+              appearance:
+                border: DARK
+              style: CARDS
+              items:
+                - app-link:
+                    icon: fa fa-cog
+                    text: Plain link item
+                    location: https://www.nasdanika.org
+                    active: true  
+                - app-link:
+                    icon: fa fa-cog
+                    text: Disabled link item
+                    location: https://www.nasdanika.org
+                    disabled: true  
+                - app-label:
+                    icon: fa fa-user 
+                    text: Drop-down
+                    color: DANGER
+                    children:
+                      - app-link:
+                          icon: fa fa-cog
+                          text: Child link
+                          active: true
+                          location: https://www.nasdanika.org
+                      - app-label:
+                          icon: fa fa-user 
+                          text: Section
+                          children:
+                            - app-link:
+                                icon: fa fa-cog
+                                text: Section child link
+                                location: https://www.nasdanika.org
+                      - app-label:
+                          text: Partition
+                          children:
+                            - app-link:
+                                text: Partition child link
+                                location: https://www.nasdanika.org
+                                disabled: true            
+            float-right-navigation:
+              items:
+                - app-link:
+                    icon: fa fa-cog
+                    text: Plain link item
+                    location: https://www.nasdanika.org
+                    active: true  
+                - app-link:
+                    icon: fa fa-cog
+                    text: Disabled link item
+                    location: https://www.nasdanika.org
+                    disabled: true  
+                - app-label:
+                    icon: fa fa-user 
+                    text: Drop-down
+                    color: DANGER
+                    children:
+                      - app-link:
+                          icon: fa fa-cog
+                          text: Child link
+                          active: true
+                          location: https://www.nasdanika.org
+                      - app-label:
+                          icon: fa fa-user 
+                          text: Section
+                          children:
+                            - app-link:
+                                icon: fa fa-cog
+                                text: Section child link
+                                location: https://www.nasdanika.org
+                      - app-label:
+                          text: Partition
+                          children:
+                            - app-link:
+                                text: Partition child link
+                                location: https://www.nasdanika.org
+                                disabled: true            
             content:
               - content-text: Content panel
               - html-tag:
@@ -196,6 +405,7 @@ resources-file:
                     body:
                       content:
                         content-text: Here we go!
+                        
           footer:
             items:
               - app-link:

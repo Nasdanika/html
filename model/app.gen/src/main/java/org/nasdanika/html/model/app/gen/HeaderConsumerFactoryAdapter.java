@@ -32,6 +32,7 @@ public class HeaderConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter
 	
 	@Override
 	protected List<EObject> getContent() {		
+		// A bit convoluted, refactor later to use a function and add class to the title tag - similar to NavBar
 		List<EObject> ret = new ArrayList<>();
 		Label title = getTarget().getTitle();
 		if (title != null) {

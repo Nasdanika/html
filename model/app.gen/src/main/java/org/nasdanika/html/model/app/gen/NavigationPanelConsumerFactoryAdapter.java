@@ -145,6 +145,10 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 									.attribute("role", null)
 									.attribute("data-toggle", null);								
 								
+								if (color != null) {
+									title.removeClass("text-" + color.code);
+								}
+								
 								cardHeader.toHTMLElement().content(title);
 								
 								// Tree or items

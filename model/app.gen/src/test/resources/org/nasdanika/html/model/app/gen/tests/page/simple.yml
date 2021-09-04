@@ -14,6 +14,7 @@ resources-container:
               - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css
             scripts:
               - https://code.jquery.com/jquery-3.5.1.slim.min.js
+              - ../../../../style/common.js 
               - ../../../../style/dark-head.js 
               - ../../../../style/non-fluid.js 
             body:
