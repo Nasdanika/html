@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -20,7 +21,9 @@ import org.nasdanika.common.MapCompoundSupplierFactory;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breadcrumb;
 import org.nasdanika.html.bootstrap.Breakpoint;
@@ -32,10 +35,13 @@ import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.ContentPanel;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.NavigationPanel;
+import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.bootstrap.Item;
 import org.nasdanika.html.model.html.HtmlPackage;
 
 public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter<ContentPanel> {
+
+	private static final String TITLE_CONSUMER_KEY = "title-consumer";
 
 	protected ContentPanelConsumerFactoryAdapter(ContentPanel pagePart) {
 		super(pagePart);
@@ -68,20 +74,20 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 				Map<EStructuralFeature, HTMLElement<?>> navigationPanels = new LinkedHashMap<>();
 				
 				// Floating navs - left and right
-				if (getTarget().getFloatLeftNavigation() != null) {
+				ContentPanel semanticElement = getTarget();
+				if (semanticElement.getFloatLeftNavigation() != null) {
 					Tag floatLeftNavigation = bootstrapFactory.getHTMLFactory().div();
 					floatLeftNavigation.addClass("nsd-app-content-panel-float-left-navigation");
 					ret.accept(floatLeftNavigation);
 					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__FLOAT_LEFT_NAVIGATION, floatLeftNavigation);
 				}
-				if (getTarget().getFloatRightNavigation() != null) {
+				if (semanticElement.getFloatRightNavigation() != null) {
 					Tag floatRightNavigation = bootstrapFactory.getHTMLFactory().div();
 					floatRightNavigation.addClass("nsd-app-content-panel-float-right-navigation");
 					ret.accept(floatRightNavigation);
 					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__FLOAT_RIGHT_NAVIGATION, floatRightNavigation);
 				}
-				
-				
+								
 				Container container = bootstrapFactory.fluidContainer();
 				ret.accept(container.toHTMLElement());
 				
@@ -102,23 +108,43 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 					Row bcRow = container.row();
 					bcRow.toHTMLElement().addClass("nsd-app-content-panel-breadcrumb-row");
 					bcRow.col(bc);
-				}								
+				}		
+				
+				int depth = depth(semanticElement);
+				
+				SectionStyle effectiveSemanticContainerSectionStyle = SectionStyle.HEADER;
+				EObject semanticContainer = semanticElement.eContainer();
+				if (semanticContainer instanceof ContentPanel && semanticElement.eContainmentFeature() == AppPackage.Literals.CONTENT_PANEL__SECTIONS) {
+					effectiveSemanticContainerSectionStyle = effectiveSectionStyle((ContentPanel) semanticContainer);
+				}
 				
 				Tag title = (Tag) input.getSecond().get(AppPackage.Literals.CONTENT_PANEL__TITLE);
 				List<Object> items = (List<Object>) input.getSecond().get(AppPackage.Literals.PAGE_PART__ITEMS);
 				if (title != null || items != null) {
 					Row titleAndItemsRow = container.row();
 					titleAndItemsRow.toHTMLElement().addClass("nsd-app-content-panel-title-and-items-row");
-					if (title != null) {
+					boolean withTitle = effectiveSemanticContainerSectionStyle == SectionStyle.HEADER && title != null;
+					if (withTitle) {
 						title.addClass("nsd-app-content-panel-title");
-						titleAndItemsRow.col(title).width(Breakpoint.DEFAULT, Size.AUTO);
+						Tag titleHeader = bootstrapFactory.getHTMLFactory().tag("H" + Math.min(depth + 1, 6), title);
+						titleAndItemsRow.col(titleHeader).width(Breakpoint.DEFAULT, Size.AUTO);
 					}
 	
 					if (items != null) {
 		//				ContentPanel semanticElement = getTarget();
 						Tag navs = Util.navs(items, context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE));
-						navs.addClass("nsd-app-content-panel-navs");
+						if (withTitle) {
+							navs.addClass("nsd-app-content-panel-navs");
+						}
 						titleAndItemsRow.col(navs);
+					}
+				}
+				
+				// Passing the title to title consumer stored in data
+				if (effectiveSemanticContainerSectionStyle != SectionStyle.HEADER) {
+					BiConsumer<ContentPanel, Tag> titleConsumer = (BiConsumer<ContentPanel, Tag>) ret.getData(TITLE_CONSUMER_KEY);
+					if (titleConsumer != null) {
+						titleConsumer.accept(semanticElement, title);
 					}
 				}
 				
@@ -126,7 +152,7 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 				contentRow.toHTMLElement().addClass("nsd-app-content-panel-content-row");
 				
 				// Content nav left
-				if (getTarget().getLeftNavigation() != null) {
+				if (semanticElement.getLeftNavigation() != null) {
 					Tag leftNavigationColumn = contentRow.col().toHTMLElement();
 					leftNavigationColumn.addClass("nsd-app-content-panel-left-navigation");
 					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__LEFT_NAVIGATION, leftNavigationColumn);
@@ -142,17 +168,40 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 					content.forEach(ownContentCol::accept);
 				}
 				
-				// Sections
-				List<HTMLElement<?>> sections = new ArrayList<>();
-				for (ContentPanel section: getTarget().getSections()) {
-					// TODO section style etc. Rows with columns for now.
-					
-					Tag sectionCol = contentFloatsAndSectionsContainer.row().col().toHTMLElement();
-					sectionCol.setData(section);
-					sections.add(sectionCol);
-				}				
+				// Creating containers for sections
+				SectionStyle effectivSectionStyle = effectiveSectionStyle(semanticElement);
+				List<HTMLElement<?>> sections;
+				switch (effectivSectionStyle) {
+				case ACTION_GROUP:
+					sections = actionGroupSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
+					break;
+				case CARD:
+					sections = cardSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
+					break;
+				case CARD_PILL:
+					sections = cardPillSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
+					break;
+				case CARD_TAB:
+					sections = cardTabSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
+					break;
+				case HEADER:
+					// Cols in rows
+					sections = headerSections(contentFloatsAndSectionsContainer);				
+					break;
+				case PILL:
+					sections = tabSections(contentFloatsAndSectionsContainer, true, bootstrapFactory);				
+					break;
+				case TAB:
+					sections = tabSections(contentFloatsAndSectionsContainer, false, bootstrapFactory);				
+					break;
+				case TABLE:
+					sections = tableSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
+					break;
+				default:
+					throw new UnsupportedOperationException("Unsupported section style: " + effectivSectionStyle);
+				}
 				
-				if (getTarget().getRightNavigation() != null) {
+				if (semanticElement.getRightNavigation() != null) {
 					Tag rightNavigationColumn = contentRow.col().toHTMLElement();
 					rightNavigationColumn.addClass("nsd-app-content-panel-right-navigation");
 					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__RIGHT_NAVIGATION, rightNavigationColumn);
@@ -187,6 +236,133 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 				};
 			}
 		};
+	}
+
+	private List<HTMLElement<?>> tabSections(Container contentFloatsAndSectionsContainer, boolean pills, BootstrapFactory bootstrapFactory) {
+		Row sectionRow = contentFloatsAndSectionsContainer.row();
+		sectionRow.toHTMLElement().addClass("nsd-app-content-panel-section-row");
+		Tag tabsCol = sectionRow.col().toHTMLElement();
+		HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
+		Tag navList = htmlFactory.tag(TagName.ul).addClass("nav").addClass(pills ? "nav-pills" : "nav-tabs");
+		tabsCol.accept(navList);
+		Tag contentDiv = htmlFactory.div().id(htmlFactory.nextId()).addClass("tab-content");
+		tabsCol.accept(contentDiv);
+		List<HTMLElement<?>> sections = new ArrayList<>();
+		
+		for (ContentPanel section: getTarget().getSections()) {
+			Tag sectionContentContainer = htmlFactory.div().addClass("tab-pane", "fade").id(htmlFactory.nextId());
+			Label sTitle = section.getTitle();
+			boolean isActive = sTitle != null && sTitle.isActive();
+			if (isActive) {
+				sectionContentContainer.addClass("show", "active");
+			}
+			contentDiv.accept(sectionContentContainer);
+			sections.add(sectionContentContainer);
+			BiConsumer<ContentPanel, Tag> titleConsumer = (sectionSemanticElement, title) -> {
+				navList.accept(htmlFactory.tag(TagName.li, title).addClass("nav-item"));
+				Object sectionContentContainerId = sectionContentContainer.getId();
+				title
+					.addClass("nav-link")
+					.addClassConditional(isActive, "active")
+					.id(sectionContentContainerId + "-tab")
+					.attribute("data-toggle", "tab")
+					.attribute("href", "#" + sectionContentContainerId)
+					.attribute("role", "tab")
+					.attribute("aria-controls", sectionContentContainerId)
+					.attribute("aria-selected", String.valueOf(isActive));
+			};
+			sectionContentContainer.setData(TITLE_CONSUMER_KEY, titleConsumer);
+		}
+		return sections;
+	}
+	
+	private List<HTMLElement<?>> actionGroupSections(Container contentFloatsAndSectionsContainer, BootstrapFactory bootstrapFactory) {
+		Row sectionRow = contentFloatsAndSectionsContainer.row();
+		sectionRow.toHTMLElement().addClass("nsd-app-content-panel-section-row", "nsd-app-content-panel-section-action-group");
+		HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
+		Tag actionList = htmlFactory.div().addClass("list-group", "list-group-flush").attribute("role",  "tablist");
+		sectionRow.col().width(Breakpoint.DEFAULT, Size.AUTO).toHTMLElement().accept(actionList);
+		Tag contentDiv = htmlFactory.div().addClass("tab-content");
+		sectionRow.col().toHTMLElement().accept(contentDiv);
+		List<HTMLElement<?>> sections = new ArrayList<>();
+		
+		for (ContentPanel section: getTarget().getSections()) {
+			Tag sectionContentContainer = htmlFactory.div().addClass("tab-pane").id(htmlFactory.nextId());
+			Label sTitle = section.getTitle();
+			boolean isActive = sTitle != null && sTitle.isActive();
+			if (isActive) {
+				sectionContentContainer.addClass("active");
+			}
+			contentDiv.accept(sectionContentContainer);
+			sections.add(sectionContentContainer);
+			BiConsumer<ContentPanel, Tag> titleConsumer = (sectionSemanticElement, title) -> {
+				actionList.accept(title);
+				Object sectionContentContainerId = sectionContentContainer.getId();
+				title
+					.addClass("list-group-item", "list-group-item-action")
+					.addClassConditional(isActive, "active")
+					.id(sectionContentContainerId + "-tab")
+					.attribute("data-toggle", "list")
+					.attribute("href", "#" + sectionContentContainerId)
+					.attribute("role", "tab");
+			};
+			sectionContentContainer.setData(TITLE_CONSUMER_KEY, titleConsumer);
+		}
+		return sections;
+	}
+	
+	private List<HTMLElement<?>> headerSections(Container contentFloatsAndSectionsContainer) {
+		List<HTMLElement<?>> sections = new ArrayList<>();
+		for (ContentPanel section: getTarget().getSections()) {
+			Tag sectionCol = contentFloatsAndSectionsContainer.row().col().toHTMLElement();
+			sectionCol.setData(section);
+			sections.add(sectionCol);
+		}
+		return sections;
+	}
+	
+	private List<HTMLElement<?>> tableSections(Container contentFloatsAndSectionsContainer, BootstrapFactory bootstrapFactory) {
+		throw new UnsupportedOperationException();
+	}
+	
+	private List<HTMLElement<?>> cardTabSections(Container contentFloatsAndSectionsContainer, BootstrapFactory bootstrapFactory) {
+		throw new UnsupportedOperationException();
+	}
+
+	private List<HTMLElement<?>> cardPillSections(Container contentFloatsAndSectionsContainer, BootstrapFactory bootstrapFactory) {
+		throw new UnsupportedOperationException();
+	}
+
+	private List<HTMLElement<?>> cardSections(Container contentFloatsAndSectionsContainer, BootstrapFactory bootstrapFactory) {
+		throw new UnsupportedOperationException();
+	}
+
+	private static SectionStyle effectiveSectionStyle(ContentPanel semanticElement) {
+		SectionStyle style = semanticElement.getSectionStyle();
+		if (style == null) {
+			style = SectionStyle.AUTO;
+		}
+		
+		if (style == SectionStyle.AUTO) {
+			switch (depth(semanticElement)) {
+			case 0:
+				return SectionStyle.TAB;
+			case 1:
+				return SectionStyle.ACTION_GROUP;
+			default:
+				return SectionStyle.HEADER;
+			}
+		}
+		
+		return style;
+	}
+	
+	private static int depth(ContentPanel semanticElement) {
+		Object semanticContainer = semanticElement.eContainer();
+		if (semanticContainer instanceof ContentPanel && semanticElement.eContainmentFeature() == AppPackage.Literals.CONTENT_PANEL__SECTIONS) {
+			return depth((ContentPanel) semanticContainer) + 1;
+		}
+		return 0;
 	}
 	
 	@Override

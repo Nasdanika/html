@@ -363,8 +363,9 @@ resources-file:
                                 disabled: true            
             sections:
               - title:
-                  app-label:
+                  app-link:
                     text: Section 1
+                    active: true
                 items:
                   - app-link:
                       icon: fa fa-cog
@@ -420,8 +421,9 @@ resources-file:
                                     disabled: true            
                 sections:
                   - title:
-                      app-label:
+                      app-link:
                         text: Section 1.1
+                        active: true
                     items:
                       - app-link:
                           icon: fa fa-cog
@@ -435,8 +437,24 @@ resources-file:
                           disabled: true  
                     content:
                       - content-text: Section 1.1 content 
+                  - title:
+                      app-link:
+                        text: Section 1.2
+                    items:
+                      - app-link:
+                          icon: fa fa-cog
+                          text: Plain link item
+                          location: https://www.nasdanika.org
+                          active: true  
+                      - app-link:
+                          icon: fa fa-cog
+                          text: Disabled link item
+                          location: https://www.nasdanika.org
+                          disabled: true  
+                    content:
+                      - content-text: Section 1.2 content 
               - title:
-                  app-label:
+                  app-link:
                     text: Section 2
                 items:
                   - app-link:

@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.json.JSONObject;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
@@ -100,8 +99,6 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 			@Override
 			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, Map<Class<?>, Object>> input, ProgressMonitor progressMonitor) throws Exception {
 				Tag ret = (Tag) input.getFirst();
-				
-				@SuppressWarnings("unchecked")
 				List<Object> items = (List<Object>) input.getSecond().get(Object.class);
 				
 				JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);
