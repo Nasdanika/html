@@ -3,8 +3,8 @@
 package org.nasdanika.html.model.app;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.exec.resources.Resource;
-import org.nasdanika.html.model.bootstrap.BootstrapElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,6 +21,7 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.Action#getSectionColumns <em>Section Columns</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getSectionStyle <em>Section Style</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Action#getSections <em>Sections</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getNavigation <em>Navigation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getLeftNavigation <em>Left Navigation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Action#getRightNavigation <em>Right Navigation</em>}</li>
@@ -93,8 +94,24 @@ public interface Action extends Link {
 	void setSectionStyle(SectionStyle value);
 
 	/**
+	 * Returns the value of the '<em><b>Sections</b></em>' containment reference list.
+	 * The list contents are of type {@link org.nasdanika.html.model.app.Action}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Actions which are generated into content sections. Id's of section actions are used to create URL fragments.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Sections</em>' containment reference list.
+	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Sections()
+	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 * @generated
+	 */
+	EList<Action> getSections();
+
+	/**
 	 * Returns the value of the '<em><b>Navigation</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.bootstrap.BootstrapElement}.
+	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
@@ -105,7 +122,7 @@ public interface Action extends Link {
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<BootstrapElement> getNavigation();
+	EList<EObject> getNavigation();
 
 	/**
 	 * Returns the value of the '<em><b>Left Navigation</b></em>' containment reference.

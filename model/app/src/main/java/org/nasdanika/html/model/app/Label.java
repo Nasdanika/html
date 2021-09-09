@@ -21,6 +21,7 @@ import org.nasdanika.html.model.bootstrap.Modal;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.nasdanika.html.model.app.Label#getId <em>Id</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getText <em>Text</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getIcon <em>Icon</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getTooltip <em>Tooltip</em>}</li>
@@ -28,7 +29,6 @@ import org.nasdanika.html.model.bootstrap.Modal;
  *   <li>{@link org.nasdanika.html.model.app.Label#getNotification <em>Notification</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getChildren <em>Children</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Label#getId <em>Id</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getLabel()

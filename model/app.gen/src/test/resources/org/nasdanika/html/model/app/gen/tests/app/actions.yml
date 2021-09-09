@@ -1,0 +1,25 @@
+app-action:
+  icon: https://docs.nasdanika.org/images/nasdanika-logo.png
+  text: Nasdanika
+  location: https://www.nasdanika.org 
+  tooltip: Root actionn
+  children:
+    app-action:
+      icon: fa fa-user
+      text: Principal
+      location: ${base-uri}/index.html 
+      tooltip: Principal action
+      children:
+        app-action:
+          icon: fa fa-cog
+          text: First navigation action
+          location: first-navigation-action/index.html 
+          sections:
+            - text: Section 1
+              location: section-1 
+              sections:
+                - text: Section 1.1
+                  location: section-1-11
+
+          
+          

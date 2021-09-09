@@ -126,7 +126,7 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 					boolean withTitle = effectiveSemanticContainerSectionStyle == SectionStyle.HEADER && title != null;
 					if (withTitle) {
 						title.addClass("nsd-app-content-panel-title");
-						Tag titleHeader = bootstrapFactory.getHTMLFactory().tag("H" + Math.min(depth + 1, 6), title);
+						Tag titleHeader = bootstrapFactory.getHTMLFactory().tag("H" + Math.min(headerDepth(semanticElement) + 1, 6), title);
 						titleAndItemsRow.col(titleHeader).width(Breakpoint.DEFAULT, Size.AUTO);
 					}
 	
@@ -361,6 +361,16 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 		Object semanticContainer = semanticElement.eContainer();
 		if (semanticContainer instanceof ContentPanel && semanticElement.eContainmentFeature() == AppPackage.Literals.CONTENT_PANEL__SECTIONS) {
 			return depth((ContentPanel) semanticContainer) + 1;
+		}
+		return 0;
+	}
+	
+	private static int headerDepth(ContentPanel semanticElement) {
+		Object semanticContainer = semanticElement.eContainer();
+		if (semanticContainer instanceof ContentPanel && semanticElement.eContainmentFeature() == AppPackage.Literals.CONTENT_PANEL__SECTIONS) {
+			ContentPanel containerPanel = (ContentPanel) semanticContainer;
+			int containerHeaderDepth = headerDepth(containerPanel);
+			return effectiveSectionStyle(containerPanel) == SectionStyle.HEADER ? containerHeaderDepth + 1 : containerHeaderDepth;
 		}
 		return 0;
 	}

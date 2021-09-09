@@ -18,6 +18,8 @@ import org.nasdanika.html.model.bootstrap.Modal;
  *   <li>{@link org.nasdanika.html.model.app.Link#getScript <em>Script</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Link#getModal <em>Modal</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Link#getConfirmation <em>Confirmation</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Link#getName <em>Name</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Link#getTarget <em>Target</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getLink()
@@ -129,5 +131,55 @@ public interface Link extends Label {
 	 * @generated
 	 */
 	void setConfirmation(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Link name attribute if not blank for referencing sections.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Name()
+	 * @model annotation="urn:org.nasdanika exclusive-with='script modal location'"
+	 * @generated
+	 */
+	String getName();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Link#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
+	void setName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Target</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Link name attribute if not blank for referencing sections.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Target</em>' attribute.
+	 * @see #setTarget(String)
+	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Target()
+	 * @model annotation="urn:org.nasdanika exclusive-with='script modal location'"
+	 * @generated
+	 */
+	String getTarget();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Link#getTarget <em>Target</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Target</em>' attribute.
+	 * @see #getTarget()
+	 * @generated
+	 */
+	void setTarget(String value);
 
 } // Link

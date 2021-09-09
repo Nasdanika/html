@@ -14,7 +14,6 @@ import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.common.resources.FileSystemContainer;
 
 /**
- * Tests of descriptor view parts and wizards.
  * @author Pavel
  *
  */

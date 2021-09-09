@@ -135,13 +135,22 @@ public interface AppPackage extends EPackage {
 	int LABEL__COLOR = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__ID = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Text</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__TEXT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 3;
+	int LABEL__TEXT = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Icon</b></em>' attribute.
@@ -150,7 +159,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__ICON = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 4;
+	int LABEL__ICON = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Tooltip</b></em>' attribute.
@@ -159,7 +168,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__TOOLTIP = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 5;
+	int LABEL__TOOLTIP = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Outline</b></em>' attribute.
@@ -168,7 +177,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__OUTLINE = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 6;
+	int LABEL__OUTLINE = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Notification</b></em>' attribute.
@@ -177,7 +186,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__NOTIFICATION = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 7;
+	int LABEL__NOTIFICATION = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
@@ -186,7 +195,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__CHILDREN = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 8;
+	int LABEL__CHILDREN = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Help</b></em>' containment reference.
@@ -195,16 +204,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__HELP = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 9;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LABEL__ID = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 10;
+	int LABEL__HELP = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Label</em>' class.
@@ -298,6 +298,15 @@ public interface AppPackage extends EPackage {
 	int LINK__COLOR = LABEL__COLOR;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__ID = LABEL__ID;
+
+	/**
 	 * The feature id for the '<em><b>Text</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -361,15 +370,6 @@ public interface AppPackage extends EPackage {
 	int LINK__HELP = LABEL__HELP;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LINK__ID = LABEL__ID;
-
-	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -406,13 +406,31 @@ public interface AppPackage extends EPackage {
 	int LINK__CONFIRMATION = LABEL_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__NAME = LABEL_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Target</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__TARGET = LABEL_FEATURE_COUNT + 5;
+
+	/**
 	 * The number of structural features of the '<em>Link</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK_FEATURE_COUNT = LABEL_FEATURE_COUNT + 4;
+	int LINK_FEATURE_COUNT = LABEL_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Link</em>' class.
@@ -1206,6 +1224,15 @@ public interface AppPackage extends EPackage {
 	int ACTION__COLOR = LINK__COLOR;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__ID = LINK__ID;
+
+	/**
 	 * The feature id for the '<em><b>Text</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1269,15 +1296,6 @@ public interface AppPackage extends EPackage {
 	int ACTION__HELP = LINK__HELP;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION__ID = LINK__ID;
-
-	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1314,6 +1332,24 @@ public interface AppPackage extends EPackage {
 	int ACTION__CONFIRMATION = LINK__CONFIRMATION;
 
 	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__NAME = LINK__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Target</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__TARGET = LINK__TARGET;
+
+	/**
 	 * The feature id for the '<em><b>Section Columns</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1332,13 +1368,22 @@ public interface AppPackage extends EPackage {
 	int ACTION__SECTION_STYLE = LINK_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Sections</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__SECTIONS = LINK_FEATURE_COUNT + 2;
+
+	/**
 	 * The feature id for the '<em><b>Navigation</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__NAVIGATION = LINK_FEATURE_COUNT + 2;
+	int ACTION__NAVIGATION = LINK_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Left Navigation</b></em>' containment reference.
@@ -1347,7 +1392,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__LEFT_NAVIGATION = LINK_FEATURE_COUNT + 3;
+	int ACTION__LEFT_NAVIGATION = LINK_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Right Navigation</b></em>' containment reference.
@@ -1356,7 +1401,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 4;
+	int ACTION__RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Float Left Navigation</b></em>' containment reference.
@@ -1365,7 +1410,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__FLOAT_LEFT_NAVIGATION = LINK_FEATURE_COUNT + 5;
+	int ACTION__FLOAT_LEFT_NAVIGATION = LINK_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Float Right Navigation</b></em>' containment reference.
@@ -1374,7 +1419,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__FLOAT_RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 6;
+	int ACTION__FLOAT_RIGHT_NAVIGATION = LINK_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Anonymous</b></em>' containment reference list.
@@ -1383,7 +1428,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__ANONYMOUS = LINK_FEATURE_COUNT + 7;
+	int ACTION__ANONYMOUS = LINK_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Resources</b></em>' containment reference list.
@@ -1392,7 +1437,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__RESOURCES = LINK_FEATURE_COUNT + 8;
+	int ACTION__RESOURCES = LINK_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Inline</b></em>' attribute.
@@ -1401,7 +1446,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__INLINE = LINK_FEATURE_COUNT + 9;
+	int ACTION__INLINE = LINK_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Modal Activator</b></em>' attribute.
@@ -1410,7 +1455,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__MODAL_ACTIVATOR = LINK_FEATURE_COUNT + 10;
+	int ACTION__MODAL_ACTIVATOR = LINK_FEATURE_COUNT + 11;
 
 	/**
 	 * The number of structural features of the '<em>Action</em>' class.
@@ -1419,7 +1464,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_FEATURE_COUNT = LINK_FEATURE_COUNT + 11;
+	int ACTION_FEATURE_COUNT = LINK_FEATURE_COUNT + 12;
 
 	/**
 	 * The number of operations of the '<em>Action</em>' class.
@@ -1602,6 +1647,28 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getLink_Confirmation();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Link#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.nasdanika.html.model.app.Link#getName()
+	 * @see #getLink()
+	 * @generated
+	 */
+	EAttribute getLink_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Link#getTarget <em>Target</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Target</em>'.
+	 * @see org.nasdanika.html.model.app.Link#getTarget()
+	 * @see #getLink()
+	 * @generated
+	 */
+	EAttribute getLink_Target();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.Page <em>Page</em>}'.
@@ -1970,6 +2037,17 @@ public interface AppPackage extends EPackage {
 	EAttribute getAction_SectionStyle();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.Action#getSections <em>Sections</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Sections</em>'.
+	 * @see org.nasdanika.html.model.app.Action#getSections()
+	 * @see #getAction()
+	 * @generated
+	 */
+	EReference getAction_Sections();
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.Action#getNavigation <em>Navigation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2226,6 +2304,22 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute LINK__CONFIRMATION = eINSTANCE.getLink_Confirmation();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LINK__NAME = eINSTANCE.getLink_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Target</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute LINK__TARGET = eINSTANCE.getLink_Target();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.PageImpl <em>Page</em>}' class.
@@ -2514,6 +2608,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ACTION__SECTION_STYLE = eINSTANCE.getAction_SectionStyle();
+
+		/**
+		 * The meta object literal for the '<em><b>Sections</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ACTION__SECTIONS = eINSTANCE.getAction_Sections();
 
 		/**
 		 * The meta object literal for the '<em><b>Navigation</b></em>' containment reference list feature.

@@ -30,6 +30,7 @@ import org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl;
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#isActive <em>Active</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#isDisabled <em>Disabled</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getColor <em>Color</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getId <em>Id</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getText <em>Text</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getIcon <em>Icon</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getTooltip <em>Tooltip</em>}</li>
@@ -37,7 +38,6 @@ import org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl;
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getNotification <em>Notification</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getChildren <em>Children</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getHelp <em>Help</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getId <em>Id</em>}</li>
  * </ul>
  *
  * @generated
@@ -72,6 +72,16 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 * @ordered
 	 */
 	protected static final Color COLOR_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ID_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getText() <em>Text</em>}' attribute.
@@ -122,16 +132,6 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 * @ordered
 	 */
 	protected static final String NOTIFICATION_EDEFAULT = null;
-
-	/**
-	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getId()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ID_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -404,6 +404,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return isDisabled();
 			case AppPackage.LABEL__COLOR:
 				return getColor();
+			case AppPackage.LABEL__ID:
+				return getId();
 			case AppPackage.LABEL__TEXT:
 				return getText();
 			case AppPackage.LABEL__ICON:
@@ -418,8 +420,6 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return getChildren();
 			case AppPackage.LABEL__HELP:
 				return getHelp();
-			case AppPackage.LABEL__ID:
-				return getId();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -441,6 +441,9 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return;
 			case AppPackage.LABEL__COLOR:
 				setColor((Color)newValue);
+				return;
+			case AppPackage.LABEL__ID:
+				setId((String)newValue);
 				return;
 			case AppPackage.LABEL__TEXT:
 				setText((String)newValue);
@@ -464,9 +467,6 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 			case AppPackage.LABEL__HELP:
 				setHelp((Modal)newValue);
 				return;
-			case AppPackage.LABEL__ID:
-				setId((String)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -487,6 +487,9 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return;
 			case AppPackage.LABEL__COLOR:
 				setColor(COLOR_EDEFAULT);
+				return;
+			case AppPackage.LABEL__ID:
+				setId(ID_EDEFAULT);
 				return;
 			case AppPackage.LABEL__TEXT:
 				setText(TEXT_EDEFAULT);
@@ -509,9 +512,6 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 			case AppPackage.LABEL__HELP:
 				setHelp((Modal)null);
 				return;
-			case AppPackage.LABEL__ID:
-				setId(ID_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -530,6 +530,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return isDisabled() != DISABLED_EDEFAULT;
 			case AppPackage.LABEL__COLOR:
 				return COLOR_EDEFAULT == null ? getColor() != null : !COLOR_EDEFAULT.equals(getColor());
+			case AppPackage.LABEL__ID:
+				return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
 			case AppPackage.LABEL__TEXT:
 				return TEXT_EDEFAULT == null ? getText() != null : !TEXT_EDEFAULT.equals(getText());
 			case AppPackage.LABEL__ICON:
@@ -544,8 +546,6 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return !getChildren().isEmpty();
 			case AppPackage.LABEL__HELP:
 				return getHelp() != null;
-			case AppPackage.LABEL__ID:
-				return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
 		}
 		return super.eIsSet(featureID);
 	}

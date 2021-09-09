@@ -1,0 +1,19 @@
+bootstrap-page:
+  cdn: true
+  theme: Cerulean
+  name: Application Page Template
+  language: EN
+  stylesheets: 
+    - ../../../style/app.css 
+    - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css
+    - https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.11/themes/default/style.min.css
+  scripts:
+    - ../../../style/common.js 
+    - ../../../style/dark-head.js 
+    - ../../../style/non-fluid.js 
+    - https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.11/jstree.min.js        
+  body:
+    app-page:
+      fluid: true
+            e
+

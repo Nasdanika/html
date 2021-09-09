@@ -22,6 +22,8 @@ import org.nasdanika.html.model.bootstrap.Modal;
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getScript <em>Script</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getModal <em>Modal</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getConfirmation <em>Confirmation</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getTarget <em>Target</em>}</li>
  * </ul>
  *
  * @generated
@@ -56,6 +58,26 @@ public class LinkImpl extends LabelImpl implements Link {
 	 * @ordered
 	 */
 	protected static final String CONFIRMATION_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getTarget() <em>Target</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTarget()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String TARGET_EDEFAULT = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -172,6 +194,46 @@ public class LinkImpl extends LabelImpl implements Link {
 	 * @generated
 	 */
 	@Override
+	public String getName() {
+		return (String)eDynamicGet(AppPackage.LINK__NAME, AppPackage.Literals.LINK__NAME, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setName(String newName) {
+		eDynamicSet(AppPackage.LINK__NAME, AppPackage.Literals.LINK__NAME, newName);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String getTarget() {
+		return (String)eDynamicGet(AppPackage.LINK__TARGET, AppPackage.Literals.LINK__TARGET, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setTarget(String newTarget) {
+		eDynamicSet(AppPackage.LINK__TARGET, AppPackage.Literals.LINK__TARGET, newTarget);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AppPackage.LINK__MODAL:
@@ -196,6 +258,10 @@ public class LinkImpl extends LabelImpl implements Link {
 				return getModal();
 			case AppPackage.LINK__CONFIRMATION:
 				return getConfirmation();
+			case AppPackage.LINK__NAME:
+				return getName();
+			case AppPackage.LINK__TARGET:
+				return getTarget();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -219,6 +285,12 @@ public class LinkImpl extends LabelImpl implements Link {
 				return;
 			case AppPackage.LINK__CONFIRMATION:
 				setConfirmation((String)newValue);
+				return;
+			case AppPackage.LINK__NAME:
+				setName((String)newValue);
+				return;
+			case AppPackage.LINK__TARGET:
+				setTarget((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -244,6 +316,12 @@ public class LinkImpl extends LabelImpl implements Link {
 			case AppPackage.LINK__CONFIRMATION:
 				setConfirmation(CONFIRMATION_EDEFAULT);
 				return;
+			case AppPackage.LINK__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case AppPackage.LINK__TARGET:
+				setTarget(TARGET_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -264,6 +342,10 @@ public class LinkImpl extends LabelImpl implements Link {
 				return getModal() != null;
 			case AppPackage.LINK__CONFIRMATION:
 				return CONFIRMATION_EDEFAULT == null ? getConfirmation() != null : !CONFIRMATION_EDEFAULT.equals(getConfirmation());
+			case AppPackage.LINK__NAME:
+				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
+			case AppPackage.LINK__TARGET:
+				return TARGET_EDEFAULT == null ? getTarget() != null : !TARGET_EDEFAULT.equals(getTarget());
 		}
 		return super.eIsSet(featureID);
 	}

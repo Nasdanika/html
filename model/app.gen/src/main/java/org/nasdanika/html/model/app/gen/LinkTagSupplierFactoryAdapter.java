@@ -24,7 +24,7 @@ public class LinkTagSupplierFactoryAdapter<M extends Link> extends LabelTagSuppl
 		M semanticElement = getTarget();
 		HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
 
-		Tag anchor = htmlFactory.tag(TagName.a).attribute("href", "#");
+		Tag anchor = htmlFactory.tag(TagName.a);
 		if (icon != null) {
 			icon.addClass("nsd-app-label-icon");
 			anchor.accept(icon);
@@ -40,6 +40,7 @@ public class LinkTagSupplierFactoryAdapter<M extends Link> extends LabelTagSuppl
 				}
 				anchor.attribute("data-toggle", "modal");
 				anchor.attribute("data-target", "#" + modal.getId());
+				anchor.attribute("href", "#");
 	
 				@SuppressWarnings("unchecked")
 				List<Object> pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);
@@ -48,9 +49,13 @@ public class LinkTagSupplierFactoryAdapter<M extends Link> extends LabelTagSuppl
 				String location = context.interpolateToString(semanticElement.getLocation());
 				String confirmation = context.interpolateToString(semanticElement.getConfirmation());
 				if (!Util.isBlank(location)) {
-					anchor.attribute("href", location);
+					anchor.attribute("href", location);					
 					if (!Util.isBlank(confirmation)) {
 						anchor.on(Event.click, "return confirm('" + confirmation + "');");
+					}
+					String target = context.interpolateToString(semanticElement.getTarget());
+					if (!Util.isBlank(target)) {
+						anchor.attribute("target", target);
 					}
 				} else { 
 					String script = context.interpolateToString(semanticElement.getScript());
@@ -60,6 +65,12 @@ public class LinkTagSupplierFactoryAdapter<M extends Link> extends LabelTagSuppl
 						}
 						anchor.on(Event.click, script);
 						anchor.style("cursor", "pointer");
+						anchor.attribute("href", "#");
+					} else {
+						String name = context.interpolateToString(semanticElement.getName());
+						if (!Util.isBlank(name)) {
+							anchor.attribute("name", name);
+						}
 					}
 				}
 			}

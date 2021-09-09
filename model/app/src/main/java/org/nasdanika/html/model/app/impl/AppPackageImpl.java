@@ -213,7 +213,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EReference getLabel_Help() {
-		return (EReference)labelEClass.getEStructuralFeatures().get(6);
+		return (EReference)labelEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -223,16 +223,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EAttribute getLabel_Id() {
-		return (EAttribute)labelEClass.getEStructuralFeatures().get(7);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getLabel_Text() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -242,7 +232,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLabel_Icon() {
+	public EAttribute getLabel_Text() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -252,7 +242,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLabel_Tooltip() {
+	public EAttribute getLabel_Icon() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -262,7 +252,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLabel_Outline() {
+	public EAttribute getLabel_Tooltip() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -272,7 +262,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getLabel_Notification() {
+	public EAttribute getLabel_Outline() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -282,8 +272,18 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
+	public EAttribute getLabel_Notification() {
+		return (EAttribute)labelEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EReference getLabel_Children() {
-		return (EReference)labelEClass.getEStructuralFeatures().get(5);
+		return (EReference)labelEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -334,6 +334,26 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	@Override
 	public EAttribute getLink_Confirmation() {
 		return (EAttribute)linkEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getLink_Name() {
+		return (EAttribute)linkEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getLink_Target() {
+		return (EAttribute)linkEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -682,7 +702,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_Navigation() {
+	public EReference getAction_Sections() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -692,7 +712,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_LeftNavigation() {
+	public EReference getAction_Navigation() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -702,7 +722,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_RightNavigation() {
+	public EReference getAction_LeftNavigation() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -712,7 +732,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_FloatLeftNavigation() {
+	public EReference getAction_RightNavigation() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -722,7 +742,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_FloatRightNavigation() {
+	public EReference getAction_FloatLeftNavigation() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -732,7 +752,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_Anonymous() {
+	public EReference getAction_FloatRightNavigation() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -742,7 +762,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getAction_Resources() {
+	public EReference getAction_Anonymous() {
 		return (EReference)actionEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -752,8 +772,18 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
+	public EReference getAction_Resources() {
+		return (EReference)actionEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EAttribute getAction_Inline() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(9);
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(10);
 	}
 
 	/**
@@ -763,7 +793,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EAttribute getAction_ModalActivator() {
-		return (EAttribute)actionEClass.getEStructuralFeatures().get(10);
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(11);
 	}
 
 	/**
@@ -816,6 +846,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		// Create classes and their features
 		labelEClass = createEClass(LABEL);
+		createEAttribute(labelEClass, LABEL__ID);
 		createEAttribute(labelEClass, LABEL__TEXT);
 		createEAttribute(labelEClass, LABEL__ICON);
 		createEAttribute(labelEClass, LABEL__TOOLTIP);
@@ -823,13 +854,14 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(labelEClass, LABEL__NOTIFICATION);
 		createEReference(labelEClass, LABEL__CHILDREN);
 		createEReference(labelEClass, LABEL__HELP);
-		createEAttribute(labelEClass, LABEL__ID);
 
 		linkEClass = createEClass(LINK);
 		createEAttribute(linkEClass, LINK__LOCATION);
 		createEAttribute(linkEClass, LINK__SCRIPT);
 		createEReference(linkEClass, LINK__MODAL);
 		createEAttribute(linkEClass, LINK__CONFIRMATION);
+		createEAttribute(linkEClass, LINK__NAME);
+		createEAttribute(linkEClass, LINK__TARGET);
 
 		pageEClass = createEClass(PAGE);
 		createEAttribute(pageEClass, PAGE__FLUID);
@@ -872,6 +904,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		actionEClass = createEClass(ACTION);
 		createEAttribute(actionEClass, ACTION__SECTION_COLUMNS);
 		createEAttribute(actionEClass, ACTION__SECTION_STYLE);
+		createEReference(actionEClass, ACTION__SECTIONS);
 		createEReference(actionEClass, ACTION__NAVIGATION);
 		createEReference(actionEClass, ACTION__LEFT_NAVIGATION);
 		createEReference(actionEClass, ACTION__RIGHT_NAVIGATION);
@@ -933,6 +966,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(labelEClass, Label.class, "Label", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getLabel_Id(), ecorePackage.getEString(), "id", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Text(), ecorePackage.getEString(), "text", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Icon(), ecorePackage.getEString(), "icon", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Tooltip(), ecorePackage.getEString(), "tooltip", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -940,13 +974,14 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getLabel_Notification(), ecorePackage.getEString(), "notification", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLabel_Children(), ecorePackage.getEObject(), null, "children", null, 0, -1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLabel_Help(), theBootstrapPackage.getModal(), null, "help", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getLabel_Id(), ecorePackage.getEString(), "id", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(linkEClass, Link.class, "Link", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getLink_Location(), ecorePackage.getEString(), "location", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Script(), ecorePackage.getEString(), "script", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLink_Modal(), theBootstrapPackage.getModal(), null, "modal", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Confirmation(), ecorePackage.getEString(), "confirmation", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getLink_Name(), ecorePackage.getEString(), "name", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getLink_Target(), ecorePackage.getEString(), "target", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(pageEClass, Page.class, "Page", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPage_Fluid(), ecorePackage.getEBoolean(), "fluid", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -989,7 +1024,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEClass(actionEClass, Action.class, "Action", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAction_SectionColumns(), ecorePackage.getEInt(), "sectionColumns", "3", 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_SectionStyle(), this.getSectionStyle(), "sectionStyle", "Auto", 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAction_Navigation(), theBootstrapPackage.getBootstrapElement(), null, "navigation", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Sections(), this.getAction(), null, "sections", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Navigation(), ecorePackage.getEObject(), null, "navigation", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_LeftNavigation(), this.getNavigationPanel(), null, "leftNavigation", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_RightNavigation(), this.getNavigationPanel(), null, "rightNavigation", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAction_FloatLeftNavigation(), this.getNavigationPanel(), null, "floatLeftNavigation", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1049,6 +1085,12 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Label is a text and an icon with a tooltip, notification badge, and help dialog. Labels can have children. Label is a base class for Link."
 		   });
 		addAnnotation
+		  (getLabel_Id(),
+		   source,
+		   new String[] {
+			   "documentation", "Unique label ID, autogenerated by default."
+		   });
+		addAnnotation
 		  (getLabel_Text(),
 		   source,
 		   new String[] {
@@ -1091,12 +1133,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Help modal."
 		   });
 		addAnnotation
-		  (getLabel_Id(),
-		   source,
-		   new String[] {
-			   "documentation", "Unique label ID, autogenerated by default."
-		   });
-		addAnnotation
 		  (getLink_Location(),
 		   source,
 		   new String[] {
@@ -1119,6 +1155,18 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   source,
 		   new String[] {
 			   "documentation", "Confirmation to display in a confirmation dialog before action activation to give the user an opportunity to cancel the action. E.g. confirmation of deletion."
+		   });
+		addAnnotation
+		  (getLink_Name(),
+		   source,
+		   new String[] {
+			   "documentation", "Link name attribute if not blank for referencing sections."
+		   });
+		addAnnotation
+		  (getLink_Target(),
+		   source,
+		   new String[] {
+			   "documentation", "Link name attribute if not blank for referencing sections."
 		   });
 		addAnnotation
 		  (pageEClass,
@@ -1289,6 +1337,12 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Defines how to generate section children."
 		   });
 		addAnnotation
+		  (getAction_Sections(),
+		   source,
+		   new String[] {
+			   "documentation", "Actions which are generated into content sections. Id\'s of section actions are used to create URL fragments."
+		   });
+		addAnnotation
 		  (getAction_Navigation(),
 		   source,
 		   new String[] {
@@ -1384,6 +1438,18 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "exclusive-with", "location script"
 		   });
 		addAnnotation
+		  (getLink_Name(),
+		   source,
+		   new String[] {
+			   "exclusive-with", "script modal location"
+		   });
+		addAnnotation
+		  (getLink_Target(),
+		   source,
+		   new String[] {
+			   "exclusive-with", "script modal location"
+		   });
+		addAnnotation
 		  (getPage_Header(),
 		   source,
 		   new String[] {
@@ -1445,6 +1511,12 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   });
 		addAnnotation
 		  (getContentPanel_Sections(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getAction_Sections(),
 		   source,
 		   new String[] {
 			   "homogenous", "true"
