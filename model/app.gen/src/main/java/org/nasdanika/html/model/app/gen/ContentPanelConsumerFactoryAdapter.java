@@ -110,8 +110,6 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 					bcRow.col(bc);
 				}		
 				
-				int depth = depth(semanticElement);
-				
 				SectionStyle effectiveSemanticContainerSectionStyle = SectionStyle.HEADER;
 				EObject semanticContainer = semanticElement.eContainer();
 				if (semanticContainer instanceof ContentPanel && semanticElement.eContainmentFeature() == AppPackage.Literals.CONTENT_PANEL__SECTIONS) {
