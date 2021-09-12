@@ -43,6 +43,7 @@ import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
+import org.nasdanika.html.model.bootstrap.Modal;
 import org.nasdanika.html.model.html.HtmlPackage;
 
 /**
@@ -113,6 +114,10 @@ public class TestAction extends TestBase {
 			if (uri != null && uri.isRelative()) {
 				org.nasdanika.exec.resources.File file = container.getFile(uri.toString());
 				org.nasdanika.html.model.bootstrap.Page bootstrapPage = EcoreUtil.copy(pageTemplate);
+				bootstrapPage.setName(activeAction.getText());
+				if (bootstrapPage.getBody().isEmpty()) {
+					bootstrapPage.getBody().add(AppFactory.eINSTANCE.createPage());
+				}
 				for (EObject be: bootstrapPage.getBody()) {
 					if (be instanceof org.nasdanika.html.model.app.Page) {
 						buildAppPage(root, principal, activeAction, (org.nasdanika.html.model.app.Page) be, uriResolver, progressMonitor);						
@@ -164,10 +169,8 @@ public class TestAction extends TestBase {
 			BiFunction<Action, URI, URI> uriResolver, 
 			ProgressMonitor progressMonitor) {
 		
-		URI activeActionURI = uriResolver.apply(activeAction, null);
-		
 		if (root != null) {
-			Label title = createLabel(root, uriResolver.apply(root, activeActionURI), root == activeAction, "header/title");
+			Label title = createLabel(root, activeAction, uriResolver, "header/title", false);
 			EList<EObject> rootChildren = root.getChildren();
 			if (title != null || rootChildren.size() > 1) {
 				// Header
@@ -183,9 +186,10 @@ public class TestAction extends TestBase {
 				rootChildren.listIterator(1).forEachRemaining(rac -> {
 					if (rac instanceof Action) {
 						Action raca = (Action) rac;
-						headerItems.add(createLabel(raca, uriResolver.apply(raca, activeActionURI), raca == activeAction, "header/navigation"));
+						Label racaLabel = createLabel(raca, activeAction, uriResolver, "header/navigation", true);
+						headerItems.add(racaLabel);
 					} else {
-						headerItems.add(rac);
+						headerItems.add(EcoreUtil.copy(rac));
 					}
 				});
 				
@@ -206,43 +210,83 @@ public class TestAction extends TestBase {
 	
 	}
 
-	private boolean isLink(Action action, URI uri) {
+	private boolean isLink(Action action, URI uri) {		
 		return uri != null || !Util.isBlank(action.getScript()) || action.getModal() != null || !Util.isBlank(action.getName());
 	}
 	
-	private void configureLabel(Action action, URI uri, boolean active, String appearancePath, Label label) {
+	private void configureLabel(
+			Action action, 
+			Action activeAction, 
+			BiFunction<Action, URI, URI> uriResolver, 
+			String appearancePath, 
+			Label label, 
+			boolean recursive) {
 		Appearance aa = action.getAppearance();
 		if (aa != null) {
 			label.setAppearance(aa.effectiveAppearance(appearancePath));
 		}
 
-		label.setActive(active);
+		label.setActive(activeAction == action);
 		label.setColor(action.getColor());
 		label.setDescription(action.getDescription());
 		label.setDisabled(action.isDisabled());
+		Modal help = action.getHelp();
+		if (help != null) {
 //		label.setHelp(value); TODO - make links in help relative.
+			throw new UnsupportedOperationException("Help modals not supported yet");
+		}
 		label.setIcon(action.getIcon());
-//		label.setId(action.getId());
-//		label.setNotification(value);
-//		label.setOutline(value);
+//		label.setId(action.getId());		
+		label.setNotification(action.getNotification());
+		label.setOutline(action.isOutline());
 		label.setText(action.getText());
-//		label.setTooltip(value);
+		label.setTooltip(action.getTooltip());
 //		label.getAttributes();
 //		label.getChildren();
 		
 		if (label instanceof Link) {
-			configureLink(action, uri, (Link) label);
+			configureLink(action, activeAction, uriResolver, (Link) label);
 		}
 		
+		if (recursive) {
+			EList<EObject> labelChildren = label.getChildren();
+			for (EObject actionChild: action.getChildren()) {
+				if (actionChild instanceof Action) {
+					Action childAction = (Action) actionChild;
+					labelChildren.add(createLabel(childAction, activeAction, uriResolver, "header/navigation", recursive));
+					
+					// Second level - headers, separators.
+				} else {
+					labelChildren.add(EcoreUtil.copy(actionChild));
+				}							
+			}			
+		}
 	}
 	
-	private void configureLink(Action action, URI uri, Link link) {		
+	private void configureLink(
+			Action action, 
+			Action activeAction, 
+			BiFunction<Action, URI, URI> uriResolver, 
+			Link link) {
+		
+		URI activeActionURI = uriResolver.apply(activeAction, null);
+		URI uri = uriResolver.apply(action, activeActionURI);
+		
 		if (uri != null) {
 			link.setLocation(uri.toString());
 		}
 		link.setConfirmation(action.getConfirmation());
+		if (action.getModal() != null) {
 //		link.setModal(value); TODO - contextualization of links - relativization of URI's. Token expansion with a property computer? something like ${relative-uri/<uri here>}? 
-//		Support of sub-tokens e.g. ${{relative-uri/${token}}} recognizes ${token} as a sub-token to be expanded to result in ${relative-uri/<token value>}. 
+//		Support of sub-tokens e.g. ${{relative-uri/${token}}} recognizes ${token} as a sub-token to be expanded to result in ${relative-uri/<token value>}.
+			throw new UnsupportedOperationException("Modals are not supported yet");
+		}
+		if (action.isModalActivator()) {
+			throw new UnsupportedOperationException("Modals are not supported yet");
+		}
+		if (action.isInline()) {
+			throw new UnsupportedOperationException("Inline actions are not supported yet");			
+		}
 		link.setName(action.getName());
 		link.setScript(action.getScript());
 		link.setTarget(action.getTarget());
@@ -257,12 +301,21 @@ public class TestAction extends TestBase {
 	 * @param appearancePath 
 	 * @return
 	 */
-	private Label createLabel(Action action, URI uri, boolean active, String appearancePath) {
-		if (Util.isBlank(action.getText()) && Util.isBlank(action.getIcon())) {
+	private Label createLabel(
+			Action action, 
+			Action activeAction, 
+			BiFunction<Action, URI, URI> uriResolver, 
+			String appearancePath,
+			boolean recursive) {
+		
+		URI activeActionURI = uriResolver.apply(activeAction, null);
+		URI uri = uriResolver.apply(action, activeActionURI);
+		
+		if (Util.isBlank(action.getText()) && Util.isBlank(action.getIcon()) && !recursive) {
 			return null;
 		}
 		Label label = isLink(action, uri) ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
-		configureLabel(action, uri, active, appearancePath, label);
+		configureLabel(action, activeAction, uriResolver, appearancePath, label, recursive);
 				
 		return label;
 	}
@@ -297,7 +350,7 @@ public class TestAction extends TestBase {
 			@Override
 			public URI apply(Action action, URI base) {
 				URI uri = cache.computeIfAbsent(action, this::compute);
-				return base == null ? uri : uri.deresolve(base);
+				return base == null || uri == null ? uri : uri.deresolve(base, true, true, true);
 			}
 			
 			private URI compute(Action action) {

@@ -4,123 +4,56 @@ app-action:
   location: https://www.nasdanika.org 
   tooltip: Root actionn
   children:
-    app-action:
-      icon: fa fa-user
-      text: Principal
-      location: ${base-uri}index.html 
-      tooltip: Principal action
-      children:
-        app-action:
-          icon: fa fa-cog
-          text: First navigation action
-          location: first-navigation-action/index.html 
-          sections:
-            - text: Section 1
-              location: section-1 
+    - app-action:
+        icon: fa fa-user
+        text: Principal
+        location: ${base-uri}index.html 
+        tooltip: Principal action
+        children:
+          app-action:
+            icon: fa fa-cog
+            text: First navigation action
+            location: first-navigation-action/index.html 
+            sections:
+              - text: Section 1
+                location: section-1 
+                sections:
+                  - text: Section 1.1
+                    location: section-1-1
+    - app-action:
+        icon: fa fa-user
+        text: First header nav
+        location: ${base-uri}header-nav/first/index.html 
+    - app-action:
+        text: Drop-down
+        children:
+          - app-action:
+              icon: fa fa-cog
+              text: Drop-down item
+              location: ${base-uri}header-nav/drop-down/first/index.html 
               sections:
-                - text: Section 1.1
-                  location: section-1-1
-          resources:
-            - resources-container:
-                name: my-container
-                contents:
-                  - resources-file:
-                      name: simple.html
-                      contents:
-                        bootstrap-page:
-                          cdn: true
-                          theme: Cerulean
-                          name: Test
-                          language: EN
-                          stylesheets: 
-                            - ../../../../style/app.css 
-                            - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css
-                          scripts:
-                            - https://code.jquery.com/jquery-3.5.1.slim.min.js
-                            - ../../../../style/common.js 
-                            - ../../../../style/dark-head.js 
-                            - ../../../../style/non-fluid.js 
-                          body:
-                            app-page:
-                              header:
-                                title:
-                                  app-link:
-                                    icon: fa fa-cog
-                                    text: Test Application
-                                    tooltip: A friendly app
-                                    location: https://nasdanika.org
-                                content:
-                                  - content-text: Header
-                                  - app-label: 
-                                      text: Test label
-                                      color: SECONDARY
-                                      appearance:
-                                        border: DANGER
-                              navigation-bar:
-                                content:
-                                  content-text: Navigation bar
-                              navigation-panel:
-                                content:
-                                  content-text: Navigation panel
-                              content-panel:
-                                content:
-                                  - content-text: Content panel
-                                  - html-tag:
-                                      name: h1
-                                      content:
-                                        content-text: Hello
-                                      attributes:
-                                        class:
-                                          content-text: row               
-                                  - app-label:
-                                      icon: fa fa-cog
-                                      text: Hello
-                                      tooltip: A friendly app
-                                      help: 
-                                        header:
-                                          content:
-                                            content-text: Very informative indeed!
-                                          appearance:
-                                            background: LIGHT                              
-                                        body:
-                                          content:
-                                            content-text: Extensive description...
-                                        size: large
-                                        centered: true                             
-                                      notification: 33
-                                  - app-link:
-                                      text: Location link (href)
-                                      location: https://nasdanika.org
-                                      help: 
-                                        header:
-                                          content:
-                                            content-text: Very informative indeed!
-                                          appearance:
-                                            background: LIGHT                              
-                                        body:
-                                          content:
-                                            content-text: Extensive description...
-                                        size: large
-                                        centered: true                             
-                                  - app-link:
-                                      text: Location link with confirmation
-                                      location: https://nasdanika.org
-                                      confirmation: Are you sure?
-                                  - app-link:
-                                      text: Script link
-                                      script: alert("Here I am")
-                                  - app-link:
-                                      text: Modal link
-                                      modal: 
-                                        header:
-                                          content:
-                                            content-text: Info
-                                        body:
-                                          content:
-                                            content-text: Here we go!
-                              footer:
-                                content:
-                                  content-text: Footer
+                - text: Section 1
+                  location: section-1 
+                  sections:
+                    - text: Section 1.1
+                      location: section-1-1
+          - app-action:
+              text: Header
+              children:
+                - app-action:
+                    text: Header child
+                    location: ${base-uri}header-nav/drop-down/header/first/index.html 
+                    sections:
+                      - text: Section 1
+                        location: section-1 
+                        sections:
+                          - text: Section 1.1
+                            location: section-1-
+          - app-action:
+              children:
+                - app-action:
+                    text: Separator child
+                    location: ${base-uri}header-nav/drop-down/separator/first/index.html 
           
 
           

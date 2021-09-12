@@ -12,7 +12,7 @@ bootstrap-page:
     - https://cdn.jsdelivr.net/gh/Nasdanika/html@develop/model/app.gen/style/dark-head.js 
     - https://cdn.jsdelivr.net/gh/Nasdanika/html@develop/model/app.gen/style/non-fluid.js 
     - https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.11/jstree.min.js        
-  body:
-    app-page:
-      fluid: true
+#  body:
+#    app-page: true
+      #fluid: true
  
