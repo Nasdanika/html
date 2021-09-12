@@ -36,6 +36,7 @@ import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.Footer;
 import org.nasdanika.html.model.app.Header;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
@@ -185,21 +186,30 @@ public class TestAction extends TestBase {
 				EList<EObject> headerItems = header.getItems();
 				rootChildren.listIterator(1).forEachRemaining(rac -> {
 					if (rac instanceof Action) {
-						Action raca = (Action) rac;
-						Label racaLabel = createLabel(raca, activeAction, uriResolver, "header/navigation", true);
-						headerItems.add(racaLabel);
+						headerItems.add(createLabel((Action) rac, activeAction, uriResolver, "header/navigation", true));
 					} else {
 						headerItems.add(EcoreUtil.copy(rac));
 					}
 				});
-				
 			}
 			
-//			headerNav = root.getChildren().li.size() > 1 ? List.co;null;
-			
-			
-			// Footer - navigation
-			
+			EList<EObject> rootNavigation = root.getNavigation();
+			if (!rootNavigation.isEmpty()) {
+				Footer footer = appPage.getFooter();
+				if (footer == null) {
+					footer = AppFactory.eINSTANCE.createFooter();
+					appPage.setFooter(footer);
+				}
+				EList<EObject> footerItems = footer.getItems();
+				rootNavigation.forEach(ran -> {
+					if (ran instanceof Action) {
+						footerItems.add(createLabel((Action) ran, activeAction, uriResolver, "footer/navigation", true));
+					} else {
+						footerItems.add(EcoreUtil.copy(ran));
+					}
+				});
+				
+			}
 		}
 		
 		if (principal != null) {

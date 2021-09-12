@@ -54,6 +54,41 @@ app-action:
                 - app-action:
                     text: Separator child
                     location: ${base-uri}header-nav/drop-down/separator/first/index.html 
+  navigation:
+    - app-action:
+        icon: fa fa-user
+        text: First footer nav
+        location: ${base-uri}footer-nav/first/index.html 
+    - app-action:
+        text: Drop-down
+        children:
+          - app-action:
+              icon: fa fa-cog
+              text: Drop-down item
+              location: ${base-uri}footer-nav/drop-down/first/index.html 
+              sections:
+                - text: Section 1
+                  location: section-1 
+                  sections:
+                    - text: Section 1.1
+                      location: section-1-
+          - app-action:
+              text: Header
+              children:
+                - app-action:
+                    text: Header child
+                    location: ${base-uri}footer-nav/drop-down/header/first/index.html 
+                    sections:
+                      - text: Section 1
+                        location: section-1 
+                        sections:
+                          - text: Section 1.1
+                            location: section-1
+          - app-action:
+              children:
+                - app-action:
+                    text: Separator child
+                    location: ${base-uri}footer-nav/drop-down/separator/first/index.html 
           
 
           
