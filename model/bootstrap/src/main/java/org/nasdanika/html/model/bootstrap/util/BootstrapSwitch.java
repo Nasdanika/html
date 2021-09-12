@@ -2,6 +2,7 @@
  */
 package org.nasdanika.html.model.bootstrap.util;
 
+import java.util.Map;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -130,6 +131,12 @@ public class BootstrapSwitch<T> extends Switch<T> {
 			case BootstrapPackage.APPEARANCE: {
 				Appearance appearance = (Appearance)theEObject;
 				T result = caseAppearance(appearance);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BootstrapPackage.APPEARANCE_ENTRY: {
+				@SuppressWarnings("unchecked") Map.Entry<String, Appearance> appearanceEntry = (Map.Entry<String, Appearance>)theEObject;
+				T result = caseAppearanceEntry(appearanceEntry);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -502,6 +509,21 @@ public class BootstrapSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseAppearance(Appearance object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Appearance Entry</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Appearance Entry</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAppearanceEntry(Map.Entry<String, Appearance> object) {
 		return null;
 	}
 

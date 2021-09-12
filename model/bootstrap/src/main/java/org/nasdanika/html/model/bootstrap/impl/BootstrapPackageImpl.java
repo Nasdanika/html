@@ -2,9 +2,11 @@
  */
 package org.nasdanika.html.model.bootstrap.impl;
 
+import java.util.Map;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EValidator;
@@ -94,6 +96,13 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	private EClass appearanceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass appearanceEntryEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -627,6 +636,56 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	@Override
 	public EReference getAppearance_Float() {
 		return (EReference)appearanceEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getAppearance_Children() {
+		return (EReference)appearanceEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EOperation getAppearance__EffectiveAppearance__String() {
+		return appearanceEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getAppearanceEntry() {
+		return appearanceEntryEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getAppearanceEntry_Key() {
+		return (EAttribute)appearanceEntryEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getAppearanceEntry_Value() {
+		return (EReference)appearanceEntryEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -1853,6 +1912,12 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		createEReference(appearanceEClass, APPEARANCE__PADDING);
 		createEReference(appearanceEClass, APPEARANCE__TEXT);
 		createEReference(appearanceEClass, APPEARANCE__FLOAT);
+		createEReference(appearanceEClass, APPEARANCE__CHILDREN);
+		createEOperation(appearanceEClass, APPEARANCE___EFFECTIVE_APPEARANCE__STRING);
+
+		appearanceEntryEClass = createEClass(APPEARANCE_ENTRY);
+		createEAttribute(appearanceEntryEClass, APPEARANCE_ENTRY__KEY);
+		createEReference(appearanceEntryEClass, APPEARANCE_ENTRY__VALUE);
 
 		borderEClass = createEClass(BORDER);
 		createEAttribute(borderEClass, BORDER__COLOR);
@@ -2089,6 +2154,14 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		initEReference(getAppearance_Padding(), this.getSpacing(), null, "padding", null, 0, -1, Appearance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAppearance_Text(), this.getText(), null, "text", null, 0, 1, Appearance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAppearance_Float(), this.getFloat(), null, "Float", null, 0, -1, Appearance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAppearance_Children(), this.getAppearanceEntry(), null, "children", null, 0, -1, Appearance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		EOperation op = initEOperation(getAppearance__EffectiveAppearance__String(), this.getAppearance(), "effectiveAppearance", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "path", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(appearanceEntryEClass, Map.Entry.class, "AppearanceEntry", !IS_ABSTRACT, !IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getAppearanceEntry_Key(), ecorePackage.getEString(), "key", null, 0, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAppearanceEntry_Value(), this.getAppearance(), null, "value", null, 1, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(borderEClass, Border.class, "Border", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBorder_Color(), this.getColor(), "color", null, 1, 1, Border.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2997,6 +3070,12 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 			   "homogenous", "true",
 			   "strict-containment", "true",
 			   "load-key", "float"
+		   });
+		addAnnotation
+		  (appearanceEntryEClass,
+		   source,
+		   new String[] {
+			   "documentation-reference", "doc/appearance-entry.md"
 		   });
 		addAnnotation
 		  (getBorder_Color(),

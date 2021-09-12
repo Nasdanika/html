@@ -2,6 +2,7 @@
  */
 package org.nasdanika.html.model.bootstrap.impl;
 
+import java.util.Map;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -105,6 +106,7 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 			case BootstrapPackage.BOOTSTRAP_ELEMENT: return createBootstrapElement();
 			case BootstrapPackage.PAGE: return createPage();
 			case BootstrapPackage.APPEARANCE: return createAppearance();
+			case BootstrapPackage.APPEARANCE_ENTRY: return (EObject)createAppearanceEntry();
 			case BootstrapPackage.BORDER: return createBorder();
 			case BootstrapPackage.SPACING: return createSpacing();
 			case BootstrapPackage.TEXT: return createText();
@@ -231,6 +233,16 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 	public Appearance createAppearance() {
 		AppearanceImpl appearance = new AppearanceImpl();
 		return appearance;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Map.Entry<String, Appearance> createAppearanceEntry() {
+		AppearanceEntryImpl appearanceEntry = new AppearanceEntryImpl();
+		return appearanceEntry;
 	}
 
 	/**

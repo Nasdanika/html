@@ -2,6 +2,7 @@
  */
 package org.nasdanika.html.model.bootstrap.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -15,9 +16,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
-
+import org.nasdanika.common.Util;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
@@ -40,6 +41,7 @@ import org.nasdanika.html.model.bootstrap.Text;
  *   <li>{@link org.nasdanika.html.model.bootstrap.impl.AppearanceImpl#getPadding <em>Padding</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.impl.AppearanceImpl#getText <em>Text</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.impl.AppearanceImpl#getFloat <em>Float</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.bootstrap.impl.AppearanceImpl#getChildren <em>Children</em>}</li>
  * </ul>
  *
  * @generated
@@ -194,6 +196,43 @@ public class AppearanceImpl extends MinimalEObjectImpl.Container implements Appe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public EMap<String, Appearance> getChildren() {
+		return (EMap<String, Appearance>)eDynamicGet(BootstrapPackage.APPEARANCE__CHILDREN, BootstrapPackage.Literals.APPEARANCE__CHILDREN, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public Appearance effectiveAppearance(String path) {
+		if (Util.isBlank(path)) {
+			return EcoreUtil.copy(this);
+		}
+		int idx = path.indexOf("/");
+		String childKey = idx == -1 ? path : path.substring(0, idx);
+		Appearance child = getChildren().get(childKey);
+		if (child == null) {
+			return EcoreUtil.copy(this);
+		}
+		Appearance ret = child.effectiveAppearance(idx == -1 ? null : path.substring(idx + 1));		
+		merge(ret);
+		return ret;
+	}
+
+	private void merge(Appearance effectiveAppearance) {
+		// TODO - put attribute keys if not present, set unset features such as color. Add to list features.
+		throw new UnsupportedOperationException("Appearance merging is not supported yet");
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -209,6 +248,8 @@ public class AppearanceImpl extends MinimalEObjectImpl.Container implements Appe
 				return basicSetText(null, msgs);
 			case BootstrapPackage.APPEARANCE__FLOAT:
 				return ((InternalEList<?>)getFloat()).basicRemove(otherEnd, msgs);
+			case BootstrapPackage.APPEARANCE__CHILDREN:
+				return ((InternalEList<?>)getChildren()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -236,6 +277,9 @@ public class AppearanceImpl extends MinimalEObjectImpl.Container implements Appe
 				return getText();
 			case BootstrapPackage.APPEARANCE__FLOAT:
 				return getFloat();
+			case BootstrapPackage.APPEARANCE__CHILDREN:
+				if (coreType) return getChildren();
+				else return getChildren().map();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -274,6 +318,9 @@ public class AppearanceImpl extends MinimalEObjectImpl.Container implements Appe
 				getFloat().clear();
 				getFloat().addAll((Collection<? extends org.nasdanika.html.model.bootstrap.Float>)newValue);
 				return;
+			case BootstrapPackage.APPEARANCE__CHILDREN:
+				((EStructuralFeature.Setting)getChildren()).set(newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -307,6 +354,9 @@ public class AppearanceImpl extends MinimalEObjectImpl.Container implements Appe
 			case BootstrapPackage.APPEARANCE__FLOAT:
 				getFloat().clear();
 				return;
+			case BootstrapPackage.APPEARANCE__CHILDREN:
+				getChildren().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -333,8 +383,24 @@ public class AppearanceImpl extends MinimalEObjectImpl.Container implements Appe
 				return getText() != null;
 			case BootstrapPackage.APPEARANCE__FLOAT:
 				return !getFloat().isEmpty();
+			case BootstrapPackage.APPEARANCE__CHILDREN:
+				return !getChildren().isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case BootstrapPackage.APPEARANCE___EFFECTIVE_APPEARANCE__STRING:
+				return effectiveAppearance((String)arguments.get(0));
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //AppearanceImpl

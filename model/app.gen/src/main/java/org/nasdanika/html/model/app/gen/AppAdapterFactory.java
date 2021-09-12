@@ -3,6 +3,7 @@ package org.nasdanika.html.model.app.gen;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.emf.FunctionAdapterFactory;
+import org.nasdanika.exec.gen.ExecutionParticpantAdapterFactory;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.ContentPanel;
@@ -14,6 +15,7 @@ import org.nasdanika.html.model.app.NavigationBar;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.Page;
 import org.nasdanika.html.model.bootstrap.gen.BootstrapAdapterFactory;
+import org.nasdanika.html.model.html.gen.HtmlAdapterFactory;
 
 /**
  * @author Pavel
@@ -82,7 +84,11 @@ public class AppAdapterFactory extends BootstrapAdapterFactory {
 					(Class) ConsumerFactory.class, 
 					classLoader, 
 					NavigationPanelConsumerFactoryAdapter::new));		
-				
+		
+		// Lower-level factories
+		registerAdapterFactory(new ExecutionParticpantAdapterFactory());
+		registerAdapterFactory(new HtmlAdapterFactory());
+		registerAdapterFactory(new BootstrapAdapterFactory());				
 	}
 	
 }

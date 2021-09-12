@@ -2,6 +2,7 @@
  */
 package org.nasdanika.html.model.bootstrap.util;
 
+import java.util.Map;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
@@ -123,6 +124,10 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseAppearance(Appearance object) {
 				return createAppearanceAdapter();
+			}
+			@Override
+			public Adapter caseAppearanceEntry(Map.Entry<String, Appearance> object) {
+				return createAppearanceEntryAdapter();
 			}
 			@Override
 			public Adapter caseBorder(Border object) {
@@ -345,6 +350,20 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createAppearanceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link java.util.Map.Entry <em>Appearance Entry</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see java.util.Map.Entry
+	 * @generated
+	 */
+	public Adapter createAppearanceEntryAdapter() {
 		return null;
 	}
 

@@ -8,6 +8,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.ResourceLocator;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.EObjectValidator;
@@ -152,6 +153,8 @@ public class BootstrapValidator extends EObjectValidator {
 				return validatePage((Page)value, diagnostics, context);
 			case BootstrapPackage.APPEARANCE:
 				return validateAppearance((Appearance)value, diagnostics, context);
+			case BootstrapPackage.APPEARANCE_ENTRY:
+				return validateAppearanceEntry((Map.Entry<?, ?>)value, diagnostics, context);
 			case BootstrapPackage.BORDER:
 				return validateBorder((Border)value, diagnostics, context);
 			case BootstrapPackage.SPACING:
@@ -397,6 +400,15 @@ public class BootstrapValidator extends EObjectValidator {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateAppearanceEntry(Map.Entry<?, ?> appearanceEntry, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint((EObject)appearanceEntry, diagnostics, context);
 	}
 
 	/**

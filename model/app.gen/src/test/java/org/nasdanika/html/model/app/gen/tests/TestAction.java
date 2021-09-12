@@ -3,8 +3,6 @@ package org.nasdanika.html.model.app.gen.tests;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -12,7 +10,6 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -29,27 +26,24 @@ import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Util;
-import org.nasdanika.common.resources.BinaryEntity;
 import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.common.resources.FileSystemContainer;
-import org.nasdanika.emf.ComposedAdapterFactory;
-import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.exec.ExecPackage;
-import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.ContentPackage;
-import org.nasdanika.exec.content.Text;
-import org.nasdanika.exec.gen.ExecutionParticpantAdapterFactory;
 import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.Header;
+import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
+import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
-import org.nasdanika.html.model.bootstrap.gen.BootstrapAdapterFactory;
 import org.nasdanika.html.model.html.HtmlPackage;
-import org.nasdanika.html.model.html.gen.HtmlAdapterFactory;
 
 /**
  * Generation of resource/page model from an action model, optional saving, and then generation of files.
@@ -59,7 +53,11 @@ import org.nasdanika.html.model.html.gen.HtmlAdapterFactory;
 public class TestAction extends TestBase {
 	
 	private static final URI CONTAINER_MODEL_URI = URI.createFileURI(new File("target/container.xml").getAbsolutePath());			
-		
+
+	/**
+	 * Generates a resource model from an action model.
+	 * @throws Exception
+	 */
 	@Test
 	public void testGenerateResourceModel() throws Exception {
 		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
@@ -68,8 +66,8 @@ public class TestAction extends TestBase {
 		
 		Context modelContext = Context.EMPTY_CONTEXT;
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
-		String resource = "app/actions.yml";
-		Action root = (Action) Objects.requireNonNull(loadObject(resource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + resource);
+		String actionsResource = "app/actions.yml";
+		Action root = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
 		dumpToYaml(root);
 		
 		URI baseURI = URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
@@ -83,7 +81,18 @@ public class TestAction extends TestBase {
 		Resource modelResource = resourceSet.createResource(CONTAINER_MODEL_URI);
 		modelResource.getContents().add(container);
 		
-		generate(root, (Action) root.getChildren().get(0), root, uriResolver, baseURI, container, progressMonitor);
+		String pageTemplateResource = "app/page-template.yml";
+		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) Objects.requireNonNull(loadObject(pageTemplateResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + pageTemplateResource);
+		
+		generate(
+				root, 
+				(Action) root.getChildren().get(0), 
+				root,
+				pageTemplate,
+				uriResolver, 
+				baseURI, 
+				container, 
+				progressMonitor);
 		
 		modelResource.save(null);
 		
@@ -93,6 +102,7 @@ public class TestAction extends TestBase {
 			Action root, 
 			Action principal, 
 			Action activeAction, 
+			org.nasdanika.html.model.bootstrap.Page pageTemplate,
 			BiFunction<Action, URI, URI> uriResolver, 
 			URI baseURI,
 			Container container,
@@ -102,9 +112,13 @@ public class TestAction extends TestBase {
 			URI uri = uriResolver.apply(activeAction, baseURI);				
 			if (uri != null && uri.isRelative()) {
 				org.nasdanika.exec.resources.File file = container.getFile(uri.toString());
-				Text text = ContentFactory.eINSTANCE.createText();
-				text.setContent(uri.toString());
-				file.getContents().add(text);
+				org.nasdanika.html.model.bootstrap.Page bootstrapPage = EcoreUtil.copy(pageTemplate);
+				for (EObject be: bootstrapPage.getBody()) {
+					if (be instanceof org.nasdanika.html.model.app.Page) {
+						buildAppPage(root, principal, activeAction, (org.nasdanika.html.model.app.Page) be, uriResolver, progressMonitor);						
+					}
+				}
+				file.getContents().add(bootstrapPage);
 				
 				for (org.nasdanika.exec.resources.Resource res: activeAction.getResources()) {
 					((Container) file.eContainer()).getContents().add(EcoreUtil.copy(res));					
@@ -114,38 +128,150 @@ public class TestAction extends TestBase {
 		
 		for (EObject child: activeAction.getChildren()) {
 			if (child instanceof Action) {
-				generate(root, principal, (Action) child, uriResolver, baseURI, container, progressMonitor);
+				generate(root, principal, (Action) child, pageTemplate, uriResolver, baseURI, container, progressMonitor);
 			}
 		}
 		
 		for (EObject section: activeAction.getSections()) {
 			if (section instanceof Action) {
-				generate(root, principal, (Action) section, uriResolver, baseURI, container, progressMonitor);
+				generate(root, principal, (Action) section, pageTemplate, uriResolver, baseURI, container, progressMonitor);
 			}
 		}
 				
 		for (EObject navigation: activeAction.getNavigation()) {
 			if (navigation instanceof Action) {
-				generate(root, principal, (Action) navigation, uriResolver, baseURI, container, progressMonitor);
+				generate(root, principal, (Action) navigation, pageTemplate, uriResolver, baseURI, container, progressMonitor);
 			}
 		}
 		
 		for (EObject anonymous: activeAction.getAnonymous()) {
 			if (anonymous instanceof Action) {
-				generate(root, principal, (Action) anonymous, uriResolver, baseURI, container, progressMonitor);
+				generate(root, principal, (Action) anonymous, pageTemplate, uriResolver, baseURI, container, progressMonitor);
 			}
 		}
 		
-		generate(root, principal, activeAction.getFloatLeftNavigation(), uriResolver, baseURI, container, progressMonitor);
-		generate(root, principal, activeAction.getFloatRightNavigation(), uriResolver, baseURI, container, progressMonitor);
-		generate(root, principal, activeAction.getLeftNavigation(), uriResolver, baseURI, container, progressMonitor);
-		generate(root, principal, activeAction.getRightNavigation(), uriResolver, baseURI, container, progressMonitor);
+		generate(root, principal, activeAction.getFloatLeftNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
+		generate(root, principal, activeAction.getFloatRightNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
+		generate(root, principal, activeAction.getLeftNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
+		generate(root, principal, activeAction.getRightNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
+	}
+	
+	private void buildAppPage(
+			Action root, 
+			Action principal, 
+			Action activeAction, 
+			org.nasdanika.html.model.app.Page appPage,
+			BiFunction<Action, URI, URI> uriResolver, 
+			ProgressMonitor progressMonitor) {
+		
+		URI activeActionURI = uriResolver.apply(activeAction, null);
+		
+		if (root != null) {
+			Label title = createLabel(root, uriResolver.apply(root, activeActionURI), root == activeAction, "header/title");
+			EList<EObject> rootChildren = root.getChildren();
+			if (title != null || rootChildren.size() > 1) {
+				// Header
+				Header header = appPage.getHeader();
+				if (header == null) {
+					header = AppFactory.eINSTANCE.createHeader();
+					appPage.setHeader(header);
+				}
+				if (title != null) {
+					header.setTitle(title);
+				}
+				EList<EObject> headerItems = header.getItems();
+				rootChildren.listIterator(1).forEachRemaining(rac -> {
+					if (rac instanceof Action) {
+						Action raca = (Action) rac;
+						headerItems.add(createLabel(raca, uriResolver.apply(raca, activeActionURI), raca == activeAction, "header/navigation"));
+					} else {
+						headerItems.add(rac);
+					}
+				});
+				
+			}
+			
+//			headerNav = root.getChildren().li.size() > 1 ? List.co;null;
+			
+			
+			// Footer - navigation
+			
+		}
+		
+		if (principal != null) {
+			
+		}
+		
+		
+	
 	}
 
+	private boolean isLink(Action action, URI uri) {
+		return uri != null || !Util.isBlank(action.getScript()) || action.getModal() != null || !Util.isBlank(action.getName());
+	}
+	
+	private void configureLabel(Action action, URI uri, boolean active, String appearancePath, Label label) {
+		Appearance aa = action.getAppearance();
+		if (aa != null) {
+			label.setAppearance(aa.effectiveAppearance(appearancePath));
+		}
+
+		label.setActive(active);
+		label.setColor(action.getColor());
+		label.setDescription(action.getDescription());
+		label.setDisabled(action.isDisabled());
+//		label.setHelp(value); TODO - make links in help relative.
+		label.setIcon(action.getIcon());
+//		label.setId(action.getId());
+//		label.setNotification(value);
+//		label.setOutline(value);
+		label.setText(action.getText());
+//		label.setTooltip(value);
+//		label.getAttributes();
+//		label.getChildren();
+		
+		if (label instanceof Link) {
+			configureLink(action, uri, (Link) label);
+		}
+		
+	}
+	
+	private void configureLink(Action action, URI uri, Link link) {		
+		if (uri != null) {
+			link.setLocation(uri.toString());
+		}
+		link.setConfirmation(action.getConfirmation());
+//		link.setModal(value); TODO - contextualization of links - relativization of URI's. Token expansion with a property computer? something like ${relative-uri/<uri here>}? 
+//		Support of sub-tokens e.g. ${{relative-uri/${token}}} recognizes ${token} as a sub-token to be expanded to result in ${relative-uri/<token value>}. 
+		link.setName(action.getName());
+		link.setScript(action.getScript());
+		link.setTarget(action.getTarget());
+		
+	}
+	
+	/**
+	 * Creates a {@link Link} from {@link Action} with a relative location for locations.
+	 * @param action
+	 * @param uri
+	 * @param active 
+	 * @param appearancePath 
+	 * @return
+	 */
+	private Label createLabel(Action action, URI uri, boolean active, String appearancePath) {
+		if (Util.isBlank(action.getText()) && Util.isBlank(action.getIcon())) {
+			return null;
+		}
+		Label label = isLink(action, uri) ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
+		configureLabel(action, uri, active, appearancePath, label);
+				
+		return label;
+	}
+	
 	protected void generate(
 			Action root, 
 			Action principal, 
 			NavigationPanel navigationPanel,
+			org.nasdanika.html.model.bootstrap.Page pageTemplate,
 			BiFunction<Action, URI, URI> uriResolver, 
 			URI baseURI, 
 			Container container,
@@ -154,7 +280,7 @@ public class TestAction extends TestBase {
 		if (navigationPanel != null) {
 			for (EObject item: navigationPanel.getItems()) {
 				if (item instanceof Action) {
-					generate(root, principal, (Action) item, uriResolver, baseURI, container, progressMonitor);
+					generate(root, principal, (Action) item, pageTemplate, uriResolver, baseURI, container, progressMonitor);
 				}
 			}			
 		}
@@ -207,6 +333,10 @@ public class TestAction extends TestBase {
 		};
 	}
 	
+	/**
+	 * Generates files from the previously generated resource model.
+	 * @throws Exception
+	 */
 	@Test
 	public void testGenerateContainer() throws Exception {
 		// Load model from XMI
@@ -220,17 +350,9 @@ public class TestAction extends TestBase {
 		resourceSet.getPackageRegistry().put(BootstrapPackage.eNS_URI, BootstrapPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
 		
-		ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory();
-		adapterFactory.registerAdapterFactory(new ExecutionParticpantAdapterFactory());
-		adapterFactory.registerAdapterFactory(new HtmlAdapterFactory());
-		adapterFactory.registerAdapterFactory(new BootstrapAdapterFactory());
-		adapterFactory.registerAdapterFactory(new AppAdapterFactory());		
-		
-		resourceSet.getAdapterFactories().add(adapterFactory);
+		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
 				
-		// Demand load resource for this file.
 		Resource containerResource = resourceSet.getResource(CONTAINER_MODEL_URI, true);
-				
 
 		BinaryEntityContainer container = new FileSystemContainer(new File("target/test-outputs/container"));
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
@@ -240,15 +362,21 @@ public class TestAction extends TestBase {
 			assertThat(diagnostic.getSeverity()).isNotEqualTo(org.eclipse.emf.common.util.Diagnostic.ERROR);
 			generate(eObject, container, Context.EMPTY_CONTEXT, progressMonitor);
 		}		
-		
-//		BinaryEntityContainer myContainer = container.getContainer("my-container", progressMonitor);
-//		assertThat(myContainer).isNotNull();
-//		assertThat(myContainer.exists(progressMonitor)).isTrue();
-//		
-//		BinaryEntity file = myContainer.get("simple.html", progressMonitor);
-//		assertThat(file).isNotNull();
-//		assertThat(file.exists(progressMonitor)).isTrue();
 	}
-
+	
+	/**
+	 * Generates a resource model from an action model and then generates files from the resource model.
+	 * @throws Exception
+	 */
+	@Test
+	public void testGenerateSite() throws Exception {
+		long start = System.currentTimeMillis();
+		testGenerateResourceModel();
+		long grm = System.currentTimeMillis();
+		testGenerateContainer();
+		long end = System.currentTimeMillis();
+		System.out.println((grm - start) + "/" + (end - grm));
+	
+	}
 	
 }

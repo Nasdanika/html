@@ -28,6 +28,7 @@ import org.nasdanika.html.bootstrap.Color;
  *   <li>{@link org.nasdanika.html.model.bootstrap.Appearance#getPadding <em>Padding</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.Appearance#getText <em>Text</em>}</li>
  *   <li>{@link org.nasdanika.html.model.bootstrap.Appearance#getFloat <em>Float</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.bootstrap.Appearance#getChildren <em>Children</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getAppearance()
@@ -195,5 +196,26 @@ public interface Appearance extends EObject {
 	 * @generated
 	 */
 	EList<org.nasdanika.html.model.bootstrap.Float> getFloat();
+
+	/**
+	 * Returns the value of the '<em><b>Children</b></em>' map.
+	 * The key is of type {@link java.lang.String},
+	 * and the value is of type {@link org.nasdanika.html.model.bootstrap.Appearance},
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Children</em>' map.
+	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getAppearance_Children()
+	 * @model mapType="org.nasdanika.html.model.bootstrap.AppearanceEntry&lt;org.eclipse.emf.ecore.EString, org.nasdanika.html.model.bootstrap.Appearance&gt;"
+	 * @generated
+	 */
+	EMap<String, Appearance> getChildren();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	Appearance effectiveAppearance(String path);
 
 } // Appearance

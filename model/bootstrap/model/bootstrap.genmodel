@@ -32,6 +32,14 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Appearance/padding"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Appearance/text"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Appearance/Float"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Appearance/children"/>
+      <genOperations ecoreOperation="bootstrap.ecore#//Appearance/effectiveAppearance">
+        <genParameters ecoreParameter="bootstrap.ecore#//Appearance/effectiveAppearance/path"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="bootstrap.ecore#//AppearanceEntry">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//AppearanceEntry/key"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//AppearanceEntry/value"/>
     </genClasses>
     <genClasses ecoreClass="bootstrap.ecore#//Border">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Border/color"/>
