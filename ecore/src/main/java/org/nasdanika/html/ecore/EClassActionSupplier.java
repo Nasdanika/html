@@ -1,14 +1,9 @@
 package org.nasdanika.html.ecore;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -38,8 +33,6 @@ import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
-import org.nasdanika.html.app.Action;
-import org.nasdanika.html.app.SectionStyle;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
@@ -47,20 +40,24 @@ import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.bootstrap.Text.Alignment;
 import org.nasdanika.html.bootstrap.Text.Weight;
+import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.html.model.app.SectionStyle;
 
-public class EClassViewActionStorable extends EClassifierViewActionStorable<EClass> {
+public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 
-	public EClassViewActionStorable(EClass value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
+	public EClassActionSupplier(EClass value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value, context, ePackagePathComputer);
 	}
 	
 	@Override
-	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
-		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
-		put(data, "section-style", SectionStyle.DEFAULT.name().toLowerCase());
+	public org.nasdanika.html.model.app.Action execute(ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(progressMonitor);
+		
+		action.setSectionStyle(SectionStyle.HEADER);
 		
 		// Diagram
-		addContent(data, generateDiagram(false, null, 1, RelationshipDirection.both, true, true, progressMonitor));
+		addContent(action, generateDiagram(false, null, 1, RelationshipDirection.both, true, true, progressMonitor));
 
 		// Generic supertypes
 		EList<EGenericType> eGenericSuperTypes = eObject.getEGenericSuperTypes();
@@ -76,7 +73,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 				list.content(listItem);
 				genericType(superType, listItem.getContent(), progressMonitor);
 			}
-			addContent(data, gstf.toString());
+			addContent(action, gstf.toString());
 		}
 		
 		// Subtypes
@@ -91,7 +88,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 			for (EClass subType: eSubTypes) {
 				list.content(TagName.li.create(link(subType)));
 			}
-			addContent(data, gstf.toString());
+			addContent(action, gstf.toString());
 		}
 		
 		// Referrers
@@ -106,7 +103,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 			for (EClass referrer: referrers) {
 				list.content(TagName.li.create(link(referrer)));
 			}
-			addContent(data, gstf.toString());
+			addContent(action, gstf.toString());
 		}
 		
 		// Uses
@@ -121,7 +118,7 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 			for (EClass use: uses) {
 				list.content(TagName.li.create(link(use)));
 			}
-			addContent(data, gstf.toString());
+			addContent(action, gstf.toString());
 		}
 		
 		// Load specification
@@ -176,64 +173,55 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 			};
 			gstf.content(table);
 			
-			addContent(data, gstf.toString());
+			addContent(action, gstf.toString());
 		}
 
-		Map<String, Object> locConfig = new LinkedHashMap<>();
-		locConfig.put("tooltip", true);
-		locConfig.put("header", "Members");		
-		locConfig.put("role", Action.Role.SECTION);		
-		addContent(data, Collections.singletonMap("component-list-of-contents", locConfig));
+//		TODO - Table (list) of contents
+//		Map<String, Object> locConfig = new LinkedHashMap<>();
+//		locConfig.put("tooltip", true);
+//		locConfig.put("header", "Members");		
+//		locConfig.put("role", Action.Role.SECTION);		
+//		addContent(data, Collections.singletonMap("component-list-of-contents", locConfig));
 		
-		List<Object> children = new ArrayList<>();
-		
+		EList<Action> sections = action.getSections();
 		if (!eObject.getEAttributes().isEmpty()) {
-			Map<String,Object> attrsCategory = new LinkedHashMap<>();
-			children.add(Collections.singletonMap(APP_CATEGORY_KEY, attrsCategory));
-			attrsCategory.put("text", "Attributes");
-			attrsCategory.put("id", "attributes");
-			Collection<Object> attrList = new ArrayList<>();
-			attrsCategory.put("actions", attrList);
+			Action attributesCategory = AppFactory.eINSTANCE.createAction();
+			attributesCategory.setText("Attributes");
+			attributesCategory.setName("attributes");
+			sections.add(attributesCategory);
+			EList<Action> attributes = attributesCategory.getSections();
 			for (EStructuralFeature sf: eObject.getEAttributes().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				attrList.add(adaptChild(sf).store(base, progressMonitor));
+				attributes.add(adaptChild(sf).execute(progressMonitor));
 			}
 		}
 		
 		if (!eObject.getEReferences().isEmpty()) {
-			Map<String,Object> refsCategory = new LinkedHashMap<>();
-			children.add(Collections.singletonMap(APP_CATEGORY_KEY, refsCategory));
-			refsCategory.put("text", "References");
-			refsCategory.put("id", "references");
-			Collection<Object> refList = new ArrayList<>();
-			refsCategory.put("actions", refList);
-			
+			Action referencesCategory = AppFactory.eINSTANCE.createAction();
+			referencesCategory.setText("References");
+			referencesCategory.setName("references");
+			sections.add(referencesCategory);
+			EList<Action> references = referencesCategory.getSections();			
 			for (EStructuralFeature sf: eObject.getEReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				refList.add(adaptChild(sf).store(base, progressMonitor));
+				references.add(adaptChild(sf).execute(progressMonitor));
 			}
 		}
 		
 		if (!eObject.getEOperations().isEmpty()) {
-			Map<String,Object> opsCategory = new LinkedHashMap<>();
-			children.add(Collections.singletonMap(APP_CATEGORY_KEY, opsCategory));
-			opsCategory.put("text", "Operations");
-			opsCategory.put("id", "operations");
-			Collection<Object> opList = new ArrayList<>();
-			opsCategory.put("actions", opList);
-			
+			Action operationsCategory = AppFactory.eINSTANCE.createAction();
+			operationsCategory.setText("Operations");
+			operationsCategory.setName("operations");
+			sections.add(operationsCategory);
+			EList<Action> operations = operationsCategory.getSections();			
 			for (EOperation eOp: eObject.getEOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				opList.add(adaptChild(eOp).store(base, progressMonitor));			
+				operations.add(adaptChild(eOp).execute(progressMonitor));			
 			}
 		}
 		
-		if (!children.isEmpty()) {
-			put(data, "children", children);
-		}
-		
 		if (eObject.isInterface()) {
-			put(data, "icon", ICONS_BASE + "EInterface.gif");			
+			action.setIcon(ICONS_BASE + "EInterface.gif");			
 		}		
 		
-		return data;
+		return action;
 	}
 	
 	protected String generateDiagram(
@@ -250,17 +238,17 @@ public class EClassViewActionStorable extends EClassifierViewActionStorable<ECla
 			
 			@Override
 			protected Collection<EClass> getSubTypes(EClass eClass) {
-				return EClassViewActionStorable.this.getSubTypes(eClass);
+				return EClassActionSupplier.this.getSubTypes(eClass);
 			}
 			
 			@Override
 			protected Collection<EClass> getReferrers(EClass eClass) {
-				return EClassViewActionStorable.this.getReferrers(eClass);
+				return EClassActionSupplier.this.getReferrers(eClass);
 			}
 			
 			@Override
 			protected Collection<EClass> getUses(EClassifier eClassifier) {
-				return EClassViewActionStorable.this.getUses(eClassifier);
+				return EClassActionSupplier.this.getUses(eClassifier);
 			}
 			
 			@Override

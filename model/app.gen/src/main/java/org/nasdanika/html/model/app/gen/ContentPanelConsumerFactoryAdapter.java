@@ -166,37 +166,42 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 					content.forEach(ownContentCol::accept);
 				}
 				
-				// Creating containers for sections
-				SectionStyle effectivSectionStyle = effectiveSectionStyle(semanticElement);
-				List<HTMLElement<?>> sections;
-				switch (effectivSectionStyle) {
-				case ACTION_GROUP:
-					sections = actionGroupSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
-					break;
-				case CARD:
-					sections = cardSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
-					break;
-				case CARD_PILL:
-					sections = cardPillSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
-					break;
-				case CARD_TAB:
-					sections = cardTabSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
-					break;
-				case HEADER:
-					// Cols in rows
-					sections = headerSections(contentFloatsAndSectionsContainer);				
-					break;
-				case PILL:
-					sections = tabSections(contentFloatsAndSectionsContainer, true, bootstrapFactory);				
-					break;
-				case TAB:
-					sections = tabSections(contentFloatsAndSectionsContainer, false, bootstrapFactory);				
-					break;
-				case TABLE:
-					sections = tableSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
-					break;
-				default:
-					throw new UnsupportedOperationException("Unsupported section style: " + effectivSectionStyle);
+				
+				List<HTMLElement<?>> sections;				
+				if (semanticElement.getSections().isEmpty()) {
+					sections = Collections.emptyList();
+				} else {
+					// Creating containers for sections
+					SectionStyle effectivSectionStyle = effectiveSectionStyle(semanticElement);
+					switch (effectivSectionStyle) {
+					case ACTION_GROUP:
+						sections = actionGroupSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
+						break;
+					case CARD:
+						sections = cardSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
+						break;
+					case CARD_PILL:
+						sections = cardPillSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
+						break;
+					case CARD_TAB:
+						sections = cardTabSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
+						break;
+					case HEADER:
+						// Cols in rows
+						sections = headerSections(contentFloatsAndSectionsContainer);				
+						break;
+					case PILL:
+						sections = tabSections(contentFloatsAndSectionsContainer, true, bootstrapFactory);				
+						break;
+					case TAB:
+						sections = tabSections(contentFloatsAndSectionsContainer, false, bootstrapFactory);				
+						break;
+					case TABLE:
+						sections = tableSections(contentFloatsAndSectionsContainer, bootstrapFactory);				
+						break;
+					default:
+						throw new UnsupportedOperationException("Unsupported section style: " + effectivSectionStyle);
+					}
 				}
 				
 				if (semanticElement.getRightNavigation() != null) {

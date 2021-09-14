@@ -250,9 +250,5 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 		
 		return super.createConfigureFunction(context).then(tagsAndNodesFunction).then(createCardsFunction(context));
 	}
-	
-	
-	
-	
 
 }

@@ -23,20 +23,14 @@ import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.emf.EObjectAdaptable;
-import org.nasdanika.html.emf.ViewActionStorable;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
-/**
- * Generates Vinci {@link org.nasdanika.vinci.app.Action} tree documentation.
- * @author Pavel
- *
- */
 @Command(
-		description = "Generates Ecore model documentation as a YAML action tree",
+		description = "Generates Ecore model documentation as an action model",
 		name = "ecore")
 public class EcoreDocumentationGeneratorCommand extends CommandBase {
 	
@@ -102,7 +96,7 @@ public class EcoreDocumentationGeneratorCommand extends CommandBase {
 	 * Override to customize the adapter factory.
 	 * @return
 	 */
-	protected EcoreViewActionStorableAdapterFactory createAdapterFactory() {
+	protected EcoreActionSupplierAdapterFactory createAdapterFactory() {
 		if (outputDir == null) {
 			outputDir = new File(".");
 		}
@@ -115,10 +109,10 @@ public class EcoreDocumentationGeneratorCommand extends CommandBase {
 			context.put(JAVADOC_CONTEXT_BUILDER_MOUNT, javaDocContextBuilderMount);
 		}
 		
-		return new EcoreViewActionStorableAdapterFactory(context, useEPackageNameInPath ? this::getEPackagePath : null);
+		return new EcoreActionSupplierAdapterFactory(context, useEPackageNameInPath ? this::getEPackagePath : null);
 	}
 	
-	public List<ViewActionStorable> loadGenModel() {
+	public List<ActionSupplier> loadGenModel() {
 		resourceSet = new GenModelResourceSet();		
 		resourceSet.getAdapterFactories().add(createAdapterFactory());
 		
@@ -130,13 +124,13 @@ public class EcoreDocumentationGeneratorCommand extends CommandBase {
 			}
 			resources.add(genModel);
 		}
-		List<ViewActionStorable> ret = new ArrayList<>();
+		List<ActionSupplier> ret = new ArrayList<>();
 		for (Resource resource: resources) {
 			for (EObject contents: resource.getContents()) {
 				if (contents instanceof GenModel) {
 					for (GenPackage genPackage: ((GenModel) contents).getGenPackages()) {
 						EPackage ecorePackage = genPackage.getEcorePackage();
-						ret.add(EObjectAdaptable.adaptTo(ecorePackage, ViewActionStorable.class));
+						ret.add(EObjectAdaptable.adaptTo(ecorePackage, ActionSupplier.class));
 					}
 				}
 			}
@@ -146,11 +140,11 @@ public class EcoreDocumentationGeneratorCommand extends CommandBase {
 
 	@Override
 	public Integer call() throws Exception {
-		List<ViewActionStorable> storables = loadGenModel();
+		List<ActionSupplier> suppliers = loadGenModel();
 		
 		Set<String> names = new HashSet<>();
 		
-		try (ProgressMonitor pm = progressMonitorMixin.createProgressMonitor(storables.size())) { 
+		try (ProgressMonitor pm = progressMonitorMixin.createProgressMonitor(suppliers.size())) { 
 //			int pos = 0;
 //			List<Object> data = new ArrayList<>();
 //			for (ViewActionStorable storable: storables) {

@@ -1,29 +1,27 @@
 package org.nasdanika.html.ecore;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.PlantUmlTextGenerator;
 import org.nasdanika.emf.PlantUmlTextGenerator.RelationshipDirection;
+import org.nasdanika.html.model.app.Action;
 
-public class EPackageViewActionStorable extends ENamedElementViewActionStorable<EPackage> {
+public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage> {
 
-	public EPackageViewActionStorable(EPackage value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
+	public EPackageActionSupplier(EPackage value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value, context, ePackagePathComputer);
 //		dump(value, 0);
 	}
@@ -51,27 +49,24 @@ public class EPackageViewActionStorable extends ENamedElementViewActionStorable<
 //	}
 	
 	@Override
-	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
-		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
-		put(data, "href", eObject.getName() + "/package-summary.html");
+	public Action execute(ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(progressMonitor);
+		action.setLocation(eObject.getName() + "/package-summary.html");
 		
-		addContent(data, generateDiagram(false,  null, 0, RelationshipDirection.both, true, true));
-		addContent(data, Collections.singletonMap("component-list-of-contents", Collections.singletonMap("tooltip", true))); 
+		addContent(action, generateDiagram(false,  null, 0, RelationshipDirection.both, true, true));
+		// TODO - Table (list) of contents
+//		addContent(data, Collections.singletonMap("component-list-of-contents", Collections.singletonMap("tooltip", true))); 
 		
-		List<Object> children = new ArrayList<>();
+		EList<EObject> children = action.getChildren();
 		for (EPackage subPackage: eObject.getESubpackages().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-			children.add(adaptChild(subPackage).store(base, progressMonitor));
+			children.add(adaptChild(subPackage).execute(progressMonitor));
 		}
 	
 		for (EClassifier eClassifier: eObject.getEClassifiers().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-			children.add(adaptChild(eClassifier).store(base, progressMonitor));			
+			children.add(adaptChild(eClassifier).execute(progressMonitor));			
 		}
 		
-		if (!children.isEmpty()) {
-			put(data, "children", children);
-		}
-		
-		return data;
+		return action;
 	}
 	
 	/**
@@ -93,12 +88,12 @@ public class EPackageViewActionStorable extends ENamedElementViewActionStorable<
 			
 			@Override
 			protected Collection<EClass> getSubTypes(EClass eClass) {
-				return EPackageViewActionStorable.this.getSubTypes(eClass);
+				return EPackageActionSupplier.this.getSubTypes(eClass);
 			}
 			
 			@Override
 			protected Collection<EClass> getReferrers(EClass eClass) {
-				return EPackageViewActionStorable.this.getReferrers(eClass);
+				return EPackageActionSupplier.this.getReferrers(eClass);
 			}
 			
 			@Override

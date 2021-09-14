@@ -1,28 +1,25 @@
 package org.nasdanika.html.ecore;
 
-import java.net.URL;
-import java.util.Map;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.html.app.Action;
 import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.model.app.Action;
 
-public class EStructuralFeatureViewActionStorable<T extends EStructuralFeature> extends ETypedElementViewActionStorable<T> {
+public class EStructuralFeatureActionSupplier<T extends EStructuralFeature> extends ETypedElementActionSupplier<T> {
 
-	public EStructuralFeatureViewActionStorable(T value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
+	public EStructuralFeatureActionSupplier(T value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value, context, ePackagePathComputer);
 	}
 	
 	@Override
-	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
-		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
-		put(data, "role", Action.Role.SECTION);
+	public Action execute(ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(progressMonitor);
+	
 		EClass eContainingClass = eObject.getEContainingClass();
-		put(data, "id", encodeEPackage(
+		action.setId(encodeEPackage(
 				eContainingClass.getEPackage())
 				+ "-"
 				+ eContainingClass.getName()
@@ -31,8 +28,8 @@ public class EStructuralFeatureViewActionStorable<T extends EStructuralFeature> 
 				+ "-" 				
 				+ eObject.getName());
 
-		put(data, "href", eContainingClass.getName() + ".html#" + eObject.eClass().getName() + "-" + eObject.getName());
-		return data;
+		action.setName(eObject.eClass().getName() + "-" + eObject.getName());
+		return action;
 	}
 
 	@Override

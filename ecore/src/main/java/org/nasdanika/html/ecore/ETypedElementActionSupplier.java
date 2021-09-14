@@ -1,8 +1,6 @@
 package org.nasdanika.html.ecore;
 
-import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
@@ -13,16 +11,17 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
 import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.model.app.Action;
 
-public class ETypedElementViewActionStorable<T extends ETypedElement> extends ENamedElementViewActionStorable<T> {
+public class ETypedElementActionSupplier<T extends ETypedElement> extends ENamedElementActionSupplier<T> {
 	
-	public ETypedElementViewActionStorable(T value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
+	public ETypedElementActionSupplier(T value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value, context, ePackagePathComputer);
 	}
 	
 	@Override
-	public Map<String, Map<String, Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
-		Map<String, Map<String, Object>> data = super.store(base, progressMonitor);
+	public Action execute(ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(progressMonitor);
 
 		StringBuilder label = new StringBuilder(eObject.getName());
 		EGenericType genericType = eObject.getEGenericType();
@@ -33,10 +32,10 @@ public class ETypedElementViewActionStorable<T extends ETypedElement> extends EN
 				label.append("*");
 			}
 		}
-		put(data, "text", label.toString());
+		action.setText(label.toString());
 		
-		addContent(data, propertiesTable(progressMonitor).toString()); 
-		return data;
+		addContent(action, propertiesTable(progressMonitor).toString()); 
+		return action;
 	}
 
 	protected Table propertiesTable(ProgressMonitor monitor) throws Exception {		

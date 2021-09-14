@@ -7,9 +7,9 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.html.bootstrap.Table;
 
-public class EReferenceViewActionStorable extends EStructuralFeatureViewActionStorable<EReference> {
+public class EReferenceActionSupplier extends EStructuralFeatureActionSupplier<EReference> {
 
-	public EReferenceViewActionStorable(EReference value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
+	public EReferenceActionSupplier(EReference value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value, context, ePackagePathComputer);
 	}
 	

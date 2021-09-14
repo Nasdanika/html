@@ -1,15 +1,11 @@
 package org.nasdanika.html.ecore;
 
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.codec.binary.Hex;
@@ -31,18 +27,18 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.MarkdownHelper;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Util;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
-import org.nasdanika.html.app.impl.Util;
+import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.Interpolator;
+import org.nasdanika.exec.content.Markdown;
+import org.nasdanika.exec.content.Text;
+import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
 
-public class EModelElementViewActionStorable<T extends EModelElement> extends EObjectViewActionStorable<T> {
+public class EModelElementActionSupplier<T extends EModelElement> extends EObjectActionSupplier<T> {
 	
-	static final String CONTENT_KEY = "content";
-
-	static final String APP_ACTION_KEY = "app-action";
-	
-	static final String APP_CATEGORY_KEY = "app-category";
-
 	public static final String ICONS_BASE = "https://www.nasdanika.org/resources/images/ecore/";
 		
 	/**
@@ -55,62 +51,54 @@ public class EModelElementViewActionStorable<T extends EModelElement> extends EO
 
 	private java.util.function.Function<EPackage,String> ePackagePathComputer; 
 		
-	public EModelElementViewActionStorable(T value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
+	public EModelElementActionSupplier(T value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value);		
 		this.context = context;
 		this.ePackagePathComputer = ePackagePathComputer;
 	}
 	
+
 	@Override
-	public Map<String,Map<String,Object>> store(URL base, ProgressMonitor progressMonitor) throws Exception {
-		Map<String,Object> data = new LinkedHashMap<>();
-		
-		data.put("icon", ICONS_BASE+eObject.eClass().getName()+".gif");
+	public Action execute(ProgressMonitor progressMonitor) throws Exception {
+		Action ret = AppFactory.eINSTANCE.createAction();
+		ret.setIcon(ICONS_BASE+eObject.eClass().getName()+".gif");
 		
 		String markdown = EObjectAdaptable.getResourceContext(eObject).getString("documentation", EcoreUtil.getDocumentation(eObject));
 		if (Util.isBlank(markdown)) {
 			markdown = EmfUtil.getDocumentation(eObject);
 		}
-		List<Object> content = new ArrayList<>();
-		data.put(CONTENT_KEY, content);
 		
 		if (!Util.isBlank(markdown)) {
-			content.add(interpolatedMarkdown(markdown));
-			data.put("tooltip", context.computingContext().get(MarkdownHelper.class, MarkdownHelper.INSTANCE).firstPlainTextSentence(markdown));
+			ret.getContent().add(interpolatedMarkdown(markdown));
+			ret.setTooltip(context.computingContext().get(MarkdownHelper.class, MarkdownHelper.INSTANCE).firstPlainTextSentence(markdown));
 		}
 		
-		return Collections.singletonMap(APP_ACTION_KEY, data);
+		return ret;
 	}
-	
-	/**
-	 * 
-	 * @param key
-	 * @param value
-	 */
-	protected Map<String,Map<String,Object>> put(Map<String,Map<String,Object>> data, String key, Object value) {
-		data.get(APP_ACTION_KEY).put(key, value);
-		return data;
+
+	@Override
+	public double size() {
+		return 1;
+	}
+
+	@Override
+	public String name() {
+		return eObject.eClass().getName();
 	}
 	
 	/**
 	 * @param markdown Markdown text
 	 * @return Spec for interpolating markdown and then converting to HTML. 
 	 */
-	protected static Map<String,Map<String,String>> interpolatedMarkdown(String markdown) {
-		return Collections.singletonMap("exec-styled-markdown", Collections.singletonMap("exec-interpolator", markdown));		
-	}
-	
-	/**
-	 * Adds content to <code>content</code> key's list value in the data map.
-	 * @param data
-	 * @param content
-	 */
-	protected static void addContent(Map<String,Map<String,Object>> data, Object... content) {
-		@SuppressWarnings("unchecked")
-		Collection<Object> dc = (Collection<Object>) data.get(APP_ACTION_KEY).get(CONTENT_KEY);
-		for (Object ce: content) {
-			dc.add(ce);		
-		}
+	protected static Markdown interpolatedMarkdown(String markdown) {
+		Markdown ret = ContentFactory.eINSTANCE.createMarkdown();
+		Interpolator interpolator = ContentFactory.eINSTANCE.createInterpolator();
+		Text text = ContentFactory.eINSTANCE.createText();
+		text.setContent(markdown);
+		interpolator.setSource(text);
+		ret.setSource(interpolator);
+		ret.setStyle(true);
+		return ret;
 	}
 	
 	protected String getEModelElementFirstDocSentence(EModelElement modelElement) {
@@ -405,6 +393,16 @@ public class EModelElementViewActionStorable<T extends EModelElement> extends EO
 		}
 		
 		return ret.toString();
+	}
+	
+	/**
+	 * Adds textual content.
+	 * @param content
+	 */
+	protected static void addContent(Action action, String content) {
+		Text text = ContentFactory.eINSTANCE.createText();
+		text.setContent(content);
+		action.getContent().add(text);
 	}
 	
 }

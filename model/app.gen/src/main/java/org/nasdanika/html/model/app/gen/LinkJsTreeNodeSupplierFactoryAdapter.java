@@ -47,6 +47,7 @@ public class LinkJsTreeNodeSupplierFactoryAdapter<M extends Link> extends LabelJ
 			public void execute(JsTreeNode jsTreeNode, ProgressMonitor progressMonitor) throws Exception {
 				M semanticElement = getTarget();
 				jsTreeNode.disabled(semanticElement.isDisabled());
+				jsTreeNode.id(semanticElement.getId());
 				
 				if (!semanticElement.isDisabled()) {
 					Tag modal = (Tag) jsTreeNode.getData(AppPackage.Literals.LINK__MODAL);

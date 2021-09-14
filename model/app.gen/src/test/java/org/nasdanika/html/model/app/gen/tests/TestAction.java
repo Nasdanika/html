@@ -3,12 +3,16 @@ package org.nasdanika.html.model.app.gen.tests;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -36,11 +40,14 @@ import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.ContentPanel;
 import org.nasdanika.html.model.app.Footer;
 import org.nasdanika.html.model.app.Header;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
+import org.nasdanika.html.model.app.NavigationBar;
 import org.nasdanika.html.model.app.NavigationPanel;
+import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
@@ -171,7 +178,7 @@ public class TestAction extends TestBase {
 			ProgressMonitor progressMonitor) {
 		
 		if (root != null) {
-			Label title = createLabel(root, activeAction, uriResolver, "header/title", false);
+			Label title = createLabel(root, activeAction, uriResolver, null, "header/title", false);
 			EList<EObject> rootChildren = root.getChildren();
 			if (title != null || rootChildren.size() > 1) {
 				// Header
@@ -186,7 +193,7 @@ public class TestAction extends TestBase {
 				EList<EObject> headerItems = header.getItems();
 				rootChildren.listIterator(1).forEachRemaining(rac -> {
 					if (rac instanceof Action) {
-						headerItems.add(createLabel((Action) rac, activeAction, uriResolver, "header/navigation", true));
+						headerItems.add(createLabel((Action) rac, activeAction, uriResolver, null, "header/navigation", true));
 					} else {
 						headerItems.add(EcoreUtil.copy(rac));
 					}
@@ -203,7 +210,7 @@ public class TestAction extends TestBase {
 				EList<EObject> footerItems = footer.getItems();
 				rootNavigation.forEach(ran -> {
 					if (ran instanceof Action) {
-						footerItems.add(createLabel((Action) ran, activeAction, uriResolver, "footer/navigation", true));
+						footerItems.add(createLabel((Action) ran, activeAction, uriResolver, null, "footer/navigation", true));
 					} else {
 						footerItems.add(EcoreUtil.copy(ran));
 					}
@@ -213,11 +220,146 @@ public class TestAction extends TestBase {
 		}
 		
 		if (principal != null) {
+			// Navbar 
+			Label brand = createLabel(principal, activeAction, uriResolver, null, "navbar/brand", false);
+			EList<EObject> principalNavigation = principal.getNavigation();
+			if (brand != null || !principalNavigation.isEmpty()) {
+				NavigationBar navBar = appPage.getNavigationBar();
+				if (navBar == null) {
+					navBar = AppFactory.eINSTANCE.createNavigationBar();
+					appPage.setNavigationBar(navBar);
+				}
+				if (brand != null) {
+					navBar.setBrand(brand);
+				}
+				EList<EObject> navBarItems = navBar.getItems();
+				principalNavigation.forEach(principalNavigationElement -> {
+					if (principalNavigationElement instanceof Action) {
+						navBarItems.add(createLabel((Action) principalNavigationElement, activeAction, uriResolver, null, "navbar/item", true));
+					} else {
+						navBarItems.add(EcoreUtil.copy(principalNavigationElement));
+					}
+				});
+			}
 			
+			// Navigation panel
+			EList<EObject> principalChildren = principal.getChildren();
+			if (!principalChildren.isEmpty()) {
+				NavigationPanel navPanel = appPage.getNavigationPanel();
+				if (navPanel == null) {
+					navPanel = AppFactory.eINSTANCE.createNavigationPanel();
+					appPage.setNavigationPanel(navPanel);
+				}
+				if (Util.isBlank(navPanel.getId())) {
+					navPanel.setId(principal.getId() + "-navigation-panel");
+				}
+				Function<Action, String> navItemIdProvider = na -> Util.isBlank(na.getId()) ? null : "nsd-app-nav-item-" + na.getId();
+				EList<EObject> navPanelItems = navPanel.getItems();
+				principalChildren.forEach(principalChild -> {
+					if (principalChild instanceof Action) {
+						navPanelItems.add(createLabel((Action) principalChild, activeAction, uriResolver, navItemIdProvider, "nav-panel", true));
+					} else {
+						navPanelItems.add(EcoreUtil.copy(principalChild));
+					}
+				});
+				
+			}
 		}
 		
+		// Content panel
+		ContentPanel contentPanel = appPage.getContentPanel();
+		if (contentPanel == null) {
+			contentPanel = AppFactory.eINSTANCE.createContentPanel();
+			appPage.setContentPanel(contentPanel);
+		}
 		
+		List<Action> path = new ArrayList<>();
+		if (activeAction != root && activeAction != principal) {
+			for (EObject ancestor = activeAction.eContainer(); ancestor instanceof Action && ancestor != principal; ancestor = ancestor.eContainer()) {
+				path.add((Action) ancestor);
+			}
+		}
+		
+		Collections.reverse(path);
+		
+		buildContentPanel(activeAction, path, activeAction == root || activeAction == principal, contentPanel, uriResolver, progressMonitor);	
+	}
 	
+	private void buildContentPanel(
+			Action action, 
+			List<Action> path,
+			boolean rootOrPrincipal,
+			ContentPanel contentPanel,
+			BiFunction<Action, URI, URI> uriResolver, 
+			ProgressMonitor progressMonitor) {
+		
+		if (!rootOrPrincipal) {
+			if (path != null && !path.isEmpty()) {
+				EList<Label> breadcrumb = contentPanel.getBreadcrumb();
+				path.forEach(pathElement -> {
+					Label element = createLabel(pathElement, action, uriResolver, null, "content-panel/breadcrumb", false);
+					if (element != null) {
+						breadcrumb.add(element);
+					}
+				});
+				Label tail = createLabel(action, action, uriResolver, null, "content-panel/breadcrumb", false);		
+				tail.setActive(true);
+				breadcrumb.add(tail);
+			}
+	
+			if (!Util.isBlank(action.getText()) || !Util.isBlank(action.getIcon())) {
+				Label title = AppFactory.eINSTANCE.createLabel(); 
+				configureLabel(action, action, uriResolver, null, "content-panel/title", title, false);
+				contentPanel.setTitle(title);
+			}
+					
+			EList<EObject> navigation = action.getNavigation();
+			EList<EObject> navigationItems = contentPanel.getItems();
+			navigation.forEach(navigationElement -> {
+				if (navigationElement instanceof Action) {
+					navigationItems.add(createLabel((Action) navigationElement, action, uriResolver, null, "content-panel/navigation-item", true));
+				} else {
+					navigationItems.add(EcoreUtil.copy(navigationElement));
+				}
+			});
+		}
+		
+		int sectionColumns = action.getSectionColumns();
+		if (sectionColumns > 0) {
+			contentPanel.setSectionColumns(sectionColumns);
+		}
+		SectionStyle sectionStyle = action.getSectionStyle();
+		if (sectionStyle != null) {
+			contentPanel.setSectionStyle(sectionStyle);
+		}
+		
+		EList<ContentPanel> cpSections = contentPanel.getSections();
+		for (Action section: action.getSections()) {
+			ContentPanel sectionPanel = AppFactory.eINSTANCE.createContentPanel();
+			cpSections.add(sectionPanel);
+			buildContentPanel(section, null, false, sectionPanel, uriResolver, progressMonitor);
+		}
+
+		contentPanel.setFloatLeftNavigation(createNavigationPanel(action.getFloatLeftNavigation()));
+		contentPanel.setFloatRightNavigation(createNavigationPanel(action.getFloatRightNavigation()));
+		contentPanel.setLeftNavigation(createNavigationPanel(action.getLeftNavigation()));		
+		contentPanel.setRightNavigation(createNavigationPanel(action.getRightNavigation()));
+		
+		contentPanel.getContent().addAll(EcoreUtil.copyAll(action.getContent()));
+	}
+	
+	/**
+	 * Creates a copy of a panel if not null and replaces action references with links.
+	 * @param panel
+	 * @return
+	 */
+	private NavigationPanel createNavigationPanel(NavigationPanel panel) {
+		if (panel == null) {
+			return null;
+		}
+		NavigationPanel ret = EcoreUtil.copy(panel);
+		// TODO - process action references.
+		return ret;
 	}
 
 	private boolean isLink(Action action, URI uri) {		
@@ -228,6 +370,7 @@ public class TestAction extends TestBase {
 			Action action, 
 			Action activeAction, 
 			BiFunction<Action, URI, URI> uriResolver, 
+			Function<Action, String> idProvider, 
 			String appearancePath, 
 			Label label, 
 			boolean recursive) {
@@ -246,13 +389,15 @@ public class TestAction extends TestBase {
 			throw new UnsupportedOperationException("Help modals not supported yet");
 		}
 		label.setIcon(action.getIcon());
+		if (idProvider != null) {
+			label.setId(idProvider.apply(action));
+		}
 //		label.setId(action.getId());		
 		label.setNotification(action.getNotification());
 		label.setOutline(action.isOutline());
 		label.setText(action.getText());
 		label.setTooltip(action.getTooltip());
 //		label.getAttributes();
-//		label.getChildren();
 		
 		if (label instanceof Link) {
 			configureLink(action, activeAction, uriResolver, (Link) label);
@@ -263,7 +408,7 @@ public class TestAction extends TestBase {
 			for (EObject actionChild: action.getChildren()) {
 				if (actionChild instanceof Action) {
 					Action childAction = (Action) actionChild;
-					labelChildren.add(createLabel(childAction, activeAction, uriResolver, "header/navigation", recursive));
+					labelChildren.add(createLabel(childAction, activeAction, uriResolver, idProvider, "header/navigation", recursive));
 					
 					// Second level - headers, separators.
 				} else {
@@ -315,6 +460,7 @@ public class TestAction extends TestBase {
 			Action action, 
 			Action activeAction, 
 			BiFunction<Action, URI, URI> uriResolver, 
+			Function<Action, String> idProvider, 
 			String appearancePath,
 			boolean recursive) {
 		
@@ -325,7 +471,7 @@ public class TestAction extends TestBase {
 			return null;
 		}
 		Label label = isLink(action, uri) ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
-		configureLabel(action, activeAction, uriResolver, appearancePath, label, recursive);
+		configureLabel(action, activeAction, uriResolver, idProvider, appearancePath, label, recursive);
 				
 		return label;
 	}
@@ -364,12 +510,18 @@ public class TestAction extends TestBase {
 			}
 			
 			private URI compute(Action action) {
-				String uriString = context.interpolateToString(action.getLocation());
-				if (Util.isBlank(uriString)) {
-					return null;
-				}
+				String uriString;
 				if (action.eContainmentFeature() == AppPackage.Literals.ACTION__SECTIONS) {
-					uriString = "#" + uriString;
+					String aName = context.interpolateToString(action.getLocation());
+					if (Util.isBlank(aName)) {
+						return null;
+					}
+					uriString = "#" + aName;
+				} else {				
+					uriString = context.interpolateToString(action.getLocation());
+					if (Util.isBlank(uriString)) {
+						return null;
+					}
 				}
 				URI uri = URI.createURI(uriString);
 				if (uri.isRelative()) {

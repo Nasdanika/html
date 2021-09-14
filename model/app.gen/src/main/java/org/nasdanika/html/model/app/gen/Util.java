@@ -89,9 +89,11 @@ public final class Util {
 		
 		Tag content = htmlFactory.div().addClass("collapse", "navbar-collapse").id(navbarContentId);
 		navbar.accept(content);
-		Tag navs = navs(items, bootstrapFactory);
-		navs.removeClass("nav").addClass("navbar-nav", "mr-auto");
-		content.accept(navs);
+		if (items != null && !items.isEmpty()) {
+			Tag navs = navs(items, bootstrapFactory);
+			navs.removeClass("nav").addClass("navbar-nav", "mr-auto");
+			content.accept(navs);
+		}
 		return navbar;
 	}
 			

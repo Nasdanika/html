@@ -45,32 +45,32 @@ public class LinkTagSupplierFactoryAdapter<M extends Link> extends LabelTagSuppl
 				@SuppressWarnings("unchecked")
 				List<Object> pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);
 				pageBody.add(modal);
-			} else {							
-				String location = context.interpolateToString(semanticElement.getLocation());
-				String confirmation = context.interpolateToString(semanticElement.getConfirmation());
-				if (!Util.isBlank(location)) {
-					anchor.attribute("href", location);					
-					if (!Util.isBlank(confirmation)) {
-						anchor.on(Event.click, "return confirm('" + confirmation + "');");
-					}
-					String target = context.interpolateToString(semanticElement.getTarget());
-					if (!Util.isBlank(target)) {
-						anchor.attribute("target", target);
-					}
-				} else { 
-					String script = context.interpolateToString(semanticElement.getScript());
-					if (!Util.isBlank(script)) {
+			} else {	
+				String name = context.interpolateToString(semanticElement.getName());
+				if (!Util.isBlank(name)) {
+					anchor.attribute("name", name);
+				} else {				
+					String location = context.interpolateToString(semanticElement.getLocation());
+					String confirmation = context.interpolateToString(semanticElement.getConfirmation());
+					if (!Util.isBlank(location)) {
+						anchor.attribute("href", location);					
 						if (!Util.isBlank(confirmation)) {
-							script = "if (confirm('" + confirmation + "')) { "+ script +" } return false;";
+							anchor.on(Event.click, "return confirm('" + confirmation + "');");
 						}
-						anchor.on(Event.click, script);
-						anchor.style("cursor", "pointer");
-						anchor.attribute("href", "#");
-					} else {
-						String name = context.interpolateToString(semanticElement.getName());
-						if (!Util.isBlank(name)) {
-							anchor.attribute("name", name);
+						String target = context.interpolateToString(semanticElement.getTarget());
+						if (!Util.isBlank(target)) {
+							anchor.attribute("target", target);
 						}
+					} else { 
+						String script = context.interpolateToString(semanticElement.getScript());
+						if (!Util.isBlank(script)) {
+							if (!Util.isBlank(confirmation)) {
+								script = "if (confirm('" + confirmation + "')) { "+ script +" } return false;";
+							}
+							anchor.on(Event.click, script);
+							anchor.style("cursor", "pointer");
+							anchor.attribute("href", "#");
+						} 
 					}
 				}
 			}
