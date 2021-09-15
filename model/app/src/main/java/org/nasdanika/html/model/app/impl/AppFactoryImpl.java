@@ -65,6 +65,7 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 			case AppPackage.CONTENT_PANEL: return createContentPanel();
 			case AppPackage.FOOTER: return createFooter();
 			case AppPackage.ACTION: return createAction();
+			case AppPackage.ACTION_REFERENCE: return createActionReference();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -201,6 +202,17 @@ public class AppFactoryImpl extends EFactoryImpl implements AppFactory {
 	public Action createAction() {
 		ActionImpl action = new ActionImpl();
 		return action;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public ActionReference createActionReference() {
+		ActionReferenceImpl actionReference = new ActionReferenceImpl();
+		return actionReference;
 	}
 
 	/**

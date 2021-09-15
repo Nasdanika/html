@@ -1,0 +1,15 @@
+app-action:
+  icon: https://docs.nasdanika.org/images/nasdanika-logo.png
+  text: Nasdanika
+  location: https://www.nasdanika.org 
+  tooltip: Root action
+  children:
+    - app-action:
+        icon: fa fa-book
+        text: Documentation
+        id: doc
+        location: ${base-uri}index.html 
+        tooltip: Documentation
+        content:
+          content-text: TODO  
+          

@@ -1476,6 +1476,43 @@ public interface AppPackage extends EPackage {
 	int ACTION_OPERATION_COUNT = LINK_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.ActionReferenceImpl <em>Action Reference</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.app.impl.ActionReferenceImpl
+	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getActionReference()
+	 * @generated
+	 */
+	int ACTION_REFERENCE = 10;
+
+	/**
+	 * The feature id for the '<em><b>Target</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_REFERENCE__TARGET = 0;
+
+	/**
+	 * The number of structural features of the '<em>Action Reference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_REFERENCE_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>Action Reference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_REFERENCE_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1483,7 +1520,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getNavigationPanelStyle()
 	 * @generated
 	 */
-	int NAVIGATION_PANEL_STYLE = 11;
+	int NAVIGATION_PANEL_STYLE = 12;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.SectionStyle <em>Section Style</em>}' enum.
@@ -1493,7 +1530,7 @@ public interface AppPackage extends EPackage {
 	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getSectionStyle()
 	 * @generated
 	 */
-	int SECTION_STYLE = 10;
+	int SECTION_STYLE = 11;
 
 
 	/**
@@ -2147,6 +2184,27 @@ public interface AppPackage extends EPackage {
 	EAttribute getAction_ModalActivator();
 
 	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ActionReference <em>Action Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Action Reference</em>'.
+	 * @see org.nasdanika.html.model.app.ActionReference
+	 * @generated
+	 */
+	EClass getActionReference();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.nasdanika.html.model.app.ActionReference#getTarget <em>Target</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Target</em>'.
+	 * @see org.nasdanika.html.model.app.ActionReference#getTarget()
+	 * @see #getActionReference()
+	 * @generated
+	 */
+	EReference getActionReference_Target();
+
+	/**
 	 * Returns the meta object for enum '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2688,6 +2746,24 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ACTION__MODAL_ACTIVATOR = eINSTANCE.getAction_ModalActivator();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ActionReferenceImpl <em>Action Reference</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.app.impl.ActionReferenceImpl
+		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getActionReference()
+		 * @generated
+		 */
+		EClass ACTION_REFERENCE = eINSTANCE.getActionReference();
+
+		/**
+		 * The meta object literal for the '<em><b>Target</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ACTION_REFERENCE__TARGET = eINSTANCE.getActionReference_Target();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}' enum.

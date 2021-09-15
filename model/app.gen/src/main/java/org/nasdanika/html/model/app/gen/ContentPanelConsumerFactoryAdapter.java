@@ -22,6 +22,7 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.RowContainer.Row.Cell;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -31,6 +32,8 @@ import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Container.Row;
 import org.nasdanika.html.bootstrap.Navs;
 import org.nasdanika.html.bootstrap.Size;
+import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.html.bootstrap.Table.TableBody;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.ContentPanel;
 import org.nasdanika.html.model.app.Label;
@@ -68,7 +71,7 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 			@Override
 			@SuppressWarnings("unchecked")
 			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>> execute(BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>> input, ProgressMonitor progressMonitor) throws Exception {
-				Tag ret = (Tag) input.getFirst();
+				HTMLElement<?> ret = (HTMLElement<?>) input.getFirst();
 				
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				Map<EStructuralFeature, HTMLElement<?>> navigationPanels = new LinkedHashMap<>();
@@ -78,18 +81,18 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 				if (semanticElement.getFloatLeftNavigation() != null) {
 					Tag floatLeftNavigation = bootstrapFactory.getHTMLFactory().div();
 					floatLeftNavigation.addClass("nsd-app-content-panel-float-left-navigation");
-					ret.accept(floatLeftNavigation);
+					((java.util.function.Consumer<Object>) ret).accept(floatLeftNavigation);
 					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__FLOAT_LEFT_NAVIGATION, floatLeftNavigation);
 				}
 				if (semanticElement.getFloatRightNavigation() != null) {
 					Tag floatRightNavigation = bootstrapFactory.getHTMLFactory().div();
 					floatRightNavigation.addClass("nsd-app-content-panel-float-right-navigation");
-					ret.accept(floatRightNavigation);
+					((java.util.function.Consumer<Object>) ret).accept(floatRightNavigation);
 					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__FLOAT_RIGHT_NAVIGATION, floatRightNavigation);
 				}
 								
 				Container container = bootstrapFactory.fluidContainer();
-				ret.accept(container.toHTMLElement());
+				((java.util.function.Consumer<Object>) ret).accept(container.toHTMLElement());
 				
 				List<Object> breadcrumb = (List<Object>) input.getSecond().get(AppPackage.Literals.CONTENT_PANEL__BREADCRUMB);
 				if (breadcrumb != null) {
@@ -289,13 +292,13 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 		sectionRow.col().toHTMLElement().accept(contentDiv);
 		List<HTMLElement<?>> sections = new ArrayList<>();
 		
+		boolean active = true;
 		for (ContentPanel section: getTarget().getSections()) {
 			Tag sectionContentContainer = htmlFactory.div().addClass("tab-pane").id(htmlFactory.nextId());
-			Label sTitle = section.getTitle();
-			boolean isActive = sTitle != null && sTitle.isActive();
-			if (isActive) {
+			if (active) {
 				sectionContentContainer.addClass("active");
 			}
+			boolean isActive = active;
 			contentDiv.accept(sectionContentContainer);
 			sections.add(sectionContentContainer);
 			BiConsumer<ContentPanel, Tag> titleConsumer = (sectionSemanticElement, title) -> {
@@ -310,6 +313,8 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 					.attribute("role", "tab");
 			};
 			sectionContentContainer.setData(TITLE_CONSUMER_KEY, titleConsumer);
+			sectionContentContainer.setData(section);
+			active = false;
 		}
 		return sections;
 	}
@@ -325,7 +330,25 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 	}
 	
 	private List<HTMLElement<?>> tableSections(Container contentFloatsAndSectionsContainer, BootstrapFactory bootstrapFactory) {
-		throw new UnsupportedOperationException();
+		Row sectionRow = contentFloatsAndSectionsContainer.row();
+		sectionRow.toHTMLElement().addClass("nsd-app-content-panel-section-row", "nsd-app-content-panel-section-table");
+		Table table = bootstrapFactory.table().bordered();
+		sectionRow.col(table);
+		List<HTMLElement<?>> sections = new ArrayList<>();
+
+		TableBody body = table.body();
+		for (ContentPanel section: getTarget().getSections()) {
+			org.nasdanika.html.bootstrap.RowContainer.Row row = body.row();
+			Cell titleCell = row.cell().toHTMLElement();
+			Cell contentCell = row.cell().toHTMLElement();
+			contentCell.setData(section);
+			sections.add(contentCell);
+			BiConsumer<ContentPanel, Tag> titleConsumer = (sectionSemanticElement, title) -> {
+				titleCell.accept(title);
+			};
+			contentCell.setData(TITLE_CONSUMER_KEY, titleConsumer);
+		}
+		return sections;
 	}
 	
 	private List<HTMLElement<?>> cardTabSections(Container contentFloatsAndSectionsContainer, BootstrapFactory bootstrapFactory) {

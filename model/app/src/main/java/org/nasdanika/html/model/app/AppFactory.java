@@ -103,6 +103,15 @@ public interface AppFactory extends EFactory {
 	Action createAction();
 
 	/**
+	 * Returns a new object of class '<em>Action Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Action Reference</em>'.
+	 * @generated
+	 */
+	ActionReference createActionReference();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

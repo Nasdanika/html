@@ -95,5 +95,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/inline"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Action/modalActivator"/>
     </genClasses>
+    <genClasses ecoreClass="app.ecore#//ActionReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference app.ecore#//ActionReference/target"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

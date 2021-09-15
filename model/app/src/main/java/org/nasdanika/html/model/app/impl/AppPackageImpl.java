@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.ActionReference;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.ContentPanel;
@@ -105,6 +106,13 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	private EClass actionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass actionReferenceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -802,6 +810,26 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
+	public EClass getActionReference() {
+		return actionReferenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getActionReference_Target() {
+		return (EReference)actionReferenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EEnum getNavigationPanelStyle() {
 		return navigationPanelStyleEEnum;
 	}
@@ -914,6 +942,9 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEReference(actionEClass, ACTION__RESOURCES);
 		createEAttribute(actionEClass, ACTION__INLINE);
 		createEAttribute(actionEClass, ACTION__MODAL_ACTIVATOR);
+
+		actionReferenceEClass = createEClass(ACTION_REFERENCE);
+		createEReference(actionReferenceEClass, ACTION_REFERENCE__TARGET);
 
 		// Create enums
 		sectionStyleEEnum = createEEnum(SECTION_STYLE);
@@ -1034,6 +1065,9 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEReference(getAction_Resources(), theResourcesPackage.getResource(), null, "resources", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Inline(), ecorePackage.getEBoolean(), "inline", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_ModalActivator(), ecorePackage.getEBoolean(), "modalActivator", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(actionReferenceEClass, ActionReference.class, "ActionReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getActionReference_Target(), this.getAction(), null, "target", null, 1, 1, ActionReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(sectionStyleEEnum, SectionStyle.class, "SectionStyle");

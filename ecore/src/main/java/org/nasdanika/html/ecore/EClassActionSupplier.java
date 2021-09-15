@@ -188,6 +188,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			Action attributesCategory = AppFactory.eINSTANCE.createAction();
 			attributesCategory.setText("Attributes");
 			attributesCategory.setName("attributes");
+			attributesCategory.setSectionStyle(SectionStyle.HEADER);
 			sections.add(attributesCategory);
 			EList<Action> attributes = attributesCategory.getSections();
 			for (EStructuralFeature sf: eObject.getEAttributes().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
@@ -199,6 +200,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			Action referencesCategory = AppFactory.eINSTANCE.createAction();
 			referencesCategory.setText("References");
 			referencesCategory.setName("references");
+			referencesCategory.setSectionStyle(SectionStyle.HEADER);
 			sections.add(referencesCategory);
 			EList<Action> references = referencesCategory.getSections();			
 			for (EStructuralFeature sf: eObject.getEReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
@@ -210,6 +212,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			Action operationsCategory = AppFactory.eINSTANCE.createAction();
 			operationsCategory.setText("Operations");
 			operationsCategory.setName("operations");
+			operationsCategory.setSectionStyle(SectionStyle.HEADER);
 			sections.add(operationsCategory);
 			EList<Action> operations = operationsCategory.getSections();			
 			for (EOperation eOp: eObject.getEOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {

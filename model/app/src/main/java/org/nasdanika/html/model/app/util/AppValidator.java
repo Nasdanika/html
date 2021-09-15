@@ -117,6 +117,8 @@ public class AppValidator extends EObjectValidator {
 				return validateFooter((Footer)value, diagnostics, context);
 			case AppPackage.ACTION:
 				return validateAction((Action)value, diagnostics, context);
+			case AppPackage.ACTION_REFERENCE:
+				return validateActionReference((ActionReference)value, diagnostics, context);
 			case AppPackage.SECTION_STYLE:
 				return validateSectionStyle((SectionStyle)value, diagnostics, context);
 			case AppPackage.NAVIGATION_PANEL_STYLE:
@@ -277,6 +279,15 @@ public class AppValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= bootstrapValidator.validateItem_activeAndDisabled(action, diagnostics, context);
 		if (result || diagnostics != null) result &= validateLink_activator(action, diagnostics, context);
 		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateActionReference(ActionReference actionReference, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(actionReference, diagnostics, context);
 	}
 
 	/**

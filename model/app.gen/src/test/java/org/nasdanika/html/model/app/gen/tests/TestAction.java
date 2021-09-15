@@ -3,25 +3,15 @@ package org.nasdanika.html.model.app.gen.tests;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.Test;
 import org.nasdanika.common.Context;
@@ -29,7 +19,6 @@ import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
-import org.nasdanika.common.Util;
 import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.common.resources.FileSystemContainer;
 import org.nasdanika.exec.ExecPackage;
@@ -38,20 +27,10 @@ import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.html.model.app.Action;
-import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
-import org.nasdanika.html.model.app.ContentPanel;
-import org.nasdanika.html.model.app.Footer;
-import org.nasdanika.html.model.app.Header;
-import org.nasdanika.html.model.app.Label;
-import org.nasdanika.html.model.app.Link;
-import org.nasdanika.html.model.app.NavigationBar;
-import org.nasdanika.html.model.app.NavigationPanel;
-import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
-import org.nasdanika.html.model.bootstrap.Appearance;
+import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
-import org.nasdanika.html.model.bootstrap.Modal;
 import org.nasdanika.html.model.html.HtmlPackage;
 
 /**
@@ -79,9 +58,6 @@ public class TestAction extends TestBase {
 		Action root = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
 		dumpToYaml(root);
 		
-		URI baseURI = URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
-		BiFunction<Action, URI, URI> uriResolver = uriResolver(Context.singleton("base-uri", baseURI));
-		
 		Container container = ResourcesFactory.eINSTANCE.createContainer();
 		container.setName("Actions");
 		
@@ -93,459 +69,15 @@ public class TestAction extends TestBase {
 		String pageTemplateResource = "app/page-template.yml";
 		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) Objects.requireNonNull(loadObject(pageTemplateResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + pageTemplateResource);
 		
-		generate(
+		Util.generateSite(
 				root, 
-				(Action) root.getChildren().get(0), 
-				root,
 				pageTemplate,
-				uriResolver, 
-				baseURI, 
-				container, 
+				container,
+				Context.EMPTY_CONTEXT,
 				progressMonitor);
 		
 		modelResource.save(null);
 		
-	}
-	
-	private void generate(
-			Action root, 
-			Action principal, 
-			Action activeAction, 
-			org.nasdanika.html.model.bootstrap.Page pageTemplate,
-			BiFunction<Action, URI, URI> uriResolver, 
-			URI baseURI,
-			Container container,
-			ProgressMonitor progressMonitor) {
-		
-		if (activeAction.eContainmentFeature() != AppPackage.Literals.ACTION__SECTIONS) {
-			URI uri = uriResolver.apply(activeAction, baseURI);				
-			if (uri != null && uri.isRelative()) {
-				org.nasdanika.exec.resources.File file = container.getFile(uri.toString());
-				org.nasdanika.html.model.bootstrap.Page bootstrapPage = EcoreUtil.copy(pageTemplate);
-				bootstrapPage.setName(activeAction.getText());
-				if (bootstrapPage.getBody().isEmpty()) {
-					bootstrapPage.getBody().add(AppFactory.eINSTANCE.createPage());
-				}
-				for (EObject be: bootstrapPage.getBody()) {
-					if (be instanceof org.nasdanika.html.model.app.Page) {
-						buildAppPage(root, principal, activeAction, (org.nasdanika.html.model.app.Page) be, uriResolver, progressMonitor);						
-					}
-				}
-				file.getContents().add(bootstrapPage);
-				
-				for (org.nasdanika.exec.resources.Resource res: activeAction.getResources()) {
-					((Container) file.eContainer()).getContents().add(EcoreUtil.copy(res));					
-				}				
-			}
-		}
-		
-		for (EObject child: activeAction.getChildren()) {
-			if (child instanceof Action) {
-				generate(root, principal, (Action) child, pageTemplate, uriResolver, baseURI, container, progressMonitor);
-			}
-		}
-		
-		for (EObject section: activeAction.getSections()) {
-			if (section instanceof Action) {
-				generate(root, principal, (Action) section, pageTemplate, uriResolver, baseURI, container, progressMonitor);
-			}
-		}
-				
-		for (EObject navigation: activeAction.getNavigation()) {
-			if (navigation instanceof Action) {
-				generate(root, principal, (Action) navigation, pageTemplate, uriResolver, baseURI, container, progressMonitor);
-			}
-		}
-		
-		for (EObject anonymous: activeAction.getAnonymous()) {
-			if (anonymous instanceof Action) {
-				generate(root, principal, (Action) anonymous, pageTemplate, uriResolver, baseURI, container, progressMonitor);
-			}
-		}
-		
-		generate(root, principal, activeAction.getFloatLeftNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
-		generate(root, principal, activeAction.getFloatRightNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
-		generate(root, principal, activeAction.getLeftNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
-		generate(root, principal, activeAction.getRightNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
-	}
-	
-	private void buildAppPage(
-			Action root, 
-			Action principal, 
-			Action activeAction, 
-			org.nasdanika.html.model.app.Page appPage,
-			BiFunction<Action, URI, URI> uriResolver, 
-			ProgressMonitor progressMonitor) {
-		
-		if (root != null) {
-			Label title = createLabel(root, activeAction, uriResolver, null, "header/title", false);
-			EList<EObject> rootChildren = root.getChildren();
-			if (title != null || rootChildren.size() > 1) {
-				// Header
-				Header header = appPage.getHeader();
-				if (header == null) {
-					header = AppFactory.eINSTANCE.createHeader();
-					appPage.setHeader(header);
-				}
-				if (title != null) {
-					header.setTitle(title);
-				}
-				EList<EObject> headerItems = header.getItems();
-				rootChildren.listIterator(1).forEachRemaining(rac -> {
-					if (rac instanceof Action) {
-						headerItems.add(createLabel((Action) rac, activeAction, uriResolver, null, "header/navigation", true));
-					} else {
-						headerItems.add(EcoreUtil.copy(rac));
-					}
-				});
-			}
-			
-			EList<EObject> rootNavigation = root.getNavigation();
-			if (!rootNavigation.isEmpty()) {
-				Footer footer = appPage.getFooter();
-				if (footer == null) {
-					footer = AppFactory.eINSTANCE.createFooter();
-					appPage.setFooter(footer);
-				}
-				EList<EObject> footerItems = footer.getItems();
-				rootNavigation.forEach(ran -> {
-					if (ran instanceof Action) {
-						footerItems.add(createLabel((Action) ran, activeAction, uriResolver, null, "footer/navigation", true));
-					} else {
-						footerItems.add(EcoreUtil.copy(ran));
-					}
-				});
-				
-			}
-		}
-		
-		if (principal != null) {
-			// Navbar 
-			Label brand = createLabel(principal, activeAction, uriResolver, null, "navbar/brand", false);
-			EList<EObject> principalNavigation = principal.getNavigation();
-			if (brand != null || !principalNavigation.isEmpty()) {
-				NavigationBar navBar = appPage.getNavigationBar();
-				if (navBar == null) {
-					navBar = AppFactory.eINSTANCE.createNavigationBar();
-					appPage.setNavigationBar(navBar);
-				}
-				if (brand != null) {
-					navBar.setBrand(brand);
-				}
-				EList<EObject> navBarItems = navBar.getItems();
-				principalNavigation.forEach(principalNavigationElement -> {
-					if (principalNavigationElement instanceof Action) {
-						navBarItems.add(createLabel((Action) principalNavigationElement, activeAction, uriResolver, null, "navbar/item", true));
-					} else {
-						navBarItems.add(EcoreUtil.copy(principalNavigationElement));
-					}
-				});
-			}
-			
-			// Navigation panel
-			EList<EObject> principalChildren = principal.getChildren();
-			if (!principalChildren.isEmpty()) {
-				NavigationPanel navPanel = appPage.getNavigationPanel();
-				if (navPanel == null) {
-					navPanel = AppFactory.eINSTANCE.createNavigationPanel();
-					appPage.setNavigationPanel(navPanel);
-				}
-				if (Util.isBlank(navPanel.getId())) {
-					navPanel.setId(principal.getId() + "-navigation-panel");
-				}
-				Function<Action, String> navItemIdProvider = na -> Util.isBlank(na.getId()) ? null : "nsd-app-nav-item-" + na.getId();
-				EList<EObject> navPanelItems = navPanel.getItems();
-				principalChildren.forEach(principalChild -> {
-					if (principalChild instanceof Action) {
-						navPanelItems.add(createLabel((Action) principalChild, activeAction, uriResolver, navItemIdProvider, "nav-panel", true));
-					} else {
-						navPanelItems.add(EcoreUtil.copy(principalChild));
-					}
-				});
-				
-			}
-		}
-		
-		// Content panel
-		ContentPanel contentPanel = appPage.getContentPanel();
-		if (contentPanel == null) {
-			contentPanel = AppFactory.eINSTANCE.createContentPanel();
-			appPage.setContentPanel(contentPanel);
-		}
-		
-		List<Action> path = new ArrayList<>();
-		if (activeAction != root && activeAction != principal) {
-			for (EObject ancestor = activeAction.eContainer(); ancestor instanceof Action && ancestor != principal; ancestor = ancestor.eContainer()) {
-				path.add((Action) ancestor);
-			}
-		}
-		
-		Collections.reverse(path);
-		
-		buildContentPanel(activeAction, path, activeAction == root || activeAction == principal, contentPanel, uriResolver, progressMonitor);	
-	}
-	
-	private void buildContentPanel(
-			Action action, 
-			List<Action> path,
-			boolean rootOrPrincipal,
-			ContentPanel contentPanel,
-			BiFunction<Action, URI, URI> uriResolver, 
-			ProgressMonitor progressMonitor) {
-		
-		if (!rootOrPrincipal) {
-			if (path != null && !path.isEmpty()) {
-				EList<Label> breadcrumb = contentPanel.getBreadcrumb();
-				path.forEach(pathElement -> {
-					Label element = createLabel(pathElement, action, uriResolver, null, "content-panel/breadcrumb", false);
-					if (element != null) {
-						breadcrumb.add(element);
-					}
-				});
-				Label tail = createLabel(action, action, uriResolver, null, "content-panel/breadcrumb", false);		
-				tail.setActive(true);
-				breadcrumb.add(tail);
-			}
-	
-			if (!Util.isBlank(action.getText()) || !Util.isBlank(action.getIcon())) {
-				Label title = AppFactory.eINSTANCE.createLabel(); 
-				configureLabel(action, action, uriResolver, null, "content-panel/title", title, false);
-				contentPanel.setTitle(title);
-			}
-					
-			EList<EObject> navigation = action.getNavigation();
-			EList<EObject> navigationItems = contentPanel.getItems();
-			navigation.forEach(navigationElement -> {
-				if (navigationElement instanceof Action) {
-					navigationItems.add(createLabel((Action) navigationElement, action, uriResolver, null, "content-panel/navigation-item", true));
-				} else {
-					navigationItems.add(EcoreUtil.copy(navigationElement));
-				}
-			});
-		}
-		
-		int sectionColumns = action.getSectionColumns();
-		if (sectionColumns > 0) {
-			contentPanel.setSectionColumns(sectionColumns);
-		}
-		SectionStyle sectionStyle = action.getSectionStyle();
-		if (sectionStyle != null) {
-			contentPanel.setSectionStyle(sectionStyle);
-		}
-		
-		EList<ContentPanel> cpSections = contentPanel.getSections();
-		for (Action section: action.getSections()) {
-			ContentPanel sectionPanel = AppFactory.eINSTANCE.createContentPanel();
-			cpSections.add(sectionPanel);
-			buildContentPanel(section, null, false, sectionPanel, uriResolver, progressMonitor);
-		}
-
-		contentPanel.setFloatLeftNavigation(createNavigationPanel(action.getFloatLeftNavigation()));
-		contentPanel.setFloatRightNavigation(createNavigationPanel(action.getFloatRightNavigation()));
-		contentPanel.setLeftNavigation(createNavigationPanel(action.getLeftNavigation()));		
-		contentPanel.setRightNavigation(createNavigationPanel(action.getRightNavigation()));
-		
-		contentPanel.getContent().addAll(EcoreUtil.copyAll(action.getContent()));
-	}
-	
-	/**
-	 * Creates a copy of a panel if not null and replaces action references with links.
-	 * @param panel
-	 * @return
-	 */
-	private NavigationPanel createNavigationPanel(NavigationPanel panel) {
-		if (panel == null) {
-			return null;
-		}
-		NavigationPanel ret = EcoreUtil.copy(panel);
-		// TODO - process action references.
-		return ret;
-	}
-
-	private boolean isLink(Action action, URI uri) {		
-		return uri != null || !Util.isBlank(action.getScript()) || action.getModal() != null || !Util.isBlank(action.getName());
-	}
-	
-	private void configureLabel(
-			Action action, 
-			Action activeAction, 
-			BiFunction<Action, URI, URI> uriResolver, 
-			Function<Action, String> idProvider, 
-			String appearancePath, 
-			Label label, 
-			boolean recursive) {
-		Appearance aa = action.getAppearance();
-		if (aa != null) {
-			label.setAppearance(aa.effectiveAppearance(appearancePath));
-		}
-
-		label.setActive(activeAction == action);
-		label.setColor(action.getColor());
-		label.setDescription(action.getDescription());
-		label.setDisabled(action.isDisabled());
-		Modal help = action.getHelp();
-		if (help != null) {
-//		label.setHelp(value); TODO - make links in help relative.
-			throw new UnsupportedOperationException("Help modals not supported yet");
-		}
-		label.setIcon(action.getIcon());
-		if (idProvider != null) {
-			label.setId(idProvider.apply(action));
-		}
-//		label.setId(action.getId());		
-		label.setNotification(action.getNotification());
-		label.setOutline(action.isOutline());
-		label.setText(action.getText());
-		label.setTooltip(action.getTooltip());
-//		label.getAttributes();
-		
-		if (label instanceof Link) {
-			configureLink(action, activeAction, uriResolver, (Link) label);
-		}
-		
-		if (recursive) {
-			EList<EObject> labelChildren = label.getChildren();
-			for (EObject actionChild: action.getChildren()) {
-				if (actionChild instanceof Action) {
-					Action childAction = (Action) actionChild;
-					labelChildren.add(createLabel(childAction, activeAction, uriResolver, idProvider, "header/navigation", recursive));
-					
-					// Second level - headers, separators.
-				} else {
-					labelChildren.add(EcoreUtil.copy(actionChild));
-				}							
-			}			
-		}
-	}
-	
-	private void configureLink(
-			Action action, 
-			Action activeAction, 
-			BiFunction<Action, URI, URI> uriResolver, 
-			Link link) {
-		
-		URI activeActionURI = uriResolver.apply(activeAction, null);
-		URI uri = uriResolver.apply(action, activeActionURI);
-		
-		if (uri != null) {
-			link.setLocation(uri.toString());
-		}
-		link.setConfirmation(action.getConfirmation());
-		if (action.getModal() != null) {
-//		link.setModal(value); TODO - contextualization of links - relativization of URI's. Token expansion with a property computer? something like ${relative-uri/<uri here>}? 
-//		Support of sub-tokens e.g. ${{relative-uri/${token}}} recognizes ${token} as a sub-token to be expanded to result in ${relative-uri/<token value>}.
-			throw new UnsupportedOperationException("Modals are not supported yet");
-		}
-		if (action.isModalActivator()) {
-			throw new UnsupportedOperationException("Modals are not supported yet");
-		}
-		if (action.isInline()) {
-			throw new UnsupportedOperationException("Inline actions are not supported yet");			
-		}
-		link.setName(action.getName());
-		link.setScript(action.getScript());
-		link.setTarget(action.getTarget());
-		
-	}
-	
-	/**
-	 * Creates a {@link Link} from {@link Action} with a relative location for locations.
-	 * @param action
-	 * @param uri
-	 * @param active 
-	 * @param appearancePath 
-	 * @return
-	 */
-	private Label createLabel(
-			Action action, 
-			Action activeAction, 
-			BiFunction<Action, URI, URI> uriResolver, 
-			Function<Action, String> idProvider, 
-			String appearancePath,
-			boolean recursive) {
-		
-		URI activeActionURI = uriResolver.apply(activeAction, null);
-		URI uri = uriResolver.apply(action, activeActionURI);
-		
-		if (Util.isBlank(action.getText()) && Util.isBlank(action.getIcon()) && !recursive) {
-			return null;
-		}
-		Label label = isLink(action, uri) ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
-		configureLabel(action, activeAction, uriResolver, idProvider, appearancePath, label, recursive);
-				
-		return label;
-	}
-	
-	protected void generate(
-			Action root, 
-			Action principal, 
-			NavigationPanel navigationPanel,
-			org.nasdanika.html.model.bootstrap.Page pageTemplate,
-			BiFunction<Action, URI, URI> uriResolver, 
-			URI baseURI, 
-			Container container,
-			ProgressMonitor progressMonitor) {
-		
-		if (navigationPanel != null) {
-			for (EObject item: navigationPanel.getItems()) {
-				if (item instanceof Action) {
-					generate(root, principal, (Action) item, pageTemplate, uriResolver, baseURI, container, progressMonitor);
-				}
-			}			
-		}
-	}
-	
-	/**
-	 * @param context
-	 * @return A function resolving {@link URI} for the argument {@link Action}. Caches results.
-	 */
-	private BiFunction<Action,URI,URI> uriResolver(Context context) {		
-		return new BiFunction<Action, URI, URI>() {
-			Map<Action, URI> cache = new HashMap<>();
-			
-			@Override
-			public URI apply(Action action, URI base) {
-				URI uri = cache.computeIfAbsent(action, this::compute);
-				return base == null || uri == null ? uri : uri.deresolve(base, true, true, true);
-			}
-			
-			private URI compute(Action action) {
-				String uriString;
-				if (action.eContainmentFeature() == AppPackage.Literals.ACTION__SECTIONS) {
-					String aName = context.interpolateToString(action.getLocation());
-					if (Util.isBlank(aName)) {
-						return null;
-					}
-					uriString = "#" + aName;
-				} else {				
-					uriString = context.interpolateToString(action.getLocation());
-					if (Util.isBlank(uriString)) {
-						return null;
-					}
-				}
-				URI uri = URI.createURI(uriString);
-				if (uri.isRelative()) {
-					URI base = getAncestorURI(action);				
-					if (base != null) {					
-						return uri.resolve(base);
-					}
-				}
-				return uri;
-			}
-			
-			private URI getAncestorURI(Action action) {
-				for (EObject ancestor = action.eContainer(); ancestor != null; ancestor = ancestor.eContainer()) {
-					if (ancestor instanceof Action) {
-						URI ancestorURI = apply((Action) ancestor, null);
-						if (ancestorURI != null) {
-							return ancestorURI;
-						}
-					}
-				}		
-				return null;
-			}
-			
-		};
 	}
 	
 	/**

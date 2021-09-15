@@ -10,8 +10,6 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.html.Fragment;
-import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.model.app.Action;
@@ -59,16 +57,11 @@ public class EEnumActionSupplier extends EClassifierActionSupplier<EEnum> {
 		usesAction.setText("Uses");
 		
 		// Uses
-		HTMLFactory htmlFactory = context.get(HTMLFactory.class);
-		Fragment gstf = htmlFactory.fragment(TagName.h3.create("Uses"));
-
 		Tag list = TagName.ul.create();
-		gstf.content(list);
-		
 		for (EClass use: uses) {
 			list.content(TagName.li.create(link(use)));
 		}
-		addContent(usesAction, gstf.toString());
+		addContent(usesAction, list.toString());
 		
 		return usesAction;
 	}
