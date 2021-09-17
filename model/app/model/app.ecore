@@ -410,6 +410,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActionReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
-        eType="#//Action"/>
+        eType="#//Action">
+      <eAnnotations source="urn:org.nasdanika">
+        <details key="default-feature" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
 </ecore:EPackage>

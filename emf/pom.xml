@@ -4,13 +4,13 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2021.8.0</version>
+	    <version>2021.9.0</version>
 	    <relativePath>..</relativePath>
 	  </parent>
 	<artifactId>emf</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML EMF library</name>
-	<description>Classes for generating HTML Application UI from EMF classes.</description>
+	<description>Classes for generating HTML Application UI from Ecore model elements.</description>
 	<build>
 	    <plugins>
 			<plugin>

@@ -624,19 +624,19 @@ public final class Util {
 		cache.put(action, actionURI);
 		for (EObject child: resolveActionReferences(action.getChildren())) {
 			if (child instanceof Action) {
-				traverse((Action) child, actionURI, context, cache);
+				traverse((Action) child, actionURI == null ? base : actionURI, context, cache);
 			}
 		}
 		for (EObject item: resolveActionReferences(action.getNavigation())) {
 			if (item instanceof Action) {
-				traverse((Action) item, actionURI, context, cache);
+				traverse((Action) item, actionURI == null ? base : actionURI, context, cache);
 			}
 		}
 		for (Action section: action.getSections()) {
-			traverse(section, actionURI, context, cache);
+			traverse(section, actionURI == null ? base : actionURI, context, cache);
 		}
 		for (Action anonymous: action.getAnonymous()) {
-			traverse(anonymous, actionURI, context, cache);
+			traverse(anonymous, actionURI == null ? base : actionURI, context, cache);
 		}
 		
 		// TODO - nav panels?
@@ -662,8 +662,6 @@ public final class Util {
 		}
 		return uri;
 	}
-	
-	
 	
 	private static EObject resolveActionReference(EObject obj) {
 		return obj instanceof ActionReference ? ((ActionReference) obj).getTarget() : obj;

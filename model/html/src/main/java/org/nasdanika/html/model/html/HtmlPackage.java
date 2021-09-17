@@ -74,6 +74,15 @@ public interface HtmlPackage extends EPackage {
 	int HTML_ELEMENT = 0;
 
 	/**
+	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HTML_ELEMENT__MARKER = ExecPackage.MODEL_ELEMENT__MARKER;
+
+	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -127,6 +136,15 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 */
 	int TAG = 1;
+
+	/**
+	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TAG__MARKER = HTML_ELEMENT__MARKER;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -191,6 +209,15 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 */
 	int PAGE = 2;
+
+	/**
+	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__MARKER = ExecPackage.MODEL_ELEMENT__MARKER;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -293,6 +320,15 @@ public interface HtmlPackage extends EPackage {
 	int STYLESHEET = 3;
 
 	/**
+	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STYLESHEET__MARKER = ContentPackage.FILTER__MARKER;
+
+	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -337,6 +373,15 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 */
 	int STYLESHEET_REFERENCE = 4;
+
+	/**
+	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STYLESHEET_REFERENCE__MARKER = ExecPackage.MODEL_ELEMENT__MARKER;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -385,6 +430,15 @@ public interface HtmlPackage extends EPackage {
 	int SCRIPT = 5;
 
 	/**
+	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT__MARKER = ContentPackage.FILTER__MARKER;
+
+	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -429,6 +483,15 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 */
 	int SCRIPT_REFERENCE = 6;
+
+	/**
+	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT_REFERENCE__MARKER = ExecPackage.MODEL_ELEMENT__MARKER;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.

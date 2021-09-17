@@ -5,8 +5,8 @@
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
     featureDelegation="Dynamic" complianceLevel="8.0" suppressGenModelAnnotations="false"
     copyrightFields="false" providerRootExtendsClass="org.nasdanika.emf.edit.NasdanikaItemProviderAdapter"
-    usedGenPackages="../../org.nasdanika.exec/model/exec.genmodel#//exec" operationReflection="true"
-    importOrganizing="true">
+    usedGenPackages="../../org.nasdanika.exec/model/exec.genmodel#//exec ../../org.nasdanika.ncore/model/ncore.genmodel#//ncore"
+    operationReflection="true" importOrganizing="true">
   <foreignModel>html.ecore</foreignModel>
   <genPackages prefix="Html" basePackage="org.nasdanika.html.model" disposableProviderFactory="true"
       ecorePackage="html.ecore#/">

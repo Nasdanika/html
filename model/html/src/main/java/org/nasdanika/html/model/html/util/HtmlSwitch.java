@@ -12,6 +12,7 @@ import org.nasdanika.exec.ModelElement;
 import org.nasdanika.exec.content.Filter;
 
 import org.nasdanika.html.model.html.*;
+import org.nasdanika.ncore.Marked;
 
 /**
  * <!-- begin-user-doc -->
@@ -74,6 +75,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				HtmlElement htmlElement = (HtmlElement)theEObject;
 				T result = caseHtmlElement(htmlElement);
 				if (result == null) result = caseModelElement(htmlElement);
+				if (result == null) result = caseMarked(htmlElement);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -82,6 +84,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				T result = caseTag(tag);
 				if (result == null) result = caseHtmlElement(tag);
 				if (result == null) result = caseModelElement(tag);
+				if (result == null) result = caseMarked(tag);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -89,6 +92,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				Page page = (Page)theEObject;
 				T result = casePage(page);
 				if (result == null) result = caseModelElement(page);
+				if (result == null) result = caseMarked(page);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -97,6 +101,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				T result = caseStylesheet(stylesheet);
 				if (result == null) result = caseFilter(stylesheet);
 				if (result == null) result = caseModelElement(stylesheet);
+				if (result == null) result = caseMarked(stylesheet);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -104,6 +109,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				StylesheetReference stylesheetReference = (StylesheetReference)theEObject;
 				T result = caseStylesheetReference(stylesheetReference);
 				if (result == null) result = caseModelElement(stylesheetReference);
+				if (result == null) result = caseMarked(stylesheetReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -112,6 +118,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				T result = caseScript(script);
 				if (result == null) result = caseFilter(script);
 				if (result == null) result = caseModelElement(script);
+				if (result == null) result = caseMarked(script);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -119,6 +126,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				ScriptReference scriptReference = (ScriptReference)theEObject;
 				T result = caseScriptReference(scriptReference);
 				if (result == null) result = caseModelElement(scriptReference);
+				if (result == null) result = caseMarked(scriptReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -228,6 +236,21 @@ public class HtmlSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseScriptReference(ScriptReference object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Marked</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Marked</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMarked(Marked object) {
 		return null;
 	}
 

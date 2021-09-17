@@ -14,6 +14,7 @@ import org.nasdanika.exec.ModelElement;
 import org.nasdanika.exec.content.Filter;
 
 import org.nasdanika.html.model.html.*;
+import org.nasdanika.ncore.Marked;
 
 /**
  * <!-- begin-user-doc -->
@@ -98,6 +99,10 @@ public class HtmlAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseScriptReference(ScriptReference object) {
 				return createScriptReferenceAdapter();
+			}
+			@Override
+			public Adapter caseMarked(Marked object) {
+				return createMarkedAdapter();
 			}
 			@Override
 			public Adapter caseModelElement(ModelElement object) {
@@ -222,6 +227,20 @@ public class HtmlAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createScriptReferenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.ncore.Marked <em>Marked</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.ncore.Marked
+	 * @generated
+	 */
+	public Adapter createMarkedAdapter() {
 		return null;
 	}
 

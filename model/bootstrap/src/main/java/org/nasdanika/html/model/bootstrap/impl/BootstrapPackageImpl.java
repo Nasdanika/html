@@ -68,6 +68,7 @@ import org.nasdanika.html.model.bootstrap.Tooltip;
 import org.nasdanika.html.model.bootstrap.util.BootstrapValidator;
 
 import org.nasdanika.html.model.html.HtmlPackage;
+import org.nasdanika.ncore.NcorePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -483,6 +484,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		// Initialize simple dependencies
 		HtmlPackage.eINSTANCE.eClass();
 		ExecPackage.eINSTANCE.eClass();
+		NcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theBootstrapPackage.createPackageContents();

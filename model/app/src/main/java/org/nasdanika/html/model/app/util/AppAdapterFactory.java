@@ -13,6 +13,7 @@ import org.nasdanika.html.model.app.*;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.Item;
 import org.nasdanika.html.model.html.HtmlElement;
+import org.nasdanika.ncore.Marked;
 
 /**
  * <!-- begin-user-doc -->
@@ -113,6 +114,10 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseActionReference(ActionReference object) {
 				return createActionReferenceAdapter();
+			}
+			@Override
+			public Adapter caseMarked(Marked object) {
+				return createMarkedAdapter();
 			}
 			@Override
 			public Adapter caseModelElement(ModelElement object) {
@@ -301,6 +306,20 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createActionReferenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.ncore.Marked <em>Marked</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.ncore.Marked
+	 * @generated
+	 */
+	public Adapter createMarkedAdapter() {
 		return null;
 	}
 

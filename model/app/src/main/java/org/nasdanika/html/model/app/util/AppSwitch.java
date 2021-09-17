@@ -11,6 +11,7 @@ import org.nasdanika.html.model.app.*;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.Item;
 import org.nasdanika.html.model.html.HtmlElement;
+import org.nasdanika.ncore.Marked;
 
 /**
  * <!-- begin-user-doc -->
@@ -76,6 +77,7 @@ public class AppSwitch<T> extends Switch<T> {
 				if (result == null) result = caseItem(label);
 				if (result == null) result = caseHtmlElement(label);
 				if (result == null) result = caseModelElement(label);
+				if (result == null) result = caseMarked(label);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -87,6 +89,7 @@ public class AppSwitch<T> extends Switch<T> {
 				if (result == null) result = caseItem(link);
 				if (result == null) result = caseHtmlElement(link);
 				if (result == null) result = caseModelElement(link);
+				if (result == null) result = caseMarked(link);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -96,6 +99,7 @@ public class AppSwitch<T> extends Switch<T> {
 				if (result == null) result = caseBootstrapElement(page);
 				if (result == null) result = caseHtmlElement(page);
 				if (result == null) result = caseModelElement(page);
+				if (result == null) result = caseMarked(page);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -105,6 +109,7 @@ public class AppSwitch<T> extends Switch<T> {
 				if (result == null) result = caseBootstrapElement(pagePart);
 				if (result == null) result = caseHtmlElement(pagePart);
 				if (result == null) result = caseModelElement(pagePart);
+				if (result == null) result = caseMarked(pagePart);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -115,6 +120,7 @@ public class AppSwitch<T> extends Switch<T> {
 				if (result == null) result = caseBootstrapElement(header);
 				if (result == null) result = caseHtmlElement(header);
 				if (result == null) result = caseModelElement(header);
+				if (result == null) result = caseMarked(header);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -125,6 +131,7 @@ public class AppSwitch<T> extends Switch<T> {
 				if (result == null) result = caseBootstrapElement(navigationBar);
 				if (result == null) result = caseHtmlElement(navigationBar);
 				if (result == null) result = caseModelElement(navigationBar);
+				if (result == null) result = caseMarked(navigationBar);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -135,6 +142,7 @@ public class AppSwitch<T> extends Switch<T> {
 				if (result == null) result = caseBootstrapElement(navigationPanel);
 				if (result == null) result = caseHtmlElement(navigationPanel);
 				if (result == null) result = caseModelElement(navigationPanel);
+				if (result == null) result = caseMarked(navigationPanel);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -145,6 +153,7 @@ public class AppSwitch<T> extends Switch<T> {
 				if (result == null) result = caseBootstrapElement(contentPanel);
 				if (result == null) result = caseHtmlElement(contentPanel);
 				if (result == null) result = caseModelElement(contentPanel);
+				if (result == null) result = caseMarked(contentPanel);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -155,6 +164,7 @@ public class AppSwitch<T> extends Switch<T> {
 				if (result == null) result = caseBootstrapElement(footer);
 				if (result == null) result = caseHtmlElement(footer);
 				if (result == null) result = caseModelElement(footer);
+				if (result == null) result = caseMarked(footer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -167,6 +177,7 @@ public class AppSwitch<T> extends Switch<T> {
 				if (result == null) result = caseItem(action);
 				if (result == null) result = caseHtmlElement(action);
 				if (result == null) result = caseModelElement(action);
+				if (result == null) result = caseMarked(action);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -342,6 +353,21 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseActionReference(ActionReference object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Marked</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Marked</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMarked(Marked object) {
 		return null;
 	}
 

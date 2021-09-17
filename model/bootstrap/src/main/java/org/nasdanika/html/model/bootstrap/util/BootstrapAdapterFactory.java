@@ -56,6 +56,7 @@ import org.nasdanika.html.model.bootstrap.Tooltip;
 
 import org.nasdanika.html.model.html.HtmlElement;
 import org.nasdanika.html.model.html.Page;
+import org.nasdanika.ncore.Marked;
 
 /**
  * <!-- begin-user-doc -->
@@ -288,6 +289,10 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseAccordion(Accordion object) {
 				return createAccordionAdapter();
+			}
+			@Override
+			public Adapter caseMarked(Marked object) {
+				return createMarkedAdapter();
 			}
 			@Override
 			public Adapter caseModelElement(ModelElement object) {
@@ -924,6 +929,20 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createAccordionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.ncore.Marked <em>Marked</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.ncore.Marked
+	 * @generated
+	 */
+	public Adapter createMarkedAdapter() {
 		return null;
 	}
 

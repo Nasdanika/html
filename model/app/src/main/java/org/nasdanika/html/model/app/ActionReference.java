@@ -29,6 +29,7 @@ public interface ActionReference extends EObject {
 	 * @see #setTarget(Action)
 	 * @see org.nasdanika.html.model.app.AppPackage#getActionReference_Target()
 	 * @model required="true"
+	 *        annotation="urn:org.nasdanika default-feature='true'"
 	 * @generated
 	 */
 	Action getTarget();

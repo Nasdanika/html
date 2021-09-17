@@ -29,6 +29,7 @@ import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.app.util.AppValidator;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
+import org.nasdanika.ncore.NcorePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -179,6 +180,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		BootstrapPackage.eINSTANCE.eClass();
 		HtmlPackage.eINSTANCE.eClass();
 		ExecPackage.eINSTANCE.eClass();
+		NcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theAppPackage.createPackageContents();
@@ -1590,6 +1592,12 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   source,
 		   new String[] {
 			   "exclusive-with", "location binding script inline"
+		   });
+		addAnnotation
+		  (getActionReference_Target(),
+		   source,
+		   new String[] {
+			   "default-feature", "true"
 		   });
 	}
 

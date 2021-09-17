@@ -32,6 +32,7 @@ import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
+import org.nasdanika.ncore.NcorePackage;
 
 /**
  * Generation of resource/page model from an action model, optional saving, and then generation of files.
@@ -90,6 +91,7 @@ public class TestAction extends TestBase {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 
+		resourceSet.getPackageRegistry().put(NcorePackage.eNS_URI, NcorePackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(ExecPackage.eNS_URI, ExecPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(ContentPackage.eNS_URI, ContentPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(ResourcesPackage.eNS_URI, ResourcesPackage.eINSTANCE);

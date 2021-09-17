@@ -24,6 +24,7 @@ import org.nasdanika.html.model.html.StylesheetReference;
 import org.nasdanika.html.model.html.Tag;
 
 import org.nasdanika.html.model.html.util.HtmlValidator;
+import org.nasdanika.ncore.NcorePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -130,6 +131,7 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 
 		// Initialize simple dependencies
 		ExecPackage.eINSTANCE.eClass();
+		NcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theHtmlPackage.createPackageContents();

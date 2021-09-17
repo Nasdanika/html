@@ -4,12 +4,37 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2021.8.0</version>
+	    <version>2021.9.0</version>
 	    <relativePath>../..</relativePath>
 	  </parent>
 	<artifactId>bootstrap-model</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Bootstrap Model</name>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classifier>model</classifier>
+							<includes>
+								<include>model/bootstrap.*</include>
+							</includes>
+							<classesDirectory>${project.basedir}</classesDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>		
+		</plugins>
+	</build>
 
 	<dependencies>
 		<dependency>
