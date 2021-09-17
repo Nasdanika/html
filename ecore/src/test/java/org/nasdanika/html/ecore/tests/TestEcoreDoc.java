@@ -10,8 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -51,8 +51,6 @@ import org.nasdanika.html.ecore.ActionSupplier;
 import org.nasdanika.html.ecore.EcoreActionSupplierAdapterFactory;
 import org.nasdanika.html.ecore.GenModelResourceSet;
 import org.nasdanika.html.model.app.Action;
-import org.nasdanika.html.model.app.ActionReference;
-import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.app.gen.Util;
@@ -62,7 +60,6 @@ import org.nasdanika.html.model.html.HtmlPackage;
 public class TestEcoreDoc extends TestBase {
 		
 	private static final URI CONTAINER_MODEL_URI = URI.createFileURI(new File("target/model-doc/container.xml").getAbsolutePath());				
-	private static final URI EXEC_ACTION_MODEL_URI = URI.createFileURI(new File("target/model-doc/actions/exec.genmodel.xml").getAbsolutePath());				
 
 	private DiagramGenerator createDiagramGenerator(ProgressMonitor progressMonitor) {
 		FileSystemContainer output = new FileSystemContainer(new File("target\\diagram-cache"));
@@ -193,6 +190,12 @@ public class TestEcoreDoc extends TestBase {
 	@Test
 	public void generateResourceModel() throws Exception {
 		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
+			if (diagnostic.getStatus() == Status.FAIL) {
+				System.err.println("***********************");
+				System.err.println("*      Diagnostic     *");
+				System.err.println("***********************");
+				diagnostic.dump(System.err, 4);
+			}
 			assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
 		};
 		
@@ -201,11 +204,12 @@ public class TestEcoreDoc extends TestBase {
 		String actionsResource = "actions.yml";
 		Action root = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
 		
-		Resource modelDocResource = createResourceSet().getResource(EXEC_ACTION_MODEL_URI, true);
-		
-		ActionReference ref = AppFactory.eINSTANCE.createActionReference();
-		ref.setTarget((Action) modelDocResource.getContents().get(0));
-		((Action) root.getChildren().get(0)).getChildren().add(ref);
+//		Resource modelDocResource = createResourceSet().getResource(EXEC_ACTION_MODEL_URI, true);
+//		
+//		ActionReference ref = AppFactory.eINSTANCE.createActionReference();
+//		ref.setTarget((Action) modelDocResource.getContents().get(0));
+//		System.out.println(ref.getTarget().eResource().getURIFragment(ref.getTarget()));
+//		((Action) root.getChildren().get(0)).getChildren().add(ref);
 		
 		Container container = ResourcesFactory.eINSTANCE.createContainer();
 		container.setName("doc-site");
@@ -226,7 +230,6 @@ public class TestEcoreDoc extends TestBase {
 				progressMonitor);
 		
 		modelResource.save(null);
-		
 	}
 	
 	/**

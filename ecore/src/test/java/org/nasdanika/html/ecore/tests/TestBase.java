@@ -1,7 +1,5 @@
 package org.nasdanika.html.ecore.tests;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.ArrayList;
@@ -85,6 +83,13 @@ public class TestBase {
 			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
 			Context context,
 			ProgressMonitor progressMonitor) throws Exception {
+		
+		Class<? extends TestBase> clazz = TestBase.this.getClass();
+		URL resourceURL = clazz.getResource(resource);
+		if (resourceURL == null) {
+			throw new IllegalArgumentException("Classloader resource not found: " + resource + " by " + clazz); 
+		}
+		URI resourceURI = URI.createURI(resourceURL.toString());
 
 		class ObjectSupplier extends AppGenYamlLoadingExecutionParticipant implements Supplier<EObject> {
 
@@ -94,18 +99,12 @@ public class TestBase {
 
 			@Override
 			protected Collection<URI> getResources() {
-				Class<? extends TestBase> clazz = TestBase.this.getClass();
-				URL resourceURL = clazz.getResource(resource);
-				if (resourceURL == null) {
-					throw new IllegalArgumentException("Classloader resource not found: " + resource + " by " + clazz); 
-				}
-				return Collections.singleton(URI.createURI(resourceURL.toString()));
+				return Collections.singleton(resourceURI);
 			}
 
 			@Override
-			public EObject execute(ProgressMonitor progressMonitor) throws Exception {
-				assertEquals(1, roots.size());
-				return roots.iterator().next();
+			public EObject execute(ProgressMonitor progressMonitor) throws Exception {				
+				return resourceSet.getResource(resourceURI, false).getContents().iterator().next();
 			}
 			
 		};

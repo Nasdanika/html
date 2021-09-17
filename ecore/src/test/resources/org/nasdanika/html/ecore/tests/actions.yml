@@ -12,4 +12,6 @@ app-action:
         tooltip: Documentation
         content:
           content-text: TODO  
+        children:
+          - app-action-reference: "../../../../../../../target/model-doc/actions/exec.genmodel.xml#/"
           
