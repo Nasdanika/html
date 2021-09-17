@@ -3,8 +3,6 @@
 package org.nasdanika.html.model.bootstrap.impl;
 
 import org.eclipse.emf.ecore.EClass;
-
-import org.nasdanika.exec.impl.ModelElementImpl;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Item;
@@ -24,7 +22,7 @@ import org.nasdanika.html.model.bootstrap.Item;
  *
  * @generated
  */
-public abstract class ItemImpl extends ModelElementImpl implements Item {
+public abstract class ItemImpl extends org.nasdanika.ncore.impl.ModelElementImpl implements Item {
 	/**
 	 * The default value of the '{@link #isActive() <em>Active</em>}' attribute.
 	 * <!-- begin-user-doc -->

@@ -5,7 +5,6 @@ package org.nasdanika.html.model.html;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EObject;
-import org.nasdanika.exec.ModelElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +27,7 @@ import org.nasdanika.exec.ModelElement;
  * @model abstract="true"
  * @generated
  */
-public interface HtmlElement extends ModelElement {
+public interface HtmlElement extends org.nasdanika.ncore.ModelElement {
 
 	/**
 	 * Returns the value of the '<em><b>Attributes</b></em>' map.

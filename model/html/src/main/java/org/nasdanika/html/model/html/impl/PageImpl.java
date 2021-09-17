@@ -13,9 +13,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.util.InternalEList;
-
-import org.nasdanika.exec.impl.ModelElementImpl;
-
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.html.model.html.Page;
 
@@ -38,7 +35,7 @@ import org.nasdanika.html.model.html.Page;
  *
  * @generated
  */
-public class PageImpl extends ModelElementImpl implements Page {
+public class PageImpl extends org.nasdanika.ncore.impl.ModelElementImpl implements Page {
 	/**
 	 * The default value of the '{@link #getLanguage() <em>Language</em>}' attribute.
 	 * <!-- begin-user-doc -->

@@ -2108,6 +2108,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		// Obtain other dependent packages
 		HtmlPackage theHtmlPackage = (HtmlPackage)EPackage.Registry.INSTANCE.getEPackage(HtmlPackage.eNS_URI);
 		ExecPackage theExecPackage = (ExecPackage)EPackage.Registry.INSTANCE.getEPackage(ExecPackage.eNS_URI);
+		NcorePackage theNcorePackage = (NcorePackage)EPackage.Registry.INSTANCE.getEPackage(NcorePackage.eNS_URI);
 
 		// Create type parameters
 
@@ -2120,7 +2121,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		tagEClass.getESuperTypes().add(this.getBootstrapElement());
 		modalEClass.getESuperTypes().add(this.getBootstrapElement());
 		divEClass.getESuperTypes().add(this.getTag());
-		itemEClass.getESuperTypes().add(theExecPackage.getModelElement());
+		itemEClass.getESuperTypes().add(theNcorePackage.getModelElement());
 		actionGroupItemEClass.getESuperTypes().add(this.getItem());
 		linkActionGroupItemEClass.getESuperTypes().add(this.getActionGroupItem());
 		contentActionGroupItemEClass.getESuperTypes().add(this.getActionGroupItem());

@@ -8,7 +8,6 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
-import org.nasdanika.exec.ModelElement;
 import org.nasdanika.html.model.app.*;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.Item;
@@ -120,7 +119,7 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 				return createMarkedAdapter();
 			}
 			@Override
-			public Adapter caseModelElement(ModelElement object) {
+			public Adapter caseModelElement(org.nasdanika.ncore.ModelElement object) {
 				return createModelElementAdapter();
 			}
 			@Override
@@ -324,13 +323,13 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.nasdanika.exec.ModelElement <em>Model Element</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.ncore.ModelElement <em>Model Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.nasdanika.exec.ModelElement
+	 * @see org.nasdanika.ncore.ModelElement
 	 * @generated
 	 */
 	public Adapter createModelElementAdapter() {

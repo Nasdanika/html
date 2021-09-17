@@ -427,6 +427,7 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
+		NcorePackage theNcorePackage = (NcorePackage)EPackage.Registry.INSTANCE.getEPackage(NcorePackage.eNS_URI);
 		ExecPackage theExecPackage = (ExecPackage)EPackage.Registry.INSTANCE.getEPackage(ExecPackage.eNS_URI);
 		ContentPackage theContentPackage = (ContentPackage)EPackage.Registry.INSTANCE.getEPackage(ContentPackage.eNS_URI);
 
@@ -435,13 +436,13 @@ public class HtmlPackageImpl extends EPackageImpl implements HtmlPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		htmlElementEClass.getESuperTypes().add(theExecPackage.getModelElement());
+		htmlElementEClass.getESuperTypes().add(theNcorePackage.getModelElement());
 		tagEClass.getESuperTypes().add(this.getHtmlElement());
-		pageEClass.getESuperTypes().add(theExecPackage.getModelElement());
+		pageEClass.getESuperTypes().add(theNcorePackage.getModelElement());
 		stylesheetEClass.getESuperTypes().add(theContentPackage.getFilter());
-		stylesheetReferenceEClass.getESuperTypes().add(theExecPackage.getModelElement());
+		stylesheetReferenceEClass.getESuperTypes().add(theNcorePackage.getModelElement());
 		scriptEClass.getESuperTypes().add(theContentPackage.getFilter());
-		scriptReferenceEClass.getESuperTypes().add(theExecPackage.getModelElement());
+		scriptReferenceEClass.getESuperTypes().add(theNcorePackage.getModelElement());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(htmlElementEClass, HtmlElement.class, "HtmlElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

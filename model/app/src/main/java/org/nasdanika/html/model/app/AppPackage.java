@@ -81,6 +81,15 @@ public interface AppPackage extends EPackage {
 	int LABEL__MARKER = BootstrapPackage.BOOTSTRAP_ELEMENT__MARKER;
 
 	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__URI = BootstrapPackage.BOOTSTRAP_ELEMENT__URI;
+
+	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -251,6 +260,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK__MARKER = LABEL__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__URI = LABEL__URI;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -479,6 +497,15 @@ public interface AppPackage extends EPackage {
 	int PAGE__MARKER = BootstrapPackage.BOOTSTRAP_ELEMENT__MARKER;
 
 	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__URI = BootstrapPackage.BOOTSTRAP_ELEMENT__URI;
+
+	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -615,6 +642,15 @@ public interface AppPackage extends EPackage {
 	int PAGE_PART__MARKER = BootstrapPackage.BOOTSTRAP_ELEMENT__MARKER;
 
 	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE_PART__URI = BootstrapPackage.BOOTSTRAP_ELEMENT__URI;
+
+	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -695,6 +731,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int HEADER__MARKER = PAGE_PART__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HEADER__URI = PAGE_PART__URI;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -786,6 +831,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int NAVIGATION_BAR__MARKER = PAGE_PART__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_BAR__URI = PAGE_PART__URI;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -906,6 +960,15 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL__MARKER = PAGE_PART__MARKER;
 
 	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_PANEL__URI = PAGE_PART__URI;
+
+	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1004,6 +1067,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_PANEL__MARKER = PAGE_PART__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_PANEL__URI = PAGE_PART__URI;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1169,6 +1241,15 @@ public interface AppPackage extends EPackage {
 	int FOOTER__MARKER = PAGE_PART__MARKER;
 
 	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FOOTER__URI = PAGE_PART__URI;
+
+	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1249,6 +1330,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION__MARKER = LINK__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__URI = LINK__URI;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.

@@ -4,7 +4,7 @@
   <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
     <details key="documentation" value="HTML model"/>
   </eAnnotations>
-  <eClassifiers xsi:type="ecore:EClass" name="HtmlElement" abstract="true" eSuperTypes="../../org.nasdanika.exec/model/exec.ecore#//ModelElement">
+  <eClassifiers xsi:type="ecore:EClass" name="HtmlElement" abstract="true" eSuperTypes="../../org.nasdanika.ncore/model/ncore.ecore#//ModelElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Base class for other HTML and bootstrap elements. "/>
     </eAnnotations>
@@ -36,7 +36,7 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Page" eSuperTypes="../../org.nasdanika.exec/model/exec.ecore#//ModelElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Page" eSuperTypes="../../org.nasdanika.ncore/model/ncore.ecore#//ModelElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="HTML page. The name attribute is output as title tag in the head.&#xA;&#xA;[Overview video](https://www.youtube.com/watch?v=S28UszI-2g8) - in Russian."/>
     </eAnnotations>
@@ -82,7 +82,7 @@
       <details key="documentation" value="CSS stylesheet with code stored in the model element ``code`` attribute."/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="StylesheetReference" eSuperTypes="../../org.nasdanika.exec/model/exec.ecore#//ModelElement">
+  <eClassifiers xsi:type="ecore:EClass" name="StylesheetReference" eSuperTypes="../../org.nasdanika.ncore/model/ncore.ecore#//ModelElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Reference to an external stylesheet."/>
     </eAnnotations>
@@ -101,7 +101,7 @@
       <details key="documentation" value="Script with code stored in the model element ``code`` attribute."/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ScriptReference" eSuperTypes="../../org.nasdanika.exec/model/exec.ecore#//ModelElement">
+  <eClassifiers xsi:type="ecore:EClass" name="ScriptReference" eSuperTypes="../../org.nasdanika.ncore/model/ncore.ecore#//ModelElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="References external script."/>
     </eAnnotations>

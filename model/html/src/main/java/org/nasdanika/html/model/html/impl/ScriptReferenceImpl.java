@@ -3,9 +3,6 @@
 package org.nasdanika.html.model.html.impl;
 
 import org.eclipse.emf.ecore.EClass;
-
-import org.nasdanika.exec.impl.ModelElementImpl;
-
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.html.model.html.ScriptReference;
 
@@ -22,7 +19,7 @@ import org.nasdanika.html.model.html.ScriptReference;
  *
  * @generated
  */
-public class ScriptReferenceImpl extends ModelElementImpl implements ScriptReference {
+public class ScriptReferenceImpl extends org.nasdanika.ncore.impl.ModelElementImpl implements ScriptReference {
 	/**
 	 * The default value of the '{@link #getSrc() <em>Src</em>}' attribute.
 	 * <!-- begin-user-doc -->

@@ -6,10 +6,8 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
-import org.nasdanika.exec.ExecPackage;
-
 import org.nasdanika.exec.content.ContentPackage;
+import org.nasdanika.ncore.NcorePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -80,7 +78,16 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__MARKER = ExecPackage.MODEL_ELEMENT__MARKER;
+	int HTML_ELEMENT__MARKER = NcorePackage.MODEL_ELEMENT__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HTML_ELEMENT__URI = NcorePackage.MODEL_ELEMENT__URI;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -89,7 +96,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__DESCRIPTION = ExecPackage.MODEL_ELEMENT__DESCRIPTION;
+	int HTML_ELEMENT__DESCRIPTION = NcorePackage.MODEL_ELEMENT__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -98,7 +105,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__ATTRIBUTES = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+	int HTML_ELEMENT__ATTRIBUTES = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
@@ -107,7 +114,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__CONTENT = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+	int HTML_ELEMENT__CONTENT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Element</em>' class.
@@ -116,7 +123,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT_FEATURE_COUNT = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 2;
+	int HTML_ELEMENT_FEATURE_COUNT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Element</em>' class.
@@ -125,7 +132,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT_OPERATION_COUNT = ExecPackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
+	int HTML_ELEMENT_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.html.impl.TagImpl <em>Tag</em>}' class.
@@ -145,6 +152,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int TAG__MARKER = HTML_ELEMENT__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TAG__URI = HTML_ELEMENT__URI;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -217,7 +233,16 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__MARKER = ExecPackage.MODEL_ELEMENT__MARKER;
+	int PAGE__MARKER = NcorePackage.MODEL_ELEMENT__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__URI = NcorePackage.MODEL_ELEMENT__URI;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -226,7 +251,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__DESCRIPTION = ExecPackage.MODEL_ELEMENT__DESCRIPTION;
+	int PAGE__DESCRIPTION = NcorePackage.MODEL_ELEMENT__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Head</b></em>' containment reference list.
@@ -235,7 +260,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__HEAD = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+	int PAGE__HEAD = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference list.
@@ -244,7 +269,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__BODY = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+	int PAGE__BODY = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Builders</b></em>' containment reference list.
@@ -253,7 +278,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__BUILDERS = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 2;
+	int PAGE__BUILDERS = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Language</b></em>' attribute.
@@ -262,7 +287,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__LANGUAGE = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 3;
+	int PAGE__LANGUAGE = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -271,7 +296,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__NAME = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 4;
+	int PAGE__NAME = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Stylesheets</b></em>' attribute list.
@@ -280,7 +305,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__STYLESHEETS = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 5;
+	int PAGE__STYLESHEETS = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Scripts</b></em>' attribute list.
@@ -289,7 +314,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__SCRIPTS = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 6;
+	int PAGE__SCRIPTS = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Page</em>' class.
@@ -298,7 +323,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_FEATURE_COUNT = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 7;
+	int PAGE_FEATURE_COUNT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of operations of the '<em>Page</em>' class.
@@ -307,7 +332,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_OPERATION_COUNT = ExecPackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
+	int PAGE_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.html.impl.StylesheetImpl <em>Stylesheet</em>}' class.
@@ -327,6 +352,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int STYLESHEET__MARKER = ContentPackage.FILTER__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STYLESHEET__URI = ContentPackage.FILTER__URI;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -381,7 +415,16 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STYLESHEET_REFERENCE__MARKER = ExecPackage.MODEL_ELEMENT__MARKER;
+	int STYLESHEET_REFERENCE__MARKER = NcorePackage.MODEL_ELEMENT__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STYLESHEET_REFERENCE__URI = NcorePackage.MODEL_ELEMENT__URI;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -390,7 +433,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STYLESHEET_REFERENCE__DESCRIPTION = ExecPackage.MODEL_ELEMENT__DESCRIPTION;
+	int STYLESHEET_REFERENCE__DESCRIPTION = NcorePackage.MODEL_ELEMENT__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' attribute.
@@ -399,7 +442,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STYLESHEET_REFERENCE__TARGET = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+	int STYLESHEET_REFERENCE__TARGET = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Stylesheet Reference</em>' class.
@@ -408,7 +451,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STYLESHEET_REFERENCE_FEATURE_COUNT = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+	int STYLESHEET_REFERENCE_FEATURE_COUNT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Stylesheet Reference</em>' class.
@@ -417,7 +460,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STYLESHEET_REFERENCE_OPERATION_COUNT = ExecPackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
+	int STYLESHEET_REFERENCE_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.html.impl.ScriptImpl <em>Script</em>}' class.
@@ -437,6 +480,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCRIPT__MARKER = ContentPackage.FILTER__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT__URI = ContentPackage.FILTER__URI;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -491,7 +543,16 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCRIPT_REFERENCE__MARKER = ExecPackage.MODEL_ELEMENT__MARKER;
+	int SCRIPT_REFERENCE__MARKER = NcorePackage.MODEL_ELEMENT__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT_REFERENCE__URI = NcorePackage.MODEL_ELEMENT__URI;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -500,7 +561,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCRIPT_REFERENCE__DESCRIPTION = ExecPackage.MODEL_ELEMENT__DESCRIPTION;
+	int SCRIPT_REFERENCE__DESCRIPTION = NcorePackage.MODEL_ELEMENT__DESCRIPTION;
 
 	/**
 	 * The feature id for the '<em><b>Src</b></em>' attribute.
@@ -509,7 +570,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCRIPT_REFERENCE__SRC = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
+	int SCRIPT_REFERENCE__SRC = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Script Reference</em>' class.
@@ -518,7 +579,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCRIPT_REFERENCE_FEATURE_COUNT = ExecPackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
+	int SCRIPT_REFERENCE_FEATURE_COUNT = NcorePackage.MODEL_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Script Reference</em>' class.
@@ -527,7 +588,7 @@ public interface HtmlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCRIPT_REFERENCE_OPERATION_COUNT = ExecPackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
+	int SCRIPT_REFERENCE_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
 
 
 	/**
