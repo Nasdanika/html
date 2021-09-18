@@ -13,6 +13,8 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.Item;
 import org.nasdanika.html.model.html.HtmlElement;
 import org.nasdanika.ncore.Marked;
+import org.nasdanika.ncore.ModelElement;
+import org.nasdanika.ncore.Reference;
 
 /**
  * <!-- begin-user-doc -->
@@ -119,7 +121,7 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 				return createMarkedAdapter();
 			}
 			@Override
-			public Adapter caseModelElement(org.nasdanika.ncore.ModelElement object) {
+			public Adapter caseModelElement(ModelElement object) {
 				return createModelElementAdapter();
 			}
 			@Override
@@ -133,6 +135,10 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseItem(Item object) {
 				return createItemAdapter();
+			}
+			@Override
+			public <T extends ModelElement> Adapter caseReference(Reference<T> object) {
+				return createReferenceAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -375,6 +381,20 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createItemAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.ncore.Reference <em>Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.ncore.Reference
+	 * @generated
+	 */
+	public Adapter createReferenceAdapter() {
 		return null;
 	}
 

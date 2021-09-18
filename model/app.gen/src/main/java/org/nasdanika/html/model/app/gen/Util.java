@@ -360,7 +360,7 @@ public final class Util {
 					navPanel.setId(principal.getId() + "-navigation-panel");
 				}
 				Function<Action, String> navItemIdProvider = na -> isBlank(na.getId()) ? null : "nsd-app-nav-item-" + na.getId();
-				EList<EObject> navPanelItems = navPanel.getItems();
+				List<EObject> navPanelItems = navPanel.getItems();
 				principalChildren.forEach(principalChild -> {
 					if (principalChild instanceof Action) {
 						navPanelItems.add(createLabel((Action) principalChild, activeAction, uriResolver, navItemIdProvider, "nav-panel", true));
@@ -509,6 +509,9 @@ public final class Util {
 		if (recursive) {
 			EList<EObject> labelChildren = label.getChildren();
 			for (EObject actionChild: action.getChildren()) {
+				if (actionChild instanceof ActionReference) {
+					actionChild = ((ActionReference) actionChild).getTarget();
+				}
 				if (actionChild instanceof Action) {
 					Action childAction = (Action) actionChild;
 					labelChildren.add(createLabel(childAction, activeAction, uriResolver, idProvider, "header/navigation", recursive));
@@ -622,6 +625,10 @@ public final class Util {
 	private static void traverse(Action action, URI base, Context context, Map<Action, URI> cache) {
 		URI actionURI = compute(action, base, context);
 		cache.put(action, actionURI);
+//		if (actionURI != null) {
+//			System.out.println(">>> " + action.getText() + " " + action.getLocation() + " > " + actionURI);
+//		}
+		
 		for (EObject child: resolveActionReferences(action.getChildren())) {
 			if (child instanceof Action) {
 				traverse((Action) child, actionURI == null ? base : actionURI, context, cache);

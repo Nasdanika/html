@@ -11,12 +11,16 @@ import org.nasdanika.html.Event;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
+import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Link;
 
 public class LinkTagSupplierFactoryAdapter<M extends Link> extends LabelTagSupplierFactoryAdapter<M> {
 	
-	public LinkTagSupplierFactoryAdapter(M label) {
-		super(label);
+	public LinkTagSupplierFactoryAdapter(M link) {
+		super(link);
+		if (link instanceof Action) {
+			throw new IllegalArgumentException("Actions must be converted to links first");
+		}
 	}
 	
 	@Override

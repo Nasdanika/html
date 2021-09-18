@@ -11,13 +11,17 @@ import org.nasdanika.common.Util;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.jstree.JsTreeNode;
+import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Link;
 
 public class LinkJsTreeNodeSupplierFactoryAdapter<M extends Link> extends LabelJsTreeNodeSupplierFactoryAdapter<M> {
 	
-	public LinkJsTreeNodeSupplierFactoryAdapter(M label) {
-		super(label);
+	public LinkJsTreeNodeSupplierFactoryAdapter(M link) {
+		super(link);
+		if (link instanceof Action) {
+			throw new IllegalArgumentException("Actions must be converted to links first");
+		}
 	}
 	
 	/**

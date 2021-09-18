@@ -190,11 +190,11 @@ public class TestEcoreDoc extends TestBase {
 	@Test
 	public void generateResourceModel() throws Exception {
 		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
-			if (diagnostic.getStatus() == Status.FAIL) {
+			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
 				System.err.println("***********************");
 				System.err.println("*      Diagnostic     *");
 				System.err.println("***********************");
-				diagnostic.dump(System.err, 4);
+				diagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
 			}
 			assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
 		};
@@ -203,13 +203,6 @@ public class TestEcoreDoc extends TestBase {
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		String actionsResource = "actions.yml";
 		Action root = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
-		
-//		Resource modelDocResource = createResourceSet().getResource(EXEC_ACTION_MODEL_URI, true);
-//		
-//		ActionReference ref = AppFactory.eINSTANCE.createActionReference();
-//		ref.setTarget((Action) modelDocResource.getContents().get(0));
-//		System.out.println(ref.getTarget().eResource().getURIFragment(ref.getTarget()));
-//		((Action) root.getChildren().get(0)).getChildren().add(ref);
 		
 		Container container = ResourcesFactory.eINSTANCE.createContainer();
 		container.setName("doc-site");

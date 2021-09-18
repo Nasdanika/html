@@ -5,6 +5,7 @@ package org.nasdanika.html.model.app.impl;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EValidator;
@@ -822,16 +823,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getActionReference_Target() {
-		return (EReference)actionReferenceEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EEnum getNavigationPanelStyle() {
 		return navigationPanelStyleEEnum;
 	}
@@ -946,7 +937,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(actionEClass, ACTION__MODAL_ACTIVATOR);
 
 		actionReferenceEClass = createEClass(ACTION_REFERENCE);
-		createEReference(actionReferenceEClass, ACTION_REFERENCE__TARGET);
 
 		// Create enums
 		sectionStyleEEnum = createEEnum(SECTION_STYLE);
@@ -979,6 +969,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		// Obtain other dependent packages
 		BootstrapPackage theBootstrapPackage = (BootstrapPackage)EPackage.Registry.INSTANCE.getEPackage(BootstrapPackage.eNS_URI);
 		ResourcesPackage theResourcesPackage = (ResourcesPackage)EPackage.Registry.INSTANCE.getEPackage(ResourcesPackage.eNS_URI);
+		NcorePackage theNcorePackage = (NcorePackage)EPackage.Registry.INSTANCE.getEPackage(NcorePackage.eNS_URI);
 
 		// Create type parameters
 
@@ -996,6 +987,10 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		contentPanelEClass.getESuperTypes().add(this.getPagePart());
 		footerEClass.getESuperTypes().add(this.getPagePart());
 		actionEClass.getESuperTypes().add(this.getLink());
+		EGenericType g1 = createEGenericType(theNcorePackage.getReference());
+		EGenericType g2 = createEGenericType(this.getAction());
+		g1.getETypeArguments().add(g2);
+		actionReferenceEClass.getEGenericSuperTypes().add(g1);
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(labelEClass, Label.class, "Label", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1069,7 +1064,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getAction_ModalActivator(), ecorePackage.getEBoolean(), "modalActivator", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(actionReferenceEClass, ActionReference.class, "ActionReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getActionReference_Target(), this.getAction(), null, "target", null, 1, 1, ActionReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(sectionStyleEEnum, SectionStyle.class, "SectionStyle");
@@ -1592,12 +1586,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   source,
 		   new String[] {
 			   "exclusive-with", "location binding script inline"
-		   });
-		addAnnotation
-		  (getActionReference_Target(),
-		   source,
-		   new String[] {
-			   "default-feature", "true"
 		   });
 	}
 

@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
+import org.nasdanika.ncore.NcorePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -1672,7 +1673,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_REFERENCE__TARGET = 0;
+	int ACTION_REFERENCE__TARGET = NcorePackage.REFERENCE__TARGET;
 
 	/**
 	 * The number of structural features of the '<em>Action Reference</em>' class.
@@ -1681,7 +1682,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_REFERENCE_FEATURE_COUNT = 1;
+	int ACTION_REFERENCE_FEATURE_COUNT = NcorePackage.REFERENCE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Action Reference</em>' class.
@@ -1690,7 +1691,7 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_REFERENCE_OPERATION_COUNT = 0;
+	int ACTION_REFERENCE_OPERATION_COUNT = NcorePackage.REFERENCE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}' enum.
@@ -2374,17 +2375,6 @@ public interface AppPackage extends EPackage {
 	EClass getActionReference();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.nasdanika.html.model.app.ActionReference#getTarget <em>Target</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Target</em>'.
-	 * @see org.nasdanika.html.model.app.ActionReference#getTarget()
-	 * @see #getActionReference()
-	 * @generated
-	 */
-	EReference getActionReference_Target();
-
-	/**
 	 * Returns the meta object for enum '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2936,14 +2926,6 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EClass ACTION_REFERENCE = eINSTANCE.getActionReference();
-
-		/**
-		 * The meta object literal for the '<em><b>Target</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ACTION_REFERENCE__TARGET = eINSTANCE.getActionReference_Target();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}' enum.

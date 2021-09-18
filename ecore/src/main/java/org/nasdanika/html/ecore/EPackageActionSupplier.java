@@ -1,12 +1,14 @@
 package org.nasdanika.html.ecore;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -51,7 +53,9 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 	@Override
 	public Action execute(ProgressMonitor progressMonitor) throws Exception {
 		Action action = super.execute(progressMonitor);
-		action.setLocation(eObject.getName() + "/package-summary.html");
+		String ePackageFolder = ePackagePathComputer == null ? Hex.encodeHexString(eObject.getNsURI().getBytes(StandardCharsets.UTF_8)) : ePackagePathComputer.apply(eObject);
+		action.setLocation(ePackageFolder + "/package-summary.html");
+		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject));
 		
 		addContent(action, generateDiagram(false,  null, 0, RelationshipDirection.both, true, true));
 		// TODO - Table (list) of contents

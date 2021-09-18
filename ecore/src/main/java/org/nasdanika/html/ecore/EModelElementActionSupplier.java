@@ -49,7 +49,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 
 	protected Context context;
 
-	private java.util.function.Function<EPackage,String> ePackagePathComputer; 
+	protected java.util.function.Function<EPackage,String> ePackagePathComputer; 
 		
 	public EModelElementActionSupplier(T value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value);		
@@ -383,16 +383,18 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	 * @return
 	 */
 	public String encodeEPackage(EPackage ePackage) {
-		StringBuilder ret = new StringBuilder();
-		
+		String ret = null;
+				
 		for (EPackage p = ePackage; p != null; p = p.getESuperPackage()) {
-			if (ret.length() > 0) {
-				ret.append("/");
+			String segment = ePackagePathComputer == null ? Hex.encodeHexString(p.getNsURI().getBytes(StandardCharsets.UTF_8)) : ePackagePathComputer.apply(p);
+			if (ret == null) {
+				ret = segment;
+			} else {
+				ret = segment + "/" + ret;
 			}
-			ret.append(ePackagePathComputer == null ? Hex.encodeHexString(ePackage.getNsURI().getBytes(StandardCharsets.UTF_8)) : ePackagePathComputer.apply(ePackage));
 		}
 		
-		return ret.toString();
+		return ret;
 	}
 	
 	/**

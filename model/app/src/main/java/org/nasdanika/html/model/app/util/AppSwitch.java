@@ -11,6 +11,8 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.Item;
 import org.nasdanika.html.model.html.HtmlElement;
 import org.nasdanika.ncore.Marked;
+import org.nasdanika.ncore.ModelElement;
+import org.nasdanika.ncore.Reference;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,7 +27,7 @@ import org.nasdanika.ncore.Marked;
  * @see org.nasdanika.html.model.app.AppPackage
  * @generated
  */
-public class AppSwitch<T> extends Switch<T> {
+public class AppSwitch<T1> extends Switch<T1> {
 	/**
 	 * The cached model package
 	 * <!-- begin-user-doc -->
@@ -67,11 +69,11 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	@Override
-	protected T doSwitch(int classifierID, EObject theEObject) {
+	protected T1 doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
 			case AppPackage.LABEL: {
 				Label label = (Label)theEObject;
-				T result = caseLabel(label);
+				T1 result = caseLabel(label);
 				if (result == null) result = caseBootstrapElement(label);
 				if (result == null) result = caseItem(label);
 				if (result == null) result = caseHtmlElement(label);
@@ -82,7 +84,7 @@ public class AppSwitch<T> extends Switch<T> {
 			}
 			case AppPackage.LINK: {
 				Link link = (Link)theEObject;
-				T result = caseLink(link);
+				T1 result = caseLink(link);
 				if (result == null) result = caseLabel(link);
 				if (result == null) result = caseBootstrapElement(link);
 				if (result == null) result = caseItem(link);
@@ -94,7 +96,7 @@ public class AppSwitch<T> extends Switch<T> {
 			}
 			case AppPackage.PAGE: {
 				Page page = (Page)theEObject;
-				T result = casePage(page);
+				T1 result = casePage(page);
 				if (result == null) result = caseBootstrapElement(page);
 				if (result == null) result = caseHtmlElement(page);
 				if (result == null) result = caseModelElement(page);
@@ -104,7 +106,7 @@ public class AppSwitch<T> extends Switch<T> {
 			}
 			case AppPackage.PAGE_PART: {
 				PagePart pagePart = (PagePart)theEObject;
-				T result = casePagePart(pagePart);
+				T1 result = casePagePart(pagePart);
 				if (result == null) result = caseBootstrapElement(pagePart);
 				if (result == null) result = caseHtmlElement(pagePart);
 				if (result == null) result = caseModelElement(pagePart);
@@ -114,7 +116,7 @@ public class AppSwitch<T> extends Switch<T> {
 			}
 			case AppPackage.HEADER: {
 				Header header = (Header)theEObject;
-				T result = caseHeader(header);
+				T1 result = caseHeader(header);
 				if (result == null) result = casePagePart(header);
 				if (result == null) result = caseBootstrapElement(header);
 				if (result == null) result = caseHtmlElement(header);
@@ -125,7 +127,7 @@ public class AppSwitch<T> extends Switch<T> {
 			}
 			case AppPackage.NAVIGATION_BAR: {
 				NavigationBar navigationBar = (NavigationBar)theEObject;
-				T result = caseNavigationBar(navigationBar);
+				T1 result = caseNavigationBar(navigationBar);
 				if (result == null) result = casePagePart(navigationBar);
 				if (result == null) result = caseBootstrapElement(navigationBar);
 				if (result == null) result = caseHtmlElement(navigationBar);
@@ -136,7 +138,7 @@ public class AppSwitch<T> extends Switch<T> {
 			}
 			case AppPackage.NAVIGATION_PANEL: {
 				NavigationPanel navigationPanel = (NavigationPanel)theEObject;
-				T result = caseNavigationPanel(navigationPanel);
+				T1 result = caseNavigationPanel(navigationPanel);
 				if (result == null) result = casePagePart(navigationPanel);
 				if (result == null) result = caseBootstrapElement(navigationPanel);
 				if (result == null) result = caseHtmlElement(navigationPanel);
@@ -147,7 +149,7 @@ public class AppSwitch<T> extends Switch<T> {
 			}
 			case AppPackage.CONTENT_PANEL: {
 				ContentPanel contentPanel = (ContentPanel)theEObject;
-				T result = caseContentPanel(contentPanel);
+				T1 result = caseContentPanel(contentPanel);
 				if (result == null) result = casePagePart(contentPanel);
 				if (result == null) result = caseBootstrapElement(contentPanel);
 				if (result == null) result = caseHtmlElement(contentPanel);
@@ -158,7 +160,7 @@ public class AppSwitch<T> extends Switch<T> {
 			}
 			case AppPackage.FOOTER: {
 				Footer footer = (Footer)theEObject;
-				T result = caseFooter(footer);
+				T1 result = caseFooter(footer);
 				if (result == null) result = casePagePart(footer);
 				if (result == null) result = caseBootstrapElement(footer);
 				if (result == null) result = caseHtmlElement(footer);
@@ -169,7 +171,7 @@ public class AppSwitch<T> extends Switch<T> {
 			}
 			case AppPackage.ACTION: {
 				Action action = (Action)theEObject;
-				T result = caseAction(action);
+				T1 result = caseAction(action);
 				if (result == null) result = caseLink(action);
 				if (result == null) result = caseLabel(action);
 				if (result == null) result = caseBootstrapElement(action);
@@ -182,7 +184,8 @@ public class AppSwitch<T> extends Switch<T> {
 			}
 			case AppPackage.ACTION_REFERENCE: {
 				ActionReference actionReference = (ActionReference)theEObject;
-				T result = caseActionReference(actionReference);
+				T1 result = caseActionReference(actionReference);
+				if (result == null) result = caseReference(actionReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -201,7 +204,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseLabel(Label object) {
+	public T1 caseLabel(Label object) {
 		return null;
 	}
 
@@ -216,7 +219,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseLink(Link object) {
+	public T1 caseLink(Link object) {
 		return null;
 	}
 
@@ -231,7 +234,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T casePage(Page object) {
+	public T1 casePage(Page object) {
 		return null;
 	}
 
@@ -246,7 +249,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T casePagePart(PagePart object) {
+	public T1 casePagePart(PagePart object) {
 		return null;
 	}
 
@@ -261,7 +264,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseHeader(Header object) {
+	public T1 caseHeader(Header object) {
 		return null;
 	}
 
@@ -276,7 +279,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseNavigationBar(NavigationBar object) {
+	public T1 caseNavigationBar(NavigationBar object) {
 		return null;
 	}
 
@@ -291,7 +294,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseNavigationPanel(NavigationPanel object) {
+	public T1 caseNavigationPanel(NavigationPanel object) {
 		return null;
 	}
 
@@ -306,7 +309,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseContentPanel(ContentPanel object) {
+	public T1 caseContentPanel(ContentPanel object) {
 		return null;
 	}
 
@@ -321,7 +324,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseFooter(Footer object) {
+	public T1 caseFooter(Footer object) {
 		return null;
 	}
 
@@ -336,7 +339,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseAction(Action object) {
+	public T1 caseAction(Action object) {
 		return null;
 	}
 
@@ -351,7 +354,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseActionReference(ActionReference object) {
+	public T1 caseActionReference(ActionReference object) {
 		return null;
 	}
 
@@ -366,7 +369,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseMarked(Marked object) {
+	public T1 caseMarked(Marked object) {
 		return null;
 	}
 
@@ -381,7 +384,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseModelElement(org.nasdanika.ncore.ModelElement object) {
+	public T1 caseModelElement(ModelElement object) {
 		return null;
 	}
 
@@ -396,7 +399,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseHtmlElement(HtmlElement object) {
+	public T1 caseHtmlElement(HtmlElement object) {
 		return null;
 	}
 
@@ -411,7 +414,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseBootstrapElement(BootstrapElement object) {
+	public T1 caseBootstrapElement(BootstrapElement object) {
 		return null;
 	}
 
@@ -426,7 +429,22 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseItem(Item object) {
+	public T1 caseItem(Item object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Reference</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <T extends ModelElement> T1 caseReference(Reference<T> object) {
 		return null;
 	}
 
@@ -442,7 +460,7 @@ public class AppSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	@Override
-	public T defaultCase(EObject object) {
+	public T1 defaultCase(EObject object) {
 		return null;
 	}
 

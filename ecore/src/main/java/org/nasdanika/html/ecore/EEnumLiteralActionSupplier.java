@@ -16,7 +16,7 @@ public class EEnumLiteralActionSupplier extends ENamedElementActionSupplier<EEnu
 	public Action execute(ProgressMonitor progressMonitor) throws Exception {
 		Action action = super.execute(progressMonitor);
 		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject.getEEnum().getEPackage()) + "-" + eObject.getEEnum().getName() + "-" + eObject.getName());
-		action.setLocation("#"+eObject.getName());		
+		action.setName(eObject.getName());		
 		return action;
 	}
 		
