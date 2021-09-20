@@ -69,7 +69,6 @@ public class TestEcoreDoc extends TestBase {
 		return DiagramGenerator.INSTANCE.cachingDiagramGenerator(output.stateAdapter().adapt(decoder, encoder), progressMonitor);
 	}
 		
-	@Test	
 	public void generateActionModel() throws Exception {
 		GenModelResourceSet ecoreModelsResourceSet = new GenModelResourceSet();
 		
@@ -187,7 +186,6 @@ public class TestEcoreDoc extends TestBase {
 	 * Generates a resource model from an action model.
 	 * @throws Exception
 	 */
-	@Test
 	public void generateResourceModel() throws Exception {
 		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
 			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
@@ -229,7 +227,6 @@ public class TestEcoreDoc extends TestBase {
 	 * Generates files from the previously generated resource model.
 	 * @throws Exception
 	 */
-	@Test
 	public void generateContainer() throws Exception {
 		ResourceSet resourceSet = createResourceSet();
 		
