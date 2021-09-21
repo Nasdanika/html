@@ -12,5 +12,7 @@ engineering-module:
        description: EClass and EPackage are output as engineered elements. Issues, owner, and other things are loaded using Nasdanika engineering annotation pointing to a yaml file.     
      - name: YAML/load spec
        description: All keys including inherited - changeable, take load-key annotation into account, load-doc annotation to override default description. Sort alphabetically. Table. Homogenous, strict containment, default feature.  
+     - name: Display EMaps directly to the value class with a different relationship, e.g. ``#--`` 
+     - name: Consider support of association classes using annotations. E.g. an annotation on the association class with target reference name. Say ``association-class-reference`` key with reference name.  
 
 
