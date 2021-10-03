@@ -23,6 +23,7 @@ import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.model.app.util.ActionSupplier;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
