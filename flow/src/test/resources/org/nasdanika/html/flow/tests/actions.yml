@@ -1,0 +1,18 @@
+app-action:
+  icon: https://docs.nasdanika.org/images/nasdanika-logo.png
+  uri: nasdanika:test/action/s1/s2
+  text: Nasdanika
+  location: https://www.nasdanika.org 
+  tooltip: Root action
+  children:
+    - app-action:
+        icon: fa fa-book
+        text: Documentation
+        id: doc
+        location: ${base-uri}index.html 
+        tooltip: Documentation
+        content:
+          content-text: TODO  
+        children:
+          - app-action-reference: "../../../../../../../target/model-doc/actions/exec.genmodel.xml#/"
+          
