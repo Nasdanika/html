@@ -3,11 +3,13 @@ package org.nasdanika.html.flow;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Util;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.flow.PackageElement;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.ncore.impl.ModelElementImpl;
 
 public class PackageElementActionSupplier<T extends PackageElement<?>> extends EObjectActionSupplier<T> {
 	
@@ -28,7 +30,14 @@ public class PackageElementActionSupplier<T extends PackageElement<?>> extends E
 	public Action execute(ProgressMonitor progressMonitor) throws Exception {
 		Action ret = AppFactory.eINSTANCE.createAction();		
 		ret.getContent().addAll(EcoreUtil.copyAll(eObject.getDocumentation()));	
-		ret.setLocation("${base-uri}index.html");
+
+		String cPath = ModelElementImpl.containmentPath(eObject);
+		if (Util.isBlank(cPath)) {
+			ret.setLocation("${base-uri}index.html");
+		} else {
+			ret.setLocation(cPath + "/index.html");
+		}
+		
 		ret.setText(eObject.getName()); // Escape?
 		return ret;
 	}

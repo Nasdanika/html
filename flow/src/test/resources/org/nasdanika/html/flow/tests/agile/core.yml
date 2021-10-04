@@ -51,6 +51,7 @@ flow-package:
   activities:
     development:
       flow-flow:
+        name: Agile development
         elements:
           create:
             flow-activity:

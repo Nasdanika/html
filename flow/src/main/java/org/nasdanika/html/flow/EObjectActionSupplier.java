@@ -18,7 +18,7 @@ public abstract class EObjectActionSupplier<T extends EObject> implements Action
 	}	
 	
 	/**
-	 * Adapts child eObject to {@link ActionSupplier} and adds to the list of children to be configured.
+	 * Adapts child eObject to {@link ActionSupplier}.
 	 * @param child
 	 * @return
 	 */

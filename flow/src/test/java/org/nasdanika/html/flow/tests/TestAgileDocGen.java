@@ -26,6 +26,7 @@ import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.content.ContentPackage;
 import org.nasdanika.exec.resources.Container;
+import org.nasdanika.exec.resources.ReconcileAction;
 import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.flow.Package;
@@ -148,10 +149,11 @@ public class TestAgileDocGen extends TestBase {
 		
 		Container container = ResourcesFactory.eINSTANCE.createContainer();
 		container.setName(name);
+		container.setReconcileAction(ReconcileAction.CANCEL);
 		
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-		Resource modelResource = resourceSet.createResource(URI.createURI(name).resolve(CONTAINER_MODELS_URI));
+		Resource modelResource = resourceSet.createResource(URI.createURI(name + ".xml").resolve(CONTAINER_MODELS_URI));
 		modelResource.getContents().add(container);
 		
 		String pageTemplateResource = "page-template.yml";
@@ -176,7 +178,7 @@ public class TestAgileDocGen extends TestBase {
 		
 		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
 				
-		Resource containerResource = resourceSet.getResource(URI.createURI(name).resolve(CONTAINER_MODELS_URI), true);
+		Resource containerResource = resourceSet.getResource(URI.createURI(name + ".xml").resolve(CONTAINER_MODELS_URI), true);
 	
 		BinaryEntityContainer container = new FileSystemContainer(new File("target/model-doc/site"));
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();

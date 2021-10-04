@@ -152,6 +152,8 @@ public final class Util {
 			EObject firstChild = root.getChildren().get(0);
 			if (firstChild instanceof Action) {
 				principal = (Action) firstChild;
+			} else if (firstChild instanceof ActionReference) {
+				principal = ((ActionReference) firstChild).getTarget();
 			}
 		}
 		
