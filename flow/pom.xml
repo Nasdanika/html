@@ -51,6 +51,11 @@
 		  <artifactId>commons-codec</artifactId>
 		  <version>1.15</version>
 		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.core</groupId>
+			<artifactId>diagram-gen</artifactId>
+			<version>${project.version}</version>
+		</dependency>		
 		
 		<dependency>
 			<groupId>junit</groupId>

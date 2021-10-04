@@ -5,14 +5,5 @@ app-action:
   location: https://www.nasdanika.org 
   tooltip: Root action
   children:
-    - app-action:
-        icon: fa fa-book
-        text: Documentation
-        id: doc
-        location: ${base-uri}index.html 
-        tooltip: Documentation
-        content:
-          content-text: TODO  
-        children:
-          - app-action-reference: "../../../../../../../target/model-doc/actions/exec.genmodel.xml#/"
+    - app-action-reference: "../../../../../../../target/model-doc/actions/${model-name}.xml#/"
           

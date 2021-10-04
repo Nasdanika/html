@@ -2,6 +2,7 @@ package org.nasdanika.html.flow;
 
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.model.app.util.ActionSupplier;
 
 /**
  * Adapts {@link EObject} to {@link ActionSupplier}.
