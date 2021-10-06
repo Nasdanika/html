@@ -1,5 +1,9 @@
 package org.nasdanika.html.flow;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+
+import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
@@ -30,6 +34,8 @@ public class PackageElementActionSupplier<T extends PackageElement<?>> extends E
 	public Action execute(ProgressMonitor progressMonitor) throws Exception {
 		Action ret = AppFactory.eINSTANCE.createAction();		
 		ret.getContent().addAll(EcoreUtil.copyAll(eObject.getDocumentation()));	
+		String digest = Hex.encodeHexString(MessageDigest.getInstance("SHA-256").digest(eObject.getUri().getBytes(StandardCharsets.UTF_8)));
+		ret.setId(digest);
 
 		String cPath = ModelElementImpl.containmentPath(eObject);
 		if (Util.isBlank(cPath)) {
