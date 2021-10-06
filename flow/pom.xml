@@ -4,10 +4,10 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2021.10.0</version>
+	    <version>2021.10.1</version>
 	    <relativePath>..</relativePath>
 	  </parent>
-	<artifactId>ecore</artifactId>
+	<artifactId>flow</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML Flow documentation generation</name>
 	<description>Classes for generating Flow models documentation as YAML action spec.</description>
