@@ -19,7 +19,9 @@ public class FlowActionSupplier extends ActivityActionSupplier<Flow> {
 	public Action execute(ProgressMonitor progressMonitor) throws Exception {
 		Action action = super.execute(progressMonitor);
 		
-		EList<EObject> children = action.getChildren();
+		// TODO - diagram to content.
+		
+		EList<EObject> children = action.getChildren(); // TODO - sort by dependency then by name - comparator.
 		for (FlowElement<?> element: eObject.getElements().values()) {
 			if (!(element instanceof PseudoState)) {
 				children.add(adaptChild(element).execute(progressMonitor));

@@ -3,9 +3,9 @@ package org.nasdanika.html.flow;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
@@ -44,14 +44,14 @@ public class PackageActionSupplier extends PackageElementActionSupplier<org.nasd
 	 * @throws Exception 
 	 */
 	protected List<Action> createSubPackageActions(ProgressMonitor progressMonitor) throws Exception {
-		EMap<String, Package> subPackages = eObject.getSubPackages();
+		List<Package> subPackages = eObject.getSubPackages().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (subPackages.isEmpty()) {
 			return Collections.emptyList();
 		}
 		Action group = AppFactory.eINSTANCE.createAction();
 		group.setText("Sub-packages");
 		// TODO - icon, ...
-		for (Package sp: subPackages.values()) {
+		for (Package sp: subPackages) {
 			group.getChildren().add(adaptChild(sp).execute(progressMonitor));
 		}
 		
@@ -65,7 +65,7 @@ public class PackageActionSupplier extends PackageElementActionSupplier<org.nasd
 	 * @throws Exception 
 	 */
 	protected List<Action> createActivityActions(ProgressMonitor progressMonitor) throws Exception {
-		Collection<Activity<?>> activities = eObject.getActivities().values();
+		Collection<Activity<?>> activities = eObject.getActivities().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (activities.isEmpty()) {
 			return Collections.emptyList();
 		}
@@ -86,7 +86,7 @@ public class PackageActionSupplier extends PackageElementActionSupplier<org.nasd
 	 * @throws Exception 
 	 */
 	protected List<Action> createParticipantActions(ProgressMonitor progressMonitor) throws Exception {
-		Collection<Participant> participants = eObject.getParticipants().values();
+		Collection<Participant> participants = eObject.getParticipants().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (participants.isEmpty()) {
 			return Collections.emptyList();
 		}
@@ -107,7 +107,7 @@ public class PackageActionSupplier extends PackageElementActionSupplier<org.nasd
 	 * @throws Exception 
 	 */
 	protected List<Action> createResourceActions(ProgressMonitor progressMonitor) throws Exception {
-		Collection<Resource> resources = eObject.getResources().values();
+		Collection<Resource> resources = eObject.getResources().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (resources.isEmpty()) {
 			return Collections.emptyList();
 		}
@@ -128,7 +128,7 @@ public class PackageActionSupplier extends PackageElementActionSupplier<org.nasd
 	 * @throws Exception 
 	 */
 	protected List<Action> createArtifactActions(ProgressMonitor progressMonitor) throws Exception {
-		Collection<Artifact> artifacts = eObject.getArtifacts().values();
+		Collection<Artifact> artifacts = eObject.getArtifacts().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (artifacts.isEmpty()) {
 			return Collections.emptyList();
 		}
