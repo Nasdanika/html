@@ -14,71 +14,71 @@ import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.Participant;
 import org.nasdanika.flow.Resource;
 import org.nasdanika.flow.Service;
-import org.nasdanika.html.model.app.util.ActionSupplier;
+import org.nasdanika.html.model.app.util.ActionProvider;
 
 /**
  * Provides adapters for the Ecore types - {@link EPackage}, {@link EClass}, {@link EStructuralFeature}, {@link EOperation}, ...
  * @author Pavel
  *
  */
-public class FlowActionSupplierAdapterFactory extends ComposedAdapterFactory {
+public class FlowActionProviderAdapterFactory extends ComposedAdapterFactory {
 	
-	public FlowActionSupplierAdapterFactory(Context context) {
+	public FlowActionProviderAdapterFactory(Context context) {
 		// Registering adapter factories.
 		registerAdapterFactory(
-			new FunctionAdapterFactory<ActionSupplier, org.nasdanika.flow.Package>(
+			new FunctionAdapterFactory<ActionProvider, org.nasdanika.flow.Package>(
 				FlowPackage.Literals.PACKAGE, 
-				ActionSupplier.class, 
+				ActionProvider.class, 
 				this.getClass().getClassLoader(), 
-				e -> new PackageActionSupplier(e, context)));
+				e -> new PackageActionProvider(e, context)));
 
 		// Participant
 		registerAdapterFactory(
-				new FunctionAdapterFactory<ActionSupplier, Participant>(
+				new FunctionAdapterFactory<ActionProvider, Participant>(
 					FlowPackage.Literals.PARTICIPANT, 
-					ActionSupplier.class, 
+					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new ParticipantActionSupplier(e, context)));
+					e -> new ParticipantActionProvider(e, context)));
 		
 		// Resource
 		registerAdapterFactory(
-				new FunctionAdapterFactory<ActionSupplier, Resource>(
+				new FunctionAdapterFactory<ActionProvider, Resource>(
 					FlowPackage.Literals.RESOURCE, 
-					ActionSupplier.class, 
+					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new ResourceActionSupplier(e, context)));
+					e -> new ResourceActionProvider(e, context)));
 		
 		// Artifact
 		registerAdapterFactory(
-				new FunctionAdapterFactory<ActionSupplier, Artifact>(
+				new FunctionAdapterFactory<ActionProvider, Artifact>(
 					FlowPackage.Literals.ARTIFACT, 
-					ActionSupplier.class, 
+					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new ArtifactActionSupplier(e, context)));
+					e -> new ArtifactActionProvider(e, context)));
 		
 		// Activity
 		registerAdapterFactory(
-				new FunctionAdapterFactory<ActionSupplier, Activity<?>>(
+				new FunctionAdapterFactory<ActionProvider, Activity<?>>(
 					FlowPackage.Literals.ACTIVITY, 
-					ActionSupplier.class, 
+					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new ActivityActionSupplier<Activity<?>>(e, context)));
+					e -> new ActivityActionProvider<Activity<?>>(e, context)));
 		
 		// Flow
 		registerAdapterFactory(
-				new FunctionAdapterFactory<ActionSupplier, Flow>(
+				new FunctionAdapterFactory<ActionProvider, Flow>(
 					FlowPackage.Literals.FLOW, 
-					ActionSupplier.class, 
+					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new FlowActionSupplier(e, context)));
+					e -> new FlowActionProvider(e, context)));
 		
 		// Service
 		registerAdapterFactory(
-				new FunctionAdapterFactory<ActionSupplier, Service>(
+				new FunctionAdapterFactory<ActionProvider, Service>(
 					FlowPackage.Literals.SERVICE, 
-					ActionSupplier.class, 
+					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new ServiceActionSupplier(e, context)));
+					e -> new ServiceActionProvider(e, context)));
 		
 	}
 

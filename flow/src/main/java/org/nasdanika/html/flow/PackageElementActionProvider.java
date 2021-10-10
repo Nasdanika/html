@@ -2,8 +2,10 @@ package org.nasdanika.html.flow;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.function.BiConsumer;
 
 import org.apache.commons.codec.binary.Hex;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
@@ -11,11 +13,12 @@ import org.nasdanika.common.Util;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.flow.PackageElement;
+import org.nasdanika.html.emf.EObjectActionProvider;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.ncore.impl.ModelElementImpl;
 
-public class PackageElementActionSupplier<T extends PackageElement<?>> extends EObjectActionSupplier<T> {
+public class PackageElementActionProvider<T extends PackageElement<?>> extends EObjectActionProvider<T> {
 	
 	/**
 	 * Descriptions shorter than this value are put on the top of the tabs, longer
@@ -25,37 +28,36 @@ public class PackageElementActionSupplier<T extends PackageElement<?>> extends E
 
 	protected Context context;
 		
-	public PackageElementActionSupplier(T value, Context context) {
+	public PackageElementActionProvider(T value, Context context) {
 		super(value);		
 		this.context = context;
 	}
 
 	@Override
-	public Action execute(ProgressMonitor progressMonitor) throws Exception {
+	protected Action createAction(
+			BiConsumer<EObject,Action> registry, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			ProgressMonitor progressMonitor) throws Exception {
 		Action ret = AppFactory.eINSTANCE.createAction();		
-		ret.getContent().addAll(EcoreUtil.copyAll(eObject.getDocumentation()));	
-		String digest = Hex.encodeHexString(MessageDigest.getInstance("SHA-256").digest(eObject.getUri().getBytes(StandardCharsets.UTF_8)));
+		T eObj = getTarget();
+		ret.getContent().addAll(EcoreUtil.copyAll(eObj.getDocumentation()));	
+		String digest = Hex.encodeHexString(MessageDigest.getInstance("SHA-256").digest(eObj.getUri().getBytes(StandardCharsets.UTF_8)));
 		ret.setId(digest);
 
-		String cPath = ModelElementImpl.containmentPath(eObject);
+		String cPath = ModelElementImpl.containmentPath(eObj);
 		if (Util.isBlank(cPath)) {
 			ret.setLocation("${base-uri}index.html");
 		} else {
 			ret.setLocation(cPath + "/index.html");
 		}
 		
-		ret.setText(eObject.getName()); // Escape?
+		ret.setText(eObj.getName()); // Escape?
 		return ret;
 	}
 
 	@Override
-	public double size() {
-		return 1;
-	}
-
-	@Override
 	public String name() {
-		return eObject.getName();
+		return getTarget().getName();
 	}
 	
 	/**

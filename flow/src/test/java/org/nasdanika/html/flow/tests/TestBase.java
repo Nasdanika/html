@@ -26,7 +26,7 @@ import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.DiagnosticException;
-import org.nasdanika.common.PrintStreamProgressMonitor;
+//import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
@@ -162,34 +162,6 @@ public class TestBase {
 		return generate(eObject, container, generationContext, progressMonitor);
 	}
 	
-	protected Diagnostic generate(
-			String resource, 
-			BinaryEntityContainer container,
-			Context modelContext,
-			Context generationContext,
-			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer) throws Exception {
-		try (ProgressMonitor progressMonitor = new PrintStreamProgressMonitor()) {
-			return generate(resource, container, modelContext, generationContext, progressMonitor, diagnosticConsumer);
-		}
-	}
-	
-	/**
-	 * Generates with empty context and {@link PrintStreamProgressMonitor} outputting to System.out
-	 * @param resource
-	 * @param container 
-	 * @param diagnosticConsumer Consumer of model diagnostic. 
-	 * @return Generation diagnostic
-	 * @throws Exception
-	 */
-	protected Diagnostic generate(
-			String resource,
-			BinaryEntityContainer container,
-			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer) throws Exception {
-		try (ProgressMonitor progressMonitor = new PrintStreamProgressMonitor()) {
-			return generate(resource, container, Context.EMPTY_CONTEXT, Context.EMPTY_CONTEXT, progressMonitor, diagnosticConsumer);
-		}
-	}	
-
 	// Loading Object	
 	protected Object load(
 			EObject eObject, 
@@ -219,29 +191,6 @@ public class TestBase {
 		EObject eObject = Objects.requireNonNull(loadObject(resource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + resource);
 		return load(eObject, diagnosticConsumer, generationContext, progressMonitor);
 	}
-	
-	protected Object load(
-			String resource, 
-			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
-			Context modelContext,
-			Context generationContext) throws Exception {
-		try (ProgressMonitor progressMonitor = new PrintStreamProgressMonitor()) {
-			return load(resource, diagnosticConsumer, modelContext, generationContext, progressMonitor);
-		}
-	}
-	
-	/**
-	 * Loads input stream with empty context and {@link PrintStreamProgressMonitor} outputting to System.out
-	 * @param resource
-	 * @param diagnosticConsumer
-	 * @return
-	 * @throws Exception
-	 */
-	protected Object load(String resource, Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer) throws Exception {
-		try (ProgressMonitor progressMonitor = new PrintStreamProgressMonitor()) {
-			return load(resource, diagnosticConsumer, Context.EMPTY_CONTEXT, Context.EMPTY_CONTEXT, progressMonitor);
-		}
-	}	
 	
 	// Consuming
 	protected Diagnostic consume(
@@ -273,34 +222,6 @@ public class TestBase {
 		EObject eObject = Objects.requireNonNull(loadObject(resource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + resource);
 		return consume(eObject, arg, generationContext, progressMonitor);
 	}
-	
-	protected Diagnostic consume(
-			String resource, 
-			Object arg,
-			Context modelContext,
-			Context generationContext,
-			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer) throws Exception {
-		try (ProgressMonitor progressMonitor = new PrintStreamProgressMonitor()) {
-			return consume(resource, arg, modelContext, generationContext, progressMonitor, diagnosticConsumer);
-		}
-	}
-	
-	/**
-	 * Generates with empty context and {@link PrintStreamProgressMonitor} outputting to System.out
-	 * @param resource
-	 * @param container 
-	 * @param diagnosticConsumer Consumer of model diagnostic. 
-	 * @return Generation diagnostic
-	 * @throws Exception
-	 */
-	protected Diagnostic consume(
-			String resource,
-			Object arg,
-			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer) throws Exception {
-		try (ProgressMonitor progressMonitor = new PrintStreamProgressMonitor()) {
-			return consume(resource, arg, Context.EMPTY_CONTEXT, Context.EMPTY_CONTEXT, progressMonitor, diagnosticConsumer);
-		}
-	}	
 		
 	public static void copy(File source, File target, boolean cleanTarget, BiConsumer<File,File> listener) throws IOException {
 		if (cleanTarget && target.isDirectory()) {
@@ -342,9 +263,10 @@ public class TestBase {
 	protected void load(
 			String resource, 
 			Consumer<EObject> consumer, 
-			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer) throws Exception {
+			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
+			ProgressMonitor progressMonitor) throws Exception {
 		
-		load(resource, Context.EMPTY_CONTEXT, consumer, diagnosticConsumer);
+		load(resource, Context.EMPTY_CONTEXT, consumer, diagnosticConsumer, progressMonitor);
 	}
 
 	/**
@@ -358,9 +280,8 @@ public class TestBase {
 			String resource,
 			Context context, 
 			Consumer<EObject> consumer, 
-			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer) throws Exception {	
-		// Outputs to console, send to file if desired.
-		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
+			ProgressMonitor progressMonitor) throws Exception {	
 
 		URI resourceURI = URI.createURI(TestBase.this.getClass().getResource(resource).toString());
 

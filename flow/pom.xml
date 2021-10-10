@@ -38,6 +38,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
+			<artifactId>emf</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.html</groupId>
 			<artifactId>app-model-gen</artifactId>
 			<version>${project.version}</version>
 		</dependency>
