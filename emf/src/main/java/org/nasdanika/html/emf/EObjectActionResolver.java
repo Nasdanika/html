@@ -1,5 +1,6 @@
 package org.nasdanika.html.emf;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.html.model.app.Action;
 
@@ -17,7 +18,24 @@ import org.nasdanika.html.model.app.Action;
  * @author Pavel
  *
  */
-public interface EObjectActionResolver extends org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>> {
+public interface EObjectActionResolver extends org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context> {
 	
+	/**
+	 * Resolver context providing access to semantic element to action mapping and URI resolver.
+	 * @author Pavel
+	 *
+	 */
+	interface Context {
+		
+		Action getAction(EObject semanticElement);
+		
+		URI resolve(Action action, URI base);
+
+		default URI resolve(Action action, Action base) {
+			URI bURI = resolve(base, (URI) null);
+			return resolve(action, bURI);
+		}
+		
+	}	
 
 }

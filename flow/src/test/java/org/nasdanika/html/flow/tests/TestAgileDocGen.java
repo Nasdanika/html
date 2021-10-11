@@ -6,6 +6,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -80,9 +82,24 @@ public class TestAgileDocGen extends TestBase {
 					try {
 						Map<EObject,Action> registry = new HashMap<>();
 						Action rootAction = EObjectAdaptable.adaptTo(instance, ActionProvider.class).execute(registry::put, progressMonitor);
+						Context uriResolverContext = Context.singleton(Context.BASE_URI_PROPERTY, URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/"));
+						BiFunction<Action, URI, URI> uriResolver = org.nasdanika.html.model.app.gen.Util.uriResolver(rootAction, uriResolverContext);
 						Adapter resolver = EcoreUtil.getExistingAdapter(rootAction, EObjectActionResolver.class);
-						if (resolver instanceof EObjectActionResolver) {
-							((EObjectActionResolver) resolver).execute(registry::get, progressMonitor);
+						if (resolver instanceof EObjectActionResolver) {														
+							org.nasdanika.html.emf.EObjectActionResolver.Context resolverContext = new org.nasdanika.html.emf.EObjectActionResolver.Context() {
+
+								@Override
+								public Action getAction(EObject semanticElement) {
+									return registry.get(semanticElement);
+								}
+
+								@Override
+								public URI resolve(Action action, URI base) {
+									return uriResolver.apply(action, base);
+								}
+								
+							};
+							((EObjectActionResolver) resolver).execute(resolverContext, progressMonitor);
 						}
 						actionModelResource.getContents().add(rootAction);
 

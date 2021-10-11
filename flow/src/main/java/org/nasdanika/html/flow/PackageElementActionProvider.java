@@ -32,11 +32,11 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 		super(value);		
 		this.context = context;
 	}
-
+	
 	@Override
 	protected Action createAction(
 			BiConsumer<EObject,Action> registry, 
-			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
 		Action ret = AppFactory.eINSTANCE.createAction();		
 		T eObj = getTarget();

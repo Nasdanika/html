@@ -3,7 +3,6 @@ package org.nasdanika.html.emf;
 import java.util.function.BiConsumer;
 //import java.util.function.Consumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -19,6 +18,7 @@ import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
+import org.nasdanika.html.emf.EObjectActionResolver.Context;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
@@ -47,11 +47,11 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			return type == EObjectActionResolver.class;
 		}
 		
-		private CollectionCompoundConsumer<java.util.function.Function<EObject, Action>> accumulator;
+		private CollectionCompoundConsumer<Context> accumulator;
 		
 		public EObjectActionResolverAdapter() {
-			accumulator = new CollectionCompoundConsumer<java.util.function.Function<EObject, Action>>("Resolve consumer accumulator");
-			accumulator.add(new org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>() {
+			accumulator = new CollectionCompoundConsumer<Context>("Resolve consumer accumulator");
+			accumulator.add(new org.nasdanika.common.Consumer<Context>() {
 
 				@Override
 				public double size() {
@@ -64,14 +64,14 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 				}
 
 				@Override
-				public void execute(java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
+				public void execute(Context registry, ProgressMonitor progressMonitor) throws Exception {
 					EObjectActionProvider.this.resolve((Action) getTarget(), registry, progressMonitor);					
 				}
 				
 			});
 		}
 		
-		public void add(org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>> consumer) {
+		public void add(org.nasdanika.common.Consumer<Context> consumer) {
 			accumulator.add(consumer);
 		}
 
@@ -79,8 +79,8 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		 * Executes and removes itself from the list of adapters.
 		 */
 		@Override
-		public void execute(java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
-			accumulator.execute(registry, progressMonitor);		
+		public void execute(Context context, ProgressMonitor progressMonitor) throws Exception {
+			accumulator.execute(context, progressMonitor);		
 			((Action) getTarget()).eAdapters().remove(this);
 		}
 
@@ -124,7 +124,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	 */
 	protected Action createAction(
 			BiConsumer<EObject,Action> registry, 
-			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
 		Action ret = AppFactory.eINSTANCE.createAction();
 		
@@ -137,31 +137,31 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		return ret;
 	}	
 	
-	protected NavigationPanel createLeftNavigation(java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	protected NavigationPanel createLeftNavigation(Context context, ProgressMonitor progressMonitor) throws Exception {
 	
 		return null;
 	}
 	
-	protected NavigationPanel createRightNavigation(java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	protected NavigationPanel createRightNavigation(Context context, ProgressMonitor progressMonitor) throws Exception {
 	
 		return null;
 	}
 	
-	protected NavigationPanel createFloatLeftNavigation(java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	protected NavigationPanel createFloatLeftNavigation(Context context, ProgressMonitor progressMonitor) throws Exception {
 	
 		return null;
 	}
 	
-	protected NavigationPanel createFloatRightNavigation(java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	protected NavigationPanel createFloatRightNavigation(Context context, ProgressMonitor progressMonitor) throws Exception {
 	
 		return null;
 	}
 		
-	protected void resolve(Action action, java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
-		action.setLeftNavigation(createLeftNavigation(registry, progressMonitor));
-		action.setFloatLeftNavigation(createFloatLeftNavigation(registry, progressMonitor));
-		action.setRightNavigation(createRightNavigation(registry, progressMonitor));
-		action.setFloatRightNavigation(createFloatRightNavigation(registry, progressMonitor));
+	protected void resolve(Action action, Context context, ProgressMonitor progressMonitor) throws Exception {
+		action.setLeftNavigation(createLeftNavigation(context, progressMonitor));
+		action.setFloatLeftNavigation(createFloatLeftNavigation(context, progressMonitor));
+		action.setRightNavigation(createRightNavigation(context, progressMonitor));
+		action.setFloatRightNavigation(createFloatRightNavigation(context, progressMonitor));
 		
 		// Navigation
 		
@@ -216,7 +216,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	protected Action createChildAction(
 			EObject child, 
 			BiConsumer<EObject, Action> registry,
-			Consumer<org.nasdanika.common.Consumer<Function<EObject, Action>>> resolveConsumer,
+			Consumer<org.nasdanika.common.Consumer<Context>> resolveConsumer,
 			ProgressMonitor progressMonitor) throws Exception {
 		
 		ActionProvider provider = adaptChild(child);
@@ -258,26 +258,6 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	@Override
 	public String name() {
 		return "Action provider for " + getTarget();
-	}
-	
-	/**
-	 * Creates a link to the argument action with action text, icon, and tooltip.
-	 * This implementation returns an interpolation token to be processed at the later generation state.
-	 * @param action
-	 * @return
-	 */
-	protected String actionLink(Action action) {
-		return "${action/" + action.getId() + "/link}";
-	}
-	
-	/**
-	 * Returns a relative path to the argument action.
-	 * This implementation returns an interpolation token to be processed at the later generation state.
-	 * @param action
-	 * @return
-	 */
-	protected String actionPath(Action action) {
-		return "${action/" + action.getId() + "/path}";
 	}
 	
 }

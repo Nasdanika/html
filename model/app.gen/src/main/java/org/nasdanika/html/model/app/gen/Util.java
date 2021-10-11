@@ -605,7 +605,7 @@ public final class Util {
 	}
 	
 	/**
-	 * Resolves URI's by traversing containment references from root taking {@link ActionReference} into account.
+	 * Resolves URI's by traversing containment references from the root Action taking {@link ActionReference} into account.
 	 * @param context
 	 * @return A function resolving {@link URI} for the argument {@link Action}. Caches results.
 	 */

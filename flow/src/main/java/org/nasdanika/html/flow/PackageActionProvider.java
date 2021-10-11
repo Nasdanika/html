@@ -27,7 +27,7 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 	@Override
 	protected Action createAction(
 			BiConsumer<EObject,Action> registry, 
-			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
 		Action action = super.createAction(registry, resolveConsumer, progressMonitor);
 		
@@ -49,7 +49,7 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 	 */
 	protected List<Action> createSubPackageActions(
 			BiConsumer<EObject,Action> registry, 
-			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
 		List<Package> subPackages = getTarget().getSubPackages().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (subPackages.isEmpty()) {
@@ -73,7 +73,7 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 	 */
 	protected List<Action> createActivityActions(
 			BiConsumer<EObject,Action> registry, 
-			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
 		Collection<Activity<?>> activities = getTarget().getActivities().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (activities.isEmpty()) {
@@ -97,7 +97,7 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 	 */
 	protected List<Action> createParticipantActions(
 			BiConsumer<EObject,Action> registry, 
-			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
 		Collection<Participant> participants = getTarget().getParticipants().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (participants.isEmpty()) {
@@ -121,7 +121,7 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 	 */
 	protected List<Action> createResourceActions(
 			BiConsumer<EObject,Action> registry, 
-			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
 		Collection<Resource> resources = getTarget().getResources().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (resources.isEmpty()) {
@@ -145,7 +145,7 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 	 */
 	protected List<Action> createArtifactActions(
 			BiConsumer<EObject,Action> registry, 
-			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
 		Collection<Artifact> artifacts = getTarget().getArtifacts().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (artifacts.isEmpty()) {
