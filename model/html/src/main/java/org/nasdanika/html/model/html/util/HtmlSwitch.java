@@ -6,10 +6,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
+import org.nasdanika.common.Adaptable;
 import org.nasdanika.exec.content.Filter;
 
 import org.nasdanika.html.model.html.*;
 import org.nasdanika.ncore.Marked;
+import org.nasdanika.ncore.ModelElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -73,6 +75,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				T result = caseHtmlElement(htmlElement);
 				if (result == null) result = caseModelElement(htmlElement);
 				if (result == null) result = caseMarked(htmlElement);
+				if (result == null) result = caseAdaptable(htmlElement);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -82,6 +85,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(tag);
 				if (result == null) result = caseModelElement(tag);
 				if (result == null) result = caseMarked(tag);
+				if (result == null) result = caseAdaptable(tag);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -90,6 +94,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				T result = casePage(page);
 				if (result == null) result = caseModelElement(page);
 				if (result == null) result = caseMarked(page);
+				if (result == null) result = caseAdaptable(page);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -99,6 +104,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				if (result == null) result = caseFilter(stylesheet);
 				if (result == null) result = caseModelElement(stylesheet);
 				if (result == null) result = caseMarked(stylesheet);
+				if (result == null) result = caseAdaptable(stylesheet);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -107,6 +113,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				T result = caseStylesheetReference(stylesheetReference);
 				if (result == null) result = caseModelElement(stylesheetReference);
 				if (result == null) result = caseMarked(stylesheetReference);
+				if (result == null) result = caseAdaptable(stylesheetReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -116,6 +123,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				if (result == null) result = caseFilter(script);
 				if (result == null) result = caseModelElement(script);
 				if (result == null) result = caseMarked(script);
+				if (result == null) result = caseAdaptable(script);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -124,6 +132,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				T result = caseScriptReference(scriptReference);
 				if (result == null) result = caseModelElement(scriptReference);
 				if (result == null) result = caseMarked(scriptReference);
+				if (result == null) result = caseAdaptable(scriptReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -252,6 +261,21 @@ public class HtmlSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Adaptable</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Adaptable</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAdaptable(Adaptable object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Model Element</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -262,7 +286,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseModelElement(org.nasdanika.ncore.ModelElement object) {
+	public T caseModelElement(ModelElement object) {
 		return null;
 	}
 

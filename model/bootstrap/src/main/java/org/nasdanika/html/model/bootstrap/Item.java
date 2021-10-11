@@ -3,6 +3,7 @@
 package org.nasdanika.html.model.bootstrap;
 
 import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.ncore.ModelElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,7 +28,7 @@ import org.nasdanika.html.bootstrap.Color;
  *        annotation="http://www.eclipse.org/emf/2002/Ecore constraints='color activeAndDisabled'"
  * @generated
  */
-public interface Item extends org.nasdanika.ncore.ModelElement {
+public interface Item extends ModelElement {
 	/**
 	 * Returns the value of the '<em><b>Active</b></em>' attribute.
 	 * <!-- begin-user-doc -->

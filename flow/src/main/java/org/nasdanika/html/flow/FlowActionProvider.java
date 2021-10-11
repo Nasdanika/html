@@ -60,7 +60,7 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 					return null;
 				}
 				
-				return elementAction.relativeLocation(action);
+				return actionPath(elementAction);
 			}
 			
 		};

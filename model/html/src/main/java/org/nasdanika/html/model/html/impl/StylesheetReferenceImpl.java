@@ -5,6 +5,7 @@ package org.nasdanika.html.model.html.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.html.model.html.StylesheetReference;
+import org.nasdanika.ncore.impl.ModelElementImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -19,7 +20,7 @@ import org.nasdanika.html.model.html.StylesheetReference;
  *
  * @generated
  */
-public class StylesheetReferenceImpl extends org.nasdanika.ncore.impl.ModelElementImpl implements StylesheetReference {
+public class StylesheetReferenceImpl extends ModelElementImpl implements StylesheetReference {
 	/**
 	 * The default value of the '{@link #getTarget() <em>Target</em>}' attribute.
 	 * <!-- begin-user-doc -->

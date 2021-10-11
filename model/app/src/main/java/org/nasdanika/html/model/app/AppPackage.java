@@ -5,10 +5,11 @@ package org.nasdanika.html.model.app;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
+
 import org.nasdanika.ncore.NcorePackage;
 
 /**
@@ -489,22 +490,13 @@ public interface AppPackage extends EPackage {
 	int LINK_FEATURE_COUNT = LABEL_FEATURE_COUNT + 6;
 
 	/**
-	 * The operation id for the '<em>Relative Location</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LINK___RELATIVE_LOCATION__LINK = LABEL_OPERATION_COUNT + 0;
-
-	/**
 	 * The number of operations of the '<em>Link</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK_OPERATION_COUNT = LABEL_OPERATION_COUNT + 1;
+	int LINK_OPERATION_COUNT = LABEL_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.PageImpl <em>Page</em>}' class.
@@ -1748,15 +1740,6 @@ public interface AppPackage extends EPackage {
 	int ACTION_FEATURE_COUNT = LINK_FEATURE_COUNT + 12;
 
 	/**
-	 * The operation id for the '<em>Relative Location</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION___RELATIVE_LOCATION__LINK = LINK___RELATIVE_LOCATION__LINK;
-
-	/**
 	 * The number of operations of the '<em>Action</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1803,16 +1786,6 @@ public interface AppPackage extends EPackage {
 	int ACTION_REFERENCE_OPERATION_COUNT = NcorePackage.REFERENCE_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.nasdanika.html.model.app.NavigationPanelStyle
-	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getNavigationPanelStyle()
-	 * @generated
-	 */
-	int NAVIGATION_PANEL_STYLE = 12;
-
-	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.SectionStyle <em>Section Style</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1821,6 +1794,16 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	int SECTION_STYLE = 11;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.app.NavigationPanelStyle
+	 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getNavigationPanelStyle()
+	 * @generated
+	 */
+	int NAVIGATION_PANEL_STYLE = 12;
 
 
 	/**
@@ -1832,17 +1815,6 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getLabel();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Help</em>'.
-	 * @see org.nasdanika.html.model.app.Label#getHelp()
-	 * @see #getLabel()
-	 * @generated
-	 */
-	EReference getLabel_Help();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.Label#getId <em>Id</em>}'.
@@ -1922,6 +1894,17 @@ public interface AppPackage extends EPackage {
 	EReference getLabel_Children();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Help</em>'.
+	 * @see org.nasdanika.html.model.app.Label#getHelp()
+	 * @see #getLabel()
+	 * @generated
+	 */
+	EReference getLabel_Help();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.Link <em>Link</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1996,16 +1979,6 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getLink_Target();
-
-	/**
-	 * Returns the meta object for the '{@link org.nasdanika.html.model.app.Link#relativeLocation(org.nasdanika.html.model.app.Link) <em>Relative Location</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Relative Location</em>' operation.
-	 * @see org.nasdanika.html.model.app.Link#relativeLocation(org.nasdanika.html.model.app.Link)
-	 * @generated
-	 */
-	EOperation getLink__RelativeLocation__Link();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.Page <em>Page</em>}'.
@@ -2233,17 +2206,6 @@ public interface AppPackage extends EPackage {
 	EClass getContentPanel();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.ContentPanel#getTitle <em>Title</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Title</em>'.
-	 * @see org.nasdanika.html.model.app.ContentPanel#getTitle()
-	 * @see #getContentPanel()
-	 * @generated
-	 */
-	EReference getContentPanel_Title();
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.app.ContentPanel#getBreadcrumb <em>Breadcrumb</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2253,6 +2215,17 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getContentPanel_Breadcrumb();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.ContentPanel#getTitle <em>Title</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Title</em>'.
+	 * @see org.nasdanika.html.model.app.ContentPanel#getTitle()
+	 * @see #getContentPanel()
+	 * @generated
+	 */
+	EReference getContentPanel_Title();
 
 	/**
 	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.ContentPanel#getLeftNavigation <em>Left Navigation</em>}'.
@@ -2494,16 +2467,6 @@ public interface AppPackage extends EPackage {
 	EClass getActionReference();
 
 	/**
-	 * Returns the meta object for enum '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Navigation Panel Style</em>'.
-	 * @see org.nasdanika.html.model.app.NavigationPanelStyle
-	 * @generated
-	 */
-	EEnum getNavigationPanelStyle();
-
-	/**
 	 * Returns the meta object for enum '{@link org.nasdanika.html.model.app.SectionStyle <em>Section Style</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2512,6 +2475,16 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EEnum getSectionStyle();
+
+	/**
+	 * Returns the meta object for enum '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Navigation Panel Style</em>'.
+	 * @see org.nasdanika.html.model.app.NavigationPanelStyle
+	 * @generated
+	 */
+	EEnum getNavigationPanelStyle();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -2545,14 +2518,6 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EClass LABEL = eINSTANCE.getLabel();
-
-		/**
-		 * The meta object literal for the '<em><b>Help</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference LABEL__HELP = eINSTANCE.getLabel_Help();
 
 		/**
 		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
@@ -2611,6 +2576,14 @@ public interface AppPackage extends EPackage {
 		EReference LABEL__CHILDREN = eINSTANCE.getLabel_Children();
 
 		/**
+		 * The meta object literal for the '<em><b>Help</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LABEL__HELP = eINSTANCE.getLabel_Help();
+
+		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.LinkImpl <em>Link</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2667,14 +2640,6 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute LINK__TARGET = eINSTANCE.getLink_Target();
-
-		/**
-		 * The meta object literal for the '<em><b>Relative Location</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation LINK___RELATIVE_LOCATION__LINK = eINSTANCE.getLink__RelativeLocation__Link();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.PageImpl <em>Page</em>}' class.
@@ -2857,20 +2822,20 @@ public interface AppPackage extends EPackage {
 		EClass CONTENT_PANEL = eINSTANCE.getContentPanel();
 
 		/**
-		 * The meta object literal for the '<em><b>Title</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference CONTENT_PANEL__TITLE = eINSTANCE.getContentPanel_Title();
-
-		/**
 		 * The meta object literal for the '<em><b>Breadcrumb</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference CONTENT_PANEL__BREADCRUMB = eINSTANCE.getContentPanel_Breadcrumb();
+
+		/**
+		 * The meta object literal for the '<em><b>Title</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CONTENT_PANEL__TITLE = eINSTANCE.getContentPanel_Title();
 
 		/**
 		 * The meta object literal for the '<em><b>Left Navigation</b></em>' containment reference feature.
@@ -3055,16 +3020,6 @@ public interface AppPackage extends EPackage {
 		EClass ACTION_REFERENCE = eINSTANCE.getActionReference();
 
 		/**
-		 * The meta object literal for the '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}' enum.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.nasdanika.html.model.app.NavigationPanelStyle
-		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getNavigationPanelStyle()
-		 * @generated
-		 */
-		EEnum NAVIGATION_PANEL_STYLE = eINSTANCE.getNavigationPanelStyle();
-
-		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.SectionStyle <em>Section Style</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3073,6 +3028,16 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EEnum SECTION_STYLE = eINSTANCE.getSectionStyle();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.app.NavigationPanelStyle <em>Navigation Panel Style</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.app.NavigationPanelStyle
+		 * @see org.nasdanika.html.model.app.impl.AppPackageImpl#getNavigationPanelStyle()
+		 * @generated
+		 */
+		EEnum NAVIGATION_PANEL_STYLE = eINSTANCE.getNavigationPanelStyle();
 
 	}
 

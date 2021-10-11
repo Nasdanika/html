@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.nasdanika.html.model.html.HtmlElement;
 import org.nasdanika.html.model.html.HtmlPackage;
+import org.nasdanika.ncore.impl.ModelElementImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +30,7 @@ import org.nasdanika.html.model.html.HtmlPackage;
  *
  * @generated
  */
-public abstract class HtmlElementImpl extends org.nasdanika.ncore.impl.ModelElementImpl implements HtmlElement {
+public abstract class HtmlElementImpl extends ModelElementImpl implements HtmlElement {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

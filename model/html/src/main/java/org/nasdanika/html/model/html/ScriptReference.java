@@ -2,6 +2,8 @@
  */
 package org.nasdanika.html.model.html;
 
+import org.nasdanika.ncore.ModelElement;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Script Reference</b></em>'.
@@ -22,7 +24,7 @@ package org.nasdanika.html.model.html;
  * @model
  * @generated
  */
-public interface ScriptReference extends org.nasdanika.ncore.ModelElement {
+public interface ScriptReference extends ModelElement {
 	/**
 	 * Returns the value of the '<em><b>Src</b></em>' attribute.
 	 * <!-- begin-user-doc -->

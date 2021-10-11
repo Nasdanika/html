@@ -2,6 +2,8 @@
  */
 package org.nasdanika.html.model.html;
 
+import org.nasdanika.ncore.ModelElement;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Stylesheet Reference</b></em>'.
@@ -22,7 +24,7 @@ package org.nasdanika.html.model.html;
  * @model
  * @generated
  */
-public interface StylesheetReference extends org.nasdanika.ncore.ModelElement {
+public interface StylesheetReference extends ModelElement {
 	/**
 	 * Returns the value of the '<em><b>Target</b></em>' attribute.
 	 * <!-- begin-user-doc -->

@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
+import org.nasdanika.common.Adaptable;
 import org.nasdanika.html.model.bootstrap.Accordion;
 import org.nasdanika.html.model.bootstrap.ActionGroup;
 import org.nasdanika.html.model.bootstrap.ActionGroupItem;
@@ -53,6 +54,7 @@ import org.nasdanika.html.model.bootstrap.Tooltip;
 import org.nasdanika.html.model.html.HtmlElement;
 import org.nasdanika.html.model.html.Page;
 import org.nasdanika.ncore.Marked;
+import org.nasdanika.ncore.ModelElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -117,6 +119,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(bootstrapElement);
 				if (result == null) result = caseModelElement(bootstrapElement);
 				if (result == null) result = caseMarked(bootstrapElement);
+				if (result == null) result = caseAdaptable(bootstrapElement);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -126,6 +129,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtml_Page(page);
 				if (result == null) result = caseModelElement(page);
 				if (result == null) result = caseMarked(page);
+				if (result == null) result = caseAdaptable(page);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -173,6 +177,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(tag);
 				if (result == null) result = caseModelElement(tag);
 				if (result == null) result = caseMarked(tag);
+				if (result == null) result = caseAdaptable(tag);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -183,6 +188,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(modal);
 				if (result == null) result = caseModelElement(modal);
 				if (result == null) result = caseMarked(modal);
+				if (result == null) result = caseAdaptable(modal);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -195,6 +201,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(div);
 				if (result == null) result = caseModelElement(div);
 				if (result == null) result = caseMarked(div);
+				if (result == null) result = caseAdaptable(div);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -203,6 +210,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				T result = caseItem(item);
 				if (result == null) result = caseModelElement(item);
 				if (result == null) result = caseMarked(item);
+				if (result == null) result = caseAdaptable(item);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -212,6 +220,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseItem(actionGroupItem);
 				if (result == null) result = caseModelElement(actionGroupItem);
 				if (result == null) result = caseMarked(actionGroupItem);
+				if (result == null) result = caseAdaptable(actionGroupItem);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -222,6 +231,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseItem(linkActionGroupItem);
 				if (result == null) result = caseModelElement(linkActionGroupItem);
 				if (result == null) result = caseMarked(linkActionGroupItem);
+				if (result == null) result = caseAdaptable(linkActionGroupItem);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -232,6 +242,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseItem(contentActionGroupItem);
 				if (result == null) result = caseModelElement(contentActionGroupItem);
 				if (result == null) result = caseMarked(contentActionGroupItem);
+				if (result == null) result = caseAdaptable(contentActionGroupItem);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -245,6 +256,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(actionGroup);
 				if (result == null) result = caseModelElement(actionGroup);
 				if (result == null) result = caseMarked(actionGroup);
+				if (result == null) result = caseAdaptable(actionGroup);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -255,6 +267,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(container);
 				if (result == null) result = caseModelElement(container);
 				if (result == null) result = caseMarked(container);
+				if (result == null) result = caseAdaptable(container);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -265,6 +278,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(row);
 				if (result == null) result = caseModelElement(row);
 				if (result == null) result = caseMarked(row);
+				if (result == null) result = caseAdaptable(row);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -281,6 +295,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(column);
 				if (result == null) result = caseModelElement(column);
 				if (result == null) result = caseMarked(column);
+				if (result == null) result = caseAdaptable(column);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -291,6 +306,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(tableRowContainer);
 				if (result == null) result = caseModelElement(tableRowContainer);
 				if (result == null) result = caseMarked(tableRowContainer);
+				if (result == null) result = caseAdaptable(tableRowContainer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -302,6 +318,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(tableSection);
 				if (result == null) result = caseModelElement(tableSection);
 				if (result == null) result = caseMarked(tableSection);
+				if (result == null) result = caseAdaptable(tableSection);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -314,6 +331,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(tableHeader);
 				if (result == null) result = caseModelElement(tableHeader);
 				if (result == null) result = caseMarked(tableHeader);
+				if (result == null) result = caseAdaptable(tableHeader);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -332,6 +350,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(table);
 				if (result == null) result = caseModelElement(table);
 				if (result == null) result = caseMarked(table);
+				if (result == null) result = caseAdaptable(table);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -342,6 +361,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(tableRow);
 				if (result == null) result = caseModelElement(tableRow);
 				if (result == null) result = caseMarked(tableRow);
+				if (result == null) result = caseAdaptable(tableRow);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -352,6 +372,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(tableCell);
 				if (result == null) result = caseModelElement(tableCell);
 				if (result == null) result = caseMarked(tableCell);
+				if (result == null) result = caseAdaptable(tableCell);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -365,6 +386,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(card);
 				if (result == null) result = caseModelElement(card);
 				if (result == null) result = caseMarked(card);
+				if (result == null) result = caseAdaptable(card);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -378,6 +400,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(alert);
 				if (result == null) result = caseModelElement(alert);
 				if (result == null) result = caseMarked(alert);
+				if (result == null) result = caseAdaptable(alert);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -391,6 +414,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(badge);
 				if (result == null) result = caseModelElement(badge);
 				if (result == null) result = caseMarked(badge);
+				if (result == null) result = caseAdaptable(badge);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -410,6 +434,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 				if (result == null) result = caseHtmlElement(button);
 				if (result == null) result = caseModelElement(button);
 				if (result == null) result = caseMarked(button);
+				if (result == null) result = caseAdaptable(button);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -1165,6 +1190,21 @@ public class BootstrapSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Adaptable</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Adaptable</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAdaptable(Adaptable object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Model Element</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1175,7 +1215,7 @@ public class BootstrapSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseModelElement(org.nasdanika.ncore.ModelElement object) {
+	public T caseModelElement(ModelElement object) {
 		return null;
 	}
 

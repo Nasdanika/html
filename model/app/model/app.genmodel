@@ -43,9 +43,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/confirmation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/target"/>
-      <genOperations ecoreOperation="app.ecore#//Link/relativeLocation">
-        <genParameters ecoreParameter="app.ecore#//Link/relativeLocation/base"/>
-      </genOperations>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//Page">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Page/fluid"/>

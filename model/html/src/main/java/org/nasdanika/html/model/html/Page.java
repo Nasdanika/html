@@ -5,6 +5,7 @@ package org.nasdanika.html.model.html;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.ncore.ModelElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,7 +35,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface Page extends org.nasdanika.ncore.ModelElement {
+public interface Page extends ModelElement {
 	/**
 	 * Returns the value of the '<em><b>Head</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.

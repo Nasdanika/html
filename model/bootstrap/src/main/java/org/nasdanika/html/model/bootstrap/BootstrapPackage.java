@@ -101,6 +101,15 @@ public interface BootstrapPackage extends EPackage {
 	int BOOTSTRAP_ELEMENT__DESCRIPTION = HtmlPackage.HTML_ELEMENT__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOTSTRAP_ELEMENT__UUID = HtmlPackage.HTML_ELEMENT__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -181,6 +190,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int PAGE__DESCRIPTION = HtmlPackage.PAGE__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__UUID = HtmlPackage.PAGE__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Head</b></em>' containment reference list.
@@ -793,6 +811,15 @@ public interface BootstrapPackage extends EPackage {
 	int TAG__DESCRIPTION = HtmlPackage.TAG__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TAG__UUID = HtmlPackage.TAG__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1214,6 +1241,15 @@ public interface BootstrapPackage extends EPackage {
 	int MODAL__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__UUID = BOOTSTRAP_ELEMENT__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1349,6 +1385,15 @@ public interface BootstrapPackage extends EPackage {
 	int DIV__DESCRIPTION = TAG__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DIV__UUID = TAG__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1430,6 +1475,15 @@ public interface BootstrapPackage extends EPackage {
 	int ITEM__DESCRIPTION = NcorePackage.MODEL_ELEMENT__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITEM__UUID = NcorePackage.MODEL_ELEMENT__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1500,6 +1554,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION_GROUP_ITEM__DESCRIPTION = ITEM__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_GROUP_ITEM__UUID = ITEM__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
@@ -1581,6 +1644,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK_ACTION_GROUP_ITEM__DESCRIPTION = ACTION_GROUP_ITEM__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK_ACTION_GROUP_ITEM__UUID = ACTION_GROUP_ITEM__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
@@ -1673,6 +1745,15 @@ public interface BootstrapPackage extends EPackage {
 	int CONTENT_ACTION_GROUP_ITEM__DESCRIPTION = ACTION_GROUP_ITEM__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_ACTION_GROUP_ITEM__UUID = ACTION_GROUP_ITEM__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1761,6 +1842,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION_GROUP__DESCRIPTION = DIV__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_GROUP__UUID = DIV__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1862,6 +1952,15 @@ public interface BootstrapPackage extends EPackage {
 	int CONTAINER__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER__UUID = BOOTSTRAP_ELEMENT__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1950,6 +2049,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ROW__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROW__UUID = BOOTSTRAP_ELEMENT__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2069,6 +2177,15 @@ public interface BootstrapPackage extends EPackage {
 	int COLUMN__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COLUMN__UUID = BOOTSTRAP_ELEMENT__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2148,6 +2265,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_ROW_CONTAINER__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_ROW_CONTAINER__UUID = BOOTSTRAP_ELEMENT__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2231,6 +2357,15 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_SECTION__DESCRIPTION = TABLE_ROW_CONTAINER__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_SECTION__UUID = TABLE_ROW_CONTAINER__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2310,6 +2445,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_HEADER__DESCRIPTION = TABLE_SECTION__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_HEADER__UUID = TABLE_SECTION__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2483,6 +2627,15 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE__DESCRIPTION = TABLE_ROW_CONTAINER__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE__UUID = TABLE_ROW_CONTAINER__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2645,6 +2798,15 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_ROW__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_ROW__UUID = BOOTSTRAP_ELEMENT__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2742,6 +2904,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_CELL__DESCRIPTION = BOOTSTRAP_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_CELL__UUID = BOOTSTRAP_ELEMENT__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2861,6 +3032,15 @@ public interface BootstrapPackage extends EPackage {
 	int CARD__DESCRIPTION = DIV__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CARD__UUID = DIV__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2969,6 +3149,15 @@ public interface BootstrapPackage extends EPackage {
 	int ALERT__DESCRIPTION = DIV__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ALERT__UUID = DIV__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3057,6 +3246,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int BADGE__DESCRIPTION = DIV__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__UUID = DIV__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -3165,6 +3363,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int BUTTON__DESCRIPTION = DIV__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BUTTON__UUID = DIV__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.

@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EValidator;
@@ -366,16 +365,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	@Override
 	public EAttribute getLink_Target() {
 		return (EAttribute)linkEClass.getEStructuralFeatures().get(5);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EOperation getLink__RelativeLocation__Link() {
-		return linkEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -894,7 +883,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(linkEClass, LINK__CONFIRMATION);
 		createEAttribute(linkEClass, LINK__NAME);
 		createEAttribute(linkEClass, LINK__TARGET);
-		createEOperation(linkEClass, LINK___RELATIVE_LOCATION__LINK);
 
 		pageEClass = createEClass(PAGE);
 		createEAttribute(pageEClass, PAGE__FLUID);
@@ -1022,9 +1010,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getLink_Confirmation(), ecorePackage.getEString(), "confirmation", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Name(), ecorePackage.getEString(), "name", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Target(), ecorePackage.getEString(), "target", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		EOperation op = initEOperation(getLink__RelativeLocation__Link(), ecorePackage.getEString(), "relativeLocation", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getLink(), "base", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(pageEClass, Page.class, "Page", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPage_Fluid(), ecorePackage.getEBoolean(), "fluid", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1176,18 +1161,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   source,
 		   new String[] {
 			   "documentation", "Help modal."
-		   });
-		addAnnotation
-		  (getLink__RelativeLocation__Link(),
-		   source,
-		   new String[] {
-			   "documentation", "Computes a location of this link/action relative to the argument base link/action. Returns an absolute location or null if a relative location cannot be computed."
-		   });
-		addAnnotation
-		  ((getLink__RelativeLocation__Link()).getEParameters().get(0),
-		   source,
-		   new String[] {
-			   "documentation", "Base link."
 		   });
 		addAnnotation
 		  (getLink_Location(),

@@ -2,13 +2,9 @@
  */
 package org.nasdanika.html.model.app.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.bootstrap.Modal;
@@ -230,40 +226,6 @@ public class LinkImpl extends LabelImpl implements Link {
 	public void setTarget(String newTarget) {
 		eDynamicSet(AppPackage.LINK__TARGET, AppPackage.Literals.LINK__TARGET, newTarget);
 	}
-	
-	private Link getLocationAncestor() {
-		for (EObject ancestor = action.getParent(); ancestor != null; ancestor = ancestor.getParent()) {
-			if (ancestor.getActivator() instanceof NavigationActionActivator) {
-				return ancestor;
-			}
-		}		
-		return null;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	public String relativeLocation(Link base) {
-		if (base == null) {
-			return null;
-		}
-		
-		if (EcoreUtil.isAncestor(this, base)) {
-			// Navigate up
-		}
-		if (EcoreUtil.isAncestor(base, obj)) {
-			// TODO
-		}
-		for (EObject ancestor = obj.eContainer(); ancestor != null; ancestor = ancestor.eContainer()) {
-			if (EcoreUtil.isAncestor(ancestor, obj)) {
-				// TODO
-			}
-		}
-		return null;
-	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -385,20 +347,6 @@ public class LinkImpl extends LabelImpl implements Link {
 				return TARGET_EDEFAULT == null ? getTarget() != null : !TARGET_EDEFAULT.equals(getTarget());
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case AppPackage.LINK___RELATIVE_LOCATION__LINK:
-				return relativeLocation((Link)arguments.get(0));
-		}
-		return super.eInvoke(operationID, arguments);
 	}
 
 } //LinkImpl

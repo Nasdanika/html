@@ -259,5 +259,25 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	public String name() {
 		return "Action provider for " + getTarget();
 	}
-			
+	
+	/**
+	 * Creates a link to the argument action with action text, icon, and tooltip.
+	 * This implementation returns an interpolation token to be processed at the later generation state.
+	 * @param action
+	 * @return
+	 */
+	protected String actionLink(Action action) {
+		return "${action/" + action.getId() + "/link}";
+	}
+	
+	/**
+	 * Returns a relative path to the argument action.
+	 * This implementation returns an interpolation token to be processed at the later generation state.
+	 * @param action
+	 * @return
+	 */
+	protected String actionPath(Action action) {
+		return "${action/" + action.getId() + "/path}";
+	}
+	
 }
