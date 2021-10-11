@@ -5,6 +5,7 @@ package org.nasdanika.html.model.app;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
@@ -98,6 +99,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int LABEL__DESCRIPTION = BootstrapPackage.BOOTSTRAP_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__UUID = BootstrapPackage.BOOTSTRAP_ELEMENT__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -279,6 +289,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK__DESCRIPTION = LABEL__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__UUID = LABEL__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -470,13 +489,22 @@ public interface AppPackage extends EPackage {
 	int LINK_FEATURE_COUNT = LABEL_FEATURE_COUNT + 6;
 
 	/**
+	 * The operation id for the '<em>Relative Location</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK___RELATIVE_LOCATION__LINK = LABEL_OPERATION_COUNT + 0;
+
+	/**
 	 * The number of operations of the '<em>Link</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK_OPERATION_COUNT = LABEL_OPERATION_COUNT + 0;
+	int LINK_OPERATION_COUNT = LABEL_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.PageImpl <em>Page</em>}' class.
@@ -514,6 +542,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int PAGE__DESCRIPTION = BootstrapPackage.BOOTSTRAP_ELEMENT__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__UUID = BootstrapPackage.BOOTSTRAP_ELEMENT__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -661,6 +698,15 @@ public interface AppPackage extends EPackage {
 	int PAGE_PART__DESCRIPTION = BootstrapPackage.BOOTSTRAP_ELEMENT__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE_PART__UUID = BootstrapPackage.BOOTSTRAP_ELEMENT__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -750,6 +796,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int HEADER__DESCRIPTION = PAGE_PART__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HEADER__UUID = PAGE_PART__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -850,6 +905,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int NAVIGATION_BAR__DESCRIPTION = PAGE_PART__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_BAR__UUID = PAGE_PART__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -979,6 +1043,15 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL__DESCRIPTION = PAGE_PART__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_PANEL__UUID = PAGE_PART__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1086,6 +1159,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_PANEL__DESCRIPTION = PAGE_PART__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_PANEL__UUID = PAGE_PART__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1260,6 +1342,15 @@ public interface AppPackage extends EPackage {
 	int FOOTER__DESCRIPTION = PAGE_PART__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FOOTER__UUID = PAGE_PART__UUID;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1349,6 +1440,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION__DESCRIPTION = LINK__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__UUID = LINK__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1648,6 +1748,15 @@ public interface AppPackage extends EPackage {
 	int ACTION_FEATURE_COUNT = LINK_FEATURE_COUNT + 12;
 
 	/**
+	 * The operation id for the '<em>Relative Location</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION___RELATIVE_LOCATION__LINK = LINK___RELATIVE_LOCATION__LINK;
+
+	/**
 	 * The number of operations of the '<em>Action</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1887,6 +1996,16 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getLink_Target();
+
+	/**
+	 * Returns the meta object for the '{@link org.nasdanika.html.model.app.Link#relativeLocation(org.nasdanika.html.model.app.Link) <em>Relative Location</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Relative Location</em>' operation.
+	 * @see org.nasdanika.html.model.app.Link#relativeLocation(org.nasdanika.html.model.app.Link)
+	 * @generated
+	 */
+	EOperation getLink__RelativeLocation__Link();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.Page <em>Page</em>}'.
@@ -2548,6 +2667,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute LINK__TARGET = eINSTANCE.getLink_Target();
+
+		/**
+		 * The meta object literal for the '<em><b>Relative Location</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation LINK___RELATIVE_LOCATION__LINK = eINSTANCE.getLink__RelativeLocation__Link();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.PageImpl <em>Page</em>}' class.

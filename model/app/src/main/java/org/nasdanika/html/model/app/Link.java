@@ -182,4 +182,16 @@ public interface Link extends Label {
 	 */
 	void setTarget(String value);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Computes a location of this link/action relative to the argument base link/action. Returns an absolute location or null if a relative location cannot be computed.
+	 * @param base Base link.
+	 * <!-- end-model-doc -->
+	 * @model
+	 * @generated
+	 */
+	String relativeLocation(Link base);
+
 } // Link

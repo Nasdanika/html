@@ -105,39 +105,6 @@ public class TestAgileDocGen extends TestBase {
 				},
 				progressMonitor);		
 	}
-
-//	private void generateFlowDiagram(Flow flow, String name) {
-//		FlowStateDiagramGenerator flowStateDiagramGenerator = new FlowStateDiagramGenerator() {
-//		
-//			@Override
-//			protected String getFlowElementLocation(String key, FlowElement<?> flowElement) {
-//				return "https://www.nasdanika.org/" + key + ".html";
-//			}
-//			
-//		};
-//		
-//		Diagram diagram = flowStateDiagramGenerator.generateFlowDiagram(flow);
-//		
-//		Generator generator = new Generator();
-//		
-//		String spec = generator.generateSpec(diagram);
-//		System.out.println(spec);
-//		File outputDir = new File("target/diagrams");
-//		outputDir.mkdirs();
-//		try {
-//			Files.write(new File(outputDir, name + ".html").toPath(), generator.generateUmlDiagram(diagram).getBytes(StandardCharsets.UTF_8));
-//		} catch (Exception e) {
-//			throw new NasdanikaException(e);
-//		}
-//	}
-//	
-//	private DiagramGenerator createDiagramGenerator(ProgressMonitor progressMonitor) {
-//		FileSystemContainer output = new FileSystemContainer(new File("target\\diagram-cache"));
-//		
-//		BiFunction<String,InputStream,String> decoder = (path, state) -> DefaultConverter.INSTANCE.convert(state, String.class);
-//		BiFunction<String,String,InputStream> encoder = (path, state) -> DefaultConverter.INSTANCE.convert(state, InputStream.class);
-//		return DiagramGenerator.INSTANCE.cachingDiagramGenerator(output.stateAdapter().adapt(decoder, encoder), progressMonitor);
-//	}
 	
 	/**
 	 * Generates a resource model from an action model.

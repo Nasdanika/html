@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
+import org.nasdanika.common.Adaptable;
 import org.nasdanika.html.model.app.*;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.Item;
@@ -79,6 +80,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseHtmlElement(label);
 				if (result == null) result = caseModelElement(label);
 				if (result == null) result = caseMarked(label);
+				if (result == null) result = caseAdaptable(label);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -91,6 +93,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseHtmlElement(link);
 				if (result == null) result = caseModelElement(link);
 				if (result == null) result = caseMarked(link);
+				if (result == null) result = caseAdaptable(link);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -101,6 +104,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseHtmlElement(page);
 				if (result == null) result = caseModelElement(page);
 				if (result == null) result = caseMarked(page);
+				if (result == null) result = caseAdaptable(page);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -111,6 +115,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseHtmlElement(pagePart);
 				if (result == null) result = caseModelElement(pagePart);
 				if (result == null) result = caseMarked(pagePart);
+				if (result == null) result = caseAdaptable(pagePart);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -122,6 +127,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseHtmlElement(header);
 				if (result == null) result = caseModelElement(header);
 				if (result == null) result = caseMarked(header);
+				if (result == null) result = caseAdaptable(header);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -133,6 +139,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseHtmlElement(navigationBar);
 				if (result == null) result = caseModelElement(navigationBar);
 				if (result == null) result = caseMarked(navigationBar);
+				if (result == null) result = caseAdaptable(navigationBar);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -144,6 +151,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseHtmlElement(navigationPanel);
 				if (result == null) result = caseModelElement(navigationPanel);
 				if (result == null) result = caseMarked(navigationPanel);
+				if (result == null) result = caseAdaptable(navigationPanel);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -155,6 +163,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseHtmlElement(contentPanel);
 				if (result == null) result = caseModelElement(contentPanel);
 				if (result == null) result = caseMarked(contentPanel);
+				if (result == null) result = caseAdaptable(contentPanel);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -166,6 +175,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseHtmlElement(footer);
 				if (result == null) result = caseModelElement(footer);
 				if (result == null) result = caseMarked(footer);
+				if (result == null) result = caseAdaptable(footer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -179,6 +189,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseHtmlElement(action);
 				if (result == null) result = caseModelElement(action);
 				if (result == null) result = caseMarked(action);
+				if (result == null) result = caseAdaptable(action);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -374,6 +385,21 @@ public class AppSwitch<T1> extends Switch<T1> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Adaptable</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Adaptable</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseAdaptable(Adaptable object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Model Element</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -444,7 +470,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <T extends ModelElement> T1 caseReference(Reference<T> object) {
+	public <T> T1 caseReference(Reference<T> object) {
 		return null;
 	}
 

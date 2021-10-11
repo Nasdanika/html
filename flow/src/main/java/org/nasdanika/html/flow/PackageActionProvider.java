@@ -32,11 +32,11 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 		Action action = super.createAction(registry, resolveConsumer, progressMonitor);
 		
 		EList<EObject> children = action.getChildren();
-		children.addAll(createSubPackageActions(registry, progressMonitor));
-		children.addAll(createActivityActions(registry, progressMonitor));
-		children.addAll(createParticipantActions(registry, progressMonitor));
-		children.addAll(createResourceActions(registry, progressMonitor));
-		children.addAll(createArtifactActions(registry, progressMonitor));
+		children.addAll(createSubPackageActions(registry, resolveConsumer, progressMonitor));
+		children.addAll(createActivityActions(registry, resolveConsumer, progressMonitor));
+		children.addAll(createParticipantActions(registry, resolveConsumer, progressMonitor));
+		children.addAll(createResourceActions(registry, resolveConsumer, progressMonitor));
+		children.addAll(createArtifactActions(registry, resolveConsumer, progressMonitor));
 		
 		return action;
 	}
@@ -47,7 +47,10 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 	 * @return An empty list if there are no sub-packages. A singleton list containing a grouping action containing sub-package actions otherwise.
 	 * @throws Exception 
 	 */
-	protected List<Action> createSubPackageActions(BiConsumer<EObject,Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	protected List<Action> createSubPackageActions(
+			BiConsumer<EObject,Action> registry, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			ProgressMonitor progressMonitor) throws Exception {
 		List<Package> subPackages = getTarget().getSubPackages().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (subPackages.isEmpty()) {
 			return Collections.emptyList();
@@ -56,7 +59,7 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 		group.setText("Sub-packages");
 		// TODO - icon, ...
 		for (Package sp: subPackages) {
-			group.getChildren().add(adaptChild(sp).execute(registry, progressMonitor));
+			group.getChildren().add(createChildAction(sp, registry, resolveConsumer, progressMonitor));
 		}
 		
 		return Collections.singletonList(group);
@@ -68,7 +71,10 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 	 * @return An empty list if there are no activities. A singleton list containing a grouping action containing activity actions otherwise.
 	 * @throws Exception 
 	 */
-	protected List<Action> createActivityActions(BiConsumer<EObject,Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	protected List<Action> createActivityActions(
+			BiConsumer<EObject,Action> registry, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			ProgressMonitor progressMonitor) throws Exception {
 		Collection<Activity<?>> activities = getTarget().getActivities().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (activities.isEmpty()) {
 			return Collections.emptyList();
@@ -77,7 +83,7 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 		group.setText("Activities");
 		// TODO - icon, ...
 		for (Activity<?> activity: activities) {
-			group.getChildren().add(adaptChild(activity).execute(registry, progressMonitor));
+			group.getChildren().add(createChildAction(activity, registry, resolveConsumer, progressMonitor));
 		}
 		
 		return Collections.singletonList(group);
@@ -89,7 +95,10 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 	 * @return An empty list if there are no participants. A singleton list containing a grouping action containing participant actions otherwise.
 	 * @throws Exception 
 	 */
-	protected List<Action> createParticipantActions(BiConsumer<EObject,Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	protected List<Action> createParticipantActions(
+			BiConsumer<EObject,Action> registry, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			ProgressMonitor progressMonitor) throws Exception {
 		Collection<Participant> participants = getTarget().getParticipants().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (participants.isEmpty()) {
 			return Collections.emptyList();
@@ -98,7 +107,7 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 		group.setText("Participants");
 		// TODO - icon, ...
 		for (Participant participant: participants) {
-			group.getChildren().add(adaptChild(participant).execute(registry, progressMonitor));
+			group.getChildren().add(createChildAction(participant, registry, resolveConsumer, progressMonitor));
 		}
 		
 		return Collections.singletonList(group);
@@ -110,7 +119,10 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 	 * @return An empty list if there are no resources. A singleton list containing a grouping action containing resource actions otherwise.
 	 * @throws Exception 
 	 */
-	protected List<Action> createResourceActions(BiConsumer<EObject,Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	protected List<Action> createResourceActions(
+			BiConsumer<EObject,Action> registry, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			ProgressMonitor progressMonitor) throws Exception {
 		Collection<Resource> resources = getTarget().getResources().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (resources.isEmpty()) {
 			return Collections.emptyList();
@@ -119,7 +131,7 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 		group.setText("Resources");
 		// TODO - icon, ...
 		for (Resource resource: resources) {
-			group.getChildren().add(adaptChild(resource).execute(registry, progressMonitor));
+			group.getChildren().add(createChildAction(resource, registry, resolveConsumer, progressMonitor));
 		}
 		
 		return Collections.singletonList(group);
@@ -131,7 +143,10 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 	 * @return An empty list if there are no activities. A singleton list containing a grouping action containing actvity actions otherwise.
 	 * @throws Exception 
 	 */
-	protected List<Action> createArtifactActions(BiConsumer<EObject,Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	protected List<Action> createArtifactActions(
+			BiConsumer<EObject,Action> registry, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<java.util.function.Function<EObject, Action>>> resolveConsumer, 
+			ProgressMonitor progressMonitor) throws Exception {
 		Collection<Artifact> artifacts = getTarget().getArtifacts().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (artifacts.isEmpty()) {
 			return Collections.emptyList();
@@ -140,7 +155,7 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 		group.setText("Artifacts");
 		// TODO - icon, ...
 		for (Artifact artifact: artifacts) {
-			group.getChildren().add(adaptChild(artifact).execute(registry, progressMonitor));
+			group.getChildren().add(createChildAction(artifact, registry, resolveConsumer, progressMonitor));
 		}
 		
 		return Collections.singletonList(group);

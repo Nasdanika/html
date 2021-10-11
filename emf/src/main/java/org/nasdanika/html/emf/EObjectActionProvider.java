@@ -2,12 +2,16 @@ package org.nasdanika.html.emf;
 
 import java.util.function.BiConsumer;
 //import java.util.function.Consumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypedElement;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.CollectionCompoundConsumer;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
@@ -18,6 +22,7 @@ import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.util.ActionProvider;
 import org.nasdanika.html.model.app.util.ActionSupplier;
 
@@ -123,16 +128,48 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			ProgressMonitor progressMonitor) throws Exception {
 		Action ret = AppFactory.eINSTANCE.createAction();
 		
+		// Anonymous
+		
+		// Children
+		
+		// Sections
 		
 		return ret;
-	}
-	
-	
-	protected void resolve(Action action, java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) {
-		System.out.println("Resolving " + action);
 	}	
 	
+	protected NavigationPanel createLeftNavigation(java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	
+		return null;
+	}
+	
+	protected NavigationPanel createRightNavigation(java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	
+		return null;
+	}
+	
+	protected NavigationPanel createFloatLeftNavigation(java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	
+		return null;
+	}
+	
+	protected NavigationPanel createFloatRightNavigation(java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	
+		return null;
+	}
 		
+	protected void resolve(Action action, java.util.function.Function<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
+		action.setLeftNavigation(createLeftNavigation(registry, progressMonitor));
+		action.setFloatLeftNavigation(createFloatLeftNavigation(registry, progressMonitor));
+		action.setRightNavigation(createRightNavigation(registry, progressMonitor));
+		action.setFloatRightNavigation(createFloatRightNavigation(registry, progressMonitor));
+		
+		// Navigation
+		
+		// Content
+		
+		// Resources
+	}	
+			
 	/**
 	 * Creates a label for {@link ETypedElement}s such as {@link EAttribute} and {@link EReference} to be used
 	 * in (table) headers, tabs, etc. This method creates a label using {@link AppFactory} instance, passes it to configureETypedElementLabel and returns.
@@ -168,12 +205,36 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	
 	/**
 	 * Adapts child eObject to {@link ActionSupplier}.
+	 * If there is a resolver adapter attached to the child and resolveConsumer is not null, calls resolveConsumer with the adapter as an argument.
 	 * @param child
 	 * @return
 	 */
 	protected ActionProvider adaptChild(EObject child) {
 		return EObjectAdaptable.adaptTo(child, ActionProvider.class);
 	}	
+	
+	protected Action createChildAction(
+			EObject child, 
+			BiConsumer<EObject, Action> registry,
+			Consumer<org.nasdanika.common.Consumer<Function<EObject, Action>>> resolveConsumer,
+			ProgressMonitor progressMonitor) throws Exception {
+		
+		ActionProvider provider = adaptChild(child);
+		if (provider == null) {
+			return null;
+		}
+		
+		Action ret = provider.execute(registry, progressMonitor);
+		
+		if (ret != null && resolveConsumer != null) {
+			Adapter childResolver = EcoreUtil.getExistingAdapter(ret, EObjectActionResolver.class);
+			if (childResolver instanceof EObjectActionResolver) {
+				resolveConsumer.accept((EObjectActionResolver) childResolver);
+			}
+		}
+		
+		return ret;
+	}
 	
 	/**
 	 * Convenience method to add textual content.
@@ -198,130 +259,5 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	public String name() {
 		return "Action provider for " + getTarget();
 	}
-	
-	
-//	public enum Classifier {
-//		
-//		/**
-//		 * Default action for the literal.
-//		 */
-//		DEFAULT,
-//		
-//		/**
-//		 * Properties table.
-//		 */
-//		PROPERTIES,
-//		
-//		/**
-//		 * For {@link TypeElement} literals create an action for each of (return) value elements.
-//		 */
-//		ELEMENTS,
-//		
-//		/**
-//		 * For {@link TypeElement} literals create an action or a list of actions for each of 
-//		 * (return) value elements and then sort results alphabetically by text.
-//		 */
-//		ELEMENTS_SORTED,
-//		
-//		/**
-//		 * Child actions for the member, e.g. a section with action list
-//		 */
-//		ACTIONS,
-//				
-//		/**
-//		 * No classifier. Used to suppress inherited classifier via configuration.
-//		 */
-//		NONE;
-//		
-//		public final String LITERAL;
-//		
-//		private Classifier() {
-//			this.LITERAL = name().toLowerCase().replace('_', '-');
-//		}
-//		
-//	}	
-//		
-//	// subClassifier and vararg arguments?
-//	/**
-//	 * @param literal Part of the target to return a list of actions for. {@link EClass} for self, 
-//	 * {@link EStructuralFeature} such as {@link EAttribute} or {@link EReference}, or {@link EOperation}.
-//	 * @param classifier
-//	 * @return A list of actions parts of the target or the target itself. 
-//	 */
-//	public List<Action> getActions(
-//			EModelElement literal, 
-//			Classifier classifier) throws Exception {
-//		if (literal instanceof EClass) {
-//			return getEClassActions((EClass) literal, classifier);
-//		}
-//		if (literal instanceof ETypedElement) {
-//			return getTypedElementActions((ETypedElement) literal, getTypedElementValue((ETypedElement) literal), classifier);
-//		}
-//		throw new UnsupportedOperationException("Unsupported literal: " + literal);
-//	}
-//	
-//	protected List<Action> getEClassActions(EClass literal, Classifier classifier) throws Exception  {
-//		
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	private List<Action> getTypedElementActions(ETypedElement literal, Object typedElementValue, Classifier classifier) throws Exception  {
-//		// Further dispatching.
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	private Object getTypedElementValue(ETypedElement typedElement) throws Exception  {
-//		if (typedElement instanceof EStructuralFeature) {
-//			return getTarget().eGet((EStructuralFeature) typedElement);
-//		}
-//		
-//		EOperation eOp = (EOperation) typedElement;
-//		
-//		// A hack to get to the container.
-//		if (eOp == EcorePackage.Literals.EOBJECT___ECONTAINER) {
-//			return getTarget().eContainer();
-//		}
-//		
-//		EList<EParameter> params = eOp.getEParameters();
-//		if (params.isEmpty()) {
-//			return getTarget().eInvoke(eOp, ECollections.emptyEList());
-//		}
-//		return getTarget().eInvoke(eOp, bind(eOp));
-//	}
-//	
-//	/**
-//	 * Returns a list of arguments for the operation.
-//	 * @param eOperation
-//	 * @return
-//	 * @throws Exception
-//	 */
-//	protected EList<Object> bind(EOperation eOperation) throws Exception {
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	private Optional<Action> defaultAction;
-//	
-//	public Action getAction() throws Exception {
-//		if (defaultAction == null) {
-//			List<Action> actions = getActions(getTarget().eClass(), Classifier.DEFAULT);
-//			
-//			if (actions == null || actions.isEmpty()) {
-//				defaultAction = Optional.empty();
-//			} else if (actions.size() == 1) {
-//				defaultAction = Optional.of(actions.get(0));
-//			}
-//			
-//			throw new UnsupportedOperationException("Multiple default actions are not supported");
-//		}
-//		return defaultAction.orElse(null);
-//	}
-//		
-//	/**
-//	 * A list of members - {@link EStructuralFeature}s and {@link EOperation}s 
-//	 * @return
-//	 */
-//	protected List<ETypedElement> getMembers() {
-//		
-//	}
-		
+			
 }
