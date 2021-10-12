@@ -37,6 +37,7 @@ public interface Table extends TableRowContainer, TableConfiguration {
 	 * @see #setHeader(TableHeader)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTable_Header()
 	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
 	 * @generated
 	 */
 	TableHeader getHeader();
@@ -62,6 +63,7 @@ public interface Table extends TableRowContainer, TableConfiguration {
 	 * @see #setBody(TableSection)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTable_Body()
 	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
 	 * @generated
 	 */
 	TableSection getBody();
@@ -87,6 +89,7 @@ public interface Table extends TableRowContainer, TableConfiguration {
 	 * @see #setFooter(TableSection)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTable_Footer()
 	 * @model containment="true"
+	 *        annotation="urn:org.nasdanika homogenous='true'"
 	 * @generated
 	 */
 	TableSection getFooter();

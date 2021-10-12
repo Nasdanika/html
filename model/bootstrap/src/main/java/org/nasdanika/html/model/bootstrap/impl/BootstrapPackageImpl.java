@@ -3122,6 +3122,36 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		   new String[] {
 			   "homogenous", "true"
 		   });
+		addAnnotation
+		  (getTableRowContainer_Rows(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getTable_Header(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getTable_Body(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getTable_Footer(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getTableRow_Cells(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
 	}
 
 } //BootstrapPackageImpl

@@ -1,0 +1,17 @@
+resources-file:
+  name: simple.html
+  contents:
+    bootstrap-page:
+      cdn: true
+      theme: Cerulean
+      name: Simple table test
+      language: EN
+      body:
+        - bootstrap-table:
+            header:
+              rows:
+                cells:
+                  content:
+                    content-text: Header 1
+        
+          

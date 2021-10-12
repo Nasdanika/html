@@ -51,6 +51,33 @@ public abstract class BootstrapElementSupplierFactoryAdapter<M extends org.nasda
 		
 	protected Supplier<T> createBootstrapElementSupplier(Context context) throws Exception {
 		throw new UnsupportedOperationException("Override this method or createHTMLElementSupplier()");
-	};
-
+	}
+	
+	/**
+	 * Retrieves wrapping bootstrap element.
+	 * @param context
+	 * @return
+	 */
+	protected Function<org.nasdanika.html.HTMLElement<?>, T> getWrapper(Context context) {
+		return new Function<org.nasdanika.html.HTMLElement<?>, T>() {
+	
+			@Override
+			public double size() {
+				return 1;
+			}
+	
+			@Override
+			public String name() {
+				return "Retrieving wrapping bootstrap element";
+			}
+	
+			@SuppressWarnings("unchecked")
+			@Override
+			public T execute(HTMLElement<?> htmlElement, ProgressMonitor progressMonitor) throws Exception {
+				return (T) htmlElement.getData(org.nasdanika.html.bootstrap.BootstrapElement.class);
+			}
+			
+		};
+	}
+	
 }

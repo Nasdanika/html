@@ -17,10 +17,11 @@ public class WrappingBootstrapElementImpl<H extends HTMLElement<?>, B extends Bo
 	public WrappingBootstrapElementImpl(BootstrapFactory factory, H htmlElement) {
 		super(factory);
 		this.htmlElement = htmlElement;
+		htmlElement.setData(BootstrapElement.class, this);
 	}
 
 	@Override
-	public H toHTMLElement() {
+	public H toHTMLElement() {		
 		return htmlElement;
 	}
 
