@@ -84,8 +84,12 @@ public class TableConsumerFactoryAdapter extends TableRowContainerConsumerFactor
 					sectionsMap.put(BootstrapPackage.Literals.TABLE__FOOTER, table.footer().toHTMLElement());
 				}
 								
-				// TODO - dark, striped, bordered, borderless, hover, small
-				
+				table.dark(semanticElement.isDark());
+				table.striped(semanticElement.isStriped());
+				table.bordered(semanticElement.isBordered());
+				table.borderless(semanticElement.isBorderless());
+				table.hover(semanticElement.isHover());
+				table.small(semanticElement.isSmall());
 				
 				return new BiSupplier<Map<EStructuralFeature,HTMLElement<?>>, HTMLElement<?>>() {
 					

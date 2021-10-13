@@ -11,7 +11,8 @@ resources-file:
             header:
               rows:
                 cells:
-                  content:
-                    content-text: Header 1
+                  - header: true
+                    content:
+                      content-text: Header 1
         
           

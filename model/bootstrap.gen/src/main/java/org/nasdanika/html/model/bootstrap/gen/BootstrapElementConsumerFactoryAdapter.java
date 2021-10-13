@@ -53,5 +53,31 @@ public class BootstrapElementConsumerFactoryAdapter<M extends org.nasdanika.html
 			
 		};
 	}
+	
+	/**
+	 * Helper function for calling BootstrapElement.toHTMLElement();
+	 * @param context
+	 * @return
+	 */
+	protected Function<org.nasdanika.html.bootstrap.BootstrapElement<?, ?>, org.nasdanika.html.HTMLElement<?>> toHTMLElement(Context context) {
+		return new Function<org.nasdanika.html.bootstrap.BootstrapElement<?, ?>, org.nasdanika.html.HTMLElement<?>>() {
+	
+			@Override
+			public double size() {
+				return 1;
+			}
+	
+			@Override
+			public String name() {
+				return "To HTML elment";
+			}
+	
+			@Override
+			public HTMLElement<?> execute(org.nasdanika.html.bootstrap.BootstrapElement<?, ?> bootstrapElement, ProgressMonitor progressMonitor) throws Exception {
+				return bootstrapElement.toHTMLElement();
+			}
+			
+		};
+	}
 
 }
