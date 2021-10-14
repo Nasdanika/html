@@ -19,8 +19,7 @@ public class TableCellConsumerFactoryAdapter extends BootstrapElementConsumerFac
 	}
 	
 	@Override
-	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {
-		
+	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {		
 		return getWrapper(context)
 				.then(createTableCellFunction(context))
 				.then(toHTMLElement(context))

@@ -9,20 +9,33 @@ class TableImpl extends RowContainerImpl<org.nasdanika.html.Table, Table> implem
 		super(factory, htmlTable);
 		htmlTable.addClass("table");
 	}
+	
+	private TableHeader header;
+	private TableBody body;
+	private TableFooter footer;
 
 	@Override
 	public TableHeader header() {
-		return new TableHeaderImpl(getFactory(), htmlElement.header());
+		if (header == null) {
+			header = new TableHeaderImpl(getFactory(), htmlElement.header());
+		}
+		return header;
 	}
 	
 	@Override
 	public TableBody body() {
-		return new TableBodyImpl(getFactory(), htmlElement.body());
+		if (body == null) {
+			body = new TableBodyImpl(getFactory(), htmlElement.body());
+		}
+		return body;
 	}
 	
 	@Override
 	public TableFooter footer() {
-		return new TableFooterImpl(getFactory(), htmlElement.footer());
+		if (footer == null) {
+			footer = new TableFooterImpl(getFactory(), htmlElement.footer());
+		}
+		return footer;
 	}
 
 	@Override

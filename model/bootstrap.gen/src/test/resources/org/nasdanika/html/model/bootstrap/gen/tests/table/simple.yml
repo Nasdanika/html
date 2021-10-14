@@ -9,10 +9,21 @@ resources-file:
       body:
         - bootstrap-table:
             header:
+              dark: true
               rows:
                 cells:
                   - header: true
                     content:
                       content-text: Header 1
+            body:
+              rows:
+                cells:
+                  - content:
+                      content-text: Body 1
+            footer:
+              rows:
+                cells:
+                  - content:
+                      content-text: Footer 1
         
           

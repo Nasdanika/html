@@ -5,7 +5,7 @@ package org.nasdanika.html.model.bootstrap.gen;
  * @author Pavel
  *
  */
-public class TableSectionConsumerFactoryAdapter<M extends org.nasdanika.html.model.bootstrap.TableSection> extends TableRowContainerConsumerFactoryAdapter<M,org.nasdanika.html.bootstrap.Table> {
+public class TableSectionConsumerFactoryAdapter<M extends org.nasdanika.html.model.bootstrap.TableSection, T extends org.nasdanika.html.bootstrap.RowContainer<?,?>> extends TableRowContainerConsumerFactoryAdapter<M,T> {
 
 	public TableSectionConsumerFactoryAdapter(M tableSection) {
 		super(tableSection);
