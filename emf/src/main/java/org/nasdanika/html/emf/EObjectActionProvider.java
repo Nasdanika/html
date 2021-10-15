@@ -1,15 +1,31 @@
 package org.nasdanika.html.emf;
 
+import java.text.DateFormat;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.function.BiConsumer;
 //import java.util.function.Consumer;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.ECollections;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypedElement;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.CollectionCompoundConsumer;
 import org.nasdanika.common.ProgressMonitor;
@@ -22,14 +38,22 @@ import org.nasdanika.html.emf.EObjectActionResolver.Context;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.util.ActionProvider;
 import org.nasdanika.html.model.app.util.ActionSupplier;
+import org.nasdanika.html.model.bootstrap.BootstrapFactory;
+import org.nasdanika.html.model.bootstrap.Table;
+import org.nasdanika.html.model.bootstrap.TableCell;
+import org.nasdanika.html.model.bootstrap.TableHeader;
+import org.nasdanika.html.model.bootstrap.TableRow;
+import org.nasdanika.html.model.bootstrap.TableSection;
+import org.nasdanika.html.model.html.HtmlFactory;
+
+import com.ibm.icu.util.Calendar;
 
 public class EObjectActionProvider<T extends EObject> extends AdapterImpl implements ActionProvider {
 	
-	protected Action action;
-
 	public EObjectActionProvider(T target) {
 		setTarget(target);
 	}
@@ -163,12 +187,64 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		action.setRightNavigation(createRightNavigation(context, progressMonitor));
 		action.setFloatRightNavigation(createFloatRightNavigation(context, progressMonitor));
 		
-		// Navigation
+		// Navigation (context)
+		
+		// TODO - diagnostic
 		
 		// Content
+		Table propertiesTable = createPropertiesTable(action, context, progressMonitor);
+		if (propertiesTable != null) {
+			action.getContent().add(propertiesTable);
+		}
 		
 		// Resources
-	}	
+	}
+	
+	/**
+	 * Creates a properties table from properties
+	 * @param context
+	 * @param progressMonitor
+	 * @return Table or null if there are no properties.
+	 * @throws Exception
+	 */
+	protected Table createPropertiesTable(Action action, Context context, ProgressMonitor progressMonitor) throws Exception {
+		List<ETypedElement> properties = getProperties();
+		if (properties == null || properties.isEmpty()) {
+			return null;
+		}
+		
+		Table ret = BootstrapFactory.eINSTANCE.createTable();
+		EList<TableRow> rows = ret.getRows();
+		for (ETypedElement property: properties) {
+			Object propertyValue = getTypedElementValue(property);
+			if (!isEmptyValue(property, propertyValue)) {
+				TableRow propertyRow = BootstrapFactory.eINSTANCE.createTableRow();
+				rows.add(propertyRow);
+				EList<TableCell> propertyCells = propertyRow.getCells();
+	
+				// TODO - conditionals - empty/isSet
+	
+				// TODO - feature diagnostics
+				TableCell propertyHeader = BootstrapFactory.eINSTANCE.createTableCell();
+				propertyHeader.setHeader(true);
+				propertyCells.add(propertyHeader);
+				propertyHeader.getContent().add(createETypedElementLabel(property, false));
+				
+				TableCell propertyValueCell = BootstrapFactory.eINSTANCE.createTableCell();
+				propertyCells.add(propertyValueCell);
+				EObject renderedValue = renderValue(action, property, propertyValue, context, progressMonitor);
+				if (renderedValue != null) {
+					propertyValueCell.getContent().add(renderedValue);
+				}
+			}
+		}
+				
+		return ret;
+	}
+	
+	protected List<ETypedElement> getProperties() {
+		return Collections.emptyList();
+	}
 			
 	/**
 	 * Creates a label for {@link ETypedElement}s such as {@link EAttribute} and {@link EReference} to be used
@@ -235,20 +311,6 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		
 		return ret;
 	}
-	
-	/**
-	 * Convenience method to add textual content.
-	 * @param content
-	 */
-	protected static void addContent(Action action, String content) {
-		Text text = ContentFactory.eINSTANCE.createText();
-		text.setContent(content);
-		action.getContent().add(text);
-	}
-
-	public Action getAction() {
-		return action;
-	}
 
 	@Override
 	public double size() {
@@ -258,6 +320,326 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	@Override
 	public String name() {
 		return "Action provider for " + getTarget();
+	}
+	
+	/**
+	 * Empty values are not shown in property tables unless there is a diagnostic to show.
+	 * This method returns true if value is null, an empty string, an empty collection, false for booleans, or zero for numbers.
+	 * @param member
+	 * @param value
+	 * @return
+	 */
+	protected boolean isEmptyValue(ETypedElement member, Object value) {
+		if (value == null) {
+			return true;
+		}
+		if (value instanceof Collection) {
+			return ((Collection<?>) value).isEmpty();
+		}
+		if (value instanceof String) {
+			return Util.isBlank((String) value);		
+		}
+		if (value instanceof Number) {
+			return ((Number) value).equals(0);
+		}
+		return Boolean.FALSE.equals(value);
+	}
+	
+	protected Object getTypedElementValue(ETypedElement typedElement) throws Exception {
+		return getTypedElementValue(getTarget(), typedElement);
+	}
+		
+	protected Object getTypedElementValue(EObject eObject, ETypedElement typedElement) throws Exception {
+		if (typedElement instanceof EStructuralFeature) {
+			return eObject.eGet((EStructuralFeature) typedElement);
+		}
+		
+		if (typedElement == EcorePackage.Literals.EOBJECT___ECONTAINER) {
+			return eObject.eContainer();
+		}
+		
+		EOperation eOp = (EOperation) typedElement;
+		return eObject.eInvoke(eOp, getArguments(eObject, eOp));
+	}
+	
+	protected EList<?> getArguments(EObject eObject, EOperation eOp) {
+		if (eOp.getEParameters().isEmpty()) {
+			return ECollections.emptyEList();
+		}
+		throw new UnsupportedOperationException();
+	}	
+	
+	/**
+	 * Adds textual content.
+	 * @param content
+	 */
+	protected static void addContent(Action action, String content) {
+		Text text = createText(content);
+		action.getContent().add(text);
+	}
+
+	/**
+	 * Convenience method to create Text and set content in one shot.
+	 * @param content
+	 * @return
+	 */
+	public static Text createText(String content) {
+		Text text = ContentFactory.eINSTANCE.createText();
+		text.setContent(content);
+		return text;
+	}
+
+	/**
+	 * Renders value.
+	 * @param base Context/base action.
+	 * @param typedElement Optional typed element for customizing behavior.
+	 * @param value Value to render
+	 * @param context Context
+	 * @param progressMonitor progress monitor.
+	 * @return rendered value
+	 * @throws Exception
+	 */
+	protected EObject renderValue(
+			Action base, 
+			ETypedElement typedElement,
+			Object value, 
+			Context context, 
+			ProgressMonitor progressMonitor) throws Exception {		
+		if (value == null) {
+			return null;
+		}
+		if (value instanceof Instant) {
+			return renderValue(base, typedElement, new Date(((Instant) value).toEpochMilli()), context, progressMonitor);
+		}
+		
+		if (value instanceof Date) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime((Date) value);
+			String datePart = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault()).format((Date) value);
+			if (calendar.get(Calendar.HOUR_OF_DAY) == 0 && calendar.get(Calendar.MINUTE) == 0 && calendar.get(Calendar.SECOND) == 0) {
+				return createText(datePart);
+			}
+			String timePart = DateFormat.getTimeInstance().format((Date) value);
+			return createText(datePart + " " + timePart);
+			
+		}
+		
+		if (value instanceof EObject) {
+			Action valueAction = context.getAction((EObject) value);
+			if (valueAction != null) {
+				Link link = AppFactory.eINSTANCE.createLink();
+				link.setText(valueAction.getText());
+				link.setIcon(valueAction.getIcon());
+				link.setTooltip(valueAction.getTooltip());
+				link.setLocation(context.resolve(valueAction, base).toString());
+				return link;
+			}
+		} else if (value instanceof EMap) {
+			return createEMapTable(typedElement, (EMap<?,?>) value, base, context, progressMonitor);
+		} else if (value instanceof Collection) {
+			Collection<?> vc = (Collection<?>) value;
+			if (vc.isEmpty()) {
+				return null;
+			}
+			if (vc.size() == 1) {
+				return renderValue(base, typedElement, vc.iterator().next(), context, progressMonitor);
+			}			
+			
+			org.nasdanika.html.model.html.Tag ol = HtmlFactory.eINSTANCE.createTag();
+			ol.setName("ol");
+			for (Object e: (Iterable<?>) value) {
+				org.nasdanika.html.model.html.Tag li = HtmlFactory.eINSTANCE.createTag();
+				li.setName("li");
+				ol.getContent().add(li);
+				li.getContent().add(renderValue(base, typedElement, e, context, progressMonitor));
+			}
+			return ol;
+		}
+		return createText(String.valueOf(value));
+	}
+	
+	/**
+	 * Creates a table from EMap entries
+	 * @param typedElement Optional classifier to customize behavior
+	 * @param eMap EMap
+	 * @param action Context/base action for relativising references
+	 * @param context Context
+	 * @param progressMonitor Progress montior
+	 * @return null if emap is empty or null, a table with keys and values otherwise.
+	 * @throws Exception
+	 */
+	protected Table createEMapTable(
+			ETypedElement typedElement,
+			EMap<?,?> eMap, 
+			Action action, 
+			Context context, 
+			ProgressMonitor progressMonitor) throws Exception {
+		if (eMap == null || eMap.isEmpty()) {
+			return null;
+		}
+		
+		Table ret = BootstrapFactory.eINSTANCE.createTable();
+		EList<TableRow> rows = ret.getRows();
+		for (Object key: sortKeys(eMap.keySet())) {
+			Object value = eMap.get(key);
+			TableRow entryRow = BootstrapFactory.eINSTANCE.createTableRow();
+			rows.add(entryRow);
+			EList<TableCell> entryCells = entryRow.getCells();
+
+			TableCell keyHeader = BootstrapFactory.eINSTANCE.createTableCell();
+			keyHeader.setHeader(true);
+			entryCells.add(keyHeader);
+			keyHeader.getContent().add(createText(String.valueOf(key)));
+			
+			TableCell valueCell = BootstrapFactory.eINSTANCE.createTableCell();
+			entryCells.add(valueCell);
+			EObject renderedValue = renderValue(action, typedElement, value, context, progressMonitor);
+			if (renderedValue != null) {
+				valueCell.getContent().add(renderedValue);
+			}
+		}
+				
+		return ret;
+	}
+	
+	protected <K> List<K> sortKeys(Set<K> keys) {
+		return keys.stream().sorted((a,b) -> String.valueOf(a).compareTo(String.valueOf(b))).collect(Collectors.toList());
+	}
+	
+	protected ColumnBuilder<EObject> createColumnBuilder(ETypedElement typedElement) {
+		return new ColumnBuilder<EObject>() {
+			
+			@Override
+			public void buildHeader(
+					TableCell header, 
+					Action base, 
+					ETypedElement tElement, 
+					Context context,
+					ProgressMonitor progressMonitor) throws Exception {
+				header.getContent().add(createETypedElementLabel(typedElement, false));				
+			}
+			
+			@Override
+			public void buildCell(
+					EObject rowElement, 
+					TableCell cell, 
+					Action base, 
+					ETypedElement tElement, 
+					Context context,
+					ProgressMonitor progressMonitor) throws Exception {
+				
+				Object value = getTypedElementValue(rowElement, typedElement);
+				EObject renderedValue = renderValue(base, typedElement, value, context, progressMonitor);
+				if (renderedValue != null) {
+					cell.getContent().add(renderedValue);
+				}
+			}
+		};
+	}
+	
+	protected List<ColumnBuilder<EObject>> createColumnBuilders(Collection<ETypedElement> typedElements) {
+		return typedElements.stream().map(this::createColumnBuilder).collect(Collectors.toList());
+	}
+	
+	protected List<ColumnBuilder<EObject>> createColumnBuilders(ETypedElement... typedElements) {
+		return createColumnBuilders(Arrays.asList(typedElements));
+	}
+
+	@SafeVarargs
+	public static <T> Table buildTable(
+			Collection<T> elements, 
+			Action base, 
+			ETypedElement typedElement,
+			Context context, 
+			ProgressMonitor progressMonitor,			
+			ColumnBuilder<T>... columnBuilders) throws Exception {
+		return buildTable(elements, Arrays.asList(columnBuilders), base, typedElement, context, progressMonitor);
+	}
+	
+	public static <T> Table buildTable(
+			Collection<T> elements, 
+			Collection<ColumnBuilder<T>> columnBuilders,
+			Action base, 
+			ETypedElement typedElement,
+			Context context, 
+			ProgressMonitor progressMonitor) throws Exception {
+		Table ret = BootstrapFactory.eINSTANCE.createTable();
+		TableHeader header = BootstrapFactory.eINSTANCE.createTableHeader();
+		ret.setHeader(header);
+		TableRow headerRow = BootstrapFactory.eINSTANCE.createTableRow();
+		header.getRows().add(headerRow);
+		EList<TableCell> headerRowCells = headerRow.getCells();
+		for (ColumnBuilder<T> cb: columnBuilders) {
+			TableCell headerCell = BootstrapFactory.eINSTANCE.createTableCell();
+			headerCell.setHeader(true);
+			headerRowCells.add(headerCell);
+			cb.buildHeader(headerCell, base, typedElement, context, progressMonitor);
+		}
+		
+		TableSection body = BootstrapFactory.eINSTANCE.createTableSection();
+		ret.setBody(body);
+		EList<TableRow> bodyRows = body.getRows();
+		for (T element: elements) {
+			TableRow elementRow = BootstrapFactory.eINSTANCE.createTableRow();
+			bodyRows.add(elementRow);
+			EList<TableCell> elementRowCells = elementRow.getCells();
+			for (ColumnBuilder<T> cb: columnBuilders) {
+				TableCell elementCell = BootstrapFactory.eINSTANCE.createTableCell();
+				elementRowCells.add(elementCell);
+				cb.buildCell(element, elementCell, base, typedElement, context, progressMonitor);
+			}
+		}
+		return ret;
+	}
+	
+	/**
+	 * Creates an action with a table of typed element values.
+	 * @param typedElement
+	 * @param columnBuilders
+	 * @return
+	 * @throws Exception 
+	 */
+	protected Action createTableAction(
+			ETypedElement typedElement,
+			Collection<ColumnBuilder<EObject>> columnBuilders,
+			Action base, 
+			Context context, 
+			ProgressMonitor progressMonitor) throws Exception {
+		Action ret = AppFactory.eINSTANCE.createAction();
+		configureETypedElementLabel(typedElement, ret, false);
+		
+		@SuppressWarnings("unchecked")
+		Table table = buildTable(
+				(Collection<EObject>) getTypedElementValue(typedElement), 
+				columnBuilders, 
+				base, 
+				typedElement, 
+				context, 
+				progressMonitor);
+		
+		ret.getContent().add(table);
+		return ret;
+	}
+
+	/**
+	 * Creates an action with a table of typed element values.
+	 * @param typedElement
+	 * @param columnBuilders
+	 * @return
+	 * @throws Exception 
+	 */
+	protected Action createTableAction(
+			ETypedElement typedElement,
+			Action base, 
+			Context context, 
+			ProgressMonitor progressMonitor,						
+			ETypedElement... columnElements) throws Exception {
+		return createTableAction(
+				typedElement, 
+				createColumnBuilders(columnElements), 
+				base, 
+				context, 
+				progressMonitor);
 	}
 	
 }

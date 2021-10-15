@@ -15,4 +15,5 @@ app-action:
           content-text: TODO  
         children:
           - app-action-reference: "../../../../../../../target/model-doc/actions/exec.genmodel.xml#/"
+          - app-action-reference: "../../../../../../../target/model-doc/actions/flow.genmodel.xml#/"
           

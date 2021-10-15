@@ -102,6 +102,7 @@ public class TestEcoreDoc extends TestBase {
 		// Physical location relative to the projects (git) root folder -> logical (workspace) name 
 		Map<String,String> bundleMap = new LinkedHashMap<>();
 		bundleMap.put("core/exec", "org.nasdanika.exec");
+		bundleMap.put("core/flow", "org.nasdanika.flow");
 
 		File modelDir = new File("target/models").getAbsoluteFile();
 		modelDir.mkdirs();

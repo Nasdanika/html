@@ -2,20 +2,26 @@ package org.nasdanika.html.flow;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
-import org.nasdanika.exec.content.ContentFactory;
-import org.nasdanika.exec.content.Text;
+import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.PackageElement;
 import org.nasdanika.html.emf.EObjectActionProvider;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.html.model.app.SectionStyle;
+import org.nasdanika.html.model.bootstrap.BootstrapFactory;
+import org.nasdanika.html.model.bootstrap.Table;
+import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.impl.ModelElementImpl;
 
 public class PackageElementActionProvider<T extends PackageElement<?>> extends EObjectActionProvider<T> {
@@ -52,6 +58,7 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 		}
 		
 		ret.setText(eObj.getName()); // Escape?
+		ret.setSectionStyle(SectionStyle.HEADER);
 		return ret;
 	}
 
@@ -60,14 +67,28 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 		return getTarget().getName();
 	}
 	
-	/**
-	 * Adds textual content.
-	 * @param content
-	 */
-	protected static void addContent(Action action, String content) {
-		Text text = ContentFactory.eINSTANCE.createText();
-		text.setContent(content);
-		action.getContent().add(text);
+	@Override
+	protected List<ETypedElement> getProperties() {
+		List<ETypedElement> ret = new ArrayList<>();
+		ret.add(FlowPackage.Literals.PACKAGE_ELEMENT__EXTENDS);
+		ret.add(FlowPackage.Literals.PACKAGE_ELEMENT__EXTENSIONS);
+		ret.add(NcorePackage.Literals.MARKED__MARKER);
+		ret.add(FlowPackage.Literals.PACKAGE_ELEMENT__MODIFIERS);
+//		ret.add(FlowPackage.Literals.PACKAGE_ELEMENT__PROTOTYPE);
+		ret.add(NcorePackage.Literals.MODEL_ELEMENT__URI);
+//		ret.add(NcorePackage.Literals.MODEL_ELEMENT__UUID);
+		return ret;
+	}
+	
+	@Override
+	protected Table createPropertiesTable(
+			Action action,
+			org.nasdanika.html.emf.EObjectActionResolver.Context context,
+			ProgressMonitor progressMonitor) throws Exception {
+		Table propertiesTable = super.createPropertiesTable(action, context, progressMonitor);
+		propertiesTable.getAttributes().put("style", createText("width:auto"));
+		BootstrapFactory.eINSTANCE.createAppearance();
+		return propertiesTable;
 	}
 	
 }
