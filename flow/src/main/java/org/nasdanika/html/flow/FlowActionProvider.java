@@ -1,18 +1,24 @@
 package org.nasdanika.html.flow;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Util;
 import org.nasdanika.diagram.Diagram;
 import org.nasdanika.diagram.gen.plantuml.Generator;
+import org.nasdanika.flow.Call;
 import org.nasdanika.flow.Flow;
 import org.nasdanika.flow.FlowElement;
 import org.nasdanika.flow.PseudoState;
+import org.nasdanika.flow.Transition;
 import org.nasdanika.flow.util.FlowStateDiagramGenerator;
 import org.nasdanika.html.model.app.Action;
 
@@ -29,14 +35,55 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 			ProgressMonitor progressMonitor) throws Exception {
 		
 		Action action = super.createAction(registry, resolveConsumer, progressMonitor);
-		EList<EObject> children = action.getChildren(); // TODO - sort by dependency then by name - comparator.
-		for (FlowElement<?> element: getTarget().getElements().values()) {
-			if (!(element instanceof PseudoState)) {
-				children.add(createChildAction(element, registry, resolveConsumer, progressMonitor));
-			}
+		EList<EObject> children = action.getChildren(); 
+		for (FlowElement<?> element: getTarget().getElements().values().stream().filter(e -> !(e instanceof PseudoState)).sorted(this::compareFlowElements).collect(Collectors.toList())) {
+			children.add(createChildAction(element, registry, resolveConsumer, progressMonitor));
 		}
 		
 		return action;
+	}
+	
+	private int compareFlowElements(FlowElement<?> a, FlowElement<?> b) {
+		if (a == b) {
+			return 0;
+		}
+		
+		if (isReacheable(a, b, new HashSet<>())) {
+			return -1;
+		}
+		
+		if (isReacheable(b, a, new HashSet<>())) {
+			return 1;
+		}
+		
+		if (Util.isBlank(a.getName())) {
+			return Util.isBlank(b.getName()) ? a.hashCode() - b.hashCode() : 1;
+		}
+		
+		if (Util.isBlank(b.getName())) {
+			return -1;
+		}
+		
+		return a.getName().compareTo(b.getName());
+	}
+	
+	private boolean isReacheable(FlowElement<?> source, FlowElement<?> target, Set<FlowElement<?>> traversed) {
+		if (source == target) {
+			return true;
+		}
+		if (traversed.add(source)) {
+			for (Transition output: source.getOutputs().values()) {
+				if (isReacheable(output.getTarget(), target, traversed)) {
+					return true;
+				}
+			}
+			for (Call call: source.getCalls().values()) {
+				if (isReacheable(call.getTarget(), target, traversed)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	@Override
