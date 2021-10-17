@@ -77,6 +77,10 @@ flow-package:
                 develop:
                   target: develop
                   payload: story
+                  documentation:
+                    content-markdown:
+                      source:
+                        content-text: Groomed ``stories`` transition to the development. 
           develop:
             flow-activity:
               name: Develop a story
