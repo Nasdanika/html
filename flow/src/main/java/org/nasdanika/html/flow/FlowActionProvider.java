@@ -7,13 +7,11 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.diagram.Diagram;
-import org.nasdanika.diagram.gen.plantuml.Generator;
 import org.nasdanika.flow.Call;
 import org.nasdanika.flow.Flow;
 import org.nasdanika.flow.FlowElement;
@@ -85,34 +83,10 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 		}
 		return false;
 	}
-	
-	@Override
-	protected void resolve(
-			Action action, 
-			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-			ProgressMonitor progressMonitor)
-			throws Exception {
-		super.resolve(action, context, progressMonitor);
-		
-		FlowStateDiagramGenerator flowStateDiagramGenerator = new FlowStateDiagramGenerator() {
-		
-			@Override
-			protected String getFlowElementLocation(String key, FlowElement<?> flowElement) {
-				Action elementAction = context.getAction(flowElement);
-				if (elementAction == null) {
-					return null;
-				}
-				
-				URI uri = context.resolve(elementAction, action);
-				return uri == null ? null : uri.toString();
-			}
-			
-		};
-		
-		Diagram diagram = flowStateDiagramGenerator.generateFlowDiagram(getTarget());
-		Generator generator = new Generator();
-		String diagramHTML = generator.generateUmlDiagram(diagram);
-		addContent(action, diagramHTML);
+
+
+	protected Diagram generateDiagram(FlowStateDiagramGenerator flowStateDiagramGenerator) {
+		return flowStateDiagramGenerator.generateFlowDiagram(getTarget());
 	}
 
 }

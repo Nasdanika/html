@@ -6,14 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.diagram.Diagram;
+import org.nasdanika.diagram.gen.plantuml.Generator;
 import org.nasdanika.flow.Call;
 import org.nasdanika.flow.FlowElement;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.Transition;
+import org.nasdanika.flow.util.FlowStateDiagramGenerator;
 import org.nasdanika.html.emf.ColumnBuilder;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.bootstrap.TableCell;
@@ -44,6 +48,8 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Package
 			ProgressMonitor progressMonitor) throws Exception {
 		
 		super.resolve(action, context, progressMonitor);
+		
+		addContent(action, createDiagram(action, context));
 	
 		// Inputs
 		EList<Action> sections = action.getSections();
@@ -65,6 +71,34 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Package
 		if (!getTarget().getCalls().isEmpty()) {
 			sections.add(createCallsAction(action, context, progressMonitor));
 		}
+	}
+	
+	protected String createDiagram(Action action, org.nasdanika.html.emf.EObjectActionResolver.Context context) throws Exception {
+		FlowStateDiagramGenerator flowStateDiagramGenerator = new FlowStateDiagramGenerator() {
+		
+			@Override
+			protected String getFlowElementLocation(FlowElement<?> flowElement) {
+				Action elementAction = context.getAction(flowElement);
+				if (elementAction == null) {
+					return null;
+				}
+				
+				URI uri = context.resolve(elementAction, action);
+				return uri == null ? null : uri.toString();
+			}
+			
+		};
+		
+		Diagram diagram = generateDiagram(flowStateDiagramGenerator);
+		Generator generator = new Generator();
+		String diagramHTML = generator.generateUmlDiagram(diagram);
+		return diagramHTML;
+	}
+
+	protected Diagram generateDiagram(FlowStateDiagramGenerator flowStateDiagramGenerator) {
+		Diagram diagram = flowStateDiagramGenerator.generateContextDiagram(getTarget());
+		diagram.setVertical(false);
+		return diagram;
 	}
 
 	private Action createInputsAction(
@@ -507,5 +541,6 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Package
 				context, 
 				progressMonitor);
 	}
+	
 	
 }
