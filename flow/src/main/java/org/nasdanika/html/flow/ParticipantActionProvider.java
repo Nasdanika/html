@@ -16,7 +16,9 @@ public class ParticipantActionProvider extends PackageElementActionProvider<Part
 	@Override
 	protected List<ETypedElement> getProperties() {
 		List<ETypedElement> properties = super.getProperties();
+		properties.add(FlowPackage.Literals.PARTICIPANT__ARTIFACTS);
 		properties.add(FlowPackage.Literals.PARTICIPANT__PARTICIPATES);
+		properties.add(FlowPackage.Literals.PARTICIPANT__RESOURCES);
 		properties.add(FlowPackage.Literals.PARTICIPANT__SERVICES);
 		return properties;
 	}

@@ -30,6 +30,7 @@ public class ArtifactActionProvider extends PackageElementActionProvider<Artifac
 		properties.add(FlowPackage.Literals.ARTIFACT__INPUT_FOR);
 		properties.add(FlowPackage.Literals.ARTIFACT__OUTPUT_FOR);
 		properties.add(FlowPackage.Literals.ARTIFACT__REPOSITORIES);
+		properties.add(FlowPackage.Literals.ARTIFACT__USED_BY);
 		return properties;
 	}
 		

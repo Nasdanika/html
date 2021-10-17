@@ -12,6 +12,7 @@ import org.nasdanika.flow.Artifact;
 import org.nasdanika.flow.Flow;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.Participant;
+import org.nasdanika.flow.PseudoState;
 import org.nasdanika.flow.Resource;
 import org.nasdanika.flow.Service;
 import org.nasdanika.html.model.app.util.ActionProvider;
@@ -55,6 +56,14 @@ public class FlowActionProviderAdapterFactory extends ComposedAdapterFactory {
 					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
 					e -> new ArtifactActionProvider(e, context)));
+		
+		// Pseudo-state
+		registerAdapterFactory(
+				new FunctionAdapterFactory<ActionProvider, PseudoState>(
+					FlowPackage.Literals.PSEUDO_STATE, 
+					ActionProvider.class, 
+					this.getClass().getClassLoader(), 
+					e -> new PseudoStateActionProvider<PseudoState>(e, context)));
 		
 		// Activity
 		registerAdapterFactory(

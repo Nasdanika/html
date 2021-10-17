@@ -10,6 +10,9 @@ flow-package:
         content-markdown:
           source:
             content-text: Creates and ``grooms`` stories.
+    architect:
+      name: Architect
+      description: Keeps the product aligned to the architectural guidelines.
     developer:
       name: Developer
       description: Implements stories and tests in their local environment
@@ -74,16 +77,54 @@ flow-package:
               input-artifacts: story
               output-artifacts: story
               outputs: 
-                develop:
-                  target: develop
+                is-architecturally-significant:
+                  target: is-architecturally-significant
+                  payload: story
+          is-architecturally-significant:
+            flow-choice:
+              name: Architecturally significant
+              description: Decision whether the story is architecturally significant and requires an architectural review.
+              participants: product-owner
+              resources: issue-tracker
+              input-artifacts: story
+              output-artifacts: story
+              outputs: 
+                review:
+                  target: architectural-review
+                  name: "Yes"
                   payload: story
                   documentation:
                     content-markdown:
                       source:
-                        content-text: Groomed ``stories`` transition to the development. 
-          develop:
+                        content-text: Architecturally significant stories need to go through an architectural review. 
+                develop:
+                  target: develop/elements/code
+                  name: "No"
+                  payload: story                    
+                  documentation:
+                    content-markdown:
+                      source:
+                        content-text: Stories which are not architecturally significant go straight to development. 
+          architectural-review:
             flow-activity:
+              name: Architectural review
+              description: Architect reviews architecturally significan stories and releases them to development or sends back with comments for additional grooming.
+              participants: architect
+              resources: issue-tracker
+              input-artifacts: story
+              output-artifacts: story
+              outputs: 
+                develop:
+                  target: develop/elements/code
+                  payload: story
+                  documentation:
+                    content-markdown:
+                      source:
+                        content-text: Approved ``stories`` transition to the development. 
+          develop:
+            flow-flow:
               name: Develop a story
+              partition: true
               description: Developer creates or modifies source code to implement story functionality.
               participants: developer
               modifiers: abstract
@@ -93,9 +134,32 @@ flow-package:
                 - ide
               input-artifacts: story
               output-artifacts: source
-              outputs: 
-                build: 
-                  target: build
+              elements:
+                code:
+                  flow-activity:
+                    name: Code
+                    outputs:
+                      unit-test:
+                        target: unit-test
+                      document:
+                        target: document
+                unit-test:
+                  flow-activity:
+                    name: Unit test
+                    outputs:
+                      join:
+                        target: join
+                document:
+                  flow-activity:
+                    name: Document
+                    outputs:
+                      join:
+                        target: join
+                join:
+                  flow-join:
+                    outputs:
+                      build:
+                        target: ../../build
           build:
             flow-activity:
               name: Build

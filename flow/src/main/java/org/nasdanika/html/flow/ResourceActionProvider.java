@@ -19,6 +19,7 @@ public class ResourceActionProvider extends PackageElementActionProvider<Resourc
 		properties.add(FlowPackage.Literals.RESOURCE__ARTIFACTS);
 		properties.add(FlowPackage.Literals.RESOURCE__SERVICES);
 		properties.add(FlowPackage.Literals.RESOURCE__USED_BY);
+		properties.add(FlowPackage.Literals.RESOURCE__USED_IN);
 		return properties;
 	}
 

@@ -90,6 +90,9 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Package
 		};
 		
 		Diagram diagram = generateDiagram(flowStateDiagramGenerator);
+		if (diagram.getElements().size() < 2) {
+			return null; // No point in a context diagram with a single element.
+		}
 		Generator generator = new Generator();
 		String diagramHTML = generator.generateUmlDiagram(diagram);
 		return diagramHTML;
@@ -97,7 +100,8 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Package
 
 	protected Diagram generateDiagram(FlowStateDiagramGenerator flowStateDiagramGenerator) {
 		Diagram diagram = flowStateDiagramGenerator.generateContextDiagram(getTarget());
-		diagram.setVertical(false);
+		diagram.setVertical(false); // TODO - configurable via representations
+		diagram.setHideEmptyDescription(true); // TODO - configurable via representations
 		return diagram;
 	}
 
