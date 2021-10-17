@@ -374,8 +374,10 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	 * @param content
 	 */
 	protected static void addContent(Action action, String content) {
-		Text text = createText(content);
-		action.getContent().add(text);
+		if (!Util.isBlank(content)) {
+			Text text = createText(content);
+			action.getContent().add(text);
+		}
 	}
 
 	/**
