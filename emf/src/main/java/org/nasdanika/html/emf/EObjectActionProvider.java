@@ -426,14 +426,16 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		
 		if (value instanceof EObject) {
 			Action valueAction = context.getAction((EObject) value);
-			if (valueAction != null) {
-				Link link = AppFactory.eINSTANCE.createLink();
-				link.setText(valueAction.getText());
-				link.setIcon(valueAction.getIcon());
-				link.setTooltip(valueAction.getTooltip());
-				link.setLocation(context.resolve(valueAction, base).toString());
-				return link;
+			if (valueAction == null) {
+				return EcoreUtil.copy((EObject) value); // Returning copy to be handled at later stages, e.g. render markdown during site generation. 
 			}
+			
+			Link link = AppFactory.eINSTANCE.createLink();
+			link.setText(valueAction.getText());
+			link.setIcon(valueAction.getIcon());
+			link.setTooltip(valueAction.getTooltip());
+			link.setLocation(context.resolve(valueAction, base).toString());
+			return link;
 		} else if (value instanceof EMap) {
 			return createEMapTable(typedElement, (EMap<?,?>) value, base, context, progressMonitor);
 		} else if (value instanceof Collection) {
