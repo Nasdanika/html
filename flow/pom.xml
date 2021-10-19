@@ -4,7 +4,11 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
+<<<<<<< HEAD
 	    <version>2021.10.3</version>
+=======
+	    <version>2021.10.2</version>
+>>>>>>> branch 'develop' of https://github.com/Nasdanika/html.git
 	    <relativePath>..</relativePath>
 	  </parent>
 	<artifactId>flow</artifactId>
