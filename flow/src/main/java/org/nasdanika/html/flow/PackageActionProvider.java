@@ -17,6 +17,7 @@ import org.nasdanika.flow.Participant;
 import org.nasdanika.flow.Resource;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.ncore.util.NamedElementComparator;
 
 public class PackageActionProvider extends PackageElementActionProvider<org.nasdanika.flow.Package> {
 	
@@ -51,15 +52,16 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
-		List<Package> subPackages = getTarget().getSubPackages().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		List<Package> subPackages = getTarget().getSubPackages().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
 		if (subPackages.isEmpty()) {
 			return Collections.emptyList();
 		}
 		Action group = AppFactory.eINSTANCE.createAction();
 		group.setText("Sub-packages");
 		// TODO - icon, ...
+		EList<EObject> children = group.getChildren();
 		for (Package sp: subPackages) {
-			group.getChildren().add(createChildAction(sp, registry, resolveConsumer, progressMonitor));
+			children.add(createChildAction(sp, registry, resolveConsumer, progressMonitor));
 		}
 		
 		return Collections.singletonList(group);
@@ -75,15 +77,16 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
-		Collection<Activity<?>> activities = getTarget().getActivities().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		Collection<Activity<?>> activities = getTarget().getActivities().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
 		if (activities.isEmpty()) {
 			return Collections.emptyList();
 		}
 		Action group = AppFactory.eINSTANCE.createAction();
 		group.setText("Activities");
 		// TODO - icon, ...
+		EList<EObject> children = group.getChildren();
 		for (Activity<?> activity: activities) {
-			group.getChildren().add(createChildAction(activity, registry, resolveConsumer, progressMonitor));
+			children.add(createChildAction(activity, registry, resolveConsumer, progressMonitor));
 		}
 		
 		return Collections.singletonList(group);
@@ -99,15 +102,16 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
-		Collection<Participant> participants = getTarget().getParticipants().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		Collection<Participant> participants = getTarget().getParticipants().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
 		if (participants.isEmpty()) {
 			return Collections.emptyList();
 		}
 		Action group = AppFactory.eINSTANCE.createAction();
 		group.setText("Participants");
 		// TODO - icon, ...
+		EList<EObject> children = group.getChildren();
 		for (Participant participant: participants) {
-			group.getChildren().add(createChildAction(participant, registry, resolveConsumer, progressMonitor));
+			children.add(createChildAction(participant, registry, resolveConsumer, progressMonitor));
 		}
 		
 		return Collections.singletonList(group);
@@ -123,15 +127,16 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
-		Collection<Resource> resources = getTarget().getResources().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		Collection<Resource> resources = getTarget().getResources().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
 		if (resources.isEmpty()) {
 			return Collections.emptyList();
 		}
 		Action group = AppFactory.eINSTANCE.createAction();
 		group.setText("Resources");
 		// TODO - icon, ...
+		EList<EObject> children = group.getChildren();
 		for (Resource resource: resources) {
-			group.getChildren().add(createChildAction(resource, registry, resolveConsumer, progressMonitor));
+			children.add(createChildAction(resource, registry, resolveConsumer, progressMonitor));
 		}
 		
 		return Collections.singletonList(group);
@@ -147,15 +152,16 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
-		Collection<Artifact> artifacts = getTarget().getArtifacts().values().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		Collection<Artifact> artifacts = getTarget().getArtifacts().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
 		if (artifacts.isEmpty()) {
 			return Collections.emptyList();
 		}
 		Action group = AppFactory.eINSTANCE.createAction();
 		group.setText("Artifacts");
 		// TODO - icon, ...
+		EList<EObject> children = group.getChildren();
 		for (Artifact artifact: artifacts) {
-			group.getChildren().add(createChildAction(artifact, registry, resolveConsumer, progressMonitor));
+			children.add(createChildAction(artifact, registry, resolveConsumer, progressMonitor));
 		}
 		
 		return Collections.singletonList(group);

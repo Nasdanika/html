@@ -17,9 +17,7 @@ import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.PackageElement;
 import org.nasdanika.html.emf.EObjectActionProvider;
 import org.nasdanika.html.model.app.Action;
-import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.SectionStyle;
-import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.Table;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.impl.ModelElementImpl;
@@ -44,11 +42,14 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
-		Action ret = AppFactory.eINSTANCE.createAction();		
+		Action ret = super.createAction(registry, resolveConsumer, progressMonitor);		
 		T eObj = getTarget();
-		ret.getContent().addAll(EcoreUtil.copyAll(eObj.getDocumentation()));	
 		String digest = Hex.encodeHexString(MessageDigest.getInstance("SHA-256").digest(eObj.getUri().getBytes(StandardCharsets.UTF_8)));
 		ret.setId(digest);
+		
+		String description = eObj.getDescription();
+		addContent(ret, description);
+		ret.setDescription(description);
 
 		String cPath = ModelElementImpl.containmentPath(eObj);
 		if (Util.isBlank(cPath)) {
@@ -87,8 +88,19 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 			ProgressMonitor progressMonitor) throws Exception {
 		Table propertiesTable = super.createPropertiesTable(action, context, progressMonitor);
 		propertiesTable.getAttributes().put("style", createText("width:auto"));
-		BootstrapFactory.eINSTANCE.createAppearance();
 		return propertiesTable;
+	}
+	
+	@Override
+	protected void resolve(
+			Action action, 
+			org.nasdanika.html.emf.EObjectActionResolver.Context context,
+			ProgressMonitor progressMonitor) throws Exception {
+		super.resolve(action, context, progressMonitor);
+		
+		// Adding documentation here so it appears under the properties table
+		T eObj = getTarget();
+		action.getContent().addAll(EcoreUtil.copyAll(eObj.getDocumentation()));			
 	}
 	
 }

@@ -449,18 +449,76 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 				return renderValue(base, typedElement, vc.iterator().next(), context, progressMonitor);
 			}			
 			
-			org.nasdanika.html.model.html.Tag ol = HtmlFactory.eINSTANCE.createTag();
-			ol.setName("ol");
-			for (Object e: (Iterable<?>) value) {
-				org.nasdanika.html.model.html.Tag li = HtmlFactory.eINSTANCE.createTag();
-				li.setName("li");
-				ol.getContent().add(li);
-				li.getContent().add(renderValue(base, typedElement, e, context, progressMonitor));
-			}
-			return ol;
+			return renderList((Collection<?>) value, true, null, base, typedElement, context, progressMonitor);
 		}
 		return createText(String.valueOf(value));
 	}
+	
+	/**
+	 * Functional interface that provides content for an element, e.g. in a list - description or child items for a nested list.
+	 * @author Pavel
+	 *
+	 */
+	public interface ContentProvider<T> {
+		
+		/**
+		 * Creates element content
+		 * @param element Element for which create content. 
+		 * @param base Context/base action.
+		 * @param typedElement Optional typed element for customizing behavior.
+		 * @param context Context
+		 * @param progressMonitor progress monitor.
+		 * @return rendered value
+		 * @throws Exception
+		 */
+		List<EObject> createContent(
+				T element,
+				Action base, 
+				ETypedElement typedElement,
+				Context context, 
+				ProgressMonitor progressMonitor) throws Exception;		
+		
+	}
+	
+	/**
+	 * Renders a list.
+	 * @param base Context/base action.
+	 * @param typedElement Optional typed element for customizing behavior.
+	 * @param value Value to render
+	 * @param context Context
+	 * @param progressMonitor progress monitor.
+	 * @return null for null or empty collections or a list.
+	 * @throws Exception
+	 */
+	protected <E> org.nasdanika.html.model.html.Tag renderList(
+			Collection<E> elements,
+			boolean ordered,
+			ContentProvider<E> contentProvider,
+			Action base, 
+			ETypedElement typedElement,
+			Context context, 
+			ProgressMonitor progressMonitor) throws Exception {		
+		if (elements == null || elements.isEmpty()) {
+			return null;
+		}
+			
+		org.nasdanika.html.model.html.Tag ol = HtmlFactory.eINSTANCE.createTag();
+		ol.setName(ordered ? "ol" : "ul");
+		for (E element: elements) {
+			org.nasdanika.html.model.html.Tag li = HtmlFactory.eINSTANCE.createTag();
+			li.setName("li");
+			ol.getContent().add(li);
+			li.getContent().add(renderValue(base, typedElement, element, context, progressMonitor));
+			if (contentProvider != null) {
+				List<EObject> content = contentProvider.createContent(element, base, typedElement, context, progressMonitor);
+				if (content != null) {
+					li.getContent().addAll(content);
+				}
+			}
+		}
+		return ol;
+	}
+	
 	
 	/**
 	 * Creates a table from EMap entries

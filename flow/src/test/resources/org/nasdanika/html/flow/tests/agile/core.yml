@@ -71,6 +71,7 @@ flow-package:
           groom:
             flow-activity:
               name: Groom a story
+              modifiers: optional
               description: Product Owner elaborates a story so it has enough details for development and testing.
               participants: product-owner
               resources: issue-tracker
@@ -107,8 +108,8 @@ flow-package:
                         content-text: Stories which are not architecturally significant go straight to development. 
           architectural-review:
             flow-activity:
-              name: Architectural review
-              description: Architect reviews architecturally significan stories and releases them to development or sends back with comments for additional grooming.
+              name: Architectural review with a long description to test word wrapping and line increment
+              description: Architect reviews architecturally significant stories and releases them to development or sends back with comments for additional grooming.
               participants: architect
               resources: issue-tracker
               input-artifacts: story

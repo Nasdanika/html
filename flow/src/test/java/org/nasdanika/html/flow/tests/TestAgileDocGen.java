@@ -29,6 +29,9 @@ import org.nasdanika.common.Status;
 import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.common.resources.FileSystemContainer;
 import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.emf.EmfUtil;
+import org.nasdanika.emf.persistence.FeatureCache;
+import org.nasdanika.emf.persistence.FeatureCacheAdapter;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.content.ContentPackage;
 import org.nasdanika.exec.resources.Container;
@@ -67,6 +70,13 @@ public class TestAgileDocGen extends TestBase {
 					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 					org.eclipse.emf.ecore.resource.Resource resource = resourceSet.createResource(URI.createURI("mem://xxx/" + name + "-instance.xml"));
 					resource.getContents().add(instance);
+					
+					org.eclipse.emf.common.util.Diagnostic instanceDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(resourceSet, Context.EMPTY_CONTEXT);
+					int severity = instanceDiagnostic.getSeverity();
+					if (severity != org.eclipse.emf.common.util.Diagnostic.OK) {
+						EmfUtil.dumpDiagnostic(instanceDiagnostic, 2, System.err);
+					}
+					assertThat(severity).isEqualTo(org.eclipse.emf.common.util.Diagnostic.OK);
 					
 					ResourceSet actionModelsResourceSet = new ResourceSetImpl();
 					actionModelsResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
@@ -205,11 +215,28 @@ public class TestAgileDocGen extends TestBase {
 	 */
 	@Test
 	public void generateCoreSite() throws Exception {
-		String name = "core";
+		generateSite("core");
+	}
+
+	/**
+	 * Generates a resource model from an action model and then generates files from the resource model.
+	 * @throws Exception
+	 */
+	@Test
+	public void generateJavaSite() throws Exception {
+		generateSite("java");
+	}
+
+	private void generateSite(String name) throws Exception {
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		generateActionModel(name, progressMonitor);
 		generateResourceModel(name, progressMonitor);
 		generateContainer(name, progressMonitor);
+		
+		long cacheMisses = FeatureCacheAdapter.getMisses();
+		long cacheCalls = FeatureCacheAdapter.getCalls();
+		long cacheEfficiency = 100*(cacheCalls - cacheMisses)/cacheCalls;
+		System.out.println("Feature cache - calls: " + cacheCalls + ", misses: " + cacheMisses + ", efficiency: " + cacheEfficiency + "%, compute time: " + FeatureCacheAdapter.getComputeTime() + " nanoseconds.");
 	}	
 	
 }

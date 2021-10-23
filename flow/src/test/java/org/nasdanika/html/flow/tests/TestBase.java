@@ -322,6 +322,11 @@ public class TestBase {
 				}
 			}
 			
+			@Override
+			protected boolean isDiagnoseModel() {
+				return false;
+			}
+			
 		};
 		
 		// Diagnosing loaded resources. 

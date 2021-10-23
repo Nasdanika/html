@@ -11,11 +11,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Util;
 import org.nasdanika.diagram.Diagram;
+import org.nasdanika.diagram.DiagramElement;
 import org.nasdanika.diagram.gen.plantuml.Generator;
 import org.nasdanika.flow.Call;
 import org.nasdanika.flow.FlowElement;
 import org.nasdanika.flow.FlowPackage;
+import org.nasdanika.flow.Participant;
 import org.nasdanika.flow.Transition;
 import org.nasdanika.flow.util.FlowStateDiagramGenerator;
 import org.nasdanika.html.emf.ColumnBuilder;
@@ -85,6 +88,47 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Package
 				
 				URI uri = context.resolve(elementAction, action);
 				return uri == null ? null : uri.toString();
+			}
+			
+			@Override
+			protected String getFlowElementTooltip(FlowElement<?> flowElement) {
+				Action elementAction = context.getAction(flowElement);
+				return elementAction == null ? null : elementAction.getDescription();
+			}
+			
+			@Override
+			protected String getParticipantLocation(Participant participant) {
+				Action elementAction = context.getAction(participant);
+				if (elementAction == null) {
+					return null;
+				}
+				
+				URI uri = context.resolve(elementAction, action);
+				return uri == null ? null : uri.toString();
+			}
+			
+			@Override
+			protected String getParticipantTooltip(Participant participant) {
+				Action elementAction = context.getAction(participant);
+				return elementAction == null ? null : elementAction.getDescription();
+			}
+			
+			/**
+			 * Wraps text
+			 */
+			@Override
+			protected DiagramElement createDiagramElement(
+					FlowElement<?> flowElement,
+					Map<FlowElement<?>, DiagramElement> semanticMap, 
+					FlowElement<?> contextElement) {
+				
+				DiagramElement ret = super.createDiagramElement(flowElement, semanticMap, contextElement);
+				String text = ret.getText();
+				int initialLineLength = 25;
+				if (text != null && text.length() > initialLineLength) {
+					ret.setText(Util.wrap(text, initialLineLength, 2, "\\n"));
+				}
+				return ret;
 			}
 			
 		};

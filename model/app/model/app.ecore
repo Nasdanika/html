@@ -322,7 +322,7 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sectionStyle" eType="#//SectionStyle"
-        defaultValueLiteral="Auto">
+        defaultValueLiteral="Header">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Defines how to generate section children."/>
       </eAnnotations>
