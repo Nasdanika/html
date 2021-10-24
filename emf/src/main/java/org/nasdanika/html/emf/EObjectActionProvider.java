@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.function.BiConsumer;
-//import java.util.function.Consumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
@@ -34,6 +35,7 @@ import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.emf.EObjectActionResolver.Context;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
@@ -42,6 +44,8 @@ import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.util.ActionProvider;
 import org.nasdanika.html.model.app.util.ActionSupplier;
+import org.nasdanika.html.model.bootstrap.Alert;
+import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.Table;
 import org.nasdanika.html.model.bootstrap.TableCell;
@@ -180,6 +184,31 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	
 		return null;
 	}
+	
+	/**
+	 * @return Diagnostics for the semantic element. This implementation returns an empty list.
+	 */
+	protected Collection<Diagnostic> getDiagnostic() {
+		return Collections.emptyList();
+	}
+	
+	/**
+	 * Creates an action with a diagnostic summary for the object's contained objects recursively.
+	 * This action is added to object's action navigation actions. 
+	 * @return Diagnostic aciton. This implementation return null.
+	 */
+	protected Action createDiagnosticAction(Action action, Context context, ProgressMonitor progressMonitor) {
+		return null;
+	}	
+	
+	/**
+	 * Used to report property diagnostic in the properties table.
+	 * @return Diagnostics for a {@link EStructuralFeature} of the semantic element. 
+	 * This implementation returns an empty list. 
+	 */
+	protected Collection<Diagnostic> getFeatureDiagnostic(EStructuralFeature feature) {
+		return Collections.emptyList();
+	}
 		
 	protected void resolve(Action action, Context context, ProgressMonitor progressMonitor) throws Exception {
 		action.setLeftNavigation(createLeftNavigation(context, progressMonitor));
@@ -188,8 +217,10 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		action.setFloatRightNavigation(createFloatRightNavigation(context, progressMonitor));
 		
 		// Navigation (context)
-		
-		// TODO - diagnostic
+		Action diagnosticAction = createDiagnosticAction(action, context, progressMonitor);
+		if (diagnosticAction != null) {
+			action.getNavigation().add(diagnosticAction);
+		}
 		
 		// Content
 		Table propertiesTable = createPropertiesTable(action, context, progressMonitor);
@@ -217,25 +248,50 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		EList<TableRow> rows = ret.getRows();
 		for (ETypedElement property: properties) {
 			Object propertyValue = getTypedElementValue(property);
-			if (!isEmptyValue(property, propertyValue)) {
+			Collection<org.eclipse.emf.common.util.Diagnostic> featureDiagnostic = property instanceof EStructuralFeature ? getFeatureDiagnostic((EStructuralFeature) property) : Collections.emptyList();
+			int severity = org.eclipse.emf.common.util.Diagnostic.OK;
+			for (org.eclipse.emf.common.util.Diagnostic diagnostic: featureDiagnostic) {
+				severity = Math.max(severity, diagnostic.getSeverity());
+			}
+			
+			boolean isEmptyValue = isEmptyValue(property, propertyValue);
+			if (!isEmptyValue || !featureDiagnostic.isEmpty()) {				
 				TableRow propertyRow = BootstrapFactory.eINSTANCE.createTableRow();
 				rows.add(propertyRow);
+				
+//				if (severity > 0) {
+//					propertyRow.setColor(getSeverityColor(severity));
+//				}
+				
 				EList<TableCell> propertyCells = propertyRow.getCells();
 	
-				// TODO - conditionals - empty/isSet
-	
-				// TODO - feature diagnostics
 				TableCell propertyHeader = BootstrapFactory.eINSTANCE.createTableCell();
 				propertyHeader.setHeader(true);
 				propertyCells.add(propertyHeader);
 				propertyHeader.getContent().add(createETypedElementLabel(property, false));
+				if (severity > 0) {
+					Appearance headerAppearance = BootstrapFactory.eINSTANCE.createAppearance();
+					propertyHeader.setAppearance(headerAppearance);
+					org.nasdanika.html.model.bootstrap.Text aText = BootstrapFactory.eINSTANCE.createText();
+					headerAppearance.setText(aText);
+					aText.setColor(getSeverityColor(severity));
+				}
 				
 				TableCell propertyValueCell = BootstrapFactory.eINSTANCE.createTableCell();
 				propertyCells.add(propertyValueCell);
-				EObject renderedValue = renderValue(action, property, propertyValue, context, progressMonitor);
-				if (renderedValue != null) {
-					propertyValueCell.getContent().add(renderedValue);
+				if (!isEmptyValue) {
+					EObject renderedValue = renderValue(action, property, propertyValue, context, progressMonitor);
+					if (renderedValue != null) {
+						propertyValueCell.getContent().add(renderedValue);
+					}
 				}
+				for (Diagnostic diagnostic: featureDiagnostic) {
+					Alert diagnosticAlert = BootstrapFactory.eINSTANCE.createAlert();
+					diagnosticAlert.setColor(getSeverityColor(diagnostic.getSeverity()));
+					diagnosticAlert.getContent().add(createText(StringEscapeUtils.escapeHtml4(diagnostic.getMessage())));
+					propertyValueCell.getContent().add(diagnosticAlert);
+				}
+				
 			}
 		}
 				
@@ -703,5 +759,23 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 				context, 
 				progressMonitor);
 	}
+	
+	public static Color getSeverityColor(int severity) {
+		switch (severity) {
+		case Diagnostic.OK:
+			return Color.SUCCESS;
+		case Diagnostic.CANCEL:
+			return Color.SECONDARY;
+		case Diagnostic.ERROR:
+			return Color.DANGER;
+		case Diagnostic.INFO:
+			return Color.INFO;
+		case Diagnostic.WARNING:
+			return Color.WARNING;
+		default:
+			return Color.PRIMARY;
+		}
+	}
+	
 	
 }
