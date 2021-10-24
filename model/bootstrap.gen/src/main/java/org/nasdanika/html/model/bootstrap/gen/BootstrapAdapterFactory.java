@@ -64,6 +64,13 @@ public class BootstrapAdapterFactory extends HtmlAdapterFactory {
 					classLoader, 
 					ModalSupplierFactoryAdapter::new));		
 		
+		registerAdapterFactory(
+				new FunctionAdapterFactory<SupplierFactory<org.nasdanika.html.Tag>, org.nasdanika.html.model.bootstrap.Alert>(
+					BootstrapPackage.Literals.ALERT, 
+					Util.getSupplierFactoryClass(org.nasdanika.html.Tag.class), 
+					classLoader, 
+					AlertSupplierFactoryAdapter::new));		
+		
 		// Table
 		
 		registerAdapterFactory(

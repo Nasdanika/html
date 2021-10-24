@@ -6,9 +6,9 @@ import org.nasdanika.common.Function;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.model.bootstrap.Appearance;
 
-public class TagSupplierFactoryAdapter extends org.nasdanika.html.model.html.gen.TagSupplierFactoryAdapter<org.nasdanika.html.model.bootstrap.Tag> {
+public class TagSupplierFactoryAdapter<T extends org.nasdanika.html.model.bootstrap.Tag> extends org.nasdanika.html.model.html.gen.TagSupplierFactoryAdapter<T> {
 	
-	public TagSupplierFactoryAdapter(org.nasdanika.html.model.bootstrap.Tag tag) {
+	public TagSupplierFactoryAdapter(T tag) {
 		super(tag);
 	}
 	
