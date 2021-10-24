@@ -7,7 +7,7 @@ import org.nasdanika.common.Context;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.Participant;
 
-public class ParticipantActionProvider extends PackageElementActionProvider<Participant> {
+public class ParticipantActionProvider extends ServiceProviderActionProvider<Participant> {
 	
 	public ParticipantActionProvider(Participant value, Context context) {
 		super(value, context);
@@ -19,7 +19,6 @@ public class ParticipantActionProvider extends PackageElementActionProvider<Part
 		properties.add(FlowPackage.Literals.PARTICIPANT__ARTIFACTS);
 		properties.add(FlowPackage.Literals.PARTICIPANT__PARTICIPATES);
 		properties.add(FlowPackage.Literals.PARTICIPANT__RESOURCES);
-		properties.add(FlowPackage.Literals.PARTICIPANT__SERVICES);
 		return properties;
 	}
 
