@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.CollectionCompoundConsumer;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
+import org.nasdanika.emf.DiagnosticProvider;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.exec.content.ContentFactory;
@@ -155,6 +156,24 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			java.util.function.Consumer<org.nasdanika.common.Consumer<Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
 		Action ret = AppFactory.eINSTANCE.createAction();
+
+		// Diagnostic
+		Collection<Diagnostic> diagnostic = getDiagnostic();
+		int severity = Diagnostic.OK;
+		for (Diagnostic de: diagnostic) {
+			severity = Math.max(severity, de.getSeverity());
+		}
+		
+		if (severity > 0) {
+			ret.setColor(getSeverityColor(severity));
+		}
+		
+		for (Diagnostic de: diagnostic) {
+			Alert diagnosticAlert = BootstrapFactory.eINSTANCE.createAlert();
+			diagnosticAlert.setColor(getSeverityColor(de.getSeverity()));
+			diagnosticAlert.getContent().add(createText(StringEscapeUtils.escapeHtml4(de.getMessage())));
+			ret.getContent().add(diagnosticAlert);
+		}		
 		
 		// Anonymous
 		
@@ -186,10 +205,11 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	}
 	
 	/**
-	 * @return Diagnostics for the semantic element. This implementation returns an empty list.
+	 * @return Diagnostics for the semantic element. This implementation adapts target to {@link DiagnosticProvider} and delegates to it if not null or returns an empty collection.
 	 */
 	protected Collection<Diagnostic> getDiagnostic() {
-		return Collections.emptyList();
+		Object adapter = EcoreUtil.getRegisteredAdapter(getTarget(), DiagnosticProvider.class);		
+		return adapter instanceof DiagnosticProvider ? ((DiagnosticProvider) adapter).getDiagnostic() : Collections.emptyList();
 	}
 	
 	/**
@@ -204,10 +224,11 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	/**
 	 * Used to report property diagnostic in the properties table.
 	 * @return Diagnostics for a {@link EStructuralFeature} of the semantic element. 
-	 * This implementation returns an empty list. 
+	 * This implementation adapts target to {@link DiagnosticProvider} and delegates to it if not null or returns an empty collection. 
 	 */
 	protected Collection<Diagnostic> getFeatureDiagnostic(EStructuralFeature feature) {
-		return Collections.emptyList();
+		Object adapter = EcoreUtil.getRegisteredAdapter(getTarget(), DiagnosticProvider.class);		
+		return adapter instanceof DiagnosticProvider ? ((DiagnosticProvider) adapter).getFeatureDiagnostic(feature) : Collections.emptyList();
 	}
 		
 	protected void resolve(Action action, Context context, ProgressMonitor progressMonitor) throws Exception {
@@ -223,6 +244,8 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		}
 		
 		// Content
+		
+		// Properties table
 		Table propertiesTable = createPropertiesTable(action, context, progressMonitor);
 		if (propertiesTable != null) {
 			action.getContent().add(propertiesTable);
@@ -248,9 +271,9 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		EList<TableRow> rows = ret.getRows();
 		for (ETypedElement property: properties) {
 			Object propertyValue = getTypedElementValue(property);
-			Collection<org.eclipse.emf.common.util.Diagnostic> featureDiagnostic = property instanceof EStructuralFeature ? getFeatureDiagnostic((EStructuralFeature) property) : Collections.emptyList();
-			int severity = org.eclipse.emf.common.util.Diagnostic.OK;
-			for (org.eclipse.emf.common.util.Diagnostic diagnostic: featureDiagnostic) {
+			Collection<Diagnostic> featureDiagnostic = property instanceof EStructuralFeature ? getFeatureDiagnostic((EStructuralFeature) property) : Collections.emptyList();
+			int severity = Diagnostic.OK;
+			for (Diagnostic diagnostic: featureDiagnostic) {
 				severity = Math.max(severity, diagnostic.getSeverity());
 			}
 			

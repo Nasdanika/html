@@ -166,5 +166,5 @@ public class PackageActionProvider extends PackageElementActionProvider<org.nasd
 		
 		return Collections.singletonList(group);
 	}
-
+	
 }

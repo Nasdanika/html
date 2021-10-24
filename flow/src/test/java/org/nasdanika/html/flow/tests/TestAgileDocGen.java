@@ -3,7 +3,10 @@ package org.nasdanika.html.flow.tests;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -11,8 +14,10 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -30,7 +35,6 @@ import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.common.resources.FileSystemContainer;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
-import org.nasdanika.emf.persistence.FeatureCache;
 import org.nasdanika.emf.persistence.FeatureCacheAdapter;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.content.ContentPackage;
@@ -66,7 +70,6 @@ public class TestAgileDocGen extends TestBase {
 					org.nasdanika.flow.Package core = (org.nasdanika.flow.Package) obj;					
 					Package instance = core.create();
 					ResourceSet resourceSet = new NcoreResourceSet();
-					resourceSet.getAdapterFactories().add(new FlowActionProviderAdapterFactory(Context.EMPTY_CONTEXT));
 					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 					org.eclipse.emf.ecore.resource.Resource resource = resourceSet.createResource(URI.createURI("mem://xxx/" + name + "-instance.xml"));
 					resource.getContents().add(instance);
@@ -77,6 +80,51 @@ public class TestAgileDocGen extends TestBase {
 						EmfUtil.dumpDiagnostic(instanceDiagnostic, 2, System.err);
 					}
 					assertThat(severity).isEqualTo(org.eclipse.emf.common.util.Diagnostic.OK);
+					
+					resourceSet.getAdapterFactories().add(new FlowActionProviderAdapterFactory(Context.EMPTY_CONTEXT) {
+						
+						private void collect(Notifier target, org.eclipse.emf.common.util.Diagnostic source, Collection<org.eclipse.emf.common.util.Diagnostic> accumulator) {
+							List<?> data = source.getData();
+							if (source.getChildren().isEmpty()
+									&& source.getSeverity() > org.eclipse.emf.common.util.Diagnostic.OK 
+									&& data != null 
+									&& data.size() == 1 
+									&& data.get(0) == target) {
+								accumulator.add(source);
+							}
+							for (org.eclipse.emf.common.util.Diagnostic child: source.getChildren()) {
+								collect(target, child, accumulator);
+							}
+						}
+						
+						protected Collection<org.eclipse.emf.common.util.Diagnostic> getDiagnostic(Notifier target) {
+							Collection<org.eclipse.emf.common.util.Diagnostic> ret = new ArrayList<>();
+							collect(target, instanceDiagnostic, ret);
+							return ret;
+						}
+						
+						private void collect(Notifier target, EStructuralFeature feature, org.eclipse.emf.common.util.Diagnostic source, Collection<org.eclipse.emf.common.util.Diagnostic> accumulator) {
+							List<?> data = source.getData();
+							if (source.getChildren().isEmpty() 
+									&& source.getSeverity() > org.eclipse.emf.common.util.Diagnostic.OK 
+									&& data != null 
+									&& data.size() > 1 
+									&& data.get(0) == target 
+									&& data.get(1) == feature) {
+								accumulator.add(source);
+							}
+							for (org.eclipse.emf.common.util.Diagnostic child: source.getChildren()) {
+								collect(target, feature, child, accumulator);
+							}
+						}
+
+						protected Collection<org.eclipse.emf.common.util.Diagnostic> getFeatureDiagnostic(Notifier target, EStructuralFeature feature) {
+							Collection<org.eclipse.emf.common.util.Diagnostic> ret = new ArrayList<>();
+							collect(target, feature, instanceDiagnostic, ret);
+							return ret;
+						}
+						
+					});					
 					
 					ResourceSet actionModelsResourceSet = new ResourceSetImpl();
 					actionModelsResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
