@@ -3,6 +3,7 @@ package org.nasdanika.html.flow.tests;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -52,6 +53,7 @@ import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.app.util.ActionProvider;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
+import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.util.NcoreResourceSet;
 
 /**
@@ -71,8 +73,21 @@ public class TestAgileDocGen extends TestBase {
 					Package instance = core.create();
 					ResourceSet resourceSet = new NcoreResourceSet();
 					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-					org.eclipse.emf.ecore.resource.Resource resource = resourceSet.createResource(URI.createURI("mem://xxx/" + name + "-instance.xml"));
-					resource.getContents().add(instance);
+					
+					// Cleaning all URI's except the root one for proper hierarchy-based recalculation, 
+					instance.eAllContents().forEachRemaining(e -> { 
+						if (e instanceof ModelElement) {
+							((ModelElement) e).setUri(null);
+						}
+					});
+					
+					File instanceModelDir = new File("target/model-doc/instances").getAbsoluteFile();
+//					delete(instanceModelDir);
+					instanceModelDir.mkdirs();
+					File instanceOutput = new File(instanceModelDir, name + ".xml");
+					
+					org.eclipse.emf.ecore.resource.Resource instanceModelResource = resourceSet.createResource(URI.createFileURI(instanceOutput.getAbsolutePath()));
+					instanceModelResource.getContents().add(instance);
 					
 					org.eclipse.emf.common.util.Diagnostic instanceDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(resourceSet, Context.EMPTY_CONTEXT);
 					int severity = instanceDiagnostic.getSeverity();
@@ -124,7 +139,13 @@ public class TestAgileDocGen extends TestBase {
 							return ret;
 						}
 						
-					});					
+					});
+					
+					try {
+						instanceModelResource.save(null);
+					} catch (IOException ioe) {
+						throw new NasdanikaException(ioe);
+					}
 					
 					ResourceSet actionModelsResourceSet = new ResourceSetImpl();
 					actionModelsResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
