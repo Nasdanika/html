@@ -597,8 +597,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		}
 		return ol;
 	}
-	
-	
+		
 	/**
 	 * Creates a table from EMap entries
 	 * @param typedElement Optional classifier to customize behavior

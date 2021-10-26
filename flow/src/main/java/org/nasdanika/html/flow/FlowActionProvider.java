@@ -36,7 +36,7 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 		Action action = super.createAction(registry, resolveConsumer, progressMonitor);
 		EList<EObject> children = action.getChildren(); 
 		Predicate<FlowElement<?>> isPseudoState = PseudoState.class::isInstance;
-		for (FlowElement<?> element: getTarget().getElements().values().stream().filter(isPseudoState.negate()).sorted(this::compareFlowElements).collect(Collectors.toList())) {
+		for (FlowElement<?> element: getTarget().getElements().values().stream().filter(isPseudoState.negate()).sorted(FlowActionProvider::compareFlowElements).collect(Collectors.toList())) {
 			children.add(createChildAction(element, registry, resolveConsumer, progressMonitor));
 		}
 		EList<Action> anonymous = action.getAnonymous(); 
@@ -47,7 +47,7 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 		return action;
 	}
 		
-	private int compareFlowElements(FlowElement<?> a, FlowElement<?> b) {
+	public static int compareFlowElements(FlowElement<?> a, FlowElement<?> b) {
 		if (a == b) {
 			return 0;
 		}
@@ -63,7 +63,7 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 		return NamedElementComparator.INSTANCE.compare(a, b);
 	}
 	
-	private boolean isReacheable(FlowElement<?> source, FlowElement<?> target, Set<FlowElement<?>> traversed) {
+	private static boolean isReacheable(FlowElement<?> source, FlowElement<?> target, Set<FlowElement<?>> traversed) {
 		if (source == target) {
 			return true;
 		}

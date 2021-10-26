@@ -1,5 +1,5 @@
 flow-package:
-  uri: nasdanika://agile/java
+  uri: nasdanika://agile/java/kubernetes
   description: Java Kubernetes agile development on GitHub.
   extends: java.yml 
   name: Java and Kubernetes Agile Development
@@ -14,12 +14,29 @@ flow-package:
     binary:
       name: Docker Image
       modifiers: extension
+    kubernetes-cluster:
+      name: Cluster
+      children:
+        node-a: 
+          name: Node A
+          children:
+            container-1: 
+              name: Container A.1
+            container-2: 
+              name: Container A.2              
+        node-b: 
+          name: Node B
+          children:
+            container-1: 
+              name: Container B.1
+            container-2: 
+              name: Container B.2                        
   activities:
     development:
       flow-flow:
         elements:
           develop:
-            flow-activity:
+            flow-flow:
               description: Develop in Eclipse, test in Eclipse, build and test locally.
               resources: 
                 - issue-tracker

@@ -275,6 +275,15 @@ public class TestAgileDocGen extends TestBase {
 		generateSite("java");
 	}
 
+	/**
+	 * Generates a resource model from an action model and then generates files from the resource model.
+	 * @throws Exception
+	 */
+	@Test
+	public void generateJavaKubernetesSite() throws Exception {
+		generateSite("java-kubernetes");
+	}
+
 	private void generateSite(String name) throws Exception {
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		generateActionModel(name, progressMonitor);

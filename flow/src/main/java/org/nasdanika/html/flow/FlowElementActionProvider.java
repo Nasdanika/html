@@ -26,7 +26,7 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.bootstrap.TableCell;
 import org.nasdanika.ncore.NcorePackage;
 
-public class FlowElementActionProvider<T extends FlowElement<?>> extends PackageElementActionProvider<T> {
+public class FlowElementActionProvider<T extends FlowElement<?>> extends ParticipantResponsibilityActionProvider<T> {
 	
 	public FlowElementActionProvider(T value, Context context) {
 		super(value, context);
@@ -73,6 +73,11 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Package
 		// Calls
 		if (!getTarget().getCalls().isEmpty()) {
 			sections.add(createCallsAction(action, context, progressMonitor));
+		}
+		
+		// Artifact participant responsibilities
+		if (!getTarget().getArtifactResponsibilities().isEmpty()) {
+			sections.add(createArtifactResponsibilitiesAction(action, context, progressMonitor));			
 		}
 	}
 	
@@ -590,5 +595,23 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Package
 				progressMonitor);
 	}
 	
+	
+	private Action createArtifactResponsibilitiesAction(
+			Action action, 
+			org.nasdanika.html.emf.EObjectActionResolver.Context context,
+			ProgressMonitor progressMonitor) throws Exception {
+		
+		return createTableAction(
+				FlowPackage.Literals.FLOW_ELEMENT__ARTIFACT_RESPONSIBILITIES,
+				action, 
+				context, 
+				progressMonitor,
+				FlowPackage.Literals.ARTIFACT_PARTICIPANT_RESPONSIBILITY__ARTIFACT,
+				FlowPackage.Literals.PARTICIPANT_RESPONSIBILITY__RESPONSIBLE,
+				FlowPackage.Literals.PARTICIPANT_RESPONSIBILITY__ACCOUNTABLE,
+				FlowPackage.Literals.PARTICIPANT_RESPONSIBILITY__CONSULTED,
+				FlowPackage.Literals.PARTICIPANT_RESPONSIBILITY__INFORMED,
+				NcorePackage.Literals.MODEL_ELEMENT__DESCRIPTION);
+	}
 	
 }

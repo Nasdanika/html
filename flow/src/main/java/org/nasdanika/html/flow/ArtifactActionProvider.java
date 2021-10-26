@@ -18,7 +18,7 @@ import org.nasdanika.html.emf.ColumnBuilder;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.bootstrap.TableCell;
 
-public class ArtifactActionProvider extends PackageElementActionProvider<Artifact> {
+public class ArtifactActionProvider extends ParticipantResponsibilityActionProvider<Artifact> {
 	
 	public ArtifactActionProvider(Artifact value, Context context) {
 		super(value, context);
