@@ -24,6 +24,8 @@ flow-package:
           partition: true
           style:
             type: node
+            dashed: true
+            color: lightblue
           children:
             container-1: 
               name: Container A.1
@@ -31,7 +33,7 @@ flow-package:
               children:
                 httpd:
                   name: Apache Web Server
-                  outbound-relationships:
+                  relationships:
                     tomcat:
                       target: ../../container-2/children/tomcat
                       description: Reverse proxy
