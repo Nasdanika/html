@@ -687,7 +687,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 
 	@SafeVarargs
 	public static <T> Table buildTable(
-			Collection<T> elements, 
+			Collection<? extends T> elements, 
 			Action base, 
 			ETypedElement typedElement,
 			Context context, 
@@ -697,7 +697,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	}
 	
 	public static <T> Table buildTable(
-			Collection<T> elements, 
+			Collection<? extends T> elements, 
 			Collection<ColumnBuilder<T>> columnBuilders,
 			Action base, 
 			ETypedElement typedElement,

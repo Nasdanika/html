@@ -16,16 +16,39 @@ flow-package:
       modifiers: extension
     kubernetes-cluster:
       name: Cluster
+      partition: true
       children:
         node-a: 
           name: Node A
+          description: Web requests processing node
+          partition: true
+          style:
+            type: node
           children:
             container-1: 
               name: Container A.1
+              partition: true
+              children:
+                httpd:
+                  name: Apache Web Server
+                  outbound-relationships:
+                    tomcat:
+                      target: ../../container-2/children/tomcat
+                      description: Reverse proxy
+                      name: Pass request
+                      style:
+                        type: "#-->>" 
             container-2: 
               name: Container A.2              
+              partition: true
+              children:
+                tomcat:
+                  name: Tomcat
         node-b: 
           name: Node B
+          style:
+            type: node
+          partition: true
           children:
             container-1: 
               name: Container B.1
