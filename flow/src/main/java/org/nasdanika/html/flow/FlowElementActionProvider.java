@@ -139,8 +139,8 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 		};
 		
 		Diagram diagram = generateDiagram(flowStateDiagramGenerator);
-		if (diagram.getElements().size() < 2) {
-			return null; // No point in a context diagram with a single element.
+		if (diagram == null || diagram.getElements().isEmpty()) {
+			return null; 
 		}
 		Generator generator = new Generator();
 		String diagramHTML = generator.generateUmlDiagram(diagram);

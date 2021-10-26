@@ -302,22 +302,21 @@ public class ArtifactActionProvider extends ParticipantResponsibilityActionProvi
 		};
 		
 		Diagram diagram = generateDiagram(artifactComponentDiagramGenerator);
-		if (diagram.getElements().size() < 2) {
-			return null; // No point in a context diagram with a single element.
+		if (diagram == null) {
+			return null; 
 		}
 		Generator generator = new Generator();
 		String diagramHTML = generator.generateUmlDiagram(diagram);
 		return diagramHTML;
 	}
 
-	protected Diagram generateDiagram(ArtifactComponentDiagramGenerator artifactContextDiagramGenerator) {
+	protected Diagram generateDiagram(ArtifactComponentDiagramGenerator artifactComponentDiagramGenerator) {
 		Artifact semanticElement = getTarget();
 		if (semanticElement.eContainmentFeature() == FlowPackage.Literals.ARTIFACT_ENTRY__VALUE && semanticElement.eContainer().eContainmentFeature() == FlowPackage.Literals.ARTIFACT__CHILDREN) {
-			return artifactContextDiagramGenerator.generateContextDiagram(semanticElement);
+			return artifactComponentDiagramGenerator.generateContextDiagram(semanticElement);
 		}
-		return artifactContextDiagramGenerator.generateDiagram(semanticElement.getChildren().values());
+		return artifactComponentDiagramGenerator.generateDiagram(semanticElement.getChildren().values());
 	}
-	
 
 	private Action createInboundRelationshipsAction(
 			Action action, 
