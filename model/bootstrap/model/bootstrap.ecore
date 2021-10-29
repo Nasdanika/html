@@ -109,7 +109,7 @@
       <eAnnotations source="urn:org.nasdanika">
         <details key="homogenous" value="true"/>
         <details key="strict-containment" value="true"/>
-        <details key="load-key" value="float"/>
+        <details key="feature-key" value="float"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"

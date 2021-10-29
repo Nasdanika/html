@@ -21,6 +21,7 @@ import org.nasdanika.html.app.Action;
 import org.nasdanika.html.app.Label;
 import org.nasdanika.html.app.impl.LabelImpl;
 import org.nasdanika.html.app.viewparts.ListOfActionsViewPart;
+import org.nasdanika.ncore.util.NcoreUtil;
 
 /**
  * Marker interface for "view" (as opposed to "edit") actions.
@@ -44,7 +45,7 @@ public interface ViewAction<T extends EObject> extends Action {
 	}
 	
 	default String memberIcon(ETypedElement member) {
-		return EmfUtil.getNasdanikaAnnotationDetail(member, EmfUtil.ICON_KEY, EmfUtil.getNasdanikaAnnotationDetail(member.getEType(), EmfUtil.ICON_KEY));
+		return NcoreUtil.getNasdanikaAnnotationDetail(member, EmfUtil.ICON_KEY, NcoreUtil.getNasdanikaAnnotationDetail(member.getEType(), EmfUtil.ICON_KEY));
 	}
 	
 	default LabelImpl memberLabel(ETypedElement member) {
@@ -67,7 +68,7 @@ public interface ViewAction<T extends EObject> extends Action {
 	}
 
 	default String memberLabelText(ETypedElement member) {
-		return EmfUtil.getNasdanikaAnnotationDetail(member, EmfUtil.LABEL_KEY, Util.nameToLabel(member.getName()));
+		return NcoreUtil.getNasdanikaAnnotationDetail(member, EmfUtil.LABEL_KEY, Util.nameToLabel(member.getName()));
 	}
 	
 	default String memberDescription(ETypedElement member) {		

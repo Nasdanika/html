@@ -34,6 +34,7 @@ import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
 import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.ncore.util.NcoreUtil;
 
 /**
  * @author Pavel
@@ -94,8 +95,8 @@ public final class HtmlEmfUtil {
 		for (ETypedElement dataSource: dataSources) {
 			ViewBuilder headerBuilder = headerBuilderProvider == null ? null : headerBuilderProvider.apply(dataSource);
 			if (headerBuilder == null) {
-				String text = EmfUtil.getNasdanikaAnnotationDetail(dataSource, EmfUtil.LABEL_KEY, Util.nameToLabel(dataSource.getName()));
-				String icon = EmfUtil.getNasdanikaAnnotationDetail(dataSource, EmfUtil.ICON_KEY);
+				String text = NcoreUtil.getNasdanikaAnnotationDetail(dataSource, EmfUtil.LABEL_KEY, Util.nameToLabel(dataSource.getName()));
+				String icon = NcoreUtil.getNasdanikaAnnotationDetail(dataSource, EmfUtil.ICON_KEY);
 				LabelImpl label = new LabelImpl();
 				label.setText(text);
 				label.setIcon(icon);

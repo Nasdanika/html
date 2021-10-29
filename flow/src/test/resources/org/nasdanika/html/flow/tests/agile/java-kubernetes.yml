@@ -1,7 +1,7 @@
 flow-package:
   uri: nasdanika://agile/java/kubernetes
   description: Java Kubernetes agile development on GitHub.
-  extends: java.yml 
+  extends: "../../../../../../../../target/model-doc/instances/java.xml#/" # Loading previously generated instance model.
   name: Java and Kubernetes Agile Development
   resources:
     mini-kube:
@@ -46,6 +46,8 @@ flow-package:
               children:
                 tomcat:
                   name: Tomcat
+                  style:
+                    stereotype: Servlet Container
         node-b: 
           name: Node B
           style:

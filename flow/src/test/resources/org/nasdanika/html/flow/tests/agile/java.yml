@@ -1,7 +1,7 @@
 flow-package:
   uri: nasdanika://agile/java
   description: Java agile development on GitHub.
-  extends: core.yml 
+  extends: "../../../../../../../../target/model-doc/instances/core.xml#/" # Loading previously generated instance model.
   name: Java Agile Development
   resources:
     issue-tracker:

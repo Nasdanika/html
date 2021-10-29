@@ -63,6 +63,7 @@ import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.RowContainer.Row;
 import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
 import org.nasdanika.html.bootstrap.Table;
+import org.nasdanika.ncore.util.NcoreUtil;
 
 import com.ibm.icu.util.Calendar;
 
@@ -683,7 +684,7 @@ public abstract class SimpleEObjectViewAction<T extends EObject> implements View
 
 	@Override
 	public String getIcon() {
-		return EmfUtil.getNasdanikaAnnotationDetail(getSemanticElement().eClass(), EmfUtil.ICON_KEY);
+		return NcoreUtil.getNasdanikaAnnotationDetail(getSemanticElement().eClass(), EmfUtil.ICON_KEY);
 	}
 
 	@Override

@@ -54,6 +54,7 @@ import org.nasdanika.html.model.bootstrap.TableHeader;
 import org.nasdanika.html.model.bootstrap.TableRow;
 import org.nasdanika.html.model.bootstrap.TableSection;
 import org.nasdanika.html.model.html.HtmlFactory;
+import org.nasdanika.ncore.util.NcoreUtil;
 
 import com.ibm.icu.util.Calendar;
 
@@ -351,11 +352,11 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	}
 	
 	protected String typedElementLabelText(ETypedElement type) {
-		return EmfUtil.getNasdanikaAnnotationDetail(type, EmfUtil.LABEL_KEY, Util.nameToLabel(type.getName()));
+		return NcoreUtil.getNasdanikaAnnotationDetail(type, EmfUtil.LABEL_KEY, Util.nameToLabel(type.getName()));
 	}
 	
 	protected String typedElementIcon(ETypedElement member) {
-		return EmfUtil.getNasdanikaAnnotationDetail(member, EmfUtil.ICON_KEY, EmfUtil.getNasdanikaAnnotationDetail(member.getEType(), EmfUtil.ICON_KEY));
+		return NcoreUtil.getNasdanikaAnnotationDetail(member, EmfUtil.ICON_KEY, NcoreUtil.getNasdanikaAnnotationDetail(member.getEType(), EmfUtil.ICON_KEY));
 	}	
 	
 	/**

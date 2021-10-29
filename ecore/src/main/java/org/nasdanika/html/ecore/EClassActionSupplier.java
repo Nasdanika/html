@@ -43,6 +43,7 @@ import org.nasdanika.html.bootstrap.Text.Weight;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.SectionStyle;
+import org.nasdanika.ncore.util.NcoreUtil;
 
 public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 
@@ -122,11 +123,11 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		}
 		
 		// Load specification
-		if (!eObject.isAbstract() && "true".equals(EmfUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.IS_LOADABLE, "true"))) {
+		if (!eObject.isAbstract() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.IS_LOADABLE, "true"))) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
 			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create("Load specification")).attribute("name", "load-specification"));
 			
-			String loadDoc = EmfUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.LOAD_DOC);
+			String loadDoc = NcoreUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.LOAD_DOC);
 			if (!Util.isBlank(loadDoc)) {
 				gstf.content(interpolatedMarkdown(loadDoc));
 			}
@@ -135,11 +136,11 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			Table table = bootstrapFactory.table().bordered().striped();
 			table.header().headerRow("Key", "Type", "Homogenous", "Strict containment", "Exclusive with", "Description").background(Color.SECONDARY);			
 			
-			Predicate<EStructuralFeature> predicate = sf -> sf.isChangeable() && "true".equals(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, "true"));
+			Predicate<EStructuralFeature> predicate = sf -> sf.isChangeable() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, "true"));
 			Comparator<EStructuralFeature> comparator = (a,b) -> a.getName().compareTo(b.getName());
 			for (EStructuralFeature sf: eObject.getEAllStructuralFeatures().stream().filter(predicate).sorted(comparator).collect(Collectors.toList())) {
 				Row featureRow = table.body().row();
-				Cell keyCell = featureRow.cell(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, Util.camelToKebab(sf.getName())));
+				Cell keyCell = featureRow.cell(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, Util.camelToKebab(sf.getName())));
 				keyCell.text().monospace();
 				if (EObjectLoader.isDefaultFeature(eObject, sf)) {
 					keyCell.text().weight(Weight.BOLD);
@@ -147,10 +148,10 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 
 				genericType(sf.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);				
 				
-				featureRow.cell(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENOUS, "")).text().alignment(Alignment.CENTER);
-				featureRow.cell(EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_STRICT_CONTAINMENT, "")).text().alignment(Alignment.CENTER);
+				featureRow.cell(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENOUS, "")).text().alignment(Alignment.CENTER);
+				featureRow.cell(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_STRICT_CONTAINMENT, "")).text().alignment(Alignment.CENTER);
 				
-				String exclusiveWithStr = EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.EXCLUSIVE_WITH);
+				String exclusiveWithStr = NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.EXCLUSIVE_WITH);
 				String[] exclusiveWith = exclusiveWithStr == null ? new String[0] : exclusiveWithStr.split("\\s");
 				if (exclusiveWith.length == 0) {
 					featureRow.cell("");
@@ -168,7 +169,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 					featureDoc = EmfUtil.getDocumentation(sf);
 				}
 				
-				String featureLoadDoc = EmfUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_DOC, featureDoc);
+				String featureLoadDoc = NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_DOC, featureDoc);
 				featureRow.cell(Util.isBlank(featureLoadDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureLoadDoc));
 			};
 			gstf.content(table);

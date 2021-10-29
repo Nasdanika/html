@@ -9,6 +9,7 @@ import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.html.app.ActionActivator;
 import org.nasdanika.html.app.NavigationActionActivator;
 import org.nasdanika.html.app.impl.PathNavigationActionActivator;
+import org.nasdanika.ncore.util.NcoreUtil;
 
 public class ETypedElementViewActionImpl<T extends EObject, E extends ETypedElement, V extends ViewAction<T>> extends ViewActionImpl<T> implements ETypedElementViewAction<T,E> {
 	
@@ -18,8 +19,8 @@ public class ETypedElementViewActionImpl<T extends EObject, E extends ETypedElem
 	public ETypedElementViewActionImpl(T semanticElement, E typedElement) {
 		super(semanticElement);
 		this.typedElement = typedElement;
-		this.setText(EmfUtil.getNasdanikaAnnotationDetail(typedElement, EmfUtil.LABEL_KEY, Util.nameToLabel(typedElement.getName())));
-		this.setIcon(EmfUtil.getNasdanikaAnnotationDetail(typedElement, EmfUtil.ICON_KEY, EmfUtil.getNasdanikaAnnotationDetail(typedElement.getEType(), EmfUtil.ICON_KEY)));
+		this.setText(NcoreUtil.getNasdanikaAnnotationDetail(typedElement, EmfUtil.LABEL_KEY, Util.nameToLabel(typedElement.getName())));
+		this.setIcon(NcoreUtil.getNasdanikaAnnotationDetail(typedElement, EmfUtil.ICON_KEY, NcoreUtil.getNasdanikaAnnotationDetail(typedElement.getEType(), EmfUtil.ICON_KEY)));
 	}
 	
 	public ETypedElementViewActionImpl(V semanticElementViewAction, E typedElement) {
