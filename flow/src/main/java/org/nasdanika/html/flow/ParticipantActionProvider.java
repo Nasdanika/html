@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
@@ -36,6 +38,21 @@ public class ParticipantActionProvider extends ServiceProviderActionProvider<Par
 	public ParticipantActionProvider(Participant value, Context context) {
 		super(value, context);
 	}
+	
+	@Override
+	protected Action createAction(
+			BiConsumer<EObject, Action> registry,
+			Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer,
+			ProgressMonitor progressMonitor) throws Exception {
+		
+		Action action = super.createAction(registry, resolveConsumer, progressMonitor);
+		EList<EObject> children = action.getChildren(); 
+		for (Participant element: getTarget().getChildren().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList())) {
+			children.add(createChildAction(element, registry, resolveConsumer, progressMonitor));
+		}
+		
+		return action;
+	}	
 	
 	@Override
 	protected List<ETypedElement> getProperties() {
