@@ -63,7 +63,7 @@ public class ActionImpl extends LinkImpl implements Action {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final SectionStyle SECTION_STYLE_EDEFAULT = SectionStyle.AUTO;
+	protected static final SectionStyle SECTION_STYLE_EDEFAULT = SectionStyle.HEADER;
 
 	/**
 	 * The default value of the '{@link #isInline() <em>Inline</em>}' attribute.

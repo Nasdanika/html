@@ -66,7 +66,7 @@ public interface Action extends Link {
 
 	/**
 	 * Returns the value of the '<em><b>Section Style</b></em>' attribute.
-	 * The default value is <code>"Auto"</code>.
+	 * The default value is <code>"Header"</code>.
 	 * The literals are from the enumeration {@link org.nasdanika.html.model.app.SectionStyle}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -77,7 +77,7 @@ public interface Action extends Link {
 	 * @see org.nasdanika.html.model.app.SectionStyle
 	 * @see #setSectionStyle(SectionStyle)
 	 * @see org.nasdanika.html.model.app.AppPackage#getAction_SectionStyle()
-	 * @model default="Auto"
+	 * @model default="Header"
 	 * @generated
 	 */
 	SectionStyle getSectionStyle();

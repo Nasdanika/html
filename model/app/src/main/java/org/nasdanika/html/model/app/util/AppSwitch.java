@@ -81,6 +81,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseModelElement(label);
 				if (result == null) result = caseMarked(label);
 				if (result == null) result = caseAdaptable(label);
+				if (result == null) result = caseIMarked(label);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -94,6 +95,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseModelElement(link);
 				if (result == null) result = caseMarked(link);
 				if (result == null) result = caseAdaptable(link);
+				if (result == null) result = caseIMarked(link);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -105,6 +107,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseModelElement(page);
 				if (result == null) result = caseMarked(page);
 				if (result == null) result = caseAdaptable(page);
+				if (result == null) result = caseIMarked(page);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -116,6 +119,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseModelElement(pagePart);
 				if (result == null) result = caseMarked(pagePart);
 				if (result == null) result = caseAdaptable(pagePart);
+				if (result == null) result = caseIMarked(pagePart);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -128,6 +132,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseModelElement(header);
 				if (result == null) result = caseMarked(header);
 				if (result == null) result = caseAdaptable(header);
+				if (result == null) result = caseIMarked(header);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -140,6 +145,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseModelElement(navigationBar);
 				if (result == null) result = caseMarked(navigationBar);
 				if (result == null) result = caseAdaptable(navigationBar);
+				if (result == null) result = caseIMarked(navigationBar);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -152,6 +158,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseModelElement(navigationPanel);
 				if (result == null) result = caseMarked(navigationPanel);
 				if (result == null) result = caseAdaptable(navigationPanel);
+				if (result == null) result = caseIMarked(navigationPanel);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -164,6 +171,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseModelElement(contentPanel);
 				if (result == null) result = caseMarked(contentPanel);
 				if (result == null) result = caseAdaptable(contentPanel);
+				if (result == null) result = caseIMarked(contentPanel);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -176,6 +184,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseModelElement(footer);
 				if (result == null) result = caseMarked(footer);
 				if (result == null) result = caseAdaptable(footer);
+				if (result == null) result = caseIMarked(footer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -190,6 +199,7 @@ public class AppSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseModelElement(action);
 				if (result == null) result = caseMarked(action);
 				if (result == null) result = caseAdaptable(action);
+				if (result == null) result = caseIMarked(action);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -366,6 +376,21 @@ public class AppSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseActionReference(ActionReference object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IMarked</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IMarked</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseIMarked(org.nasdanika.common.persistence.Marked object) {
 		return null;
 	}
 

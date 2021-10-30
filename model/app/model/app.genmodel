@@ -24,6 +24,7 @@
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="app.ecore#//NavigationPanelStyle">
       <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/Auto"/>
       <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/Cards"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/CollapsibleCards"/>
       <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/Tree"/>
     </genEnums>
     <genClasses ecoreClass="app.ecore#//Label">

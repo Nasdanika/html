@@ -12,6 +12,15 @@
 .nsd-app-content-row {
     min-height: 25rem;
 }
+
+.nsd-collapsible-trigger .fa:before {  
+  content: "\f13a";
+}
+
+.nsd-collapsible-trigger.collapsed .fa:before {
+  content: "\f138";
+}
+
 @media print {
   div.nsd-app-navigation-panel {
     display: none;

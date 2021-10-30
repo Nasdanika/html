@@ -15,5 +15,5 @@ bootstrap-page:
     app-page:
       fluid: true
       navigation-panel:
-        style: CARDS
+        style: COLLAPSIBLE_CARDS
  

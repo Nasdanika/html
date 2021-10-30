@@ -39,6 +39,14 @@ public enum NavigationPanelStyle implements Enumerator {
 	CARDS(1, "Cards", "Cards"),
 
 	/**
+	 * The '<em><b>Collapsible Cards</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #COLLAPSIBLE_CARDS_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	COLLAPSIBLE_CARDS(2, "CollapsibleCards", "CollapsibleCards"), /**
 	 * The '<em><b>Tree</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -46,7 +54,7 @@ public enum NavigationPanelStyle implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	TREE(2, "Tree", "Tree");
+	TREE(3, "Tree", "Tree");
 
 	/**
 	 * The '<em><b>Auto</b></em>' literal value.
@@ -71,6 +79,17 @@ public enum NavigationPanelStyle implements Enumerator {
 	public static final int CARDS_VALUE = 1;
 
 	/**
+	 * The '<em><b>Collapsible Cards</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #COLLAPSIBLE_CARDS
+	 * @model name="CollapsibleCards"
+	 * @generated
+	 * @ordered
+	 */
+	public static final int COLLAPSIBLE_CARDS_VALUE = 2;
+
+	/**
 	 * The '<em><b>Tree</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -79,7 +98,7 @@ public enum NavigationPanelStyle implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	public static final int TREE_VALUE = 2;
+	public static final int TREE_VALUE = 3;
 
 	/**
 	 * An array of all the '<em><b>Navigation Panel Style</b></em>' enumerators.
@@ -91,6 +110,7 @@ public enum NavigationPanelStyle implements Enumerator {
 		new NavigationPanelStyle[] {
 			AUTO,
 			CARDS,
+			COLLAPSIBLE_CARDS,
 			TREE,
 		};
 
@@ -150,6 +170,7 @@ public enum NavigationPanelStyle implements Enumerator {
 		switch (value) {
 			case AUTO_VALUE: return AUTO;
 			case CARDS_VALUE: return CARDS;
+			case COLLAPSIBLE_CARDS_VALUE: return COLLAPSIBLE_CARDS;
 			case TREE_VALUE: return TREE;
 		}
 		return null;

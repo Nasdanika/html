@@ -118,6 +118,10 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 				return createActionReferenceAdapter();
 			}
 			@Override
+			public Adapter caseIMarked(org.nasdanika.common.persistence.Marked object) {
+				return createIMarkedAdapter();
+			}
+			@Override
 			public Adapter caseMarked(Marked object) {
 				return createMarkedAdapter();
 			}
@@ -316,6 +320,20 @@ public class AppAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createActionReferenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.common.persistence.Marked <em>IMarked</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.common.persistence.Marked
+	 * @generated
+	 */
+	public Adapter createIMarkedAdapter() {
 		return null;
 	}
 

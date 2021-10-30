@@ -16,9 +16,11 @@ import org.nasdanika.common.ListCompoundSupplierFactory;
 import org.nasdanika.common.MapCompoundSupplierFactory;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.html.Button;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Card;
@@ -146,10 +148,10 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 									title.removeClass("text-" + color.code);
 								}
 								
-								cardHeader.toHTMLElement().content(title);
-								
+								Tag cardHeaderTag = cardHeader.toHTMLElement();
+								Tag collapsible;
 								// Tree or items
-								TagBootstrapElement cardBody = card.getBody();
+								TagBootstrapElement cardBody = card.getBody();																
 								if (depth(semanticElement.getChildren()) == 1) {
 									Tag childrenActionGroup = htmlFactory.div().addClass("list-group", "list-group-flush");
 									for (Object itemChild: (List<Object>) itemTag.getData(AppPackage.Literals.LABEL__CHILDREN)) {
@@ -165,8 +167,10 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 										}
 									}
 									card.toHTMLElement().accept(childrenActionGroup);
+									collapsible = childrenActionGroup;
 								} else {									
 									cardBody.padding().all(Breakpoint.DEFAULT, Size.S1);
+									collapsible = cardBody.toHTMLElement();
 									for (JsTreeNode node: (List<JsTreeNode>) input.getSecond().get(JsTreeNode.class)) {
 										if (node.getData() == semanticElement) {
 											String nodeTreeId;
@@ -194,7 +198,27 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 											break;
 										}
 									}
-								}								
+								}
+
+								// Collapse button
+								if (getTarget().getStyle() == NavigationPanelStyle.COLLAPSIBLE_CARDS) {
+									Tag iTag = htmlFactory.tag(TagName.i).addClass("fa").attribute("aria-hidden", "true");
+									if (collapsible.getId() == null) {
+										collapsible.id(htmlFactory.nextId());
+									}
+
+									Button collapsibleTrigger = htmlFactory.button(iTag)
+											.addClass("btn", "nsd-collapsible-trigger")
+											.attribute("data-toggle", "collapse")
+											.attribute("data-target", "#" + collapsible.getId())
+											.attribute("aria-expanded", "true")
+											.attribute("aria-controls", collapsible.getId());
+									
+									cardHeaderTag.content(collapsibleTrigger);
+									collapsible.addClass("collapse", "show");
+								}
+								
+								cardHeaderTag.content(title);								
 							}
 						} else {
 							ret.accept(item);

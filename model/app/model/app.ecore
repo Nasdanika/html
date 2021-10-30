@@ -309,7 +309,8 @@
   <eClassifiers xsi:type="ecore:EEnum" name="NavigationPanelStyle">
     <eLiterals name="Auto"/>
     <eLiterals name="Cards" value="1"/>
-    <eLiterals name="Tree" value="2"/>
+    <eLiterals name="CollapsibleCards" value="2"/>
+    <eLiterals name="Tree" value="3"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//Link">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
