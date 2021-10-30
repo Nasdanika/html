@@ -14,7 +14,7 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.diagram.Diagram;
 import org.nasdanika.diagram.DiagramElement;
-import org.nasdanika.diagram.gen.plantuml.Generator;
+import org.nasdanika.diagram.gen.PlantumlGenerator;
 import org.nasdanika.flow.Call;
 import org.nasdanika.flow.FlowElement;
 import org.nasdanika.flow.FlowPackage;
@@ -142,7 +142,7 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 		if (diagram == null || diagram.getElements().isEmpty()) {
 			return null; 
 		}
-		Generator generator = new Generator();
+		PlantumlGenerator generator = new PlantumlGenerator();
 		String diagramHTML = generator.generateUmlDiagram(diagram);
 		return diagramHTML;
 	}

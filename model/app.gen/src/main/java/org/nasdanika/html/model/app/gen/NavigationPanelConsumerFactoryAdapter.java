@@ -203,9 +203,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 								// Collapse button
 								if (getTarget().getStyle() == NavigationPanelStyle.COLLAPSIBLE_CARDS) {
 									Tag iTag = htmlFactory.tag(TagName.i).addClass("fa").attribute("aria-hidden", "true");
-									if (collapsible.getId() == null) {
-										collapsible.id(htmlFactory.nextId());
-									}
+									collapsible.id(semanticElement.getId()+"-collapsible");
 
 									Button collapsibleTrigger = htmlFactory.button(iTag)
 											.addClass("btn", "nsd-collapsible-trigger")

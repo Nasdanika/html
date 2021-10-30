@@ -19,7 +19,7 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.diagram.Diagram;
 import org.nasdanika.diagram.DiagramElement;
-import org.nasdanika.diagram.gen.plantuml.Generator;
+import org.nasdanika.diagram.gen.PlantumlGenerator;
 import org.nasdanika.flow.Artifact;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.Relationship;
@@ -305,7 +305,7 @@ public class ArtifactActionProvider extends ParticipantResponsibilityActionProvi
 		if (diagram == null) {
 			return null; 
 		}
-		Generator generator = new Generator();
+		PlantumlGenerator generator = new PlantumlGenerator();
 		String diagramHTML = generator.generateUmlDiagram(diagram);
 		return diagramHTML;
 	}
