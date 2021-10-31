@@ -24,7 +24,11 @@ import org.nasdanika.html.emf.EObjectActionProvider;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.SectionStyle;
+import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.Table;
+import org.nasdanika.html.model.bootstrap.TableCell;
+import org.nasdanika.html.model.bootstrap.TableRow;
+import org.nasdanika.html.model.bootstrap.TableSection;
 import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NamedElementComparator;
@@ -91,6 +95,15 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 	}
 	
 	@Override
+	protected Object getTypedElementValue(ETypedElement typedElement) throws Exception {
+		Object ret = super.getTypedElementValue(typedElement);
+		if (typedElement == NcorePackage.Literals.MODEL_ELEMENT__URI && ret == null) {
+			return NcoreUtil.getUri(getTarget());
+		}
+		return ret;
+	}
+	
+	@Override
 	protected Table createPropertiesTable(
 			Action action,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
@@ -124,8 +137,29 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 				representationAction.setText(representation.getName());
 				action.getSections().add(representationAction); // TODO - support of navigation/navigation-modal - get from properties.
 			}
-			addContent(representationAction, createGenerator().generate(representation));
-			addContent(representationAction, representation.getDescription());						
+			String rDescr = representation.getDescription();
+			if (Util.isBlank(rDescr)) {
+				addContent(representationAction, createGenerator().generate(representation));				
+			} else {
+				Table table = BootstrapFactory.eINSTANCE.createTable();
+				action.getContent().add(table);
+				table.setBordered(true);
+				TableSection body = BootstrapFactory.eINSTANCE.createTableSection();
+				table.setBody(body);
+				table.getAttributes().put("style", createText("width:auto"));				
+				
+				TableRow diagramRow = BootstrapFactory.eINSTANCE.createTableRow();
+				body.getRows().add(diagramRow);
+				TableCell diagramCell = BootstrapFactory.eINSTANCE.createTableCell();
+				diagramRow.getCells().add(diagramCell);				
+				diagramCell.getContent().add(createText(createGenerator().generate(representation)));
+				
+				TableRow descriptionRow = BootstrapFactory.eINSTANCE.createTableRow();
+				body.getRows().add(descriptionRow);
+				TableCell descriptionCell = BootstrapFactory.eINSTANCE.createTableCell();
+				descriptionRow.getCells().add(descriptionCell);				
+				descriptionCell.getContent().add(createText(rDescr));								
+			}
 		}
 	}
 	

@@ -14,7 +14,6 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.diagram.Diagram;
 import org.nasdanika.diagram.DiagramElement;
-import org.nasdanika.diagram.gen.PlantumlGenerator;
 import org.nasdanika.flow.Call;
 import org.nasdanika.flow.FlowElement;
 import org.nasdanika.flow.FlowPackage;
@@ -52,8 +51,6 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 		
 		super.resolve(action, context, progressMonitor);
 		
-		addContent(action, createDiagram(action, context));
-	
 		// Inputs
 		EList<Action> sections = action.getSections();
 		if (!getTarget().getInputs().isEmpty()) {
@@ -81,7 +78,14 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 		}
 	}
 	
-	protected String createDiagram(Action action, org.nasdanika.html.emf.EObjectActionResolver.Context context) throws Exception {
+	@Override
+	protected void populateRepresentation(
+			Diagram representation, 
+			Action action,
+			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
+			ProgressMonitor progressMonitor)
+			throws Exception {
+		
 		FlowStateDiagramGenerator flowStateDiagramGenerator = new FlowStateDiagramGenerator() {
 		
 			@Override
@@ -138,20 +142,11 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 			
 		};
 		
-		Diagram diagram = generateDiagram(flowStateDiagramGenerator);
-		if (diagram == null || diagram.getElements().isEmpty()) {
-			return null; 
-		}
-		PlantumlGenerator generator = new PlantumlGenerator();
-		String diagramHTML = generator.generateUmlDiagram(diagram);
-		return diagramHTML;
+		populateRepresentation(representation, flowStateDiagramGenerator);
 	}
 
-	protected Diagram generateDiagram(FlowStateDiagramGenerator flowStateDiagramGenerator) {
-		Diagram diagram = flowStateDiagramGenerator.generateContextDiagram(getTarget());
-		diagram.setVertical(false); // TODO - configurable via representations
-		diagram.setHideEmptyDescription(true); // TODO - configurable via representations
-		return diagram;
+	protected void populateRepresentation(Diagram representation, FlowStateDiagramGenerator flowStateDiagramGenerator) {
+		flowStateDiagramGenerator.generateContextDiagram(getTarget(), representation);
 	}
 
 	private Action createInputsAction(

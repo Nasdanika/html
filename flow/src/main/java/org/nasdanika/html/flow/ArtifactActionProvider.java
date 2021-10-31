@@ -19,7 +19,6 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.diagram.Diagram;
 import org.nasdanika.diagram.DiagramElement;
-import org.nasdanika.diagram.gen.PlantumlGenerator;
 import org.nasdanika.flow.Artifact;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.Relationship;
@@ -73,8 +72,6 @@ public class ArtifactActionProvider extends ParticipantResponsibilityActionProvi
 		
 		super.resolve(action, context, progressMonitor);
 		
-		addContent(action, createDiagram(action, context));
-	
 		EList<Action> sections = action.getSections();
 		Artifact semanticElement = getTarget();
 		if (!semanticElement.getPayloadFor().isEmpty()) {
@@ -264,7 +261,13 @@ public class ArtifactActionProvider extends ParticipantResponsibilityActionProvi
 				progressMonitor);
 	}
 	
-	protected String createDiagram(Action action, org.nasdanika.html.emf.EObjectActionResolver.Context context) throws Exception {
+	@Override
+	protected void populateRepresentation(
+			Diagram representation, 
+			Action action,
+			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
+			ProgressMonitor progressMonitor) throws Exception {
+
 		ArtifactComponentDiagramGenerator artifactComponentDiagramGenerator = new ArtifactComponentDiagramGenerator() {
 		
 			@Override
@@ -301,21 +304,17 @@ public class ArtifactActionProvider extends ParticipantResponsibilityActionProvi
 						
 		};
 		
-		Diagram diagram = generateDiagram(artifactComponentDiagramGenerator);
-		if (diagram == null) {
-			return null; 
-		}
-		PlantumlGenerator generator = new PlantumlGenerator();
-		String diagramHTML = generator.generateUmlDiagram(diagram);
-		return diagramHTML;
+		populateRepresentation(representation, artifactComponentDiagramGenerator);
 	}
+	
 
-	protected Diagram generateDiagram(ArtifactComponentDiagramGenerator artifactComponentDiagramGenerator) {
+	protected void populateRepresentation(Diagram representation, ArtifactComponentDiagramGenerator artifactComponentDiagramGenerator) {
 		Artifact semanticElement = getTarget();
 		if (semanticElement.eContainmentFeature() == FlowPackage.Literals.ARTIFACT_ENTRY__VALUE && semanticElement.eContainer().eContainmentFeature() == FlowPackage.Literals.ARTIFACT__CHILDREN) {
-			return artifactComponentDiagramGenerator.generateContextDiagram(semanticElement);
+			artifactComponentDiagramGenerator.generateContextDiagram(semanticElement, representation);
+		} else {
+			artifactComponentDiagramGenerator.generateDiagram(semanticElement.getChildren().values(), representation);
 		}
-		return artifactComponentDiagramGenerator.generateDiagram(semanticElement.getChildren().values());
 	}
 
 	private Action createInboundRelationshipsAction(

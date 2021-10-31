@@ -81,11 +81,10 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 		}
 		return false;
 	}
-
-	protected Diagram generateDiagram(FlowStateDiagramGenerator flowStateDiagramGenerator) {		
-		Diagram diagram = flowStateDiagramGenerator.generateFlowDiagram(getTarget());
-		diagram.setHideEmptyDescription(true); // TODO - configurable via representations		
-		return diagram;
+		
+	@Override
+	protected void populateRepresentation(Diagram representation, FlowStateDiagramGenerator flowStateDiagramGenerator) {
+		flowStateDiagramGenerator.generateFlowDiagram(getTarget(), representation);
 	}
 
 }
