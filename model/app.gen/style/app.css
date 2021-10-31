@@ -12,16 +12,13 @@
 .nsd-app-content-row {
   min-height: 25rem;
 }
-
 .nsd-collapsible-trigger {
   float:right;
   margin-left:0.3em;
 } 
-
 .nsd-collapsible-trigger .fa:before {  
   content: "\f139";
 }
-
 .nsd-collapsible-trigger.collapsed .fa:before {
   content: "\f13a";
 }
