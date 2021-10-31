@@ -14,7 +14,8 @@
 }
 
 .nsd-collapsible-trigger {
-	float:right
+	float:right;
+	margin-left:0.3em
 } 
 
 .nsd-collapsible-trigger .fa:before {  

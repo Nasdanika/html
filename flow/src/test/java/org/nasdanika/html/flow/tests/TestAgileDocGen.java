@@ -37,6 +37,7 @@ import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.common.resources.FileSystemContainer;
 import org.nasdanika.diagram.Diagram;
 import org.nasdanika.diagram.DiagramFactory;
+import org.nasdanika.diagram.DiagramPackage;
 import org.nasdanika.diagram.gen.Generator;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
@@ -58,6 +59,7 @@ import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.app.util.ActionProvider;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
+import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreResourceSet;
 
 /**
@@ -278,6 +280,8 @@ public class TestAgileDocGen extends TestBase {
 		ResourceSet resourceSet = new NcoreResourceSet();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 	
+		resourceSet.getPackageRegistry().put(NcorePackage.eNS_URI, NcorePackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(DiagramPackage.eNS_URI, DiagramPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(ExecPackage.eNS_URI, ExecPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(ContentPackage.eNS_URI, ContentPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(ResourcesPackage.eNS_URI, ResourcesPackage.eINSTANCE);
@@ -299,6 +303,7 @@ public class TestAgileDocGen extends TestBase {
 		RESOURCE_MODELS_DIR.mkdirs();
 		
 		generateSite("core");
+		generateSite("aws");
 		generateSite("java");
 		generateSite("java-kubernetes");
 

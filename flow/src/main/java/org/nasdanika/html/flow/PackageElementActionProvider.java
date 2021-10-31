@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.common.util.URI;
@@ -15,14 +16,18 @@ import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
+import org.nasdanika.diagram.Diagram;
+import org.nasdanika.diagram.gen.Generator;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.PackageElement;
 import org.nasdanika.html.emf.EObjectActionProvider;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.bootstrap.Table;
 import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.NcorePackage;
+import org.nasdanika.ncore.util.NamedElementComparator;
 import org.nasdanika.ncore.util.NcoreUtil;
 
 public class PackageElementActionProvider<T extends PackageElement<?>> extends EObjectActionProvider<T> {
@@ -103,8 +108,46 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 		super.resolve(action, context, progressMonitor);
 		
 		// Adding documentation here so it appears under the properties table
-		T eObj = getTarget();
-		action.getContent().addAll(EcoreUtil.copyAll(eObj.getDocumentation()));			
+		T semanticElement = getTarget();
+		action.getContent().addAll(EcoreUtil.copyAll(semanticElement.getDocumentation()));		
+		
+		// Representations
+		for (Diagram representation: semanticElement.getRepresentations().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList())) {
+			if (representation.getElements().isEmpty()) {
+				populateRepresentation(representation, action, context, progressMonitor);
+			}			
+			Action representationAction;
+			if (Util.isBlank(representation.getName())) {
+				representationAction = action;
+			} else {
+				representationAction = AppFactory.eINSTANCE.createAction();
+				representationAction.setText(representation.getName());
+				action.getSections().add(representationAction); // TODO - support of navigation/navigation-modal - get from properties.
+			}
+			addContent(representationAction, createGenerator().generate(representation));
+			addContent(representationAction, representation.getDescription());						
+		}
+	}
+	
+	/**
+	 * Creates a diagram {@link Generator}.
+	 * @return
+	 */
+	protected Generator createGenerator() {
+		return new Generator();
+	}
+	
+	/**
+	 * Populates empty representations. An empty representation indicates that it has to be auto-populated. 
+	 * Non-empty representations indicate that they were pre-populated, e.g. manually, and should not be auto-populated. 
+	 * @param representation
+	 */
+	protected void populateRepresentation(
+			Diagram representation, 
+			Action action, 
+			org.nasdanika.html.emf.EObjectActionResolver.Context context,
+			ProgressMonitor progressMonitor) throws Exception {
+		
 	}
 	
 	@Override

@@ -205,8 +205,8 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 									Tag iTag = htmlFactory.tag(TagName.i).addClass("fa").attribute("aria-hidden", "true");
 									collapsible.id(semanticElement.getId()+"-collapsible");
 
-									Button collapsibleTrigger = htmlFactory.button(iTag)
-											.addClass("btn", "nsd-collapsible-trigger")
+									Tag collapsibleTrigger = htmlFactory.span(iTag)
+											.addClass("nsd-collapsible-trigger")
 											.attribute("data-toggle", "collapse")
 											.attribute("data-target", "#" + collapsible.getId())
 											.attribute("aria-expanded", "true")
