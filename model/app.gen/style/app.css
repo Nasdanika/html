@@ -13,12 +13,16 @@
     min-height: 25rem;
 }
 
+.nsd-collapsible-trigger {
+	float:right
+} 
+
 .nsd-collapsible-trigger .fa:before {  
-  content: "\f13a";
+  content: "\f139";
 }
 
 .nsd-collapsible-trigger.collapsed .fa:before {
-  content: "\f138";
+  content: "\f13a";
 }
 
 @media print {
