@@ -10,3 +10,69 @@ flow-package:
       representations:
         component: 
           type: "drawio:../../../src/test/resources/org/nasdanika/html/flow/tests/agile/aws.drawio"
+      children:
+        cloud:
+          name: AWS Cloud
+          partition: true
+          children:
+            s3-bucket:
+              name: Amazon S3 Bucket
+              relationships:
+                pipeline: code-pipeline
+            code-pipeline:
+              name: AWS CodePipeline
+              relationships:
+                organizations: organizations
+                account-baseline: account-baseline
+                service-catalog: service-catalog
+            organizations:
+              name: AWS Organizations
+              relationships:
+                core-ou: core-ou
+                sso: sso
+            sso:
+              name: AWS Single Sign-on
+            account-baseline:
+              name: Account Baseline
+            service-catalog:
+              name: AWS Service Catalog
+            parameter-store:
+              name: AWS Parameter Store
+            core-ou:
+              name: Core OU
+              relationships:
+                shared-services-account: ../../shared-services-account
+                log-archive-account: ../../log-archive-account
+                security-account: ../../security-account
+          representations:
+            context:
+              description: Context diagram.
+        shared-services-account:
+          partition: true
+          name: Shared Services Account
+          children:
+            account-baseline:
+              name: Account Baseline
+            vpc:
+              name: Amazon VPC
+        log-archive-account:
+          partition: true
+          name: Log Archive Account
+          children:
+            account-baseline:
+              name: Account Baseline
+            logs:
+              name: Aggregate CloudTrail and Config Logs
+        security-account:
+          partition: true
+          name: Security Account
+          children:
+            account-baseline:
+              name: Account Baseline
+            roles:
+              name: Security Cross-Account Roles
+            guard-duty:
+              name: Amazon GuardDuty
+            sns:
+              name: Amazon SNS
+        
