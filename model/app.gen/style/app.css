@@ -1,21 +1,21 @@
 .nsd-app-label-icon {
-    height:0.8em;
-    margin-bottom:0.2em;
-    margin-right:0.1em;
+  height:0.8em;
+  margin-bottom:0.2em;
+  margin-right:0.1em;
 }
 .nsd-app-label-notification {
-    margin-left:0.1em;
+  margin-left:0.1em;
 }
 .nsd-app-label-help {
-    margin-left:0.1em;
+  margin-left:0.1em;
 }
 .nsd-app-content-row {
-    min-height: 25rem;
+  min-height: 25rem;
 }
 
 .nsd-collapsible-trigger {
-	float:right;
-	margin-left:0.3em;
+  float:right;
+  margin-left:0.3em;
 } 
 
 .nsd-collapsible-trigger .fa:before {  
