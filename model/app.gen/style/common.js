@@ -35,14 +35,14 @@ $(document).ready( function() {
     $('.nsd-collapsible').on('shown.bs.collapse', function () {
        var localStorage = window.localStorage;
        if (localStorage) {
-         localStorage.removeItem(even.target.id + ":collapsed");
+         localStorage.removeItem(this.id + ":collapsed");
       }
     });
         
     $('.nsd-collapsible').on('hidden.bs.collapse', function () {
        var localStorage = window.localStorage;
        if (localStorage) {
-         localStorage.setItem(even.target.id + ":collapsed", "true");
+         localStorage.setItem(this.id + ":collapsed", "true");
       }
     });
     
