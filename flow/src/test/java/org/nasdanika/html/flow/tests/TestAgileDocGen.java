@@ -334,13 +334,4 @@ public class TestAgileDocGen extends TestBase {
 		System.out.println("\tGenerated site in " + (System.currentTimeMillis() - start) + " milliseconds");
 	}
 	
-	@Test
-	public void testDrawio() throws Exception {
-		URL resource = getClass().getResource("aws.drawio");
-		Generator generator = new Generator();
-		Diagram diagram = DiagramFactory.eINSTANCE.createDiagram();
-		diagram.setType("drawio:" + resource.toString());
-		System.out.println(generator.generate(diagram));
-	}
-	
 }

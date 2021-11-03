@@ -210,10 +210,11 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 											.attribute("data-toggle", "collapse")
 											.attribute("data-target", "#" + collapsible.getId())
 											.attribute("aria-expanded", "true")
-											.attribute("aria-controls", collapsible.getId());
+											.attribute("aria-controls", collapsible.getId())
+											.id(semanticElement.getId()+"-collapsible-trigger");
 									
 									cardHeaderTag.content(collapsibleTrigger);
-									collapsible.addClass("collapse", "show");
+									collapsible.addClass("nsd-collapsible", "collapse", "show");
 								}
 								
 								cardHeaderTag.content(title);								

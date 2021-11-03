@@ -7,9 +7,13 @@ flow-package:
     aws:
       name: AWS
       description: Amazon Web Services
+      partition: true
       representations:
         component: 
           type: "drawio:../../../src/test/resources/org/nasdanika/html/flow/tests/agile/aws.drawio"
+        grouped:
+          description: Generated component diagram with depth 1.              
+          depth: 1
       children:
         cloud:
           name: AWS Cloud
@@ -25,6 +29,7 @@ flow-package:
                 organizations: organizations
                 account-baseline: account-baseline
                 service-catalog: service-catalog
+                parameter-store: parameter-store
             organizations:
               name: AWS Organizations
               relationships:
@@ -34,25 +39,32 @@ flow-package:
               name: AWS Single Sign-on
             account-baseline:
               name: Account Baseline
+              templates: ../../account-baseline-template
             service-catalog:
               name: AWS Service Catalog
             parameter-store:
               name: AWS Parameter Store
             core-ou:
               name: Core OU
+              representations:
+                context:
+                  description: Context diagram.
+                  context: 1    
+                  depth: 0          
               relationships:
                 shared-services-account: ../../shared-services-account
                 log-archive-account: ../../log-archive-account
                 security-account: ../../security-account
           representations:
-            context:
-              description: Context diagram.
+            component:
+              description: Component diagram.              
         shared-services-account:
           partition: true
           name: Shared Services Account
           children:
             account-baseline:
               name: Account Baseline
+              templates: ../../account-baseline-template
             vpc:
               name: Amazon VPC
         log-archive-account:
@@ -61,6 +73,7 @@ flow-package:
           children:
             account-baseline:
               name: Account Baseline
+              templates: ../../account-baseline-template
             logs:
               name: Aggregate CloudTrail and Config Logs
         security-account:
@@ -69,10 +82,14 @@ flow-package:
           children:
             account-baseline:
               name: Account Baseline
+              templates: ../../account-baseline-template
             roles:
               name: Security Cross-Account Roles
             guard-duty:
               name: Amazon GuardDuty
             sns:
               name: Amazon SNS
+        account-baseline-template:
+          name: Account Baseline Template
+          description: A template for account baselines.
         

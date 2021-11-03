@@ -29,6 +29,7 @@ $(document).ready( function() {
       var localStorage = window.localStorage;
       if (localStorage && localStorage.getItem(this.id + ":collapsed") == "true") { 
         $(this).removeClass("show");
+        $("#" + this.id + "-trigger").addClass("collapsed");
       }
     });
     

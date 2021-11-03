@@ -129,9 +129,10 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 			protected DiagramElement createDiagramElement(
 					FlowElement<?> flowElement,
 					Map<FlowElement<?>, DiagramElement> semanticMap, 
-					FlowElement<?> contextElement) {
+					FlowElement<?> contextElement,
+					int depth) {
 				
-				DiagramElement ret = super.createDiagramElement(flowElement, semanticMap, contextElement);
+				DiagramElement ret = super.createDiagramElement(flowElement, semanticMap, contextElement, depth);
 				String text = ret.getText();
 				int initialLineLength = 25;
 				if (text != null && text.length() > initialLineLength) {
@@ -146,7 +147,7 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 	}
 
 	protected void populateRepresentation(Diagram representation, FlowStateDiagramGenerator flowStateDiagramGenerator) {
-		flowStateDiagramGenerator.generateContextDiagram(getTarget(), representation);
+		flowStateDiagramGenerator.generateDiagram(getTarget(), representation);
 	}
 
 	private Action createInputsAction(

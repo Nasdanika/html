@@ -84,7 +84,7 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 		
 	@Override
 	protected void populateRepresentation(Diagram representation, FlowStateDiagramGenerator flowStateDiagramGenerator) {
-		flowStateDiagramGenerator.generateFlowDiagram(getTarget(), representation);
+		flowStateDiagramGenerator.generateDiagram(getTarget(), representation);
 	}
 
 }

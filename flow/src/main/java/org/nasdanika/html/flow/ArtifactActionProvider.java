@@ -61,6 +61,8 @@ public class ArtifactActionProvider extends ParticipantResponsibilityActionProvi
 		properties.add(FlowPackage.Literals.ARTIFACT__OUTPUT_FOR);
 		properties.add(FlowPackage.Literals.ARTIFACT__REPOSITORIES);
 		properties.add(FlowPackage.Literals.ARTIFACT__USED_BY);
+		properties.add(FlowPackage.Literals.ARTIFACT__TEMPLATES);
+		properties.add(FlowPackage.Literals.ARTIFACT__INSTANCES);
 		return properties;
 	}
 		
@@ -291,9 +293,10 @@ public class ArtifactActionProvider extends ParticipantResponsibilityActionProvi
 			protected DiagramElement createDiagramElement(
 					Artifact semanticElement,
 					Map<Artifact, DiagramElement> semanticMap, 
-					Artifact contextElement) {
+					Artifact contextElement,
+					int depth) {
 				
-				DiagramElement ret = super.createDiagramElement(semanticElement, semanticMap, contextElement);
+				DiagramElement ret = super.createDiagramElement(semanticElement, semanticMap, contextElement, depth);
 				String text = ret.getText();
 				int initialLineLength = 25;
 				if (text != null && text.length() > initialLineLength) {
@@ -307,14 +310,8 @@ public class ArtifactActionProvider extends ParticipantResponsibilityActionProvi
 		populateRepresentation(representation, artifactComponentDiagramGenerator);
 	}
 	
-
 	protected void populateRepresentation(Diagram representation, ArtifactComponentDiagramGenerator artifactComponentDiagramGenerator) {
-		Artifact semanticElement = getTarget();
-		if (semanticElement.eContainmentFeature() == FlowPackage.Literals.ARTIFACT_ENTRY__VALUE && semanticElement.eContainer().eContainmentFeature() == FlowPackage.Literals.ARTIFACT__CHILDREN) {
-			artifactComponentDiagramGenerator.generateContextDiagram(semanticElement, representation);
-		} else {
-			artifactComponentDiagramGenerator.generateDiagram(semanticElement.getChildren().values(), representation);
-		}
+		artifactComponentDiagramGenerator.generateDiagram(getTarget(), representation);
 	}
 
 	private Action createInboundRelationshipsAction(
