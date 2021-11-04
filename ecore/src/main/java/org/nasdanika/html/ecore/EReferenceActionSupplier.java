@@ -1,6 +1,5 @@
 package org.nasdanika.html.ecore;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.Context;
@@ -18,22 +17,7 @@ public class EReferenceActionSupplier extends EStructuralFeatureActionSupplier<E
 	@Override
 	protected Table propertiesTable(ProgressMonitor monitor) throws Exception {
 		Table propertiesTable = super.propertiesTable(monitor);
-		EReference opposite = eObject.getEOpposite();
-		if (opposite == null) {
-			String oName = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "opposite");
-			EClass refType = eObject.getEReferenceType();
-			for (EReference ref: refType.getEAllReferences()) {
-				if (ref.getName().equals(oName)) {
-					opposite = ref;
-					break;
-				}
-				String ooName = NcoreUtil.getNasdanikaAnnotationDetail(refType, "opposite");
-				if (eObject.getName().equals(ooName)) {
-					opposite = ref;
-					break;
-				}
-			}
-		}
+		EReference opposite = NcoreUtil.getOpposite(eObject);
 		if (opposite != null) {
 			String oPath = path(opposite.getEContainingClass());
 			if (Util.isBlank(oPath)) {
