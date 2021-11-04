@@ -156,7 +156,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
-		Action ret = AppFactory.eINSTANCE.createAction();
+		Action ret = newAction(registry, resolveConsumer, progressMonitor);
 
 		// Diagnostic
 		Collection<Diagnostic> diagnostic = getDiagnostic();
@@ -183,7 +183,24 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		// Sections
 		
 		return ret;
-	}	
+	}
+	
+	/**
+	 * Called by createAction(). This implementation calls {@link AppFactory} createAction().
+	 * Override to customize action creation before it gets populated by createAction().
+	 * For example, create an action from a template action.
+	 * @param registry
+	 * @param resolveConsumer
+	 * @param progressMonitor
+	 * @return
+	 * @throws Exception
+	 */
+	protected Action newAction(
+			BiConsumer<EObject,Action> registry, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<Context>> resolveConsumer, 
+			ProgressMonitor progressMonitor) throws Exception {
+		return AppFactory.eINSTANCE.createAction();
+	}
 	
 	protected NavigationPanel createLeftNavigation(Context context, ProgressMonitor progressMonitor) throws Exception {
 	
