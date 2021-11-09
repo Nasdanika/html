@@ -10,7 +10,7 @@ flow-package:
       partition: true
       representations:
         component: 
-          type: "drawio:../../../src/test/resources/org/nasdanika/html/flow/tests/agile/aws.drawio"
+          type: "drawio:../../../src/test/resources/org/nasdanika/html/flow/tests/agile/aws-encoded-uncompressed.drawio"
         grouped:
           description: Generated component diagram with depth 1.              
           depth: 1
