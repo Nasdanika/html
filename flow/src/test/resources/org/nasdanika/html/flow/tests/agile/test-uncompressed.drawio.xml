@@ -1,0 +1,42 @@
+<mxfile
+	agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/15.4.0 Chrome/91.0.4472.164 Electron/13.5.0 Safari/537.36"
+	compressed="false" etag="w0n7dgBFaxwQIusVcIVM" host="Electron"
+	modified="2021-11-08T14:01:22.302Z" type="device" version="15.4.0">
+	<diagram id="Ht1M8jgEwFfnCIfOTk4-" name="Page-1">
+		<mxGraph>
+			<mxGraphModel as="model">
+				<root>
+					<mxCell id="0" />
+					<mxCell id="1" parent="0" />
+					<UserObject id="2" label="Hren&#10;sobachya"
+						link="https://nasdanika.org" uri="nasdanika://hmmm">
+						<mxCell parent="1" style="verticalAlign=top" vertex="1">
+							<mxGeometry as="geometry" height="60.0" width="160.0"
+								x="152.78874536821954" y="305.5774907364391" />
+						</mxCell>
+					</UserObject>
+					<mxCell id="3" parent="2" value="Purum" vertex="1">
+						<mxGeometry as="geometry" height="30.0" width="80.0"
+							x="20.0" y="20.0" />
+					</mxCell>
+					<mxCell id="4" parent="1" value="World!" vertex="1">
+						<mxGeometry as="geometry" height="60.0" width="160.0"
+							x="285.10768026944965" y="76.3943726841098" />
+					</mxCell>
+					<mxCell id="5" parent="1" value="Govno" vertex="1">
+						<mxGeometry as="geometry" height="30.0" width="80.0"
+							x="20.469810466989486" y="76.3943726841097" />
+					</mxCell>
+					<mxCell edge="1" id="6" parent="1" source="2"
+						style="noEdgeStyle=1" target="4" value="Edge">
+						<mxGeometry as="geometry" relative="1" />
+					</mxCell>
+					<mxCell edge="1" id="7" parent="1" source="3"
+						style="noEdgeStyle=1" target="5" value="Cross Edge">
+						<mxGeometry as="geometry" relative="1" />
+					</mxCell>
+				</root>
+			</mxGraphModel>
+		</mxGraph>
+	</diagram>
+</mxfile>

@@ -14,6 +14,8 @@ flow-package:
         grouped:
           description: Generated component diagram with depth 1.              
           depth: 1
+        generated: 
+          type: "drawio"
       children:
         cloud:
           name: AWS Cloud

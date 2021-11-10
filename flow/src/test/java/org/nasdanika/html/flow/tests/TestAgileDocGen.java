@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,10 +34,7 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.common.resources.FileSystemContainer;
-import org.nasdanika.diagram.Diagram;
-import org.nasdanika.diagram.DiagramFactory;
 import org.nasdanika.diagram.DiagramPackage;
-import org.nasdanika.diagram.gen.Generator;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.emf.persistence.FeatureCacheAdapter;
