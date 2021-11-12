@@ -10,12 +10,13 @@ flow-package:
       partition: true
       representations:
         component: 
-          type: "drawio:../../../src/test/resources/org/nasdanika/html/flow/tests/agile/aws-encoded-uncompressed.drawio"
+          type: "drawio:../../../src/test/resources/org/nasdanika/html/flow/tests/agile/aws.drawio"
         grouped:
           description: Generated component diagram with depth 1.              
           depth: 1
         generated: 
           type: "drawio"
+          description: Generated drawio diagram
       children:
         cloud:
           name: AWS Cloud
@@ -61,9 +62,13 @@ flow-package:
             component:
               description: Component diagram.              
             generated: 
-              type: "drawio:aws/cloud-components.drawio"
+              type: "drawio"
               name: AWS Cloud Components
               description: Generated diagram
+            manual: 
+              type: "drawio:aws/cloud-components.drawio"
+              name: AWS Cloud Components
+              description: Generated and then manually edited diagram
         shared-services-account:
           partition: true
           name: Shared Services Account
