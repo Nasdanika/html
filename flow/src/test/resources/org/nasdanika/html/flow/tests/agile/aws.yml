@@ -60,6 +60,10 @@ flow-package:
           representations:
             component:
               description: Component diagram.              
+            generated: 
+              type: "drawio:aws/cloud-components.drawio"
+              name: AWS Cloud Components
+              description: Generated diagram
         shared-services-account:
           partition: true
           name: Shared Services Account

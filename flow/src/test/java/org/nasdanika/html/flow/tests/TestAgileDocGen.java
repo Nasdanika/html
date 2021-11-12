@@ -290,18 +290,18 @@ public class TestAgileDocGen extends TestBase {
 	
 	@Test
 	public void generate() throws Exception {
-		delete(INSTANCE_MODELS_DIR);
-		delete(ACTION_MODELS_DIR);
-		delete(RESOURCE_MODELS_DIR);
+//		delete(INSTANCE_MODELS_DIR);
+//		delete(ACTION_MODELS_DIR);
+//		delete(RESOURCE_MODELS_DIR);
+//		
+//		INSTANCE_MODELS_DIR.mkdirs();
+//		ACTION_MODELS_DIR.mkdirs();
+//		RESOURCE_MODELS_DIR.mkdirs();
 		
-		INSTANCE_MODELS_DIR.mkdirs();
-		ACTION_MODELS_DIR.mkdirs();
-		RESOURCE_MODELS_DIR.mkdirs();
-		
-		generateSite("core");
+//		generateSite("core");
 		generateSite("aws");
-		generateSite("java");
-		generateSite("java-kubernetes");
+//		generateSite("java");
+//		generateSite("java-kubernetes");
 
 		long cacheMisses = FeatureCacheAdapter.getMisses();
 		long cacheCalls = FeatureCacheAdapter.getCalls();
