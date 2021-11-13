@@ -45,6 +45,13 @@ flow-package:
               templates: ../../account-baseline-template
             service-catalog:
               name: AWS Service Catalog
+              properties:
+                representation:
+                  drawio:
+                    width: 150
+                    height: 200
+                    style:
+                      shape: note
             parameter-store:
               name: AWS Parameter Store
             core-ou:

@@ -298,7 +298,7 @@ public class TestAgileDocGen extends TestBase {
 //		ACTION_MODELS_DIR.mkdirs();
 //		RESOURCE_MODELS_DIR.mkdirs();
 		
-//		generateSite("core");
+		generateSite("core");
 		generateSite("aws");
 //		generateSite("java");
 //		generateSite("java-kubernetes");
