@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
@@ -529,11 +530,15 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 				return EcoreUtil.copy((EObject) value); // Returning copy to be handled at later stages, e.g. render markdown during site generation. 
 			}
 			
+			URI location = context.resolve(valueAction, base);
+			if (location == null) { 
+				throw new IllegalArgumentException("Cannot resolve value action URI: " + value);
+			}
 			Link link = AppFactory.eINSTANCE.createLink();
 			link.setText(valueAction.getText());
 			link.setIcon(valueAction.getIcon());
 			link.setTooltip(valueAction.getTooltip());
-			link.setLocation(context.resolve(valueAction, base).toString());
+			link.setLocation(location.toString());
 			return link;
 		} else if (value instanceof EMap) {
 			return createEMapTable(typedElement, (EMap<?,?>) value, base, context, progressMonitor);
@@ -665,6 +670,14 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	}
 	
 	protected ColumnBuilder<EObject> createColumnBuilder(ETypedElement typedElement) {
+		return createColumnBuilder(typedElement, createETypedElementLabel(typedElement, false));
+	}
+	
+	protected ColumnBuilder<EObject> createColumnBuilder(ETypedElement typedElement, String label) {
+		return createColumnBuilder(typedElement, createText(label));
+	}
+	
+	protected ColumnBuilder<EObject> createColumnBuilder(ETypedElement typedElement, EObject label) {
 		return new ColumnBuilder<EObject>() {
 			
 			@Override
@@ -674,7 +687,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 					ETypedElement tElement, 
 					Context context,
 					ProgressMonitor progressMonitor) throws Exception {
-				header.getContent().add(createETypedElementLabel(typedElement, false));				
+				header.getContent().add(label);				
 			}
 			
 			@Override
@@ -694,6 +707,51 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			}
 		};
 	}
+	
+	/**
+	 * Creates a column builder for the row element itself.
+	 * @param label
+	 * @return
+	 */
+	protected ColumnBuilder<EObject> createColumnBuilder(String label) {
+		return createColumnBuilder(createText(label));
+	}
+	
+	/**
+	 * Creates a column builder for the row element itself.
+	 * @param label
+	 * @return
+	 */
+	protected ColumnBuilder<EObject> createColumnBuilder(EObject label) {
+		return new ColumnBuilder<EObject>() {
+			
+			@Override
+			public void buildHeader(
+					TableCell header, 
+					Action base, 
+					ETypedElement tElement, 
+					Context context,
+					ProgressMonitor progressMonitor) throws Exception {
+				header.getContent().add(label);				
+			}
+			
+			@Override
+			public void buildCell(
+					EObject rowElement, 
+					TableCell cell, 
+					Action base, 
+					ETypedElement tElement, 
+					Context context,
+					ProgressMonitor progressMonitor) throws Exception {
+				
+				EObject renderedValue = renderValue(base, null, (Object) rowElement, context, progressMonitor);
+				if (renderedValue != null) {
+					cell.getContent().add(renderedValue);
+				}
+			}
+		};
+	}
+	
 	
 	protected List<ColumnBuilder<EObject>> createColumnBuilders(Collection<ETypedElement> typedElements) {
 		return typedElements.stream().map(this::createColumnBuilder).collect(Collectors.toList());

@@ -51,7 +51,7 @@ flow-package:
                     width: 150
                     height: 200
                     style:
-                      shape: note
+                      shape: mxgraph.aws3d.cloudfront
             parameter-store:
               name: AWS Parameter Store
             core-ou:

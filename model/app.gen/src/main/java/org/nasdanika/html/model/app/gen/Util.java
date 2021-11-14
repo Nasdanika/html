@@ -617,10 +617,10 @@ public final class Util {
 			
 			@Override
 			public URI apply(Action action, URI base) {
-				URI uri = cache.get(action);
+				URI uri = cache.get(action);				
 				return base == null || uri == null ? uri : uri.deresolve(base, true, true, true);
 			}
-			
+		
 		};
 	}
 	
