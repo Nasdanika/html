@@ -71,7 +71,7 @@ flow-package:
             hide-empty-description: true
             vertical: false
           generated: 
-            type: "drawio"
+            type: drawio
             name: Agile Development
             description: Generated diagram
           manual: 
@@ -185,7 +185,7 @@ flow-package:
                       document:
                         target: document
                     artifact-responsibilities: # Artifact responsibilities
-                      - artifact: story
+                      story:
                         responsible: developer
                         accountable: scrum-master
                         consulted: [lead-developer, architect]
@@ -193,7 +193,7 @@ flow-package:
                         description: |+2
                           Developer changes story status to "In progress" and adds comments about the progress or questions requiring clarifications. 
                           Other responsible subscribe to the story to receive notifications and provide clarifications.                                   
-                      - artifact: source
+                      source:
                         responsible: developer
                         accountable: lead-developer
                         consulted: [product-owner, architect]

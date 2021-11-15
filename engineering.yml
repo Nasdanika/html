@@ -1,12 +1,9 @@
 engineering-product:
    name: HTML
    path: html
-   representations:
-     - representation-component-diagram: true
-   appearance:
-     features:
-       modules:
-         category: false
+   releases:
+     "2021-11-2":
+       name: "2021.11.2"
    modules:
       - html/engineering.yml
       - model/html/engineering.yml

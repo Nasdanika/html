@@ -6,6 +6,10 @@ engineering-module:
   dependencies:
     - nasdanika:modules/html/modules/emf
   issues:
+    generation-api:
+      name: Generation API
+      description: |+2
+        Convert unit tests into a generation API in the main codebase and documentation. Consider also Maven plug-in and CLI. 
      - name: Application model as output in addition to YAML
        increment: nasdanika:increments/2021/children/q2  
      - name: Engineering model as output

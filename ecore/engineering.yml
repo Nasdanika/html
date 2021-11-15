@@ -6,6 +6,16 @@ engineering-module:
   dependencies:
     - nasdanika:modules/html/modules/emf
   issues:
+    action-template:
+      name: Action template
+      description: |+2
+        Annnotation to load documentation action from a template, e.g. YAML or XML, instead of creating with a factory.
+        The action will then be populated as usual. This would allow to, say, have engineering issues at model element level.  
+    engineering-generation-target:
+      name: Engineering generation target
+      description: |+2
+        Generate engineering model instead of action model. This would allow to link issues, owners, etc. to model elements.
+        Need support of merging.
      - name: Application model as output in addition to YAML
        increment: nasdanika:increments/2021/children/q2  
      - name: Engineering model as output
