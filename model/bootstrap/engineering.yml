@@ -6,4 +6,8 @@ engineering-module:
   dependencies:
     - nasdanika:modules/html/modules/bootstrap
     - nasdanika:modules/html/modules/models/html
-  
+  issues:
+    carousel:
+      name: Carousel
+      description: https://getbootstrap.com/docs/4.5/components/carousel/
+    

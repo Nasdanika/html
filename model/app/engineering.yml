@@ -7,6 +7,9 @@ engineering-module:
     - nasdanika:modules/html/modules/app
     - nasdanika:modules/html/modules/models/app
   issues:
+    carousel-section-style:
+      name: Carousel section style
+      description: To support presentation-like sections with https://getbootstrap.com/docs/4.5/components/carousel/. Figure out how to configure the carousel - appearance?
      - name: Ability to inherit action hierarchies and override specific actions
        description: Override by ID. Children will have to be derived and will need "ownChildren" reference with "children" load key.
      - name: Label context list of labels.
