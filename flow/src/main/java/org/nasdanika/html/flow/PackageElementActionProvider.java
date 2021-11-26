@@ -29,7 +29,6 @@ import org.nasdanika.html.model.bootstrap.Table;
 import org.nasdanika.html.model.bootstrap.TableCell;
 import org.nasdanika.html.model.bootstrap.TableRow;
 import org.nasdanika.html.model.bootstrap.TableSection;
-import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NamedElementComparator;
 import org.nasdanika.ncore.util.NcoreUtil;
@@ -182,28 +181,6 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
 			ProgressMonitor progressMonitor) throws Exception {
 		
-	}
-	
-	@Override
-	protected EObject renderValue(
-			Action base, 
-			ETypedElement typedElement, 
-			Object value,
-			org.nasdanika.html.emf.EObjectActionResolver.Context context, ProgressMonitor progressMonitor)
-			throws Exception {
-
-		if (value instanceof Marker) {
-			Marker marker = (Marker) value;
-			StringBuilder textBuilder = new StringBuilder(marker.getLocation());
-			if (marker.getLine() > 0) {
-				textBuilder.append(" ").append(marker.getLine());
-				if (marker.getColumn() > 0) {
-					textBuilder.append(":").append(marker.getColumn());
-				}
-			}
-			return createText(textBuilder.toString());
-		}
-		return super.renderValue(base, typedElement, value, context, progressMonitor);
 	}
 	
 }

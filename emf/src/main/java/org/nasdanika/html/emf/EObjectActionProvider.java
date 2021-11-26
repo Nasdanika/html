@@ -55,6 +55,8 @@ import org.nasdanika.html.model.bootstrap.TableHeader;
 import org.nasdanika.html.model.bootstrap.TableRow;
 import org.nasdanika.html.model.bootstrap.TableSection;
 import org.nasdanika.html.model.html.HtmlFactory;
+import org.nasdanika.ncore.Marker;
+import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreUtil;
 
 import com.ibm.icu.util.Calendar;
@@ -353,7 +355,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	 */
 	protected Label createETypedElementLabel(ETypedElement eTypedElement, boolean inModal) {
 		Label label = AppFactory.eINSTANCE.createLabel();
-		configureETypedElementLabel(eTypedElement, label, inModal);
+		configureETypedElementLabel(eTypedElement, label, inModal);		
 		return label;
 	}
 
@@ -364,12 +366,19 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	 * @param inModal
 	 */
 	protected void configureETypedElementLabel(ETypedElement eTypedElement, Label label, boolean inModal) {
-		label.setText(typedElementLabelText(eTypedElement));
+		label.setText(typedElementLabelText(eTypedElement));		
 		label.setIcon(typedElementIcon(eTypedElement));
 		// TODO - tooltip, description
 	}
 	
 	protected String typedElementLabelText(ETypedElement type) {
+		if (type == NcorePackage.Literals.MARKED__MARKER) {
+			Marker marker = (Marker) getTarget().eGet((EStructuralFeature) type);
+			if (marker != null && !Util.isBlank(marker.getOrigin())) {
+				return "Origin";
+			}
+		}
+		
 		return NcoreUtil.getNasdanikaAnnotationDetail(type, EmfUtil.LABEL_KEY, Util.nameToLabel(type.getName()));
 	}
 	
@@ -521,8 +530,30 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			}
 			String timePart = DateFormat.getTimeInstance().format((Date) value);
 			return createText(datePart + " " + timePart);
-			
 		}
+		
+		if (value instanceof Marker) {
+			Marker marker = (Marker) value;
+			StringBuilder textBuilder = new StringBuilder(marker.getLocation());
+			if (marker.getLine() > 0) {
+				textBuilder.append(" ").append(marker.getLine());
+				if (marker.getColumn() > 0) {
+					textBuilder.append(":").append(marker.getColumn());
+				}
+			}
+			String origin = marker.getOrigin();
+			if (Util.isBlank(origin)) {			
+				return createText(textBuilder.toString());
+			}
+			Link link = AppFactory.eINSTANCE.createLink();
+			link.setText(textBuilder.toString());
+			if (origin.startsWith("https://github.com")) {
+				link.setIcon("fab fa-github");
+			}
+			link.setLocation(origin);
+			return link;			
+		}
+		
 		
 		if (value instanceof EObject) {
 			Action valueAction = context.getAction((EObject) value);
