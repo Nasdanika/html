@@ -11,6 +11,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Util;
 import org.nasdanika.diagram.Diagram;
 import org.nasdanika.flow.Call;
 import org.nasdanika.flow.Flow;
@@ -51,12 +52,28 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 		if (a == b) {
 			return 0;
 		}
+
+		String asg = a.getSortGroup();
+		String bsg = b.getSortGroup();
+		if (Util.isBlank(asg)) {
+			if (!Util.isBlank(bsg)) {
+				return -1;
+			}
+		} else {
+			if (Util.isBlank(bsg)) {
+				return 1;
+			}
+			int cmp = asg.compareTo(bsg);
+			if (cmp != 0) {
+				return cmp;
+			}
+		}
 		
-		if (isReacheable(a, b, new HashSet<>())) {
+		if (isReacheable(a, b, new HashSet<>()) && !isReacheable(b, a, new HashSet<>())) {
 			return -1;
 		}
 		
-		if (isReacheable(b, a, new HashSet<>())) {
+		if (isReacheable(b, a, new HashSet<>()) && !isReacheable(a, b, new HashSet<>())) {
 			return 1;
 		}
 		
