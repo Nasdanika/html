@@ -24,6 +24,7 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.bootstrap.gen.BootstrapElementSupplierFactoryAdapter;
 
 public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapElementSupplierFactoryAdapter<M, BootstrapElement<?,?>> {
@@ -206,6 +207,16 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 				Label semanticElement = getTarget();
 				
 				String text = context.interpolateToString(getTarget().getText());
+				for (EObject semanticAncestor = semanticElement.eContainer(); semanticAncestor != null; semanticAncestor = semanticAncestor.eContainer()) {
+					if (semanticAncestor instanceof NavigationPanel) {
+						int labelTrimLength = ((NavigationPanel) semanticAncestor).getLabelTrimLength();
+						if (labelTrimLength > 0 && text.length() > labelTrimLength) {
+							text = text.substring(0, labelTrimLength - 3) + "...";
+						}
+						break;
+					}						
+				}
+				
 				String icon = semanticElement.getIcon();
 				Tag iconTag = null;
 				if (icon != null) {
