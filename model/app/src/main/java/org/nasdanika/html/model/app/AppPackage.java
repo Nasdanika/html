@@ -1098,13 +1098,22 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL__ID = PAGE_PART_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Label Trim Length</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_PANEL__LABEL_TRIM_LENGTH = PAGE_PART_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Navigation Panel</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_PANEL_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 2;
+	int NAVIGATION_PANEL_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Navigation Panel</em>' class.
@@ -2196,6 +2205,17 @@ public interface AppPackage extends EPackage {
 	EAttribute getNavigationPanel_Id();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.NavigationPanel#getLabelTrimLength <em>Label Trim Length</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Label Trim Length</em>'.
+	 * @see org.nasdanika.html.model.app.NavigationPanel#getLabelTrimLength()
+	 * @see #getNavigationPanel()
+	 * @generated
+	 */
+	EAttribute getNavigationPanel_LabelTrimLength();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ContentPanel <em>Content Panel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2810,6 +2830,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute NAVIGATION_PANEL__ID = eINSTANCE.getNavigationPanel_Id();
+
+		/**
+		 * The meta object literal for the '<em><b>Label Trim Length</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NAVIGATION_PANEL__LABEL_TRIM_LENGTH = eINSTANCE.getNavigationPanel_LabelTrimLength();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ContentPanelImpl <em>Content Panel</em>}' class.

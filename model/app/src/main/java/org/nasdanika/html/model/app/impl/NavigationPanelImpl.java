@@ -17,6 +17,7 @@ import org.nasdanika.html.model.app.NavigationPanelStyle;
  * <ul>
  *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getStyle <em>Style</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getId <em>Id</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getLabelTrimLength <em>Label Trim Length</em>}</li>
  * </ul>
  *
  * @generated
@@ -41,6 +42,16 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 	 * @ordered
 	 */
 	protected static final String ID_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getLabelTrimLength() <em>Label Trim Length</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLabelTrimLength()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int LABEL_TRIM_LENGTH_EDEFAULT = 50;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -107,12 +118,34 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 	 * @generated
 	 */
 	@Override
+	public int getLabelTrimLength() {
+		return (Integer)eDynamicGet(AppPackage.NAVIGATION_PANEL__LABEL_TRIM_LENGTH, AppPackage.Literals.NAVIGATION_PANEL__LABEL_TRIM_LENGTH, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setLabelTrimLength(int newLabelTrimLength) {
+		eDynamicSet(AppPackage.NAVIGATION_PANEL__LABEL_TRIM_LENGTH, AppPackage.Literals.NAVIGATION_PANEL__LABEL_TRIM_LENGTH, newLabelTrimLength);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AppPackage.NAVIGATION_PANEL__STYLE:
 				return getStyle();
 			case AppPackage.NAVIGATION_PANEL__ID:
 				return getId();
+			case AppPackage.NAVIGATION_PANEL__LABEL_TRIM_LENGTH:
+				return getLabelTrimLength();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -132,6 +165,9 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 			case AppPackage.NAVIGATION_PANEL__ID:
 				setId((String)newValue);
 				return;
+			case AppPackage.NAVIGATION_PANEL__LABEL_TRIM_LENGTH:
+				setLabelTrimLength((Integer)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -150,6 +186,9 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 			case AppPackage.NAVIGATION_PANEL__ID:
 				setId(ID_EDEFAULT);
 				return;
+			case AppPackage.NAVIGATION_PANEL__LABEL_TRIM_LENGTH:
+				setLabelTrimLength(LABEL_TRIM_LENGTH_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -166,6 +205,8 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 				return getStyle() != STYLE_EDEFAULT;
 			case AppPackage.NAVIGATION_PANEL__ID:
 				return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
+			case AppPackage.NAVIGATION_PANEL__LABEL_TRIM_LENGTH:
+				return getLabelTrimLength() != LABEL_TRIM_LENGTH_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

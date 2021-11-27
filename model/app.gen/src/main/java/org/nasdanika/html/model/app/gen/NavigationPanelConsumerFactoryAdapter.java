@@ -16,7 +16,6 @@ import org.nasdanika.common.ListCompoundSupplierFactory;
 import org.nasdanika.common.MapCompoundSupplierFactory;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.EObjectAdaptable;
-import org.nasdanika.html.Button;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
@@ -81,6 +80,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 				
 				return ret;
 			}
+						
 		};
 	}
 	

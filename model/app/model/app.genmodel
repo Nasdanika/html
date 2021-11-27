@@ -69,6 +69,7 @@
     <genClasses ecoreClass="app.ecore#//NavigationPanel">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//NavigationPanel/style"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//NavigationPanel/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//NavigationPanel/labelTrimLength"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//ContentPanel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//ContentPanel/breadcrumb"/>

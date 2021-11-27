@@ -21,6 +21,7 @@ import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.NavigationPanel;
 
 public class LabelJsTreeNodeSupplierFactoryAdapter<M extends Label> extends AdapterImpl implements SupplierFactory<JsTreeNode> {
 	
@@ -60,6 +61,17 @@ public class LabelJsTreeNodeSupplierFactoryAdapter<M extends Label> extends Adap
 				}
 				String text = context.interpolateToString(semanticElement.getText());
 				if (!Util.isBlank(text)) {
+					for (EObject semanticAncestor = semanticElement.eContainer(); semanticAncestor != null; semanticAncestor = semanticAncestor.eContainer()) {
+						if (semanticAncestor instanceof NavigationPanel) {
+							int labelTrimLength = ((NavigationPanel) semanticAncestor).getLabelTrimLength();
+							if (labelTrimLength > 0 && text.length() > labelTrimLength) {
+								ret.anchorAttribute("title", text);
+								text = text.substring(0, labelTrimLength - 3) + "...";
+							}
+							break;
+						}						
+					}
+					
 					ret.text(text);
 				}
 				String tooltip = context.interpolateToString(semanticElement.getTooltip());
