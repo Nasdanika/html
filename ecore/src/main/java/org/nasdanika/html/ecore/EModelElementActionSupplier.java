@@ -290,7 +290,9 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	 * @throws Exception 
 	 */
 	protected void genericType(EGenericType eGenericType, List<Object> accumulator, ProgressMonitor monitor) throws Exception {
-		if (eGenericType.getETypeParameter() != null) {
+		if (eGenericType == null) {
+			accumulator.add("void");
+		} else if (eGenericType.getETypeParameter() != null) {
 			accumulator.add(eGenericType.getETypeParameter().getName());
 		} else if (eGenericType.getEClassifier() != null) {
 			accumulator.add(link(eGenericType.getEClassifier()));

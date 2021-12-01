@@ -10,11 +10,15 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EParameter;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -122,23 +126,25 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			addContent(action, gstf.toString());
 		}
 		
+		Comparator<ENamedElement> namedElementComparator = (a,b) -> a.getName().compareTo(b.getName());
+		EList<Action> sections = action.getSections();
+		
 		// Load specification
 		if (!eObject.isAbstract() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.IS_LOADABLE, "true"))) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
-			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create("Load specification")).attribute("name", "load-specification"));
+			Fragment loadSpecificationFragment = htmlFactory.fragment();
 			
 			String loadDoc = NcoreUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.LOAD_DOC);
 			if (!Util.isBlank(loadDoc)) {
-				gstf.content(interpolatedMarkdown(loadDoc));
+				loadSpecificationFragment.content(interpolatedMarkdown(loadDoc));
 			}
 			
-			BootstrapFactory bootstrapFactory = BootstrapFactory.INSTANCE;
+			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
 			Table table = bootstrapFactory.table().bordered().striped();
 			table.header().headerRow("Key", "Type", "Homogenous", "Strict containment", "Exclusive with", "Description").background(Color.SECONDARY);			
 			
 			Predicate<EStructuralFeature> predicate = sf -> sf.isChangeable() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, "true"));
-			Comparator<EStructuralFeature> comparator = (a,b) -> a.getName().compareTo(b.getName());
-			for (EStructuralFeature sf: eObject.getEAllStructuralFeatures().stream().filter(predicate).sorted(comparator).collect(Collectors.toList())) {
+			for (EStructuralFeature sf: eObject.getEAllStructuralFeatures().stream().filter(predicate).sorted(namedElementComparator).collect(Collectors.toList())) {
 				Row featureRow = table.body().row();
 				Cell keyCell = featureRow.cell(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, Util.camelToKebab(sf.getName())));
 				keyCell.text().monospace();
@@ -172,9 +178,126 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				String featureLoadDoc = NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_DOC, featureDoc);
 				featureRow.cell(Util.isBlank(featureLoadDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureLoadDoc));
 			};
-			gstf.content(table);
+			loadSpecificationFragment.content(table);
 			
-			addContent(action, gstf.toString());
+			Action loadSpecificationSection = AppFactory.eINSTANCE.createAction();
+			loadSpecificationSection.setText("Load specification");
+			loadSpecificationSection.setName("load-specification");
+			loadSpecificationSection.setSectionStyle(SectionStyle.HEADER);
+			sections.add(loadSpecificationSection);
+						
+			addContent(loadSpecificationSection, loadSpecificationFragment.toString());
+		}
+		
+		// All attributes
+		EList<EAttribute> allAttributes = eObject.getEAllAttributes();
+		if (!allAttributes.isEmpty()) {
+			Action allAttributesSection = AppFactory.eINSTANCE.createAction();
+			allAttributesSection.setText("All attributes");
+			allAttributesSection.setName("all-attributes");
+			allAttributesSection.setSectionStyle(SectionStyle.HEADER);
+			sections.add(allAttributesSection);
+			
+			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
+			Table table = bootstrapFactory.table().bordered().striped();
+			table.header().headerRow("Name", "Type", "Declaring class", "Description").background(Color.SECONDARY);			
+			
+			for (EStructuralFeature attribute: allAttributes.stream().sorted(namedElementComparator).collect(Collectors.toList())) {
+				Row featureRow = table.body().row();
+				featureRow.cell(attribute.getName());
+
+				genericType(attribute.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);	
+				featureRow.cell(link(attribute.getEContainingClass()));				
+				
+				String featureDoc = EObjectAdaptable.getResourceContext(attribute).getString("documentation", EcoreUtil.getDocumentation(attribute));
+				if (Util.isBlank(featureDoc)) {
+					featureDoc = EmfUtil.getDocumentation(attribute);
+				}
+				
+				featureRow.cell(Util.isBlank(featureDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureDoc));
+			};
+			
+			addContent(allAttributesSection, table.toString());
+		}
+		
+		// All references
+		EList<EReference> allReferences = eObject.getEAllReferences();
+		if (!allReferences.isEmpty()) {
+			Action allReferencesSection = AppFactory.eINSTANCE.createAction();
+			allReferencesSection.setText("All references");
+			allReferencesSection.setName("all-references");
+			allReferencesSection.setSectionStyle(SectionStyle.HEADER);
+			sections.add(allReferencesSection);
+			
+			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
+			Table table = bootstrapFactory.table().bordered().striped();
+			table.header().headerRow("Name", "Type", "Declaring class", "Description").background(Color.SECONDARY);			
+			
+			for (EStructuralFeature reference: allReferences.stream().sorted(namedElementComparator).collect(Collectors.toList())) {
+				Row featureRow = table.body().row();
+				featureRow.cell(reference.getName());
+
+				genericType(reference.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);	
+				featureRow.cell(link(reference.getEContainingClass()));				
+				
+				String featureDoc = EObjectAdaptable.getResourceContext(reference).getString("documentation", EcoreUtil.getDocumentation(reference));
+				if (Util.isBlank(featureDoc)) {
+					featureDoc = EmfUtil.getDocumentation(reference);
+				}
+				
+				featureRow.cell(Util.isBlank(featureDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureDoc));
+			};
+			
+			addContent(allReferencesSection, table.toString());
+		}
+		
+		// All operations
+		EList<EOperation> allOperations = eObject.getEAllOperations();
+		if (!allOperations.isEmpty()) {
+			Action allOperationsSection = AppFactory.eINSTANCE.createAction();
+			allOperationsSection.setText("All operations");
+			allOperationsSection.setName("all-operations");
+			allOperationsSection.setSectionStyle(SectionStyle.HEADER);
+			sections.add(allOperationsSection);
+			
+			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
+			Table table = bootstrapFactory.table().bordered().striped();
+			table.header().headerRow("Name", "Type", "Parameters", "Declaring class", "Description").background(Color.SECONDARY);			
+			
+			for (EOperation operation: allOperations.stream().sorted(namedElementComparator).collect(Collectors.toList())) {
+				Row featureRow = table.body().row();
+				featureRow.cell(operation.getName());
+
+				genericType(operation.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);
+				
+				org.nasdanika.html.RowContainer.Row.Cell paramsCell = featureRow.cell().toHTMLElement();
+				EList<EParameter> parameters = operation.getEParameters();
+				if (parameters.size() == 1) {
+					EParameter param = parameters.get(0);
+					paramsCell.content(param.getName(), " : ");
+					genericType(param.getEGenericType(), paramsCell.getContent(), progressMonitor);
+				} else if (!parameters.isEmpty()) {
+					Tag pList = bootstrapFactory.getHTMLFactory().tag(TagName.ol);
+					paramsCell.content(pList);
+					for (EParameter param: parameters) {
+						Tag pItem = bootstrapFactory.getHTMLFactory().tag(TagName.li);
+						pList.content(pItem);
+						pItem.content(param.getName(), " : ");
+						genericType(param.getEGenericType(), pItem.getContent(), progressMonitor);						
+					}					
+				}
+				
+				featureRow.cell(link(operation.getEContainingClass()));				
+				
+				String opDoc = EObjectAdaptable.getResourceContext(operation).getString("documentation", EcoreUtil.getDocumentation(operation));
+				if (Util.isBlank(opDoc)) {
+					opDoc = EmfUtil.getDocumentation(operation);
+				}
+				
+				featureRow.cell(Util.isBlank(opDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(opDoc));
+			};
+			
+			addContent(allOperationsSection, table.toString());
 		}
 
 //		TODO - Table (list) of contents
@@ -184,7 +307,6 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 //		locConfig.put("role", Action.Role.SECTION);		
 //		addContent(data, Collections.singletonMap("component-list-of-contents", locConfig));
 		
-		EList<Action> sections = action.getSections();
 		if (!eObject.getEAttributes().isEmpty()) {
 			Action attributesCategory = AppFactory.eINSTANCE.createAction();
 			attributesCategory.setText("Attributes");

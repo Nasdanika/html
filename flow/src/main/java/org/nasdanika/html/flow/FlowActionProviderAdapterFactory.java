@@ -1,19 +1,10 @@
 package org.nasdanika.html.flow;
 
-import java.util.Collection;
-import java.util.Collections;
-
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.Context;
-import org.nasdanika.emf.ComposedAdapterFactory;
-import org.nasdanika.emf.DiagnosticProvider;
-import org.nasdanika.emf.DiagnosticProviderAdapter;
 import org.nasdanika.emf.FunctionAdapterFactory;
 import org.nasdanika.flow.Activity;
 import org.nasdanika.flow.Artifact;
@@ -23,6 +14,7 @@ import org.nasdanika.flow.Participant;
 import org.nasdanika.flow.PseudoState;
 import org.nasdanika.flow.Resource;
 import org.nasdanika.flow.Service;
+import org.nasdanika.html.emf.ActionProviderAdapterFactory;
 import org.nasdanika.html.model.app.util.ActionProvider;
 
 /**
@@ -30,9 +22,10 @@ import org.nasdanika.html.model.app.util.ActionProvider;
  * @author Pavel
  *
  */
-public class FlowActionProviderAdapterFactory extends ComposedAdapterFactory {
+public class FlowActionProviderAdapterFactory extends ActionProviderAdapterFactory {
 	
 	public FlowActionProviderAdapterFactory(Context context) {
+		super(context);
 		// Registering adapter factories.
 		registerAdapterFactory(
 			new FunctionAdapterFactory<ActionProvider, org.nasdanika.flow.Package>(
@@ -98,26 +91,5 @@ public class FlowActionProviderAdapterFactory extends ComposedAdapterFactory {
 					e -> new ServiceActionProvider(e, context)));
 		
 	}
-	
-	@Override
-	public Adapter adaptNew(Notifier target, Object type) {
-		if (type == DiagnosticProvider.class) {
-			return new DiagnosticProviderAdapter(target, this::getDiagnostic, this::getFeatureDiagnostic);
-		}
-		return super.adaptNew(target, type);
-	}
-	
-	@Override
-	public boolean isFactoryForType(Object type) {
-		return super.isFactoryForType(type) || type == DiagnosticProvider.class;
-	}
-	
-	protected Collection<Diagnostic> getDiagnostic(Notifier target) {
-		return Collections.emptyList();
-	}
-
-	protected Collection<Diagnostic> getFeatureDiagnostic(Notifier target, EStructuralFeature feature) {
-		return Collections.emptyList();
-	}
-	
+		
 }

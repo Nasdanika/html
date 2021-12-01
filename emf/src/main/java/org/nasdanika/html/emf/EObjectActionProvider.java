@@ -1,7 +1,9 @@
 package org.nasdanika.html.emf;
 
 import java.text.DateFormat;
+import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -55,8 +57,12 @@ import org.nasdanika.html.model.bootstrap.TableHeader;
 import org.nasdanika.html.model.bootstrap.TableRow;
 import org.nasdanika.html.model.bootstrap.TableSection;
 import org.nasdanika.html.model.html.HtmlFactory;
+import org.nasdanika.ncore.Marked;
 import org.nasdanika.ncore.Marker;
+import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.NcorePackage;
+import org.nasdanika.ncore.Period;
+import org.nasdanika.ncore.Temporal;
 import org.nasdanika.ncore.util.NcoreUtil;
 
 import com.ibm.icu.util.Calendar;
@@ -343,7 +349,21 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	}
 	
 	protected List<ETypedElement> getProperties() {
-		return Collections.emptyList();
+		List<ETypedElement> properties = new ArrayList<>();
+		if (getTarget() instanceof Marked) {
+			properties.add(NcorePackage.Literals.MARKED__MARKER);
+		}
+		if (getTarget() instanceof ModelElement) {
+			properties.add(NcorePackage.Literals.MODEL_ELEMENT__URI);
+		}
+		if (getTarget() instanceof Period) {
+			properties.add(NcorePackage.Literals.PERIOD__START);
+			properties.add(NcorePackage.Literals.PERIOD__END);
+			properties.add(NcorePackage.Literals.PERIOD__DURATION);
+			
+		}
+//		ret.add(NcorePackage.Literals.MODEL_ELEMENT__UUID);
+		return properties;
 	}
 			
 	/**
@@ -449,6 +469,15 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		if (value instanceof Number) {
 			return ((Number) value).equals(0);
 		}
+		
+		if (value instanceof Temporal) {
+			Temporal temporal = (Temporal) value;
+			return temporal.getInstant() == null 
+					&& temporal.getBase() == null
+					&& temporal.getLowerBounds().isEmpty()
+					&& temporal.getUpperBounds().isEmpty();
+		}
+		
 		return Boolean.FALSE.equals(value);
 	}
 	
@@ -456,13 +485,17 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		return getTypedElementValue(getTarget(), typedElement);
 	}
 		
-	protected Object getTypedElementValue(EObject eObject, ETypedElement typedElement) throws Exception {
-		if (typedElement instanceof EStructuralFeature) {
-			return eObject.eGet((EStructuralFeature) typedElement);
-		}
-		
+	protected Object getTypedElementValue(EObject eObject, ETypedElement typedElement) throws Exception {		
 		if (typedElement == EcorePackage.Literals.EOBJECT___ECONTAINER) {
 			return eObject.eContainer();
+		}
+		
+		if (typedElement == NcorePackage.Literals.MODEL_ELEMENT__URI) {
+			return NcoreUtil.getUri(eObject);
+		}
+		
+		if (typedElement instanceof EStructuralFeature) {
+			return eObject.eGet((EStructuralFeature) typedElement);
 		}
 		
 		EOperation eOp = (EOperation) typedElement;
@@ -554,6 +587,13 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			return link;			
 		}
 		
+		if (value instanceof Temporal) {
+			return temporalValue(base, typedElement, (Temporal) value, context, progressMonitor);
+		}
+		
+		if (value instanceof Duration) {
+			return createText(Temporal.formatDuration((Duration) value));
+		}		
 		
 		if (value instanceof EObject) {
 			Action valueAction = context.getAction((EObject) value);
@@ -906,5 +946,103 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		}
 	}
 	
+	// --- Temporal ---
+	
+	protected EObject temporalValue(
+			Action baseAction, 
+			ETypedElement typedElement,
+			Temporal temporal, 
+			Context context, 
+			ProgressMonitor progressMonitor) throws Exception {
+		
+//		if (temporal instanceof Event) {
+//			return super.memberValue(member, temporal, viewGenerator, progressMonitor);
+//		}
+		
+		Temporal normalized = temporal.normalize();
+		Instant instant = normalized.getInstant();
+		if (instant != null) {
+			return renderValue(baseAction, typedElement, instant, context, progressMonitor);
+		}
+		
+//		Duration offset = normalized.getOffset();
+//		Temporal temporalBase = normalized.getBase();
+//		if ((offset == null || offset.equals(Duration.ZERO)) && temporalBase != null) {
+//			return "Coincides with " 
+//					+ temporalValue(typedElement, temporalBase, viewGenerator, progressMonitor, withModalTrigger)
+//					+ (withModalTrigger ? temporalInfoModalTrigger(member, temporal, viewGenerator, progressMonitor) : "");
+//		}
+//		
+//		if (temporalBase != null) {
+//			return Temporal.formatDuration(offset.abs())
+//					+ (offset.isNegative() ? " before " : " after ")
+//					+ temporalValue(member, temporalBase, viewGenerator, progressMonitor, withModalTrigger)
+//					+ (withModalTrigger ? temporalInfoModalTrigger(member, temporal, viewGenerator, progressMonitor) : "");
+//		}
+//		
+//		// Using containment
+//		EObject tc = temporal.eContainer();
+//		if (tc != null) {
+//			ViewAction<?> tcv = EObjectAdaptable.adaptTo(tc, ViewAction.class);
+//			EReference cf = temporal.eContainmentFeature();
+//			return (tcv == null ? tc : viewGenerator.link(tcv)) + (cf == null ? "" : " " + cf.getName()) + bounds(member, temporal, viewGenerator, progressMonitor, withModalTrigger);
+//		}
+//		
+//		// Should never be the case - should be handled as an empty value.
+//		return temporal.toString()
+//				+ (withModalTrigger ? temporalInfoModalTrigger(member, temporal, viewGenerator, progressMonitor) : "");
+		
+		throw new UnsupportedOperationException("Relative temporals are not supported yet");
+	}
+
+//	protected Object bounds(ETypedElement member, Temporal temporal, ViewGenerator viewGenerator, ProgressMonitor progressMonitor, boolean withModalTrigger) {
+//		List<Temporal> lowerBounds = reduceBounds(temporal.getLowerBounds(), (a,b) -> a.after(b));
+//		List<Temporal> upperBounds = reduceBounds(temporal.getUpperBounds(), (a,b) -> a.before(b));
+//		if (lowerBounds.isEmpty() && upperBounds.isEmpty()) {
+//			return "";
+//		}
+//			
+//		Function<Temporal, String> temporalToString = t -> String.valueOf(temporalValue(member, t, viewGenerator, progressMonitor, withModalTrigger));
+//			
+//		String lowerBoundsList = String.join(" or ", lowerBounds.stream().map(temporalToString).collect(Collectors.toList()));
+//		String upperBoundsList = String.join(" or ", upperBounds.stream().map(temporalToString).collect(Collectors.toList()));
+//		if (lowerBounds.isEmpty()) {
+//			return " before " + upperBoundsList;
+//		} 
+//		
+//		if (upperBounds.isEmpty()) {
+//			return " after " + lowerBoundsList;
+//		}
+//		
+//		return " between " + lowerBoundsList + " and " + upperBoundsList;
+//	}
+//	
+//	/**
+//	 * Retains only the latest bounds.
+//	 * @param bounds
+//	 * @param comparator Returns true if the first argument supercedes the second, false if the second argument supercedes the first and null if unknown.
+//	 * @return
+//	 */
+//	private static List<Temporal> reduceBounds(List<Temporal> bounds, BiFunction<Temporal, Temporal, Boolean> comparator) {
+//		List<Temporal> ret = new ArrayList<>();
+//		for (Temporal bound: bounds) {
+//			boolean superceded = false;
+//			Iterator<Temporal> rit = ret.iterator();			
+//			while (rit.hasNext()) {
+//				Temporal rBound = rit.next();
+//				Boolean result = comparator.apply(bound, rBound);
+//				if (result == Boolean.TRUE) {
+//					rit.remove();
+//				} else if (result != null) {
+//					superceded = true;
+//				}
+//			}
+//			
+//			if (!superceded) {
+//				ret.add(bound);
+//			}
+//		}
+//		return ret;
+//	}	
 	
 }

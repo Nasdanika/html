@@ -2,7 +2,6 @@ package org.nasdanika.html.flow;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -29,7 +28,6 @@ import org.nasdanika.html.model.bootstrap.Table;
 import org.nasdanika.html.model.bootstrap.TableCell;
 import org.nasdanika.html.model.bootstrap.TableRow;
 import org.nasdanika.html.model.bootstrap.TableSection;
-import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NamedElementComparator;
 import org.nasdanika.ncore.util.NcoreUtil;
 
@@ -83,23 +81,11 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 	
 	@Override
 	protected List<ETypedElement> getProperties() {
-		List<ETypedElement> ret = new ArrayList<>();
-		ret.add(FlowPackage.Literals.PACKAGE_ELEMENT__EXTENDS);
-		ret.add(FlowPackage.Literals.PACKAGE_ELEMENT__EXTENSIONS);
-		ret.add(NcorePackage.Literals.MARKED__MARKER);
-		ret.add(FlowPackage.Literals.PACKAGE_ELEMENT__MODIFIERS);
-		ret.add(NcorePackage.Literals.MODEL_ELEMENT__URI);
-//		ret.add(NcorePackage.Literals.MODEL_ELEMENT__UUID);
-		return ret;
-	}
-	
-	@Override
-	protected Object getTypedElementValue(ETypedElement typedElement) throws Exception {
-		Object ret = super.getTypedElementValue(typedElement);
-		if (typedElement == NcorePackage.Literals.MODEL_ELEMENT__URI && ret == null) {
-			return NcoreUtil.getUri(getTarget());
-		}
-		return ret;
+		List<ETypedElement> propertiew = super.getProperties();
+		propertiew.add(FlowPackage.Literals.PACKAGE_ELEMENT__EXTENDS);
+		propertiew.add(FlowPackage.Literals.PACKAGE_ELEMENT__EXTENSIONS);
+		propertiew.add(FlowPackage.Literals.PACKAGE_ELEMENT__MODIFIERS);
+		return propertiew;
 	}
 	
 	@Override

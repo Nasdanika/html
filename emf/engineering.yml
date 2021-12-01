@@ -12,7 +12,9 @@ engineering-module:
       description: RowBuilder provider similar as for lists. Perhaps needs to take depth argument so can build indent in the first column.
     temporal-rendering:
       name: Temporal rendering
-      description: Migrate from legacy.
+      description: |+2
+        Implement for relative temporals, generate start/end actions for period subclasses if start/end temporals have offset, base, bounds, or derivatives.
+        Also info icon in render value navigating to the respective actions. 
     search:
       name: Search functionality
       description: Pluggable - some context service for indexing, search functionality in the navigation tree - default (node text) and custom - full text. Lunrjs implementation.       
