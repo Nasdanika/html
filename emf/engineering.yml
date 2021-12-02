@@ -18,7 +18,10 @@ engineering-module:
     search:
       name: Search functionality
       description: Pluggable - some context service for indexing, search functionality in the navigation tree - default (node text) and custom - full text. Lunrjs implementation.       
-        
+    uri-copy-to-clipboard:
+      name: URI copy to clipboard icon
+      description: As on GitHub.
+          
     - name: Support of diagnostic to SimpleEObjectViewAction
       markdown-description: |+2
         DiagnosticSource and DiagnosticSourceAdapter to core emf. DiagnosticSource provides a list of diagnostics - for object (no feature in data), for feature, and all.

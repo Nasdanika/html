@@ -9,6 +9,9 @@ engineering-module:
   issues:
     carousel-section-style:
       name: Carousel section style
+    site-map:
+      name: Site map
+      description: Site map model element by default uses actions contained by the root action. Path to override this behavior - relative to self. Maybe also specify what to include - navigation, children, anonymous, ... And format - jsTree with search, list  
       description: To support presentation-like sections with https://getbootstrap.com/docs/4.5/components/carousel/. Figure out how to configure the carousel - appearance?
      - name: Ability to inherit action hierarchies and override specific actions
        description: Override by ID. Children will have to be derived and will need "ownChildren" reference with "children" load key.
