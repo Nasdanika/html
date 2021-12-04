@@ -467,7 +467,23 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			return Util.isBlank((String) value);		
 		}
 		if (value instanceof Number) {
-			return ((Number) value).equals(0);
+			if (value.equals(0)) {
+				return true;
+			}
+			
+			if (value instanceof Double) {				
+				if (((Double) value).isNaN()) {
+					return true;
+				}
+				return Math.abs((Double) value) < 2 * Double.MIN_VALUE;
+			}
+			
+			if (value instanceof Float) {
+				if (((Float) value).isNaN()) {
+					return true;
+				}
+				return Math.abs((Float) value) < 2 * Float.MIN_VALUE;
+			}
 		}
 		
 		if (value instanceof Temporal) {
@@ -547,7 +563,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			Object value, 
 			Context context, 
 			ProgressMonitor progressMonitor) throws Exception {		
-		if (value == null) {
+		if (isEmptyValue(typedElement, value)) {
 			return null;
 		}
 		if (value instanceof Instant) {
