@@ -3673,6 +3673,278 @@ public interface BootstrapPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.CarouselImpl <em>Carousel</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.CarouselImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getCarousel()
+	 * @generated
+	 */
+	int CAROUSEL = 44;
+
+	/**
+	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__MARKER = DIV__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__URI = DIV__URI;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__DESCRIPTION = DIV__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__UUID = DIV__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__ATTRIBUTES = DIV__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__CONTENT = DIV__CONTENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__NAME = DIV__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__APPEARANCE = DIV__APPEARANCE;
+
+	/**
+	 * The feature id for the '<em><b>Slides</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__SLIDES = DIV_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Controls</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__CONTROLS = DIV_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Indicator</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__INDICATOR = DIV_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Cross Fade</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__CROSS_FADE = DIV_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Ride</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__RIDE = DIV_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Interval</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__INTERVAL = DIV_FEATURE_COUNT + 5;
+
+	/**
+	 * The number of structural features of the '<em>Carousel</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL_FEATURE_COUNT = DIV_FEATURE_COUNT + 6;
+
+	/**
+	 * The number of operations of the '<em>Carousel</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.nasdanika.html.model.bootstrap.impl.SlideImpl <em>Slide</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.nasdanika.html.model.bootstrap.impl.SlideImpl
+	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getSlide()
+	 * @generated
+	 */
+	int SLIDE = 45;
+
+	/**
+	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE__MARKER = DIV__MARKER;
+
+	/**
+	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE__URI = DIV__URI;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE__DESCRIPTION = DIV__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE__UUID = DIV__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE__ATTRIBUTES = DIV__ATTRIBUTES;
+
+	/**
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE__CONTENT = DIV__CONTENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE__NAME = DIV__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Appearance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE__APPEARANCE = DIV__APPEARANCE;
+
+	/**
+	 * The feature id for the '<em><b>Interval</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE__INTERVAL = DIV_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Captions</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE__CAPTIONS = DIV_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Slide</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE_FEATURE_COUNT = DIV_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '<em>Slide</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '<em>Theme</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3680,7 +3952,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTheme()
 	 * @generated
 	 */
-	int THEME = 44;
+	int THEME = 46;
 
 	/**
 	 * The meta object id for the '<em>Color</em>' data type.
@@ -3690,7 +3962,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getColor()
 	 * @generated
 	 */
-	int COLOR = 45;
+	int COLOR = 47;
 
 	/**
 	 * The meta object id for the '<em>Size</em>' data type.
@@ -3700,7 +3972,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getSize()
 	 * @generated
 	 */
-	int SIZE = 46;
+	int SIZE = 48;
 
 	/**
 	 * The meta object id for the '<em>Breakpoint</em>' data type.
@@ -3710,7 +3982,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getBreakpoint()
 	 * @generated
 	 */
-	int BREAKPOINT = 47;
+	int BREAKPOINT = 49;
 
 	/**
 	 * The meta object id for the '<em>Text Alignment</em>' data type.
@@ -3720,7 +3992,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTextAlignment()
 	 * @generated
 	 */
-	int TEXT_ALIGNMENT = 48;
+	int TEXT_ALIGNMENT = 50;
 
 	/**
 	 * The meta object id for the '<em>Text Transform</em>' data type.
@@ -3730,7 +4002,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTextTransform()
 	 * @generated
 	 */
-	int TEXT_TRANSFORM = 49;
+	int TEXT_TRANSFORM = 51;
 
 	/**
 	 * The meta object id for the '<em>Text Weight</em>' data type.
@@ -3740,7 +4012,7 @@ public interface BootstrapPackage extends EPackage {
 	 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getTextWeight()
 	 * @generated
 	 */
-	int TEXT_WEIGHT = 50;
+	int TEXT_WEIGHT = 52;
 
 
 	/**
@@ -5121,6 +5393,114 @@ public interface BootstrapPackage extends EPackage {
 	EClass getAccordion();
 
 	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.model.bootstrap.Carousel <em>Carousel</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Carousel</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Carousel
+	 * @generated
+	 */
+	EClass getCarousel();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.bootstrap.Carousel#getSlides <em>Slides</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Slides</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Carousel#getSlides()
+	 * @see #getCarousel()
+	 * @generated
+	 */
+	EReference getCarousel_Slides();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.Carousel#isControls <em>Controls</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Controls</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Carousel#isControls()
+	 * @see #getCarousel()
+	 * @generated
+	 */
+	EAttribute getCarousel_Controls();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.Carousel#isIndicator <em>Indicator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Indicator</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Carousel#isIndicator()
+	 * @see #getCarousel()
+	 * @generated
+	 */
+	EAttribute getCarousel_Indicator();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.Carousel#isCrossFade <em>Cross Fade</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Cross Fade</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Carousel#isCrossFade()
+	 * @see #getCarousel()
+	 * @generated
+	 */
+	EAttribute getCarousel_CrossFade();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.Carousel#isRide <em>Ride</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Ride</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Carousel#isRide()
+	 * @see #getCarousel()
+	 * @generated
+	 */
+	EAttribute getCarousel_Ride();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.Carousel#getInterval <em>Interval</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Interval</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Carousel#getInterval()
+	 * @see #getCarousel()
+	 * @generated
+	 */
+	EAttribute getCarousel_Interval();
+
+	/**
+	 * Returns the meta object for class '{@link org.nasdanika.html.model.bootstrap.Slide <em>Slide</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Slide</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Slide
+	 * @generated
+	 */
+	EClass getSlide();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.bootstrap.Slide#getInterval <em>Interval</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Interval</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Slide#getInterval()
+	 * @see #getSlide()
+	 * @generated
+	 */
+	EAttribute getSlide_Interval();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.bootstrap.Slide#getCaptions <em>Captions</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Captions</em>'.
+	 * @see org.nasdanika.html.model.bootstrap.Slide#getCaptions()
+	 * @see #getSlide()
+	 * @generated
+	 */
+	EReference getSlide_Captions();
+
+	/**
 	 * Returns the meta object for data type '{@link org.nasdanika.html.bootstrap.Theme <em>Theme</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6339,6 +6719,90 @@ public interface BootstrapPackage extends EPackage {
 		 * @generated
 		 */
 		EClass ACCORDION = eINSTANCE.getAccordion();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.bootstrap.impl.CarouselImpl <em>Carousel</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.bootstrap.impl.CarouselImpl
+		 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getCarousel()
+		 * @generated
+		 */
+		EClass CAROUSEL = eINSTANCE.getCarousel();
+
+		/**
+		 * The meta object literal for the '<em><b>Slides</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CAROUSEL__SLIDES = eINSTANCE.getCarousel_Slides();
+
+		/**
+		 * The meta object literal for the '<em><b>Controls</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CAROUSEL__CONTROLS = eINSTANCE.getCarousel_Controls();
+
+		/**
+		 * The meta object literal for the '<em><b>Indicator</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CAROUSEL__INDICATOR = eINSTANCE.getCarousel_Indicator();
+
+		/**
+		 * The meta object literal for the '<em><b>Cross Fade</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CAROUSEL__CROSS_FADE = eINSTANCE.getCarousel_CrossFade();
+
+		/**
+		 * The meta object literal for the '<em><b>Ride</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CAROUSEL__RIDE = eINSTANCE.getCarousel_Ride();
+
+		/**
+		 * The meta object literal for the '<em><b>Interval</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CAROUSEL__INTERVAL = eINSTANCE.getCarousel_Interval();
+
+		/**
+		 * The meta object literal for the '{@link org.nasdanika.html.model.bootstrap.impl.SlideImpl <em>Slide</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.nasdanika.html.model.bootstrap.impl.SlideImpl
+		 * @see org.nasdanika.html.model.bootstrap.impl.BootstrapPackageImpl#getSlide()
+		 * @generated
+		 */
+		EClass SLIDE = eINSTANCE.getSlide();
+
+		/**
+		 * The meta object literal for the '<em><b>Interval</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SLIDE__INTERVAL = eINSTANCE.getSlide_Interval();
+
+		/**
+		 * The meta object literal for the '<em><b>Captions</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SLIDE__CAPTIONS = eINSTANCE.getSlide_Captions();
 
 		/**
 		 * The meta object literal for the '<em>Theme</em>' data type.

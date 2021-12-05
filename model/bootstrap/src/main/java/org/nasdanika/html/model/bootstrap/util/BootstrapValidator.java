@@ -34,6 +34,7 @@ import org.nasdanika.html.model.bootstrap.Button;
 import org.nasdanika.html.model.bootstrap.ButtonGroup;
 import org.nasdanika.html.model.bootstrap.ButtonToolbar;
 import org.nasdanika.html.model.bootstrap.Card;
+import org.nasdanika.html.model.bootstrap.Carousel;
 import org.nasdanika.html.model.bootstrap.Collapse;
 import org.nasdanika.html.model.bootstrap.Column;
 import org.nasdanika.html.model.bootstrap.ColumnWidth;
@@ -52,6 +53,7 @@ import org.nasdanika.html.model.bootstrap.Navbar;
 import org.nasdanika.html.model.bootstrap.Navs;
 import org.nasdanika.html.model.bootstrap.Page;
 import org.nasdanika.html.model.bootstrap.Row;
+import org.nasdanika.html.model.bootstrap.Slide;
 import org.nasdanika.html.model.bootstrap.Spacing;
 import org.nasdanika.html.model.bootstrap.Table;
 import org.nasdanika.html.model.bootstrap.TableCell;
@@ -235,6 +237,10 @@ public class BootstrapValidator extends EObjectValidator {
 				return validateCollapse((Collapse)value, diagnostics, context);
 			case BootstrapPackage.ACCORDION:
 				return validateAccordion((Accordion)value, diagnostics, context);
+			case BootstrapPackage.CAROUSEL:
+				return validateCarousel((Carousel)value, diagnostics, context);
+			case BootstrapPackage.SLIDE:
+				return validateSlide((Slide)value, diagnostics, context);
 			case BootstrapPackage.THEME:
 				return validateTheme((Theme)value, diagnostics, context);
 			case BootstrapPackage.COLOR:
@@ -1216,6 +1222,44 @@ public class BootstrapValidator extends EObjectValidator {
 	 */
 	public boolean validateAccordion(Accordion accordion, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(accordion, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateCarousel(Carousel carousel, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		if (!validate_NoCircularContainment(carousel, diagnostics, context)) return false;
+		boolean result = validate_EveryMultiplicityConforms(carousel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(carousel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(carousel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(carousel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryProxyResolves(carousel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_UniqueID(carousel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryKeyUnique(carousel, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(carousel, diagnostics, context);
+		if (result || diagnostics != null) result &= htmlValidator.validateTag_attributes(carousel, diagnostics, context);
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateSlide(Slide slide, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		if (!validate_NoCircularContainment(slide, diagnostics, context)) return false;
+		boolean result = validate_EveryMultiplicityConforms(slide, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(slide, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(slide, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(slide, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryProxyResolves(slide, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_UniqueID(slide, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryKeyUnique(slide, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(slide, diagnostics, context);
+		if (result || diagnostics != null) result &= htmlValidator.validateTag_attributes(slide, diagnostics, context);
+		return result;
 	}
 
 	/**

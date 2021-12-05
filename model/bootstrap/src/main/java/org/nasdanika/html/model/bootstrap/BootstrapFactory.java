@@ -373,6 +373,24 @@ public interface BootstrapFactory extends EFactory {
 	Accordion createAccordion();
 
 	/**
+	 * Returns a new object of class '<em>Carousel</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Carousel</em>'.
+	 * @generated
+	 */
+	Carousel createCarousel();
+
+	/**
+	 * Returns a new object of class '<em>Slide</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Slide</em>'.
+	 * @generated
+	 */
+	Slide createSlide();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

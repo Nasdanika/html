@@ -177,5 +177,17 @@
     <genClasses ecoreClass="bootstrap.ecore#//FormGroup"/>
     <genClasses ecoreClass="bootstrap.ecore#//Collapse"/>
     <genClasses ecoreClass="bootstrap.ecore#//Accordion"/>
+    <genClasses ecoreClass="bootstrap.ecore#//Carousel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Carousel/slides"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Carousel/controls"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Carousel/indicator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Carousel/crossFade"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Carousel/ride"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Carousel/interval"/>
+    </genClasses>
+    <genClasses ecoreClass="bootstrap.ecore#//Slide">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bootstrap.ecore#//Slide/interval"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bootstrap.ecore#//Slide/captions"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

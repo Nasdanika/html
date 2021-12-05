@@ -33,6 +33,7 @@ import org.nasdanika.html.model.bootstrap.Button;
 import org.nasdanika.html.model.bootstrap.ButtonGroup;
 import org.nasdanika.html.model.bootstrap.ButtonToolbar;
 import org.nasdanika.html.model.bootstrap.Card;
+import org.nasdanika.html.model.bootstrap.Carousel;
 import org.nasdanika.html.model.bootstrap.Collapse;
 import org.nasdanika.html.model.bootstrap.Column;
 import org.nasdanika.html.model.bootstrap.ColumnWidth;
@@ -49,6 +50,7 @@ import org.nasdanika.html.model.bootstrap.Navbar;
 import org.nasdanika.html.model.bootstrap.Navs;
 import org.nasdanika.html.model.bootstrap.Page;
 import org.nasdanika.html.model.bootstrap.Row;
+import org.nasdanika.html.model.bootstrap.Slide;
 import org.nasdanika.html.model.bootstrap.Spacing;
 import org.nasdanika.html.model.bootstrap.Table;
 import org.nasdanika.html.model.bootstrap.TableCell;
@@ -143,6 +145,8 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 			case BootstrapPackage.FORM_GROUP: return createFormGroup();
 			case BootstrapPackage.COLLAPSE: return createCollapse();
 			case BootstrapPackage.ACCORDION: return createAccordion();
+			case BootstrapPackage.CAROUSEL: return createCarousel();
+			case BootstrapPackage.SLIDE: return createSlide();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -639,6 +643,28 @@ public class BootstrapFactoryImpl extends EFactoryImpl implements BootstrapFacto
 	public Accordion createAccordion() {
 		AccordionImpl accordion = new AccordionImpl();
 		return accordion;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Carousel createCarousel() {
+		CarouselImpl carousel = new CarouselImpl();
+		return carousel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Slide createSlide() {
+		SlideImpl slide = new SlideImpl();
+		return slide;
 	}
 
 	/**

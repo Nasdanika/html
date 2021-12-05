@@ -36,6 +36,7 @@ import org.nasdanika.html.model.bootstrap.Button;
 import org.nasdanika.html.model.bootstrap.ButtonGroup;
 import org.nasdanika.html.model.bootstrap.ButtonToolbar;
 import org.nasdanika.html.model.bootstrap.Card;
+import org.nasdanika.html.model.bootstrap.Carousel;
 import org.nasdanika.html.model.bootstrap.Collapse;
 import org.nasdanika.html.model.bootstrap.Column;
 import org.nasdanika.html.model.bootstrap.ColumnWidth;
@@ -53,6 +54,7 @@ import org.nasdanika.html.model.bootstrap.Navbar;
 import org.nasdanika.html.model.bootstrap.Navs;
 import org.nasdanika.html.model.bootstrap.Page;
 import org.nasdanika.html.model.bootstrap.Row;
+import org.nasdanika.html.model.bootstrap.Slide;
 import org.nasdanika.html.model.bootstrap.Spacing;
 import org.nasdanika.html.model.bootstrap.Table;
 import org.nasdanika.html.model.bootstrap.TableCell;
@@ -384,6 +386,20 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	private EClass accordionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass carouselEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass slideEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1806,6 +1822,106 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 	 * @generated
 	 */
 	@Override
+	public EClass getCarousel() {
+		return carouselEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getCarousel_Slides() {
+		return (EReference)carouselEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCarousel_Controls() {
+		return (EAttribute)carouselEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCarousel_Indicator() {
+		return (EAttribute)carouselEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCarousel_CrossFade() {
+		return (EAttribute)carouselEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCarousel_Ride() {
+		return (EAttribute)carouselEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCarousel_Interval() {
+		return (EAttribute)carouselEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getSlide() {
+		return slideEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSlide_Interval() {
+		return (EAttribute)slideEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getSlide_Captions() {
+		return (EReference)slideEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EDataType getTheme() {
 		return themeEDataType;
 	}
@@ -2072,6 +2188,18 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 
 		accordionEClass = createEClass(ACCORDION);
 
+		carouselEClass = createEClass(CAROUSEL);
+		createEReference(carouselEClass, CAROUSEL__SLIDES);
+		createEAttribute(carouselEClass, CAROUSEL__CONTROLS);
+		createEAttribute(carouselEClass, CAROUSEL__INDICATOR);
+		createEAttribute(carouselEClass, CAROUSEL__CROSS_FADE);
+		createEAttribute(carouselEClass, CAROUSEL__RIDE);
+		createEAttribute(carouselEClass, CAROUSEL__INTERVAL);
+
+		slideEClass = createEClass(SLIDE);
+		createEAttribute(slideEClass, SLIDE__INTERVAL);
+		createEReference(slideEClass, SLIDE__CAPTIONS);
+
 		// Create data types
 		themeEDataType = createEDataType(THEME);
 		colorEDataType = createEDataType(COLOR);
@@ -2140,6 +2268,8 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		alertEClass.getESuperTypes().add(this.getDiv());
 		badgeEClass.getESuperTypes().add(this.getDiv());
 		buttonEClass.getESuperTypes().add(this.getDiv());
+		carouselEClass.getESuperTypes().add(this.getDiv());
+		slideEClass.getESuperTypes().add(this.getDiv());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(bootstrapElementEClass, BootstrapElement.class, "BootstrapElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2316,6 +2446,18 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		initEClass(collapseEClass, Collapse.class, "Collapse", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(accordionEClass, Accordion.class, "Accordion", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(carouselEClass, Carousel.class, "Carousel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getCarousel_Slides(), this.getSlide(), null, "slides", null, 0, -1, Carousel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCarousel_Controls(), ecorePackage.getEBoolean(), "controls", null, 0, 1, Carousel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCarousel_Indicator(), ecorePackage.getEBoolean(), "indicator", null, 0, 1, Carousel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCarousel_CrossFade(), ecorePackage.getEBoolean(), "crossFade", null, 0, 1, Carousel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCarousel_Ride(), ecorePackage.getEBoolean(), "ride", "true", 0, 1, Carousel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCarousel_Interval(), ecorePackage.getEString(), "interval", null, 0, 1, Carousel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(slideEClass, Slide.class, "Slide", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSlide_Interval(), ecorePackage.getEIntegerObject(), "interval", null, 0, 1, Slide.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSlide_Captions(), ecorePackage.getEObject(), null, "captions", null, 0, -1, Slide.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(themeEDataType, Theme.class, "Theme", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
@@ -3072,7 +3214,7 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		   new String[] {
 			   "homogenous", "true",
 			   "strict-containment", "true",
-			   "load-key", "float"
+			   "feature-key", "float"
 		   });
 		addAnnotation
 		  (appearanceEntryEClass,
@@ -3148,6 +3290,12 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		   });
 		addAnnotation
 		  (getTableRow_Cells(),
+		   source,
+		   new String[] {
+			   "homogenous", "true"
+		   });
+		addAnnotation
+		  (getCarousel_Slides(),
 		   source,
 		   new String[] {
 			   "homogenous", "true"

@@ -24,6 +24,7 @@ import org.nasdanika.html.model.bootstrap.Button;
 import org.nasdanika.html.model.bootstrap.ButtonGroup;
 import org.nasdanika.html.model.bootstrap.ButtonToolbar;
 import org.nasdanika.html.model.bootstrap.Card;
+import org.nasdanika.html.model.bootstrap.Carousel;
 import org.nasdanika.html.model.bootstrap.Collapse;
 import org.nasdanika.html.model.bootstrap.Column;
 import org.nasdanika.html.model.bootstrap.ColumnWidth;
@@ -41,6 +42,7 @@ import org.nasdanika.html.model.bootstrap.Modal;
 import org.nasdanika.html.model.bootstrap.Navbar;
 import org.nasdanika.html.model.bootstrap.Navs;
 import org.nasdanika.html.model.bootstrap.Row;
+import org.nasdanika.html.model.bootstrap.Slide;
 import org.nasdanika.html.model.bootstrap.Spacing;
 import org.nasdanika.html.model.bootstrap.Table;
 import org.nasdanika.html.model.bootstrap.TableCell;
@@ -289,6 +291,18 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseAccordion(Accordion object) {
 				return createAccordionAdapter();
+			}
+			@Override
+			public Adapter caseCarousel(Carousel object) {
+				return createCarouselAdapter();
+			}
+			@Override
+			public Adapter caseSlide(Slide object) {
+				return createSlideAdapter();
+			}
+			@Override
+			public Adapter caseIMarked(org.nasdanika.common.persistence.Marked object) {
+				return createIMarkedAdapter();
 			}
 			@Override
 			public Adapter caseMarked(Marked object) {
@@ -933,6 +947,48 @@ public class BootstrapAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createAccordionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.Carousel <em>Carousel</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.bootstrap.Carousel
+	 * @generated
+	 */
+	public Adapter createCarouselAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.html.model.bootstrap.Slide <em>Slide</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.html.model.bootstrap.Slide
+	 * @generated
+	 */
+	public Adapter createSlideAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.nasdanika.common.persistence.Marked <em>IMarked</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.nasdanika.common.persistence.Marked
+	 * @generated
+	 */
+	public Adapter createIMarkedAdapter() {
 		return null;
 	}
 

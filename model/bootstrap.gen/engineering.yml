@@ -5,5 +5,8 @@ engineering-module:
      - representation-component-diagram: true
    dependencies:
      - nasdanika:modules/html/modules/bootstrap
+   issues:
+     slide-captions:
+       name: Carousel slide captions
      
    

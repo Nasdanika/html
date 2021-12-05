@@ -71,6 +71,20 @@ public class BootstrapAdapterFactory extends HtmlAdapterFactory {
 					classLoader, 
 					AlertSupplierFactoryAdapter::new));		
 		
+		registerAdapterFactory(
+				new FunctionAdapterFactory<SupplierFactory<org.nasdanika.html.Tag>, org.nasdanika.html.model.bootstrap.Carousel>(
+					BootstrapPackage.Literals.CAROUSEL, 
+					Util.getSupplierFactoryClass(org.nasdanika.html.Tag.class), 
+					classLoader, 
+					CarouselSupplierFactoryAdapter::new));		
+		
+		registerAdapterFactory(
+				new FunctionAdapterFactory<SupplierFactory<org.nasdanika.html.Tag>, org.nasdanika.html.model.bootstrap.Slide>(
+					BootstrapPackage.Literals.SLIDE, 
+					Util.getSupplierFactoryClass(org.nasdanika.html.Tag.class), 
+					classLoader, 
+					SlideSupplierFactoryAdapter::new));		
+		
 		// Table
 		
 		registerAdapterFactory(
