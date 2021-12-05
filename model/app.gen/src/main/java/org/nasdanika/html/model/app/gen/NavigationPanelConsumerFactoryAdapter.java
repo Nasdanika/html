@@ -56,6 +56,33 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, List<JsTreeNode>> input, ProgressMonitor progressMonitor) throws Exception {
 				Tag ret = (Tag) input.getFirst();
 				
+				Tag panel;
+				if (getTarget().isCollapsible()) {
+					Tag triggerDiv = ret.getFactory().div();
+					ret.content(triggerDiv);
+					HTMLFactory htmlFactory = ret.getFactory();
+					panel = htmlFactory.div();
+					panel.id("nsd-nav-panel-" + getTarget().getUuid() + "-collapsible");
+					
+					Tag iTag = htmlFactory.tag(TagName.i).addClass("fa").attribute("aria-hidden", "true");
+
+					Tag collapsibleTrigger = htmlFactory.span(iTag)
+							.addClass("nsd-collapsible-trigger")
+							.attribute("data-toggle", "collapse")
+							.attribute("data-target", "#" + panel.getId())
+							.attribute("aria-expanded", "true")
+							.attribute("aria-controls", panel.getId())
+							.id(panel.getId()+"-trigger");
+					
+					triggerDiv.content(collapsibleTrigger);
+					panel.addClass("nsd-collapsible", "collapse", "show");
+					panel.style("clear", "right");
+
+					ret.content(panel);
+				} else {
+					panel = ret;
+				}
+				
 				JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);
 				String treeId = getTarget().getId();
 				HTMLFactory htmlFactory = jsTreeFactory.getHTMLFactory();
@@ -63,7 +90,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 					treeId = htmlFactory.nextId();
 				}
 				Tag container = htmlFactory.div().id(treeId);
-				ret.accept(container);
+				panel.accept(container);
 				
 				JSONObject jsTree = jsTreeFactory.buildJsTree(input.getSecond());
 
@@ -76,7 +103,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 				String filter = "tree.state.filter = function(state) { delete state.core.selected; return state; };";
 				
 				Tag script = jsTreeFactory.bind(container, jsTree, filter);
-				ret.accept(script);
+				panel.accept(script);
 				
 				return ret;
 			}
@@ -101,6 +128,33 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 			@Override
 			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, Map<Class<?>, Object>> input, ProgressMonitor progressMonitor) throws Exception {
 				Tag ret = (Tag) input.getFirst();
+				Tag panel;
+				if (getTarget().isCollapsible()) {
+					HTMLFactory htmlFactory = ret.getFactory();
+					Tag triggerDiv = htmlFactory.div();
+					ret.content(triggerDiv);
+					panel = htmlFactory.div();
+					panel.id("nsd-nav-panel-" + getTarget().getUuid() + "-collapsible");
+					
+					Tag iTag = htmlFactory.tag(TagName.i).addClass("fa").attribute("aria-hidden", "true");
+
+					Tag collapsibleTrigger = htmlFactory.span(iTag)
+							.addClass("nsd-collapsible-trigger")
+							.attribute("data-toggle", "collapse")
+							.attribute("data-target", "#" + panel.getId())
+							.attribute("aria-expanded", "true")
+							.attribute("aria-controls", panel.getId())
+							.id(panel.getId()+"-trigger");
+					
+					triggerDiv.content(collapsibleTrigger);
+					panel.addClass("nsd-collapsible", "collapse", "show");
+					panel.style("clear", "right");
+
+					ret.content(panel);
+				} else {
+					panel = ret;
+				}
+				
 				List<Object> items = (List<Object>) input.getSecond().get(Object.class);
 				
 				JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);
@@ -124,12 +178,12 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 								currentActionGroup.accept(itemTag);
 							} else {
 								if (currentActionGroup != null) {
-									ret.accept(currentActionGroup);
+									panel.accept(currentActionGroup);
 									currentActionGroup = null;
 								}
 								
 								Card card = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE).card();
-								ret.accept(card);
+								panel.accept(card);
 								TagBootstrapElement cardHeader = card.getHeader();
 								Color color = semanticElement.getColor();
 								if (color != null) {
@@ -194,7 +248,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 											String filter = "tree.state.filter = function(state) { delete state.core.selected; return state; };";
 											
 											Tag script = jsTreeFactory.bind(container, jsTree, filter);
-											ret.accept(script);
+											panel.accept(script);
 											break;
 										}
 									}
@@ -220,14 +274,14 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 								cardHeaderTag.content(title);								
 							}
 						} else {
-							ret.accept(item);
+							panel.accept(item);
 						}						
 					} else {
-						ret.accept(item);
+						panel.accept(item);
 					}
 				}
 				if (currentActionGroup != null) {
-					ret.accept(currentActionGroup);
+					panel.accept(currentActionGroup);
 				}
 				
 				return ret;

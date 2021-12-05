@@ -18,6 +18,7 @@ package org.nasdanika.html.model.app;
  *   <li>{@link org.nasdanika.html.model.app.NavigationPanel#getStyle <em>Style</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.NavigationPanel#getId <em>Id</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.NavigationPanel#getLabelTrimLength <em>Label Trim Length</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.NavigationPanel#isCollapsible <em>Collapsible</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getNavigationPanel()
@@ -101,5 +102,27 @@ public interface NavigationPanel extends PagePart {
 	 * @generated
 	 */
 	void setLabelTrimLength(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Collapsible</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Collapsible</em>' attribute.
+	 * @see #setCollapsible(boolean)
+	 * @see org.nasdanika.html.model.app.AppPackage#getNavigationPanel_Collapsible()
+	 * @model
+	 * @generated
+	 */
+	boolean isCollapsible();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.NavigationPanel#isCollapsible <em>Collapsible</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Collapsible</em>' attribute.
+	 * @see #isCollapsible()
+	 * @generated
+	 */
+	void setCollapsible(boolean value);
 
 } // NavigationPanel

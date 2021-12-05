@@ -583,6 +583,16 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
+	public EAttribute getNavigationPanel_Collapsible() {
+		return (EAttribute)navigationPanelEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getContentPanel() {
 		return contentPanelEClass;
 	}
@@ -919,6 +929,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(navigationPanelEClass, NAVIGATION_PANEL__STYLE);
 		createEAttribute(navigationPanelEClass, NAVIGATION_PANEL__ID);
 		createEAttribute(navigationPanelEClass, NAVIGATION_PANEL__LABEL_TRIM_LENGTH);
+		createEAttribute(navigationPanelEClass, NAVIGATION_PANEL__COLLAPSIBLE);
 
 		contentPanelEClass = createEClass(CONTENT_PANEL);
 		createEReference(contentPanelEClass, CONTENT_PANEL__BREADCRUMB);
@@ -1047,6 +1058,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getNavigationPanel_Style(), this.getNavigationPanelStyle(), "style", "Auto", 0, 1, NavigationPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getNavigationPanel_Id(), ecorePackage.getEString(), "id", null, 0, 1, NavigationPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getNavigationPanel_LabelTrimLength(), ecorePackage.getEInt(), "labelTrimLength", "50", 0, 1, NavigationPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNavigationPanel_Collapsible(), ecorePackage.getEBoolean(), "collapsible", null, 0, 1, NavigationPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(contentPanelEClass, ContentPanel.class, "ContentPanel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getContentPanel_Breadcrumb(), this.getLabel(), null, "breadcrumb", null, 0, -1, ContentPanel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

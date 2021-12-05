@@ -18,6 +18,7 @@ import org.nasdanika.html.model.app.NavigationPanelStyle;
  *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getStyle <em>Style</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getId <em>Id</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getLabelTrimLength <em>Label Trim Length</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#isCollapsible <em>Collapsible</em>}</li>
  * </ul>
  *
  * @generated
@@ -52,6 +53,16 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 	 * @ordered
 	 */
 	protected static final int LABEL_TRIM_LENGTH_EDEFAULT = 50;
+
+	/**
+	 * The default value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isCollapsible()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean COLLAPSIBLE_EDEFAULT = false;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -138,6 +149,26 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 	 * @generated
 	 */
 	@Override
+	public boolean isCollapsible() {
+		return (Boolean)eDynamicGet(AppPackage.NAVIGATION_PANEL__COLLAPSIBLE, AppPackage.Literals.NAVIGATION_PANEL__COLLAPSIBLE, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setCollapsible(boolean newCollapsible) {
+		eDynamicSet(AppPackage.NAVIGATION_PANEL__COLLAPSIBLE, AppPackage.Literals.NAVIGATION_PANEL__COLLAPSIBLE, newCollapsible);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AppPackage.NAVIGATION_PANEL__STYLE:
@@ -146,6 +177,8 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 				return getId();
 			case AppPackage.NAVIGATION_PANEL__LABEL_TRIM_LENGTH:
 				return getLabelTrimLength();
+			case AppPackage.NAVIGATION_PANEL__COLLAPSIBLE:
+				return isCollapsible();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -168,6 +201,9 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 			case AppPackage.NAVIGATION_PANEL__LABEL_TRIM_LENGTH:
 				setLabelTrimLength((Integer)newValue);
 				return;
+			case AppPackage.NAVIGATION_PANEL__COLLAPSIBLE:
+				setCollapsible((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -189,6 +225,9 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 			case AppPackage.NAVIGATION_PANEL__LABEL_TRIM_LENGTH:
 				setLabelTrimLength(LABEL_TRIM_LENGTH_EDEFAULT);
 				return;
+			case AppPackage.NAVIGATION_PANEL__COLLAPSIBLE:
+				setCollapsible(COLLAPSIBLE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -207,6 +246,8 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 				return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
 			case AppPackage.NAVIGATION_PANEL__LABEL_TRIM_LENGTH:
 				return getLabelTrimLength() != LABEL_TRIM_LENGTH_EDEFAULT;
+			case AppPackage.NAVIGATION_PANEL__COLLAPSIBLE:
+				return isCollapsible() != COLLAPSIBLE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
