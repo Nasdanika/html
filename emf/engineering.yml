@@ -21,6 +21,9 @@ engineering-module:
     uri-copy-to-clipboard:
       name: URI copy to clipboard icon
       description: As on GitHub.
+    uri-copy-to-clipboard-relative:
+      name: Relative URI copy to clipboard
+      description: Drop-down or a dialog with a base URI field to compute relative URI's. Use of relative URI's may be preferred in models which are intended to be reused and the root URI may change.
           
     - name: Support of diagnostic to SimpleEObjectViewAction
       markdown-description: |+2
