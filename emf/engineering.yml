@@ -1,11 +1,9 @@
 engineering-module:
   name: EMF
   path: emf
-  representations:
-    - representation-component-diagram: true
   dependencies:
-    - nasdanika:modules/html/modules/html
-    - nasdanika:modules/core/modules/emf
+    - engineering://nasdanika/modules/html/modules/html
+    - engineering://nasdanika/modules/core/modules/emf
   issues:
     hierarchical-tables:    
       name: Hierarchical tables
@@ -24,17 +22,4 @@ engineering-module:
     uri-copy-to-clipboard-relative:
       name: Relative URI copy to clipboard
       description: Drop-down or a dialog with a base URI field to compute relative URI's. Use of relative URI's may be preferred in models which are intended to be reused and the root URI may change.
-          
-    - name: Support of diagnostic to SimpleEObjectViewAction
-      markdown-description: |+2
-        DiagnosticSource and DiagnosticSourceAdapter to core emf. DiagnosticSource provides a list of diagnostics - for object (no feature in data), for feature, and all.
-        DiagnosticAdapter takes Diagnostic in its constructor and filters by target on query (target may change).
-        SimpleEObjectViewAction adapts target to DiagnosticSource and displays diagnostics with features and the object allowing to override how it is done - alerts, background, border, ...
-        Duplicate - all diagnostics as a context action with respective color. A table with messages and links to sources if they are adaptable to ViewAction. 
-    - name: Feature description
-      status: nasdanika:issue-statuses/done
-      markdown-description: |+2
-        Similar to getDescription(). Use double dash to separate EClass name from feature name. E.g. ``engineered-element--issues.md``.
-        Use in feature actions. Rename ``getFeatureLabel()`` to ``getFeatureText()``, create ``Label getFeatureLabel()`` method returning a label with 
-        text, icon, and description. Question marks and description modals in sections - tabs, paragraphs, ... 
         

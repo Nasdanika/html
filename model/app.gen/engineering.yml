@@ -1,12 +1,13 @@
 engineering-module:
-   name: Application Generation Adapters
-   path: app-gen
-   representations:
-     - representation-component-diagram: true
+   name: Generation Adapters
+   path: gen
    dependencies:
-     - nasdanika:modules/html/modules/app
+     - engineering://nasdanika/modules/html/modules/models/modules/app/modules/model
+     - engineering://nasdanika/modules/html/modules/models/modules/bootstrap/modules/gen
+     - engineering://nasdanika/modules/html/modules/jstree
    issues:
-     - name: Implement support of remaining section styles and section columns in the Content panel
+     section-styles:
+       name: Implement support of remaining section styles and section columns in the Content panel
        description: table, cards, card tabs, card pills. 
        effort: 4                         
      

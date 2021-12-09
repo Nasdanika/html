@@ -1,8 +1,6 @@
 engineering-module:
   name: ECharts
   path: echarts
-  representations:
-    - representation-component-diagram: true
   dependencies:
-    - nasdanika:modules/html/modules/bootstrap
+    - engineering://nasdanika/modules/html/modules/bootstrap
   

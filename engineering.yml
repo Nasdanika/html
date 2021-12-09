@@ -1,20 +1,22 @@
 engineering-product:
-   name: HTML
-   path: html
-   releases:
+  name: HTML
+  path: html
+  releases:
      "2021-11-2":
        name: "2021.11.2"
-   modules:
-      - html/engineering.yml
-      - model/html/engineering.yml
+  modules:
       - bootstrap/engineering.yml
-      - model/bootstrap/engineering.yml
-      - app/engineering.yml
-      - model/app/engineering.yml
-      - model/components/engineering.yml
+      - echarts/engineering.yml
+      - ecore/engineering.yml
+      - emf/engineering.yml
+      - flow/engineering.yml
+      - fontawesome/engineering.yml
+      - html/engineering.yml
       - jstree/engineering.yml
       - knockout/engineering.yml
-      - fontawesome/engineering.yml
-      - echarts/engineering.yml
-      - emf/engineering.yml
-      - ecore/engineering.yml
+      - model/engineering.yml
+  issues:
+    merge-to-master:
+      name: Merge to master 
+
+

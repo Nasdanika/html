@@ -1,9 +1,7 @@
 engineering-module:
-  name: HTML Model
-  path: models/html
-  representations:
-    - representation-component-diagram: true
+  name: Model
+  path: model
   dependencies:
-    - nasdanika:modules/html/modules/html
-    - nasdanika:modules/core/modules/ncore
+    - engineering://nasdanika/modules/html/modules/html
+    - engineering://nasdanika/modules/core/modules/exec
   

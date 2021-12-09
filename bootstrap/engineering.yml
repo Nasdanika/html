@@ -1,11 +1,10 @@
 engineering-module:
   name: Bootstrap
   path: bootstrap
-  representations:
-    - representation-component-diagram: true
   dependencies:
-    - nasdanika:modules/html/modules/html
+    - engineering://nasdanika/modules/html/modules/html
   issues:
-    - name: Updgrade to Bootstrap 5
-      markdown-description: "[Migration](https://getbootstrap.com/docs/5.0/migration/)"
+    upgrade-to-bootstrap-5:
+      name: Updgrade to Bootstrap 5
+      description: https://getbootstrap.com/docs/5.0/migration/
       effort: 40

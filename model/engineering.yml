@@ -1,0 +1,26 @@
+engineering-module:
+  name: Models
+  path: models
+  modules:
+    html:
+      engineering-module:
+        name: HTML
+        modules:
+          - html/engineering.yml
+          - html.gen/engineering.yml
+    bootstrap:
+      engineering-module:
+        name: Bootstrap
+        modules:
+          - bootstrap/engineering.yml
+          - bootstrap.gen/engineering.yml
+    app:
+      engineering-module:
+        name: Application
+        modules:
+          - app/engineering.yml
+          - app.gen/engineering.yml
+  issues:
+    components:
+      name: Reintroduce components
+ 

@@ -1,10 +1,8 @@
 engineering-module:
   name: Ecore
   path: ecore
-  representations:
-    - representation-component-diagram: true
   dependencies:
-    - nasdanika:modules/html/modules/emf
+    - engineering://nasdanika/modules/html/modules/emf
   issues:
     action-template:
       name: Action template
@@ -15,17 +13,14 @@ engineering-module:
       name: Engineering generation target
       description: |+2
         Generate engineering model instead of action model. This would allow to link issues, owners, etc. to model elements.
-        Need support of merging.
-     - name: Application model as output in addition to YAML
-       increment: nasdanika:increments/2021/children/q2  
-     - name: Engineering model as output
-       description: EClass and EPackage are output as engineered elements. Issues, owner, and other things are loaded using Nasdanika engineering annotation pointing to a yaml file.     
-     - name: YAML/load spec
-       description: All keys including inherited - changeable, take load-key annotation into account, load-doc annotation to override default description. Sort alphabetically. Table. Homogenous, strict containment, default feature.  
-     - name: Display EMaps directly to the value class with a different relationship, e.g. ``#--``
-     - name: EKeys as qualifiers - similar to EMaps. Report in documentation. 
-     - name: Consider support of association classes using annotations. E.g. an annotation on the association class with target reference name. Say ``association-class-reference`` key with reference name.  
-     - name: Action template annotation - location of an action resource to load a template from instead of using AppFactory.createAction(). Would allow to merge, say, navigation actions.
-     - name: Support of association classes - annotation on a rereference - reference of the target class which points to the target class. E.g. Alignment aligns Alignable to Aim. 
+        Need support for merging.
+    emaps:
+      name: Display EMaps directly to the value class with a different relationship, e.g. ``#--``
+    ekeys:
+      name: EKeys as qualifiers - similar to EMaps. Report in documentation. 
+    association-classes:
+      name: Consider support of association classes using annotations. E.g. an annotation on the association class with target reference name. Say ``association-class-reference`` key with reference name.  
+    action-template-annotation:
+      name: Action template annotation - location of an action resource to load a template from instead of using AppFactory.createAction(). Would allow to merge, say, navigation actions.
 
 

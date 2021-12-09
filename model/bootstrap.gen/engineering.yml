@@ -1,10 +1,10 @@
 engineering-module:
-   name: Bootstrap Generation Adapters
-   path: bootstrap-gen
-   representations:
-     - representation-component-diagram: true
+   name: Generation Adapters
+   path: gen
    dependencies:
-     - nasdanika:modules/html/modules/bootstrap
+     - engineering://nasdanika/modules/html/modules/models/modules/bootstrap/modules/model
+     - engineering://nasdanika/modules/html/modules/models/modules/html/modules/gen
+     - engineering://nasdanika/modules/html/modules/bootstrap
    issues:
      slide-captions:
        name: Carousel slide captions

@@ -1,7 +1,5 @@
 engineering-module:
   name: FontAwesome
   path: fontawesome
-  representations:
-    - representation-component-diagram: true
   dependencies:
-    - nasdanika:modules/html/modules/html
+    - engineering://nasdanika/modules/html/modules/html

@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -195,9 +196,15 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	}
 	
 	/**
-	 * Called by createAction(). This implementation calls {@link AppFactory} createAction().
+	 * Called by createAction(). 
+	 * If target is and instance of {@link ModelElement} and its <code>actionPrototype</code> reference is set then,
+	 * if the prototype is {@link Action}, its copy is created and returned.
+	 * Otherwise the prototype is adapted to {@link ActionProvider} and the provider is used to create
+	 * a new Action and return. 
+	 * 
+	 * If the target is not and instance of ModelElement or actionPrototype is not set, then this implementation calls {@link AppFactory} createAction().
+	 * 
 	 * Override to customize action creation before it gets populated by createAction().
-	 * For example, create an action from a template action.
 	 * @param registry
 	 * @param resolveConsumer
 	 * @param progressMonitor
@@ -208,6 +215,18 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
+		
+		T semanticElement = getTarget();
+		if (semanticElement instanceof ModelElement) {
+			EObject actionPrototype = ((ModelElement) semanticElement).getActionPrototype();
+			if (actionPrototype instanceof Action) {
+				return EcoreUtil.copy((Action) actionPrototype);
+			}
+			if (actionPrototype != null) {
+				ActionProvider actionProvider = Objects.requireNonNull((ActionProvider) EcoreUtil.getRegisteredAdapter(actionPrototype, ActionProvider.class), "Cannot adapt " + actionPrototype + " to " + ActionProvider.class);
+				return actionProvider.execute(registry, progressMonitor);
+			}
+		}
 		return AppFactory.eINSTANCE.createAction();
 	}
 	

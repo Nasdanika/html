@@ -1,10 +1,6 @@
 engineering-module:
   name: HTML
   path: html
-  representations:
-    - representation-component-diagram: true
   dependencies:
-    - nasdanika:modules/core/modules/common
-  issues:
-    - name: Expose existing docs via engineering site - exec loaders
+    - engineering://nasdanika/modules/core/modules/common
                 
