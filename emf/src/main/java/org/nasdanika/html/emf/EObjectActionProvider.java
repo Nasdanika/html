@@ -323,8 +323,8 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 				severity = Math.max(severity, diagnostic.getSeverity());
 			}
 			
-			boolean isEmptyValue = isEmptyValue(property, propertyValue);
-			if (!isEmptyValue || !featureDiagnostic.isEmpty()) {				
+			boolean isSetOrNotEmpty = property instanceof EStructuralFeature && ((EStructuralFeature) property).isChangeable() ? getTarget().eIsSet((EStructuralFeature) property) : !isEmptyValue(property, propertyValue);
+			if (isSetOrNotEmpty || !featureDiagnostic.isEmpty()) {				
 				TableRow propertyRow = BootstrapFactory.eINSTANCE.createTableRow();
 				rows.add(propertyRow);
 				
@@ -348,7 +348,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 				
 				TableCell propertyValueCell = BootstrapFactory.eINSTANCE.createTableCell();
 				propertyCells.add(propertyValueCell);
-				if (!isEmptyValue) {
+				if (isSetOrNotEmpty) {
 					EObject renderedValue = renderValue(action, property, propertyValue, context, progressMonitor);
 					if (renderedValue != null) {
 						propertyValueCell.getContent().add(renderedValue);
