@@ -108,6 +108,15 @@ public interface HtmlPackage extends EPackage {
 	int HTML_ELEMENT__UUID = NcorePackage.MODEL_ELEMENT__UUID;
 
 	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HTML_ELEMENT__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -188,6 +197,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int TAG__UUID = HTML_ELEMENT__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TAG__ACTION_PROTOTYPE = HTML_ELEMENT__ACTION_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -279,6 +297,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int PAGE__UUID = NcorePackage.MODEL_ELEMENT__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Head</b></em>' containment reference list.
@@ -408,6 +435,15 @@ public interface HtmlPackage extends EPackage {
 	int STYLESHEET__UUID = ContentPackage.FILTER__UUID;
 
 	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STYLESHEET__ACTION_PROTOTYPE = ContentPackage.FILTER__ACTION_PROTOTYPE;
+
+	/**
 	 * The feature id for the '<em><b>Source</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -479,6 +515,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int STYLESHEET_REFERENCE__UUID = NcorePackage.MODEL_ELEMENT__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STYLESHEET_REFERENCE__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' attribute.
@@ -554,6 +599,15 @@ public interface HtmlPackage extends EPackage {
 	int SCRIPT__UUID = ContentPackage.FILTER__UUID;
 
 	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT__ACTION_PROTOTYPE = ContentPackage.FILTER__ACTION_PROTOTYPE;
+
+	/**
 	 * The feature id for the '<em><b>Source</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -625,6 +679,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCRIPT_REFERENCE__UUID = NcorePackage.MODEL_ELEMENT__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT_REFERENCE__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Src</b></em>' attribute.

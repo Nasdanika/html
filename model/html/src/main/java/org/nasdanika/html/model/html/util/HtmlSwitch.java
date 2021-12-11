@@ -76,6 +76,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				if (result == null) result = caseModelElement(htmlElement);
 				if (result == null) result = caseMarked(htmlElement);
 				if (result == null) result = caseAdaptable(htmlElement);
+				if (result == null) result = caseIMarked(htmlElement);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -86,6 +87,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				if (result == null) result = caseModelElement(tag);
 				if (result == null) result = caseMarked(tag);
 				if (result == null) result = caseAdaptable(tag);
+				if (result == null) result = caseIMarked(tag);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -95,6 +97,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				if (result == null) result = caseModelElement(page);
 				if (result == null) result = caseMarked(page);
 				if (result == null) result = caseAdaptable(page);
+				if (result == null) result = caseIMarked(page);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -105,6 +108,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				if (result == null) result = caseModelElement(stylesheet);
 				if (result == null) result = caseMarked(stylesheet);
 				if (result == null) result = caseAdaptable(stylesheet);
+				if (result == null) result = caseIMarked(stylesheet);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -114,6 +118,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				if (result == null) result = caseModelElement(stylesheetReference);
 				if (result == null) result = caseMarked(stylesheetReference);
 				if (result == null) result = caseAdaptable(stylesheetReference);
+				if (result == null) result = caseIMarked(stylesheetReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -124,6 +129,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				if (result == null) result = caseModelElement(script);
 				if (result == null) result = caseMarked(script);
 				if (result == null) result = caseAdaptable(script);
+				if (result == null) result = caseIMarked(script);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -133,6 +139,7 @@ public class HtmlSwitch<T> extends Switch<T> {
 				if (result == null) result = caseModelElement(scriptReference);
 				if (result == null) result = caseMarked(scriptReference);
 				if (result == null) result = caseAdaptable(scriptReference);
+				if (result == null) result = caseIMarked(scriptReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -242,6 +249,21 @@ public class HtmlSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseScriptReference(ScriptReference object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IMarked</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IMarked</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIMarked(org.nasdanika.common.persistence.Marked object) {
 		return null;
 	}
 

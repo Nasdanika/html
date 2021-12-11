@@ -111,6 +111,15 @@ public interface AppPackage extends EPackage {
 	int LABEL__UUID = BootstrapPackage.BOOTSTRAP_ELEMENT__UUID;
 
 	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__ACTION_PROTOTYPE = BootstrapPackage.BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -299,6 +308,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK__UUID = LABEL__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__ACTION_PROTOTYPE = LABEL__ACTION_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -545,6 +563,15 @@ public interface AppPackage extends EPackage {
 	int PAGE__UUID = BootstrapPackage.BOOTSTRAP_ELEMENT__UUID;
 
 	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__ACTION_PROTOTYPE = BootstrapPackage.BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -699,6 +726,15 @@ public interface AppPackage extends EPackage {
 	int PAGE_PART__UUID = BootstrapPackage.BOOTSTRAP_ELEMENT__UUID;
 
 	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE_PART__ACTION_PROTOTYPE = BootstrapPackage.BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -797,6 +833,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int HEADER__UUID = PAGE_PART__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HEADER__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -906,6 +951,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int NAVIGATION_BAR__UUID = PAGE_PART__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_BAR__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1044,6 +1098,15 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL__UUID = PAGE_PART__UUID;
 
 	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_PANEL__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1178,6 +1241,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_PANEL__UUID = PAGE_PART__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_PANEL__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1361,6 +1433,15 @@ public interface AppPackage extends EPackage {
 	int FOOTER__UUID = PAGE_PART__UUID;
 
 	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FOOTER__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1459,6 +1540,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION__UUID = LINK__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__ACTION_PROTOTYPE = LINK__ACTION_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
