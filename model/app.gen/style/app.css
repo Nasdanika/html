@@ -15,12 +15,17 @@
 .nsd-collapsible-trigger {
   float:right;
   margin-left:0.3em;
+}
+.nsd-collapse-panel .nsd-collapsible-trigger {
+  float:none;
+  margin-right:0.3em;  
 } 
+ 
 .nsd-collapsible-trigger .fa:before {  
-  content: "\f139";
+  content: "\f077";
 }
 .nsd-collapsible-trigger.collapsed .fa:before {
-  content: "\f13a";
+  content: "\f078";
 }
 
 @media print {
