@@ -15,6 +15,7 @@
 .nsd-collapsible-trigger {
   float:right;
   margin-left:0.3em;
+  cursor: pointer;
 }
 .nsd-collapse-panel .nsd-collapsible-trigger {
   float:none;
