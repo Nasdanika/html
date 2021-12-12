@@ -3266,7 +3266,7 @@ public interface BootstrapPackage extends EPackage {
 	int CARD__HEADER = DIV_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Body</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Body</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -5305,10 +5305,10 @@ public interface BootstrapPackage extends EPackage {
 	EReference getCard_Header();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.nasdanika.html.model.bootstrap.Card#getBody <em>Body</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.bootstrap.Card#getBody <em>Body</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Body</em>'.
+	 * @return the meta object for the containment reference '<em>Body</em>'.
 	 * @see org.nasdanika.html.model.bootstrap.Card#getBody()
 	 * @see #getCard()
 	 * @generated
@@ -6672,7 +6672,7 @@ public interface BootstrapPackage extends EPackage {
 		EReference CARD__HEADER = eINSTANCE.getCard_Header();
 
 		/**
-		 * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

@@ -2,8 +2,6 @@
  */
 package org.nasdanika.html.model.bootstrap;
 
-import org.eclipse.emf.common.util.EList;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Card</b></em>'.
@@ -35,12 +33,12 @@ public interface Card extends Div {
 	 * Card header.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Header</em>' containment reference.
-	 * @see #setHeader(Div)
+	 * @see #setHeader(BootstrapElement)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getCard_Header()
 	 * @model containment="true"
 	 * @generated
 	 */
-	Div getHeader();
+	BootstrapElement getHeader();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Card#getHeader <em>Header</em>}' containment reference.
@@ -50,22 +48,32 @@ public interface Card extends Div {
 	 * @see #getHeader()
 	 * @generated
 	 */
-	void setHeader(Div value);
+	void setHeader(BootstrapElement value);
 
 	/**
-	 * Returns the value of the '<em><b>Body</b></em>' containment reference list.
-	 * The list contents are of type {@link org.nasdanika.html.model.bootstrap.Div}.
+	 * Returns the value of the '<em><b>Body</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * Card body.
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Body</em>' containment reference list.
+	 * @return the value of the '<em>Body</em>' containment reference.
+	 * @see #setBody(BootstrapElement)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getCard_Body()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<Div> getBody();
+	BootstrapElement getBody();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Card#getBody <em>Body</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Body</em>' containment reference.
+	 * @see #getBody()
+	 * @generated
+	 */
+	void setBody(BootstrapElement value);
 
 	/**
 	 * Returns the value of the '<em><b>Footer</b></em>' containment reference.
@@ -75,12 +83,12 @@ public interface Card extends Div {
 	 * Card footer.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Footer</em>' containment reference.
-	 * @see #setFooter(Div)
+	 * @see #setFooter(BootstrapElement)
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getCard_Footer()
 	 * @model containment="true"
 	 * @generated
 	 */
-	Div getFooter();
+	BootstrapElement getFooter();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.bootstrap.Card#getFooter <em>Footer</em>}' containment reference.
@@ -90,6 +98,6 @@ public interface Card extends Div {
 	 * @see #getFooter()
 	 * @generated
 	 */
-	void setFooter(Div value);
+	void setFooter(BootstrapElement value);
 
 } // Card

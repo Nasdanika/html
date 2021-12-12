@@ -154,7 +154,7 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
 			ProgressMonitor progressMonitor) throws Exception {
-		Collection<ColumnBuilder<EObject>> columnBuilders = new ArrayList<>();
+		Collection<ColumnBuilder<? super EObject>> columnBuilders = new ArrayList<>();
 		columnBuilders.add(new ColumnBuilder<EObject>() {
 			
 			@Override
@@ -197,7 +197,7 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
 			ProgressMonitor progressMonitor) throws Exception {
-		Collection<ColumnBuilder<EObject>> columnBuilders = new ArrayList<>();
+		Collection<ColumnBuilder<? super EObject>> columnBuilders = new ArrayList<>();
 		columnBuilders.add(new ColumnBuilder<EObject>() {
 			
 			@Override
@@ -359,7 +359,7 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
 			ProgressMonitor progressMonitor) throws Exception {
-		Collection<ColumnBuilder<EObject>> columnBuilders = new ArrayList<>();
+		Collection<ColumnBuilder<? super EObject>> columnBuilders = new ArrayList<>();
 		columnBuilders.add(new ColumnBuilder<EObject>() {
 			
 			@Override
@@ -403,7 +403,7 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
 			ProgressMonitor progressMonitor) throws Exception {
-		Collection<ColumnBuilder<EObject>> columnBuilders = new ArrayList<>();
+		Collection<ColumnBuilder<? super EObject>> columnBuilders = new ArrayList<>();
 		columnBuilders.add(new ColumnBuilder<EObject>() {
 			
 			@Override

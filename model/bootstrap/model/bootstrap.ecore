@@ -634,19 +634,19 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Bootstrap [card](https://getbootstrap.com/docs/4.0/components/card/)."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="header" eType="#//Div"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="header" eType="#//BootstrapElement"
         containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Card header."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Div"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//BootstrapElement"
         containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Card body."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="footer" eType="#//Div"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="footer" eType="#//BootstrapElement"
         containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Card footer."/>

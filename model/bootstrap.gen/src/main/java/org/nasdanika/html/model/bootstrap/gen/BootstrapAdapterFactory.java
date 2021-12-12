@@ -85,8 +85,14 @@ public class BootstrapAdapterFactory extends HtmlAdapterFactory {
 					classLoader, 
 					SlideSupplierFactoryAdapter::new));		
 		
-		// Table
+		registerAdapterFactory(
+				new FunctionAdapterFactory<SupplierFactory<HTMLElement<?>>, org.nasdanika.html.model.bootstrap.Card>(
+					BootstrapPackage.Literals.CARD, 
+					Util.getSupplierFactoryClass(htmlElementClass), 
+					classLoader, 
+					CardSupplierFactoryAdapter::new));		
 		
+		// Table		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, TableHeader>(
 					BootstrapPackage.Literals.TABLE_HEADER, 

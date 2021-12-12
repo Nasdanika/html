@@ -871,11 +871,11 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	}
 	
 	
-	protected List<ColumnBuilder<EObject>> createColumnBuilders(Collection<ETypedElement> typedElements) {
+	protected List<ColumnBuilder<? super EObject>> createColumnBuilders(Collection<ETypedElement> typedElements) {
 		return typedElements.stream().map(this::createColumnBuilder).collect(Collectors.toList());
 	}
 	
-	protected List<ColumnBuilder<EObject>> createColumnBuilders(ETypedElement... typedElements) {
+	protected List<ColumnBuilder<? super EObject>> createColumnBuilders(ETypedElement... typedElements) {
 		return createColumnBuilders(Arrays.asList(typedElements));
 	}
 
@@ -886,13 +886,13 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			ETypedElement typedElement,
 			Context context, 
 			ProgressMonitor progressMonitor,			
-			ColumnBuilder<T>... columnBuilders) throws Exception {
+			ColumnBuilder<? super T>... columnBuilders) throws Exception {
 		return buildTable(elements, Arrays.asList(columnBuilders), base, typedElement, context, progressMonitor);
 	}
 	
 	public static <T> Table buildTable(
 			Collection<? extends T> elements, 
-			Collection<ColumnBuilder<T>> columnBuilders,
+			Collection<ColumnBuilder<? super T>> columnBuilders,
 			Action base, 
 			ETypedElement typedElement,
 			Context context, 
@@ -903,7 +903,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		TableRow headerRow = BootstrapFactory.eINSTANCE.createTableRow();
 		header.getRows().add(headerRow);
 		EList<TableCell> headerRowCells = headerRow.getCells();
-		for (ColumnBuilder<T> cb: columnBuilders) {
+		for (ColumnBuilder<? super T> cb: columnBuilders) {
 			TableCell headerCell = BootstrapFactory.eINSTANCE.createTableCell();
 			headerCell.setHeader(true);
 			headerRowCells.add(headerCell);
@@ -917,7 +917,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			TableRow elementRow = BootstrapFactory.eINSTANCE.createTableRow();
 			bodyRows.add(elementRow);
 			EList<TableCell> elementRowCells = elementRow.getCells();
-			for (ColumnBuilder<T> cb: columnBuilders) {
+			for (ColumnBuilder<? super T> cb: columnBuilders) {
 				TableCell elementCell = BootstrapFactory.eINSTANCE.createTableCell();
 				elementRowCells.add(elementCell);
 				cb.buildCell(element, elementCell, base, typedElement, context, progressMonitor);
@@ -935,7 +935,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	 */
 	protected Action createTableAction(
 			ETypedElement typedElement,
-			Collection<ColumnBuilder<EObject>> columnBuilders,
+			Collection<ColumnBuilder<? super EObject>> columnBuilders,
 			Action base, 
 			Context context, 
 			ProgressMonitor progressMonitor) throws Exception {
