@@ -323,7 +323,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 				severity = Math.max(severity, diagnostic.getSeverity());
 			}
 			
-			boolean isSetOrNotEmpty = property instanceof EStructuralFeature && ((EStructuralFeature) property).isChangeable() ? getTarget().eIsSet((EStructuralFeature) property) : !isEmptyValue(property, propertyValue);
+			boolean isSetOrNotEmpty = property instanceof EStructuralFeature && ((EStructuralFeature) property).isChangeable() ? isSet((EStructuralFeature) property) : !isEmptyValue(property, propertyValue);
 			if (isSetOrNotEmpty || !featureDiagnostic.isEmpty()) {				
 				TableRow propertyRow = BootstrapFactory.eINSTANCE.createTableRow();
 				rows.add(propertyRow);
@@ -365,6 +365,13 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		}
 				
 		return ret;
+	}
+	
+	protected boolean isSet(EStructuralFeature feature) {
+		if (feature == NcorePackage.Literals.MODEL_ELEMENT__URI) {
+			return NcoreUtil.getUri(getTarget()) != null;
+		}
+		return getTarget().eIsSet((EStructuralFeature) feature);
 	}
 	
 	protected List<ETypedElement> getProperties() {
