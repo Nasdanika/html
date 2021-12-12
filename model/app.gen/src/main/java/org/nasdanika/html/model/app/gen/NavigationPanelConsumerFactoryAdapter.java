@@ -58,7 +58,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 				
 				Tag panel;
 				if (getTarget().isCollapsible()) {
-					Tag triggerDiv = ret.getFactory().div();
+					Tag triggerDiv = ret.getFactory().div().addClass("nsd-collapse-panel", "bg-light", "text-center");
 					ret.content(triggerDiv);
 					HTMLFactory htmlFactory = ret.getFactory();
 					panel = htmlFactory.div();
@@ -131,7 +131,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 				Tag panel;
 				if (getTarget().isCollapsible()) {
 					HTMLFactory htmlFactory = ret.getFactory();
-					Tag triggerDiv = htmlFactory.div();
+					Tag triggerDiv = htmlFactory.div().addClass("nsd-collapse-panel", "bg-light", "text-center");
 					ret.content(triggerDiv);
 					panel = htmlFactory.div();
 					panel.id("nsd-nav-panel-" + getTarget().getUuid() + "-collapsible");

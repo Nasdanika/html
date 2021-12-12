@@ -10,11 +10,5 @@ engineering-module:
        name: Implement support of remaining section styles and section columns in the Content panel
        description: table, cards, card tabs, card pills. 
        effort: 4 
-     navigation-collapse:
-       name: Navigation collapse
-       description: |+2
-         Set float to none, margin-right:0.3em and containing div text center, consider using chevrones without circle - everywhere?
-         Background via styling, light by default. nsd-panel-collapse class. f139 -> f077, f13a to f078.  
-       effort: 1                        
      
    
