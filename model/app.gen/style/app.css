@@ -20,8 +20,7 @@
 .nsd-collapse-panel .nsd-collapsible-trigger {
   float:none;
   margin-right:0.3em;  
-} 
- 
+}  
 .nsd-collapsible-trigger .fa:before {  
   content: "\f077";
 }

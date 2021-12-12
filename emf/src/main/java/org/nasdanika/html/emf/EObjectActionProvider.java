@@ -585,8 +585,13 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		if (isEmptyValue(typedElement, value)) {
 			return null;
 		}
+		
 		if (value instanceof Instant) {
 			return renderValue(base, typedElement, new Date(((Instant) value).toEpochMilli()), context, progressMonitor);
+		}
+		
+		if (value == Boolean.TRUE) {
+			return createText("<i class=\"fas fa-check\"></i>");
 		}
 		
 		if (value instanceof Date) {
