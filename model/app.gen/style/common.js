@@ -46,5 +46,9 @@ $(document).ready( function() {
          localStorage.setItem(this.id + ":collapsed", "true");
       }
     });
+
+    if (hljs) {
+        hljs.highlightAll();
+    }
     
 });
