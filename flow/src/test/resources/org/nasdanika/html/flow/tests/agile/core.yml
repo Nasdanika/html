@@ -30,7 +30,7 @@ flow-package:
     issue-tracker:
       name: Issue Tracker
       modifiers: abstract
-      description: Repository of stories
+      description: Repository of stories      
     source-repository:
       name: Source Repository
       modifiers: abstract
@@ -38,6 +38,11 @@ flow-package:
     ide:
       name: Development Environment
       modifiers: abstract
+      services:
+        install:
+          flow-activity:
+            name: Installation
+            description: ...
     build-tool:
       name: Build tool
       modifiers: abstract
