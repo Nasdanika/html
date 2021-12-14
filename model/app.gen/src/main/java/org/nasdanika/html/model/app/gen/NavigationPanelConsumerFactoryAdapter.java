@@ -72,6 +72,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 							.attribute("data-target", "#" + panel.getId())
 							.attribute("aria-expanded", "true")
 							.attribute("aria-controls", panel.getId())
+							.attribute("title", "Toggle panel")
 							.id(panel.getId()+"-trigger");
 					
 					triggerDiv.content(collapsibleTrigger);
@@ -144,6 +145,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 							.attribute("data-target", "#" + panel.getId())
 							.attribute("aria-expanded", "true")
 							.attribute("aria-controls", panel.getId())
+							.attribute("title", "Toggle panel")							
 							.id(panel.getId()+"-trigger");
 					
 					triggerDiv.content(collapsibleTrigger);
@@ -265,6 +267,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 											.attribute("data-target", "#" + collapsible.getId())
 											.attribute("aria-expanded", "true")
 											.attribute("aria-controls", collapsible.getId())
+											.attribute("title", "Toggle card")											
 											.id(semanticElement.getId()+"-collapsible-trigger");
 									
 									cardHeaderTag.content(collapsibleTrigger);
