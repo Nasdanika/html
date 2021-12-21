@@ -671,6 +671,11 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			
 			return renderList((Collection<?>) value, true, null, base, typedElement, context, progressMonitor);
 		}
+		
+		if (typedElement == NcorePackage.Literals.MODEL_ELEMENT__URI) {
+			return createText(value + " <i class='far fa-copy' style='cursor:pointer' title='Copy URI to clipboard' onclick='navigator.clipboard.writeText(\"" + StringEscapeUtils.escapeHtml4(String.valueOf(value)) + "\")'/>");
+		}
+		
 		return createText(String.valueOf(value));
 	}
 	

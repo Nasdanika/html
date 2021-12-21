@@ -2,8 +2,8 @@ engineering-product:
   name: HTML
   path: html
   releases:
-     "2021-11-2":
-       name: "2021.11.2"
+     "2021-12-3":
+       name: "2021.12.3"
   modules:
       - bootstrap/engineering.yml
       - echarts/engineering.yml

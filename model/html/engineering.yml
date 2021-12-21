@@ -5,7 +5,6 @@ engineering-module:
     - engineering://nasdanika/modules/html/modules/html
     - engineering://nasdanika/modules/core/modules/exec
   issues:
-  issues:
     fluent-api:
       name: Fluent API
       description: |+2
