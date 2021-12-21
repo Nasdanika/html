@@ -23,4 +23,9 @@ engineering-module:
   issues:
     components:
       name: Reintroduce components
+    bootstrap-vue:
+      name: BootstrapVue model and generation adapters
+      description: |+2
+        Extends Bootstrap element for styling, appearance. Also extends Vue inteface for directives
+        Create issues for components, implement table first for issues
  

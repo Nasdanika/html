@@ -4,4 +4,8 @@ engineering-module:
   dependencies:
     - engineering://nasdanika/modules/html/modules/bootstrap
     - engineering://nasdanika/modules/html/modules/models/modules/html/modules/model
+  issues:
+    fluent-api:
+      name: Fluent API
+      description: Fluent API. e.g. appearance().margin().top(1) - creates apperance and margin on access. Model after the Bootstrap API      
     

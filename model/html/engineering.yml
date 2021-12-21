@@ -4,4 +4,12 @@ engineering-module:
   dependencies:
     - engineering://nasdanika/modules/html/modules/html
     - engineering://nasdanika/modules/core/modules/exec
+  issues:
+  issues:
+    fluent-api:
+      name: Fluent API
+      description: |+2
+        attribute() to add attribute, class(), style(), content(Object) - convert to text if not EObject and add. The goal it to make the model API easier to work with. 
+        Review HTMLElement methods and BootstrapElement methods. Implement in the model. 
+
   
