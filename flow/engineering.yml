@@ -11,5 +11,11 @@ engineering-module:
     unresolved-proxies:
       name: Unresolved proxies
       description: NPE at FlowStateDiagramGenerator.wire() in the grouping lambda because of unresolved proxy. Unresolved proxies shall be caught earlier in the pipeline. 
+    predicate:
+      name: Predicate
+      description: |+2
+        Add support of filtered generation using a predicate service in Context. Perhaps have a specialized interface instead of java function predicate to avoid accidental clash.
+        Also the predicate interface may have a method for filtering typed elements - structural features and operations. E.g. hide URI's. Perhaps have this interface in the same 
+        package with EObjectActionProvider or even as a nested interface. getPredicate() returns a predicate which accepts everything - to avoid null checks all over.  
 
 

@@ -15,4 +15,17 @@ engineering-module:
     js-tree-context-items:
      name: JsTree context items
      description: Label context list of labels. If present use JsTree context menu in the tree and on the page - find how it is done in the old server code on GitHub. In the content panel as well.
+    vue-table-component:
+     name: Vue table component
+     effort: 6
+     description: |+2
+       Takes storage key and two JSON arrays - columns and items. Column default visibility from column specs, overriden by info from local storage if storage key is specified.
+       Filtering, sorting, configuration in a dialog. Vue/BootstrapVue. Store configuration in local storage. Have local storage operations in own methods so it is easy in the future to replace/augment 
+       storage mechanism. E.g. store to profile for authenticated users.  
+    vue-table-component-column-filtering:
+     name: Vue table component column filtering
+     effort: 6
+     description: |+2
+       Column-level filtering - funnel icon in the header opens a modal. If filter is applied the funnel icon changes las la-filter if no filter is applied fas fa-filter if applied. May also simply change color os stack icons, e.g. put in a circle 
+       Choices in column specs, e.g. issue statuses. Support of trees - checkbox lists or jsTree with checkboxes. Host as CSS and other JS - GitHub -> jsdelivr. Option to apply filters on columns which are not visible. Clear all filters button.  
   
