@@ -1,6 +1,9 @@
 package org.nasdanika.html.flow;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -20,6 +23,7 @@ import org.nasdanika.flow.PseudoState;
 import org.nasdanika.flow.Transition;
 import org.nasdanika.flow.util.FlowStateDiagramGenerator;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.util.NamedElementComparator;
 
 public class FlowActionProvider extends ActivityActionProvider<Flow> {
@@ -69,34 +73,137 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 			}
 		}
 		
-		if (isReacheable(a, b, new HashSet<>()) && !isReacheable(b, a, new HashSet<>())) {
+		int abDistance = distance(a, b, new HashSet<>());
+		int baDistance = distance(b, a, new HashSet<>());
+		
+		if (abDistance != -1 && baDistance == -1) {
 			return -1;
 		}
 		
-		if (isReacheable(b, a, new HashSet<>()) && !isReacheable(a, b, new HashSet<>())) {
+		if (baDistance != -1 && abDistance == -1) {
 			return 1;
+		}
+		
+		// Cycle
+		if (abDistance != -1 && baDistance != -1) {
+			return abDistance - baDistance;
+		}
+		
+		// Common source - shortest sum.
+		Map<FlowElement<?>, Integer> aSources = sources(a, new HashSet<>());
+		int da = 0;
+		int db = 0;
+		FlowElement<?> cs = null;
+		for (Entry<FlowElement<?>, Integer> bse: sources(b, new HashSet<>()).entrySet()) {
+			for (Entry<FlowElement<?>, Integer> ase: aSources.entrySet()) {
+				if (ase.getKey() == bse.getKey()) {
+					int sd = ase.getValue() + bse.getValue();
+					if (cs == null || sd < da + db) {
+						da = ase.getValue();
+						db = bse.getValue();
+						cs = ase.getKey();
+					}
+				}
+			}					
+		}				
+		if (cs != null && da != db) {
+			return da - db;
+		}
+		
+		Marker am = a.getMarker();
+		Marker bm = b.getMarker();
+		if (am != null 
+				&& bm != null 
+				&& !Util.isBlank(am.getLocation())
+				&& am.getLocation().equals(bm.getLocation())) {
+			
+			int lineDiff = am.getLine() - bm.getLine();
+			if (lineDiff != 0) {
+				return lineDiff;
+			}
+			int colDiff = am.getColumn() - bm.getColumn();
+			if (colDiff != 0) {
+				return colDiff;
+			}			
 		}
 		
 		return NamedElementComparator.INSTANCE.compare(a, b);
 	}
 	
-	private static boolean isReacheable(FlowElement<?> source, FlowElement<?> target, Set<FlowElement<?>> traversed) {
-		if (source == target) {
-			return true;
+	/**
+	 * All sources for this target with distances.
+	 * @param source
+	 * @param target
+	 * @param traversed
+	 * @return
+	 */
+	private static Map<FlowElement<?>, Integer> sources(FlowElement<?> target, Set<FlowElement<?>> traversed) {
+		Map<FlowElement<?>, Integer> ret = new HashMap<>();
+		if (traversed.add(target)) {
+			for (Transition input: target.getInputs()) {
+				FlowElement<?> source = (FlowElement<?>) input.eContainer().eContainer();
+				ret.put(source, 1);
+				for (Entry<FlowElement<?>, Integer> se: sources(source, traversed).entrySet()) {
+					Integer existingDistance = ret.get(se.getKey());
+					if (existingDistance == null) {
+						ret.put(se.getKey(), se.getValue() + 1);						
+					} else if (se.getValue() < existingDistance) {
+						ret.put(se.getKey(), se.getValue());
+					}
+				}				
+			}
+			
+			for (Call invocation: target.getInvocations()) {
+				FlowElement<?> source = (FlowElement<?>) invocation.eContainer().eContainer();
+				ret.put(source, 1);
+				for (Entry<FlowElement<?>, Integer> se: sources(source, traversed).entrySet()) {
+					Integer existingDistance = ret.get(se.getKey());
+					if (existingDistance == null) {
+						ret.put(se.getKey(), se.getValue() + 1);						
+					} else if (se.getValue() < existingDistance) {
+						ret.put(se.getKey(), se.getValue());
+					}
+				}								
+			}
 		}
+		return ret;
+	}
+	
+	/**
+	 * 
+	 * @param source
+	 * @param target
+	 * @param traversed
+	 * @return Number of transitions/calls between the source and the target. -1 if target is not reacheable from the source. 
+	 */
+	private static int distance(FlowElement<?> source, FlowElement<?> target, Set<FlowElement<?>> traversed) {
+		if (source == target) {
+			return 0;
+		}
+		int distance = -1;
 		if (traversed.add(source)) {
 			for (Transition output: source.getOutputs().values()) {
-				if (isReacheable(output.getTarget(), target, traversed)) {
-					return true;
+				int targetDistance = distance(output.getTarget(), target, traversed);
+				if (targetDistance != -1) {
+					if (distance == -1) {
+						distance = targetDistance + 1;
+					} else {
+						distance = Math.min(distance, targetDistance + 1);
+					}
 				}
 			}
 			for (Call call: source.getCalls().values()) {
-				if (isReacheable(call.getTarget(), target, traversed)) {
-					return true;
+				int targetDistance = distance(call.getTarget(), target, traversed);
+				if (targetDistance != -1) {
+					if (distance == -1) {
+						distance = targetDistance + 1;
+					} else {
+						distance = Math.min(distance, targetDistance + 1);
+					}
 				}
 			}
 		}
-		return false;
+		return distance;
 	}
 		
 	@Override
