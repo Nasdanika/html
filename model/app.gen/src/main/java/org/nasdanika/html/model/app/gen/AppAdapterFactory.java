@@ -83,7 +83,7 @@ public class AppAdapterFactory extends BootstrapAdapterFactory {
 					AppPackage.Literals.NAVIGATION_PANEL, 
 					(Class) ConsumerFactory.class, 
 					classLoader, 
-					NavigationPanelConsumerFactoryAdapter::new));		
+					NavigationPanelConsumerFactoryAdapter::new));	
 		
 		// Lower-level factories
 		registerAdapterFactory(new ExecutionParticpantAdapterFactory());

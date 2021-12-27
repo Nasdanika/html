@@ -10,19 +10,30 @@ Vue.component('nsd-table', {
   	},
 	computed: {
 		fields() {
-			// TODO - filter using configuration.
-			return this.columns;
+			return this.columns.filter(this.filterColumns);
 		}, 
 		rows() {
-			return this.items;
+			return this.items.filter(this.filterItems);
   		}  	
 	},
+	methods: {
+		filterColumns(column) {
+			// TODO - from local storage.
+			
+			return column.visible;
+		},
+		filterItems(item) {
+			return true;
+		}
+	}, 
 	template: `
-		<b-container>
+		<b-container fluid>		
 			<b-table striped hover :items="rows" :fields="fields">
+				<template #head()="data">
+					<span v-html="data.label"></span>
+	      		</template>
 				<template #cell()="data">
-					<span v-if="data.value.html" v-html="data.value.value"></span>
-					<span v-else> {{ data.value.value }}</span>
+					<span v-html="data.value"></span>
 	      		</template>
 			</b-table>
 		</b-container>

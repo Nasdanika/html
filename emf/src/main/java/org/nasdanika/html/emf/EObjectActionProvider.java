@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -41,6 +40,7 @@ import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
+import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.emf.EObjectActionResolver.Context;
 import org.nasdanika.html.model.app.Action;
@@ -974,7 +974,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			@Override
 			public Map buildHeader(
 					Action base, 
-					ETypedElement typedElement, 
+					ETypedElement tElement, 
 					Context context,
 					ProgressMonitor progressMonitor) throws Exception {
 				
@@ -1026,14 +1026,14 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			@Override
 			public org.nasdanika.ncore.Map buildHeader(
 					Action base, 
-					ETypedElement typedElement, 
+					ETypedElement tElement, 
 					Context context,
 					ProgressMonitor progressMonitor) throws Exception {				
 				org.nasdanika.ncore.Map header = NcoreFactory.eINSTANCE.createMap();
 				if (visible) {
 					header.put("visible", visible);
 				}
-				header.put("key", "this");
+				header.put("key", "__this");
 				header.put("label", label);
 				return header;
 			}
@@ -1043,13 +1043,13 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 					EObject rowElement, 
 					Map row, 
 					Action base, 
-					ETypedElement typedElement, 
+					ETypedElement tElement, 
 					Context context,
 					ProgressMonitor progressMonitor) throws Exception {
 				
 				EObject renderedValue = renderValue(base, null, (Object) rowElement, context, progressMonitor);
 				if (renderedValue != null) {
-					row.put("this", renderedValue);
+					row.put("__this", renderedValue);
 				}				
 			}
 		};
@@ -1113,6 +1113,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			String appId,
 			Context context, 
 			ProgressMonitor progressMonitor) throws Exception {
+
 		org.nasdanika.ncore.List columns = NcoreFactory.eINSTANCE.createList();
 		for (DynamicColumnBuilder<? super T> cb: columnBuilders) {
 			org.nasdanika.ncore.Map column = cb.buildHeader(base, typedElement, context, progressMonitor);
@@ -1129,17 +1130,17 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		}
 		Tag table = HtmlFactory.eINSTANCE.createTag();
 		table.setName("nsd-table");
-		table.getAttributes().put("columns", columns);
-		table.getAttributes().put("items", items);
+		table.getAttributes().put(":columns", columns);
+		table.getAttributes().put(":items", items);
 		if (!Util.isBlank(configKey)) {
-			table.getAttributes().put("configKey", createText(configKey));			
+			table.getAttributes().put("config-key", createText(configKey));			
 		}
 		
 		Tag appDiv = HtmlFactory.eINSTANCE.createTag();
 		appDiv.getContent().add(table);
 		appDiv.setName("div");
 		if (Util.isBlank(appId)) {
-			appId = UUID.randomUUID().toString();
+			appId = HTMLFactory.INSTANCE.nextId()+"-vue-app";
 		}
 		appDiv.getAttributes().put("id", createText(appId));
 		

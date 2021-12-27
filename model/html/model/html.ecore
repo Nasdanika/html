@@ -98,7 +98,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Script" eSuperTypes="../../org.nasdanika.exec/model/exec.ecore#//content/Filter">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Script with code stored in the model element ``code`` attribute."/>
+      <details key="documentation" value="Script with code stored in the model element ``source`` reference."/>
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScriptReference" eSuperTypes="../../org.nasdanika.ncore/model/ncore.ecore#//ModelElement">
