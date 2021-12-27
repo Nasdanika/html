@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -58,9 +59,13 @@ import org.nasdanika.html.model.bootstrap.TableHeader;
 import org.nasdanika.html.model.bootstrap.TableRow;
 import org.nasdanika.html.model.bootstrap.TableSection;
 import org.nasdanika.html.model.html.HtmlFactory;
+import org.nasdanika.html.model.html.Script;
+import org.nasdanika.html.model.html.Tag;
+import org.nasdanika.ncore.Map;
 import org.nasdanika.ncore.Marked;
 import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.ModelElement;
+import org.nasdanika.ncore.NcoreFactory;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.Period;
 import org.nasdanika.ncore.Temporal;
@@ -884,6 +889,18 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		return createColumnBuilders(Arrays.asList(typedElements));
 	}
 
+	/**
+	 * Builds a static table.
+	 * @param <T>
+	 * @param elements
+	 * @param base
+	 * @param typedElement
+	 * @param context
+	 * @param progressMonitor
+	 * @param columnBuilders
+	 * @return
+	 * @throws Exception
+	 */
 	@SafeVarargs
 	public static <T> Table buildTable(
 			Collection<? extends T> elements, 
@@ -895,6 +912,18 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		return buildTable(elements, Arrays.asList(columnBuilders), base, typedElement, context, progressMonitor);
 	}
 	
+	/**
+	 * Builds a static table
+	 * @param <T>
+	 * @param elements
+	 * @param columnBuilders
+	 * @param base
+	 * @param typedElement
+	 * @param context
+	 * @param progressMonitor
+	 * @return
+	 * @throws Exception
+	 */
 	public static <T> Table buildTable(
 			Collection<? extends T> elements, 
 			Collection<ColumnBuilder<? super T>> columnBuilders,
@@ -929,6 +958,201 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			}
 		}
 		return ret;
+	}
+		
+	protected DynamicColumnBuilder<EObject> createDynamicColumnBuilder(ETypedElement typedElement, boolean visible) {
+		return createDynamicColumnBuilder(typedElement, createETypedElementLabel(typedElement, false), visible);
+	}
+	
+	protected DynamicColumnBuilder<EObject> createDynamicColumnBuilder(ETypedElement typedElement, String label, boolean visible) {
+		return createDynamicColumnBuilder(typedElement, createText(label), visible);
+	}
+	
+	protected DynamicColumnBuilder<EObject> createDynamicColumnBuilder(ETypedElement typedElement, EObject label, boolean visible) {
+		return new DynamicColumnBuilder<EObject>() {
+
+			@Override
+			public Map buildHeader(
+					Action base, 
+					ETypedElement typedElement, 
+					Context context,
+					ProgressMonitor progressMonitor) throws Exception {
+				
+				org.nasdanika.ncore.Map header = NcoreFactory.eINSTANCE.createMap();
+				if (visible) {
+					header.put("visible", visible);
+				}
+				header.put("key", typedElement.getName()); // TODO - signature for EOperations
+				header.put("label", label);
+				return header;
+			}
+
+			@Override
+			public void buildCell(
+					EObject rowElement, 
+					Map row, 
+					Action base, 
+					ETypedElement tElement, 
+					Context context,
+					ProgressMonitor progressMonitor) throws Exception {
+				
+				Object value = getTypedElementValue(rowElement, typedElement);
+				EObject renderedValue = renderValue(base, typedElement, value, context, progressMonitor);
+				if (renderedValue != null) {
+					row.put(typedElement.getName(), renderedValue); // TODO - signature for EOperations
+				}
+				
+			}
+		};
+	}
+	
+	/**
+	 * Creates a dynamic column builder for the row element itself.
+	 * @param label
+	 * @return
+	 */
+	protected DynamicColumnBuilder<EObject> createDynamicColumnBuilder(String label, boolean visible) {
+		return createDynamicColumnBuilder(createText(label), visible);
+	}
+	
+	/**
+	 * Creates a dynamic column builder for the row element itself.
+	 * @param label
+	 * @return
+	 */
+	protected DynamicColumnBuilder<EObject> createDynamicColumnBuilder(EObject label, boolean visible) {
+		return new DynamicColumnBuilder<EObject>() {
+			
+			@Override
+			public org.nasdanika.ncore.Map buildHeader(
+					Action base, 
+					ETypedElement typedElement, 
+					Context context,
+					ProgressMonitor progressMonitor) throws Exception {				
+				org.nasdanika.ncore.Map header = NcoreFactory.eINSTANCE.createMap();
+				if (visible) {
+					header.put("visible", visible);
+				}
+				header.put("key", "this");
+				header.put("label", label);
+				return header;
+			}
+
+			@Override
+			public void buildCell(
+					EObject rowElement, 
+					Map row, 
+					Action base, 
+					ETypedElement typedElement, 
+					Context context,
+					ProgressMonitor progressMonitor) throws Exception {
+				
+				EObject renderedValue = renderValue(base, null, (Object) rowElement, context, progressMonitor);
+				if (renderedValue != null) {
+					row.put("this", renderedValue);
+				}				
+			}
+		};
+	}
+	
+	protected List<DynamicColumnBuilder<? super EObject>> createDynamicColumnBuilders(Collection<ETypedElement> typedElements) {
+		return typedElements.stream().map(te -> createDynamicColumnBuilder(te, true)).collect(Collectors.toList());
+	}
+	
+	protected List<DynamicColumnBuilder<? super EObject>> createDynamicColumnBuilders(ETypedElement... typedElements) {
+		return createDynamicColumnBuilders(Arrays.asList(typedElements));
+	}
+	
+	/**
+	 * Builds a dynamic configurable table.
+	 * @param <T>
+	 * @param elements
+	 * @param base
+	 * @param typedElement
+	 * @param configKey Browser local storage key for table configuration.
+	 * @param appId Id for the application div. Generated if null.
+	 * @param context
+	 * @param progressMonitor
+	 * @param columnBuilders
+	 * @return
+	 * @throws Exception
+	 */
+	@SafeVarargs
+	public static <T> Tag buildDynamicTable(
+			Collection<? extends T> elements, 
+			Action base, 
+			ETypedElement typedElement,
+			String configKey,
+			String appId,
+			Context context, 
+			ProgressMonitor progressMonitor,			
+			DynamicColumnBuilder<? super T>... columnBuilders) throws Exception {
+		return buildDynamicTable(elements, Arrays.asList(columnBuilders), base, typedElement, configKey, appId, context, progressMonitor);
+	}
+	
+	/**
+	 * Builds a dynamic configurable table.
+	 * @param <T>
+	 * @param elements
+	 * @param columnBuilders
+	 * @param base
+	 * @param typedElement
+	 * @param configKey Browser local storage key for table configuration.
+	 * @param appId Id for the application div. Generated if null.
+	 * @param context
+	 * @param progressMonitor
+	 * @return
+	 * @throws Exception
+	 */
+	public static <T> Tag buildDynamicTable(
+			Collection<? extends T> elements, 
+			Collection<DynamicColumnBuilder<? super T>> columnBuilders,
+			Action base, 
+			ETypedElement typedElement,
+			String configKey,
+			String appId,
+			Context context, 
+			ProgressMonitor progressMonitor) throws Exception {
+		org.nasdanika.ncore.List columns = NcoreFactory.eINSTANCE.createList();
+		for (DynamicColumnBuilder<? super T> cb: columnBuilders) {
+			org.nasdanika.ncore.Map column = cb.buildHeader(base, typedElement, context, progressMonitor);
+			columns.getValue().add(column);
+		}
+		
+		org.nasdanika.ncore.List items = NcoreFactory.eINSTANCE.createList();
+		for (T element: elements) {
+			org.nasdanika.ncore.Map item = NcoreFactory.eINSTANCE.createMap();
+			for (DynamicColumnBuilder<? super T> cb: columnBuilders) {
+				cb.buildCell(element, item, base, typedElement, context, progressMonitor);
+			}
+			items.getValue().add(item);
+		}
+		Tag table = HtmlFactory.eINSTANCE.createTag();
+		table.setName("nsd-table");
+		table.getAttributes().put("columns", columns);
+		table.getAttributes().put("items", items);
+		if (!Util.isBlank(configKey)) {
+			table.getAttributes().put("configKey", createText(configKey));			
+		}
+		
+		Tag appDiv = HtmlFactory.eINSTANCE.createTag();
+		appDiv.getContent().add(table);
+		appDiv.setName("div");
+		if (Util.isBlank(appId)) {
+			appId = UUID.randomUUID().toString();
+		}
+		appDiv.getAttributes().put("id", createText(appId));
+		
+		Tag wrapperDiv = HtmlFactory.eINSTANCE.createTag();
+		wrapperDiv.getContent().add(appDiv);
+		wrapperDiv.setName("div");
+		
+		Script script = HtmlFactory.eINSTANCE.createScript();
+		wrapperDiv.getContent().add(script);
+		String code = "new Vue({ el: '#" + appId + "' });";
+		script.setSource(createText(code));
+		
+		return wrapperDiv;
 	}
 	
 	/**
