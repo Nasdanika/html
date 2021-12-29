@@ -18,7 +18,6 @@ Vue.component('nsd-table', {
         	sortDesc: false,
         	sortDirection: 'asc',
         	filter: null,
-        	filterOn: [],
         	visibleFields: null,
         	config: {
 				items: null,
@@ -37,15 +36,15 @@ Vue.component('nsd-table', {
 					console.error(error);
 				}
 			}
-			if (!data.visibleFields) {
-				data.visibleFields = [];
-				this.columns.forEach(element => {
-					if (element.visible) {
-						data.visibleFields.push(element.key);
-					}
-				});				
-				
-			}			
+			// TODO - sortable and filterable
+		}
+		if (!data.visibleFields) {
+			data.visibleFields = [];
+			this.columns.forEach(element => {
+				if (element.visible) {
+					data.visibleFields.push(element.key);
+				}
+			});								
 		}
 		
 		return data;
@@ -53,17 +52,14 @@ Vue.component('nsd-table', {
 	computed: {
 		fields() {
 			return this.columns.filter(this.filterColumns);
-		}, 
-		rows() {
-			return this.items.filter(this.filterItems);
-  		}  	
+		},  	
+  		filterOn() {
+			return this.visibleFields;
+		}
 	},
 	methods: {
 		filterColumns(column) {
 			return this.visibleFields.indexOf(column.key) !== -1;
-		},
-		filterItems(item) {
-			return true;
 		},
 		configModal() {
 			this.config.items = [];
@@ -138,7 +134,7 @@ Vue.component('nsd-table', {
 					<b-table 
 						striped 
 						hover
-						:items="rows"
+						:items="items"
 						:fields="fields"
 						@filtered="onFiltered"
 						:filter="filter"

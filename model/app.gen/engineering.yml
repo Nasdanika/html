@@ -10,5 +10,13 @@ engineering-module:
        name: Implement support of remaining section styles and section columns in the Content panel
        description: table, cards, card tabs, card pills. 
        effort: 4 
+     table-component:
+       name: Table component improvements
+       description: |+2
+         Filterable flag to fields, also store, filterable column in the configuration table.
+         Sortable flag to fields, also store, sortable column in the configuration table.
+         Search using visible text, not HTML markup - an extra field, see if there are table facilities, use own filter function otherwise.
+         Table configuration (style) - pagination, border, ... - two tabs in the dialog - Columns and Style.            
+       effort: 16 
      
    
