@@ -15,8 +15,14 @@ engineering-module:
        description: |+2
          Filterable flag to fields, also store, filterable column in the configuration table.
          Sortable flag to fields, also store, sortable column in the configuration table.
-         Search using visible text, not HTML markup - an extra field, see if there are table facilities, use own filter function otherwise.
-         Table configuration (style) - pagination, border, ... - two tabs in the dialog - Columns and Style.            
-       effort: 16 
+         Search using visible text, not HTML markup - an extra field, see if there are table facilities, use own filter function otherwise. Jsoup to produce text from markup during generation.
+         Table configuration (style) - pagination, border, ... - two tabs in the dialog - Columns and Style. 
+         Primary key prop.           
+       effort: 8 
+     table-component-column-order:
+       name: Table component column order
+       description: |+2
+         Add support of column ordering - drag and drop or up/down arrows. Also storable in the local storage.            
+       effort: 4 
      
    

@@ -88,9 +88,7 @@ public class ListSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 
 	private static Function<java.util.Map<String, Object>, JSONObject> createMapToJsonObjectFunction(Context context) {
 		java.util.function.Function<Map<String, Object>, JSONObject> func = map -> {
-			JSONObject ret = new JSONObject(map);
-			System.out.println(ret.toString(4));
-			return ret;
+			return new JSONObject(map);
 		};
 		return Function.fromFunction(func, "Map to JSON Object", 1);
 	}
