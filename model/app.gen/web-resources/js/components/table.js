@@ -84,8 +84,12 @@ Vue.component('nsd-table', {
 				};
 				window.localStorage.setItem(this.configKey, JSON.stringify(storedConfig));
 			}
-		}
-		
+		},
+		onFiltered(filteredItems) {
+        // Trigger pagination to update the number of buttons/pages due to filtering
+        this.totalRows = filteredItems.length
+        this.currentPage = 1
+      }				
 	}, 
 	template: `
 		<b-container fluid>		
@@ -131,7 +135,15 @@ Vue.component('nsd-table', {
 			</b-row>
 			<b-row>
 				<b-col>
-					<b-table striped hover :items="rows" :fields="fields">
+					<b-table 
+						striped 
+						hover
+						:items="rows"
+						:fields="fields"
+						@filtered="onFiltered"
+						:filter="filter"
+      					:filter-included-fields="filterOn">
+      					
 						<template #head()="data">
 							<span v-html="data.label"></span>
 			      		</template>
