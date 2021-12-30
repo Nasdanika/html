@@ -15,12 +15,5 @@ engineering-product:
       - jstree/engineering.yml
       - knockout/engineering.yml
       - model/engineering.yml
-  issues:
-    merge-to-master:
-      name: Merge to master 
-    vue:
-      name: Vue module
-      description: |+2
-        Vue interface with directives and from methods to wrap from HTML element, Bootstrap Element, and model HTML element.
 
 
