@@ -4,15 +4,19 @@ bootstrap-page:
   name: Application Page Template
   language: EN
   stylesheets: 
-    - https://cdn.jsdelivr.net/gh/Nasdanika/html@develop/model/app.gen/style/app.css 
+    - https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/css/app.css 
     - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css
-    - https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.11/themes/default/style.min.css
+    - https://cdn.jsdelivr.net/npm/jstree@3.3.11/dist/themes/default/style.min.css
     - https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/styles/default.min.css
+    - https://cdn.jsdelivr.net/npm/bootstrap-vue@2.21.2/dist/bootstrap-vue.css
   scripts:
-    - https://cdn.jsdelivr.net/gh/Nasdanika/html@develop/model/app.gen/style/common.js 
-    - https://cdn.jsdelivr.net/gh/Nasdanika/html@develop/model/app.gen/style/dark-head.js 
-    - https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.11/jstree.min.js        
-    - https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/highlight.min.js        
+    - https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/js/common.js 
+    - https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/js/dark-head.js 
+    - https://cdn.jsdelivr.net/npm/jstree@3.3.11/dist/jstree.min.js
+    - https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/highlight.min.js
+    - https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js
+    - https://cdn.jsdelivr.net/npm/bootstrap-vue@2.21.2/dist/bootstrap-vue.min.js
+    - https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/js/components/table.js
   body:
     app-page:
       fluid: true
