@@ -1,1 +1,5 @@
-See [Nasdanika HTML Site](https://www.nasdanika.org/home/products/html/).
+# HTML
+
+Nasdanika HTML libraries.
+
+[Online documentation](https://docs.nasdanika.org/modules/html/index.html)
