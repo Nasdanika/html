@@ -20,6 +20,8 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.PlantUmlTextGenerator;
 import org.nasdanika.emf.PlantUmlTextGenerator.RelationshipDirection;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.ncore.util.NcoreUtil;
 
 public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage> {
 
@@ -57,7 +59,35 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 		action.setLocation(ePackageFolder + "/package-summary.html");
 		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject));
 		
-		addContent(action, generateDiagram(false,  null, 0, RelationshipDirection.both, true, true));
+		String diagramMode = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "diagram", "content");
+		switch (diagramMode) {
+		case "content":
+			addContent(action, generateDiagram(false,  null, 0, RelationshipDirection.both, true, true));
+			break;
+		case "none":
+			break;
+		case "navigation": {
+			Action diagramAction = AppFactory.eINSTANCE.createAction();
+			action.getNavigation().add(diagramAction);
+			diagramAction.setText("Diagram");
+			diagramAction.setIcon("fas fa-project-diagram");
+			diagramAction.setLocation(ePackageFolder + "/package-summary-diagram.html");
+			addContent(diagramAction, generateDiagram(false,  null, 0, RelationshipDirection.both, true, true));
+			break;
+		}
+		case "anonymous": {
+			Action diagramAction = AppFactory.eINSTANCE.createAction();
+			action.getAnonymous().add(diagramAction);
+			diagramAction.setText("Diagram");
+			diagramAction.setIcon("fas fa-project-diagram");
+			diagramAction.setLocation(ePackageFolder + "/package-summary-diagram.html");
+			addContent(diagramAction, generateDiagram(false,  null, 0, RelationshipDirection.both, true, true));
+			break;			
+		}
+		default:
+			throw new IllegalArgumentException("Unsupported diagram annotation value '" + diagramMode +"' on EPackage " + eObject); 			
+		}
+		
 		// TODO - Table (list) of contents
 //		addContent(data, Collections.singletonMap("component-list-of-contents", Collections.singletonMap("tooltip", true))); 
 		

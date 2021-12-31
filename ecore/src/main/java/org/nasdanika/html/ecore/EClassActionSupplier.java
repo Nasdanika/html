@@ -62,7 +62,34 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		action.setSectionStyle(SectionStyle.HEADER);
 		
 		// Diagram
-		addContent(action, generateDiagram(false, null, 1, RelationshipDirection.both, true, true, progressMonitor));
+		String diagramMode = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "diagram", "content");
+		switch (diagramMode) {
+		case "content":
+			addContent(action, generateDiagram(false, null, 1, RelationshipDirection.both, true, true, progressMonitor));
+			break;
+		case "none":
+			break;
+		case "navigation": {
+			Action diagramAction = AppFactory.eINSTANCE.createAction();
+			action.getNavigation().add(diagramAction);
+			diagramAction.setText("Diagram");
+			diagramAction.setIcon("fas fa-project-diagram");
+			diagramAction.setLocation(eObject.getName() + "-diagram.html");
+			addContent(diagramAction, generateDiagram(false, null, 1, RelationshipDirection.both, true, true, progressMonitor));
+			break;
+		}
+		case "anonymous": {
+			Action diagramAction = AppFactory.eINSTANCE.createAction();
+			action.getAnonymous().add(diagramAction);
+			diagramAction.setText("Diagram");
+			diagramAction.setIcon("fas fa-project-diagram");
+			diagramAction.setLocation(eObject.getName() + "-diagram.html");
+			addContent(diagramAction, generateDiagram(false, null, 1, RelationshipDirection.both, true, true, progressMonitor));
+			break;			
+		}
+		default:
+			throw new IllegalArgumentException("Unsupported diagram annotation value '" + diagramMode +"' on EClass " + eObject); 			
+		}		
 
 		// Generic supertypes
 		EList<EGenericType> eGenericSuperTypes = eObject.getEGenericSuperTypes();
