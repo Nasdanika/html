@@ -62,7 +62,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		action.setSectionStyle(SectionStyle.HEADER);
 		
 		// Diagram
-		String diagramMode = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "diagram", "content");
+		String diagramMode = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "diagram", "navigation");
 		switch (diagramMode) {
 		case "content":
 			addContent(action, generateDiagram(false, null, 1, RelationshipDirection.both, true, true, progressMonitor));

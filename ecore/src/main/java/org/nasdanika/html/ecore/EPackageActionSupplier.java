@@ -59,7 +59,7 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 		action.setLocation(ePackageFolder + "/package-summary.html");
 		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject));
 		
-		String diagramMode = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "diagram", "content");
+		String diagramMode = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "diagram", "navigation");
 		switch (diagramMode) {
 		case "content":
 			addContent(action, generateDiagram(false,  null, 0, RelationshipDirection.both, true, true));
