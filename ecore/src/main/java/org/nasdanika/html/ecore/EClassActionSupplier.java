@@ -176,7 +176,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			Predicate<EStructuralFeature> predicate = sf -> sf.isChangeable() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, "true"));
 			for (EStructuralFeature sf: eObject.getEAllStructuralFeatures().stream().filter(predicate).sorted(namedElementComparator).collect(Collectors.toList())) {
 				Row featureRow = table.body().row();
-				Cell keyCell = featureRow.cell(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, Util.camelToKebab(sf.getName())));
+				Cell keyCell = featureRow.cell(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, NcoreUtil.getFeatureKey(eObject, sf)));
 				keyCell.text().monospace();
 				if (EObjectLoader.isDefaultFeature(eObject, sf)) {
 					keyCell.text().weight(Weight.BOLD);
