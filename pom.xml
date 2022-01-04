@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika.html</groupId>
-	<version>2021.12.2</version>
+	<version>2022.1.0</version>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Nasdanika HTML Parent</name>
@@ -11,7 +11,7 @@
 	<url>https://nasdanika.org</url>
 		
 	<properties>
-		<core.version>2021.12.2</core.version>
+		<core.version>2022.1.0</core.version>
 		<jacoco.version>0.8.7</jacoco.version>
 	</properties>	
 
@@ -98,6 +98,112 @@
 						<configuration>
 							<failOnError>false</failOnError>
 							<additionalparam>-Xdoclint:none</additionalparam>
+							<links>
+								<link>https://download.eclipse.org/modeling/emf/emf/javadoc/2.11/</link>
+								<link>https://picocli.info/apidocs/</link>
+							</links>
+							<offlineLinks>
+                                                                <!-- Core -->
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/core/modules/common/apidocs/</url>
+									<location>${project.parent.basedir}/../core/common/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/core/modules/ncore/apidocs/</url>
+									<location>${project.parent.basedir}/../core/ncore/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/core/modules/flow/apidocs/</url>
+									<location>${project.parent.basedir}/../core/flow/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/core/modules/diagram/modules/model/apidocs/</url>
+									<location>${project.parent.basedir}/../core/diagram/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/core/modules/diagram/modules/gen/apidocs/</url>
+									<location>${project.parent.basedir}/../core/diagram.gen/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/core/modules/exec/modules/model/apidocs/</url>
+									<location>${project.parent.basedir}/../core/exec/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/core/modules/exec/modules/gen/apidocs/</url>
+									<location>${project.parent.basedir}/../core/exec.gen/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/core/modules/cli/apidocs/</url>
+									<location>${project.parent.basedir}/../core/cli/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/core/modules/emf/apidocs/</url>
+									<location>${project.parent.basedir}/../core/emf/target/apidocs/</location>
+								</offlineLink>
+
+                                                                <!-- HTML -->
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/html/apidocs/</url>
+									<location>${project.parent.basedir}/html/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/bootstrap/apidocs/</url>
+									<location>${project.parent.basedir}/bootstrap/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/jstree/apidocs/</url>
+									<location>${project.parent.basedir}/jstree/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/knockout/apidocs/</url>
+									<location>${project.parent.basedir}/knockout/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/fontawesome/apidocs/</url>
+									<location>${project.parent.basedir}/fontawesome/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/echarts/apidocs/</url>
+									<location>${project.parent.basedir}/echarts/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/emf/apidocs/</url>
+									<location>${project.parent.basedir}/emf/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/models/modules/html/modules/model/apidocs/</url>
+									<location>${project.parent.basedir}/model/html/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/models/modules/html/modules/gen/apidocs/</url>
+									<location>${project.parent.basedir}/model/html.gen/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/models/modules/bootstrap/modules/model/apidocs/</url>
+									<location>${project.parent.basedir}/model/bootstrap/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/models/modules/bootstrap/modules/gen/apidocs/</url>
+									<location>${project.parent.basedir}/model/bootstrap.gen/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/models/modules/app/modules/model/apidocs/</url>
+									<location>${project.parent.basedir}/model/app/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/models/modules/app/modules/gen/apidocs/</url>
+									<location>${project.parent.basedir}/model/app.gen/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/ecore/apidocs/</url>
+									<location>${project.parent.basedir}/ecore/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/html/modules/flow/apidocs/</url>
+									<location>${project.parent.basedir}/flow/target/apidocs/</location>
+								</offlineLink>
+							</offlineLinks>
+
 						</configuration>
 					</execution>
 				</executions>

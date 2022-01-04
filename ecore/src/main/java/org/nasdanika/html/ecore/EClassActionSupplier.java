@@ -57,6 +57,9 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 	
 	@Override
 	public org.nasdanika.html.model.app.Action execute(ProgressMonitor progressMonitor) throws Exception {
+		
+		// TODO - Javadoc
+		
 		Action action = super.execute(progressMonitor);
 		
 		action.setSectionStyle(SectionStyle.HEADER);

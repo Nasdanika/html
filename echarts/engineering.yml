@@ -1,6 +1,7 @@
 engineering-module:
   name: ECharts
   path: echarts
+  action-prototype: "../javadoc-action-prototype.xml#/"
   dependencies:
     - engineering://nasdanika/modules/html/modules/bootstrap
   

@@ -1,6 +1,7 @@
 engineering-module:
   name: Ecore
   path: ecore
+  action-prototype: "../javadoc-action-prototype.xml#/"
   dependencies:
     - engineering://nasdanika/modules/html/modules/emf
   issues:
@@ -22,5 +23,7 @@ engineering-module:
       name: Consider support of association classes using annotations. E.g. an annotation on the association class with target reference name. Say ``association-class-reference`` key with reference name.  
     action-template-annotation:
       name: Action template annotation - location of an action resource to load a template from instead of using AppFactory.createAction(). Would allow to merge, say, navigation actions.
+    javadoc:
+      name: Javadoc link to instance class.
 
 

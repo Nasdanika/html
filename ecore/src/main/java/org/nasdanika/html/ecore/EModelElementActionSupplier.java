@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.codec.binary.Hex;
@@ -36,6 +37,9 @@ import org.nasdanika.exec.content.Markdown;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.html.model.app.util.ActionProvider;
+import org.nasdanika.ncore.ModelElement;
+import org.nasdanika.ncore.util.NcoreUtil;
 
 public class EModelElementActionSupplier<T extends EModelElement> extends EObjectActionSupplier<T> {
 	
@@ -59,7 +63,19 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	
 
 	@Override
-	public Action execute(ProgressMonitor progressMonitor) throws Exception {
+	public Action execute(ProgressMonitor progressMonitor) throws Exception {		
+		// TODO - refactor to 
+//		EObject actionPrototype = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "action-prototype");
+//		if (actionPrototype instanceof Action) {
+//			return EcoreUtil.copy((Action) actionPrototype);
+//		}
+//		if (actionPrototype != null) {
+//			ActionProvider actionProvider = Objects.requireNonNull((ActionProvider) EcoreUtil.getRegisteredAdapter(actionPrototype, ActionProvider.class), "Cannot adapt " + actionPrototype + " to " + ActionProvider.class);
+//			return actionProvider.execute(registry, progressMonitor);
+//		}
+//		return AppFactory.eINSTANCE.createAction();
+		
+		
 		Action ret = AppFactory.eINSTANCE.createAction();
 		ret.setIcon(ICONS_BASE+eObject.eClass().getName()+".gif");
 		

@@ -1,5 +1,6 @@
 engineering-module:
   name: FontAwesome
   path: fontawesome
+  action-prototype: "../javadoc-action-prototype.xml#/"
   dependencies:
     - engineering://nasdanika/modules/html/modules/html
