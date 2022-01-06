@@ -86,26 +86,62 @@ flow-package:
                   target: one
                 two:
                   target: two
+                choice:
+                  target: choice
+          choice:
+            flow-choice:
+              outputs:
+                one-a:
+                  target: one-a
                 three:
                   target: three
+                fork:
+                  target: fork
           one:
             flow-activity:
               name: One 
               outputs:
                 one:
                   target: one-a
+              calls:
+                installation:
+                  target: nasdanika://flow/test/resources/ide/services/install
+                  description: Install things.
+              representations:
+                flow:
+                  hide-empty-description: true
+                  vertical: false
+                  context: 1                  
           one-a:
             flow-activity:
               name: 1.a 
               outputs:
-                one:
-                  target: one-b
+                fork:
+                  target: fork
+              representations:
+                flow:
+                  hide-empty-description: true
+                  vertical: false
+                  context: 1   
+          fork:
+            flow-fork:
+              description: Fork on the road
+              outputs:
+                one-b:
+                  target: one-b                       
+                two:
+                  target: two                       
           one-b:
             flow-activity:
               name: 1.b 
               outputs:
                 one:
                   target: end
+              representations:
+                flow:
+                  hide-empty-description: true
+                  vertical: false
+                  context: 1                  
           two:
             flow-flow:
               name: Two 
@@ -143,12 +179,22 @@ flow-package:
                         target: end
                 end:
                   flow-end: {}              
+              representations:
+                flow:
+                  hide-empty-description: true
+                  vertical: false
+                  context: 1                  
           three:
             flow-activity:
               name: Three 
               outputs:
                 one:
                   target: end
+              representations:
+                flow:
+                  hide-empty-description: true
+                  vertical: false
+                  context: 1                  
           end:
             flow-end: {} 
             
