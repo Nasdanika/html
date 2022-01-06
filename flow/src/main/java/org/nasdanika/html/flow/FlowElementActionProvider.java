@@ -34,9 +34,7 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 	@Override
 	protected List<ETypedElement> getProperties() {
 		List<ETypedElement> properties = super.getProperties();
-		properties.add(FlowPackage.Literals.FLOW_ELEMENT__CALLS);
 		properties.add(FlowPackage.Literals.FLOW_ELEMENT__INPUT_ARTIFACTS);
-		properties.add(FlowPackage.Literals.FLOW_ELEMENT__INVOCATIONS);
 		properties.add(FlowPackage.Literals.FLOW_ELEMENT__OUTPUT_ARTIFACTS);
 		properties.add(FlowPackage.Literals.FLOW_ELEMENT__PARTICIPANTS);
 		properties.add(FlowPackage.Literals.FLOW_ELEMENT__RESOURCES);
