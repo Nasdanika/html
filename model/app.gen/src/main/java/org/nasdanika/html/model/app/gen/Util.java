@@ -267,7 +267,7 @@ public final class Util {
 		}
 		
 		for (Action anonymous: activeAction.getAnonymous()) {
-			generateSite(root, principal, (Action) anonymous, subActionPath, pageTemplate, uriResolver, baseURI, container, progressMonitor);
+			generateSite(root, principal, anonymous, subActionPath, pageTemplate, uriResolver, baseURI, container, progressMonitor);
 		}
 		
 		generateNavigationPanel(root, principal, actionPath, activeAction.getFloatLeftNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
