@@ -1,0 +1,1 @@
+${embedded-image/png/nasdanika-logo.png}

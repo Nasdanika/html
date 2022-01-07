@@ -88,6 +88,8 @@ flow-package:
                   target: two
                 choice:
                   target: choice
+                service: 
+                  target: service
           choice:
             flow-choice:
               outputs:
@@ -97,6 +99,15 @@ flow-package:
                   target: three
                 fork:
                   target: fork
+          service:
+            flow-service:
+              name: Install stuff
+              target: nasdanika://flow/test/resources/ide/services/install 
+              documentation:
+                content-interpolator:
+                  process-includes: true
+                  source:
+                    content-resource: install.txt       
           one:
             flow-activity:
               name: One 
