@@ -105,9 +105,11 @@ flow-package:
               target: nasdanika://flow/test/resources/ide/services/install 
               documentation:
                 content-interpolator:
-                  process-includes: true
                   source:
-                    content-resource: install.txt       
+                    content-markdown:
+                      style: true
+                      source:
+                        content-resource: install.md       
           one:
             flow-activity:
               name: One 
