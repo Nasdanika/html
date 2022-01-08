@@ -49,6 +49,9 @@ $(document).ready( function() {
 
     if (hljs) {
         hljs.highlightAll();
+        if (hljs.initLineNumbersOnLoad) {
+        	hljs.initLineNumbersOnLoad();
+        }
     }
     
 });
