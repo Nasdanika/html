@@ -39,9 +39,34 @@ flow-package:
       modifiers: abstract
       services:
         install:
-          flow-activity:
+          flow-flow:
             name: Installation
-            description: ...
+            description: Do this and then that
+            representations:
+              flow:
+                hide-empty-description: true
+                vertical: false                
+            elements:
+              step-one:
+                flow-activity:
+                  name: Step 1
+                  outputs:
+                    step-two:
+                      target: step-two
+              step-two:
+                flow-flow:
+                  name: Step 2
+                  representations:
+                    flow:
+                      hide-empty-description: true
+                      vertical: false                
+                  elements:
+                    step-2.1:
+                      flow-activity:
+                        name: 2.1
+                    step-2.2:
+                      flow-activity:
+                        name: 2.2
     build-tool:
       name: Build tool
       modifiers: abstract

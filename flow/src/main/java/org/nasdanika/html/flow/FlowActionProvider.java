@@ -1,5 +1,6 @@
 package org.nasdanika.html.flow;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,10 +20,15 @@ import org.nasdanika.diagram.Diagram;
 import org.nasdanika.flow.Call;
 import org.nasdanika.flow.Flow;
 import org.nasdanika.flow.FlowElement;
+import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.PseudoState;
 import org.nasdanika.flow.Transition;
 import org.nasdanika.flow.util.FlowStateDiagramGenerator;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.NavigationPanel;
+import org.nasdanika.html.model.app.NavigationPanelStyle;
 import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.util.NamedElementComparator;
 
@@ -40,7 +46,7 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 		
 		Action action = super.createAction(registry, resolveConsumer, progressMonitor);
 		EList<EObject> children = action.getChildren(); 
-		Predicate<FlowElement<?>> isPseudoState = PseudoState.class::isInstance;
+		Predicate<FlowElement<?>> isPseudoState= PseudoState.class::isInstance;
 		for (FlowElement<?> element: getTarget().getElements().values().stream().filter(isPseudoState.negate()).sorted(FlowActionProvider::compareFlowElements).collect(Collectors.toList())) {
 			children.add(createChildAction(element, registry, resolveConsumer, progressMonitor));
 		}
@@ -213,6 +219,45 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 		} else {
 			flowStateDiagramGenerator.generateDiagram(getTarget(), representation);
 		}
+	}
+	
+	@Override
+	protected void resolve(
+			Action action, 
+			org.nasdanika.html.emf.EObjectActionResolver.Context context,
+			ProgressMonitor progressMonitor) throws Exception {
+		super.resolve(action, context, progressMonitor);
+		
+		if (getTarget().eContainmentFeature() == FlowPackage.Literals.ACTIVITY_ENTRY__VALUE && getTarget().eContainer().eContainmentFeature() == FlowPackage.Literals.SERVICE_PROVIDER__SERVICES) {
+			// Left content panel with children.
+			NavigationPanel leftNavigation = action.getLeftNavigation();
+			if (leftNavigation == null) {
+				leftNavigation = AppFactory.eINSTANCE.createNavigationPanel();
+				action.setLeftNavigation(leftNavigation);			
+				int subChildren = getTarget().getElements().values().stream().filter(Flow.class::isInstance).map(Flow.class::cast).map(Flow::getElements).mapToInt(Collection::size).sum();
+				leftNavigation.setStyle(subChildren == 0 ? NavigationPanelStyle.AUTO : NavigationPanelStyle.TREE);
+			}
+			Predicate<FlowElement<?>> isPseudoState= PseudoState.class::isInstance;
+			for (FlowElement<?> element: getTarget().getElements().values().stream().filter(isPseudoState.negate()).sorted(FlowActionProvider::compareFlowElements).collect(Collectors.toList())) {
+				leftNavigation.getItems().add(createItem(action, context, progressMonitor, element));
+			}
+		}
+
+	}
+
+	private EObject createItem(
+			Action action, 
+			org.nasdanika.html.emf.EObjectActionResolver.Context context,
+			ProgressMonitor progressMonitor, 
+			FlowElement<?> element) throws Exception {
+		EObject item = renderValue(action, FlowPackage.Literals.FLOW__ELEMENTS, element, context, progressMonitor);
+		if (element instanceof Flow && item instanceof Label) {
+			Predicate<FlowElement<?>> isPseudoState= PseudoState.class::isInstance;
+			for (FlowElement<?> child: ((Flow) element).getElements().values().stream().filter(isPseudoState.negate()).sorted(FlowActionProvider::compareFlowElements).collect(Collectors.toList())) {
+				((Label) item).getChildren().add(createItem(action, context, progressMonitor, child));
+			}
+		}
+		return item;
 	}
 
 }
