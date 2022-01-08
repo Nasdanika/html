@@ -75,7 +75,7 @@ flow-package:
             hide-empty-description: true
             vertical: false
           generated: 
-            type: drawio
+            type: drawio:./test.drawio
             name: Drawio
             description: Generated diagram
         elements:
