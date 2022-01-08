@@ -71,7 +71,7 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 			action.getNavigation().add(diagramAction);
 			diagramAction.setText("Diagram");
 			diagramAction.setIcon("fas fa-project-diagram");
-			diagramAction.setLocation(ePackageFolder + "/package-summary-diagram.html");
+			diagramAction.setLocation("package-summary-diagram.html");
 			addContent(diagramAction, generateDiagram(false,  null, 0, RelationshipDirection.both, true, true));
 			break;
 		}
