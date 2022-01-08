@@ -286,7 +286,7 @@ public final class Util {
 			ProgressMonitor progressMonitor) {
 		
 		if (root != null) {
-			Label title = createLabel(root, activeAction, uriResolver, null, "header/title", false);
+			Label title = createLabel(root, activeAction, uriResolver, null, "header/title", false, false);
 			EList<EObject> rootChildren = root.getChildren();
 			if (title != null || rootChildren.size() > 1) {
 				// Header
@@ -301,7 +301,7 @@ public final class Util {
 				List<EObject> headerItems = resolveActionReferences(header.getItems());
 				rootChildren.listIterator(1).forEachRemaining(rac -> {
 					if (rac instanceof Action) {
-						headerItems.add(createLabel((Action) rac, activeAction, uriResolver, null, "header/navigation", true));
+						headerItems.add(createLabel((Action) rac, activeAction, uriResolver, null, "header/navigation", true, false));
 					} else {
 						headerItems.add(EcoreUtil.copy(rac));
 					}
@@ -318,7 +318,7 @@ public final class Util {
 				EList<EObject> footerItems = footer.getItems();
 				rootNavigation.forEach(ran -> {
 					if (ran instanceof Action) {
-						footerItems.add(createLabel((Action) ran, activeAction, uriResolver, null, "footer/navigation", true));
+						footerItems.add(createLabel((Action) ran, activeAction, uriResolver, null, "footer/navigation", true, false));
 					} else {
 						footerItems.add(EcoreUtil.copy(ran));
 					}
@@ -329,7 +329,7 @@ public final class Util {
 		
 		if (principal != null) {
 			// Navbar 
-			Label brand = createLabel(principal, activeAction, uriResolver, null, "navbar/brand", false);
+			Label brand = createLabel(principal, activeAction, uriResolver, null, "navbar/brand", false, false);
 			List<EObject> principalNavigation = resolveActionReferences(principal.getNavigation());
 			if (brand != null || !principalNavigation.isEmpty()) {
 				NavigationBar navBar = appPage.getNavigationBar();
@@ -343,7 +343,7 @@ public final class Util {
 				EList<EObject> navBarItems = navBar.getItems();
 				principalNavigation.forEach(principalNavigationElement -> {
 					if (principalNavigationElement instanceof Action) {
-						navBarItems.add(createLabel((Action) principalNavigationElement, activeAction, uriResolver, null, "navbar/item", true));
+						navBarItems.add(createLabel((Action) principalNavigationElement, activeAction, uriResolver, null, "navbar/item", true, false));
 					} else {
 						navBarItems.add(EcoreUtil.copy(principalNavigationElement));
 					}
@@ -365,7 +365,7 @@ public final class Util {
 				List<EObject> navPanelItems = navPanel.getItems();
 				principalChildren.forEach(principalChild -> {
 					if (principalChild instanceof Action) {
-						navPanelItems.add(createLabel((Action) principalChild, activeAction, uriResolver, navItemIdProvider, "nav-panel", true));
+						navPanelItems.add(createLabel((Action) principalChild, activeAction, uriResolver, navItemIdProvider, "nav-panel", true, true));
 					} else {
 						navPanelItems.add(EcoreUtil.copy(principalChild));
 					}
@@ -396,19 +396,19 @@ public final class Util {
 			if (path != null && !path.isEmpty()) {
 				EList<Label> breadcrumb = contentPanel.getBreadcrumb();
 				path.forEach(pathElement -> {
-					Label element = createLabel(pathElement, action, uriResolver, null, "content-panel/breadcrumb", false);
+					Label element = createLabel(pathElement, action, uriResolver, null, "content-panel/breadcrumb", false, false);
 					if (element != null) {
 						breadcrumb.add(element);
 					}
 				});
-				Label tail = createLabel(action, action, uriResolver, null, "content-panel/breadcrumb", false);		
+				Label tail = createLabel(action, action, uriResolver, null, "content-panel/breadcrumb", false, false);		
 				tail.setActive(true);
 				breadcrumb.add(tail);
 			}
 	
 			if (!isBlank(action.getText()) || !isBlank(action.getIcon())) {
 				Label title = AppFactory.eINSTANCE.createLabel(); 
-				configureLabel(action, action, uriResolver, null, "content-panel/title", title, false);
+				configureLabel(action, action, uriResolver, null, "content-panel/title", title, false, false);
 				contentPanel.setTitle(title);
 			}
 					
@@ -416,7 +416,7 @@ public final class Util {
 			EList<EObject> navigationItems = contentPanel.getItems();
 			navigation.forEach(navigationElement -> {
 				if (navigationElement instanceof Action) {
-					navigationItems.add(createLabel((Action) navigationElement, action, uriResolver, null, "content-panel/navigation-item", true));
+					navigationItems.add(createLabel((Action) navigationElement, action, uriResolver, null, "content-panel/navigation-item", true, false));
 				} else {
 					navigationItems.add(EcoreUtil.copy(navigationElement));
 				}
@@ -471,6 +471,39 @@ public final class Util {
 		return uri != null || !isBlank(action.getScript()) || action.getModal() != null || !isBlank(action.getName());
 	}
 	
+	/**
+	 * @param action
+	 * @param activeAction
+	 * @return true if this action is active or one of its anonymous or navigation descendants is active.
+	 */
+	private static boolean isActiveAction(Action action, Action activeAction, boolean inspectChildren) {
+		if (action == activeAction) {
+			return true;
+		}
+		
+		for (Action ac: action.getAnonymous()) {
+			if (isActiveAction(ac, activeAction, inspectChildren)) {
+				return true;
+			}
+		}
+		
+		for (EObject nc: action.getNavigation()) {
+			if (nc instanceof Action && isActiveAction((Action) nc, activeAction, inspectChildren)) {
+				return true;
+			}
+		}
+		
+		if (inspectChildren) {
+			for (EObject child: action.getChildren()) {
+				if (child instanceof Action && isActiveAction((Action) child, activeAction, inspectChildren)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	private static void configureLabel(
 			Action action, 
 			Action activeAction, 
@@ -478,13 +511,13 @@ public final class Util {
 			Function<Action, String> idProvider, 
 			String appearancePath, 
 			Label label, 
-			boolean recursive) {
+			boolean recursive,
+			boolean inNavPanel) {
 		Appearance aa = action.getAppearance();
 		if (aa != null) {
 			label.setAppearance(aa.effectiveAppearance(appearancePath));
 		}
 
-		label.setActive(activeAction == action);
 		label.setColor(action.getColor());
 		label.setDescription(action.getDescription());
 		label.setDisabled(action.isDisabled());
@@ -516,7 +549,7 @@ public final class Util {
 				}
 				if (actionChild instanceof Action) {
 					Action childAction = (Action) actionChild;
-					labelChildren.add(createLabel(childAction, activeAction, uriResolver, idProvider, "header/navigation", recursive));
+					labelChildren.add(createLabel(childAction, activeAction, uriResolver, idProvider, "header/navigation", recursive, inNavPanel));
 					
 					// Second level - headers, separators.
 				} else {
@@ -524,6 +557,20 @@ public final class Util {
 				}							
 			}			
 		}
+		
+		label.setActive(inNavPanel ? isActiveAction(action, activeAction, !hasActiveChildren(label)) : action.isActive());		
+	}
+	
+	private static boolean hasActiveChildren(Label label) {
+		for (EObject child: label.getChildren()) {
+			if (child instanceof Label) {
+				Label cl = (Label) child;
+				if (cl.isActive() || hasActiveChildren(cl)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	private static void configureLink(
@@ -570,7 +617,8 @@ public final class Util {
 			BiFunction<Action, URI, URI> uriResolver, 
 			Function<Action, String> idProvider, 
 			String appearancePath,
-			boolean recursive) {
+			boolean recursive,
+			boolean inNavPanel) {
 		
 		URI activeActionURI = uriResolver.apply(activeAction, null);
 		URI uri = uriResolver.apply(action, activeActionURI);
@@ -579,7 +627,7 @@ public final class Util {
 			return null;
 		}
 		Label label = isLink(action, uri) ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
-		configureLabel(action, activeAction, uriResolver, idProvider, appearancePath, label, recursive);
+		configureLabel(action, activeAction, uriResolver, idProvider, appearancePath, label, recursive, inNavPanel);
 				
 		return label;
 	}
