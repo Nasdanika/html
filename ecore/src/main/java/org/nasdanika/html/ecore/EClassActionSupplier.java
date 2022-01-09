@@ -51,8 +51,12 @@ import org.nasdanika.ncore.util.NcoreUtil;
 
 public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 
-	public EClassActionSupplier(EClass value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
-		super(value, context, ePackagePathComputer);
+	public EClassActionSupplier(
+			EClass value, 
+			Context context, 
+			java.util.function.Function<EPackage,String> ePackagePathComputer,
+			java.util.function.Function<String, String> javadocResolver) {
+		super(value, context, ePackagePathComputer, javadocResolver);
 	}
 	
 	@Override

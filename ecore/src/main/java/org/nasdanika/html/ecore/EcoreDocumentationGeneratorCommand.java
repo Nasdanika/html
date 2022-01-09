@@ -110,7 +110,7 @@ public class EcoreDocumentationGeneratorCommand extends CommandBase {
 			context.put(JAVADOC_CONTEXT_BUILDER_MOUNT, javaDocContextBuilderMount);
 		}
 		
-		return new EcoreActionSupplierAdapterFactory(context, useEPackageNameInPath ? this::getEPackagePath : null);
+		return new EcoreActionSupplierAdapterFactory(context, useEPackageNameInPath ? this::getEPackagePath : null, null); // TODO JavadocResolver - perhaps javadoc URL's options 
 	}
 	
 	public List<ActionSupplier> loadGenModel() {

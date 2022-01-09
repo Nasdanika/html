@@ -23,7 +23,11 @@ import org.nasdanika.html.model.app.util.ActionSupplier;
  */
 public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 	
-	public EcoreActionSupplierAdapterFactory(Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
+	public EcoreActionSupplierAdapterFactory(
+			Context context, 
+			java.util.function.Function<EPackage,String> ePackagePathComputer,
+			java.util.function.Function<String, String> javadocResolver) {
+		
 		// Registering adapter factories.
 		registerAdapterFactory(
 			new FunctionAdapterFactory<ActionSupplier, EPackage>(
@@ -37,21 +41,21 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 				EcorePackage.Literals.ECLASS, 
 				ActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EClassActionSupplier(e, context, ePackagePathComputer)));		
+				e -> new EClassActionSupplier(e, context, ePackagePathComputer, javadocResolver)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<ActionSupplier, EDataType>(
 				EcorePackage.Literals.EDATA_TYPE, 
 				ActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EDataTypeActionSupplier(e, context, ePackagePathComputer)));		
+				e -> new EDataTypeActionSupplier(e, context, ePackagePathComputer, javadocResolver)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<ActionSupplier, EEnum>(
 				EcorePackage.Literals.EENUM, 
 				ActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EEnumActionSupplier(e, context, ePackagePathComputer)));		
+				e -> new EEnumActionSupplier(e, context, ePackagePathComputer, javadocResolver)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<ActionSupplier, EEnumLiteral>(

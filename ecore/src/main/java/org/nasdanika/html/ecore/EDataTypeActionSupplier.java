@@ -16,8 +16,12 @@ import org.nasdanika.html.model.app.Action;
 
 public class EDataTypeActionSupplier extends EClassifierActionSupplier<EDataType> {
 
-	public EDataTypeActionSupplier(EDataType value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
-		super(value, context, ePackagePathComputer);
+	public EDataTypeActionSupplier(
+			EDataType value, 
+			Context context, 
+			java.util.function.Function<EPackage,String> ePackagePathComputer,
+			java.util.function.Function<String, String> javadocResolver) {
+		super(value, context, ePackagePathComputer, javadocResolver);
 	}
 	
 	@Override

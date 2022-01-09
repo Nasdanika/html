@@ -97,10 +97,11 @@ public class TestEcoreDoc extends TestBase {
 		DiagramGenerator diagramGenerator = createDiagramGenerator(progressMonitor);
 		context.register(DiagramGenerator.class, diagramGenerator);//DiagramGenerator.createClient(new URL("http://localhost:8090/spring-exec/api/v1/exec/diagram/")));
 		
-		ecoreModelsResourceSet.getAdapterFactories().add(new EcoreActionSupplierAdapterFactory(context, getEPackagePath));
+		ecoreModelsResourceSet.getAdapterFactories().add(new EcoreActionSupplierAdapterFactory(context, getEPackagePath, org.nasdanika.common.Util.createNasdanikaJavadocResolver(new File("../.."), progressMonitor)));
 		
 		// Physical location relative to the projects (git) root folder -> logical (workspace) name 
 		Map<String,String> bundleMap = new LinkedHashMap<>();
+		bundleMap.put("core/ncore", "org.nasdanika.ncore");
 		bundleMap.put("core/exec", "org.nasdanika.exec");
 		bundleMap.put("core/flow", "org.nasdanika.flow");
 
@@ -123,7 +124,11 @@ public class TestEcoreDoc extends TestBase {
 				}
 			});			
 			copy(new File(sourceDir, "doc"), new File(targetDir, "doc"), true, null);
-		}		
+		}
+		
+//		URL eCoreGenmodelURL = getClass().getResource("/model/Ecore.genmodel");
+//		URI eCoreGenmodelURI = URI.createURI(eCoreGenmodelURL.toString());
+//		ecoreModelsResourceSet.getResource(eCoreGenmodelURI, true);
 		
 		// Loading resources to the resource set.
 		for (URI uri: modelToActionModelMap.keySet()) {

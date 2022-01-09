@@ -18,8 +18,12 @@ import org.nasdanika.html.model.app.SectionStyle;
 
 public class EEnumActionSupplier extends EClassifierActionSupplier<EEnum> {
 
-	public EEnumActionSupplier(EEnum value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
-		super(value, context, ePackagePathComputer);
+	public EEnumActionSupplier(
+			EEnum value, 
+			Context context, 
+			java.util.function.Function<EPackage,String> ePackagePathComputer,
+			java.util.function.Function<String, String> javadocResolver) {
+		super(value, context, ePackagePathComputer, javadocResolver);
 	}
 	
 	@Override

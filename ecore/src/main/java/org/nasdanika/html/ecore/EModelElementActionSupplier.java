@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.codec.binary.Hex;
@@ -37,9 +36,6 @@ import org.nasdanika.exec.content.Markdown;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
-import org.nasdanika.html.model.app.util.ActionProvider;
-import org.nasdanika.ncore.ModelElement;
-import org.nasdanika.ncore.util.NcoreUtil;
 
 public class EModelElementActionSupplier<T extends EModelElement> extends EObjectActionSupplier<T> {
 	
@@ -79,6 +75,8 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		Action ret = AppFactory.eINSTANCE.createAction();
 		ret.setIcon(ICONS_BASE+eObject.eClass().getName()+".gif");
 		
+		header(ret, progressMonitor);
+		
 		String markdown = EObjectAdaptable.getResourceContext(eObject).getString("documentation", EcoreUtil.getDocumentation(eObject));
 		if (Util.isBlank(markdown)) {
 			markdown = EmfUtil.getDocumentation(eObject);
@@ -91,6 +89,14 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		
 		return ret;
 	}
+	
+	/**
+	 * Content before documentation.
+	 * @param action
+	 * @param progressMonitor
+	 * @throws Exception
+	 */
+	protected void header(Action action, ProgressMonitor progressMonitor) throws Exception {}
 
 	@Override
 	public double size() {
