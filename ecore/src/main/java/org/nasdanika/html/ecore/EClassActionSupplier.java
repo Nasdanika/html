@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -17,7 +18,6 @@ import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -25,7 +25,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
-import org.nasdanika.common.MarkdownHelper;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.emf.EObjectAdaptable;
@@ -38,12 +37,7 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Color;
-import org.nasdanika.html.bootstrap.RowContainer.Row;
-import org.nasdanika.html.bootstrap.RowContainer.Row.Cell;
 import org.nasdanika.html.bootstrap.Table;
-import org.nasdanika.html.bootstrap.Text.Alignment;
-import org.nasdanika.html.bootstrap.Text.Weight;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.SectionStyle;
@@ -161,9 +155,9 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		
 		generateLoadSpecification(action, namedElementComparator, progressMonitor);
 		
-		EList<EAttribute> allAttributes = eObject.getEAllAttributes();
-		EList<EReference> allReferences = eObject.getEAllReferences();
-		EList<EOperation> allOperations = eObject.getEAllOperations();
+		List<EAttribute> allAttributes = eObject.getEAllAttributes().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		List<EReference> allReferences = eObject.getEAllReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		List<EOperation> allOperations = eObject.getEAllOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		
 		if (allAttributes.size() + allReferences.size() + allOperations.size() != 0) { 	
 			Action allGroup = AppFactory.eINSTANCE.createAction();
@@ -171,9 +165,9 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			allGroup.setUuid(action.getUuid() + "-all");
 			action.getNavigation().add(allGroup);
 			
-			generateAllAttributes(allAttributes, allGroup, namedElementComparator, progressMonitor);
-			generateAllReferences(allReferences, allGroup, namedElementComparator, progressMonitor);
-			generateAllOperations(allOperations, allGroup, namedElementComparator, progressMonitor);			
+			generateAllAttributes(allAttributes, allGroup, progressMonitor);
+			generateAllReferences(allReferences, allGroup, progressMonitor);
+			generateAllOperations(allOperations, allGroup, progressMonitor);			
 		}
 
 //		TODO - Table (list) of contents
@@ -227,11 +221,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		return action;
 	}
 
-	private void generateAllOperations(
-			EList<EOperation> allOperations, Action allGroup,
-			Comparator<ENamedElement> namedElementComparator, 
-			ProgressMonitor progressMonitor) throws Exception {
-		
+	private void generateAllOperations(List<EOperation> allOperations, Action allGroup, ProgressMonitor progressMonitor) throws Exception {		
 		if (!allOperations.isEmpty()) {
 			Action allOperationsAction = AppFactory.eINSTANCE.createAction();
 			allOperationsAction.setText("Operations");
@@ -239,53 +229,14 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			allOperationsAction.setSectionStyle(SectionStyle.HEADER);
 			allGroup.getChildren().add(allOperationsAction);
 			
-			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
-			Table table = bootstrapFactory.table().bordered().striped();
-			table.header().headerRow("Name", "Type", "Parameters", "Declaring class", "Description").background(Color.SECONDARY);			
-			
-			for (EOperation operation: allOperations.stream().sorted(namedElementComparator).collect(Collectors.toList())) {
-				Row featureRow = table.body().row();
-				featureRow.cell(operation.getName());
-
-				genericType(operation.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);
-				
-				org.nasdanika.html.RowContainer.Row.Cell paramsCell = featureRow.cell().toHTMLElement();
-				EList<EParameter> parameters = operation.getEParameters();
-				if (parameters.size() == 1) {
-					EParameter param = parameters.get(0);
-					paramsCell.content(param.getName(), " : ");
-					genericType(param.getEGenericType(), paramsCell.getContent(), progressMonitor);
-				} else if (!parameters.isEmpty()) {
-					Tag pList = bootstrapFactory.getHTMLFactory().tag(TagName.ol);
-					paramsCell.content(pList);
-					for (EParameter param: parameters) {
-						Tag pItem = bootstrapFactory.getHTMLFactory().tag(TagName.li);
-						pList.content(pItem);
-						pItem.content(param.getName(), " : ");
-						genericType(param.getEGenericType(), pItem.getContent(), progressMonitor);						
-					}					
-				}
-				
-				featureRow.cell(link(operation.getEContainingClass()));				
-				
-				String opDoc = EObjectAdaptable.getResourceContext(operation).getString("documentation", EcoreUtil.getDocumentation(operation));
-				if (Util.isBlank(opDoc)) {
-					opDoc = EmfUtil.getDocumentation(operation);
-				}
-				
-				featureRow.cell(Util.isBlank(opDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(opDoc));
-			};
-			
-			addContent(allOperationsAction, table.toString());
+			EList<Action> operations = allOperationsAction.getSections();			
+			for (EOperation eOp: eObject.getEOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+				operations.add(adaptChild(eOp).execute(progressMonitor));			
+			}
 		}
 	}
 
-	private void generateAllReferences(
-			EList<EReference> allReferences, 
-			Action allGroup,
-			Comparator<ENamedElement> namedElementComparator, 
-			ProgressMonitor progressMonitor) throws Exception {
-		
+	private void generateAllReferences(List<EReference> allReferences,	Action allGroup, ProgressMonitor progressMonitor) throws Exception {		
 		if (!allReferences.isEmpty()) {
 			Action allReferencesAction = AppFactory.eINSTANCE.createAction();
 			allReferencesAction.setText("References");
@@ -293,35 +244,14 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			allReferencesAction.setSectionStyle(SectionStyle.HEADER);
 			allGroup.getChildren().add(allReferencesAction);
 			
-			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
-			Table table = bootstrapFactory.table().bordered().striped();
-			table.header().headerRow("Name", "Type", "Declaring class", "Description").background(Color.SECONDARY);			
-			
-			for (EStructuralFeature reference: allReferences.stream().sorted(namedElementComparator).collect(Collectors.toList())) {
-				Row featureRow = table.body().row();
-				featureRow.cell(reference.getName());
-
-				genericType(reference.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);	
-				featureRow.cell(link(reference.getEContainingClass()));				
-				
-				String featureDoc = EObjectAdaptable.getResourceContext(reference).getString("documentation", EcoreUtil.getDocumentation(reference));
-				if (Util.isBlank(featureDoc)) {
-					featureDoc = EmfUtil.getDocumentation(reference);
-				}
-				
-				featureRow.cell(Util.isBlank(featureDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureDoc));
-			};
-			
-			addContent(allReferencesAction, table.toString());
+			EList<Action> references = allReferencesAction.getSections();			
+			for (EStructuralFeature sf: eObject.getEReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+				references.add(adaptChild(sf).execute(progressMonitor));
+			}
 		}
 	}
 
-	private void generateAllAttributes(
-			EList<EAttribute> allAttributes, 
-			Action allGroup,
-			Comparator<ENamedElement> namedElementComparator, 
-			ProgressMonitor progressMonitor) throws Exception {
-		
+	private void generateAllAttributes(List<EAttribute> allAttributes, Action allGroup,	ProgressMonitor progressMonitor) throws Exception {		
 		if (!allAttributes.isEmpty()) {
 			Action allAttributesAction = AppFactory.eINSTANCE.createAction();
 			allAttributesAction.setText("Attributes");
@@ -329,26 +259,10 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			allAttributesAction.setSectionStyle(SectionStyle.HEADER);
 			allGroup.getChildren().add(allAttributesAction);
 			
-			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
-			Table table = bootstrapFactory.table().bordered().striped();
-			table.header().headerRow("Name", "Type", "Declaring class", "Description").background(Color.SECONDARY);			
-			
-			for (EStructuralFeature attribute: allAttributes.stream().sorted(namedElementComparator).collect(Collectors.toList())) {
-				Row featureRow = table.body().row();
-				featureRow.cell(attribute.getName());
-
-				genericType(attribute.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);	
-				featureRow.cell(link(attribute.getEContainingClass()));				
-				
-				String featureDoc = EObjectAdaptable.getResourceContext(attribute).getString("documentation", EcoreUtil.getDocumentation(attribute));
-				if (Util.isBlank(featureDoc)) {
-					featureDoc = EmfUtil.getDocumentation(attribute);
-				}
-				
-				featureRow.cell(Util.isBlank(featureDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureDoc));
-			};
-			
-			addContent(allAttributesAction, table.toString());
+			EList<Action> attributes = allAttributesAction.getSections();
+			for (EStructuralFeature sf: allAttributes) {
+				attributes.add(adaptChild(sf).execute(progressMonitor));
+			}
 		}
 	}
 
@@ -359,44 +273,55 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		
 		// Load specification
 		if (!eObject.isAbstract() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.IS_LOADABLE, "true"))) {
-			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
-			Fragment loadSpecificationFragment = htmlFactory.fragment();
+			Action loadSpecificationAction = AppFactory.eINSTANCE.createAction();
+			loadSpecificationAction.setText("Load specification");
+			loadSpecificationAction.setLocation(eObject.getName() + "-load-specification.html");			
+			action.getNavigation().add(loadSpecificationAction);
 			
 			String loadDoc = NcoreUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.LOAD_DOC);
 			if (!Util.isBlank(loadDoc)) {
-				loadSpecificationFragment.content(interpolatedMarkdown(loadDoc));
+				addContent(loadSpecificationAction, loadDoc);
 			}
-			
-			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
-			Table table = bootstrapFactory.table().bordered().striped();
-			table.header().headerRow("Key", "Type", "Homogenous", "Strict containment", "Exclusive with", "Description").background(Color.SECONDARY);			
 			
 			Predicate<EStructuralFeature> predicate = sf -> sf.isChangeable() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, "true"));
 			for (EStructuralFeature sf: eObject.getEAllStructuralFeatures().stream().filter(predicate).sorted(namedElementComparator).collect(Collectors.toList())) {
-				Row featureRow = table.body().row();
-				Cell keyCell = featureRow.cell(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, NcoreUtil.getFeatureKey(eObject, sf)));
-				keyCell.text().monospace();
-				if (EObjectLoader.isDefaultFeature(eObject, sf)) {
-					keyCell.text().weight(Weight.BOLD);
-				}
+				Action featureAction = AppFactory.eINSTANCE.createAction();
+				String key = NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, NcoreUtil.getFeatureKey(eObject, sf));
+				featureAction.setText(key);
+				featureAction.setName(key);			
+				loadSpecificationAction.getSections().add(featureAction);
 
-				genericType(sf.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);				
+				// Properties table
+				Table table = context.get(BootstrapFactory.class).table();
+				table.toHTMLElement().style().width("auto");
 				
-				featureRow.cell(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENOUS, "")).text().alignment(Alignment.CENTER);
-				featureRow.cell(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_STRICT_CONTAINMENT, "")).text().alignment(Alignment.CENTER);
+				genericType(sf.getEGenericType(), ETypedElementActionSupplier.addRow(table, "Type"), progressMonitor);
+				
+				if (EObjectLoader.isDefaultFeature(eObject, sf)) {
+					ETypedElementActionSupplier.addRow(table, "Default").add("true");				
+				}
+				
+				boolean isHomogenous = "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENOUS)) || NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.REFERENCE_TYPE) != null;
+				if (isHomogenous) {
+					ETypedElementActionSupplier.addRow(table, "Homogenous").add("true");									
+				}
+				
+				boolean isStrictContainment = isHomogenous && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_STRICT_CONTAINMENT));			
+				if (isStrictContainment) {
+					ETypedElementActionSupplier.addRow(table, "Strict containment").add("true");									
+				}
 				
 				String exclusiveWithStr = NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.EXCLUSIVE_WITH);
 				String[] exclusiveWith = exclusiveWithStr == null ? new String[0] : exclusiveWithStr.split("\\s");
-				if (exclusiveWith.length == 0) {
-					featureRow.cell("");
-				} else {
+				if (exclusiveWith.length != 0) {
 					Tag ul = TagName.ul.create();
 					for (String exw: exclusiveWith) {
 						ul.content(TagName.li.create(exw));
 					}
-					
-					featureRow.cell(ul).text().monospace();
+					ETypedElementActionSupplier.addRow(table, "Exclusive with").add(ul);				
 				}
+
+				addContent(featureAction, table.toString());
 				
 				String featureDoc = EObjectAdaptable.getResourceContext(sf).getString("documentation", EcoreUtil.getDocumentation(sf));
 				if (Util.isBlank(featureDoc)) {
@@ -404,16 +329,10 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				}
 				
 				String featureLoadDoc = NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_DOC, featureDoc);
-				featureRow.cell(Util.isBlank(featureLoadDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureLoadDoc));
-			};
-			loadSpecificationFragment.content(table);
-			
-			Action loadSpecificationAction = AppFactory.eINSTANCE.createAction();
-			loadSpecificationAction.setText("Load specification");
-			loadSpecificationAction.setLocation(eObject.getName() + "-load-specification.html");			
-			action.getNavigation().add(loadSpecificationAction);
-						
-			addContent(loadSpecificationAction, loadSpecificationFragment.toString());
+				if (!Util.isBlank(featureLoadDoc)) {
+					featureAction.getContent().add(interpolatedMarkdown(featureLoadDoc));
+				}
+			}			
 		}
 	}
 	
