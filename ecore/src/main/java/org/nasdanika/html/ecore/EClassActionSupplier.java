@@ -61,9 +61,6 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 	
 	@Override
 	public org.nasdanika.html.model.app.Action execute(ProgressMonitor progressMonitor) throws Exception {
-		
-		// TODO - Javadoc
-		
 		Action action = super.execute(progressMonitor);
 		
 		action.setSectionStyle(SectionStyle.HEADER);
@@ -161,7 +158,204 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		}
 		
 		Comparator<ENamedElement> namedElementComparator = (a,b) -> a.getName().compareTo(b.getName());
+		
+		generateLoadSpecification(action, namedElementComparator, progressMonitor);
+		
+		EList<EAttribute> allAttributes = eObject.getEAllAttributes();
+		EList<EReference> allReferences = eObject.getEAllReferences();
+		EList<EOperation> allOperations = eObject.getEAllOperations();
+		
+		if (allAttributes.size() + allReferences.size() + allOperations.size() != 0) { 	
+			Action allGroup = AppFactory.eINSTANCE.createAction();
+			allGroup.setText("All members");
+			allGroup.setUuid(action.getUuid() + "-all");
+			action.getNavigation().add(allGroup);
+			
+			generateAllAttributes(allAttributes, allGroup, namedElementComparator, progressMonitor);
+			generateAllReferences(allReferences, allGroup, namedElementComparator, progressMonitor);
+			generateAllOperations(allOperations, allGroup, namedElementComparator, progressMonitor);			
+		}
+
+//		TODO - Table (list) of contents
+//		Map<String, Object> locConfig = new LinkedHashMap<>();
+//		locConfig.put("tooltip", true);
+//		locConfig.put("header", "Members");		
+//		locConfig.put("role", Action.Role.SECTION);		
+//		addContent(data, Collections.singletonMap("component-list-of-contents", locConfig));
+		
 		EList<Action> sections = action.getSections();
+		if (!eObject.getEAttributes().isEmpty()) {
+			Action attributesCategory = AppFactory.eINSTANCE.createAction();
+			attributesCategory.setText("Attributes");
+			attributesCategory.setName("attributes");
+			attributesCategory.setSectionStyle(SectionStyle.HEADER);
+			sections.add(attributesCategory);
+			EList<Action> attributes = attributesCategory.getSections();
+			for (EStructuralFeature sf: eObject.getEAttributes().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+				attributes.add(adaptChild(sf).execute(progressMonitor));
+			}
+		}
+		
+		if (!eObject.getEReferences().isEmpty()) {
+			Action referencesCategory = AppFactory.eINSTANCE.createAction();
+			referencesCategory.setText("References");
+			referencesCategory.setName("references");
+			referencesCategory.setSectionStyle(SectionStyle.HEADER);
+			sections.add(referencesCategory);
+			EList<Action> references = referencesCategory.getSections();			
+			for (EStructuralFeature sf: eObject.getEReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+				references.add(adaptChild(sf).execute(progressMonitor));
+			}
+		}
+		
+		if (!eObject.getEOperations().isEmpty()) {
+			Action operationsCategory = AppFactory.eINSTANCE.createAction();
+			operationsCategory.setText("Operations");
+			operationsCategory.setName("operations");
+			operationsCategory.setSectionStyle(SectionStyle.HEADER);
+			sections.add(operationsCategory);
+			EList<Action> operations = operationsCategory.getSections();			
+			for (EOperation eOp: eObject.getEOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+				operations.add(adaptChild(eOp).execute(progressMonitor));			
+			}
+		}
+		
+		if (eObject.isInterface()) {
+			action.setIcon(ICONS_BASE + "EInterface.gif");			
+		}		
+		
+		return action;
+	}
+
+	private void generateAllOperations(
+			EList<EOperation> allOperations, Action allGroup,
+			Comparator<ENamedElement> namedElementComparator, 
+			ProgressMonitor progressMonitor) throws Exception {
+		
+		if (!allOperations.isEmpty()) {
+			Action allOperationsAction = AppFactory.eINSTANCE.createAction();
+			allOperationsAction.setText("Operations");
+			allOperationsAction.setLocation(eObject.getName() + "-all-operations.html");
+			allOperationsAction.setSectionStyle(SectionStyle.HEADER);
+			allGroup.getChildren().add(allOperationsAction);
+			
+			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
+			Table table = bootstrapFactory.table().bordered().striped();
+			table.header().headerRow("Name", "Type", "Parameters", "Declaring class", "Description").background(Color.SECONDARY);			
+			
+			for (EOperation operation: allOperations.stream().sorted(namedElementComparator).collect(Collectors.toList())) {
+				Row featureRow = table.body().row();
+				featureRow.cell(operation.getName());
+
+				genericType(operation.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);
+				
+				org.nasdanika.html.RowContainer.Row.Cell paramsCell = featureRow.cell().toHTMLElement();
+				EList<EParameter> parameters = operation.getEParameters();
+				if (parameters.size() == 1) {
+					EParameter param = parameters.get(0);
+					paramsCell.content(param.getName(), " : ");
+					genericType(param.getEGenericType(), paramsCell.getContent(), progressMonitor);
+				} else if (!parameters.isEmpty()) {
+					Tag pList = bootstrapFactory.getHTMLFactory().tag(TagName.ol);
+					paramsCell.content(pList);
+					for (EParameter param: parameters) {
+						Tag pItem = bootstrapFactory.getHTMLFactory().tag(TagName.li);
+						pList.content(pItem);
+						pItem.content(param.getName(), " : ");
+						genericType(param.getEGenericType(), pItem.getContent(), progressMonitor);						
+					}					
+				}
+				
+				featureRow.cell(link(operation.getEContainingClass()));				
+				
+				String opDoc = EObjectAdaptable.getResourceContext(operation).getString("documentation", EcoreUtil.getDocumentation(operation));
+				if (Util.isBlank(opDoc)) {
+					opDoc = EmfUtil.getDocumentation(operation);
+				}
+				
+				featureRow.cell(Util.isBlank(opDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(opDoc));
+			};
+			
+			addContent(allOperationsAction, table.toString());
+		}
+	}
+
+	private void generateAllReferences(
+			EList<EReference> allReferences, 
+			Action allGroup,
+			Comparator<ENamedElement> namedElementComparator, 
+			ProgressMonitor progressMonitor) throws Exception {
+		
+		if (!allReferences.isEmpty()) {
+			Action allReferencesAction = AppFactory.eINSTANCE.createAction();
+			allReferencesAction.setText("References");
+			allReferencesAction.setLocation(eObject.getName() + "-all-references.html");
+			allReferencesAction.setSectionStyle(SectionStyle.HEADER);
+			allGroup.getChildren().add(allReferencesAction);
+			
+			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
+			Table table = bootstrapFactory.table().bordered().striped();
+			table.header().headerRow("Name", "Type", "Declaring class", "Description").background(Color.SECONDARY);			
+			
+			for (EStructuralFeature reference: allReferences.stream().sorted(namedElementComparator).collect(Collectors.toList())) {
+				Row featureRow = table.body().row();
+				featureRow.cell(reference.getName());
+
+				genericType(reference.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);	
+				featureRow.cell(link(reference.getEContainingClass()));				
+				
+				String featureDoc = EObjectAdaptable.getResourceContext(reference).getString("documentation", EcoreUtil.getDocumentation(reference));
+				if (Util.isBlank(featureDoc)) {
+					featureDoc = EmfUtil.getDocumentation(reference);
+				}
+				
+				featureRow.cell(Util.isBlank(featureDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureDoc));
+			};
+			
+			addContent(allReferencesAction, table.toString());
+		}
+	}
+
+	private void generateAllAttributes(
+			EList<EAttribute> allAttributes, 
+			Action allGroup,
+			Comparator<ENamedElement> namedElementComparator, 
+			ProgressMonitor progressMonitor) throws Exception {
+		
+		if (!allAttributes.isEmpty()) {
+			Action allAttributesAction = AppFactory.eINSTANCE.createAction();
+			allAttributesAction.setText("Attributes");
+			allAttributesAction.setLocation(eObject.getName() + "-all-attributes.html");
+			allAttributesAction.setSectionStyle(SectionStyle.HEADER);
+			allGroup.getChildren().add(allAttributesAction);
+			
+			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
+			Table table = bootstrapFactory.table().bordered().striped();
+			table.header().headerRow("Name", "Type", "Declaring class", "Description").background(Color.SECONDARY);			
+			
+			for (EStructuralFeature attribute: allAttributes.stream().sorted(namedElementComparator).collect(Collectors.toList())) {
+				Row featureRow = table.body().row();
+				featureRow.cell(attribute.getName());
+
+				genericType(attribute.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);	
+				featureRow.cell(link(attribute.getEContainingClass()));				
+				
+				String featureDoc = EObjectAdaptable.getResourceContext(attribute).getString("documentation", EcoreUtil.getDocumentation(attribute));
+				if (Util.isBlank(featureDoc)) {
+					featureDoc = EmfUtil.getDocumentation(attribute);
+				}
+				
+				featureRow.cell(Util.isBlank(featureDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureDoc));
+			};
+			
+			addContent(allAttributesAction, table.toString());
+		}
+	}
+
+	private void generateLoadSpecification(
+			Action action, 
+			Comparator<ENamedElement> namedElementComparator,
+			ProgressMonitor progressMonitor) throws Exception {
 		
 		// Load specification
 		if (!eObject.isAbstract() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.IS_LOADABLE, "true"))) {
@@ -214,174 +408,13 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			};
 			loadSpecificationFragment.content(table);
 			
-			Action loadSpecificationSection = AppFactory.eINSTANCE.createAction();
-			loadSpecificationSection.setText("Load specification");
-			loadSpecificationSection.setName("load-specification");
-			loadSpecificationSection.setSectionStyle(SectionStyle.HEADER);
-			sections.add(loadSpecificationSection);
+			Action loadSpecificationAction = AppFactory.eINSTANCE.createAction();
+			loadSpecificationAction.setText("Load specification");
+			loadSpecificationAction.setLocation(eObject.getName() + "-load-specification.html");			
+			action.getNavigation().add(loadSpecificationAction);
 						
-			addContent(loadSpecificationSection, loadSpecificationFragment.toString());
+			addContent(loadSpecificationAction, loadSpecificationFragment.toString());
 		}
-		
-		// All attributes
-		EList<EAttribute> allAttributes = eObject.getEAllAttributes();
-		if (!allAttributes.isEmpty()) {
-			Action allAttributesSection = AppFactory.eINSTANCE.createAction();
-			allAttributesSection.setText("All attributes");
-			allAttributesSection.setName("all-attributes");
-			allAttributesSection.setSectionStyle(SectionStyle.HEADER);
-			sections.add(allAttributesSection);
-			
-			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
-			Table table = bootstrapFactory.table().bordered().striped();
-			table.header().headerRow("Name", "Type", "Declaring class", "Description").background(Color.SECONDARY);			
-			
-			for (EStructuralFeature attribute: allAttributes.stream().sorted(namedElementComparator).collect(Collectors.toList())) {
-				Row featureRow = table.body().row();
-				featureRow.cell(attribute.getName());
-
-				genericType(attribute.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);	
-				featureRow.cell(link(attribute.getEContainingClass()));				
-				
-				String featureDoc = EObjectAdaptable.getResourceContext(attribute).getString("documentation", EcoreUtil.getDocumentation(attribute));
-				if (Util.isBlank(featureDoc)) {
-					featureDoc = EmfUtil.getDocumentation(attribute);
-				}
-				
-				featureRow.cell(Util.isBlank(featureDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureDoc));
-			};
-			
-			addContent(allAttributesSection, table.toString());
-		}
-		
-		// All references
-		EList<EReference> allReferences = eObject.getEAllReferences();
-		if (!allReferences.isEmpty()) {
-			Action allReferencesSection = AppFactory.eINSTANCE.createAction();
-			allReferencesSection.setText("All references");
-			allReferencesSection.setName("all-references");
-			allReferencesSection.setSectionStyle(SectionStyle.HEADER);
-			sections.add(allReferencesSection);
-			
-			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
-			Table table = bootstrapFactory.table().bordered().striped();
-			table.header().headerRow("Name", "Type", "Declaring class", "Description").background(Color.SECONDARY);			
-			
-			for (EStructuralFeature reference: allReferences.stream().sorted(namedElementComparator).collect(Collectors.toList())) {
-				Row featureRow = table.body().row();
-				featureRow.cell(reference.getName());
-
-				genericType(reference.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);	
-				featureRow.cell(link(reference.getEContainingClass()));				
-				
-				String featureDoc = EObjectAdaptable.getResourceContext(reference).getString("documentation", EcoreUtil.getDocumentation(reference));
-				if (Util.isBlank(featureDoc)) {
-					featureDoc = EmfUtil.getDocumentation(reference);
-				}
-				
-				featureRow.cell(Util.isBlank(featureDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(featureDoc));
-			};
-			
-			addContent(allReferencesSection, table.toString());
-		}
-		
-		// All operations
-		EList<EOperation> allOperations = eObject.getEAllOperations();
-		if (!allOperations.isEmpty()) {
-			Action allOperationsSection = AppFactory.eINSTANCE.createAction();
-			allOperationsSection.setText("All operations");
-			allOperationsSection.setName("all-operations");
-			allOperationsSection.setSectionStyle(SectionStyle.HEADER);
-			sections.add(allOperationsSection);
-			
-			BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class);
-			Table table = bootstrapFactory.table().bordered().striped();
-			table.header().headerRow("Name", "Type", "Parameters", "Declaring class", "Description").background(Color.SECONDARY);			
-			
-			for (EOperation operation: allOperations.stream().sorted(namedElementComparator).collect(Collectors.toList())) {
-				Row featureRow = table.body().row();
-				featureRow.cell(operation.getName());
-
-				genericType(operation.getEGenericType(), featureRow.cell().toHTMLElement().getContent(), progressMonitor);
-				
-				org.nasdanika.html.RowContainer.Row.Cell paramsCell = featureRow.cell().toHTMLElement();
-				EList<EParameter> parameters = operation.getEParameters();
-				if (parameters.size() == 1) {
-					EParameter param = parameters.get(0);
-					paramsCell.content(param.getName(), " : ");
-					genericType(param.getEGenericType(), paramsCell.getContent(), progressMonitor);
-				} else if (!parameters.isEmpty()) {
-					Tag pList = bootstrapFactory.getHTMLFactory().tag(TagName.ol);
-					paramsCell.content(pList);
-					for (EParameter param: parameters) {
-						Tag pItem = bootstrapFactory.getHTMLFactory().tag(TagName.li);
-						pList.content(pItem);
-						pItem.content(param.getName(), " : ");
-						genericType(param.getEGenericType(), pItem.getContent(), progressMonitor);						
-					}					
-				}
-				
-				featureRow.cell(link(operation.getEContainingClass()));				
-				
-				String opDoc = EObjectAdaptable.getResourceContext(operation).getString("documentation", EcoreUtil.getDocumentation(operation));
-				if (Util.isBlank(opDoc)) {
-					opDoc = EmfUtil.getDocumentation(operation);
-				}
-				
-				featureRow.cell(Util.isBlank(opDoc) ? "" : MarkdownHelper.INSTANCE.markdownToHtml(opDoc));
-			};
-			
-			addContent(allOperationsSection, table.toString());
-		}
-
-//		TODO - Table (list) of contents
-//		Map<String, Object> locConfig = new LinkedHashMap<>();
-//		locConfig.put("tooltip", true);
-//		locConfig.put("header", "Members");		
-//		locConfig.put("role", Action.Role.SECTION);		
-//		addContent(data, Collections.singletonMap("component-list-of-contents", locConfig));
-		
-		if (!eObject.getEAttributes().isEmpty()) {
-			Action attributesCategory = AppFactory.eINSTANCE.createAction();
-			attributesCategory.setText("Attributes");
-			attributesCategory.setName("attributes");
-			attributesCategory.setSectionStyle(SectionStyle.HEADER);
-			sections.add(attributesCategory);
-			EList<Action> attributes = attributesCategory.getSections();
-			for (EStructuralFeature sf: eObject.getEAttributes().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				attributes.add(adaptChild(sf).execute(progressMonitor));
-			}
-		}
-		
-		if (!eObject.getEReferences().isEmpty()) {
-			Action referencesCategory = AppFactory.eINSTANCE.createAction();
-			referencesCategory.setText("References");
-			referencesCategory.setName("references");
-			referencesCategory.setSectionStyle(SectionStyle.HEADER);
-			sections.add(referencesCategory);
-			EList<Action> references = referencesCategory.getSections();			
-			for (EStructuralFeature sf: eObject.getEReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				references.add(adaptChild(sf).execute(progressMonitor));
-			}
-		}
-		
-		if (!eObject.getEOperations().isEmpty()) {
-			Action operationsCategory = AppFactory.eINSTANCE.createAction();
-			operationsCategory.setText("Operations");
-			operationsCategory.setName("operations");
-			operationsCategory.setSectionStyle(SectionStyle.HEADER);
-			sections.add(operationsCategory);
-			EList<Action> operations = operationsCategory.getSections();			
-			for (EOperation eOp: eObject.getEOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				operations.add(adaptChild(eOp).execute(progressMonitor));			
-			}
-		}
-		
-		if (eObject.isInterface()) {
-			action.setIcon(ICONS_BASE + "EInterface.gif");			
-		}		
-		
-		return action;
 	}
 	
 	protected String generateDiagram(
