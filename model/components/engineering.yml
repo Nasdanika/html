@@ -1,8 +1,0 @@
-engineering-module:
-  name: Components Model
-  path: models/components
-  representations:
-    - representation-component-diagram: true
-  dependencies:
-    - nasdanika:modules/html/modules/models/app
-  

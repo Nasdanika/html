@@ -1,7 +1,0 @@
-engineering-module:
-  name: Knockout
-  path: knockout
-  action-prototype: "../javadoc-action-prototype.xml#/"
-  dependencies:
-    - engineering://nasdanika/modules/html/modules/html
-  

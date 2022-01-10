@@ -6,14 +6,11 @@ engineering-product:
        name: "2021.12.3"
   modules:
       - bootstrap/engineering.yml
-      - echarts/engineering.yml
       - ecore/engineering.yml
       - emf/engineering.yml
       - flow/engineering.yml
-      - fontawesome/engineering.yml
       - html/engineering.yml
       - jstree/engineering.yml
-      - knockout/engineering.yml
       - model/engineering.yml
 
 
