@@ -32,8 +32,11 @@ import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
+import org.nasdanika.common.persistence.ObjectLoader;
 import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.emf.persistence.EObjectLoader;
+import org.nasdanika.emf.persistence.GitMarkerFactory;
 import org.nasdanika.flow.util.FlowYamlLoadingExecutionParticipant;
 import org.nasdanika.html.model.app.gen.AppGenYamlLoadingExecutionParticipant;
 import org.yaml.snakeyaml.DumperOptions;
@@ -325,6 +328,15 @@ public class TestBase {
 			@Override
 			protected boolean isDiagnoseModel() {
 				return false;
+			}
+			
+			@Override
+			protected ObjectLoader createLoader(ResourceSet resourceSet) {
+				ObjectLoader loader = super.createLoader(resourceSet);
+				if (loader instanceof EObjectLoader) {
+					((EObjectLoader) loader).setMarkerFactory(new GitMarkerFactory());
+				}
+				return loader;
 			}
 			
 		};

@@ -1,4 +1,4 @@
-${embedded-image/png/nasdanika-logo.png}
+${embedded-image/png/./nasdanika-logo.png}
 
 
 ```java

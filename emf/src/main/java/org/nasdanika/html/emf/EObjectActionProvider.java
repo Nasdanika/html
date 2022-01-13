@@ -16,6 +16,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -61,6 +62,7 @@ import org.nasdanika.html.model.bootstrap.TableSection;
 import org.nasdanika.html.model.html.HtmlFactory;
 import org.nasdanika.html.model.html.Script;
 import org.nasdanika.html.model.html.Tag;
+import org.nasdanika.ncore.GitMarker;
 import org.nasdanika.ncore.Map;
 import org.nasdanika.ncore.Marked;
 import org.nasdanika.ncore.Marker;
@@ -425,8 +427,11 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	protected String typedElementLabelText(ETypedElement type) {
 		if (type == NcorePackage.Literals.MARKED__MARKER) {
 			Marker marker = (Marker) getTarget().eGet((EStructuralFeature) type);
-			if (marker != null && !Util.isBlank(marker.getOrigin())) {
-				return "Origin";
+			if (marker instanceof GitMarker) {
+				EMap<String, String> remotes = ((GitMarker) marker).getRemotes();
+				if (remotes.size() == 1) {
+					return StringUtils.capitalize(remotes.get(0).getKey());
+				}
 			}
 		}
 		
@@ -577,6 +582,47 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		text.setContent(content);
 		return text;
 	}
+	
+	/**
+	 * Renders remote link for GitHub, returns text otherwise.
+	 * @param marker
+	 * @param remoteUrl
+	 * @return
+	 */
+	protected EObject gitRemoteLink(GitMarker marker, String remoteUrl) {
+		String remoteLocation = gitRemoteLocation(marker, remoteUrl);
+		if (remoteLocation == null) {
+			return createText("Remote: " + remoteUrl + ", path: " + marker.getPath() + ", line: " + marker.getLine() + ", column: " + marker.getColumn());			
+		}
+		
+		StringBuilder textBuilder = new StringBuilder(marker.getPath());			
+		if (marker.getLine() > 0) {
+			textBuilder.append(" ").append(marker.getLine());
+			if (marker.getColumn() > 0) {
+				textBuilder.append(":").append(marker.getColumn());
+			}
+		}
+		Link link = AppFactory.eINSTANCE.createLink();
+		link.setText(textBuilder.toString());
+		link.setLocation(remoteLocation);
+		if (remoteUrl.startsWith("https://github.com")) {
+			link.setIcon("fab fa-github");
+		}		
+		return link;						
+	}
+	
+	/**
+	 * 
+	 * @param marker
+	 * @param remoteUrl
+	 * @return URL of the marker or null if URL cannot be constructed
+	 */
+	protected String gitRemoteLocation(GitMarker marker, String remoteUrl) {
+		if (remoteUrl.startsWith("https://github.com")) {
+			return remoteUrl.substring(0, remoteUrl.length() - 4) + "/blob/" + marker.getHead() + "/" + marker.getPath() + "#L" + marker.getLine(); 
+		}
+		return null;
+	}
 
 	/**
 	 * Renders value.
@@ -617,6 +663,17 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			return createText(datePart + " " + timePart);
 		}
 		
+		if (value instanceof GitMarker) {
+			GitMarker marker = (GitMarker) value;
+			EMap<String, String> remotes = marker.getRemotes();
+			if (remotes.size() == 1) {
+				return gitRemoteLink(marker, remotes.get(0).getValue());
+			} else if (!remotes.isEmpty()) {				
+				// TODO - a list name -> link
+				throw new UnsupportedOperationException("Multiple remotes are not yet supported");
+			}
+		}
+		
 		if (value instanceof Marker) {
 			Marker marker = (Marker) value;
 			StringBuilder textBuilder = new StringBuilder(marker.getLocation());
@@ -626,17 +683,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 					textBuilder.append(":").append(marker.getColumn());
 				}
 			}
-			String origin = marker.getOrigin();
-			if (Util.isBlank(origin)) {			
-				return createText(textBuilder.toString());
-			}
-			Link link = AppFactory.eINSTANCE.createLink();
-			link.setText(textBuilder.toString());
-			if (origin.startsWith("https://github.com")) {
-				link.setIcon("fab fa-github");
-			}
-			link.setLocation(origin);
-			return link;			
+			return createText(textBuilder.toString());
 		}
 		
 		if (value instanceof Temporal) {

@@ -16,7 +16,11 @@ engineering-module:
         Also info icon in render value navigating to the respective actions. 
     search:
       name: Search functionality
-      description: Pluggable - some context service for indexing, search functionality in the navigation tree - default (node text) and custom - full text. Lunrjs implementation.       
+      description: |+2
+        Pluggable - some context service for indexing, search functionality in the navigation tree - default (node text) and custom - full text. Lunrjs implementation. Minisearch is also an option. 
+        One possibility is to add search configuration to Action, e.g. searchFields String->String map - this may have a problem with unavailability of all text because it may be generated or loaded at a later time. 
+        So, maybe scanning the generated pages, parsing them with Jsoup and extracting text from nsd-app-content-panel-content-row and title from nsd-app-content-panel-title or nsd-app-content-panel-title-and-items-row > col > h1 is the way to go.
+        Generate search index and store it in the root similar to sitemap.xml. Perhaps ignore Javadoc initially.       
     uri-copy-to-clipboard:
       name: URI copy to clipboard icon
       description: navigator.clipboard.writeText("Australia"); far fa-clipboard or far fa-copy as on GitHub. Use data-uri attribute? this.getAttribute('data-uri')
