@@ -53,8 +53,8 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 //	}
 	
 	@Override
-	public Action execute(ProgressMonitor progressMonitor) throws Exception {
-		Action action = super.execute(progressMonitor);
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(contextEClass, progressMonitor);
 		String ePackageFolder = ePackagePathComputer == null ? Hex.encodeHexString(eObject.getNsURI().getBytes(StandardCharsets.UTF_8)) : ePackagePathComputer.apply(eObject);
 		action.setLocation(ePackageFolder + "/package-summary.html");
 		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject));
@@ -93,11 +93,11 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 		
 		EList<EObject> children = action.getChildren();
 		for (EPackage subPackage: eObject.getESubpackages().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-			children.add(adaptChild(subPackage).execute(progressMonitor));
+			children.add(adaptChild(subPackage).execute(contextEClass, progressMonitor));
 		}
 	
 		for (EClassifier eClassifier: eObject.getEClassifiers().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-			children.add(adaptChild(eClassifier).execute(progressMonitor));			
+			children.add(adaptChild(eClassifier).execute(contextEClass, progressMonitor));			
 		}
 		
 		return action;

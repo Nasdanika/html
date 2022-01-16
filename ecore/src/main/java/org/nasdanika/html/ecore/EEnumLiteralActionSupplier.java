@@ -1,5 +1,6 @@
 package org.nasdanika.html.ecore;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
@@ -13,8 +14,8 @@ public class EEnumLiteralActionSupplier extends ENamedElementActionSupplier<EEnu
 	}
 	
 	@Override
-	public Action execute(ProgressMonitor progressMonitor) throws Exception {
-		Action action = super.execute(progressMonitor);
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(contextEClass, progressMonitor);
 		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject.getEEnum().getEPackage()) + "-" + eObject.getEEnum().getName() + "-" + eObject.getName());
 		action.setName(eObject.getName());		
 		return action;

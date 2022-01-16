@@ -19,19 +19,20 @@ import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
+import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.SectionStyle;
 
-public class EOperationActionSupplier extends ETypedElementActionSupplier<EOperation> {
+public class EOperationActionSupplier extends ETypedElementActionSupplier<EOperation> implements EcoreActionSupplier  {
 
 	public EOperationActionSupplier(EOperation value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value, context, ePackagePathComputer);
 	}
 	
 	@Override
-	public Action execute(ProgressMonitor progressMonitor) throws Exception {
-		Action action = super.execute(progressMonitor);
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(contextEClass, progressMonitor);
 		action.setSectionStyle(SectionStyle.HEADER);
 		
 		EClass eContainingClass = eObject.getEContainingClass();
@@ -52,7 +53,7 @@ public class EOperationActionSupplier extends ETypedElementActionSupplier<EOpera
 				String typeStr = type.eClass().getName() + "-" + encodeEPackage(type.getEPackage()) + "-" + type.getName() + ",";
 				md.update(typeStr.getBytes(StandardCharsets.UTF_8));
 				
-				parameters.add(adaptChild(ep).execute(progressMonitor));				
+				parameters.add(adaptChild(ep).execute(contextEClass, progressMonitor));				
 			}
 		}
 		
@@ -79,7 +80,7 @@ public class EOperationActionSupplier extends ETypedElementActionSupplier<EOpera
 			for (EGenericType genericException: eGenericExceptions) {
 				Tag listItem = TagName.li.create();
 				list.content(listItem);
-				genericType(genericException, listItem.getContent(), progressMonitor);
+				genericType(genericException, contextEClass, listItem.getContent(), progressMonitor);
 			}
 			addContent(action, gstf.toString());
 		}				
@@ -105,6 +106,15 @@ public class EOperationActionSupplier extends ETypedElementActionSupplier<EOpera
 		}
 
 		return signatureBuilder.toString();
+	}
+	
+	@Override
+	protected Table propertiesTable(EClass contextEClass, ProgressMonitor monitor) throws Exception {
+		Table table = super.propertiesTable(contextEClass, monitor);
+		if (contextEClass != null) {
+				addRow(table, "Declaring class").add(link(eObject.getEContainingClass(), contextEClass));
+		}
+		return table;
 	}
 		
 }

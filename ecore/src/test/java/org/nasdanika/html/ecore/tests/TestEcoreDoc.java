@@ -47,13 +47,13 @@ import org.nasdanika.exec.content.ContentPackage;
 import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
+import org.nasdanika.html.ecore.EcoreActionSupplier;
 import org.nasdanika.html.ecore.EcoreActionSupplierAdapterFactory;
 import org.nasdanika.html.ecore.GenModelResourceSet;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.app.gen.Util;
-import org.nasdanika.html.model.app.util.ActionSupplier;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 
@@ -151,7 +151,7 @@ public class TestEcoreDoc extends TestBase {
 				if (contents instanceof GenModel) {
 					for (GenPackage genPackage: ((GenModel) contents).getGenPackages()) {
 						EPackage ecorePackage = genPackage.getEcorePackage();
-						actionModelResource.getContents().add(EObjectAdaptable.adaptTo(ecorePackage, ActionSupplier.class).execute(progressMonitor));
+						actionModelResource.getContents().add(EObjectAdaptable.adaptTo(ecorePackage, EcoreActionSupplier.class).execute(null, progressMonitor));
 					}
 				}
 			}

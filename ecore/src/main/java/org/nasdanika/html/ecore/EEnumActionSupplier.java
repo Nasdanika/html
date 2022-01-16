@@ -27,13 +27,13 @@ public class EEnumActionSupplier extends EClassifierActionSupplier<EEnum> {
 	}
 	
 	@Override
-	public org.nasdanika.html.model.app.Action execute(ProgressMonitor progressMonitor) throws Exception {
-		Action action = super.execute(progressMonitor);
+	public org.nasdanika.html.model.app.Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(contextEClass, progressMonitor);
 		action.setSectionStyle(SectionStyle.HEADER);
 
 		EList<Action> sections = action.getSections();
-		sections.add(createLiteralsAction(progressMonitor));
-		Action usesAction = createUsesAction(progressMonitor);
+		sections.add(createLiteralsAction(contextEClass, progressMonitor));
+		Action usesAction = createUsesAction(contextEClass, progressMonitor);
 		if (usesAction != null) {
 			sections.add(usesAction);
 		}
@@ -41,18 +41,18 @@ public class EEnumActionSupplier extends EClassifierActionSupplier<EEnum> {
 		return action;
 	}
 	
-	protected Action createLiteralsAction(ProgressMonitor progressMonitor) throws Exception {
+	protected Action createLiteralsAction(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
 		Action literalsAction = AppFactory.eINSTANCE.createAction();
 		literalsAction.setText("Literals");
 		literalsAction.setSectionStyle(SectionStyle.TABLE);
 		EList<Action> literals = literalsAction.getSections();
 		for (EEnumLiteral literal: eObject.getELiterals()) {
-			literals.add(adaptChild(literal).execute(progressMonitor));
+			literals.add(adaptChild(literal).execute(contextEClass, progressMonitor));
 		}
 		return literalsAction;
 	}
 	
-	protected Action createUsesAction(ProgressMonitor progressMonitor) throws Exception {
+	protected Action createUsesAction(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
 		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (uses.isEmpty()) {
 			return null;
@@ -63,7 +63,7 @@ public class EEnumActionSupplier extends EClassifierActionSupplier<EEnum> {
 		// Uses
 		Tag list = TagName.ul.create();
 		for (EClass use: uses) {
-			list.content(TagName.li.create(link(use)));
+			list.content(TagName.li.create(link(use, contextEClass)));
 		}
 		addContent(usesAction, list.toString());
 		

@@ -1,5 +1,6 @@
 package org.nasdanika.html.ecore;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
@@ -14,8 +15,8 @@ public class ENamedElementActionSupplier<T extends ENamedElement> extends EModel
 	}
 	
 	@Override
-	public Action execute(ProgressMonitor progressMonitor) throws Exception {
-		Action action = super.execute(progressMonitor);
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(contextEClass, progressMonitor);
 		Context resourceContext = EObjectAdaptable.getResourceContext(eObject);
 		String text = resourceContext.getString("label");
 		action.setText(text == null ? org.nasdanika.common.Util.nameToLabel(eObject.getName()) : text);

@@ -59,7 +59,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	
 
 	@Override
-	public Action execute(ProgressMonitor progressMonitor) throws Exception {		
+	public Action execute(EClass contextClass, ProgressMonitor progressMonitor) throws Exception {		
 		// TODO - refactor to 
 //		EObject actionPrototype = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "action-prototype");
 //		if (actionPrototype instanceof Action) {
@@ -311,22 +311,22 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	 * @param accumulator
 	 * @throws Exception 
 	 */
-	protected void genericType(EGenericType eGenericType, List<Object> accumulator, ProgressMonitor monitor) throws Exception {
+	protected void genericType(EGenericType eGenericType, EClassifier contextClassifier, List<Object> accumulator, ProgressMonitor monitor) throws Exception {
 		if (eGenericType == null) {
 			accumulator.add("void");
 		} else if (eGenericType.getETypeParameter() != null) {
 			accumulator.add(eGenericType.getETypeParameter().getName());
 		} else if (eGenericType.getEClassifier() != null) {
-			accumulator.add(link(eGenericType.getEClassifier()));
-			genericTypeArguments(eGenericType, accumulator, monitor);
+			accumulator.add(link(eGenericType.getEClassifier(), contextClassifier));
+			genericTypeArguments(eGenericType, contextClassifier, accumulator, monitor);
 		} else {
 			accumulator.add('?');
 			if (eGenericType.getELowerBound() != null) {
 				accumulator.add(" super ");
-				genericType(eGenericType.getELowerBound(), accumulator, monitor);
+				genericType(eGenericType.getELowerBound(), contextClassifier, accumulator, monitor);
 			} else if (eGenericType.getEUpperBound() != null) {
 				accumulator.add(" extends ");
-				genericType(eGenericType.getEUpperBound(), accumulator, monitor);
+				genericType(eGenericType.getEUpperBound(), contextClassifier, accumulator, monitor);
 			}
 		}
 	}
@@ -335,7 +335,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	 * @param eClassifier
 	 * @return Relatieve path to the argument {@link EClassifier} or null if the classifier is not part of the documentation resource set.
 	 */
-	protected String path(EClassifier eClassifier) {
+	protected String path(EClassifier eClassifier, EClassifier contextClassifier) {
 		// TODO - resolution of external eClassifiers for federated/hierarchical documentation - from the adapter factory.
 		Resource targetResource = eClassifier.eResource();
 		if (targetResource == null) {
@@ -353,13 +353,14 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		
 		String targetPath = targetEPackagePath + "/" + eClassifier.getName() + ".html";
 		String thisPath = null;
-		EClassifier contextClassifier = null;
-		if (eObject instanceof EClassifier) {
-			contextClassifier = (EClassifier) eObject;
-		} else if (eObject.eContainer() instanceof EClassifier) {
-			contextClassifier = (EClassifier) eObject.eContainer();
-		} else if (eObject.eContainer() instanceof EOperation) {
-			contextClassifier = (EClassifier) eObject.eContainer().eContainer();
+		if (contextClassifier == null) {
+			if (eObject instanceof EClassifier) {
+				contextClassifier = (EClassifier) eObject;
+			} else if (eObject.eContainer() instanceof EClassifier) {
+				contextClassifier = (EClassifier) eObject.eContainer();
+			} else if (eObject.eContainer() instanceof EOperation) {
+				contextClassifier = (EClassifier) eObject.eContainer().eContainer();
+			}
 		}
 			
 		if (contextClassifier != null) {	
@@ -382,17 +383,17 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	/**
 	 * @return Link to {@link EClassifier} if it is part of the doc or plain text if it is not.
 	 */
-	protected String link(EClassifier eClassifier) {
-		String path = path(eClassifier);
+	protected String link(EClassifier eClassifier, EClassifier contextClassifier) {
+		String path = path(eClassifier, contextClassifier);
 		return Util.isBlank(path) ? eClassifier.getName() : "<a href=\"" + path + "\">" + eClassifier.getName() + "</a>";
 	}
 
-	protected void genericTypeArguments(EGenericType eGenericType, List<Object> accumulator, ProgressMonitor monitor) throws Exception {
+	protected void genericTypeArguments(EGenericType eGenericType, EClassifier contextClassifier, List<Object> accumulator, ProgressMonitor monitor) throws Exception {
 		Iterator<EGenericType> it = eGenericType.getETypeArguments().iterator();
 		if (it.hasNext()) {
 			accumulator.add("&lt;");
 			while (it.hasNext()) {
-				genericType(it.next(), accumulator, monitor);
+				genericType(it.next(), contextClassifier, accumulator, monitor);
 				if (it.hasNext()) {
 					accumulator.add(",");
 				}

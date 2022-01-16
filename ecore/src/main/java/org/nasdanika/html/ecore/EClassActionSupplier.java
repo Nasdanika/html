@@ -54,8 +54,8 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 	}
 	
 	@Override
-	public org.nasdanika.html.model.app.Action execute(ProgressMonitor progressMonitor) throws Exception {
-		Action action = super.execute(progressMonitor);
+	public org.nasdanika.html.model.app.Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(contextEClass, progressMonitor);
 		
 		action.setSectionStyle(SectionStyle.HEADER);
 		
@@ -101,7 +101,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			for (EGenericType superType: eGenericSuperTypes) {
 				Tag listItem = TagName.li.create();
 				list.content(listItem);
-				genericType(superType, listItem.getContent(), progressMonitor);
+				genericType(superType, eObject, listItem.getContent(), progressMonitor);
 			}
 			addContent(action, gstf.toString());
 		}
@@ -116,7 +116,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			gstf.content(list);
 			
 			for (EClass subType: eSubTypes) {
-				list.content(TagName.li.create(link(subType)));
+				list.content(TagName.li.create(link(subType, eObject)));
 			}
 			addContent(action, gstf.toString());
 		}
@@ -131,7 +131,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			gstf.content(list);
 			
 			for (EClass referrer: referrers) {
-				list.content(TagName.li.create(link(referrer)));
+				list.content(TagName.li.create(link(referrer, eObject)));
 			}
 			addContent(action, gstf.toString());
 		}
@@ -146,7 +146,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			gstf.content(list);
 			
 			for (EClass use: uses) {
-				list.content(TagName.li.create(link(use)));
+				list.content(TagName.li.create(link(use, eObject)));
 			}
 			addContent(action, gstf.toString());
 		}
@@ -186,7 +186,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			sections.add(attributesCategory);
 			EList<Action> attributes = attributesCategory.getSections();
 			for (EStructuralFeature sf: eObject.getEAttributes().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				attributes.add(adaptChild(sf).execute(progressMonitor));
+				attributes.add(adaptChild(sf).execute(null, progressMonitor));
 			}
 		}
 		
@@ -198,7 +198,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			sections.add(referencesCategory);
 			EList<Action> references = referencesCategory.getSections();			
 			for (EStructuralFeature sf: eObject.getEReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				references.add(adaptChild(sf).execute(progressMonitor));
+				references.add(adaptChild(sf).execute(null, progressMonitor));
 			}
 		}
 		
@@ -210,7 +210,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			sections.add(operationsCategory);
 			EList<Action> operations = operationsCategory.getSections();			
 			for (EOperation eOp: eObject.getEOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				operations.add(adaptChild(eOp).execute(progressMonitor));			
+				operations.add(adaptChild(eOp).execute(null, progressMonitor));			
 			}
 		}
 		
@@ -230,8 +230,8 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			allGroup.getChildren().add(allOperationsAction);
 			
 			EList<Action> operations = allOperationsAction.getSections();			
-			for (EOperation eOp: eObject.getEOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				operations.add(adaptChild(eOp).execute(progressMonitor));			
+			for (EOperation eOp: allOperations) {
+				operations.add(adaptChild(eOp).execute(eObject, progressMonitor));			
 			}
 		}
 	}
@@ -245,8 +245,8 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			allGroup.getChildren().add(allReferencesAction);
 			
 			EList<Action> references = allReferencesAction.getSections();			
-			for (EStructuralFeature sf: eObject.getEReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				references.add(adaptChild(sf).execute(progressMonitor));
+			for (EStructuralFeature sf: allReferences) {
+				references.add(adaptChild(sf).execute(eObject, progressMonitor));
 			}
 		}
 	}
@@ -261,7 +261,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			
 			EList<Action> attributes = allAttributesAction.getSections();
 			for (EStructuralFeature sf: allAttributes) {
-				attributes.add(adaptChild(sf).execute(progressMonitor));
+				attributes.add(adaptChild(sf).execute(eObject, progressMonitor));
 			}
 		}
 	}
@@ -295,7 +295,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				Table table = context.get(BootstrapFactory.class).table();
 				table.toHTMLElement().style().width("auto");
 				
-				genericType(sf.getEGenericType(), ETypedElementActionSupplier.addRow(table, "Type"), progressMonitor);
+				genericType(sf.getEGenericType(), eObject, ETypedElementActionSupplier.addRow(table, "Type"), progressMonitor);
 				
 				if (EObjectLoader.isDefaultFeature(eObject, sf)) {
 					ETypedElementActionSupplier.addRow(table, "Default").add("true");				
@@ -346,7 +346,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			ProgressMonitor monitor) throws Exception {
 		
 		StringBuilder sb = new StringBuilder();
-		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, this::path, this::getEModelElementFirstDocSentence) {
+		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, ec -> path(ec, eObject), this::getEModelElementFirstDocSentence) {
 			
 			@Override
 			protected Collection<EClass> getSubTypes(EClass eClass) {

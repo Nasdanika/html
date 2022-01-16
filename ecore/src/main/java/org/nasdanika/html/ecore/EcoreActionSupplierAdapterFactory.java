@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.emf.ComposedAdapterFactory;
 import org.nasdanika.emf.FunctionAdapterFactory;
-import org.nasdanika.html.model.app.util.ActionSupplier;
 
 /**
  * Provides adapters for the Ecore types - {@link EPackage}, {@link EClass}, {@link EStructuralFeature}, {@link EOperation}, ...
@@ -30,65 +29,65 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 		
 		// Registering adapter factories.
 		registerAdapterFactory(
-			new FunctionAdapterFactory<ActionSupplier, EPackage>(
+			new FunctionAdapterFactory<EcoreActionSupplier, EPackage>(
 				EcorePackage.Literals.EPACKAGE, 
-				ActionSupplier.class, 
+				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
 				e -> new EPackageActionSupplier(e, context, ePackagePathComputer)));	
 
 		registerAdapterFactory(
-			new FunctionAdapterFactory<ActionSupplier, EClass>(
+			new FunctionAdapterFactory<EcoreActionSupplier, EClass>(
 				EcorePackage.Literals.ECLASS, 
-				ActionSupplier.class, 
+				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
 				e -> new EClassActionSupplier(e, context, ePackagePathComputer, javadocResolver)));		
 
 		registerAdapterFactory(
-			new FunctionAdapterFactory<ActionSupplier, EDataType>(
+			new FunctionAdapterFactory<EcoreActionSupplier, EDataType>(
 				EcorePackage.Literals.EDATA_TYPE, 
-				ActionSupplier.class, 
+				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
 				e -> new EDataTypeActionSupplier(e, context, ePackagePathComputer, javadocResolver)));		
 
 		registerAdapterFactory(
-			new FunctionAdapterFactory<ActionSupplier, EEnum>(
+			new FunctionAdapterFactory<EcoreActionSupplier, EEnum>(
 				EcorePackage.Literals.EENUM, 
-				ActionSupplier.class, 
+				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
 				e -> new EEnumActionSupplier(e, context, ePackagePathComputer, javadocResolver)));		
 
 		registerAdapterFactory(
-			new FunctionAdapterFactory<ActionSupplier, EEnumLiteral>(
+			new FunctionAdapterFactory<EcoreActionSupplier, EEnumLiteral>(
 				EcorePackage.Literals.EENUM_LITERAL, 
-				ActionSupplier.class, 
+				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
 				e -> new EEnumLiteralActionSupplier(e, context, ePackagePathComputer)));		
 
 		registerAdapterFactory(
-			new FunctionAdapterFactory<ActionSupplier, EAttribute>(
+			new FunctionAdapterFactory<EcoreActionSupplier, EAttribute>(
 				EcorePackage.Literals.EATTRIBUTE, 
-				ActionSupplier.class, 
+				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
 				e -> new EAttributeActionSupplier(e, context, ePackagePathComputer)));		
 
 		registerAdapterFactory(
-			new FunctionAdapterFactory<ActionSupplier, EReference>(
+			new FunctionAdapterFactory<EcoreActionSupplier, EReference>(
 				EcorePackage.Literals.EREFERENCE, 
-				ActionSupplier.class, 
+				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
 				e -> new EReferenceActionSupplier(e, context, ePackagePathComputer)));		
 
 		registerAdapterFactory(
-			new FunctionAdapterFactory<ActionSupplier, EOperation>(
+			new FunctionAdapterFactory<EcoreActionSupplier, EOperation>(
 				EcorePackage.Literals.EOPERATION, 
-				ActionSupplier.class, 
+				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
 				e -> new EOperationActionSupplier(e, context, ePackagePathComputer)));		
 
 		registerAdapterFactory(
-			new FunctionAdapterFactory<ActionSupplier, EParameter>(
+			new FunctionAdapterFactory<EcoreActionSupplier, EParameter>(
 				EcorePackage.Literals.EPARAMETER, 
-				ActionSupplier.class, 
+				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
 				e -> new EParameterActionSupplier(e, context, ePackagePathComputer)));	
 	}

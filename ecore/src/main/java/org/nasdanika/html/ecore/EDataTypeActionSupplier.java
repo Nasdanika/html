@@ -25,8 +25,8 @@ public class EDataTypeActionSupplier extends EClassifierActionSupplier<EDataType
 	}
 	
 	@Override
-	public Action execute(ProgressMonitor progressMonitor) throws Exception {
-		Action action = super.execute(progressMonitor);
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(contextEClass, progressMonitor);
 		
 		// Uses
 		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
@@ -38,7 +38,7 @@ public class EDataTypeActionSupplier extends EClassifierActionSupplier<EDataType
 			gstf.content(list);
 			
 			for (EClass use: uses) {
-				list.content(TagName.li.create(link(use)));
+				list.content(TagName.li.create(link(use, eObject)));
 			}
 			addContent(action, gstf.toString());
 		}

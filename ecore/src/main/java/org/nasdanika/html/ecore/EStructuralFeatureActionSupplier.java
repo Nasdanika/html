@@ -8,15 +8,15 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.model.app.Action;
 
-public class EStructuralFeatureActionSupplier<T extends EStructuralFeature> extends ETypedElementActionSupplier<T> {
+public class EStructuralFeatureActionSupplier<T extends EStructuralFeature> extends ETypedElementActionSupplier<T> implements EcoreActionSupplier {
 
 	public EStructuralFeatureActionSupplier(T value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
 		super(value, context, ePackagePathComputer);
 	}
-	
+		
 	@Override
-	public Action execute(ProgressMonitor progressMonitor) throws Exception {
-		Action action = super.execute(progressMonitor);
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(contextEClass, progressMonitor);
 	
 		EClass eContainingClass = eObject.getEContainingClass();
 		action.setId(encodeEPackage(
@@ -33,10 +33,13 @@ public class EStructuralFeatureActionSupplier<T extends EStructuralFeature> exte
 	}
 
 	@Override
-	protected Table propertiesTable(ProgressMonitor monitor) throws Exception {		
-		Table table = super.propertiesTable(monitor);
+	protected Table propertiesTable(EClass contextEClass, ProgressMonitor monitor) throws Exception {		
+		Table table = super.propertiesTable(contextEClass, monitor);
 		addRow(table, "Changeable").add(eObject.isChangeable());
 		addRow(table, "Derived").add(eObject.isDerived());
+		if (contextEClass != null) {
+			addRow(table, "Declaring class").add(link(eObject.getEContainingClass(), contextEClass));
+		}
 		
 		return table;
 	}

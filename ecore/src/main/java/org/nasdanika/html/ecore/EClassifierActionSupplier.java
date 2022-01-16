@@ -51,8 +51,8 @@ public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElem
 	}
 	
 	@Override
-	public Action execute(ProgressMonitor progressMonitor) throws Exception {
-		Action action = super.execute(progressMonitor);
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(contextEClass, progressMonitor);
 		action.setLocation(eObject.getName() + ".html");
 		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject.getEPackage()) + "-" + eObject.getName());
 		action.setText(eObject.getName() + typeParameters(eObject));				 

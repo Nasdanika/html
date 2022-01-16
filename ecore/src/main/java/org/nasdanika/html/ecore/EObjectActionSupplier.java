@@ -9,7 +9,7 @@ import org.nasdanika.html.model.app.util.ActionSupplier;
  * @author Pavel Vlasov
  *
  */
-public abstract class EObjectActionSupplier<T extends EObject> implements ActionSupplier {
+public abstract class EObjectActionSupplier<T extends EObject> implements EcoreActionSupplier {
 		
 	protected T eObject;
 
@@ -22,8 +22,8 @@ public abstract class EObjectActionSupplier<T extends EObject> implements Action
 	 * @param child
 	 * @return
 	 */
-	protected ActionSupplier adaptChild(EObject child) {
-		return EObjectAdaptable.adaptTo(child, ActionSupplier.class);
+	protected EcoreActionSupplier adaptChild(EObject child) {
+		return EObjectAdaptable.adaptTo(child, EcoreActionSupplier.class);
 	}
 	
 }

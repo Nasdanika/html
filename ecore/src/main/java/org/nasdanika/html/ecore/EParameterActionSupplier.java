@@ -1,5 +1,6 @@
 package org.nasdanika.html.ecore;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
 import org.nasdanika.common.Context;
@@ -13,8 +14,8 @@ public class EParameterActionSupplier extends ETypedElementActionSupplier<EParam
 	}
 	
 	@Override
-	public Action execute(ProgressMonitor progressMonitor) throws Exception {
-		Action action = super.execute(progressMonitor);
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(contextEClass, progressMonitor);
 		action.setName(EOperationActionSupplier.eOperationSignature(eObject.getEOperation(), this::encodeEPackage) + "--" + eObject.getName());
 		return action;
 	}

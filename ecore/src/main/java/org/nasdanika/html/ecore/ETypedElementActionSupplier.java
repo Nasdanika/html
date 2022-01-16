@@ -2,6 +2,7 @@ package org.nasdanika.html.ecore;
 
 import java.util.List;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.ETypedElement;
@@ -20,8 +21,8 @@ public class ETypedElementActionSupplier<T extends ETypedElement> extends ENamed
 	}
 	
 	@Override
-	public Action execute(ProgressMonitor progressMonitor) throws Exception {
-		Action action = super.execute(progressMonitor);
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+		Action action = super.execute(contextEClass, progressMonitor);
 
 		StringBuilder label = new StringBuilder(eObject.getName());
 		EGenericType genericType = eObject.getEGenericType();
@@ -34,17 +35,17 @@ public class ETypedElementActionSupplier<T extends ETypedElement> extends ENamed
 		}
 		action.setText(label.toString());
 		
-		addContent(action, propertiesTable(progressMonitor).toString()); 
+		addContent(action, propertiesTable(contextEClass, progressMonitor).toString()); 
 		return action;
 	}
 
-	protected Table propertiesTable(ProgressMonitor monitor) throws Exception {		
+	protected Table propertiesTable(EClass contextEClass, ProgressMonitor monitor) throws Exception {		
 		Table table = context.get(BootstrapFactory.class).table();
 		table.toHTMLElement().style().width("auto");
 		
 		EGenericType genericType = eObject.getEGenericType(); 
 		if (genericType != null) {
-			genericType(genericType, addRow(table, "Type"), monitor);
+			genericType(genericType, contextEClass, addRow(table, "Type"), monitor);
 		}
 		
 		addRow(table, "Cardinality").add(cardinality(eObject));
