@@ -1,5 +1,6 @@
 package org.nasdanika.html.ecore;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -153,23 +154,25 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		
 		Comparator<ENamedElement> namedElementComparator = (a,b) -> a.getName().compareTo(b.getName());
 		
-		generateLoadSpecification(action, namedElementComparator, progressMonitor);
-		
 		List<EAttribute> allAttributes = eObject.getEAllAttributes().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		List<EReference> allReferences = eObject.getEAllReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
-		List<EOperation> allOperations = eObject.getEAllOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		List<EOperation> allOperations = eObject.getEAllOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());		
+		EList<EGenericType> allGenericSupertypes = eObject.getEAllGenericSuperTypes();
 		
-		if (allAttributes.size() + allReferences.size() + allOperations.size() != 0) { 	
+		if (allAttributes.size() + allReferences.size() + allOperations.size() + allGenericSupertypes.size()  != 0) { 	
 			Action allGroup = AppFactory.eINSTANCE.createAction();
-			allGroup.setText("All members");
+			allGroup.setText("All");
 			allGroup.setUuid(action.getUuid() + "-all");
 			action.getNavigation().add(allGroup);
 			
 			generateAllAttributes(allAttributes, allGroup, progressMonitor);
 			generateAllReferences(allReferences, allGroup, progressMonitor);
 			generateAllOperations(allOperations, allGroup, progressMonitor);			
+			generateAllGenericSupertypes(allGenericSupertypes, allGroup, progressMonitor);			
 		}
-
+	
+		generateLoadSpecification(action, namedElementComparator, progressMonitor);		
+		
 //		TODO - Table (list) of contents
 //		Map<String, Object> locConfig = new LinkedHashMap<>();
 //		locConfig.put("tooltip", true);
@@ -221,6 +224,83 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		return action;
 	}
 
+	private void generateAllGenericSupertypes(List<EGenericType> allGenericSupertypes, Action allGroup, ProgressMonitor progressMonitor) throws Exception {		
+		if (!allGenericSupertypes.isEmpty()) {
+			Action allSupertypesAction = AppFactory.eINSTANCE.createAction();
+			allSupertypesAction.setText("Supertypes");
+			allSupertypesAction.setLocation(eObject.getName() + "-all-supertypes.html");
+			allSupertypesAction.setSectionStyle(SectionStyle.HEADER);
+			allGroup.getChildren().add(allSupertypesAction);
+			
+			Tag list = TagName.ul.create();
+			
+			for (EGenericType superType: allGenericSupertypes) {
+				Tag listItem = TagName.li.create();
+				list.content(listItem);
+				genericType(superType, eObject, listItem.getContent(), progressMonitor);
+			}
+			addContent(allSupertypesAction, list.toString());			
+			addContent(allSupertypesAction, generateInheritanceDiagram(false,  null, 0, RelationshipDirection.both, true, true, progressMonitor));
+			
+		}
+	}
+	
+	protected String generateInheritanceDiagram(
+			boolean leftToRightDirection, 
+			String width, 
+			int depth, 
+			PlantUmlTextGenerator.RelationshipDirection relationshipDirection,
+			boolean appendAttributes,
+			boolean appendOperations,
+			ProgressMonitor monitor) throws Exception {
+		
+		StringBuilder sb = new StringBuilder();
+		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, ec -> path(ec, eObject), this::getEModelElementFirstDocSentence) {
+			
+			@Override
+			protected Collection<EClass> getSubTypes(EClass eClass) {
+				return EClassActionSupplier.this.getSubTypes(eClass);
+			}
+			
+			@Override
+			protected Collection<EClass> getReferrers(EClass eClass) {
+				return EClassActionSupplier.this.getReferrers(eClass);
+			}
+			
+			@Override
+			protected Collection<EClass> getUses(EClassifier eClassifier) {
+				return EClassActionSupplier.this.getUses(eClassifier);
+			}
+			
+			@Override
+			protected boolean isAppendAttributes(EClass eClass) {
+				return appendAttributes;
+			}
+			
+			@Override
+			protected boolean isAppendOperations(EClass eClass) {
+				return appendOperations;
+			}
+			
+		};
+		
+		if (leftToRightDirection) {
+			sb.append("left to right direction").append(System.lineSeparator());
+		}
+		
+		if (width != null) {
+			sb.append("scale ").append(width).append(" width").append(System.lineSeparator());
+		}
+			
+		List<EClass> diagramElements = new ArrayList<>();
+		diagramElements.add(eObject);
+		diagramElements.addAll(eObject.getEAllSuperTypes());
+		gen.appendWithRelationships(diagramElements, relationshipDirection, depth);
+		
+		return context.get(DiagramGenerator.class).generateUmlDiagram(sb.toString());
+	}
+	
+	
 	private void generateAllOperations(List<EOperation> allOperations, Action allGroup, ProgressMonitor progressMonitor) throws Exception {		
 		if (!allOperations.isEmpty()) {
 			Action allOperationsAction = AppFactory.eINSTANCE.createAction();
