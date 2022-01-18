@@ -2,6 +2,11 @@ engineering-module:
   name: Ecore
   path: ecore
   action-prototype: "../javadoc-action-prototype.xml#/"
+  documentation: 
+    content-markdown:
+      style: true
+      source:
+        content-resource: ecore.md
   dependencies:
     - engineering://nasdanika/modules/html/modules/emf
   issues:

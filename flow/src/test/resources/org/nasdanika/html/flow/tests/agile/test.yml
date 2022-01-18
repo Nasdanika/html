@@ -130,6 +130,7 @@ flow-package:
               target: nasdanika://flow/test/resources/ide/services/install 
               documentation:
                 content-interpolator:
+                  #process-includes: false
                   source:
                     content-markdown:
                       style: true

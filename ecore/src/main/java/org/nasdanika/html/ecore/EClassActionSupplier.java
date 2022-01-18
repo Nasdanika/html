@@ -358,9 +358,9 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			loadSpecificationAction.setLocation(eObject.getName() + "-load-specification.html");			
 			action.getNavigation().add(loadSpecificationAction);
 			
-			String loadDoc = NcoreUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.LOAD_DOC);
+			String loadDoc = EmfUtil.getLoadDocumentation(eObject);
 			if (!Util.isBlank(loadDoc)) {
-				addContent(loadSpecificationAction, loadDoc);
+				loadSpecificationAction.getContent().add(interpolatedMarkdown(loadDoc));
 			}
 			
 			Predicate<EStructuralFeature> predicate = sf -> sf.isChangeable() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, "true"));
@@ -408,9 +408,9 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 					featureDoc = EmfUtil.getDocumentation(sf);
 				}
 				
-				String featureLoadDoc = NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_DOC, featureDoc);
+				String featureLoadDoc = EmfUtil.getLoadDocumentation(sf);
 				if (!Util.isBlank(featureLoadDoc)) {
-					featureAction.getContent().add(interpolatedMarkdown(featureLoadDoc));
+					featureAction.getContent().add(interpolatedMarkdown(Util.isBlank(featureLoadDoc) ? featureLoadDoc : featureLoadDoc));
 				}
 			}			
 		}

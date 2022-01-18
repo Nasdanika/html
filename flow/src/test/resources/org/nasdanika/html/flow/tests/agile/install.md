@@ -22,3 +22,12 @@ ${embedded-image/png/./nasdanika-logo.png}
 		return label;
 	}
 ```
+
+```png-resource
+nasdanika-logo.png
+```
+
+
+```jpeg-resource
+logo.jpg
+```
