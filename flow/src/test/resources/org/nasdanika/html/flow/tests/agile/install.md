@@ -27,6 +27,9 @@ ${embedded-image/png/./nasdanika-logo.png}
 nasdanika-logo.png
 ```
 
+```png-resource
+nasdanika-logo.png
+```
 
 ```jpeg-resource
 logo.jpg
