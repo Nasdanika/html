@@ -42,6 +42,7 @@ import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.emf.EObjectActionResolver.Context;
 import org.nasdanika.html.model.app.Action;
@@ -591,8 +592,26 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	 */
 	protected EObject gitRemoteLink(GitMarker marker, String remoteUrl) {
 		String remoteLocation = gitRemoteLocation(marker, remoteUrl);
-		if (remoteLocation == null) {
-			return createText("Remote: " + remoteUrl + ", path: " + marker.getPath() + ", line: " + marker.getLine() + ", column: " + marker.getColumn());			
+		if (remoteLocation == null) {			
+			org.nasdanika.html.Table table = HTMLFactory.INSTANCE.table();
+			
+			Row remoteRow = table.row();
+			remoteRow.header("Remote");
+			remoteRow.cell(remoteUrl);
+			
+			Row pathRow = table.row();
+			pathRow.header("Path");
+			pathRow.cell(marker.getPath());
+			
+			Row lineRow = table.row();
+			lineRow.header("Line");
+			lineRow.cell(marker.getLine());
+			
+			Row colRow = table.row();
+			colRow.header("Column");
+			colRow.cell(marker.getColumn());
+			
+			return createText(table.toString());			
 		}
 		
 		StringBuilder textBuilder = new StringBuilder(marker.getPath());			
@@ -602,6 +621,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 				textBuilder.append(":").append(marker.getColumn());
 			}
 		}
+		
 		Link link = AppFactory.eINSTANCE.createLink();
 		link.setText(textBuilder.toString());
 		link.setLocation(remoteLocation);
