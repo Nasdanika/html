@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -128,9 +129,10 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 					FlowElement<?> flowElement,
 					Map<FlowElement<?>, DiagramElement> semanticMap, 
 					FlowElement<?> contextElement,
+					Predicate<FlowElement<?>> partitionPredicate,
 					int depth) {
 				
-				DiagramElement ret = super.createDiagramElement(flowElement, semanticMap, contextElement, depth);
+				DiagramElement ret = super.createDiagramElement(flowElement, semanticMap, contextElement, partitionPredicate, depth);
 				String text = ret.getText();
 				int initialLineLength = 25;
 				if (text != null && text.length() > initialLineLength) {
