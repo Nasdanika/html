@@ -184,7 +184,7 @@ flow-package:
           two:
             flow-flow:
               name: Two 
-              partition: true
+              #partition: true
               outputs:
                 one:
                   target: end

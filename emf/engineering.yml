@@ -33,5 +33,5 @@ engineering-module:
       name: Git Web URL resolver
       description: |+2
         Introduce an interfact GitLinkResolver with String resolve(GitMarker, String path) method. Use in gitRemoteLink() so there is no need to override in action providers.
-        Also - table for remote, path, line, col - not a single line.
+        Also - table for remote, path, line, col - not a single line. Context argument to EObjectActionProvider constructor. Rename to EObjectActionBuilder.
         
