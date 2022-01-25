@@ -87,7 +87,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>3.2.0</version>
 			
 				<executions>
 					<execution>
@@ -97,7 +97,8 @@
 						</goals>
 						<configuration>
 							<failOnError>false</failOnError>
-							<additionalparam>-Xdoclint:none</additionalparam>
+							<additionalOptions>-Xdoclint:none</additionalOptions>
+							<additionalOptions><![CDATA[--allow-script-in-comments]]></additionalOptions>
 							<links>
 								<link>https://download.eclipse.org/modeling/emf/emf/javadoc/2.11/</link>
 								<link>https://picocli.info/apidocs/</link>
@@ -191,7 +192,18 @@
 									<location>${project.parent.basedir}/flow/target/apidocs/</location>
 								</offlineLink>
 							</offlineLinks>
-
+							<header>
+								<![CDATA[
+								      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9BRJVLK8CC"></script>
+								      <script>
+								        window.dataLayer = window.dataLayer || [];
+								        function gtag(){dataLayer.push(arguments);}
+								        gtag('js', new Date());
+      
+								        gtag('config', 'G-9BRJVLK8CC');
+								      </script>    
+								]]>
+							</header>
 						</configuration>
 					</execution>
 				</executions>
