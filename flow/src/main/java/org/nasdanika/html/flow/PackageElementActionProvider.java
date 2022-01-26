@@ -103,12 +103,10 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
 			ProgressMonitor progressMonitor) throws Exception {
+
 		super.resolve(action, context, progressMonitor);
-		
-		// Adding documentation here so it appears under the properties table
 		T semanticElement = getTarget();
-		action.getContent().addAll(EcoreUtil.copyAll(semanticElement.getDocumentation()));		
-		
+
 		// Representations
 		for (Diagram representation: semanticElement.getRepresentations().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList())) {
 			if (representation.getElements().isEmpty()) {
@@ -146,6 +144,9 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 				descriptionCell.getContent().add(createText(rDescr));								
 			}
 		}
+		
+		// Adding documentation here so it appears under the properties table
+		action.getContent().addAll(EcoreUtil.copyAll(semanticElement.getDocumentation()));				
 	}
 	
 	/**
