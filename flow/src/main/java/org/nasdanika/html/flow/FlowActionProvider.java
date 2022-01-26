@@ -217,7 +217,7 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 		if (getTarget().isPartition()) {
 			super.populateRepresentation(representation, flowStateDiagramGenerator);
 		} else {
-			flowStateDiagramGenerator.generateDiagram(getTarget(), representation);
+			flowStateDiagramGenerator.generateDiagram(getTarget(), representation, null);
 		}
 	}
 	
