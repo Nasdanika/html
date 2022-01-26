@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -24,7 +25,9 @@ import org.nasdanika.flow.util.FlowStateDiagramGenerator;
 import org.nasdanika.html.emf.ColumnBuilder;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.bootstrap.TableCell;
+import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.NcorePackage;
+import org.nasdanika.ncore.util.NamedElementComparator;
 
 public class FlowElementActionProvider<T extends FlowElement<?>> extends ParticipantResponsibilityActionProvider<T> {
 	
@@ -40,6 +43,20 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 		properties.add(FlowPackage.Literals.FLOW_ELEMENT__PARTICIPANTS);
 		properties.add(FlowPackage.Literals.FLOW_ELEMENT__RESOURCES);
 		return properties;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Object getTypedElementValue(ETypedElement typedElement) throws Exception {
+		Object value = super.getTypedElementValue(typedElement);
+		if (value instanceof Collection && (
+				typedElement == FlowPackage.Literals.FLOW_ELEMENT__INPUT_ARTIFACTS 
+				|| typedElement == FlowPackage.Literals.FLOW_ELEMENT__OUTPUT_ARTIFACTS 
+				|| typedElement == FlowPackage.Literals.FLOW_ELEMENT__PARTICIPANTS
+				|| typedElement == FlowPackage.Literals.FLOW_ELEMENT__RESOURCES)) {
+			return ((Collection<NamedElement>) value).stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
+		}
+		return value;
 	}
 	
 	@Override
@@ -147,7 +164,7 @@ public class FlowElementActionProvider<T extends FlowElement<?>> extends Partici
 	}
 
 	protected void populateRepresentation(Diagram representation, FlowStateDiagramGenerator flowStateDiagramGenerator) {
-		flowStateDiagramGenerator.generateDiagram(getTarget(), representation);
+		flowStateDiagramGenerator.generateDiagram(getTarget(), representation, null);
 	}
 
 	private Action createInputsAction(
