@@ -45,7 +45,8 @@ flow-package:
             representations:
               flow:
                 hide-empty-description: true
-                vertical: false                
+                vertical: false
+                context: 1                
             elements:
               step-one:
                 flow-activity:
@@ -110,7 +111,7 @@ flow-package:
                 one:
                   target: one
                 two:
-                  target: two
+                  target: uno
                 choice:
                   target: choice
                 service: 
@@ -151,6 +152,17 @@ flow-package:
                   hide-empty-description: true
                   vertical: false
                   context: 1                  
+          uno:
+            flow-activity:
+              name: Uno 
+              outputs:
+                two:
+                  target: two
+              representations:
+                flow:
+                  hide-empty-description: true
+                  vertical: false
+                  context: 1                  
           one-a:
             flow-activity:
               name: 1.a 
@@ -184,10 +196,15 @@ flow-package:
           two:
             flow-flow:
               name: Two 
-              #partition: true
+              representations:
+                flow:
+                  hide-empty-description: true
+                  vertical: false
+                  context: 1                  
+              partition: true
               outputs:
                 one:
-                  target: end
+                  target: four
               elements:
                 start:
                   flow-start: 
@@ -207,6 +224,14 @@ flow-package:
                 two:
                   flow-flow:
                     name: 2.2 
+                    calls:
+                      install:
+                        target: nasdanika://flow/test/resources/ide/services/install
+                    representations:
+                      flow:
+                        hide-empty-description: true
+                        vertical: false
+                        context: 1                  
                     outputs:
                       one:
                         target: end
@@ -218,16 +243,22 @@ flow-package:
                         target: end
                 end:
                   flow-end: {}              
-              representations:
-                flow:
-                  hide-empty-description: true
-                  vertical: false
-                  context: 1                  
           three:
             flow-activity:
               name: Three 
               outputs:
                 one:
+                  target: end
+              representations:
+                flow:
+                  hide-empty-description: true
+                  vertical: false
+                  context: 1                  
+          four:
+            flow-activity:
+              name: Four 
+              outputs:
+                end:
                   target: end
               representations:
                 flow:
