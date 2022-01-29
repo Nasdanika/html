@@ -78,8 +78,11 @@ import com.ibm.icu.util.Calendar;
 
 public class EObjectActionProvider<T extends EObject> extends AdapterImpl implements ActionProvider {
 	
-	public EObjectActionProvider(T target) {
+	protected org.nasdanika.common.Context context;
+
+	public EObjectActionProvider(T target, org.nasdanika.common.Context context) {
 		setTarget(target);
+		this.context = context;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -591,7 +594,14 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	 * @return
 	 */
 	protected EObject gitRemoteLink(GitMarker marker, String remoteUrl) {
-		String remoteLocation = gitRemoteLocation(marker, remoteUrl);
+		GitLinkResolver gitLinkResolver = null;
+		if (context != null) {
+			gitLinkResolver = context.get(GitLinkResolver.class);
+		}
+		if (gitLinkResolver == null) {
+			gitLinkResolver = GitLinkResolver.INSTANCE;
+		}
+		String remoteLocation = gitLinkResolver.resolve(marker, remoteUrl);
 		EList<String> headRefs = marker.getHeadRefs();
 		if (remoteLocation == null) {			
 			org.nasdanika.html.Table table = HTMLFactory.INSTANCE.table();
@@ -643,19 +653,6 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			link.setIcon("fab fa-github");
 		}		
 		return link;						
-	}
-	
-	/**
-	 * 
-	 * @param marker
-	 * @param remoteUrl
-	 * @return URL of the marker or null if URL cannot be constructed
-	 */
-	protected String gitRemoteLocation(GitMarker marker, String remoteUrl) {
-		if (remoteUrl.startsWith("https://github.com")) {
-			return remoteUrl.substring(0, remoteUrl.length() - 4) + "/blob/" + marker.getHead() + "/" + marker.getPath() + "#L" + marker.getLine(); 
-		}
-		return null;
 	}
 
 	/**

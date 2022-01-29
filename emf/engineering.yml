@@ -29,9 +29,4 @@ engineering-module:
     uri-copy-to-clipboard-relative:
       name: Relative URI copy to clipboard
       description: Drop-down or a dialog with a base URI field to compute relative URI's. Use of relative URI's may be preferred in models which are intended to be reused and the root URI may change.
-    git-web-url-resolver:
-      name: Git Web URL resolver
-      description: |+2
-        Introduce an interfact GitLinkResolver with String resolve(GitMarker, String path) method. Use in gitRemoteLink() so there is no need to override in action providers.
-        Also - table for remote, path, line, col - not a single line. Context argument to EObjectActionProvider constructor. Rename to EObjectActionBuilder.
         

@@ -38,12 +38,9 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 	 * ones end up in their own tab. 
 	 */
 	protected int descriptionTabLengthThreshold = 2500;
-
-	protected Context context;
 		
 	public PackageElementActionProvider(T value, Context context) {
-		super(value);		
-		this.context = context;
+		super(value, context);		
 	}
 	
 	@Override

@@ -22,11 +22,8 @@ import org.nasdanika.ncore.util.NcoreUtil;
 
 public class TemporalActionProvider extends EObjectActionProvider<Temporal> {
 	
-	protected Context context;
-		
 	public TemporalActionProvider(Temporal value, Context context) {
-		super(value);		
-		this.context = context;
+		super(value, context);		
 	}
 	
 	@Override
