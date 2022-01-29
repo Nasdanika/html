@@ -592,6 +592,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	 */
 	protected EObject gitRemoteLink(GitMarker marker, String remoteUrl) {
 		String remoteLocation = gitRemoteLocation(marker, remoteUrl);
+		EList<String> headRefs = marker.getHeadRefs();
 		if (remoteLocation == null) {			
 			org.nasdanika.html.Table table = HTMLFactory.INSTANCE.table();
 			
@@ -611,6 +612,16 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 			colRow.header("Column");
 			colRow.cell(marker.getColumn());
 			
+			if (!headRefs.isEmpty()) {
+				Row refsRow = table.row();
+				refsRow.header("Refs");
+				if (headRefs.size() == 1) {
+					refsRow.cell(headRefs.get(0));
+				} else {
+					HTMLFactory.INSTANCE.ul(headRefs);
+				}				
+			}
+			
 			return createText(table.toString());			
 		}
 		
@@ -625,6 +636,9 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 		Link link = AppFactory.eINSTANCE.createLink();
 		link.setText(textBuilder.toString());
 		link.setLocation(remoteLocation);
+		if (!headRefs.isEmpty()) {
+			link.setTooltip(String.join(", ", headRefs));
+		}
 		if (remoteUrl.startsWith("https://github.com")) {
 			link.setIcon("fab fa-github");
 		}		
