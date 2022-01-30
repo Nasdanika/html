@@ -3,16 +3,16 @@ package org.nasdanika.html.flow.tests;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
-import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -26,12 +26,15 @@ import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.Test;
+import org.nasdanika.common.Consumer;
+import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Diagnostic;
-import org.nasdanika.common.NasdanikaException;
+import org.nasdanika.common.DiagnosticException;
 import org.nasdanika.common.NullProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
+import org.nasdanika.common.Supplier;
 import org.nasdanika.common.resources.BinaryEntityContainer;
 import org.nasdanika.common.resources.FileSystemContainer;
 import org.nasdanika.diagram.DiagramPackage;
@@ -46,11 +49,13 @@ import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.Package;
+import org.nasdanika.flow.util.FlowYamlSupplier;
 import org.nasdanika.html.emf.EObjectActionResolver;
 import org.nasdanika.html.flow.FlowActionProviderAdapterFactory;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
+import org.nasdanika.html.model.app.gen.AppGenYamlLoadingExecutionParticipant;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.app.util.ActionProvider;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
@@ -63,7 +68,7 @@ import org.nasdanika.ncore.util.NcoreResourceSet;
  * @author Pavel
  *
  */
-public class TestAgileDocGen extends TestBase {
+public class TestAgileDocGen {
 	
 	private static final File GENERATED_MODELS_BASE_DIR = new File("target/model-doc");
 	private static final File INSTANCE_MODELS_DIR = new File(GENERATED_MODELS_BASE_DIR, "instances");
@@ -72,7 +77,7 @@ public class TestAgileDocGen extends TestBase {
 	
 	private static final URI INSTANCE_MODELS_URI = URI.createFileURI(INSTANCE_MODELS_DIR.getAbsolutePath() + "/");	
 	private static final URI ACTION_MODELS_URI = URI.createFileURI(ACTION_MODELS_DIR.getAbsolutePath() + "/");	
-	private static final URI RESOURCE_MODELS_URI = URI.createFileURI(RESOURCE_MODELS_DIR.getAbsolutePath() + "/");	
+	private static final URI RESOURCE_MODELS_URI = URI.createFileURI(RESOURCE_MODELS_DIR.getAbsolutePath() + "/");
 	
 	/**
 	 * Generates an instance model, diagnoses, and stores to XMI.
@@ -80,42 +85,78 @@ public class TestAgileDocGen extends TestBase {
 	 * @param progressMonitor
 	 * @throws Exception
 	 */
-	protected void generateInstanceModel(String name, ProgressMonitor progressMonitor) throws Exception {	
-		load(
-				"agile/" + name + ".yml", 
-				obj -> {
-					org.nasdanika.flow.Package pkg = (org.nasdanika.flow.Package) obj;
-					
-					Package instance = pkg.create();
-					ResourceSet resourceSet = new NcoreResourceSet();
-					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-					
-					org.eclipse.emf.ecore.resource.Resource instanceModelResource = resourceSet.createResource(URI.createURI(name + ".xml").resolve(INSTANCE_MODELS_URI));
-					instanceModelResource.getContents().add(instance);
-					
-					org.eclipse.emf.common.util.Diagnostic instanceDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(resourceSet, Context.EMPTY_CONTEXT);
-					int severity = instanceDiagnostic.getSeverity();
-					if (severity != org.eclipse.emf.common.util.Diagnostic.OK) {
-						EmfUtil.dumpDiagnostic(instanceDiagnostic, 2, System.err);
-					}
-					assertThat(severity).isEqualTo(org.eclipse.emf.common.util.Diagnostic.OK);
-										
-					try {
-						instanceModelResource.save(null);
-					} catch (IOException ioe) {
-						throw new NasdanikaException(ioe);
-					}
-				},
-				diagnostic -> {
-					if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
-						System.err.println("***********************");
-						System.err.println("*      Diagnostic     *");
-						System.err.println("***********************");
-						diagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
-					}
-					assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
-				},
-				progressMonitor);		
+	protected void generateInstanceModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {	
+		URI resourceURI = URI.createURI(org.nasdanika.common.Util.CLASSPATH_URL_PREFIX + "org/nasdanika/html/flow/tests/agile/" + name + ".yml"); //TestBase.this.getClass().getResource(resource).toString());
+		
+		
+		@SuppressWarnings("resource")
+		Supplier<EObject> flowSupplier = new FlowYamlSupplier(resourceURI, context) {
+			
+			@Override
+			protected boolean isDiagnoseModel() {
+				return false;
+			}
+			
+		};
+		
+		Consumer<EObject> flowConsumer = new Consumer<EObject>() {
+
+			@Override
+			public double size() {
+				return 1;
+			}
+
+			@Override
+			public String name() {
+				return "Generating instance model";
+			}
+
+			@Override
+			public void execute(EObject obj, ProgressMonitor progressMonitor) throws Exception {
+				org.nasdanika.flow.Package pkg = (org.nasdanika.flow.Package) obj;
+				
+				Package instance = pkg.create();
+				ResourceSet resourceSet = new NcoreResourceSet();
+				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+				
+				org.eclipse.emf.ecore.resource.Resource instanceModelResource = resourceSet.createResource(URI.createURI(name + ".xml").resolve(INSTANCE_MODELS_URI));
+				instanceModelResource.getContents().add(instance);
+				
+				org.eclipse.emf.common.util.Diagnostic instanceDiagnostic = org.nasdanika.emf.EmfUtil.resolveClearCacheAndDiagnose(resourceSet, Context.EMPTY_CONTEXT);
+				int severity = instanceDiagnostic.getSeverity();
+				if (severity != org.eclipse.emf.common.util.Diagnostic.OK) {
+					EmfUtil.dumpDiagnostic(instanceDiagnostic, 2, System.err);
+				}
+				assertThat(severity).isEqualTo(org.eclipse.emf.common.util.Diagnostic.OK);
+									
+				instanceModelResource.save(null);
+			}
+		};
+		
+		try {
+			org.nasdanika.common.Diagnostic diagnostic = org.nasdanika.common.Util.call(flowSupplier.then(flowConsumer), progressMonitor);
+			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
+				System.err.println("***********************");
+				System.err.println("*      Diagnostic     *");
+				System.err.println("***********************");
+				diagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
+			}
+			assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
+			
+			if (diagnostic.getStatus() == Status.WARNING || diagnostic.getStatus() == Status.ERROR) {
+				System.err.println("***********************");
+				System.err.println("*      Diagnostic     *");
+				System.err.println("***********************");
+				diagnostic.dump(System.err, 4, Status.ERROR, Status.WARNING);
+			}
+		} catch (DiagnosticException e) {
+			System.err.println("******************************");
+			System.err.println("*      Diagnostic failed     *");
+			System.err.println("******************************");
+			e.getDiagnostic().dump(System.err, 4, Status.FAIL);
+			throw e;
+		}
+		
 	}
 	
 	/**
@@ -210,12 +251,55 @@ public class TestAgileDocGen extends TestBase {
 		actionModelResource.save(null);
 	}
 	
+	protected EObject loadObject(
+			String resource, 
+			java.util.function.Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
+			Context context,
+			ProgressMonitor progressMonitor) throws Exception {
+		
+		Class<?> clazz = getClass();
+		URL resourceURL = clazz.getResource(resource);
+		if (resourceURL == null) {
+			throw new IllegalArgumentException("Classloader resource not found: " + resource + " by " + clazz); 
+		}
+		URI resourceURI = URI.createURI(resourceURL.toString());
+
+		class ObjectSupplier extends AppGenYamlLoadingExecutionParticipant implements Supplier<EObject> {
+
+			public ObjectSupplier(Context context) {
+				super(context);
+			}
+
+			@Override
+			protected Collection<URI> getResources() {
+				return Collections.singleton(resourceURI);
+			}
+
+			@Override
+			public EObject execute(ProgressMonitor progressMonitor) throws Exception {				
+				return resourceSet.getResource(resourceURI, false).getContents().iterator().next();
+			}
+			
+		};
+		
+		// Diagnosing loaded resources. 
+		try {
+			return Objects.requireNonNull(org.nasdanika.common.Util.call(new ObjectSupplier(context), progressMonitor, diagnosticConsumer), "Loaded null from: " + resource);
+		} catch (DiagnosticException e) {
+			System.err.println("******************************");
+			System.err.println("*      Diagnostic failed     *");
+			System.err.println("******************************");
+			e.getDiagnostic().dump(System.err, 4, Status.FAIL);
+			throw e;
+		}		
+	}
+	
 	/**
 	 * Generates a resource model from an action model.
 	 * @throws Exception
 	 */
 	public void generateResourceModel(String name, ProgressMonitor progressMonitor) throws Exception {
-		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
+		java.util.function.Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
 			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
 				System.err.println("***********************");
 				System.err.println("*      Diagnostic     *");
@@ -227,7 +311,7 @@ public class TestAgileDocGen extends TestBase {
 		
 		Context modelContext = Context.singleton("model-name", name);
 		String actionsResource = "actions.yml";
-		Action root = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
+		Action root = (Action) loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor);
 		
 		Container container = ResourcesFactory.eINSTANCE.createContainer();
 		container.setName(name);
@@ -239,7 +323,7 @@ public class TestAgileDocGen extends TestBase {
 		modelResource.getContents().add(container);
 		
 		String pageTemplateResource = "page-template.yml";
-		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) Objects.requireNonNull(loadObject(pageTemplateResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + pageTemplateResource);
+		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) loadObject(pageTemplateResource, diagnosticConsumer, modelContext, progressMonitor);
 		
 		Util.generateSite(
 				root, 
@@ -265,9 +349,26 @@ public class TestAgileDocGen extends TestBase {
 		BinaryEntityContainer container = new FileSystemContainer(new File("target/model-doc/site"));
 		for (EObject eObject : containerResource.getContents()) {
 			Diagnostician diagnostician = new Diagnostician();
-			org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(eObject);
-			assertThat(diagnostic.getSeverity()).isNotEqualTo(org.eclipse.emf.common.util.Diagnostic.ERROR);
-			generate(eObject, container, Context.EMPTY_CONTEXT, progressMonitor);
+			org.eclipse.emf.common.util.Diagnostic eObjectDiagnostic = diagnostician.validate(eObject);
+			assertThat(eObjectDiagnostic.getSeverity()).isNotEqualTo(org.eclipse.emf.common.util.Diagnostic.ERROR);
+			// Diagnosing loaded resources. 
+			try {
+				ConsumerFactory<BinaryEntityContainer> consumerFactory = Objects.requireNonNull(EObjectAdaptable.adaptToConsumerFactory(eObject, BinaryEntityContainer.class), "Cannot adapt to ConsumerFactory");
+				Diagnostic callDiagnostic = org.nasdanika.common.Util.call(consumerFactory.create(Context.EMPTY_CONTEXT), container, progressMonitor);
+				if (callDiagnostic.getStatus() == Status.FAIL || callDiagnostic.getStatus() == Status.ERROR) {
+					System.err.println("***********************");
+					System.err.println("*      Diagnostic     *");
+					System.err.println("***********************");
+					callDiagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
+				}
+				assertThat(callDiagnostic.getStatus()).isEqualTo(Status.SUCCESS);
+			} catch (DiagnosticException e) {
+				System.err.println("******************************");
+				System.err.println("*      Diagnostic failed     *");
+				System.err.println("******************************");
+				e.getDiagnostic().dump(System.err, 4, Status.FAIL);
+				throw e;
+			}
 		}		
 	}
 	
@@ -312,10 +413,11 @@ public class TestAgileDocGen extends TestBase {
 	
 	private void generateSite(String name) throws Exception {
 		System.out.println("Generating site: " + name);
+		Context context = Context.EMPTY_CONTEXT;
 		ProgressMonitor progressMonitor = new NullProgressMonitor(); // PrintStreamProgressMonitor();
 		
 		long start = System.currentTimeMillis();
-		generateInstanceModel(name, progressMonitor);
+		generateInstanceModel(name, context, progressMonitor);
 		System.out.println("\tGenerated instance model in " + (System.currentTimeMillis() - start) + " milliseconds");
 		start = System.currentTimeMillis();
 		
