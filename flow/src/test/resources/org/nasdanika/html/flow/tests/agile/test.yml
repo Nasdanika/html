@@ -9,6 +9,12 @@ flow-package:
         content-markdown:
           source:
             content-text: Creates and ``grooms`` stories.
+    team-member:
+      name: Team Member
+      documentation: 
+        content-markdown:
+          source:
+            content-text: Base participant.
     scrum-master:
       name: Scrum Master
       description: Drives sprint execution.
@@ -17,6 +23,7 @@ flow-package:
       description: Keeps the product aligned to the architectural guidelines.
     developer:
       name: Developer
+      bases: team-member
       description: Implements stories and tests in their local environment
     lead-developer:
       name: Lead Developer
