@@ -403,14 +403,15 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 
 				addContent(featureAction, table.toString());
 				
-				String featureDoc = EObjectAdaptable.getResourceContext(sf).getString("documentation", EcoreUtil.getDocumentation(sf));
-				if (Util.isBlank(featureDoc)) {
-					featureDoc = EmfUtil.getDocumentation(sf);
-				}
-				
 				String featureLoadDoc = EmfUtil.getLoadDocumentation(sf);
+				if (Util.isBlank(featureLoadDoc)) {
+					featureLoadDoc = EObjectAdaptable.getResourceContext(sf).getString("documentation", EcoreUtil.getDocumentation(sf));
+					if (Util.isBlank(featureLoadDoc)) {
+						featureLoadDoc = EmfUtil.getDocumentation(sf);
+					}					
+				}
 				if (!Util.isBlank(featureLoadDoc)) {
-					featureAction.getContent().add(interpolatedMarkdown(Util.isBlank(featureLoadDoc) ? featureLoadDoc : featureLoadDoc));
+					featureAction.getContent().add(interpolatedMarkdown(featureLoadDoc));
 				}
 			}			
 		}
