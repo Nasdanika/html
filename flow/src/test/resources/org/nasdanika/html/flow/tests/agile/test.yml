@@ -154,6 +154,8 @@ flow-package:
                 installation:
                   target: nasdanika://flow/test/resources/ide/services/install
                   description: Install things.
+              participants: developer
+              resources: source-repository              
               representations:
                 flow:
                   hide-empty-description: true
