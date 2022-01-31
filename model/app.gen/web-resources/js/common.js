@@ -6,6 +6,8 @@ $(document).ready( function() {
     $('.nsd-app-navigation-panel').removeClass('col'); 
     $('.nsd-app-navigation-panel').addClass(['col-auto', 'border-right', 'border-secondary', 'pb-1']);
     $('.nsd-app-navigation-panel .card').addClass(['mt-2']);
+
+    $('.nsd-app-content-row').addClass('flex-nowrap');
     
     $('.nsd-app-content-panel-navs').addClass('float-right');
     $('.nsd-app-content-panel-breadcrumb').addClass('mt-1');
