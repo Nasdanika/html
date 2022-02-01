@@ -23,4 +23,5 @@ bootstrap-page:
       fluid: true
       navigation-panel:
         style: COLLAPSIBLE_CARDS
+        collapsible: true
  

@@ -75,6 +75,7 @@ flow-package:
           flow:
             hide-empty-description: true
             vertical: false
+            name: PlantUML Diagram
             description: Generated diagram
 #          generated: 
 #            type: drawio
@@ -82,7 +83,6 @@ flow-package:
 #            description: Generated diagram
           manual: 
             type: "drawio:./agile-development.drawio"
-            name: Generated diagram
             description: Generated and then manually edited diagram
         elements:
           create:
