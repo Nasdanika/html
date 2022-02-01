@@ -75,12 +75,13 @@ flow-package:
           flow:
             hide-empty-description: true
             vertical: false
-          generated: 
-            type: drawio
-            name: Agile Development
             description: Generated diagram
+#          generated: 
+#            type: drawio
+#            name: Agile Development
+#            description: Generated diagram
           manual: 
-            type: "drawio:core/flows/agile-development.drawio"
+            type: "drawio:./agile-development.drawio"
             name: Generated diagram
             description: Generated and then manually edited diagram
         elements:

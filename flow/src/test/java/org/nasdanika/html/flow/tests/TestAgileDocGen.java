@@ -86,9 +86,9 @@ public class TestAgileDocGen {
 	 * @throws Exception
 	 */
 	protected void generateInstanceModel(String name, Context context, ProgressMonitor progressMonitor) throws Exception {	
-		URI resourceURI = URI.createURI(org.nasdanika.common.Util.CLASSPATH_URL_PREFIX + "org/nasdanika/html/flow/tests/agile/" + name + ".yml"); //TestBase.this.getClass().getResource(resource).toString());
-		
-		
+//		URI resourceURI = URI.createURI(org.nasdanika.common.Util.CLASSPATH_URL_PREFIX + "org/nasdanika/html/flow/tests/agile/" + name + ".yml"); //TestBase.this.getClass().getResource(resource).toString());
+		URI resourceURI = URI.createURI(getClass().getResource("agile/" + name + ".yml").toString()); 
+			
 		@SuppressWarnings("resource")
 		Supplier<EObject> flowSupplier = new FlowYamlSupplier(resourceURI, context) {
 			
@@ -325,11 +325,12 @@ public class TestAgileDocGen {
 		String pageTemplateResource = "page-template.yml";
 		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) loadObject(pageTemplateResource, diagnosticConsumer, modelContext, progressMonitor);
 		
+		Context context = Context.singleton("my-token", "My token value");
 		Util.generateSite(
 				root, 
 				pageTemplate,
 				container,
-				Context.EMPTY_CONTEXT,
+				context,
 				progressMonitor);
 		
 		modelResource.save(null);
@@ -400,8 +401,8 @@ public class TestAgileDocGen {
 //		RESOURCE_MODELS_DIR.mkdirs();
 		
 		generateSite("test");
-//		generateSite("core");
-//		generateSite("aws");
+		generateSite("core");
+		generateSite("aws");
 //		generateSite("java");
 //		generateSite("java-kubernetes");
 

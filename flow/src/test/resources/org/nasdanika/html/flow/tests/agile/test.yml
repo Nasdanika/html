@@ -6,9 +6,11 @@ flow-package:
     product-owner:
       name: Product Owner
       documentation: 
-        content-markdown:
+        content-interpolator:
           source:
-            content-text: Creates and ``grooms`` stories.
+            content-markdown:
+              source:
+                content-text: Creates and ``grooms`` stories. ${my-token}.
     team-member:
       name: Team Member
       documentation: 

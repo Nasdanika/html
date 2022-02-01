@@ -10,13 +10,13 @@ flow-package:
       partition: true
       representations:
         component: 
-          type: "drawio:../../../src/test/resources/org/nasdanika/html/flow/tests/agile/aws.drawio"
+          type: "drawio:./aws.drawio"
         grouped:
           description: Generated component diagram with depth 1.              
           depth: 1
-        generated: 
-          type: "drawio"
-          description: Generated drawio diagram
+#        generated: 
+#          type: "drawio"
+#          description: Generated drawio diagram
       children:
         cloud:
           name: AWS Cloud
