@@ -122,7 +122,7 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 				addContent(representationAction, createGenerator().generate(representation));				
 			} else {
 				Table table = BootstrapFactory.eINSTANCE.createTable();
-				action.getContent().add(table);
+				representationAction.getContent().add(table);
 				table.setBordered(true);
 				TableSection body = BootstrapFactory.eINSTANCE.createTableSection();
 				table.setBody(body);
