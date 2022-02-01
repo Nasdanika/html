@@ -628,7 +628,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 				if (headRefs.size() == 1) {
 					refsRow.cell(headRefs.get(0));
 				} else {
-					HTMLFactory.INSTANCE.ul(headRefs);
+					refsRow.cell(HTMLFactory.INSTANCE.ul(headRefs));
 				}				
 			}
 			
