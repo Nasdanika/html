@@ -155,8 +155,7 @@ public class TestAgileDocGen {
 			System.err.println("******************************");
 			e.getDiagnostic().dump(System.err, 4, Status.FAIL);
 			throw e;
-		}
-		
+		}		
 	}
 	
 	/**

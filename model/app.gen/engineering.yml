@@ -25,5 +25,16 @@ engineering-module:
        description: |+2
          Add support of column ordering - drag and drop or up/down arrows. Also storable in the local storage.            
        effort: 4 
+     content-modes:
+       name: Content modes
+       description: |+2
+         Add configuration to select content row modes - cols (the current implementation), cols-nowrap (add flex-nowrap class to the row), table.
+         At the action level. For the principal action works on the content row, for other actions works in a similar way with left and right content panels.             
+       effort: 4 
+     document-search:
+       name: Document search
+       description: |+2
+         Document how to implement search.             
+       effort: 4 
      
    
