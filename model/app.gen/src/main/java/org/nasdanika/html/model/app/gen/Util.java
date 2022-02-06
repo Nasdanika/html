@@ -298,7 +298,7 @@ public final class Util {
 				if (title != null) {
 					header.setTitle(title);
 				}
-				List<EObject> headerItems = resolveActionReferences(header.getItems());
+				List<EObject> headerItems = header.getItems();
 				rootChildren.listIterator(1).forEachRemaining(rac -> {
 					if (rac instanceof Action) {
 						headerItems.add(createLabel((Action) rac, activeAction, uriResolver, null, "header/navigation", true, false));
