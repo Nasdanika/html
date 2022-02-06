@@ -28,6 +28,10 @@
   content: "\f078";
 }
 
+.nsd-mark {
+	background-color: yellow;
+}
+
 td.hljs-ln-numbers {
 	text-align: center;
 	color: #ccc;
