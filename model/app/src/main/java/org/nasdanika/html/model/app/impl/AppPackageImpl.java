@@ -344,7 +344,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EAttribute getLink_Confirmation() {
-		return (EAttribute)linkEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)linkEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -354,7 +354,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	@Override
 	public EAttribute getLink_Name() {
-		return (EAttribute)linkEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)linkEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -900,8 +900,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(linkEClass, LINK__LOCATION);
 		createEAttribute(linkEClass, LINK__SCRIPT);
 		createEReference(linkEClass, LINK__MODAL);
-		createEAttribute(linkEClass, LINK__CONFIRMATION);
 		createEAttribute(linkEClass, LINK__NAME);
+		createEAttribute(linkEClass, LINK__CONFIRMATION);
 		createEAttribute(linkEClass, LINK__TARGET);
 
 		pageEClass = createEClass(PAGE);
@@ -1029,8 +1029,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getLink_Location(), ecorePackage.getEString(), "location", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Script(), ecorePackage.getEString(), "script", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLink_Modal(), theBootstrapPackage.getModal(), null, "modal", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getLink_Confirmation(), ecorePackage.getEString(), "confirmation", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Name(), ecorePackage.getEString(), "name", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getLink_Confirmation(), ecorePackage.getEString(), "confirmation", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Target(), ecorePackage.getEString(), "target", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(pageEClass, Page.class, "Page", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1206,16 +1206,16 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Modal which opens on link activation."
 		   });
 		addAnnotation
-		  (getLink_Confirmation(),
-		   source,
-		   new String[] {
-			   "documentation", "Confirmation to display in a confirmation dialog before action activation to give the user an opportunity to cancel the action. E.g. confirmation of deletion."
-		   });
-		addAnnotation
 		  (getLink_Name(),
 		   source,
 		   new String[] {
 			   "documentation", "Link name attribute if not blank for referencing sections."
+		   });
+		addAnnotation
+		  (getLink_Confirmation(),
+		   source,
+		   new String[] {
+			   "documentation", "Confirmation to display in a confirmation dialog before action activation to give the user an opportunity to cancel the action. E.g. confirmation of deletion."
 		   });
 		addAnnotation
 		  (getLink_Target(),
@@ -1474,16 +1474,10 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "homogenous", "true"
 		   });
 		addAnnotation
-		  (getLink_Location(),
-		   source,
-		   new String[] {
-			   "exclusive-with", "script modal"
-		   });
-		addAnnotation
 		  (getLink_Script(),
 		   source,
 		   new String[] {
-			   "exclusive-with", "location modal"
+			   "exclusive-with", "location"
 		   });
 		addAnnotation
 		  (getLink_Modal(),

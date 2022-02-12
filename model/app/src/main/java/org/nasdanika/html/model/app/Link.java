@@ -17,8 +17,8 @@ import org.nasdanika.html.model.bootstrap.Modal;
  *   <li>{@link org.nasdanika.html.model.app.Link#getLocation <em>Location</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Link#getScript <em>Script</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Link#getModal <em>Modal</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Link#getConfirmation <em>Confirmation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Link#getName <em>Name</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Link#getConfirmation <em>Confirmation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Link#getTarget <em>Target</em>}</li>
  * </ul>
  *
@@ -41,7 +41,7 @@ public interface Link extends Label {
 	 * @return the value of the '<em>Location</em>' attribute.
 	 * @see #setLocation(String)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Location()
-	 * @model annotation="urn:org.nasdanika exclusive-with='script modal'"
+	 * @model
 	 * @generated
 	 */
 	String getLocation();
@@ -66,7 +66,7 @@ public interface Link extends Label {
 	 * @return the value of the '<em>Script</em>' attribute.
 	 * @see #setScript(String)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Script()
-	 * @model annotation="urn:org.nasdanika exclusive-with='location modal'"
+	 * @model annotation="urn:org.nasdanika exclusive-with='location'"
 	 * @generated
 	 */
 	String getScript();

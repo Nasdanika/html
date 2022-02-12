@@ -472,22 +472,22 @@ public interface AppPackage extends EPackage {
 	int LINK__MODAL = LABEL_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Confirmation</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LINK__CONFIRMATION = LABEL_FEATURE_COUNT + 3;
-
-	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK__NAME = LABEL_FEATURE_COUNT + 4;
+	int LINK__NAME = LABEL_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Confirmation</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__CONFIRMATION = LABEL_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' attribute.
@@ -1704,15 +1704,6 @@ public interface AppPackage extends EPackage {
 	int ACTION__MODAL = LINK__MODAL;
 
 	/**
-	 * The feature id for the '<em><b>Confirmation</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION__CONFIRMATION = LINK__CONFIRMATION;
-
-	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1720,6 +1711,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION__NAME = LINK__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Confirmation</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__CONFIRMATION = LINK__CONFIRMATION;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' attribute.

@@ -41,8 +41,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/location"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/script"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference app.ecore#//Link/modal"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/confirmation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/confirmation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Link/target"/>
     </genClasses>
     <genClasses ecoreClass="app.ecore#//Page">

@@ -391,11 +391,10 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 					ETypedElementActionSupplier.addRow(table, "Strict containment").add("true");									
 				}
 				
-				String exclusiveWithStr = NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.EXCLUSIVE_WITH);
-				String[] exclusiveWith = exclusiveWithStr == null ? new String[0] : exclusiveWithStr.split("\\s");
+				Object[] exclusiveWith = EObjectLoader.getExclusiveWith(eObject, sf, EObjectLoader.LOAD_KEY_PROVIDER);
 				if (exclusiveWith.length != 0) {
 					Tag ul = TagName.ul.create();
-					for (String exw: exclusiveWith) {
+					for (Object exw: exclusiveWith) {
 						ul.content(TagName.li.create(exw));
 					}
 					ETypedElementActionSupplier.addRow(table, "Exclusive with").add(ul);				

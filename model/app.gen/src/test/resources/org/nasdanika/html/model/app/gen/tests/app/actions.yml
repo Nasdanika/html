@@ -22,12 +22,13 @@ app-action:
                 content-text: I'm the first navigation action 
               sections:
                 - text: Section 1
-                  location: section-1 
+                  name: section-1 
                   content:
                     content-text: I'm section 1                   
                   sections:
                     - text: Section 1.1
                       location: section-1-1
+                      name: section-1-1
                       content:
                         content-text: I'm section 1.1 
               children:

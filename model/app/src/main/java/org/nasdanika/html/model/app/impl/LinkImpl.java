@@ -20,8 +20,8 @@ import org.nasdanika.html.model.bootstrap.Modal;
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getLocation <em>Location</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getScript <em>Script</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getModal <em>Modal</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getConfirmation <em>Confirmation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getConfirmation <em>Confirmation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getTarget <em>Target</em>}</li>
  * </ul>
  *
@@ -49,16 +49,6 @@ public class LinkImpl extends LabelImpl implements Link {
 	protected static final String SCRIPT_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getConfirmation() <em>Confirmation</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConfirmation()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CONFIRMATION_EDEFAULT = null;
-
-	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -67,6 +57,16 @@ public class LinkImpl extends LabelImpl implements Link {
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The default value of the '{@link #getConfirmation() <em>Confirmation</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getConfirmation()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CONFIRMATION_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getTarget() <em>Target</em>}' attribute.
@@ -255,10 +255,10 @@ public class LinkImpl extends LabelImpl implements Link {
 				return getScript();
 			case AppPackage.LINK__MODAL:
 				return getModal();
-			case AppPackage.LINK__CONFIRMATION:
-				return getConfirmation();
 			case AppPackage.LINK__NAME:
 				return getName();
+			case AppPackage.LINK__CONFIRMATION:
+				return getConfirmation();
 			case AppPackage.LINK__TARGET:
 				return getTarget();
 		}
@@ -282,11 +282,11 @@ public class LinkImpl extends LabelImpl implements Link {
 			case AppPackage.LINK__MODAL:
 				setModal((Modal)newValue);
 				return;
-			case AppPackage.LINK__CONFIRMATION:
-				setConfirmation((String)newValue);
-				return;
 			case AppPackage.LINK__NAME:
 				setName((String)newValue);
+				return;
+			case AppPackage.LINK__CONFIRMATION:
+				setConfirmation((String)newValue);
 				return;
 			case AppPackage.LINK__TARGET:
 				setTarget((String)newValue);
@@ -312,11 +312,11 @@ public class LinkImpl extends LabelImpl implements Link {
 			case AppPackage.LINK__MODAL:
 				setModal((Modal)null);
 				return;
-			case AppPackage.LINK__CONFIRMATION:
-				setConfirmation(CONFIRMATION_EDEFAULT);
-				return;
 			case AppPackage.LINK__NAME:
 				setName(NAME_EDEFAULT);
+				return;
+			case AppPackage.LINK__CONFIRMATION:
+				setConfirmation(CONFIRMATION_EDEFAULT);
 				return;
 			case AppPackage.LINK__TARGET:
 				setTarget(TARGET_EDEFAULT);
@@ -339,10 +339,10 @@ public class LinkImpl extends LabelImpl implements Link {
 				return SCRIPT_EDEFAULT == null ? getScript() != null : !SCRIPT_EDEFAULT.equals(getScript());
 			case AppPackage.LINK__MODAL:
 				return getModal() != null;
-			case AppPackage.LINK__CONFIRMATION:
-				return CONFIRMATION_EDEFAULT == null ? getConfirmation() != null : !CONFIRMATION_EDEFAULT.equals(getConfirmation());
 			case AppPackage.LINK__NAME:
 				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
+			case AppPackage.LINK__CONFIRMATION:
+				return CONFIRMATION_EDEFAULT == null ? getConfirmation() != null : !CONFIRMATION_EDEFAULT.equals(getConfirmation());
 			case AppPackage.LINK__TARGET:
 				return TARGET_EDEFAULT == null ? getTarget() != null : !TARGET_EDEFAULT.equals(getTarget());
 		}
