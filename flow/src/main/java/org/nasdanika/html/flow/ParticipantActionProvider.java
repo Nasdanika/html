@@ -136,7 +136,7 @@ public class ParticipantActionProvider extends ServiceProviderActionProvider<Par
 			TableRow headerRow = BootstrapFactory.eINSTANCE.createTableRow();
 			header.getRows().add(headerRow);
 			EList<TableCell> headerRowCells = headerRow.getCells();
-			for (String title: new String[] {"Activity", "Responsible", "Accoutable", "Consulted", "Informed"}) {
+			for (String title: new String[] {"Activity", "Responsible", "Accountable", "Consulted", "Informed"}) {
 				TableCell headerCell = BootstrapFactory.eINSTANCE.createTableCell();
 				headerCell.setHeader(true);
 				headerRowCells.add(headerCell);
@@ -208,7 +208,7 @@ public class ParticipantActionProvider extends ServiceProviderActionProvider<Par
 			TableRow headerRow = BootstrapFactory.eINSTANCE.createTableRow();
 			header.getRows().add(headerRow);
 			EList<TableCell> headerRowCells = headerRow.getCells();
-			for (String title: new String[] {"Responsible", "Accoutable", "Consulted", "Informed"}) {
+			for (String title: new String[] {"Responsible", "Accountable", "Consulted", "Informed"}) {
 				TableCell headerCell = BootstrapFactory.eINSTANCE.createTableCell();
 				headerCell.setHeader(true);
 				headerRowCells.add(headerCell);
