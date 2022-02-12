@@ -68,7 +68,8 @@ public interface Appearance extends EObject {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * HTML element (tag) attributes.
+	 * HTML element (tag) attributes. Attributes defined at the appearance level overwrite attributes defined at the HTML element level. 
+	 * It is recommended to use one of the other.
 	 * 
 	 * ## Interpolation
 	 * 
