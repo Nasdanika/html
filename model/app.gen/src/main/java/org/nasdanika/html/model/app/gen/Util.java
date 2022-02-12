@@ -2,21 +2,30 @@ package org.nasdanika.html.model.app.gen;
 
 import static org.nasdanika.common.Util.isBlank;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
@@ -535,7 +544,10 @@ public final class Util {
 		label.setOutline(action.isOutline());
 		label.setText(action.getText());
 		label.setTooltip(action.getTooltip());
-//		label.getAttributes();
+		
+		for (Entry<String, EObject> ae: action.getAttributes().entrySet()) {		
+			label.getAttributes().put(ae.getKey(), EcoreUtil.copy(ae.getValue()));
+		}
 		
 		if (label instanceof Link) {
 			configureLink(action, activeAction, uriResolver, (Link) label);
@@ -726,6 +738,43 @@ public final class Util {
 	
 	private static List<EObject> resolveActionReferences(EList<EObject> objs) {
 		return objs.stream().map((Function<EObject, EObject>) Util::resolveActionReference).collect(Collectors.toList());
+	}
+	
+	/**
+	 * For Nasdanika App pages extracts page title, breadcrumbs and content text into a JSONObject to add to a collector and then
+	 * to use for constructing search indices. 
+	 * @param path
+	 * @param file
+	 * @return Search document object for non-empty Nasdanika App pages, null otherwise.
+	 * @throws IOException
+	 */
+	public static JSONObject createSearchDocument(String path, File file) throws IOException {
+		Document document = Jsoup.parse(file, "UTF-8");
+		Elements contentPanelQuery = document.select("body > div > div.row.nsd-app-content-row > div.col.nsd-app-content-panel");							                                              
+		if (contentPanelQuery.isEmpty()) {
+			return null;
+		}
+		Elements contentQuery = contentPanelQuery.select("div > div.row.nsd-app-content-panel-content-row");
+		if (contentQuery.isEmpty()) {
+			return null;
+		}
+		String contentText = contentQuery.text();
+		if (org.nasdanika.common.Util.isBlank(contentText)) {
+			return null;
+		}
+		JSONObject searchDocument = new JSONObject();
+		searchDocument.put("content", StringEscapeUtils.escapeHtml4(contentText));
+		Elements titleQuery = contentPanelQuery.select("div > div.row.nsd-app-content-panel-title-and-items-row > div.col-auto > h1");
+		if (titleQuery.size() == 1) {
+			searchDocument.put("title", StringEscapeUtils.escapeHtml4(titleQuery.get(0).text()));
+		} else {
+			searchDocument.put("title", document.title());
+		}
+		Elements breadcrumbQuery = contentPanelQuery.select("div > div.row.nsd-app-content-panel-breadcrumb-row > div > nav > ol > li");
+		if (breadcrumbQuery.size() > 0) {
+			searchDocument.put("path", String.join("/", breadcrumbQuery.stream().map(e -> StringEscapeUtils.escapeHtml4(e.text())).collect(Collectors.toList())));
+		}
+		return searchDocument;
 	}
 			
 }

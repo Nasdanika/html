@@ -145,6 +145,9 @@ app-action:
         icon: fa fa-user
         text: First footer nav
         location: ${base-uri}footer-nav/first/index.html 
+        attributes:
+          class:
+            content-text: nsd-test-class
     - app-action:
         text: Drop-down
         children:

@@ -6,4 +6,14 @@ app-action:
   tooltip: Root action
   children:
     - app-action-reference: "../../../../../../../target/model-doc/actions/${model-name}.xml#/"
+  navigation:
+    app-action:
+      text: Test
+      location: "#"
+      id: "purum"
+      tooltip: Zorro
+      appearance:
+        attributes:
+          id:
+            content-text: contact-us
           

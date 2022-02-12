@@ -47,7 +47,6 @@ public class TestAction extends TestBase {
 	 * Generates a resource model from an action model.
 	 * @throws Exception
 	 */
-	@Test
 	public void testGenerateResourceModel() throws Exception {
 		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
 			assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
@@ -85,7 +84,6 @@ public class TestAction extends TestBase {
 	 * Generates files from the previously generated resource model.
 	 * @throws Exception
 	 */
-	@Test
 	public void testGenerateContainer() throws Exception {
 		// Load model from XMI
 		ResourceSet resourceSet = new ResourceSetImpl();
