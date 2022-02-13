@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -45,13 +46,17 @@ import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.ncore.util.NcoreUtil;
 
 public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
+	
+	private BooleanSupplier isGenerateLoadSpecification;
 
 	public EClassActionSupplier(
 			EClass value, 
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
-			java.util.function.Function<String, String> javadocResolver) {
+			java.util.function.Function<String, String> javadocResolver,
+			BooleanSupplier isGenerateLoadSpecification) {
 		super(value, context, ePackagePathComputer, javadocResolver);
+		this.isGenerateLoadSpecification = isGenerateLoadSpecification;
 	}
 	
 	@Override
@@ -171,7 +176,9 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			generateAllGenericSupertypes(allGenericSupertypes, allGroup, progressMonitor);			
 		}
 	
-		generateLoadSpecification(action, namedElementComparator, progressMonitor);		
+		if (isGenerateLoadSpecification.getAsBoolean()) {
+			generateLoadSpecification(action, namedElementComparator, progressMonitor);
+		}
 		
 //		TODO - Table (list) of contents
 //		Map<String, Object> locConfig = new LinkedHashMap<>();
@@ -363,12 +370,17 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				loadSpecificationAction.getContent().add(interpolatedMarkdown(loadDoc));
 			}
 			
+			Tag toc = TagName.ul.create();
+			
 			Predicate<EStructuralFeature> predicate = sf -> sf.isChangeable() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, "true"));
 			for (EStructuralFeature sf: eObject.getEAllStructuralFeatures().stream().filter(predicate).sorted(namedElementComparator).collect(Collectors.toList())) {
 				Action featureAction = AppFactory.eINSTANCE.createAction();
 				String key = NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, NcoreUtil.getFeatureKey(eObject, sf));
 				featureAction.setText(key);
-				featureAction.setName(key);			
+				String sectionAnchor = "key-section-" + key;
+				toc.accept(TagName.li.create(TagName.a.create(key).attribute("href", "#" + sectionAnchor)));
+				
+				featureAction.setName(sectionAnchor);			
 				loadSpecificationAction.getSections().add(featureAction);
 
 				// Properties table
@@ -412,7 +424,9 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				if (!Util.isBlank(featureLoadDoc)) {
 					featureAction.getContent().add(interpolatedMarkdown(featureLoadDoc));
 				}
-			}			
+			}	
+			
+			addContent(loadSpecificationAction, toc.toString());
 		}
 	}
 	

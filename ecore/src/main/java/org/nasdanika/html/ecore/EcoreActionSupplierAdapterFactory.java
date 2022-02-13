@@ -40,7 +40,7 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 				EcorePackage.Literals.ECLASS, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EClassActionSupplier(e, context, ePackagePathComputer, javadocResolver)));		
+				e -> new EClassActionSupplier(e, context, ePackagePathComputer, javadocResolver, this::isGenerateLoadSpecification)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EDataType>(
@@ -90,6 +90,14 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
 				e -> new EParameterActionSupplier(e, context, ePackagePathComputer)));	
+	}
+	
+	/**
+	 * Override to return false to suppress generation of load specification.
+	 * @return
+	 */
+	protected boolean isGenerateLoadSpecification() {
+		return true;
 	}
 
 }
