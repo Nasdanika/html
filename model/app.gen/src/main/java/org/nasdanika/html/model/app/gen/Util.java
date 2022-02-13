@@ -415,7 +415,7 @@ public final class Util {
 			}
 	
 			if (!isBlank(action.getText()) || !isBlank(action.getIcon())) {
-				Label title = AppFactory.eINSTANCE.createLabel(); 
+				Label title = org.nasdanika.common.Util.isBlank(action.getName()) ? AppFactory.eINSTANCE.createLabel() : AppFactory.eINSTANCE.createLink(); 
 				configureLabel(action, action, uriResolver, null, "content-panel/title", title, false, false);
 				contentPanel.setTitle(title);
 			}
@@ -610,8 +610,7 @@ public final class Util {
 		}
 		link.setName(action.getName());
 		link.setScript(action.getScript());
-		link.setTarget(action.getTarget());
-		
+		link.setTarget(action.getTarget());		
 	}
 	
 	/**
