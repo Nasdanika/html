@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
@@ -176,7 +177,8 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			generateAllGenericSupertypes(allGenericSupertypes, allGroup, progressMonitor);			
 		}
 	
-		if (isGenerateLoadSpecification.getAsBoolean()) {
+		// No load specification for EMap entries.
+		if (isGenerateLoadSpecification.getAsBoolean() && Map.Entry.class != instanceClass) { 
 			generateLoadSpecification(action, namedElementComparator, progressMonitor);
 		}
 		
@@ -378,7 +380,6 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				String key = NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, NcoreUtil.getFeatureKey(eObject, sf));
 				featureAction.setText(key);
 				String sectionAnchor = "key-section-" + key;
-				toc.accept(TagName.li.create(TagName.a.create(key).attribute("href", "#" + sectionAnchor)));
 				
 				featureAction.setName(sectionAnchor);			
 				loadSpecificationAction.getSections().add(featureAction);
@@ -389,9 +390,11 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				
 				genericType(sf.getEGenericType(), eObject, ETypedElementActionSupplier.addRow(table, "Type"), progressMonitor);
 				
-				if (EObjectLoader.isDefaultFeature(eObject, sf)) {
+				boolean isDefaultFeature = EObjectLoader.isDefaultFeature(eObject, sf);
+				if (isDefaultFeature) {
 					ETypedElementActionSupplier.addRow(table, "Default").add("true");				
 				}
+				toc.accept(TagName.li.create(TagName.a.create(key).attribute("href", "#" + sectionAnchor).attribute("style", "font-weight:bold", isDefaultFeature)));
 				
 				boolean isHomogenous = "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENOUS)) || NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.REFERENCE_TYPE) != null;
 				if (isHomogenous) {

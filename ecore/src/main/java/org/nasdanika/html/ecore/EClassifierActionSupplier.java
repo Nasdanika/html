@@ -16,6 +16,7 @@ import org.nasdanika.html.model.app.Action;
 public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElementActionSupplier<T> {
 
 	private Function<String, String> javadocResolver;
+	protected Class<?> instanceClass;
 
 	public EClassifierActionSupplier(
 			T value, 
@@ -24,20 +25,20 @@ public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElem
 			java.util.function.Function<String, String> javadocResolver) {
 		super(value, context, ePackagePathComputer);
 		this.javadocResolver = javadocResolver;
-	}
-	
-	@Override
-	protected void header(Action action, ProgressMonitor progressMonitor) throws Exception {
-		Class<?> instanceClass = eObject.getInstanceClass();
+		instanceClass = value.getInstanceClass();
 		if (instanceClass == null) {
-			EPackage registeredPackage = getRegisteredPackage();
+			EPackage registeredPackage = getRegisteredPackage(value);
 			if (registeredPackage != null) {
-				EClassifier registeredClassifier = registeredPackage.getEClassifier(eObject.getName());
+				EClassifier registeredClassifier = registeredPackage.getEClassifier(value.getName());
 				if (registeredClassifier != null) {
 					instanceClass = registeredClassifier.getInstanceClass();
 				}
 			}
 		}
+	}
+	
+	@Override
+	protected void header(Action action, ProgressMonitor progressMonitor) throws Exception {
 		if (instanceClass != null) {
 			String instanceClassName = instanceClass.getName();
 			if (javadocResolver != null) {
@@ -67,7 +68,7 @@ public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElem
 		return getUses(eObject);
 	}
 
-	private EPackage getRegisteredPackage() {
+	private static EPackage getRegisteredPackage(EClassifier eObject) {
 		String nsURI = eObject.getEPackage().getNsURI();
 		Object value = EPackage.Registry.INSTANCE.get(nsURI);
 		if (value instanceof EPackage) {
