@@ -36,7 +36,7 @@ import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.MutableContext;
-import org.nasdanika.common.PrintStreamProgressMonitor;
+import org.nasdanika.common.NullProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.resources.BinaryEntityContainer;
@@ -69,7 +69,7 @@ public class TestEcoreDoc extends TestBase {
 		return DiagramGenerator.INSTANCE.cachingDiagramGenerator(output.stateAdapter().adapt(decoder, encoder), progressMonitor);
 	}
 		
-	public void generateActionModel() throws Exception {
+	public void generateActionModel(ProgressMonitor progressMonitor) throws Exception {
 		GenModelResourceSet ecoreModelsResourceSet = new GenModelResourceSet();
 		
 		Map<String,String> pathMap = new ConcurrentHashMap<>();
@@ -93,7 +93,6 @@ public class TestEcoreDoc extends TestBase {
 		
 		MutableContext context = Context.EMPTY_CONTEXT.fork();
 		
-		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		DiagramGenerator diagramGenerator = createDiagramGenerator(progressMonitor);
 		context.register(DiagramGenerator.class, diagramGenerator);//DiagramGenerator.createClient(new URL("http://localhost:8090/spring-exec/api/v1/exec/diagram/")));
 		
@@ -192,7 +191,7 @@ public class TestEcoreDoc extends TestBase {
 	 * Generates a resource model from an action model.
 	 * @throws Exception
 	 */
-	public void generateResourceModel() throws Exception {
+	public void generateResourceModel(ProgressMonitor progressMonitor) throws Exception {
 		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
 			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
 				System.err.println("***********************");
@@ -204,7 +203,6 @@ public class TestEcoreDoc extends TestBase {
 		};
 		
 		Context modelContext = Context.EMPTY_CONTEXT;
-		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		String actionsResource = "actions.yml";
 		Action root = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
 		
@@ -233,7 +231,7 @@ public class TestEcoreDoc extends TestBase {
 	 * Generates files from the previously generated resource model.
 	 * @throws Exception
 	 */
-	public void generateContainer() throws Exception {
+	public void generateContainer(ProgressMonitor progressMonitor) throws Exception {
 		ResourceSet resourceSet = createResourceSet();
 		
 		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
@@ -241,7 +239,6 @@ public class TestEcoreDoc extends TestBase {
 		Resource containerResource = resourceSet.getResource(CONTAINER_MODEL_URI, true);
 
 		BinaryEntityContainer container = new FileSystemContainer(new File("target/model-doc/site"));
-		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		for (EObject eObject : containerResource.getContents()) {
 			Diagnostician diagnostician = new Diagnostician();
 			org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(eObject);
@@ -270,9 +267,10 @@ public class TestEcoreDoc extends TestBase {
 	 */
 	@Test
 	public void generateSite() throws Exception {
-		generateActionModel();
-		generateResourceModel();
-		generateContainer();
+		ProgressMonitor progressMonitor = new NullProgressMonitor();
+		generateActionModel(progressMonitor);
+		generateResourceModel(progressMonitor);
+		generateContainer(progressMonitor);
 	}	
 
 }
