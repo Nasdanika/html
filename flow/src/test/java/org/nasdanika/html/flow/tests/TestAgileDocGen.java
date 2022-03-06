@@ -6,7 +6,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,9 +54,9 @@ import org.nasdanika.html.flow.FlowActionProviderAdapterFactory;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
-import org.nasdanika.html.model.app.gen.AppGenYamlLoadingExecutionParticipant;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.app.util.ActionProvider;
+import org.nasdanika.html.model.app.util.AppYamlSupplier;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.ncore.NcorePackage;
@@ -142,13 +141,6 @@ public class TestAgileDocGen {
 				diagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
 			}
 			assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
-			
-			if (diagnostic.getStatus() == Status.WARNING || diagnostic.getStatus() == Status.ERROR) {
-				System.err.println("***********************");
-				System.err.println("*      Diagnostic     *");
-				System.err.println("***********************");
-				diagnostic.dump(System.err, 4, Status.ERROR, Status.WARNING);
-			}
 		} catch (DiagnosticException e) {
 			System.err.println("******************************");
 			System.err.println("*      Diagnostic failed     *");
@@ -262,28 +254,10 @@ public class TestAgileDocGen {
 			throw new IllegalArgumentException("Classloader resource not found: " + resource + " by " + clazz); 
 		}
 		URI resourceURI = URI.createURI(resourceURL.toString());
-
-		class ObjectSupplier extends AppGenYamlLoadingExecutionParticipant implements Supplier<EObject> {
-
-			public ObjectSupplier(Context context) {
-				super(context);
-			}
-
-			@Override
-			protected Collection<URI> getResources() {
-				return Collections.singleton(resourceURI);
-			}
-
-			@Override
-			public EObject execute(ProgressMonitor progressMonitor) throws Exception {				
-				return resourceSet.getResource(resourceURI, false).getContents().iterator().next();
-			}
-			
-		};
 		
 		// Diagnosing loaded resources. 
 		try {
-			return Objects.requireNonNull(org.nasdanika.common.Util.call(new ObjectSupplier(context), progressMonitor, diagnosticConsumer), "Loaded null from: " + resource);
+			return Objects.requireNonNull(org.nasdanika.common.Util.call(new AppYamlSupplier(resourceURI, context), progressMonitor, diagnosticConsumer), "Loaded null from: " + resource);
 		} catch (DiagnosticException e) {
 			System.err.println("******************************");
 			System.err.println("*      Diagnostic failed     *");
