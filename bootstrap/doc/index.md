@@ -1,4 +1,4 @@
-``org.nasdanika.html.bootstrap`` bundle provides Java fluent API's for building [Bootstrap 4](https://getbootstrap.com/docs/4.5/getting-started/introduction/) elements. The bundle is also published as a jar on [Maven Central](https://search.maven.org/) as [org.nasdanika.html:bootstrap](https://search.maven.org/artifact/org.nasdanika.html/bootstrap).
+``org.nasdanika.html.bootstrap`` bundle provides Java fluent API's for building [Bootstrap 4](https://getbootstrap.com/docs/4.5/getting-started/introduction/) elements. The bundle is also published as a jar on [Maven Central](https://mvnrepository.maven.org/) as [org.nasdanika.html:bootstrap](https://mvnrepository.maven.org/artifact/org.nasdanika.html/bootstrap).
 
 The bundle features the following packages:
 

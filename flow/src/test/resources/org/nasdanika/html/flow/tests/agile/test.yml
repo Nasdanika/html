@@ -84,6 +84,12 @@ flow-package:
       name: Runtime
       modifiers: abstract
       description: Execution environment for the binary artifacts.
+    standards:
+      name: Standards
+      description: Standards guiding development activities.
+      children:
+        html-5:
+          name: HTML 5
   artifacts:
     story:
       name: User story

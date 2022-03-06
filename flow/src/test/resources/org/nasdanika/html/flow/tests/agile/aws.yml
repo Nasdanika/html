@@ -3,6 +3,9 @@ flow-package:
   description: AWS agile development.
   extends: "../../../../../../../../target/model-doc/instances/core.xml#/" # Loading previously generated instance model.
   name: AWS Development
+  modifiers: []
+  documentation:
+    content-text: AWS documentation. 
   artifacts:
     aws:
       name: AWS

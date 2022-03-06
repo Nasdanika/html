@@ -10,7 +10,7 @@
 	<artifactId>ecore</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML Ecore documentation</name>
-	<description>Classes for generating Ecore models documentation as YAML action spec.</description>
+	<description>Classes for generating Ecore models documentation as action models.</description>
 	<build>
 	    <plugins>
 			<plugin>

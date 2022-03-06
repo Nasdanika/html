@@ -1,4 +1,4 @@
-``org.nasdanika.html`` bundle provides Java fluent API's for building [HTML](https://www.w3schools.com/html/) elements. The bundle is also published as a jar on [Maven Central](https://search.maven.org/) as [org.nasdanika.html:html](https://search.maven.org/artifact/org.nasdanika.html/html).
+``org.nasdanika.html`` bundle provides Java fluent API's for building [HTML](https://www.w3schools.com/html/) elements. The bundle is also published as a jar on [Maven Central](https://mvnrepository.maven.org/) as [org.nasdanika.html:html](https://mvnrepository.maven.org/artifact/org.nasdanika.html/html).
 
 The bundle features the following packages:
 

@@ -1,6 +1,6 @@
 With ``ecore`` module you can generate documentation for Ecore models.
 
-To use add [ecore](https://search.maven.org/search?q=g:org.nasdanika.html%20AND%20a:ecore) dependency to ``pom.xml``, e.g.
+To use add [ecore](https://mvnrepository.com/artifact/org.nasdanika.html/ecore) dependency to ``pom.xml``, e.g.
 
 ```xml
 <dependency>

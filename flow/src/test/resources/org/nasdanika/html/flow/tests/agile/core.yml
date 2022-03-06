@@ -2,7 +2,9 @@ flow-package:
   uri: nasdanika://agile/core
   description: Generic agile software development.
   name: Core Agile Flows
-  modifiers: abstract 
+  modifiers: abstract
+  documentation:
+    content-text: Core documentation. 
   participants:
     product-owner:
       name: Product Owner
