@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.diagram.Diagram;
@@ -151,7 +152,14 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 	 * @return
 	 */
 	protected Generator createGenerator() {
-		return new Generator();
+		return new Generator() {
+			
+			@Override
+			protected DiagramGenerator getDiagramGenerator() {
+				return context == null ? super.getDiagramGenerator() : context.get(DiagramGenerator.class, super.getDiagramGenerator()); 
+			}
+			
+		};
 	}
 	
 	/**
