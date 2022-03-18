@@ -2,6 +2,8 @@
 $(document).ready( function() {
     $('.nsd-app-header-navs').addClass('float-right');    
     $('.nsd-app-navbar .navbar').addClass('mb-0');
+    
+    $('.nsd-error').addClass(['alert', 'alert-danger']);    
 
     $('.nsd-app-navigation-panel').removeClass('col'); 
     $('.nsd-app-navigation-panel').addClass(['col-auto', 'border-right', 'border-secondary', 'pb-1']);
@@ -13,7 +15,7 @@ $(document).ready( function() {
     $('.nsd-app-content-panel-breadcrumb').addClass('mt-1');
     $('.nsd-app-content-panel-content-row').addClass('mt-2');
     $('.nsd-app-content-panel-section-row').addClass('mt-2');
-    $('.nsd-app-content-panel-section-action-group > div.col-auto > div').addClass('border-right', 'border-secondary');
+    $('.nsd-app-content-panel-section-action-group > div.col-auto > div').addClass(['border-right', 'border-secondary']);
     $('.nsd-app-content-panel-left-navigation').removeClass('col'); 
     $('.nsd-app-content-panel-left-navigation').addClass(['col-auto', 'border-right', 'border-secondary', 'pb-1']);
 
