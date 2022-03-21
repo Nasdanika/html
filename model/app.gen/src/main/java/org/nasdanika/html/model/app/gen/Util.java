@@ -917,8 +917,9 @@ public final class Util {
 			
 			try {
 				Document document = Jsoup.parse(targetFile, StandardCharsets.UTF_8.name());
-				Elements targetElement = document.select(fragment);
-				return targetElement.size() == 1;
+				Elements namedAnchors = document.select("a[name='" + fragment.substring(1) + "']");
+				Elements idAnchors = document.select("a[id='" + fragment.substring(1) + "']");
+				return namedAnchors.size() + idAnchors.size() == 1;
 			} catch (IOException e) {
 				throw new NasdanikaException("Error parsing " + targetFile.getAbsolutePath(), e);
 			}
