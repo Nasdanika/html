@@ -4,6 +4,7 @@ import static org.nasdanika.common.Util.isBlank;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,7 +14,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -24,9 +27,11 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.MutableContext;
+import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.exec.resources.Container;
 import org.nasdanika.html.Button;
@@ -51,6 +56,11 @@ import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.Item;
 import org.nasdanika.html.model.bootstrap.Modal;
+
+import com.mxgraph.io.mxCodec;
+import com.mxgraph.model.mxGraphModel;
+import com.mxgraph.model.mxICell;
+import com.mxgraph.util.mxXmlUtils;
 
 
 public final class Util {
@@ -738,15 +748,20 @@ public final class Util {
 		return objs.stream().map((Function<EObject, EObject>) Util::resolveActionReference).collect(Collectors.toList());
 	}
 	
+	public static JSONObject createSearchDocument(String path, File file) throws IOException {
+		return createSearchDocument(path, file, null);
+	}
+	
 	/**
 	 * For Nasdanika App pages extracts page title, breadcrumbs and content text into a JSONObject to add to a collector and then
 	 * to use for constructing search indices. 
 	 * @param path
 	 * @param file
+	 * @param contentConsumer Consumer of content elements which can be used to analyze page contents, e.g. find dead links. Can be null.  
 	 * @return Search document object for non-empty Nasdanika App pages, null otherwise.
 	 * @throws IOException
 	 */
-	public static JSONObject createSearchDocument(String path, File file) throws IOException {
+	public static JSONObject createSearchDocument(String path, File file, Consumer<? super Element> contentConsumer) throws IOException {
 		Document document = Jsoup.parse(file, "UTF-8");
 		Elements contentPanelQuery = document.select("body > div > div.row.nsd-app-content-row > div.col.nsd-app-content-panel");							                                              
 		if (contentPanelQuery.isEmpty()) {
@@ -759,6 +774,9 @@ public final class Util {
 		String contentText = contentQuery.text();
 		if (org.nasdanika.common.Util.isBlank(contentText)) {
 			return null;
+		}
+		if (contentConsumer != null) {
+			contentQuery.forEach(contentConsumer);
 		}
 		JSONObject searchDocument = new JSONObject();
 		searchDocument.put("content", StringEscapeUtils.escapeHtml4(contentText));
@@ -774,5 +792,140 @@ public final class Util {
 		}
 		return searchDocument;
 	}
+	
+	/**
+	 * Creates an inspector consumer which finds and reports broken links, missing images and elements with nsd-error class.
+	 * @param file
+	 * @param path
+	 * @param siteDir
+	 * @param errorConsumer
+	 * @return
+	 */
+	public static Consumer<? super Element> createInspector(Predicate<String> linkPredicate, Consumer<String> errorConsumer) {		
+		return element -> {
+			Elements anchors = element.getElementsByTag("a");
+			for (Element anchor: anchors) {
+				String target = anchor.attr("href");
+				if (target != null && !linkPredicate.test(target)) {
+					errorConsumer.accept("Broken link: " + anchor);					
+				}
+			}
+			
+			// Images
+			Elements images = element.getElementsByTag("img");
+			for (Element img: images) {
+				String src = img.attr("src");
+				if (src != null && !linkPredicate.test(src)) {
+					errorConsumer.accept("Missing image: " + img);
+				}
+			}
+			
+			// NSD errors
+			Elements errors = element.select("div.nsd-error");
+			for (Element error: errors) {
+				errorConsumer.accept("Error: " + error.text());
+			}
+			
+			// Image maps
+			for (Element area: element.select("area")) {
+				String target = area.attr("href");
+				if (target != null && !linkPredicate.test(target)) {
+					errorConsumer.accept("Broken link: " + area);					
+				}
+			}
+			
+			// Drawio diagrams
+			for (Element diagramDiv: element.select("div.mxgraph")) {
+				String data = diagramDiv.attr("data-mxgraph");
+				if (data != null) {
+					JSONObject jsonData = new JSONObject(data);
+					Object xml = jsonData.get("xml");
+					if (xml instanceof String) {
+						org.w3c.dom.Document xmlDocument = mxXmlUtils.parseXml((String) xml);
+						mxCodec codec = new mxCodec(xmlDocument);
+						org.w3c.dom.Element diagramElement = (org.w3c.dom.Element) xmlDocument.getElementsByTagName("diagram").item(0);
+						org.w3c.dom.Element graphModelElement = (org.w3c.dom.Element) diagramElement.getElementsByTagName("mxGraphModel").item(0);
+						mxGraphModel graphModel = (mxGraphModel) codec.decode(graphModelElement);
+						Object root = graphModel.getRoot();
+						if (root instanceof mxICell) {
+							visit((mxICell) root, cell -> {
+								Object cellValue = cell.getValue();
+								if (cellValue instanceof org.w3c.dom.Element) {
+									String link = ((org.w3c.dom.Element) cellValue).getAttribute("link");
+									if (!org.nasdanika.common.Util.isBlank(link) && !linkPredicate.test(link)) {
+										String label = ((org.w3c.dom.Element) cellValue).getAttribute("label");
+										if (org.nasdanika.common.Util.isBlank(label)) {
+											errorConsumer.accept("Broken diagram link: " + link);
+										} else {
+											errorConsumer.accept("Broken diagram link on " + label + ": " + link);											
+										}
+									}
+								}
+							});
+						}
+					}
+				}
+			}			
+			
+		};
+	}
+	
+	private static void visit(mxICell cell, Consumer<mxICell> visitor) {
+		visitor.accept(cell);
+		for (int i = 0; i < cell.getChildCount(); ++i) {
+        	visit(cell.getChildAt(i), visitor);
+        }
+	}		
+	
+
+	/**
+	 * Creates a predicate checking for links relative to the argument file in the argument directory. 
+	 * @param file Base file
+	 * @param dir Directory within which check for relative links
+	 * @return
+	 */
+	public static Predicate<String> createRelativeLinkPredicate(File file, File dir) {
+		return target -> {
+			File targetFile;
+			String fragment;
+			if (target.startsWith("#")) {
+				targetFile = file;
+				fragment = target;
+			} else {
+				int hashIdx = target.indexOf("#");
+				if (hashIdx == -1) {
+					fragment = null;
+				} else {
+					fragment = target.substring(hashIdx);
+					target = target.substring(0, hashIdx);
+				}
+				if (target.contains(":")) { // Absolute, not checking
+					return true;
+				}
+				targetFile = new File(file.getParentFile(), target);
+				for (File parent = targetFile.getParentFile(); parent != null; parent = parent.getParentFile()) {
+					if (parent.equals(dir)) {
+						if (!targetFile.exists()) {
+							return false;
+						}
+					}
+				}
+			}
+			if (fragment == null || fragment.trim().length() == 0) {
+				return true;
+			}
+			
+			try {
+				Document document = Jsoup.parse(targetFile, StandardCharsets.UTF_8.name());
+				Elements targetElement = document.select(fragment);
+				return targetElement.size() == 1;
+			} catch (IOException e) {
+				throw new NasdanikaException("Error parsing " + targetFile.getAbsolutePath(), e);
+			}
+			
+		};
+		
+	}
+
 			
 }

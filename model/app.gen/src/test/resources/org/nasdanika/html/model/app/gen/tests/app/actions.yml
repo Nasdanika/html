@@ -19,7 +19,12 @@ app-action:
               id: p1
               location: first-navigation-action/index.html 
               content:
-                content-text: I'm the first navigation action 
+                content-markdown: 
+                  style: true
+                  source:
+                    content-text: |+2
+                      I'm the first navigation action [Second navigation action](../second-navigation-action/index.html)
+                       
               sections:
                 - text: Section 1
                   #name: section-1 
