@@ -28,8 +28,7 @@ The flow model is copied in a similar way.
 
 Once you have generated action models, mount them to a root action model (defined in ``actions.yml`` in the examples above) and generate a resource model using a page template - defined in ``page-template.yml`` in the examples.
 
-#### Examples
-##### Root action model
+#### Root action model
 
 ```yml
 app-action:
@@ -53,7 +52,7 @@ app-action:
           - app-action-reference: "../../../../../../../target/model-doc/actions/flow.genmodel.xml#/"
 ```
 
-##### Page template
+#### Page template
 
 ```yml
 bootstrap-page:
