@@ -771,15 +771,32 @@ public final class Util {
 		if (contentQuery.isEmpty()) {
 			return null;
 		}
-		String contentText = contentQuery.text();
-		if (org.nasdanika.common.Util.isBlank(contentText)) {
-			return null;
-		}
 		if (contentConsumer != null) {
 			contentQuery.forEach(contentConsumer);
 		}
+		
+		StringBuilder contentText = new StringBuilder(contentQuery.text());
+		
+		// Drawio diagrams labels
+		for (Element diagramDiv: contentQuery.select("div.mxgraph")) {
+			traverseMxGraphModel(diagramDiv, cell -> {
+				Object cellValue = cell.getValue();
+				if (cellValue instanceof org.w3c.dom.Element) {
+					String label = ((org.w3c.dom.Element) cellValue).getAttribute("label");
+					if (!org.nasdanika.common.Util.isBlank(label)) {
+						String labelText = Jsoup.parse(label).text();
+						contentText.append(" ").append(labelText);
+					}
+				}
+			});
+		}
+		
+		if (org.nasdanika.common.Util.isBlank(contentText.toString())) {
+			return null;
+		}
+		
 		JSONObject searchDocument = new JSONObject();
-		searchDocument.put("content", StringEscapeUtils.escapeHtml4(contentText));
+		searchDocument.put("content", StringEscapeUtils.escapeHtml4(contentText.toString()));
 		Elements titleQuery = contentPanelQuery.select("div > div.row.nsd-app-content-panel-title-and-items-row > div.col-auto > h1");
 		if (titleQuery.size() == 1) {
 			searchDocument.put("title", StringEscapeUtils.escapeHtml4(titleQuery.get(0).text()));
@@ -791,6 +808,37 @@ public final class Util {
 			searchDocument.put("path", String.join("/", breadcrumbQuery.stream().map(e -> StringEscapeUtils.escapeHtml4(e.text())).collect(Collectors.toList())));
 		}
 		return searchDocument;
+	}
+	
+	/**
+	 * Loads {@link mxGraphModel} from mxgraph div.
+	 * @param mxGraphDiv
+	 * @return
+	 */
+	public static mxGraphModel loadMxGraphModel(Element mxGraphDiv) {
+		String data = mxGraphDiv.attr("data-mxgraph");
+		if (data != null) {
+			JSONObject jsonData = new JSONObject(data);
+			Object xml = jsonData.get("xml");
+			if (xml instanceof String) {
+				org.w3c.dom.Document xmlDocument = mxXmlUtils.parseXml((String) xml);
+				mxCodec codec = new mxCodec(xmlDocument);
+				org.w3c.dom.Element diagramElement = (org.w3c.dom.Element) xmlDocument.getElementsByTagName("diagram").item(0);
+				org.w3c.dom.Element graphModelElement = (org.w3c.dom.Element) diagramElement.getElementsByTagName("mxGraphModel").item(0);
+				return (mxGraphModel) codec.decode(graphModelElement);
+			}
+		}
+		return null;
+	}
+	
+	public static void traverseMxGraphModel(Element mxGraphDiv, Consumer<mxICell> visitor) {
+		mxGraphModel graphModel = loadMxGraphModel(mxGraphDiv);
+		if (graphModel != null) {
+			Object root = graphModel.getRoot();
+			if (root instanceof mxICell) {
+				visit((mxICell) root, visitor);
+			}
+		}		
 	}
 	
 	/**
@@ -836,37 +884,21 @@ public final class Util {
 			
 			// Drawio diagrams
 			for (Element diagramDiv: element.select("div.mxgraph")) {
-				String data = diagramDiv.attr("data-mxgraph");
-				if (data != null) {
-					JSONObject jsonData = new JSONObject(data);
-					Object xml = jsonData.get("xml");
-					if (xml instanceof String) {
-						org.w3c.dom.Document xmlDocument = mxXmlUtils.parseXml((String) xml);
-						mxCodec codec = new mxCodec(xmlDocument);
-						org.w3c.dom.Element diagramElement = (org.w3c.dom.Element) xmlDocument.getElementsByTagName("diagram").item(0);
-						org.w3c.dom.Element graphModelElement = (org.w3c.dom.Element) diagramElement.getElementsByTagName("mxGraphModel").item(0);
-						mxGraphModel graphModel = (mxGraphModel) codec.decode(graphModelElement);
-						Object root = graphModel.getRoot();
-						if (root instanceof mxICell) {
-							visit((mxICell) root, cell -> {
-								Object cellValue = cell.getValue();
-								if (cellValue instanceof org.w3c.dom.Element) {
-									String link = ((org.w3c.dom.Element) cellValue).getAttribute("link");
-									if (!org.nasdanika.common.Util.isBlank(link) && !linkPredicate.test(link)) {
-										String label = ((org.w3c.dom.Element) cellValue).getAttribute("label");
-										if (org.nasdanika.common.Util.isBlank(label)) {
-											errorConsumer.accept("Broken diagram link: " + link);
-										} else {
-											errorConsumer.accept("Broken diagram link on " + label + ": " + link);											
-										}
-									}
-								}
-							});
+				traverseMxGraphModel(diagramDiv, cell -> {
+					Object cellValue = cell.getValue();
+					if (cellValue instanceof org.w3c.dom.Element) {
+						String link = ((org.w3c.dom.Element) cellValue).getAttribute("link");
+						if (!org.nasdanika.common.Util.isBlank(link) && !linkPredicate.test(link)) {
+							String label = ((org.w3c.dom.Element) cellValue).getAttribute("label");
+							if (org.nasdanika.common.Util.isBlank(label)) {
+								errorConsumer.accept("Broken diagram link: " + link);
+							} else {
+								errorConsumer.accept("Broken diagram link on " + label + ": " + link);											
+							}
 						}
 					}
-				}
+				});
 			}			
-			
 		};
 	}
 	

@@ -145,6 +145,12 @@ app-action:
                 - app-action:
                     text: Separator child
                     location: ${base-uri}header-nav/drop-down/separator/first/index.html 
+    - app-action:
+        location: ${base-uri}search.html
+        icon: fas fa-search
+        text: Search
+        content:
+          content-resource: search.html
   navigation:
     - app-action:
         icon: fa fa-user
