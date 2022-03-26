@@ -17,6 +17,10 @@ flow-package:
     kubernetes-cluster:
       name: Cluster
       partition: true
+      representations:
+        uml: {}
+        drawio: 
+          type: drawio:./cluster.drawio
       children:
         node-a: 
           name: Node A
@@ -48,6 +52,12 @@ flow-package:
                   name: Tomcat
                   style:
                     stereotype: Servlet Container
+                    properties:
+                      drawio:
+                        width: 150
+                        height: 200
+                        style:
+                          shape: mxgraph.aws3d.cloudfront
         node-b: 
           name: Node B
           style:
