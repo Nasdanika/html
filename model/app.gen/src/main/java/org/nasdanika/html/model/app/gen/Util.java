@@ -974,7 +974,7 @@ public final class Util {
 					fragment = target.substring(hashIdx);
 					target = target.substring(0, hashIdx);
 				}
-				if (target.contains(":")) { // Absolute, not checking
+				if (target.contains(":") || target.contains("?")) { // Absolute or with a query string, not checking
 					return true;
 				}
 				targetFile = new File(file.getParentFile(), target);
@@ -992,8 +992,8 @@ public final class Util {
 			
 			try {
 				Document document = Jsoup.parse(targetFile, StandardCharsets.UTF_8.name());
-				Elements namedAnchors = document.select("a[name='" + fragment.substring(1) + "']");
-				Elements idAnchors = document.select("a[id='" + fragment.substring(1) + "']");
+				Elements namedAnchors = document.select("[name='" + fragment.substring(1) + "']");
+				Elements idAnchors = document.select("[id='" + fragment.substring(1) + "']");
 				return namedAnchors.size() + idAnchors.size() == 1;
 			} catch (IOException e) {
 				throw new NasdanikaException("Error parsing " + targetFile.getAbsolutePath(), e);
