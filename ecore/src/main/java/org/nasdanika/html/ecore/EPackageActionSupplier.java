@@ -19,6 +19,8 @@ import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.PlantUmlTextGenerator;
 import org.nasdanika.emf.PlantUmlTextGenerator.RelationshipDirection;
+import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.ncore.util.NcoreUtil;
@@ -29,6 +31,14 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 		super(value, context, ePackagePathComputer);
 //		dump(value, 0);
 	}
+	
+	@Override
+	protected void header(Action action, ProgressMonitor progressMonitor) throws Exception {
+		Text text = ContentFactory.eINSTANCE.createText();
+		text.setContent("<div class='text-monospace'>" + eObject.getNsURI() + "</div>");
+		action.getContent().add(text);
+	}
+	
 	
 //	private static void dump(EPackage ePackage, int offset) {
 //		String prefix = "";
