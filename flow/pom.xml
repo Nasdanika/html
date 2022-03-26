@@ -4,7 +4,7 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2022.3.0</version>
+	    <version>2022.3.1</version>
 	    <relativePath>..</relativePath>
 	  </parent>
 	<artifactId>flow</artifactId>
@@ -74,6 +74,12 @@
 			<version>3.20.2</version>
 			<scope>test</scope>
 		</dependency>				
+		<dependency>
+		  <groupId>com.github.dfabulich</groupId>
+		  <artifactId>sitemapgen4j</artifactId>
+		  <version>1.1.2</version>
+			<scope>test</scope>
+		</dependency>	
 	</dependencies>
 </project>
 
