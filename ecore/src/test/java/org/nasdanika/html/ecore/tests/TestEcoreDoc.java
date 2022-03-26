@@ -1,7 +1,6 @@
 package org.nasdanika.html.ecore.tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -114,6 +113,7 @@ public class TestEcoreDoc extends TestBase {
 		// Physical location relative to the projects (git) root folder -> logical (workspace) name 
 		Map<String,String> bundleMap = new LinkedHashMap<>();
 		bundleMap.put("core/ncore", "org.nasdanika.ncore");
+		bundleMap.put("core/diagram", "org.nasdanika.diagram");
 		bundleMap.put("core/exec", "org.nasdanika.exec");
 		bundleMap.put("core/flow", "org.nasdanika.flow");
 
