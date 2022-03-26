@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.codec.binary.Hex;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -26,7 +27,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.MarkdownHelper;
+import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.PropertyComputer;
 import org.nasdanika.common.Util;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
@@ -52,11 +55,58 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	protected java.util.function.Function<EPackage,String> ePackagePathComputer; 
 		
 	public EModelElementActionSupplier(T value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
-		super(value);		
-		this.context = context;
+		super(value);
+		this.context = context.fork();
+		PropertyComputer eClassifierPropertyComputer = new PropertyComputer() {
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public <P> P compute(Context context, String key, String path, Class<P> type) {
+				EObject contextClassifier = value;
+				while (contextClassifier != null && !(contextClassifier instanceof EClassifier)) {
+					contextClassifier = contextClassifier.eContainer();
+				}
+				if (contextClassifier == null) {
+					return null;
+				}
+				
+				EClassifier targetClassifier = null;
+				int atIdx = path.indexOf('@');
+				if (atIdx == -1) {
+					targetClassifier = ((EClassifier) contextClassifier).getEPackage().getEClassifier(path);
+				} else {
+					Resource contextResource = contextClassifier.eResource();
+					if (contextResource == null) {
+						return null;
+					}
+					ResourceSet resourceSet = contextResource.getResourceSet();
+					if (resourceSet == null) {
+						return null;
+					}
+					TreeIterator<Notifier> cit = resourceSet.getAllContents();
+					String targetNsUri = path.substring(atIdx + 1);
+					while (cit.hasNext()) {
+						Notifier next = cit.next();
+						if (next instanceof EPackage) {
+							if (((EPackage) next).getNsURI().equals(targetNsUri)) {
+								targetClassifier = ((EPackage) next).getEClassifier(path.substring(0, atIdx));
+								break;
+							}
+						}
+					}
+				}
+				
+				if (targetClassifier == null) {
+					return null;
+				}
+
+				return (P) path(targetClassifier, (EClassifier) contextClassifier);
+			}
+			
+		};
+		((MutableContext) this.context).put("classifier", eClassifierPropertyComputer);
 		this.ePackagePathComputer = ePackagePathComputer;
 	}
-	
 
 	@Override
 	public Action execute(EClass contextClass, ProgressMonitor progressMonitor) throws Exception {		
@@ -83,7 +133,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		}
 		
 		if (!Util.isBlank(markdown)) {
-			ret.getContent().add(interpolatedMarkdown(markdown));
+			ret.getContent().add(interpolatedMarkdown(context.interpolateToString(markdown)));
 			ret.setTooltip(context.computingContext().get(MarkdownHelper.class, MarkdownHelper.INSTANCE).firstPlainTextSentence(markdown));
 		}
 		

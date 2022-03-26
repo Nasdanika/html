@@ -425,7 +425,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 					}					
 				}
 				if (!Util.isBlank(featureLoadDoc)) {
-					featureAction.getContent().add(interpolatedMarkdown(featureLoadDoc));
+					featureAction.getContent().add(interpolatedMarkdown(context.interpolateToString(featureLoadDoc)));
 				}
 			}	
 			
