@@ -6,6 +6,12 @@ app-action:
   tooltip: Root action
   children:
     - app-action-reference: "../../../../../../../target/model-doc/actions/${model-name}.xml#/"
+    - app-action:
+        location: ${base-uri}search.html
+        icon: fas fa-search
+        text: Search
+        content:
+          content-resource: search.html
   navigation:
     app-action:
       text: Test

@@ -1,17 +1,25 @@
 package org.nasdanika.html.flow.tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -24,12 +32,15 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.json.JSONObject;
+import org.jsoup.nodes.Element;
 import org.junit.Test;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.DiagnosticException;
+import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.NullProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
@@ -61,6 +72,10 @@ import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreResourceSet;
+
+import com.redfin.sitemapgenerator.ChangeFreq;
+import com.redfin.sitemapgenerator.WebSitemapGenerator;
+import com.redfin.sitemapgenerator.WebSitemapUrl;
 
 /**
  * Tests of agile flows.
@@ -320,7 +335,8 @@ public class TestAgileDocGen {
 				
 		Resource containerResource = resourceSet.getResource(URI.createURI(name + ".xml").resolve(RESOURCE_MODELS_URI), true);
 	
-		BinaryEntityContainer container = new FileSystemContainer(new File("target/model-doc/site"));
+		File siteDir = new File("target/model-doc/site");
+		BinaryEntityContainer container = new FileSystemContainer(siteDir);
 		for (EObject eObject : containerResource.getContents()) {
 			Diagnostician diagnostician = new Diagnostician();
 			org.eclipse.emf.common.util.Diagnostic eObjectDiagnostic = diagnostician.validate(eObject);
@@ -344,7 +360,86 @@ public class TestAgileDocGen {
 				throw e;
 			}
 		}		
+		
+		generateSitemapAndSearch(new File(siteDir, name));		
 	}
+		
+	/**
+	 * 
+	 * @param siteDir
+	 * @return Number of broken links.
+	 * @throws IOException
+	 */
+	private void generateSitemapAndSearch(File siteDir) throws IOException {
+		AtomicInteger problems = new AtomicInteger();
+		
+		// Site map and search index
+		JSONObject searchDocuments = new JSONObject();		
+		String domain = "https://docs.nasdanika.org";
+		WebSitemapGenerator wsg = new WebSitemapGenerator(domain, siteDir);
+		BiConsumer<File, String> listener = new BiConsumer<File, String>() {
+			
+			@Override
+			public void accept(File file, String path) {
+				if (path.endsWith(".html")) {
+					try {
+						WebSitemapUrl url = new WebSitemapUrl.Options(domain + "/" + path)
+							    .lastMod(new Date(file.lastModified())).changeFreq(ChangeFreq.WEEKLY).build();
+						wsg.addUrl(url); 
+					} catch (MalformedURLException e) {
+						throw new NasdanikaException(e);
+					}
+					
+					// Excluding search.html
+					if (!"search.html".equals(path)) {
+						try {	
+							Predicate<String> predicate = org.nasdanika.html.model.app.gen.Util.createRelativeLinkPredicate(file, siteDir);						
+							java.util.function.Consumer<? super Element> inspector = org.nasdanika.html.model.app.gen.Util.createInspector(predicate, error -> {
+								System.err.println("[" + path +"] " + error);
+								problems.incrementAndGet();
+							});
+							JSONObject searchDocument = org.nasdanika.html.model.app.gen.Util.createSearchDocument(path, file, inspector);
+							if (searchDocument != null) {
+								searchDocuments.put(path, searchDocument);
+							}
+						} catch (IOException e) {
+							throw new NasdanikaException(e);
+						}
+					}
+				}
+			}
+		};
+		walk(null, listener, siteDir.listFiles());
+		wsg.write();	
+
+		try (FileWriter writer = new FileWriter(new File(siteDir, "search-documents.js"))) {
+			writer.write("var searchDocuments = " + searchDocuments);
+		}
+		
+		if (problems.get() > 0) {
+			fail("There are broken links: " + problems.get());
+		};
+	}
+	
+	/**
+	 * Walks the directory passing files to the listener.
+	 * @param source
+	 * @param target
+	 * @param cleanTarget
+	 * @param cleanPredicate
+	 * @param listener
+	 * @throws IOException
+	 */
+	public static void walk(String path, BiConsumer<File,String> listener, File... files) throws IOException {
+		for (File file: files) {
+			String filePath = path == null ? file.getName() : path + "/" + file.getName();
+			if (file.isDirectory()) {
+				walk(filePath, listener, file.listFiles());
+			} else if (file.isFile() && listener != null) {
+				listener.accept(file, filePath);
+			}
+		}
+	}	
 	
 	protected ResourceSet createResourceSet() {
 		// Load model from XMI
@@ -363,21 +458,32 @@ public class TestAgileDocGen {
 		return resourceSet;
 	}
 	
+	public static void delete(File... files) {
+		for (File file: files) {
+			if (file.exists()) {
+				if (file.isDirectory()) {
+					delete(file.listFiles());
+				}
+				file.delete();
+			}
+		}
+	}
+	
 	@Test
 	public void generate() throws Exception {
-//		delete(INSTANCE_MODELS_DIR);
-//		delete(ACTION_MODELS_DIR);
-//		delete(RESOURCE_MODELS_DIR);
-//		
-//		INSTANCE_MODELS_DIR.mkdirs();
-//		ACTION_MODELS_DIR.mkdirs();
-//		RESOURCE_MODELS_DIR.mkdirs();
+		delete(INSTANCE_MODELS_DIR);
+		delete(ACTION_MODELS_DIR);
+		delete(RESOURCE_MODELS_DIR);
+		
+		INSTANCE_MODELS_DIR.mkdirs();
+		ACTION_MODELS_DIR.mkdirs();
+		RESOURCE_MODELS_DIR.mkdirs();
 		
 		generateSite("test");
 		generateSite("core");
 		generateSite("aws");
-//		generateSite("java");
-//		generateSite("java-kubernetes");
+		generateSite("java");
+		generateSite("java-kubernetes");
 
 		long cacheMisses = FeatureCacheAdapter.getMisses();
 		long cacheCalls = FeatureCacheAdapter.getCalls();
