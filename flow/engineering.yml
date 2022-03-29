@@ -18,5 +18,14 @@ engineering-module:
         Add support of filtered generation using a predicate service in Context. Perhaps have a specialized interface instead of java function predicate to avoid accidental clash.
         Also the predicate interface may have a method for filtering typed elements - structural features and operations. E.g. hide URI's. Perhaps have this interface in the same 
         package with EObjectActionProvider or even as a nested interface. getPredicate() returns a predicate which accepts everything - to avoid null checks all over.  
+    drawio:
+      name: Generation of Drawio diagrams
+      description: |+2
+        Configuration (properties) for layers and tooltips. For tooltips interpolation. Participant layers instead of grouping. 
+        There are also options for role/resource decorations also placed into layers. 
+        Perhaps support of custom generators - either exec call or Java service or support of Java service in exec, if not already there - either with a selector or the service method shall indicate
+        whether it generated anything or just pass to all available until returns non-null.
+        Adapting to a generator is another option. Taking a generator from the context is yet another - the most consistent with the current approach.
+        That generator shall use style and properties - default implementation with ability to customize.   
 
 
