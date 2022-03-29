@@ -794,6 +794,8 @@ public final class Util {
 						String labelText = Jsoup.parse(label).text();
 						contentText.append(" ").append(labelText);
 					}
+				} else if (cellValue != null) {
+					contentText.append(" ").append(cellValue);					
 				}
 			});
 		}
