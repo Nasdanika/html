@@ -7,9 +7,9 @@ import org.nasdanika.common.Context;
 import org.nasdanika.flow.Activity;
 import org.nasdanika.flow.FlowPackage;
 
-public class ActivityActionProvider<T extends Activity<?>> extends FlowElementActionProvider<T> {
+public class ActivityActionBuilder<T extends Activity<?>> extends FlowElementActionBuilder<T> {
 	
-	public ActivityActionProvider(T value, Context context) {
+	public ActivityActionBuilder(T value, Context context) {
 		super(value, context);
 	}
 	

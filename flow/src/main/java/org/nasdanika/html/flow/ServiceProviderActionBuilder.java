@@ -17,19 +17,20 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.ncore.util.NamedElementComparator;
 
-public class ServiceProviderActionProvider<T extends ServiceProvider<?>> extends PackageElementActionProvider<T> {
+public class ServiceProviderActionBuilder<T extends ServiceProvider<?>> extends PackageElementActionBuilder<T> {
 	
-	public ServiceProviderActionProvider(T value, Context context) {
+	public ServiceProviderActionBuilder(T value, Context context) {
 		super(value, context);
 	}
 	
 	@Override
-	protected Action createAction(
+	protected Action buildAction(
+			Action action,
 			BiConsumer<EObject, Action> registry,
 			Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer,
 			ProgressMonitor progressMonitor) throws Exception {
 		
-		Action action = super.createAction(registry, resolveConsumer, progressMonitor);
+		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		List<Activity<?>> services = getTarget().getServices().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
 		if (!services.isEmpty()) {
 			Action group = AppFactory.eINSTANCE.createAction();

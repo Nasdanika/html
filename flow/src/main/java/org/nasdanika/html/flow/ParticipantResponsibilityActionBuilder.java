@@ -7,9 +7,9 @@ import org.nasdanika.common.Context;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.ParticipantResponsibility;
 
-public class ParticipantResponsibilityActionProvider<T extends ParticipantResponsibility<?>> extends PackageElementActionProvider<T> {
+public class ParticipantResponsibilityActionBuilder<T extends ParticipantResponsibility<?>> extends PackageElementActionBuilder<T> {
 	
-	public ParticipantResponsibilityActionProvider(T value, Context context) {
+	public ParticipantResponsibilityActionBuilder(T value, Context context) {
 		super(value, context);
 	}
 	

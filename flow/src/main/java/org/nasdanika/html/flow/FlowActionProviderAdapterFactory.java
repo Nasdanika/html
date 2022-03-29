@@ -32,7 +32,7 @@ public class FlowActionProviderAdapterFactory extends ActionProviderAdapterFacto
 				FlowPackage.Literals.PACKAGE, 
 				ActionProvider.class, 
 				this.getClass().getClassLoader(), 
-				e -> new PackageActionProvider(e, context)));
+				e -> new PackageActionBuilder(e, context).asActionProvider()));
 
 		// Participant
 		registerAdapterFactory(
@@ -40,7 +40,7 @@ public class FlowActionProviderAdapterFactory extends ActionProviderAdapterFacto
 					FlowPackage.Literals.PARTICIPANT, 
 					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new ParticipantActionProvider(e, context)));
+					e -> new ParticipantActionBuilder(e, context).asActionProvider()));
 		
 		// Resource
 		registerAdapterFactory(
@@ -48,7 +48,7 @@ public class FlowActionProviderAdapterFactory extends ActionProviderAdapterFacto
 					FlowPackage.Literals.RESOURCE, 
 					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new ResourceActionProvider(e, context)));
+					e -> new ResourceActionBuilder(e, context).asActionProvider()));
 		
 		// Artifact
 		registerAdapterFactory(
@@ -56,7 +56,7 @@ public class FlowActionProviderAdapterFactory extends ActionProviderAdapterFacto
 					FlowPackage.Literals.ARTIFACT, 
 					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new ArtifactActionProvider(e, context)));
+					e -> new ArtifactActionBuilder(e, context).asActionProvider()));
 		
 		// Pseudo-state
 		registerAdapterFactory(
@@ -64,7 +64,7 @@ public class FlowActionProviderAdapterFactory extends ActionProviderAdapterFacto
 					FlowPackage.Literals.PSEUDO_STATE, 
 					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new PseudoStateActionProvider<PseudoState>(e, context)));
+					e -> new PseudoStateActionBuilder<PseudoState>(e, context).asActionProvider()));
 		
 		// Activity
 		registerAdapterFactory(
@@ -72,7 +72,7 @@ public class FlowActionProviderAdapterFactory extends ActionProviderAdapterFacto
 					FlowPackage.Literals.ACTIVITY, 
 					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new ActivityActionProvider<Activity<?>>(e, context)));
+					e -> new ActivityActionBuilder<Activity<?>>(e, context).asActionProvider()));
 		
 		// Flow
 		registerAdapterFactory(
@@ -80,7 +80,7 @@ public class FlowActionProviderAdapterFactory extends ActionProviderAdapterFacto
 					FlowPackage.Literals.FLOW, 
 					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new FlowActionProvider(e, context)));
+					e -> new FlowActionBuilder(e, context).asActionProvider()));
 		
 		// Service
 		registerAdapterFactory(
@@ -88,7 +88,7 @@ public class FlowActionProviderAdapterFactory extends ActionProviderAdapterFacto
 					FlowPackage.Literals.SERVICE, 
 					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new ServiceActionProvider(e, context)));
+					e -> new ServiceActionBuilder(e, context).asActionProvider()));
 		
 	}
 		

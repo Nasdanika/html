@@ -33,7 +33,7 @@ public class ActionProviderAdapterFactory extends ComposedAdapterFactory {
 				NcorePackage.Literals.TEMPORAL, 
 				ActionProvider.class, 
 				this.getClass().getClassLoader(), 
-				e -> new TemporalActionProvider(e, context)));
+				e -> new TemporalActionBuilder(e, context).asActionProvider()));
 	}
 	
 	@Override

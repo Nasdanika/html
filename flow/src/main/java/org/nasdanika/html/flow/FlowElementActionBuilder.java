@@ -29,9 +29,9 @@ import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NamedElementComparator;
 
-public class FlowElementActionProvider<T extends FlowElement<?>> extends ParticipantResponsibilityActionProvider<T> {
+public class FlowElementActionBuilder<T extends FlowElement<?>> extends ParticipantResponsibilityActionBuilder<T> {
 	
-	public FlowElementActionProvider(T value, Context context) {
+	public FlowElementActionBuilder(T value, Context context) {
 		super(value, context);
 	}
 		

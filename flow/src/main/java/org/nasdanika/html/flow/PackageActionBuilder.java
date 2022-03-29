@@ -19,18 +19,19 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.ncore.util.NamedElementComparator;
 
-public class PackageActionProvider extends PackageElementActionProvider<org.nasdanika.flow.Package> {
+public class PackageActionBuilder extends PackageElementActionBuilder<org.nasdanika.flow.Package> {
 	
-	public PackageActionProvider(org.nasdanika.flow.Package value, Context context) {
+	public PackageActionBuilder(org.nasdanika.flow.Package value, Context context) {
 		super(value, context);
 	}
 	
 	@Override
-	protected Action createAction(
+	protected Action buildAction(
+			Action action,
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
-		Action action = super.createAction(registry, resolveConsumer, progressMonitor);
+		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		
 		EList<EObject> children = action.getChildren();
 		children.addAll(createSubPackageActions(registry, resolveConsumer, progressMonitor));

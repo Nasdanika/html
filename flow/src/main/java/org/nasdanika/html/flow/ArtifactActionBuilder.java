@@ -33,19 +33,20 @@ import org.nasdanika.html.model.bootstrap.TableCell;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NamedElementComparator;
 
-public class ArtifactActionProvider extends ParticipantResponsibilityActionProvider<Artifact> {
+public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilder<Artifact> {
 	
-	public ArtifactActionProvider(Artifact value, Context context) {
+	public ArtifactActionBuilder(Artifact value, Context context) {
 		super(value, context);
 	}
 		
 	@Override
-	protected Action createAction(
+	protected Action buildAction(
+			Action action,
 			BiConsumer<EObject, Action> registry,
 			Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer,
 			ProgressMonitor progressMonitor) throws Exception {
 		
-		Action action = super.createAction(registry, resolveConsumer, progressMonitor);
+		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		EList<EObject> children = action.getChildren(); 
 		for (Artifact element: getTarget().getChildren().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList())) {
 			children.add(createChildAction(element, registry, resolveConsumer, progressMonitor));

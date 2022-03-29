@@ -6,7 +6,7 @@ import org.nasdanika.html.model.app.Action;
 
 /**
  * Marker interface for adapters attached to actions created by
- * {@link EObjectActionProvider} instances.
+ * {@link EObjectActionBuilder} instances.
  * 
  * This interface is used to perform action configuration which requires action cross-referencing 
  * such as linking from one action to another. Resolver's execute() is invoked after all actions are created

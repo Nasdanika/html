@@ -7,9 +7,9 @@ import org.nasdanika.common.Context;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.Service;
 
-public class ServiceActionProvider extends FlowElementActionProvider<Service> {
+public class ServiceActionBuilder extends FlowElementActionBuilder<Service> {
 	
-	public ServiceActionProvider(Service value, Context context) {
+	public ServiceActionBuilder(Service value, Context context) {
 		super(value, context);
 	}
 	

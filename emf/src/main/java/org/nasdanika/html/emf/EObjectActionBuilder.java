@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.CollectionCompoundConsumer;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
@@ -50,6 +51,7 @@ import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.NavigationPanel;
+import org.nasdanika.html.model.app.util.ActionBuilder;
 import org.nasdanika.html.model.app.util.ActionProvider;
 import org.nasdanika.html.model.app.util.ActionSupplier;
 import org.nasdanika.html.model.bootstrap.Alert;
@@ -76,11 +78,11 @@ import org.nasdanika.ncore.util.NcoreUtil;
 
 import com.ibm.icu.util.Calendar;
 
-public class EObjectActionProvider<T extends EObject> extends AdapterImpl implements ActionProvider {
+public class EObjectActionBuilder<T extends EObject> extends AdapterImpl implements ActionBuilder {
 	
 	protected org.nasdanika.common.Context context;
 
-	public EObjectActionProvider(T target, org.nasdanika.common.Context context) {
+	public EObjectActionBuilder(T target, org.nasdanika.common.Context context) {
 		setTarget(target);
 		this.context = context;
 	}
@@ -116,7 +118,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 
 				@Override
 				public void execute(Context registry, ProgressMonitor progressMonitor) throws Exception {
-					EObjectActionProvider.this.resolve((Action) getTarget(), registry, progressMonitor);					
+					EObjectActionBuilder.this.resolve((Action) getTarget(), registry, progressMonitor);					
 				}
 				
 			});
@@ -142,7 +144,7 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 
 		@Override
 		public String name() {
-			return "Resolving " + EObjectActionProvider.this.name();
+			return "Resolving " + EObjectActionBuilder.this.name();
 		}
 		
 	}
@@ -156,9 +158,10 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	 * The resolving adapter removes itself upon resolution.  
 	 */
 	@Override
-	public Action execute(BiConsumer<EObject,Action> registry, ProgressMonitor progressMonitor) throws Exception {
+	public Action execute(BiSupplier<Action, BiConsumer<EObject,Action>> actionAndRegistry, ProgressMonitor progressMonitor) throws Exception {
 		EObjectActionResolverAdapter resolver = new EObjectActionResolverAdapter();
-		Action ret = createAction(registry, resolver::add, progressMonitor);
+		BiConsumer<EObject, Action> registry = actionAndRegistry.getSecond();
+		Action ret = buildAction(actionAndRegistry.getFirst(), registry, resolver::add, progressMonitor);
 		registry.accept(getTarget(), ret);
 		ret.eAdapters().add(resolver);				
 		return ret;
@@ -173,11 +176,12 @@ public class EObjectActionProvider<T extends EObject> extends AdapterImpl implem
 	 * @param progressMonitor
 	 * @return
 	 */
-	protected Action createAction(
+	protected Action buildAction(
+			Action action,
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
-		Action ret = newAction(registry, resolveConsumer, progressMonitor);
+		Action ret = action == null ? newAction(registry, resolveConsumer, progressMonitor) : action;
 
 		// Diagnostic
 		Collection<Diagnostic> diagnostic = getDiagnostic();

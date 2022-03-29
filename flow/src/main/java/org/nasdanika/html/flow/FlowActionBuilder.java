@@ -32,22 +32,23 @@ import org.nasdanika.html.model.app.NavigationPanelStyle;
 import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.util.NamedElementComparator;
 
-public class FlowActionProvider extends ActivityActionProvider<Flow> {
+public class FlowActionBuilder extends ActivityActionBuilder<Flow> {
 	
-	public FlowActionProvider(Flow value, Context context) {
+	public FlowActionBuilder(Flow value, Context context) {
 		super(value, context);
 	}
 	
 	@Override
-	protected Action createAction(
+	protected Action buildAction(
+			Action action,
 			BiConsumer<EObject, Action> registry,
 			Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer,
 			ProgressMonitor progressMonitor) throws Exception {
 		
-		Action action = super.createAction(registry, resolveConsumer, progressMonitor);
+		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		EList<EObject> children = action.getChildren(); 
 		Predicate<FlowElement<?>> isPseudoState= PseudoState.class::isInstance;
-		for (FlowElement<?> element: getTarget().getElements().values().stream().filter(isPseudoState.negate()).sorted(FlowActionProvider::compareFlowElements).collect(Collectors.toList())) {
+		for (FlowElement<?> element: getTarget().getElements().values().stream().filter(isPseudoState.negate()).sorted(FlowActionBuilder::compareFlowElements).collect(Collectors.toList())) {
 			children.add(createChildAction(element, registry, resolveConsumer, progressMonitor));
 		}
 		EList<Action> anonymous = action.getAnonymous(); 
@@ -238,7 +239,7 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 				leftNavigation.setStyle(subChildren == 0 ? NavigationPanelStyle.AUTO : NavigationPanelStyle.TREE);
 			}
 			Predicate<FlowElement<?>> isPseudoState= PseudoState.class::isInstance;
-			for (FlowElement<?> element: getTarget().getElements().values().stream().filter(isPseudoState.negate()).sorted(FlowActionProvider::compareFlowElements).collect(Collectors.toList())) {
+			for (FlowElement<?> element: getTarget().getElements().values().stream().filter(isPseudoState.negate()).sorted(FlowActionBuilder::compareFlowElements).collect(Collectors.toList())) {
 				leftNavigation.getItems().add(createItem(action, context, progressMonitor, element));
 			}
 		}
@@ -253,7 +254,7 @@ public class FlowActionProvider extends ActivityActionProvider<Flow> {
 		EObject item = renderValue(action, FlowPackage.Literals.FLOW__ELEMENTS, element, context, progressMonitor);
 		if (element instanceof Flow && item instanceof Label) {
 			Predicate<FlowElement<?>> isPseudoState= PseudoState.class::isInstance;
-			for (FlowElement<?> child: ((Flow) element).getElements().values().stream().filter(isPseudoState.negate()).sorted(FlowActionProvider::compareFlowElements).collect(Collectors.toList())) {
+			for (FlowElement<?> child: ((Flow) element).getElements().values().stream().filter(isPseudoState.negate()).sorted(FlowActionBuilder::compareFlowElements).collect(Collectors.toList())) {
 				((Label) item).getChildren().add(createItem(action, context, progressMonitor, child));
 			}
 		}

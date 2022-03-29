@@ -33,19 +33,20 @@ import org.nasdanika.html.model.bootstrap.TableRow;
 import org.nasdanika.html.model.bootstrap.TableSection;
 import org.nasdanika.ncore.util.NamedElementComparator;
 
-public class ParticipantActionProvider extends ServiceProviderActionProvider<Participant> {
+public class ParticipantActionBuilder extends ServiceProviderActionBuilder<Participant> {
 	
-	public ParticipantActionProvider(Participant value, Context context) {
+	public ParticipantActionBuilder(Participant value, Context context) {
 		super(value, context);
 	}
 	
 	@Override
-	protected Action createAction(
+	protected Action buildAction(
+			Action action,
 			BiConsumer<EObject, Action> registry,
 			Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer,
 			ProgressMonitor progressMonitor) throws Exception {
 		
-		Action action = super.createAction(registry, resolveConsumer, progressMonitor);
+		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		EList<EObject> children = action.getChildren(); 
 		for (Participant element: getTarget().getChildren().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList())) {
 			children.add(createChildAction(element, registry, resolveConsumer, progressMonitor));
@@ -162,7 +163,7 @@ public class ParticipantActionProvider extends ServiceProviderActionProvider<Par
 			responsibilitiesTable.setBody(body);
 			EList<TableRow> bodyRows = body.getRows();
 			
-			for (FlowElement<?> container: flowElements.stream().map(e -> (FlowElement<?>) e).sorted(FlowActionProvider::compareFlowElements).collect(Collectors.toList())) {
+			for (FlowElement<?> container: flowElements.stream().map(e -> (FlowElement<?>) e).sorted(FlowActionBuilder::compareFlowElements).collect(Collectors.toList())) {
 				TableRow containerRow = BootstrapFactory.eINSTANCE.createTableRow();
 				bodyRows.add(containerRow);
 

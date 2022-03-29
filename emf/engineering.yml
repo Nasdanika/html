@@ -22,4 +22,12 @@ engineering-module:
     uri-copy-to-clipboard-relative:
       name: Relative URI copy to clipboard
       description: Drop-down or a dialog with a base URI field to compute relative URI's. Use of relative URI's may be preferred in models which are intended to be reused and the root URI may change.
+    facets:
+      name: Facets
+      description: |+2
+        Either ModelElement or Faceted interface have a containment facets link - to mix-in behavior instead of inheritance.
+        Facets are adapted to something like ActionBuilderFacet to participate in action building - properties table, etc.
+        May have facets annotation at EClass level with optional prefixes. E.g. EClass B inherits from A and defines that C is a facet. 
+        C is created and its features are populated only if none of A features match. 
+        If there is a prefix then C's feature keys are prefixed with that prefix.  
         

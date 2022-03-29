@@ -15,19 +15,20 @@ import org.nasdanika.flow.Resource;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.ncore.util.NamedElementComparator;
 
-public class ResourceActionProvider extends ServiceProviderActionProvider<Resource> {
+public class ResourceActionBuilder extends ServiceProviderActionBuilder<Resource> {
 	
-	public ResourceActionProvider(Resource value, Context context) {
+	public ResourceActionBuilder(Resource value, Context context) {
 		super(value, context);
 	}
 	
 	@Override
-	protected Action createAction(
+	protected Action buildAction(
+			Action action,
 			BiConsumer<EObject, Action> registry,
 			Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer,
 			ProgressMonitor progressMonitor) throws Exception {
 		
-		Action action = super.createAction(registry, resolveConsumer, progressMonitor);
+		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		EList<EObject> children = action.getChildren(); 
 		for (Resource element: getTarget().getChildren().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList())) {
 			children.add(createChildAction(element, registry, resolveConsumer, progressMonitor));

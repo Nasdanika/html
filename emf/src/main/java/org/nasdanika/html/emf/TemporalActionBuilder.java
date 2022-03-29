@@ -20,18 +20,19 @@ import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.Temporal;
 import org.nasdanika.ncore.util.NcoreUtil;
 
-public class TemporalActionProvider extends EObjectActionProvider<Temporal> {
+public class TemporalActionBuilder extends EObjectActionBuilder<Temporal> {
 	
-	public TemporalActionProvider(Temporal value, Context context) {
+	public TemporalActionBuilder(Temporal value, Context context) {
 		super(value, context);		
 	}
 	
 	@Override
-	protected Action createAction(
+	protected Action buildAction(
+			Action action,
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
-		Action ret = super.createAction(registry, resolveConsumer, progressMonitor);		
+		Action ret = super.buildAction(action, registry, resolveConsumer, progressMonitor);		
 		Temporal eObj = getTarget();
 		URI uri = NcoreUtil.getUri(eObj);
 		String id = uri == null ? eObj.getUuid() : uri.toString();

@@ -20,7 +20,7 @@ import org.nasdanika.diagram.Diagram;
 import org.nasdanika.diagram.gen.Generator;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.PackageElement;
-import org.nasdanika.html.emf.EObjectActionProvider;
+import org.nasdanika.html.emf.EObjectActionBuilder;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.SectionStyle;
@@ -32,7 +32,7 @@ import org.nasdanika.html.model.bootstrap.TableSection;
 import org.nasdanika.ncore.util.NamedElementComparator;
 import org.nasdanika.ncore.util.NcoreUtil;
 
-public class PackageElementActionProvider<T extends PackageElement<?>> extends EObjectActionProvider<T> {
+public class PackageElementActionBuilder<T extends PackageElement<?>> extends EObjectActionBuilder<T> {
 	
 	/**
 	 * Descriptions shorter than this value are put on the top of the tabs, longer
@@ -40,16 +40,17 @@ public class PackageElementActionProvider<T extends PackageElement<?>> extends E
 	 */
 	protected int descriptionTabLengthThreshold = 2500;
 		
-	public PackageElementActionProvider(T value, Context context) {
+	public PackageElementActionBuilder(T value, Context context) {
 		super(value, context);		
 	}
 	
 	@Override
-	protected Action createAction(
+	protected Action buildAction(
+			Action action,
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
 			ProgressMonitor progressMonitor) throws Exception {
-		Action ret = super.createAction(registry, resolveConsumer, progressMonitor);		
+		Action ret = super.buildAction(action, registry, resolveConsumer, progressMonitor);		
 		T eObj = getTarget();
 		URI uri = NcoreUtil.getUri(eObj);
 		String id = uri == null ? eObj.getUuid() : uri.toString();
