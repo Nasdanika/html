@@ -34,3 +34,14 @@ nasdanika-logo.png
 ```jpeg-resource
 logo.jpg
 ```
+
+### Mermaid
+
+```mermaid
+flowchart LR
+   Alice --> Bob & Chuck --> Deb
+```
+
+```mermaid-resource
+class-diagram.mermaid
+```
