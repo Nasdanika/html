@@ -27,5 +27,14 @@ engineering-module:
         whether it generated anything or just pass to all available until returns non-null.
         Adapting to a generator is another option. Taking a generator from the context is yet another - the most consistent with the current approach.
         That generator shall use style and properties - default implementation with ability to customize.   
+    rest-api:
+      name: REST API
+      description: |+2
+        Generation of REST API - a collection of JSON and JS files to be used in SPA's, e.g. Vue.js - generate specifically for Vue.js? Separate gen module, e.g. gen.vue?
+        In this case rename this one to gen.html?  
+    mermaid:
+      name: Mermaid
+      description: |+2
+        Support of Mermaid - state diagrams, flow charts, sequence diagrams.  
 
 
