@@ -1,5 +1,7 @@
 package org.nasdanika.html.ecore;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -26,7 +28,18 @@ public class EReferenceActionSupplier extends EStructuralFeatureActionSupplier<E
 			} else {
 				addRow(propertiesTable, "Opposite").add("<a href=\"" + oPath + "#EReference-" + opposite.getName() +"\">" + opposite.getName() + "</a>");				
 			}
-		}		
+		}	
+		EList<EAttribute> eKeys = eObject.getEKeys();
+		if (!eKeys.isEmpty()) {
+			if (eKeys.size() == 1) {
+				addRow(propertiesTable, "Key").add(eKeys.get(0).getName());			
+			} else {
+				StringBuilder vb = new StringBuilder("<ol>");
+				eKeys.forEach(eKey -> vb.append("<li>").append(eKey.getName()).append("</li>"));
+				vb.append("</ol>");
+				addRow(propertiesTable, "Key").add(vb.toString());			
+			}
+		}
 		return propertiesTable;
 	}
 
