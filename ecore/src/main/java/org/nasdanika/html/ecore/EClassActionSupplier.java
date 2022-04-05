@@ -25,13 +25,11 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.Util;
-import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
+import org.nasdanika.emf.EmfUtil.EModelElementDocumentation;
 import org.nasdanika.emf.PlantUmlTextGenerator;
 import org.nasdanika.emf.PlantUmlTextGenerator.RelationshipDirection;
 import org.nasdanika.emf.persistence.EObjectLoader;
@@ -367,9 +365,9 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			loadSpecificationAction.setLocation(eObject.getName() + "-load-specification.html");			
 			action.getNavigation().add(loadSpecificationAction);
 			
-			String loadDoc = EmfUtil.getLoadDocumentation(eObject);
-			if (!Util.isBlank(loadDoc)) {
-				loadSpecificationAction.getContent().add(interpolatedMarkdown(loadDoc));
+			EModelElementDocumentation loadDoc = EmfUtil.getLoadDocumentation(eObject);
+			if (loadDoc != null) {
+				loadSpecificationAction.getContent().add(interpolatedMarkdown(loadDoc.getDocumentation(), loadDoc.getLocation(), progressMonitor));
 			}
 			
 			Tag toc = TagName.ul.create();
@@ -417,15 +415,15 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 
 				addContent(featureAction, table.toString());
 				
-				String featureLoadDoc = EmfUtil.getLoadDocumentation(sf);
-				if (Util.isBlank(featureLoadDoc)) {
-					featureLoadDoc = EObjectAdaptable.getResourceContext(sf).getString("documentation", EcoreUtil.getDocumentation(sf));
-					if (Util.isBlank(featureLoadDoc)) {
+				EModelElementDocumentation featureLoadDoc = EmfUtil.getLoadDocumentation(sf);
+				if (featureLoadDoc == null) {
+//					featureLoadDoc = EObjectAdaptable.getResourceContext(sf).getString("documentation", EcoreUtil.getDocumentation(sf));
+//					if (Util.isBlank(featureLoadDoc)) {
 						featureLoadDoc = EmfUtil.getDocumentation(sf);
-					}					
+//					}					
 				}
-				if (!Util.isBlank(featureLoadDoc)) {
-					featureAction.getContent().add(interpolatedMarkdown(context.interpolateToString(featureLoadDoc)));
+				if (featureLoadDoc != null) {
+					featureAction.getContent().add(interpolatedMarkdown(context.interpolateToString(featureLoadDoc.getDocumentation()), featureLoadDoc.getLocation(), progressMonitor));
 				}
 			}	
 			

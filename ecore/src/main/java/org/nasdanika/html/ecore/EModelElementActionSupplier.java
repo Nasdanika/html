@@ -24,21 +24,23 @@ import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.MarkdownHelper;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.PropertyComputer;
 import org.nasdanika.common.Util;
-import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
+import org.nasdanika.emf.EmfUtil.EModelElementDocumentation;
+import org.nasdanika.emf.persistence.MarkerFactory;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Interpolator;
 import org.nasdanika.exec.content.Markdown;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.ncore.Marker;
 
 public class EModelElementActionSupplier<T extends EModelElement> extends EObjectActionSupplier<T> {
 	
@@ -127,14 +129,28 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		
 		header(ret, progressMonitor);
 		
-		String markdown = EObjectAdaptable.getResourceContext(eObject).getString("documentation", EcoreUtil.getDocumentation(eObject));
-		if (Util.isBlank(markdown)) {
-			markdown = EmfUtil.getDocumentation(eObject);
-		}
+		EModelElementDocumentation documentation = EmfUtil.getDocumentation(eObject); //EObjectAdaptable.getResourceContext(eObject).getString("documentation", EcoreUtil.getDocumentation(eObject));
+//		if (Util.isBlank(markdown)) {
+//			markdown = EmfUtil.getDocumentation(eObject);
+//		}
 		
-		if (!Util.isBlank(markdown)) {
-			ret.getContent().add(interpolatedMarkdown(context.interpolateToString(markdown)));
-			ret.setTooltip(context.computingContext().get(MarkdownHelper.class, MarkdownHelper.INSTANCE).firstPlainTextSentence(markdown));
+		MarkdownHelper markdownHelper = new MarkdownHelper() {
+			
+			@Override
+			protected URI getResourceBase() {
+				return documentation.getLocation();
+			}
+			
+			@Override
+			protected DiagramGenerator getDiagramGenerator() {
+				return context == null ? super.getDiagramGenerator() : context.get(DiagramGenerator.class, super.getDiagramGenerator()); 
+			}
+			
+		};
+		
+		if (documentation != null) {
+			ret.getContent().add(interpolatedMarkdown(context.interpolateToString(documentation.getDocumentation()), documentation.getLocation(), progressMonitor));
+			ret.setTooltip(markdownHelper.firstPlainTextSentence(documentation.getDocumentation()));
 		}
 		
 		return ret;
@@ -162,7 +178,10 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	 * @param markdown Markdown text
 	 * @return Spec for interpolating markdown and then converting to HTML. 
 	 */
-	protected static Markdown interpolatedMarkdown(String markdown) {
+	protected Markdown interpolatedMarkdown(String markdown, URI location, ProgressMonitor progressMonitor) {
+		if (Util.isBlank(markdown)) {
+			return null;
+		}
 		Markdown ret = ContentFactory.eINSTANCE.createMarkdown();
 		Interpolator interpolator = ContentFactory.eINSTANCE.createInterpolator();
 		Text text = ContentFactory.eINSTANCE.createText();
@@ -170,18 +189,44 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		interpolator.setSource(text);
 		ret.setSource(interpolator);
 		ret.setStyle(true);
+		
+		// Creating a marker with EObject resource location for resource resolution in Markdown
+		if (location != null) {
+			Marker marker = ret.getMarker();
+			if (marker == null) {
+				marker = context.get(MarkerFactory.class, MarkerFactory.INSTANCE).createMarker(location.toString(), progressMonitor);
+				ret.setMarker(marker);
+			}
+		}
+		
 		return ret;
 	}
 	
 	protected String getEModelElementFirstDocSentence(EModelElement modelElement) {
-		String markdown = EObjectAdaptable.getResourceContext(modelElement).getString("documentation", EcoreUtil.getDocumentation(modelElement));
-		if (Util.isBlank(markdown)) {
-			markdown = EmfUtil.getDocumentation(modelElement);
-		}
-		if (Util.isBlank(markdown)) {
+		EModelElementDocumentation documentation = EmfUtil.getDocumentation(modelElement);
+//		String markdown = EObjectAdaptable.getResourceContext(modelElement).getString("documentation", EcoreUtil.getDocumentation(modelElement));
+//		if (Util.isBlank(markdown)) {
+//			markdown = EmfUtil.getDocumentation(modelElement);
+//		}
+		if (documentation == null) {
 			return null;
 		}
-		String ret = context.computingContext().get(MarkdownHelper.class, MarkdownHelper.INSTANCE).firstPlainTextSentence(markdown);
+		
+		MarkdownHelper markdownHelper = new MarkdownHelper() {
+			
+			@Override
+			protected URI getResourceBase() {
+				return documentation.getLocation();
+			}
+			
+			@Override
+			protected DiagramGenerator getDiagramGenerator() {
+				return context == null ? super.getDiagramGenerator() : context.get(DiagramGenerator.class, super.getDiagramGenerator()); 
+			}
+			
+		};
+		
+		String ret = /* context.computingContext().get(MarkdownHelper.class, markdownHelper) */ markdownHelper.firstPlainTextSentence(documentation.getDocumentation());
 		return String.join(" ", ret.split("\\R")); // Replacing new lines, shall they be in the first sentence, with spaces.		
 	}
 		
