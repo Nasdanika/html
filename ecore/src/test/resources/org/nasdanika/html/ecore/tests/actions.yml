@@ -18,4 +18,10 @@ app-action:
           - app-action-reference: "../../../../../../../target/model-doc/actions/diagram.genmodel.xml#/"
           - app-action-reference: "../../../../../../../target/model-doc/actions/exec.genmodel.xml#/"
           - app-action-reference: "../../../../../../../target/model-doc/actions/flow.genmodel.xml#/"
+    - app-action:
+        location: ${base-uri}search.html
+        icon: fas fa-search
+        text: Search
+        content:
+          content-resource: search.html
           

@@ -1,12 +1,14 @@
 package org.nasdanika.html.ecore.tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -38,9 +40,11 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONObject;
 import org.jsoup.nodes.Element;
 import org.junit.Test;
+import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.Diagnostic;
+import org.nasdanika.common.DiagnosticException;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.NasdanikaException;
@@ -61,6 +65,7 @@ import org.nasdanika.html.ecore.GenModelResourceSet;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
+import org.nasdanika.html.model.app.gen.AppGenYamlSupplier;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
@@ -69,7 +74,7 @@ import com.redfin.sitemapgenerator.ChangeFreq;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import com.redfin.sitemapgenerator.WebSitemapUrl;
 
-public class TestEcoreDoc extends TestBase {
+public class TestEcoreDoc /* extends TestBase */ {
 		
 	private static final URI CONTAINER_MODEL_URI = URI.createFileURI(new File("target/model-doc/container.xml").getAbsolutePath());				
 
@@ -81,7 +86,13 @@ public class TestEcoreDoc extends TestBase {
 		return DiagramGenerator.INSTANCE.cachingDiagramGenerator(output.stateAdapter().adapt(decoder, encoder), progressMonitor);
 	}
 		
-	public void generateActionModel(ProgressMonitor progressMonitor) throws Exception {
+	/**
+	 * Generating action models from Ecore models.
+	 * @param ctx
+	 * @param progressMonitor
+	 * @throws Exception
+	 */
+	public void generateActionModel(Context ctx, ProgressMonitor progressMonitor) throws Exception {
 		GenModelResourceSet ecoreModelsResourceSet = new GenModelResourceSet();
 		
 		Map<String,String> pathMap = new ConcurrentHashMap<>();
@@ -103,10 +114,10 @@ public class TestEcoreDoc extends TestBase {
 			return Hex.encodeHexString(ePackage.getNsURI().getBytes(StandardCharsets.UTF_8));
 		};
 		
-		MutableContext context = Context.EMPTY_CONTEXT.fork();
+		MutableContext context = ctx.fork();
 		
 		DiagramGenerator diagramGenerator = createDiagramGenerator(progressMonitor);
-		context.register(DiagramGenerator.class, diagramGenerator);//DiagramGenerator.createClient(new URL("http://localhost:8090/spring-exec/api/v1/exec/diagram/")));
+		context.register(DiagramGenerator.class, diagramGenerator);
 		
 		ecoreModelsResourceSet.getAdapterFactories().add(new EcoreActionSupplierAdapterFactory(context, getEPackagePath, org.nasdanika.common.Util.createNasdanikaJavadocResolver(new File("../.."), progressMonitor)));
 		
@@ -204,7 +215,7 @@ public class TestEcoreDoc extends TestBase {
 	 * Generates a resource model from an action model.
 	 * @throws Exception
 	 */
-	public void generateResourceModel(ProgressMonitor progressMonitor) throws Exception {
+	public void generateResourceModel(Context context, ProgressMonitor progressMonitor) throws Exception {
 		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
 			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
 				System.err.println("***********************");
@@ -215,9 +226,8 @@ public class TestEcoreDoc extends TestBase {
 			assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
 		};
 		
-		Context modelContext = Context.EMPTY_CONTEXT;
 		String actionsResource = "actions.yml";
-		Action root = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
+		Action root = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, context, progressMonitor), "Loaded null from " + actionsResource);
 		
 		Container container = ResourcesFactory.eINSTANCE.createContainer();
 		container.setName("doc-site");
@@ -228,23 +238,57 @@ public class TestEcoreDoc extends TestBase {
 		modelResource.getContents().add(container);
 		
 		String pageTemplateResource = "page-template.yml";
-		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) Objects.requireNonNull(loadObject(pageTemplateResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + pageTemplateResource);
+		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) Objects.requireNonNull(loadObject(pageTemplateResource, diagnosticConsumer, context, progressMonitor), "Loaded null from " + pageTemplateResource);
 		
 		Util.generateSite(
 				root, 
 				pageTemplate,
 				container,
-				Context.EMPTY_CONTEXT,
+				context,
 				progressMonitor);
 		
 		modelResource.save(null);
 	}
 	
 	/**
+	 * Loads object from a classpath resource.
+	 * @param resource
+	 * @param diagnosticConsumer
+	 * @param context
+	 * @param progressMonitor
+	 * @return
+	 * @throws Exception
+	 */
+	private EObject loadObject(
+			String resource, 
+			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
+			Context context,
+			ProgressMonitor progressMonitor) throws Exception {
+		
+		Class<?> clazz = TestEcoreDoc.this.getClass();
+		URL resourceURL = clazz.getResource(resource);
+		if (resourceURL == null) {
+			throw new IllegalArgumentException("Classloader resource not found: " + resource + " by " + clazz); 
+		}
+		URI resourceURI = URI.createURI(resourceURL.toString());
+		
+		// Diagnosing loaded resources. 
+		try {
+			return org.nasdanika.common.Util.call(new AppGenYamlSupplier(resourceURI, context), progressMonitor, diagnosticConsumer);
+		} catch (DiagnosticException e) {
+			System.err.println("******************************");
+			System.err.println("*      Diagnostic failed     *");
+			System.err.println("******************************");
+			e.getDiagnostic().dump(System.err, 4, Status.FAIL);
+			throw e;
+		}		
+	}
+	
+	/**
 	 * Generates files from the previously generated resource model.
 	 * @throws Exception
 	 */
-	public void generateContainer(ProgressMonitor progressMonitor) throws Exception {
+	public void generateContainer(Context context, ProgressMonitor progressMonitor) throws Exception {
 		ResourceSet resourceSet = createResourceSet();
 		
 		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
@@ -257,7 +301,23 @@ public class TestEcoreDoc extends TestBase {
 			Diagnostician diagnostician = new Diagnostician();
 			org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(eObject);
 			assertThat(diagnostic.getSeverity()).isNotEqualTo(org.eclipse.emf.common.util.Diagnostic.ERROR);
-			generate(eObject, container, Context.EMPTY_CONTEXT, progressMonitor);
+			try {
+				ConsumerFactory<BinaryEntityContainer> consumerFactory = Objects.requireNonNull(EObjectAdaptable.adaptToConsumerFactory(eObject, BinaryEntityContainer.class), "Cannot adapt to ConsumerFactory");
+				Diagnostic diagnostic1 = org.nasdanika.common.Util.call(consumerFactory.create(context), container, progressMonitor);
+				Status status = diagnostic1.getStatus();
+				if (status == Status.FAIL || status == Status.ERROR) {
+					System.err.println("******************************");
+					System.err.println("*      Diagnostic error     *");
+					System.err.println("******************************");
+					diagnostic1.dump(System.err, 4, Status.FAIL, Status.ERROR);				
+				}
+			} catch (DiagnosticException e) {
+				System.err.println("******************************");
+				System.err.println("*      Diagnostic failed     *");
+				System.err.println("******************************");
+				e.getDiagnostic().dump(System.err, 4, Status.FAIL);
+				throw e;
+			}
 		}	
 		
 		generateSitemapAndSearch(new File(siteDir, "doc-site"));		
@@ -327,9 +387,9 @@ public class TestEcoreDoc extends TestBase {
 			writer.write("var searchDocuments = " + searchDocuments);
 		}
 		
-//		if (problems.get() > 0) {
-//			fail("There are broken links: " + problems.get());
-//		};
+		if (problems.get() > 0) {
+			fail("There are broken links: " + problems.get());
+		};
 	}
 	
 	/**
@@ -359,9 +419,10 @@ public class TestEcoreDoc extends TestBase {
 	@Test
 	public void generateSite() throws Exception {
 		ProgressMonitor progressMonitor = new NullProgressMonitor();
-		generateActionModel(progressMonitor);
-		generateResourceModel(progressMonitor);
-		generateContainer(progressMonitor);
+		Context context = Context.EMPTY_CONTEXT;
+		generateActionModel(context, progressMonitor);
+		generateResourceModel(context, progressMonitor);
+		generateContainer(context, progressMonitor);
 	}	
 
 }
