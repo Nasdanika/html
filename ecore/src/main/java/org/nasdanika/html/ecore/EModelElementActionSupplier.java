@@ -64,20 +64,21 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 			@SuppressWarnings("unchecked")
 			@Override
 			public <P> P compute(Context context, String key, String path, Class<P> type) {
-				EObject contextClassifier = value;
-				while (contextClassifier != null && !(contextClassifier instanceof EClassifier)) {
-					contextClassifier = contextClassifier.eContainer();
-				}
-				if (contextClassifier == null) {
-					return null;
+				Resource contextResource = value.eResource();
+				EObject contextElement = value;
+				while (contextElement != null && !(contextElement instanceof EPackage)) {
+					contextElement = contextElement.eContainer();
 				}
 				
 				EClassifier targetClassifier = null;
 				int atIdx = path.indexOf('@');
 				if (atIdx == -1) {
-					targetClassifier = ((EClassifier) contextClassifier).getEPackage().getEClassifier(path);
+					if (contextElement == null) {
+						return null;
+					}
+					
+					targetClassifier = ((EPackage) contextElement).getEClassifier(path);
 				} else {
-					Resource contextResource = contextClassifier.eResource();
 					if (contextResource == null) {
 						return null;
 					}
@@ -102,7 +103,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 					return null;
 				}
 
-				return (P) path(targetClassifier, (EClassifier) contextClassifier);
+				return (P) path(targetClassifier, value instanceof EClassifier ? (EClassifier) value : null);
 			}
 			
 		};
@@ -428,7 +429,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	
 	/**
 	 * @param eClassifier
-	 * @return Relatieve path to the argument {@link EClassifier} or null if the classifier is not part of the documentation resource set.
+	 * @return Relative path to the argument {@link EClassifier} or null if the classifier is not part of the documentation resource set.
 	 */
 	protected String path(EClassifier eClassifier, EClassifier contextClassifier) {
 		// TODO - resolution of external eClassifiers for federated/hierarchical documentation - from the adapter factory.
@@ -455,7 +456,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 				contextClassifier = (EClassifier) eObject.eContainer();
 			} else if (eObject.eContainer() instanceof EOperation) {
 				contextClassifier = (EClassifier) eObject.eContainer().eContainer();
-			}
+			} 
 		}
 			
 		if (contextClassifier != null) {	
