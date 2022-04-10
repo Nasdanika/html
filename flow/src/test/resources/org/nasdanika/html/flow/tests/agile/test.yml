@@ -34,6 +34,13 @@ flow-package:
     tester:
       name: Tester
       description: Tests in runtime environment
+    management:
+      name: Management
+      children:
+        director:
+          name: Director
+        vice-president:
+          name: Vice President    
   resources:
     issue-tracker:
       name: Issue Tracker
