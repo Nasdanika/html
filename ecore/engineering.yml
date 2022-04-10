@@ -3,10 +3,12 @@ engineering-module:
   path: ecore
   action-prototype: "../javadoc-action-prototype.xml#/"
   documentation: 
-    content-markdown:
-      style: true
+    content-interpolator:
       source:
-        content-resource: ecore.md
+        content-markdown:
+          style: true
+          source:
+            content-resource: ecore.md
   dependencies:
     - engineering://nasdanika/modules/html/modules/emf
   issues:

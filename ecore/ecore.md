@@ -49,6 +49,29 @@ If you decide to separate generation steps, e.g. generate action models and publ
 package image and diagram resources together with the action model and modify the markers.
 One simple way to do it is to package the action model together with the ``.ecore`` model - in this case you'll just need to relativize marker locations.
 
+### Referencing EClassifiers
+
+You can reference EClassifiers available in the model resource set using ``${{classifier/<classifier name>[@<package namespace URI>]}}`` token.
+
+Examples:
+
+* ``${{classifier/Activity}}`` - ``Activity`` classifier in the same EPackage. Classifiers in the same EPackage can also be addressed by adding ``.html`` to the classifier name, e.g. ``[Activity](Activity.html)``.
+* ``${{classifier/Activity@urn:org.nasdanika.flow}}`` - ``Activity`` classifier in EPackage with ``urn:org.nasdanika.flow`` namespace URI.
+
+During generation you will need to pass EPackage path computer to ``org.nasdanika.html.ecore.EcoreActionSupplierAdapterFactory`` constructor.
+See [TestNasdanikaDocEngineeringGen.generateEcoreActionModel()](https://github.com/Nasdanika/nasdanika.github.io/blob/main/src/test/java/org/nasdanika/docs/engineering/TestNasdanikaDocEngineeringGen.java#L199) for an example.
+
+### Javadoc
+
+To link EClassifier instance class names to their javadocs you'll need to pass a Javadoc resolver to ``EcoreActionSupplierAdapterFactory`` constructor.
+See ``TestNasdanikaDocEngineeringGen.generateEcoreActionModel()`` above for an example.  
+
+To create links to Javadoc in makrdown you may use ``${{javadoc/<fully qualified class name>}}`` replacement tokens.
+
+For example, ``${{javadoc/org.nasdanika.common.Context}}`` would be replaced with ${javadoc/org.nasdanika.common.Context}.
+
+You will need to add a Javadoc resolver to the generation context as exemplified [here](https://github.com/Nasdanika/nasdanika.github.io/blob/main/src/test/java/org/nasdanika/docs/engineering/TestNasdanikaDocEngineeringGen.java#L735).
+
 ## Generation steps
 
 To use add [ecore](https://mvnrepository.com/artifact/org.nasdanika.html/ecore) dependency to ``pom.xml``, e.g.
