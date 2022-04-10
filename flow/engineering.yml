@@ -36,5 +36,8 @@ engineering-module:
       name: Mermaid
       description: |+2
         Support of Mermaid - state diagrams, flow charts, sequence diagrams.  
+    participant-sorting:
+      name: Participant Sorting
+      description: An option to sort participants by the order they appear in activities, i.e. sort activities as they are sorted now and then sort participants. Manage via appearance (which is also a TODO). Take children into consideration.
 
 
