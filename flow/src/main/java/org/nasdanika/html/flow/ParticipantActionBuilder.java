@@ -254,8 +254,7 @@ public class ParticipantActionBuilder extends ServiceProviderActionBuilder<Parti
 		
 		if (elements != null && !elements.isEmpty()) {
 			cell.getContent().add(renderValue(base, null, elements, context, progressMonitor));
-		}
-			
+		}			
 	}
 
 }

@@ -64,7 +64,12 @@ flow-package:
       responsible: developer
       accountable: lead-developer
       consulted: architect
-      informed: [product-owner, tester]                
+      informed: [product-owner, tester]   
+      children:
+        java:
+          name: Java Source
+          description: To test referencing of nested artifacts in artifact responsibilities
+          responsible: developer  
     binary:
       name: Binary artifact(s)
       description: Artifacts built from source code for execution in runtime environments.
@@ -208,6 +213,9 @@ flow-package:
                         informed: [scrum-master, tester]
                         description: |+2
                           Developer writes code and reaches out to the product owner and architect for clarifications. Informs the scrum master and the tester on the progress.     
+                      source/children/java:
+                        responsible: developer
+                        description: Testing of referencing of nested artifacts.     
                 unit-test:
                   flow-activity:
                     name: Unit test

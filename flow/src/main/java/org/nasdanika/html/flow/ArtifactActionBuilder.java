@@ -20,7 +20,10 @@ import org.nasdanika.common.Util;
 import org.nasdanika.diagram.Diagram;
 import org.nasdanika.diagram.DiagramElement;
 import org.nasdanika.flow.Artifact;
+import org.nasdanika.flow.ArtifactParticipantResponsibility;
+import org.nasdanika.flow.FlowElement;
 import org.nasdanika.flow.FlowPackage;
+import org.nasdanika.flow.Participant;
 import org.nasdanika.flow.Relationship;
 import org.nasdanika.flow.Transition;
 import org.nasdanika.flow.util.ArtifactComponentDiagramGenerator;
@@ -28,8 +31,12 @@ import org.nasdanika.html.emf.ColumnBuilder;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.SectionStyle;
+import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.Table;
 import org.nasdanika.html.model.bootstrap.TableCell;
+import org.nasdanika.html.model.bootstrap.TableHeader;
+import org.nasdanika.html.model.bootstrap.TableRow;
+import org.nasdanika.html.model.bootstrap.TableSection;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NamedElementComparator;
 
@@ -105,6 +112,135 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 			}
 		}
 		
+		// Activity level responsibilities
+		EList<ArtifactParticipantResponsibility> responsibilities = semanticElement.getResponsibilities();
+		
+		if (!responsibilities.isEmpty()) {
+			sections.add(createActivityResponsibilitiesAction(responsibilities, action, context, progressMonitor));
+		}
+		
+	}
+
+	private Action createActivityResponsibilitiesAction(
+			EList<ArtifactParticipantResponsibility> responsibilities,
+			Action base,
+			org.nasdanika.html.emf.EObjectActionResolver.Context context,
+			ProgressMonitor progressMonitor) throws Exception {
+
+		Action responsibilitiesAction = AppFactory.eINSTANCE.createAction(); 			
+		responsibilitiesAction.setText("Activity responsibilities");
+		
+		Table responsibilitiesTable = BootstrapFactory.eINSTANCE.createTable();
+		TableHeader header = BootstrapFactory.eINSTANCE.createTableHeader();
+		responsibilitiesTable.setHeader(header);
+		TableRow headerRow = BootstrapFactory.eINSTANCE.createTableRow();
+		header.getRows().add(headerRow);
+		EList<TableCell> headerRowCells = headerRow.getCells();
+		for (String title: new String[] {"Activity", "Responsible", "Accountable", "Consulted", "Informed"}) {
+			TableCell headerCell = BootstrapFactory.eINSTANCE.createTableCell();
+			headerCell.setHeader(true);
+			headerRowCells.add(headerCell);
+			headerCell.getContent().add(createText(title));
+		}
+		
+		// Group all by container. Sort containers For each container create a row		
+		Map<EObject, List<ArtifactParticipantResponsibility>> flowElementsMap = Util.groupBy(responsibilities, EObject::eContainer);
+
+		TableSection body = BootstrapFactory.eINSTANCE.createTableSection();
+		responsibilitiesTable.setBody(body);
+		EList<TableRow> bodyRows = body.getRows();
+		
+		for (FlowElement<?> container: flowElementsMap.keySet().stream().map(e -> (FlowElement<?>) e).sorted(FlowActionBuilder::compareFlowElements).collect(Collectors.toList())) {
+			TableRow containerRow = BootstrapFactory.eINSTANCE.createTableRow();
+			bodyRows.add(containerRow);
+
+			TableCell containerCell = BootstrapFactory.eINSTANCE.createTableCell();
+			containerRow.getCells().add(containerCell);
+			containerCell.getContent().add(renderValue(base, null, container, context, progressMonitor));
+			
+			TableCell responsibleCell = BootstrapFactory.eINSTANCE.createTableCell();
+			containerRow.getCells().add(responsibleCell);
+			List<ArtifactParticipantResponsibility> containerResponsibilities = flowElementsMap.get(container);
+			
+			buildResponsibilityCell(
+					containerResponsibilities
+						.stream()
+						.map(ArtifactParticipantResponsibility::getResponsible)
+						.flatMap(Collection::stream)
+						.collect(Collectors.toSet()) // To remove duplicates
+						.stream()
+						.sorted(NamedElementComparator.INSTANCE)
+						.collect(Collectors.toList()),
+					responsibleCell,
+					base, 
+					context, 
+					progressMonitor);
+			
+			TableCell accountableCell = BootstrapFactory.eINSTANCE.createTableCell();
+			containerRow.getCells().add(accountableCell);
+			buildResponsibilityCell(
+					containerResponsibilities
+						.stream()
+						.map(ArtifactParticipantResponsibility::getAccountable)
+						.flatMap(Collection::stream)
+						.collect(Collectors.toSet()) // To remove duplicates
+						.stream()
+						.sorted(NamedElementComparator.INSTANCE)
+						.collect(Collectors.toList()),
+					accountableCell,
+					base, 
+					context, 
+					progressMonitor);
+			
+			TableCell consultedCell = BootstrapFactory.eINSTANCE.createTableCell();
+			containerRow.getCells().add(consultedCell);
+			buildResponsibilityCell(
+					containerResponsibilities
+						.stream()
+						.map(ArtifactParticipantResponsibility::getConsulted)
+						.flatMap(Collection::stream)
+						.collect(Collectors.toSet()) // To remove duplicates
+						.stream()
+						.sorted(NamedElementComparator.INSTANCE)
+						.collect(Collectors.toList()),
+					consultedCell,
+					base, 
+					context, 
+					progressMonitor);
+			
+			TableCell informedCell = BootstrapFactory.eINSTANCE.createTableCell();
+			containerRow.getCells().add(informedCell);
+			buildResponsibilityCell(
+					containerResponsibilities
+						.stream()
+						.map(ArtifactParticipantResponsibility::getInformed)
+						.flatMap(Collection::stream)
+						.collect(Collectors.toSet()) // To remove duplicates
+						.stream()
+						.sorted(NamedElementComparator.INSTANCE)
+						.collect(Collectors.toList()),
+					informedCell,
+					base, 
+					context, 
+					progressMonitor);
+		}
+		
+		responsibilitiesAction.getContent().add(responsibilitiesTable);
+		
+		return responsibilitiesAction;
+	}
+	
+	private void buildResponsibilityCell(
+			List<Participant> elements,			
+			TableCell cell,
+			Action base,
+			org.nasdanika.html.emf.EObjectActionResolver.Context context,
+			ProgressMonitor progressMonitor) throws Exception {
+		
+		if (elements != null && !elements.isEmpty()) {
+			cell.getContent().add(renderValue(base, null, elements, context, progressMonitor));
+		}
+			
 	}
 	
 	// TODO - Sort by source 
