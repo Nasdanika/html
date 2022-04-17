@@ -24,11 +24,9 @@ import org.nasdanika.ncore.NcorePackage;
  *   <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * <!-- begin-model-doc -->
- * Application model.
- * <!-- end-model-doc -->
  * @see org.nasdanika.html.model.app.AppFactory
  * @model kind="package"
+ *        annotation="urn:org.nasdanika documentation-reference='doc/package-summary.md'"
  * @generated
  */
 public interface AppPackage extends EPackage {

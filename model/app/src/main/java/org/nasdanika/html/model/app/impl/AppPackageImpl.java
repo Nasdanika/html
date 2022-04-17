@@ -1111,10 +1111,10 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createResource(eNS_URI);
 
 		// Create annotations
-		// http://www.eclipse.org/emf/2002/GenModel
-		createGenModelAnnotations();
 		// urn:org.nasdanika
 		createUrnorgAnnotations();
+		// http://www.eclipse.org/emf/2002/GenModel
+		createGenModelAnnotations();
 		// http://www.eclipse.org/emf/2002/Ecore
 		createEcoreAnnotations();
 	}
@@ -1127,12 +1127,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	protected void createGenModelAnnotations() {
 		String source = "http://www.eclipse.org/emf/2002/GenModel";
-		addAnnotation
-		  (this,
-		   source,
-		   new String[] {
-			   "documentation", "Application model."
-		   });
 		addAnnotation
 		  (labelEClass,
 		   source,
@@ -1461,6 +1455,12 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 */
 	protected void createUrnorgAnnotations() {
 		String source = "urn:org.nasdanika";
+		addAnnotation
+		  (this,
+		   source,
+		   new String[] {
+			   "documentation-reference", "doc/package-summary.md"
+		   });
 		addAnnotation
 		  (getLabel_Text(),
 		   source,
