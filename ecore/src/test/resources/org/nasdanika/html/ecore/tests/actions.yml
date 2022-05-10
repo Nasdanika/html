@@ -2,7 +2,7 @@ app-action:
   icon: https://docs.nasdanika.org/images/nasdanika-logo.png
   uri: nasdanika:test/action/s1/s2
   text: Nasdanika
-  location: https://www.nasdanika.org 
+  location: ../index.html #https://www.nasdanika.org 
   tooltip: Root action
   children:
     - app-action:

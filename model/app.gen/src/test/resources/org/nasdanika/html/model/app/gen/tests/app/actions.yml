@@ -1,7 +1,7 @@
 app-action:
   icon: https://docs.nasdanika.org/images/nasdanika-logo.png
   text: Nasdanika
-  location: https://www.nasdanika.org 
+  location: ../index.html #https://www.nasdanika.org 
   tooltip: Root action
   children:
     - app-action:
