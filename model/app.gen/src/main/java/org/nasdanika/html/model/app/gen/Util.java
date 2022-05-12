@@ -285,25 +285,26 @@ public final class Util {
 			}
 		}
 				
-//		for (Action section: activeAction.getSections()) {
-//			generateSite(root, principal, (Action) section, subActionPath, pageTemplate, uriResolver, baseURI, container, progressMonitor);
-//		}
-				
 		if (activeAction instanceof Action) {
-			for (EObject navigation: resolveActionReferences(((Action) activeAction).getNavigation())) {
+			Action theActiveAction = (Action) activeAction;
+			for (Action section: theActiveAction.getSections()) {
+				generateSite(root, principal, (Action) section, subActionPath, pageTemplate, uriResolver, baseURI, container, progressMonitor);
+			}
+			
+			for (EObject navigation: resolveActionReferences(theActiveAction.getNavigation())) {
 				if (navigation instanceof Action) {
 					generateSite(root, principal, (Action) navigation, subActionPath, pageTemplate, uriResolver, baseURI, container, progressMonitor);
 				}
 			}
 			
-			for (Action anonymous: ((Action) activeAction).getAnonymous()) {
+			for (Action anonymous: theActiveAction.getAnonymous()) {
 				generateSite(root, principal, anonymous, subActionPath, pageTemplate, uriResolver, baseURI, container, progressMonitor);
 			}
 			
-			generateNavigationPanel(root, principal, actionPath, ((Action) activeAction).getFloatLeftNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
-			generateNavigationPanel(root, principal, actionPath, ((Action) activeAction).getFloatRightNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
-			generateNavigationPanel(root, principal, actionPath, ((Action) activeAction).getLeftNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
-			generateNavigationPanel(root, principal, actionPath, ((Action) activeAction).getRightNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
+			generateNavigationPanel(root, principal, actionPath, theActiveAction.getFloatLeftNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
+			generateNavigationPanel(root, principal, actionPath, theActiveAction.getFloatRightNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
+			generateNavigationPanel(root, principal, actionPath, theActiveAction.getLeftNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
+			generateNavigationPanel(root, principal, actionPath, theActiveAction.getRightNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
 		}
 	}
 	
