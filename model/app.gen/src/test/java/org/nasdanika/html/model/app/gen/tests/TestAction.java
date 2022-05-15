@@ -172,7 +172,7 @@ public class TestAction extends TestBase {
 				}
 			}
 		};
-		walk(null, listener, siteDir.listFiles());
+		org.nasdanika.common.Util.walk(null, listener, siteDir.listFiles());
 		wsg.write();	
 
 		try (FileWriter writer = new FileWriter(new File(siteDir, "search-documents.js"))) {
@@ -183,26 +183,6 @@ public class TestAction extends TestBase {
 			fail("There are broken links: " + problems.get());
 		};
 	}
-	
-	/**
-	 * Walks the directory passing files to the listener.
-	 * @param source
-	 * @param target
-	 * @param cleanTarget
-	 * @param cleanPredicate
-	 * @param listener
-	 * @throws IOException
-	 */
-	public static void walk(String path, BiConsumer<File,String> listener, File... files) throws IOException {
-		for (File file: files) {
-			String filePath = path == null ? file.getName() : path + "/" + file.getName();
-			if (file.isDirectory()) {
-				walk(filePath, listener, file.listFiles());
-			} else if (file.isFile() && listener != null) {
-				listener.accept(file, filePath);
-			}
-		}
-	}	
 	
 	/**
 	 * Generates a resource model from an action model and then generates files from the resource model.
