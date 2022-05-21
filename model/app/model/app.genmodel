@@ -26,6 +26,7 @@
       <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/Cards"/>
       <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/CollapsibleCards"/>
       <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/Tree"/>
+      <genEnumLiterals ecoreEnumLiteral="app.ecore#//NavigationPanelStyle/SearchableTree"/>
     </genEnums>
     <genClasses ecoreClass="app.ecore#//Label">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute app.ecore#//Label/id"/>

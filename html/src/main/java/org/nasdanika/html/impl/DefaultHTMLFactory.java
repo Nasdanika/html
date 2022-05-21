@@ -43,7 +43,7 @@ public class DefaultHTMLFactory implements HTMLFactory {
 		
 	@Override
 	public String nextId() {
-		return "nsd-"+Long.toString(idCounter.incrementAndGet(), Character.MAX_RADIX);
+		return "nsd_"+Long.toString(idCounter.incrementAndGet(), Character.MAX_RADIX);
 	}	
 
 	@Override

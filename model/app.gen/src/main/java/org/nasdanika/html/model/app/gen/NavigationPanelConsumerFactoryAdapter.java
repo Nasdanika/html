@@ -1,6 +1,6 @@
 package org.nasdanika.html.model.app.gen;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +18,8 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Input;
+import org.nasdanika.html.InputType;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
@@ -35,11 +37,13 @@ import org.nasdanika.html.model.app.NavigationPanelStyle;
 
 public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter<NavigationPanel> {
 
+	private static final String SEARCH_INPUT_SUFFIX = "_searchInput";
+
 	protected NavigationPanelConsumerFactoryAdapter(NavigationPanel navigationPanel) {
 		super(navigationPanel);
 	}
 	
-	private Function<BiSupplier<HTMLElement<?>, List<JsTreeNode>>, HTMLElement<?>> createTreeFunction(Context context) {
+	private Function<BiSupplier<HTMLElement<?>, List<JsTreeNode>>, HTMLElement<?>> createTreeFunction(NavigationPanelStyle effectiveStyle, Context context) {
 		return new Function<BiSupplier<HTMLElement<?>, List<JsTreeNode>>, HTMLElement<?>>() {
 			
 			@Override
@@ -85,25 +89,48 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 				}
 				
 				JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);
-				String treeId = getTarget().getId();
 				HTMLFactory htmlFactory = jsTreeFactory.getHTMLFactory();
+				String treeId = getTarget().getId();
 				if (org.nasdanika.common.Util.isBlank(treeId)) {
 					treeId = htmlFactory.nextId();
 				}
+				
+				String searchInputId = null;
+				if (effectiveStyle == NavigationPanelStyle.SEARCHABLE_TREE) {
+					Input searchInput = htmlFactory.input(InputType.text);
+					searchInput.addClass("form-control", "mt-1");
+					searchInputId = treeId + SEARCH_INPUT_SUFFIX;
+					searchInput.id(searchInputId);
+					panel.accept(searchInput);
+				}
+				
 				Tag container = htmlFactory.div().id(treeId);
 				panel.accept(container);
 				
 				JSONObject jsTree = jsTreeFactory.buildJsTree(input.getSecond());
 
 				// Configures jsTree. TODO - from the model.
-				jsTree.put("plugins", Arrays.asList("state", "types")); 		
+				List<String> plugins = new ArrayList<>();
+				plugins.add("state");
+				plugins.add("type");
+				if (effectiveStyle == NavigationPanelStyle.SEARCHABLE_TREE) {
+					plugins.add("search");
+					JSONObject searchConfig = new JSONObject();
+					searchConfig.put("show_only_matches", true);
+					searchConfig.put("show_only_matches_children", true);
+					jsTree.put("search", searchConfig);
+					
+					// TODO - use lunrjs search.js
+				}
+				
+				jsTree.put("plugins", plugins); 		
 				jsTree.put("state", Collections.singletonMap("key", treeId));
 				jsTree.put("types", Collections.singletonMap("leaf", Collections.singletonMap("icon", "jstree-file"))); // File leaf icon.
 				
 				// Deletes selection from state
 				String filter = "tree.state.filter = function(state) { delete state.core.selected; return state; };";
 				
-				Tag script = jsTreeFactory.bind(container, jsTree, filter);
+				Tag script = jsTreeFactory.bind(container, jsTree, filter, searchInputId == null ? null : "#" + searchInputId);
 				panel.accept(script);
 				
 				return ret;
@@ -227,7 +254,8 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 								} else {									
 									cardBody.padding().all(Breakpoint.DEFAULT, Size.S1);
 									collapsible = cardBody.toHTMLElement();
-									for (JsTreeNode node: (List<JsTreeNode>) input.getSecond().get(JsTreeNode.class)) {
+									List<JsTreeNode> nodes = (List<JsTreeNode>) input.getSecond().get(JsTreeNode.class);
+									for (JsTreeNode node: nodes) {
 										if (node.getData() == semanticElement) {
 											String nodeTreeId;
 											if (org.nasdanika.common.Util.isBlank(treeId)) {
@@ -236,20 +264,43 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 												nodeTreeId = treeId + "-" + semanticElement.getId();
 											}
 											
+											boolean isSearchable = treeSize(node.children()) > 25; // TODO configurable									
+											String searchInputId = null;
+											if (isSearchable) {
+												Input searchInput = htmlFactory.input(InputType.text);
+												searchInput.addClass("form-control");
+												searchInputId = cardBody.getFactory().getHTMLFactory().nextId() + SEARCH_INPUT_SUFFIX;
+												searchInput.id(searchInputId);
+												cardBody.toHTMLElement().accept(searchInput);
+											}
+											
 											Tag container = htmlFactory.div().id(nodeTreeId);
 											cardBody.toHTMLElement().accept(container);
 											
 											JSONObject jsTree = jsTreeFactory.buildJsTree(node.children());
 							
 											// Configures jsTree. TODO - from the model.
-											jsTree.put("plugins", Arrays.asList("state", "types")); 		
+											List<String> plugins = new ArrayList<>();
+											plugins.add("state");
+											plugins.add("type");
+											if (isSearchable) {
+												plugins.add("search");
+												JSONObject searchConfig = new JSONObject();
+												searchConfig.put("show_only_matches", true);
+												searchConfig.put("show_only_matches_children", true);
+												jsTree.put("search", searchConfig);
+												
+												// TODO - use lunrjs search.js
+											}
+											
+											jsTree.put("plugins", plugins); 		
 											jsTree.put("state", Collections.singletonMap("key", treeId));
 											jsTree.put("types", Collections.singletonMap("leaf", Collections.singletonMap("icon", "jstree-file"))); // File leaf icon.
 											
 											// Deletes selection from state
 											String filter = "tree.state.filter = function(state) { delete state.core.selected; return state; };";
 											
-											Tag script = jsTreeFactory.bind(container, jsTree, filter);
+											Tag script = jsTreeFactory.bind(container, jsTree, filter, searchInputId == null ? null : "#" + searchInputId);
 											panel.accept(script);
 											break;
 										}
@@ -302,6 +353,26 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 		return ret;
 	}
 	
+	private static int treeSize(Collection<JsTreeNode> nodes) {
+		int ret = 0;
+		for (JsTreeNode node: nodes) {
+			++ret;
+			ret += treeSize(node.children());
+		}
+		return ret;
+	}	
+	
+	private static int size(Collection<EObject> items) {
+		int ret = 0;
+		for (EObject item: items) {
+			++ret;
+			if (item instanceof Label) {
+				ret += size(((Label) item).getChildren());
+			}
+		}
+		return ret;
+	}
+	
 	/**
 	 * Adapts items to {@link JsTreeNode} suppliers.
 	 */
@@ -312,13 +383,13 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 		
 		EList<EObject> items = semanticElement.getItems();
 		if (style == NavigationPanelStyle.AUTO) {
-			style = depth(items) > 2 ?  NavigationPanelStyle.TREE : NavigationPanelStyle.CARDS; 
+			style = depth(items) > 2 ?  size(items) > 25 /* TODO - from  configuration */ ? NavigationPanelStyle.SEARCHABLE_TREE : NavigationPanelStyle.TREE : NavigationPanelStyle.CARDS; 
 		}
 		
 		ListCompoundSupplierFactory<JsTreeNode> nodesFactory = new ListCompoundSupplierFactory<>("Nodes", EObjectAdaptable.adaptToSupplierFactoryNonNull(items, JsTreeNode.class));
-		if (style == NavigationPanelStyle.TREE) {
+		if (style == NavigationPanelStyle.TREE || style == NavigationPanelStyle.SEARCHABLE_TREE) {
 			Function<HTMLElement<?>, BiSupplier<HTMLElement<?>, List<JsTreeNode>>> nodesFunction = nodesFactory.<HTMLElement<?>>asFunctionFactory().create(context);
-			return super.createConfigureFunction(context).then(nodesFunction).then(createTreeFunction(context));
+			return super.createConfigureFunction(context).then(nodesFunction).then(createTreeFunction(style, context));
 		}
 		
 		ListCompoundSupplierFactory<Object> tagsFactory = new ListCompoundSupplierFactory<>("Tags", EObjectAdaptable.adaptToSupplierFactoryNonNull(items, Object.class));

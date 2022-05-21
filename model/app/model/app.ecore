@@ -311,6 +311,7 @@
     <eLiterals name="Cards" value="1"/>
     <eLiterals name="CollapsibleCards" value="2"/>
     <eLiterals name="Tree" value="3"/>
+    <eLiterals name="SearchableTree" value="4" literal="SearchableTree"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//Link">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

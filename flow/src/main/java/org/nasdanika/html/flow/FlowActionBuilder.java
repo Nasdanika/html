@@ -235,15 +235,23 @@ public class FlowActionBuilder extends ActivityActionBuilder<Flow> {
 			if (leftNavigation == null) {
 				leftNavigation = AppFactory.eINSTANCE.createNavigationPanel();
 				action.setLeftNavigation(leftNavigation);			
-				int subChildren = getTarget().getElements().values().stream().filter(Flow.class::isInstance).map(Flow.class::cast).map(Flow::getElements).mapToInt(Collection::size).sum();
-				leftNavigation.setStyle(subChildren == 0 ? NavigationPanelStyle.AUTO : NavigationPanelStyle.TREE);
+				int subChildren = getTarget().getElements().values().stream().filter(Flow.class::isInstance).map(Flow.class::cast).map(Flow::getElements).mapToInt(Collection::size).sum();				
+				leftNavigation.setStyle(subChildren == 0 ? NavigationPanelStyle.AUTO : flowElements(getTarget()) > 25 ? NavigationPanelStyle.SEARCHABLE_TREE : NavigationPanelStyle.TREE);
 			}
 			Predicate<FlowElement<?>> isPseudoState= PseudoState.class::isInstance;
 			for (FlowElement<?> element: getTarget().getElements().values().stream().filter(isPseudoState.negate()).sorted(FlowActionBuilder::compareFlowElements).collect(Collectors.toList())) {
 				leftNavigation.getItems().add(createItem(action, context, progressMonitor, element));
 			}
 		}
-
+	}
+	
+	/**
+	 * Recursively calculates number of flow elements excluding the flow itself
+	 * @param flow
+	 * @return
+	 */
+	private static int flowElements(Flow flow) {
+		return flow.getElements().stream().mapToInt(e -> e instanceof Flow ? flowElements((Flow) e) + 1 : 1).sum();
 	}
 
 	private EObject createItem(

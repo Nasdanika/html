@@ -1106,6 +1106,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		addEEnumLiteral(navigationPanelStyleEEnum, NavigationPanelStyle.CARDS);
 		addEEnumLiteral(navigationPanelStyleEEnum, NavigationPanelStyle.COLLAPSIBLE_CARDS);
 		addEEnumLiteral(navigationPanelStyleEEnum, NavigationPanelStyle.TREE);
+		addEEnumLiteral(navigationPanelStyleEEnum, NavigationPanelStyle.SEARCHABLE_TREE);
 
 		// Create resource
 		createResource(eNS_URI);

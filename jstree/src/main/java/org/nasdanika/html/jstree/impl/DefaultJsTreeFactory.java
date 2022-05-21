@@ -1,6 +1,8 @@
 package org.nasdanika.html.jstree.impl;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -74,7 +76,7 @@ public class DefaultJsTreeFactory implements JsTreeFactory {
 	}
 
 	@Override
-	public Tag bind(String selector, Object jsTree, Object filter) {
+	public Tag bind(String selector, Object jsTree, Object filter, Object searchInputSelector) {
 		StringBuilder code = new StringBuilder("$(document).ready( function() {").append(System.lineSeparator());
 	
 		if (filter == null) {
@@ -83,16 +85,25 @@ public class DefaultJsTreeFactory implements JsTreeFactory {
 			code.append("$('"+selector+"').jstree(function(tree) { " + filter + " return tree; }(" + jsTree + "));");
 		}
 		
+		if (searchInputSelector != null) {
+			code.append(System.lineSeparator());
+			Map<String,Object> tokens = new HashMap<>();
+			tokens.put("searchInputSelector", searchInputSelector);
+			tokens.put("timer", "window['nsd_jstTreeSearchTimer_" + getHTMLFactory().nextId() + "']");
+			tokens.put("treeSelector", selector);
+			code.append(getHTMLFactory().interpolate(getClass().getResource("bindSearch.js"), tokens));			
+		}
+		
 		code.append(System.lineSeparator()).append("});");
 		return htmlFactory.nonEmptyTag(TagName.script, code.toString());
 	}
 
 	@Override
-	public Tag bind(HTMLElement<?> htmlElement, Object jsTree, Object filter) {
+	public Tag bind(HTMLElement<?> htmlElement, Object jsTree, Object filter, Object searchInputSelector) {
 		if (htmlElement.getId() == null) {
 			htmlElement.id(htmlFactory.nextId());
 		}
-		return bind("#"+htmlElement.getId(), jsTree, filter);
+		return bind("#"+htmlElement.getId(), jsTree, filter, searchInputSelector);
 	}
 	
 }

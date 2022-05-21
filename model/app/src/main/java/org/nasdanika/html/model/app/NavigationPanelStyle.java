@@ -54,7 +54,15 @@ public enum NavigationPanelStyle implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	TREE(3, "Tree", "Tree");
+	TREE(3, "Tree", "Tree"), /**
+	 * The '<em><b>Searchable Tree</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #SEARCHABLE_TREE_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	SEARCHABLE_TREE(4, "SearchableTree", "SearchableTree");
 
 	/**
 	 * The '<em><b>Auto</b></em>' literal value.
@@ -101,6 +109,17 @@ public enum NavigationPanelStyle implements Enumerator {
 	public static final int TREE_VALUE = 3;
 
 	/**
+	 * The '<em><b>Searchable Tree</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #SEARCHABLE_TREE
+	 * @model name="SearchableTree"
+	 * @generated
+	 * @ordered
+	 */
+	public static final int SEARCHABLE_TREE_VALUE = 4;
+
+	/**
 	 * An array of all the '<em><b>Navigation Panel Style</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -112,6 +131,7 @@ public enum NavigationPanelStyle implements Enumerator {
 			CARDS,
 			COLLAPSIBLE_CARDS,
 			TREE,
+			SEARCHABLE_TREE,
 		};
 
 	/**
@@ -172,6 +192,7 @@ public enum NavigationPanelStyle implements Enumerator {
 			case CARDS_VALUE: return CARDS;
 			case COLLAPSIBLE_CARDS_VALUE: return COLLAPSIBLE_CARDS;
 			case TREE_VALUE: return TREE;
+			case SEARCHABLE_TREE_VALUE: return SEARCHABLE_TREE;
 		}
 		return null;
 	}
