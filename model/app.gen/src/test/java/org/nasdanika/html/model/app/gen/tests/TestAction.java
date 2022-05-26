@@ -162,7 +162,7 @@ public class TestAction extends TestBase {
 							System.err.println("[" + path +"] " + error);
 							problems.incrementAndGet();
 						});
-						JSONObject searchDocument = org.nasdanika.html.model.app.gen.Util.createSearchDocument(path, file, inspector);
+						JSONObject searchDocument = org.nasdanika.html.model.app.gen.Util.createSearchDocument(path, file, inspector, null);
 						if (searchDocument != null) {
 							searchDocuments.put(path, searchDocument);
 						}

@@ -1177,13 +1177,22 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL__COLLAPSIBLE = PAGE_PART_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Js Tree Search Threshold</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_PANEL__JS_TREE_SEARCH_THRESHOLD = PAGE_PART_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Navigation Panel</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_PANEL_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 4;
+	int NAVIGATION_PANEL_FEATURE_COUNT = PAGE_PART_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Navigation Panel</em>' class.
@@ -2324,6 +2333,17 @@ public interface AppPackage extends EPackage {
 	EAttribute getNavigationPanel_Collapsible();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.nasdanika.html.model.app.NavigationPanel#getJsTreeSearchThreshold <em>Js Tree Search Threshold</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Js Tree Search Threshold</em>'.
+	 * @see org.nasdanika.html.model.app.NavigationPanel#getJsTreeSearchThreshold()
+	 * @see #getNavigationPanel()
+	 * @generated
+	 */
+	EAttribute getNavigationPanel_JsTreeSearchThreshold();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ContentPanel <em>Content Panel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2954,6 +2974,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute NAVIGATION_PANEL__COLLAPSIBLE = eINSTANCE.getNavigationPanel_Collapsible();
+
+		/**
+		 * The meta object literal for the '<em><b>Js Tree Search Threshold</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NAVIGATION_PANEL__JS_TREE_SEARCH_THRESHOLD = eINSTANCE.getNavigationPanel_JsTreeSearchThreshold();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ContentPanelImpl <em>Content Panel</em>}' class.

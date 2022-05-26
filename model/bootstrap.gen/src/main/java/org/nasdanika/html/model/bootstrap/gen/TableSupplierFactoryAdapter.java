@@ -1,5 +1,6 @@
 package org.nasdanika.html.model.bootstrap.gen;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.FunctionFactory;
@@ -10,8 +11,8 @@ import org.nasdanika.html.bootstrap.BootstrapFactory;
 
 public class TableSupplierFactoryAdapter extends BootstrapElementSupplierFactoryAdapter<org.nasdanika.html.model.bootstrap.Table, org.nasdanika.html.bootstrap.Table> {
 	
-	public TableSupplierFactoryAdapter(org.nasdanika.html.model.bootstrap.Table table) {
-		super(table);
+	public TableSupplierFactoryAdapter(org.nasdanika.html.model.bootstrap.Table table, AdapterFactory adapterFactory) {
+		super(table, adapterFactory);
 	}
 
 	/**
@@ -44,7 +45,7 @@ public class TableSupplierFactoryAdapter extends BootstrapElementSupplierFactory
 	protected Supplier<org.nasdanika.html.bootstrap.Table> createBootstrapElementSupplier(Context context) throws Exception {
 		
 		SupplierFactory<org.nasdanika.html.HTMLElement<?>> tableSupplierFactory = this::createTableSupplier;
-		ConsumerFactory<org.nasdanika.html.HTMLElement<?>> tableConsumerFactory = new TableConsumerFactoryAdapter(getTarget());
+		ConsumerFactory<org.nasdanika.html.HTMLElement<?>> tableConsumerFactory = new TableConsumerFactoryAdapter(getTarget(), adapterFactory);
 		FunctionFactory<org.nasdanika.html.HTMLElement<?>,org.nasdanika.html.bootstrap.Table> unWrapperFactory = this::getWrapper;
 		
 		return tableSupplierFactory.then(tableConsumerFactory.asFunctionFactory()).then(unWrapperFactory).create(context);

@@ -16,6 +16,7 @@ import org.nasdanika.common.Supplier;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.emf.EObjectAdaptable;
+import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
@@ -77,6 +78,15 @@ public class LabelJsTreeNodeSupplierFactoryAdapter<M extends Label> extends Adap
 				String tooltip = context.interpolateToString(semanticElement.getTooltip());
 				if (!Util.isBlank(tooltip)) {
 					ret.anchorAttribute("title", tooltip);
+				}
+				for (Entry<String, EObject> attr: semanticElement.getAttributes().entrySet()) {
+					String attrName = attr.getKey();
+					if (attrName.startsWith("data-nsd-")) { // Pass through Nasdanika attributes 
+						EObject attrValue = attr.getValue();
+						if (attrValue instanceof Text) { // Text only
+							ret.attribute(attrName, ((Text) attrValue).getContent());							
+						}
+					}
 				}
 				ret.id(jsTreeFactory.getHTMLFactory().nextId()); // TODO - label ID 
 				ret.setData(semanticElement);

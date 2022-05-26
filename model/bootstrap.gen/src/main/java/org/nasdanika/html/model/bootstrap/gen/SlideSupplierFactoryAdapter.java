@@ -1,5 +1,6 @@
 package org.nasdanika.html.model.bootstrap.gen;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -9,8 +10,8 @@ import org.nasdanika.html.model.bootstrap.Slide;
 
 public class SlideSupplierFactoryAdapter extends DivSupplierFactoryAdapter<Slide> {
 	
-	public SlideSupplierFactoryAdapter(Slide slide) {
-		super(slide);
+	public SlideSupplierFactoryAdapter(Slide slide, AdapterFactory adapterFactory) {
+		super(slide, adapterFactory);
 	}
 	
 	@Override

@@ -226,6 +226,12 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelTrimLength" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="50"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="collapsible" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jsTreeSearchThreshold"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Minimal number of tree nodes to show a search text input. Default is 0 - search is always shown."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContentPanel" eSuperTypes="#//PagePart">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

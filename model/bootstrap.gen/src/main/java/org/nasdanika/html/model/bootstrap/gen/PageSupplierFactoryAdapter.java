@@ -3,11 +3,9 @@ package org.nasdanika.html.model.bootstrap.gen;
 import java.util.List;
 
 import org.nasdanika.common.BiSupplier;
-import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.Supplier;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.persistence.ConfigurationException;
 import org.nasdanika.html.HTMLFactory;

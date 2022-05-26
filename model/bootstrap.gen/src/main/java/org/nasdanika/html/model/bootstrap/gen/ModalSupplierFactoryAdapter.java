@@ -3,6 +3,7 @@ package org.nasdanika.html.model.bootstrap.gen;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Consumer;
@@ -28,8 +29,8 @@ import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 
 public class ModalSupplierFactoryAdapter extends BootstrapElementSupplierFactoryAdapter<org.nasdanika.html.model.bootstrap.Modal, org.nasdanika.html.bootstrap.Modal> {
 	
-	public ModalSupplierFactoryAdapter(org.nasdanika.html.model.bootstrap.Modal modal) {
-		super(modal);
+	public ModalSupplierFactoryAdapter(org.nasdanika.html.model.bootstrap.Modal modal, AdapterFactory adapterFactory) {
+		super(modal, adapterFactory);
 	}
 	
 	protected Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>> createModalSupplier(Context context) {

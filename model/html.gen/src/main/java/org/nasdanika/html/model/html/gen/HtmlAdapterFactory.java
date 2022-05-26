@@ -26,7 +26,7 @@ public class HtmlAdapterFactory extends ExecutionParticpantAdapterFactory {
 					HtmlPackage.Literals.TAG, 
 					Util.getSupplierFactoryClass(org.nasdanika.html.Tag.class), 
 					classLoader, 
-					TagSupplierFactoryAdapter::new));		
+					e -> new TagSupplierFactoryAdapter<org.nasdanika.html.model.html.Tag>(e, this)));		
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<SupplierFactory<HTMLPage>, Page>(

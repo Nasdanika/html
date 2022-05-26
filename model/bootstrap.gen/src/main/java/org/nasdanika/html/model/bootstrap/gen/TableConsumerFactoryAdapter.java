@@ -3,6 +3,7 @@ package org.nasdanika.html.model.bootstrap.gen;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.ConsumerFactory;
@@ -20,8 +21,8 @@ import org.nasdanika.html.model.bootstrap.TableSection;
 
 public class TableConsumerFactoryAdapter extends TableRowContainerConsumerFactoryAdapter<org.nasdanika.html.model.bootstrap.Table, org.nasdanika.html.bootstrap.Table> {
 
-	public TableConsumerFactoryAdapter(org.nasdanika.html.model.bootstrap.Table table) {
-		super(table);
+	public TableConsumerFactoryAdapter(org.nasdanika.html.model.bootstrap.Table table, AdapterFactory adapterFactory) {
+		super(table, adapterFactory);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })

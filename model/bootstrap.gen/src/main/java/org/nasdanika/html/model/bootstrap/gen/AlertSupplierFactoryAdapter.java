@@ -1,5 +1,6 @@
 package org.nasdanika.html.model.bootstrap.gen;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -9,8 +10,8 @@ import org.nasdanika.html.model.bootstrap.Alert;
 
 public class AlertSupplierFactoryAdapter extends DivSupplierFactoryAdapter<Alert> {
 	
-	public AlertSupplierFactoryAdapter(Alert alert) {
-		super(alert);
+	public AlertSupplierFactoryAdapter(Alert alert, AdapterFactory adapterFactory) {
+		super(alert, adapterFactory);
 	}
 	
 	@Override

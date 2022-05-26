@@ -1,5 +1,6 @@
 package org.nasdanika.html.model.bootstrap.gen;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.ProgressMonitor;
@@ -14,8 +15,8 @@ import org.nasdanika.html.model.bootstrap.TableCell;
  */
 public class TableCellConsumerFactoryAdapter extends BootstrapElementConsumerFactoryAdapter<org.nasdanika.html.model.bootstrap.TableCell, org.nasdanika.html.bootstrap.RowContainer.Row> {
 
-	public TableCellConsumerFactoryAdapter(org.nasdanika.html.model.bootstrap.TableCell tableCell) {
-		super(tableCell);
+	public TableCellConsumerFactoryAdapter(org.nasdanika.html.model.bootstrap.TableCell tableCell, AdapterFactory adapterFactory) {
+		super(tableCell, adapterFactory);
 	}
 	
 	@Override

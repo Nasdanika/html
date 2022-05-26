@@ -2,6 +2,7 @@ package org.nasdanika.html.model.bootstrap.gen;
 
 import java.util.List;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -18,8 +19,8 @@ import org.nasdanika.html.model.bootstrap.Carousel;
 
 public class CarouselSupplierFactoryAdapter extends DivSupplierFactoryAdapter<Carousel> {
 	
-	public CarouselSupplierFactoryAdapter(Carousel carousel) {
-		super(carousel);
+	public CarouselSupplierFactoryAdapter(Carousel carousel, AdapterFactory adapterFactory) {
+		super(carousel, adapterFactory);
 	}
 	
 	@Override

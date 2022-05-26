@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.json.JSONObject;
@@ -37,10 +38,12 @@ import org.nasdanika.html.model.app.NavigationPanelStyle;
 
 public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter<NavigationPanel> {
 
+	private static final String CLEAR_STATE_FILTER = "tree.state.filter = function(state) { delete state.core.selected; return state; };";
+	private static final String SEARCH_FILTER = " tree.search.search_callback = function(searchStr, node) { if (typeof window.nsdJsTreeSearchCallback === 'function') return window.nsdJsTreeSearchCallback(searchStr, node); var sf = new $.vakata.search(searchStr, true, { caseSensitive : false, fuzzy : false }); return sf.search(node.text).isMatch; };";
 	private static final String SEARCH_INPUT_SUFFIX = "_searchInput";
 
-	protected NavigationPanelConsumerFactoryAdapter(NavigationPanel navigationPanel) {
-		super(navigationPanel);
+	protected NavigationPanelConsumerFactoryAdapter(NavigationPanel navigationPanel, AdapterFactory adapterFactory) {
+		super(navigationPanel, adapterFactory);
 	}
 	
 	private Function<BiSupplier<HTMLElement<?>, List<JsTreeNode>>, HTMLElement<?>> createTreeFunction(NavigationPanelStyle effectiveStyle, Context context) {
@@ -128,7 +131,11 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 				jsTree.put("types", Collections.singletonMap("leaf", Collections.singletonMap("icon", "jstree-file"))); // File leaf icon.
 				
 				// Deletes selection from state
-				String filter = "tree.state.filter = function(state) { delete state.core.selected; return state; };";
+				String filter = CLEAR_STATE_FILTER;
+				
+				if (effectiveStyle == NavigationPanelStyle.SEARCHABLE_TREE) {
+					filter += " " + SEARCH_FILTER;
+				}
 				
 				Tag script = jsTreeFactory.bind(container, jsTree, filter, searchInputId == null ? null : "#" + searchInputId);
 				panel.accept(script);
@@ -264,7 +271,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 												nodeTreeId = treeId + "-" + semanticElement.getId();
 											}
 											
-											boolean isSearchable = treeSize(node.children()) > 25; // TODO configurable									
+											boolean isSearchable = treeSize(node.children()) >= getSearchThreshold();									
 											String searchInputId = null;
 											if (isSearchable) {
 												Input searchInput = htmlFactory.input(InputType.text);
@@ -298,7 +305,11 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 											jsTree.put("types", Collections.singletonMap("leaf", Collections.singletonMap("icon", "jstree-file"))); // File leaf icon.
 											
 											// Deletes selection from state
-											String filter = "tree.state.filter = function(state) { delete state.core.selected; return state; };";
+											String filter = CLEAR_STATE_FILTER;
+											
+											if (isSearchable) {
+												filter += " " + SEARCH_FILTER;
+											}
 											
 											Tag script = jsTreeFactory.bind(container, jsTree, filter, searchInputId == null ? null : "#" + searchInputId);
 											panel.accept(script);
@@ -342,6 +353,10 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 			}
 		};
 	}
+	
+	protected int getSearchThreshold() {
+		return getTarget().getJsTreeSearchThreshold(); 
+	}
 		
 	private static int depth(Collection<EObject> items) {
 		int ret = 0;
@@ -383,7 +398,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 		
 		EList<EObject> items = semanticElement.getItems();
 		if (style == NavigationPanelStyle.AUTO) {
-			style = depth(items) > 2 ?  size(items) > 25 /* TODO - from  configuration */ ? NavigationPanelStyle.SEARCHABLE_TREE : NavigationPanelStyle.TREE : NavigationPanelStyle.CARDS; 
+			style = depth(items) > 2 ?  size(items) >= getSearchThreshold() ? NavigationPanelStyle.SEARCHABLE_TREE : NavigationPanelStyle.TREE : NavigationPanelStyle.CARDS; 
 		}
 		
 		ListCompoundSupplierFactory<JsTreeNode> nodesFactory = new ListCompoundSupplierFactory<>("Nodes", EObjectAdaptable.adaptToSupplierFactoryNonNull(items, JsTreeNode.class));

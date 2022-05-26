@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -14,6 +17,7 @@ import org.nasdanika.common.FunctionFactory;
 import org.nasdanika.common.ListCompoundSupplierFactory;
 import org.nasdanika.common.MapCompoundSupplierFactory;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.emf.ComposeableAdapterFactory;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.Container;
 import org.nasdanika.html.model.html.HtmlPackage;
@@ -27,9 +31,26 @@ import org.nasdanika.html.model.html.HtmlPackage;
  */
 public abstract class HtmlElementAdapter<M extends org.nasdanika.html.model.html.HtmlElement, T extends org.nasdanika.html.HTMLElement<?>> extends AdapterImpl {
 	
-	protected HtmlElementAdapter(M htmlElement) {
-		setTarget(htmlElement);
+	protected AdapterFactory adapterFactory;
+	
+	protected AdapterFactory getRootAdapterFactory() {
+		return adapterFactory instanceof ComposeableAdapterFactory ? ((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory() : adapterFactory;
 	}
+	
+	protected HtmlElementAdapter(M htmlElement, AdapterFactory adapterFactory) {
+		setTarget(htmlElement);
+		this.adapterFactory = adapterFactory;
+	}
+	
+	protected Adapter getRegisteredAdapter(EObject eObject, Object type) {
+		Adapter result = EcoreUtil.getExistingAdapter(eObject, type);
+		if (result != null) {
+			return result;
+		}
+
+		AdapterFactory factory = getRootAdapterFactory();
+		return factory == null ? null : factory.adaptNew(eObject, type);
+	}	
 	
 	/**
 	 * Creates a function which configures the element and returns it.
@@ -43,7 +64,7 @@ public abstract class HtmlElementAdapter<M extends org.nasdanika.html.model.html
 		MapCompoundSupplierFactory<String,Object> attributesFactory = new MapCompoundSupplierFactory<>("Attributes");
 		for (Entry<String, EObject> ae: getTarget().getAttributes()) {
 			EObject value = ae.getValue();
-			attributesFactory.put(ae.getKey(), EObjectAdaptable.adaptToSupplierFactoryNonNull(value, Object.class));			
+			attributesFactory.put(ae.getKey(), EObjectAdaptable.adaptToSupplierFactoryNonNull(value, Object.class, getRootAdapterFactory()));
 		}
 		
 		ListCompoundSupplierFactory<Object> contentFactory = new ListCompoundSupplierFactory<>("Content", EObjectAdaptable.adaptToSupplierFactoryNonNull(getContent(), Object.class));				

@@ -2,6 +2,7 @@ package org.nasdanika.html.model.app.gen;
 
 import java.util.List;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
@@ -16,8 +17,8 @@ import org.nasdanika.html.model.app.Link;
 
 public class LinkTagSupplierFactoryAdapter<M extends Link> extends LabelTagSupplierFactoryAdapter<M> {
 	
-	public LinkTagSupplierFactoryAdapter(M link) {
-		super(link);
+	public LinkTagSupplierFactoryAdapter(M link, AdapterFactory adapterFactory) {
+		super(link, adapterFactory);
 		if (link instanceof Action) {
 			throw new IllegalArgumentException("Actions must be converted to links first");
 		}

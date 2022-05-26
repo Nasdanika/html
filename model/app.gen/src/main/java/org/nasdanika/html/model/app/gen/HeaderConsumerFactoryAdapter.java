@@ -3,6 +3,7 @@ package org.nasdanika.html.model.app.gen;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -26,8 +27,8 @@ import org.nasdanika.html.model.bootstrap.Appearance;
 
 public class HeaderConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter<Header> {
 
-	protected HeaderConsumerFactoryAdapter(Header header) {
-		super(header);
+	protected HeaderConsumerFactoryAdapter(Header header, AdapterFactory adapterFactory) {
+		super(header, adapterFactory);
 	}
 	
 	@Override

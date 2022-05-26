@@ -1,5 +1,6 @@
 package org.nasdanika.html.model.bootstrap.gen;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -8,8 +9,8 @@ import org.nasdanika.html.model.bootstrap.Appearance;
 
 public class TagSupplierFactoryAdapter<T extends org.nasdanika.html.model.bootstrap.Tag> extends org.nasdanika.html.model.html.gen.TagSupplierFactoryAdapter<T> {
 	
-	public TagSupplierFactoryAdapter(T tag) {
-		super(tag);
+	public TagSupplierFactoryAdapter(T tag, AdapterFactory adapterFactory) {
+		super(tag, adapterFactory);
 	}
 	
 	@Override

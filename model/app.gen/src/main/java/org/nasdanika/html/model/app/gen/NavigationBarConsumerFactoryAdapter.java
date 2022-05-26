@@ -3,6 +3,7 @@ package org.nasdanika.html.model.app.gen;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -23,8 +24,8 @@ import org.nasdanika.html.model.app.NavigationBar;
 
 public class NavigationBarConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter<NavigationBar> {
 
-	protected NavigationBarConsumerFactoryAdapter(NavigationBar navigationBar) {
-		super(navigationBar);
+	protected NavigationBarConsumerFactoryAdapter(NavigationBar navigationBar, AdapterFactory adapterFactory) {
+		super(navigationBar, adapterFactory);
 	}
 	
 	private Function<BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>>, HTMLElement<?>> createNavbarFunction(Context context) {

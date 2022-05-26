@@ -41,7 +41,7 @@ public interface HtmlElement extends ModelElement {
 	 * 
 	 * ## Interpolation
 	 * 
-	 * Attribute values are interpolated, i.e. tokens in the form of ``${token name[|default value]}`` are replaced with the contextual values or default values, if any. Examples:
+	 * Attribute values are interpolated, i.e. tokens in the form of ``${{token name[|default value]}}`` are replaced with the contextual values or default values, if any. Examples:
 	 * 
 	 * * ``${my-style}`` - Token without a default value.
 	 * * ``${font-weight|bold}`` - Token with a default value.

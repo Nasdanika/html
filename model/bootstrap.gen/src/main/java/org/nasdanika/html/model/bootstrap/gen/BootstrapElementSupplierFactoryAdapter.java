@@ -1,5 +1,6 @@
 package org.nasdanika.html.model.bootstrap.gen;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -12,8 +13,8 @@ import org.nasdanika.html.model.html.gen.HtmlElementSupplierFactoryAdapter;
 
 public abstract class BootstrapElementSupplierFactoryAdapter<M extends org.nasdanika.html.model.bootstrap.BootstrapElement, T extends org.nasdanika.html.bootstrap.BootstrapElement<?,?>> extends HtmlElementSupplierFactoryAdapter<M, org.nasdanika.html.HTMLElement<?>> {
 	
-	public BootstrapElementSupplierFactoryAdapter(M bootstrapElement) {
-		super(bootstrapElement);
+	public BootstrapElementSupplierFactoryAdapter(M bootstrapElement, AdapterFactory adapterFactory) {
+		super(bootstrapElement, adapterFactory);
 	}
 
 	@Override

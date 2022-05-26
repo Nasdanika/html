@@ -3,6 +3,7 @@ package org.nasdanika.html.model.app.gen;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
@@ -31,8 +32,8 @@ import org.nasdanika.html.model.bootstrap.gen.BootstrapElementSupplierFactoryAda
 
 public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryAdapter<Page, BootstrapElement<?,?>> {
 	
-	public PageSupplierFactoryAdapter(Page page) {
-		super(page);
+	public PageSupplierFactoryAdapter(Page page, AdapterFactory adapterFactory) {
+		super(page, adapterFactory);
 	}
 		
 	protected Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>> createContainerSupplier(Context context) {

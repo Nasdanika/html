@@ -3,7 +3,6 @@ package org.nasdanika.html.model.app.gen;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.emf.FunctionAdapterFactory;
-import org.nasdanika.exec.gen.ExecutionParticpantAdapterFactory;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.ContentPanel;
@@ -15,7 +14,6 @@ import org.nasdanika.html.model.app.NavigationBar;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.Page;
 import org.nasdanika.html.model.bootstrap.gen.BootstrapAdapterFactory;
-import org.nasdanika.html.model.html.gen.HtmlAdapterFactory;
 
 /**
  * @author Pavel
@@ -34,61 +32,61 @@ public class AppAdapterFactory extends BootstrapAdapterFactory {
 					AppPackage.Literals.PAGE, 
 					(Class) SupplierFactory.class, 
 					classLoader, 
-					PageSupplierFactoryAdapter::new));
+					e -> new PageSupplierFactoryAdapter(e, this)));
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<SupplierFactory.Provider, Label>(
 					AppPackage.Literals.LABEL, 
 					SupplierFactory.Provider.class, 
 					classLoader, 
-					LabelSupplierFactoryProviderAdapter::new));
+					e -> new LabelSupplierFactoryProviderAdapter(e, this)));
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<SupplierFactory.Provider, Link>(
 					AppPackage.Literals.LINK, 
 					SupplierFactory.Provider.class, 
 					classLoader, 
-					LinkSupplierFactoryProviderAdapter::new));
+					e -> new LinkSupplierFactoryProviderAdapter(e, this)));
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, ContentPanel>(
 					AppPackage.Literals.CONTENT_PANEL, 
 					(Class) ConsumerFactory.class, 
 					classLoader, 
-					ContentPanelConsumerFactoryAdapter::new));		
+					e -> new ContentPanelConsumerFactoryAdapter(e, this)));		
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, Footer>(
 					AppPackage.Literals.FOOTER, 
 					(Class) ConsumerFactory.class, 
 					classLoader, 
-					FooterConsumerFactoryAdapter::new));		
+					e -> new FooterConsumerFactoryAdapter(e, this)));		
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, Header>(
 					AppPackage.Literals.HEADER, 
 					(Class) ConsumerFactory.class, 
 					classLoader, 
-					HeaderConsumerFactoryAdapter::new));		
+					e -> new HeaderConsumerFactoryAdapter(e, this)));		
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, NavigationBar>(
 					AppPackage.Literals.NAVIGATION_BAR, 
 					(Class) ConsumerFactory.class, 
 					classLoader, 
-					NavigationBarConsumerFactoryAdapter::new));		
+					e -> new NavigationBarConsumerFactoryAdapter(e, this)));		
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, NavigationPanel>(
 					AppPackage.Literals.NAVIGATION_PANEL, 
 					(Class) ConsumerFactory.class, 
 					classLoader, 
-					NavigationPanelConsumerFactoryAdapter::new));	
+					e -> new NavigationPanelConsumerFactoryAdapter(e, this)));	
 		
-		// Lower-level factories
-		registerAdapterFactory(new ExecutionParticpantAdapterFactory());
-		registerAdapterFactory(new HtmlAdapterFactory());
-		registerAdapterFactory(new BootstrapAdapterFactory());				
+		// Lower-level factories - through inheritance
+//		registerAdapterFactory(new ExecutionParticpantAdapterFactory());
+//		registerAdapterFactory(new HtmlAdapterFactory());
+//		registerAdapterFactory(new BootstrapAdapterFactory());				
 	}
 	
 }

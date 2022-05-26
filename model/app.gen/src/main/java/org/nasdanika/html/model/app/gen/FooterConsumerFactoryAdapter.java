@@ -3,6 +3,7 @@ package org.nasdanika.html.model.app.gen;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.BiSupplier;
@@ -19,8 +20,8 @@ import org.nasdanika.html.model.app.Footer;
 
 public class FooterConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter<Footer> {
 
-	protected FooterConsumerFactoryAdapter(Footer footer) {
-		super(footer);
+	protected FooterConsumerFactoryAdapter(Footer footer, AdapterFactory adapterFactory) {
+		super(footer, adapterFactory);
 	}
 	
 	private Function<BiSupplier<HTMLElement<?>, List<Object>>, HTMLElement<?>> createNavsFunction(Context context) {

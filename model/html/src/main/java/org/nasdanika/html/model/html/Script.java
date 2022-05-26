@@ -10,7 +10,7 @@ import org.nasdanika.exec.content.Filter;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * Script with code stored in the model element ``code`` attribute.
+ * Script with code stored in the model element ``source`` reference.
  * <!-- end-model-doc -->
  *
  *

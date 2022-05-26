@@ -5,8 +5,11 @@ import static org.nasdanika.common.Util.isBlank;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -40,6 +43,8 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.Text;
 import org.nasdanika.exec.resources.Container;
 import org.nasdanika.html.Button;
 import org.nasdanika.html.HTMLFactory;
@@ -72,6 +77,8 @@ import com.mxgraph.util.mxXmlUtils;
 
 public final class Util {
 	
+	public static final String DATA_NSD_ACTION_UUID_ATTRIBUTE = "data-nsd-action-uuid";
+
 	// Util
 	private Util() {
 		throw new UnsupportedOperationException("Utility class, not to be instantiated");
@@ -416,6 +423,14 @@ public final class Util {
 			contentPanel = AppFactory.eINSTANCE.createContentPanel();
 			appPage.setContentPanel(contentPanel);
 		}
+		if  (activeAction != null) {
+			String activeActionUUID = activeAction.getUuid();
+			if (!org.nasdanika.common.Util.isBlank(activeActionUUID)) {
+				Text text = ContentFactory.eINSTANCE.createText();
+				text.setContent(activeActionUUID);
+				contentPanel.getAttributes().put(DATA_NSD_ACTION_UUID_ATTRIBUTE, text);
+			}
+		}
 		
 		buildContentPanel(activeAction, actionPath, activeAction == root || activeAction == principal, contentPanel, uriResolver, progressMonitor);	
 	}
@@ -580,6 +595,15 @@ public final class Util {
 		label.setOutline(source.isOutline());
 		label.setText(source.getText());
 		label.setTooltip(source.getTooltip());
+
+		if (source instanceof Action) {
+			String sourceUUID = source.getUuid();
+			if (!org.nasdanika.common.Util.isBlank(sourceUUID)) {
+				Text text = ContentFactory.eINSTANCE.createText();
+				text.setContent(sourceUUID);			
+				label.getAttributes().put(DATA_NSD_ACTION_UUID_ATTRIBUTE, text);
+			}
+		}
 		
 		for (Entry<String, EObject> ae: source.getAttributes().entrySet()) {		
 			label.getAttributes().put(ae.getKey(), EcoreUtil.copy(ae.getValue()));
@@ -788,7 +812,7 @@ public final class Util {
 	}
 	
 	public static JSONObject createSearchDocument(String path, File file) throws IOException {
-		return createSearchDocument(path, file, null);
+		return createSearchDocument(path, file, null, null);
 	}
 	
 	/**
@@ -797,11 +821,17 @@ public final class Util {
 	 * @param path
 	 * @param file
 	 * @param contentConsumer Consumer of content elements which can be used to analyze page contents, e.g. find dead links. Can be null.  
+	 * @param processor If not null the document is passed to the processor. If the processor returns true that means that the document was manipulated by the processor and shall be saved to the source file.
 	 * @return Search document object for non-empty Nasdanika App pages, null otherwise.
 	 * @throws IOException
 	 */
-	public static JSONObject createSearchDocument(String path, File file, Consumer<? super Element> contentConsumer) throws IOException {
+	public static JSONObject createSearchDocument(String path, File file, Consumer<? super Element> contentConsumer, BiFunction<String, Document, Boolean> processor) throws IOException {
 		Document document = Jsoup.parse(file, "UTF-8");
+		if (processor != null && processor.apply(path, document)) {
+			try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8")) {
+				writer.write(document.outerHtml());
+			}
+		}
 		Elements contentPanelQuery = document.select("body > div > div.row.nsd-app-content-row > div.col.nsd-app-content-panel");							                                              
 		if (contentPanelQuery.isEmpty()) {
 			return null;
@@ -848,6 +878,14 @@ public final class Util {
 		if (breadcrumbQuery.size() > 0) {
 			searchDocument.put("path", String.join("/", breadcrumbQuery.stream().map(e -> StringEscapeUtils.escapeHtml4(e.text())).collect(Collectors.toList())));
 		}
+		for (Element element: contentPanelQuery) {
+			String actionUUID = element.attr(DATA_NSD_ACTION_UUID_ATTRIBUTE);
+			if (!org.nasdanika.common.Util.isBlank(actionUUID)) {
+				searchDocument.put("action-uuid", actionUUID);
+				break;
+			}
+		}
+		
 		return searchDocument;
 	}
 	

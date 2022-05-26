@@ -1,5 +1,6 @@
 package org.nasdanika.html.model.bootstrap.gen;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -13,8 +14,8 @@ import org.nasdanika.html.HTMLElement;
  */
 public class TableHeaderConsumerFactoryAdapter extends TableSectionConsumerFactoryAdapter<org.nasdanika.html.model.bootstrap.TableHeader, org.nasdanika.html.bootstrap.Table.TableHeader> {
 
-	public TableHeaderConsumerFactoryAdapter(org.nasdanika.html.model.bootstrap.TableHeader tableHeader) {
-		super(tableHeader);
+	public TableHeaderConsumerFactoryAdapter(org.nasdanika.html.model.bootstrap.TableHeader tableHeader, AdapterFactory adapterFactory) {
+		super(tableHeader, adapterFactory);
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package org.nasdanika.html.model.bootstrap.gen;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.ConsumerFactory;
@@ -20,8 +21,8 @@ import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 
 public class CardSupplierFactoryAdapter extends BootstrapElementSupplierFactoryAdapter<org.nasdanika.html.model.bootstrap.Card, org.nasdanika.html.bootstrap.Card> {
 	
-	public CardSupplierFactoryAdapter(org.nasdanika.html.model.bootstrap.Card card) {
-		super(card);
+	public CardSupplierFactoryAdapter(org.nasdanika.html.model.bootstrap.Card card, AdapterFactory adapterFactory) {
+		super(card, adapterFactory);
 	}
 	
 	protected Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card>> createCardSupplier(Context context) {

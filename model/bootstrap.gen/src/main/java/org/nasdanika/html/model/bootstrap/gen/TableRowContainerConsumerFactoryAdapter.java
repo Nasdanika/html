@@ -2,6 +2,7 @@ package org.nasdanika.html.model.bootstrap.gen;
 
 import java.util.List;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.nasdanika.common.CollectionCompoundConsumerFactory;
 import org.nasdanika.common.ConsumerFactory;
@@ -13,8 +14,8 @@ import org.nasdanika.html.model.bootstrap.TableRow;
 
 public class TableRowContainerConsumerFactoryAdapter<M extends org.nasdanika.html.model.bootstrap.TableRowContainer, T extends org.nasdanika.html.bootstrap.RowContainer<?,?>> extends BootstrapElementConsumerFactoryAdapter<M,T> {
 
-	public TableRowContainerConsumerFactoryAdapter(M tableRowContainer) {
-		super(tableRowContainer);
+	public TableRowContainerConsumerFactoryAdapter(M tableRowContainer, AdapterFactory adapterFactory) {
+		super(tableRowContainer, adapterFactory);
 	}
 	
 	@Override

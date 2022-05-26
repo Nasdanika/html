@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -46,8 +47,8 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 
 	private static final String TITLE_CONSUMER_KEY = "title-consumer";
 
-	protected ContentPanelConsumerFactoryAdapter(ContentPanel pagePart) {
-		super(pagePart);
+	protected ContentPanelConsumerFactoryAdapter(ContentPanel pagePart, AdapterFactory adapterFactory) {
+		super(pagePart, adapterFactory);
 	}
 	
 	/**

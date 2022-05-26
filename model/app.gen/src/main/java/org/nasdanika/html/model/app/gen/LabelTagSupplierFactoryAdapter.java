@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.Context;
@@ -29,8 +30,8 @@ import org.nasdanika.html.model.bootstrap.gen.BootstrapElementSupplierFactoryAda
 
 public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapElementSupplierFactoryAdapter<M, BootstrapElement<?,?>> {
 	
-	public LabelTagSupplierFactoryAdapter(M label) {
-		super(label);
+	public LabelTagSupplierFactoryAdapter(M label, AdapterFactory adapterFactory) {
+		super(label, adapterFactory);
 	}
 		
 	@Override

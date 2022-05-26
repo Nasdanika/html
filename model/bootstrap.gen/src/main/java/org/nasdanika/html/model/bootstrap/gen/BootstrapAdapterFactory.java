@@ -48,49 +48,49 @@ public class BootstrapAdapterFactory extends HtmlAdapterFactory {
 					BootstrapPackage.Literals.BOOTSTRAP_ELEMENT, 
 					Util.getConsumerFactoryClass(htmlElementClass), 
 					classLoader, 
-					BootstrapElementConsumerFactoryAdapter::new));
+					e -> new BootstrapElementConsumerFactoryAdapter<>(e, this)));
 								
 		registerAdapterFactory(
 				new FunctionAdapterFactory<SupplierFactory<org.nasdanika.html.Tag>, org.nasdanika.html.model.bootstrap.Tag>(
 					BootstrapPackage.Literals.TAG, 
 					Util.getSupplierFactoryClass(org.nasdanika.html.Tag.class), 
 					classLoader, 
-					TagSupplierFactoryAdapter::new));		
+					e -> new TagSupplierFactoryAdapter<>(e, this)));		
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<SupplierFactory<HTMLElement<?>>, org.nasdanika.html.model.bootstrap.Modal>(
 					BootstrapPackage.Literals.MODAL, 
 					Util.getSupplierFactoryClass(htmlElementClass), 
 					classLoader, 
-					ModalSupplierFactoryAdapter::new));		
+					e -> new ModalSupplierFactoryAdapter(e, this)));		
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<SupplierFactory<org.nasdanika.html.Tag>, org.nasdanika.html.model.bootstrap.Alert>(
 					BootstrapPackage.Literals.ALERT, 
 					Util.getSupplierFactoryClass(org.nasdanika.html.Tag.class), 
 					classLoader, 
-					AlertSupplierFactoryAdapter::new));		
+					e -> new AlertSupplierFactoryAdapter(e, this)));		
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<SupplierFactory<org.nasdanika.html.Tag>, org.nasdanika.html.model.bootstrap.Carousel>(
 					BootstrapPackage.Literals.CAROUSEL, 
 					Util.getSupplierFactoryClass(org.nasdanika.html.Tag.class), 
 					classLoader, 
-					CarouselSupplierFactoryAdapter::new));		
+					e -> new CarouselSupplierFactoryAdapter(e, this)));		
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<SupplierFactory<org.nasdanika.html.Tag>, org.nasdanika.html.model.bootstrap.Slide>(
 					BootstrapPackage.Literals.SLIDE, 
 					Util.getSupplierFactoryClass(org.nasdanika.html.Tag.class), 
 					classLoader, 
-					SlideSupplierFactoryAdapter::new));		
+					e -> new SlideSupplierFactoryAdapter(e, this)));		
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<SupplierFactory<HTMLElement<?>>, org.nasdanika.html.model.bootstrap.Card>(
 					BootstrapPackage.Literals.CARD, 
 					Util.getSupplierFactoryClass(htmlElementClass), 
 					classLoader, 
-					CardSupplierFactoryAdapter::new));		
+					e -> new CardSupplierFactoryAdapter(e, this)));		
 		
 		// Table		
 		registerAdapterFactory(
@@ -98,42 +98,42 @@ public class BootstrapAdapterFactory extends HtmlAdapterFactory {
 					BootstrapPackage.Literals.TABLE_HEADER, 
 					Util.getConsumerFactoryClass(htmlElementClass), 
 					classLoader, 
-					TableHeaderConsumerFactoryAdapter::new));
+					e -> new TableHeaderConsumerFactoryAdapter(e, this)));
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, TableSection>(
 					BootstrapPackage.Literals.TABLE_SECTION, 
 					Util.getConsumerFactoryClass(htmlElementClass), 
 					classLoader, 
-					TableSectionConsumerFactoryAdapter::new));
+					e -> new TableSectionConsumerFactoryAdapter(e, this)));
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, TableRow>(
 					BootstrapPackage.Literals.TABLE_ROW, 
 					Util.getConsumerFactoryClass(htmlElementClass), 
 					classLoader, 
-					TableRowConsumerFactoryAdapter::new));
+					e -> new TableRowConsumerFactoryAdapter(e, this)));
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, TableCell>(
 					BootstrapPackage.Literals.TABLE_CELL, 
 					Util.getConsumerFactoryClass(htmlElementClass), 
 					classLoader, 
-					TableCellConsumerFactoryAdapter::new));
+					e -> new TableCellConsumerFactoryAdapter(e, this)));
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ConsumerFactory<HTMLElement<?>>, org.nasdanika.html.model.bootstrap.Table>(
 					BootstrapPackage.Literals.TABLE, 
 					Util.getConsumerFactoryClass(htmlElementClass), 
 					classLoader, 
-					TableConsumerFactoryAdapter::new));
+					e -> new TableConsumerFactoryAdapter(e, this)));
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<SupplierFactory<HTMLElement<?>>, org.nasdanika.html.model.bootstrap.Table>(
 					BootstrapPackage.Literals.TABLE, 
 					Util.getSupplierFactoryClass(htmlElementClass), 
 					classLoader, 
-					TableSupplierFactoryAdapter::new));		
+					e -> new TableSupplierFactoryAdapter(e, this)));		
 		
 	}
 	

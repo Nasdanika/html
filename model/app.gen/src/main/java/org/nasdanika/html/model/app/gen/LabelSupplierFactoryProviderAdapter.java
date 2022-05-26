@@ -1,5 +1,6 @@
 package org.nasdanika.html.model.app.gen;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
@@ -8,8 +9,11 @@ import org.nasdanika.html.model.html.Tag;
 
 public class LabelSupplierFactoryProviderAdapter<M extends Label> extends AdapterImpl implements SupplierFactory.Provider {
 
-	public LabelSupplierFactoryProviderAdapter(M label) {
+	protected AdapterFactory adapterFactory;
+
+	public LabelSupplierFactoryProviderAdapter(M label, AdapterFactory adapterFactory) {
 		setTarget(label);
+		this.adapterFactory = adapterFactory;
 	}
 	
 	@Override
@@ -21,7 +25,7 @@ public class LabelSupplierFactoryProviderAdapter<M extends Label> extends Adapte
 	@Override
 	public <T> SupplierFactory<T> getFactory(Class<T> type) {
 		if (type.isAssignableFrom(Tag.class)) {
-			return (SupplierFactory<T>) new LabelTagSupplierFactoryAdapter<>((M) getTarget());
+			return (SupplierFactory<T>) new LabelTagSupplierFactoryAdapter<>((M) getTarget(), adapterFactory);
 		}
 		// TODO Card
 		

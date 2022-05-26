@@ -19,6 +19,7 @@ import org.nasdanika.html.model.app.NavigationPanelStyle;
  *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getId <em>Id</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getLabelTrimLength <em>Label Trim Length</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#isCollapsible <em>Collapsible</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.NavigationPanelImpl#getJsTreeSearchThreshold <em>Js Tree Search Threshold</em>}</li>
  * </ul>
  *
  * @generated
@@ -63,6 +64,16 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 	 * @ordered
 	 */
 	protected static final boolean COLLAPSIBLE_EDEFAULT = false;
+
+	/**
+	 * The default value of the '{@link #getJsTreeSearchThreshold() <em>Js Tree Search Threshold</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJsTreeSearchThreshold()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int JS_TREE_SEARCH_THRESHOLD_EDEFAULT = 0;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -169,6 +180,26 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 	 * @generated
 	 */
 	@Override
+	public int getJsTreeSearchThreshold() {
+		return (Integer)eDynamicGet(AppPackage.NAVIGATION_PANEL__JS_TREE_SEARCH_THRESHOLD, AppPackage.Literals.NAVIGATION_PANEL__JS_TREE_SEARCH_THRESHOLD, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setJsTreeSearchThreshold(int newJsTreeSearchThreshold) {
+		eDynamicSet(AppPackage.NAVIGATION_PANEL__JS_TREE_SEARCH_THRESHOLD, AppPackage.Literals.NAVIGATION_PANEL__JS_TREE_SEARCH_THRESHOLD, newJsTreeSearchThreshold);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AppPackage.NAVIGATION_PANEL__STYLE:
@@ -179,6 +210,8 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 				return getLabelTrimLength();
 			case AppPackage.NAVIGATION_PANEL__COLLAPSIBLE:
 				return isCollapsible();
+			case AppPackage.NAVIGATION_PANEL__JS_TREE_SEARCH_THRESHOLD:
+				return getJsTreeSearchThreshold();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -204,6 +237,9 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 			case AppPackage.NAVIGATION_PANEL__COLLAPSIBLE:
 				setCollapsible((Boolean)newValue);
 				return;
+			case AppPackage.NAVIGATION_PANEL__JS_TREE_SEARCH_THRESHOLD:
+				setJsTreeSearchThreshold((Integer)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -228,6 +264,9 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 			case AppPackage.NAVIGATION_PANEL__COLLAPSIBLE:
 				setCollapsible(COLLAPSIBLE_EDEFAULT);
 				return;
+			case AppPackage.NAVIGATION_PANEL__JS_TREE_SEARCH_THRESHOLD:
+				setJsTreeSearchThreshold(JS_TREE_SEARCH_THRESHOLD_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -248,6 +287,8 @@ public class NavigationPanelImpl extends PagePartImpl implements NavigationPanel
 				return getLabelTrimLength() != LABEL_TRIM_LENGTH_EDEFAULT;
 			case AppPackage.NAVIGATION_PANEL__COLLAPSIBLE:
 				return isCollapsible() != COLLAPSIBLE_EDEFAULT;
+			case AppPackage.NAVIGATION_PANEL__JS_TREE_SEARCH_THRESHOLD:
+				return getJsTreeSearchThreshold() != JS_TREE_SEARCH_THRESHOLD_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

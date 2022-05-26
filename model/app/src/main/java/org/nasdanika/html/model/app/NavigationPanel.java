@@ -19,6 +19,7 @@ package org.nasdanika.html.model.app;
  *   <li>{@link org.nasdanika.html.model.app.NavigationPanel#getId <em>Id</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.NavigationPanel#getLabelTrimLength <em>Label Trim Length</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.NavigationPanel#isCollapsible <em>Collapsible</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.NavigationPanel#getJsTreeSearchThreshold <em>Js Tree Search Threshold</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getNavigationPanel()
@@ -124,5 +125,30 @@ public interface NavigationPanel extends PagePart {
 	 * @generated
 	 */
 	void setCollapsible(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Js Tree Search Threshold</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Minimal number of tree nodes to show a search text input. Default is 0 - search is always shown.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Js Tree Search Threshold</em>' attribute.
+	 * @see #setJsTreeSearchThreshold(int)
+	 * @see org.nasdanika.html.model.app.AppPackage#getNavigationPanel_JsTreeSearchThreshold()
+	 * @model
+	 * @generated
+	 */
+	int getJsTreeSearchThreshold();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.NavigationPanel#getJsTreeSearchThreshold <em>Js Tree Search Threshold</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Js Tree Search Threshold</em>' attribute.
+	 * @see #getJsTreeSearchThreshold()
+	 * @generated
+	 */
+	void setJsTreeSearchThreshold(int value);
 
 } // NavigationPanel
