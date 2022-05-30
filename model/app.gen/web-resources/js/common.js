@@ -1,5 +1,5 @@
 // Common styling  
-$(document).ready( function() {
+$(document).ready(function() {
     $('.nsd-app-header-navs').addClass('float-right');    
     $('.nsd-app-navbar .navbar').addClass('mb-0');
     
@@ -58,4 +58,7 @@ $(document).ready( function() {
         }
     }
     
+    if (!navigator.clipboard) {
+		$("i.nsd-copy-to-clipboard").hide();
+	}    
 });
