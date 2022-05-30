@@ -760,7 +760,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		}
 		
 		if (typedElement == NcorePackage.Literals.MODEL_ELEMENT__URI) {
-			return createText(value + " <i class='far fa-copy' style='cursor:pointer' title='Copy URI to clipboard' onclick='navigator.clipboard.writeText(\"" + StringEscapeUtils.escapeHtml4(String.valueOf(value)) + "\")'/>");
+			return createText(value + " <i class='far fa-copy nsd-copy-to-clipboard' style='cursor:pointer' title='Copy URI to clipboard' onclick='navigator.clipboard.writeText(\"" + StringEscapeUtils.escapeHtml4(String.valueOf(value)) + "\")'/>");
 		}
 		
 		return createText(String.valueOf(value));
