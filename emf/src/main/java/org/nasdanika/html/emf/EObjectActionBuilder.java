@@ -392,7 +392,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	protected List<ETypedElement> getProperties() {
 		List<ETypedElement> properties = new ArrayList<>();
 		if (getTarget() instanceof Marked) {
-			properties.add(NcorePackage.Literals.MARKED__MARKER);
+			properties.add(NcorePackage.Literals.MARKED__MARKERS);
 		}
 		if (getTarget() instanceof ModelElement) {
 			properties.add(NcorePackage.Literals.MODEL_ELEMENT__URI);
@@ -433,10 +433,11 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	}
 	
 	protected String typedElementLabelText(ETypedElement type) {
-		if (type == NcorePackage.Literals.MARKED__MARKER) {
-			Marker marker = (Marker) getTarget().eGet((EStructuralFeature) type);
-			if (marker instanceof GitMarker) {
-				EMap<String, String> remotes = ((GitMarker) marker).getRemotes();
+		if (type == NcorePackage.Literals.MARKED__MARKERS) {
+			@SuppressWarnings("unchecked")
+			EList<Marker> markers = (EList<Marker>) getTarget().eGet((EStructuralFeature) type);
+			if (markers != null && markers.size() == 1 &&  markers.get(0) instanceof GitMarker) {
+				EMap<String, String> remotes = ((GitMarker) markers.get(0)).getRemotes();
 				if (remotes.size() == 1) {
 					return StringUtils.capitalize(remotes.get(0).getKey());
 				}

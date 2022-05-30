@@ -74,13 +74,13 @@ public interface BootstrapPackage extends EPackage {
 	int BOOTSTRAP_ELEMENT = 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BOOTSTRAP_ELEMENT__MARKER = HtmlPackage.HTML_ELEMENT__MARKER;
+	int BOOTSTRAP_ELEMENT__MARKERS = HtmlPackage.HTML_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -174,13 +174,13 @@ public interface BootstrapPackage extends EPackage {
 	int PAGE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__MARKER = HtmlPackage.PAGE__MARKER;
+	int PAGE__MARKERS = HtmlPackage.PAGE__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -802,13 +802,13 @@ public interface BootstrapPackage extends EPackage {
 	int TAG = 8;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TAG__MARKER = HtmlPackage.TAG__MARKER;
+	int TAG__MARKERS = HtmlPackage.TAG__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -1241,13 +1241,13 @@ public interface BootstrapPackage extends EPackage {
 	int MODAL = 9;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODAL__MARKER = BOOTSTRAP_ELEMENT__MARKER;
+	int MODAL__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -1394,13 +1394,13 @@ public interface BootstrapPackage extends EPackage {
 	int MODAL_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DIV__MARKER = TAG__MARKER;
+	int DIV__MARKERS = TAG__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -1493,13 +1493,13 @@ public interface BootstrapPackage extends EPackage {
 	int DIV_OPERATION_COUNT = TAG_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ITEM__MARKER = NcorePackage.MODEL_ELEMENT__MARKER;
+	int ITEM__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -1583,13 +1583,13 @@ public interface BootstrapPackage extends EPackage {
 	int ITEM_OPERATION_COUNT = NcorePackage.MODEL_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_GROUP_ITEM__MARKER = ITEM__MARKER;
+	int ACTION_GROUP_ITEM__MARKERS = ITEM__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -1682,13 +1682,13 @@ public interface BootstrapPackage extends EPackage {
 	int ACTION_GROUP_ITEM_OPERATION_COUNT = ITEM_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK_ACTION_GROUP_ITEM__MARKER = ACTION_GROUP_ITEM__MARKER;
+	int LINK_ACTION_GROUP_ITEM__MARKERS = ACTION_GROUP_ITEM__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -1790,13 +1790,13 @@ public interface BootstrapPackage extends EPackage {
 	int LINK_ACTION_GROUP_ITEM_OPERATION_COUNT = ACTION_GROUP_ITEM_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_ACTION_GROUP_ITEM__MARKER = ACTION_GROUP_ITEM__MARKER;
+	int CONTENT_ACTION_GROUP_ITEM__MARKERS = ACTION_GROUP_ITEM__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -1898,13 +1898,13 @@ public interface BootstrapPackage extends EPackage {
 	int CONTENT_ACTION_GROUP_ITEM_OPERATION_COUNT = ACTION_GROUP_ITEM_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_GROUP__MARKER = DIV__MARKER;
+	int ACTION_GROUP__MARKERS = DIV__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -2015,13 +2015,13 @@ public interface BootstrapPackage extends EPackage {
 	int ACTION_GROUP_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTAINER__MARKER = BOOTSTRAP_ELEMENT__MARKER;
+	int CONTAINER__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -2123,13 +2123,13 @@ public interface BootstrapPackage extends EPackage {
 	int CONTAINER_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROW__MARKER = BOOTSTRAP_ELEMENT__MARKER;
+	int ROW__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -2258,13 +2258,13 @@ public interface BootstrapPackage extends EPackage {
 	int COLUMN_WIDTH_OPERATION_COUNT = 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COLUMN__MARKER = BOOTSTRAP_ELEMENT__MARKER;
+	int COLUMN__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -2357,13 +2357,13 @@ public interface BootstrapPackage extends EPackage {
 	int COLUMN_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_ROW_CONTAINER__MARKER = BOOTSTRAP_ELEMENT__MARKER;
+	int TABLE_ROW_CONTAINER__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -2456,13 +2456,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_ROW_CONTAINER_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_SECTION__MARKER = TABLE_ROW_CONTAINER__MARKER;
+	int TABLE_SECTION__MARKERS = TABLE_ROW_CONTAINER__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -2555,13 +2555,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_SECTION_OPERATION_COUNT = TABLE_ROW_CONTAINER_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_HEADER__MARKER = TABLE_SECTION__MARKER;
+	int TABLE_HEADER__MARKERS = TABLE_SECTION__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -2744,13 +2744,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_CONFIGURATION_OPERATION_COUNT = 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE__MARKER = TABLE_ROW_CONTAINER__MARKER;
+	int TABLE__MARKERS = TABLE_ROW_CONTAINER__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -2924,13 +2924,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_OPERATION_COUNT = TABLE_ROW_CONTAINER_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_ROW__MARKER = BOOTSTRAP_ELEMENT__MARKER;
+	int TABLE_ROW__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -3041,13 +3041,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_ROW_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_CELL__MARKER = BOOTSTRAP_ELEMENT__MARKER;
+	int TABLE_CELL__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -3176,13 +3176,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_CELL_OPERATION_COUNT = BOOTSTRAP_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CARD__MARKER = DIV__MARKER;
+	int CARD__MARKERS = DIV__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -3302,13 +3302,13 @@ public interface BootstrapPackage extends EPackage {
 	int CARD_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT__MARKER = DIV__MARKER;
+	int ALERT__MARKERS = DIV__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -3410,13 +3410,13 @@ public interface BootstrapPackage extends EPackage {
 	int ALERT_OPERATION_COUNT = DIV_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE__MARKER = DIV__MARKER;
+	int BADGE__MARKERS = DIV__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -3536,13 +3536,13 @@ public interface BootstrapPackage extends EPackage {
 	int BREADCRUMB_OPERATION_COUNT = 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BUTTON__MARKER = DIV__MARKER;
+	int BUTTON__MARKERS = DIV__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -3890,13 +3890,13 @@ public interface BootstrapPackage extends EPackage {
 	int CAROUSEL = 44;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CAROUSEL__MARKER = DIV__MARKER;
+	int CAROUSEL__MARKERS = DIV__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -4053,13 +4053,13 @@ public interface BootstrapPackage extends EPackage {
 	int SLIDE = 45;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SLIDE__MARKER = DIV__MARKER;
+	int SLIDE__MARKERS = DIV__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.

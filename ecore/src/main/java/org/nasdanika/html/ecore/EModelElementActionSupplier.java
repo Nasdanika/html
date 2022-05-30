@@ -193,11 +193,8 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		
 		// Creating a marker with EObject resource location for resource resolution in Markdown
 		if (location != null) {
-			Marker marker = ret.getMarker();
-			if (marker == null) {
-				marker = context.get(MarkerFactory.class, MarkerFactory.INSTANCE).createMarker(location.toString(), progressMonitor);
-				ret.setMarker(marker);
-			}
+			Marker marker = context.get(MarkerFactory.class, MarkerFactory.INSTANCE).createMarker(location.toString(), progressMonitor);
+			ret.getMarkers().add(marker);
 		}
 		
 		return ret;

@@ -72,13 +72,13 @@ public interface HtmlPackage extends EPackage {
 	int HTML_ELEMENT = 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__MARKER = NcorePackage.MODEL_ELEMENT__MARKER;
+	int HTML_ELEMENT__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -163,13 +163,13 @@ public interface HtmlPackage extends EPackage {
 	int TAG = 1;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TAG__MARKER = HTML_ELEMENT__MARKER;
+	int TAG__MARKERS = HTML_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -263,13 +263,13 @@ public interface HtmlPackage extends EPackage {
 	int PAGE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__MARKER = NcorePackage.MODEL_ELEMENT__MARKER;
+	int PAGE__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -399,13 +399,13 @@ public interface HtmlPackage extends EPackage {
 	int STYLESHEET = 3;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STYLESHEET__MARKER = ContentPackage.FILTER__MARKER;
+	int STYLESHEET__MARKERS = ContentPackage.FILTER__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -481,13 +481,13 @@ public interface HtmlPackage extends EPackage {
 	int STYLESHEET_REFERENCE = 4;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STYLESHEET_REFERENCE__MARKER = NcorePackage.MODEL_ELEMENT__MARKER;
+	int STYLESHEET_REFERENCE__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -563,13 +563,13 @@ public interface HtmlPackage extends EPackage {
 	int SCRIPT = 5;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SCRIPT__MARKER = ContentPackage.FILTER__MARKER;
+	int SCRIPT__MARKERS = ContentPackage.FILTER__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -645,13 +645,13 @@ public interface HtmlPackage extends EPackage {
 	int SCRIPT_REFERENCE = 6;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SCRIPT_REFERENCE__MARKER = NcorePackage.MODEL_ELEMENT__MARKER;
+	int SCRIPT_REFERENCE__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.

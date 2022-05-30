@@ -73,13 +73,13 @@ public interface AppPackage extends EPackage {
 	int LABEL = 0;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__MARKER = BootstrapPackage.BOOTSTRAP_ELEMENT__MARKER;
+	int LABEL__MARKERS = BootstrapPackage.BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -272,13 +272,13 @@ public interface AppPackage extends EPackage {
 	int LINK = 1;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK__MARKER = LABEL__MARKER;
+	int LINK__MARKERS = LABEL__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -525,13 +525,13 @@ public interface AppPackage extends EPackage {
 	int PAGE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__MARKER = BootstrapPackage.BOOTSTRAP_ELEMENT__MARKER;
+	int PAGE__MARKERS = BootstrapPackage.BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -688,13 +688,13 @@ public interface AppPackage extends EPackage {
 	int PAGE_PART = 3;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_PART__MARKER = BootstrapPackage.BOOTSTRAP_ELEMENT__MARKER;
+	int PAGE_PART__MARKERS = BootstrapPackage.BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -797,13 +797,13 @@ public interface AppPackage extends EPackage {
 	int HEADER = 4;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HEADER__MARKER = PAGE_PART__MARKER;
+	int HEADER__MARKERS = PAGE_PART__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -915,13 +915,13 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_BAR = 5;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_BAR__MARKER = PAGE_PART__MARKER;
+	int NAVIGATION_BAR__MARKERS = PAGE_PART__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -1060,13 +1060,13 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL = 6;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_PANEL__MARKER = PAGE_PART__MARKER;
+	int NAVIGATION_PANEL__MARKERS = PAGE_PART__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -1214,13 +1214,13 @@ public interface AppPackage extends EPackage {
 	int CONTENT_PANEL = 7;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_PANEL__MARKER = PAGE_PART__MARKER;
+	int CONTENT_PANEL__MARKERS = PAGE_PART__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -1404,13 +1404,13 @@ public interface AppPackage extends EPackage {
 	int FOOTER = 8;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FOOTER__MARKER = PAGE_PART__MARKER;
+	int FOOTER__MARKERS = PAGE_PART__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -1513,13 +1513,13 @@ public interface AppPackage extends EPackage {
 	int ACTION = 9;
 
 	/**
-	 * The feature id for the '<em><b>Marker</b></em>' containment reference.
+	 * The feature id for the '<em><b>Markers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__MARKER = LINK__MARKER;
+	int ACTION__MARKERS = LINK__MARKERS;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
