@@ -72,7 +72,7 @@ public class DefaultJsTreeFactory implements JsTreeFactory {
 	@Override
 	public String buildAjaxJsTree(String nodesUrl, String contextMenuUrl) {
 		TokenSource tokens = getHTMLFactory().tokenSource("nodesUrl", nodesUrl).put("contextMenuUrl", contextMenuUrl);
-		return getHTMLFactory().interpolate(getClass().getResource(contextMenuUrl == null ? "ajaxTree.js" : "ajaxTreeWithContextMenu.js"), tokens);
+		return getHTMLFactory().interpolate(DefaultJsTreeFactory.class.getResource(contextMenuUrl == null ? "ajaxTree.js" : "ajaxTreeWithContextMenu.js"), tokens);
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class DefaultJsTreeFactory implements JsTreeFactory {
 			tokens.put("searchInputSelector", searchInputSelector);
 			tokens.put("timer", "window['nsd_jstTreeSearchTimer_" + getHTMLFactory().nextId() + "']");
 			tokens.put("treeSelector", selector);
-			code.append(getHTMLFactory().interpolate(getClass().getResource("bindSearch.js"), tokens));			
+			code.append(getHTMLFactory().interpolate(DefaultJsTreeFactory.class.getResource("bindSearch.js"), tokens));			
 		}
 		
 		code.append(System.lineSeparator()).append("});");
