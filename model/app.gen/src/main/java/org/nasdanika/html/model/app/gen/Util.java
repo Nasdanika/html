@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -68,6 +69,7 @@ import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.Item;
 import org.nasdanika.html.model.bootstrap.Modal;
+import org.w3c.dom.NodeList;
 
 import com.mxgraph.io.mxCodec;
 import com.mxgraph.model.mxGraphModel;
@@ -170,13 +172,16 @@ public final class Util {
 	 * @param context Context used for uri resolution - interpolation of action locations and names. can be null.
 	 * @param container Receiver of generated resources.
 	 * @param progressMonitor Progress monitor.
+	 * @throws Exception 
 	 */
 	public static void generateSite(
 			Label root, 
 			org.nasdanika.html.model.bootstrap.Page pageTemplate,
 			Container container,
+			ActionContentProvider.Factory actionContentProviderFactory,
+			PageContentProvider.Factory pageContentProviderFactory,
 			Context context,
-			ProgressMonitor progressMonitor) {
+			ProgressMonitor progressMonitor) throws Exception {
 	
 		Label principal = null;
 		EList<EObject> rootChildren = root.getChildren();
@@ -189,7 +194,7 @@ public final class Util {
 			}
 		}
 		
-		generateSite(root, principal, root, Collections.emptyList(), pageTemplate, container, context, progressMonitor);
+		generateSite(root, principal, root, Collections.emptyList(), pageTemplate, container, actionContentProviderFactory, pageContentProviderFactory, context, progressMonitor);
 	}
 	
 	/**
@@ -202,6 +207,7 @@ public final class Util {
 	 * @param context Context used for uri resolution - interpolation of action locations and names. can be null.
 	 * @param container Receiver of generated resources.
 	 * @param progressMonitor Progress monitor.
+	 * @throws Exception 
 	 */
 	public static void generateSite(
 			Label root, 
@@ -210,8 +216,10 @@ public final class Util {
 			List<Label> actionPath,
 			org.nasdanika.html.model.bootstrap.Page pageTemplate,
 			Container container,
+			ActionContentProvider.Factory contentProviderFactory,
+			PageContentProvider.Factory pageProviderFactory,
 			Context context,
-			ProgressMonitor progressMonitor) {
+			ProgressMonitor progressMonitor) throws Exception {
 	
 		if (context == null) {
 			context = Context.EMPTY_CONTEXT;
@@ -230,6 +238,8 @@ public final class Util {
 				uriResolver, 
 				(URI) context.get(Context.BASE_URI_PROPERTY), 
 				container, 
+				contentProviderFactory == null ? null : contentProviderFactory.create(context),
+				pageProviderFactory == null ? null : pageProviderFactory.create(context),						
 				progressMonitor);
 	}
 	
@@ -243,6 +253,7 @@ public final class Util {
 	 * @param baseURI Base URI for resolution, specifically to create relative URI's.
 	 * @param container Receiver of generated resources.
 	 * @param progressMonitor Progress monitor.
+	 * @throws Exception 
 	 */
 	public static void generateSite(
 			Label root, 
@@ -253,7 +264,9 @@ public final class Util {
 			BiFunction<Label, URI, URI> uriResolver, 
 			URI baseURI,
 			Container container,
-			ProgressMonitor progressMonitor) {
+			ActionContentProvider actionContentProvider,	
+			PageContentProvider pageContentProvider,
+			ProgressMonitor progressMonitor) throws Exception {
 		
 		if (activeAction instanceof Action && activeAction.eContainmentFeature() != AppPackage.Literals.ACTION__SECTIONS) {
 			URI uri = uriResolver.apply(activeAction, baseURI);				
@@ -267,10 +280,10 @@ public final class Util {
 					}
 					for (EObject be: bootstrapPage.getBody()) {
 						if (be instanceof org.nasdanika.html.model.app.Page) {
-							buildAppPage(root, principal, (Action) activeAction, actionPath, (org.nasdanika.html.model.app.Page) be, uriResolver, progressMonitor);						
+							buildAppPage(root, principal, (Action) activeAction, actionPath, (org.nasdanika.html.model.app.Page) be, uriResolver, actionContentProvider, progressMonitor);						
 						}
 					}
-					file.getContents().add(bootstrapPage);
+					file.getContents().add(pageContentProvider == null ? bootstrapPage : pageContentProvider.getPageContent(bootstrapPage, baseURI, uriResolver, progressMonitor));
 					
 					if (activeAction instanceof Action) {
 						for (org.nasdanika.exec.resources.Resource res: ((Action) activeAction).getResources()) {
@@ -288,30 +301,30 @@ public final class Util {
 		
 		for (EObject child: resolveActionReferences(activeAction.getChildren())) {
 			if (child instanceof Action) {
-				generateSite(root, principal, (Action) child, subActionPath, pageTemplate, uriResolver, baseURI, container, progressMonitor);
+				generateSite(root, principal, (Action) child, subActionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
 			}
 		}
 				
 		if (activeAction instanceof Action) {
 			Action theActiveAction = (Action) activeAction;
 			for (Action section: theActiveAction.getSections()) {
-				generateSite(root, principal, (Action) section, subActionPath, pageTemplate, uriResolver, baseURI, container, progressMonitor);
+				generateSite(root, principal, (Action) section, subActionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
 			}
 			
 			for (EObject navigation: resolveActionReferences(theActiveAction.getNavigation())) {
 				if (navigation instanceof Action) {
-					generateSite(root, principal, (Action) navigation, subActionPath, pageTemplate, uriResolver, baseURI, container, progressMonitor);
+					generateSite(root, principal, (Action) navigation, subActionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
 				}
 			}
 			
 			for (Action anonymous: theActiveAction.getAnonymous()) {
-				generateSite(root, principal, anonymous, subActionPath, pageTemplate, uriResolver, baseURI, container, progressMonitor);
+				generateSite(root, principal, anonymous, subActionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
 			}
 			
-			generateNavigationPanel(root, principal, actionPath, theActiveAction.getFloatLeftNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
-			generateNavigationPanel(root, principal, actionPath, theActiveAction.getFloatRightNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
-			generateNavigationPanel(root, principal, actionPath, theActiveAction.getLeftNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
-			generateNavigationPanel(root, principal, actionPath, theActiveAction.getRightNavigation(), pageTemplate, uriResolver, baseURI, container, progressMonitor);
+			generateNavigationPanel(root, principal, actionPath, theActiveAction.getFloatLeftNavigation(), pageTemplate, uriResolver, baseURI, container, actionContentProvider,  pageContentProvider,progressMonitor);
+			generateNavigationPanel(root, principal, actionPath, theActiveAction.getFloatRightNavigation(), pageTemplate, uriResolver, baseURI, container, actionContentProvider,  pageContentProvider,progressMonitor);
+			generateNavigationPanel(root, principal, actionPath, theActiveAction.getLeftNavigation(), pageTemplate, uriResolver, baseURI, container, actionContentProvider,  pageContentProvider,progressMonitor);
+			generateNavigationPanel(root, principal, actionPath, theActiveAction.getRightNavigation(), pageTemplate, uriResolver, baseURI, container, actionContentProvider,  pageContentProvider,progressMonitor);
 		}
 	}
 	
@@ -322,7 +335,8 @@ public final class Util {
 			List<Label> actionPath,
 			org.nasdanika.html.model.app.Page appPage,
 			BiFunction<Label, URI, URI> uriResolver, 
-			ProgressMonitor progressMonitor) {
+			ActionContentProvider contentProvider,			
+			ProgressMonitor progressMonitor) throws Exception {
 		
 		if (root != null) {
 			Label title = createLabel(root, activeAction, uriResolver, null, "header/title", false, false);
@@ -432,7 +446,7 @@ public final class Util {
 			}
 		}
 		
-		buildContentPanel(activeAction, actionPath, activeAction == root || activeAction == principal, contentPanel, uriResolver, progressMonitor);	
+		buildContentPanel(activeAction, actionPath, activeAction == root || activeAction == principal, contentPanel, uriResolver, contentProvider, progressMonitor);	
 	}
 	
 	private static void buildContentPanel(
@@ -441,7 +455,8 @@ public final class Util {
 			boolean rootOrPrincipal,
 			ContentPanel contentPanel,
 			BiFunction<Label, URI, URI> uriResolver, 
-			ProgressMonitor progressMonitor) {
+			ActionContentProvider contentProvider,
+			ProgressMonitor progressMonitor) throws Exception {
 		
 		if (!rootOrPrincipal) {
 			if (path != null && !path.isEmpty()) {
@@ -487,7 +502,7 @@ public final class Util {
 		for (Action section: action.getSections()) {
 			ContentPanel sectionPanel = AppFactory.eINSTANCE.createContentPanel();
 			cpSections.add(sectionPanel);
-			buildContentPanel(section, null, false, sectionPanel, uriResolver, progressMonitor);
+			buildContentPanel(section, null, false, sectionPanel, uriResolver, contentProvider, progressMonitor);
 		}
 
 		contentPanel.setFloatLeftNavigation(createNavigationPanel(action.getFloatLeftNavigation()));
@@ -495,7 +510,7 @@ public final class Util {
 		contentPanel.setLeftNavigation(createNavigationPanel(action.getLeftNavigation()));		
 		contentPanel.setRightNavigation(createNavigationPanel(action.getRightNavigation()));
 		
-		contentPanel.getContent().addAll(EcoreUtil.copyAll(action.getContent()));
+		contentPanel.getContent().addAll(contentProvider == null ? EcoreUtil.copyAll(action.getContent()) : contentProvider.getActionContent(action, uriResolver, progressMonitor));
 	}
 	
 	/**
@@ -718,12 +733,14 @@ public final class Util {
 			BiFunction<Label, URI, URI> uriResolver, 
 			URI baseURI, 
 			Container container,
-			ProgressMonitor progressMonitor) {
+			ActionContentProvider actionContentProvider,
+			PageContentProvider pageContentProvider,
+			ProgressMonitor progressMonitor) throws Exception {
 		
 		if (navigationPanel != null) {
 			for (EObject item: resolveActionReferences(navigationPanel.getItems())) {
 				if (item instanceof Label) {
-					generateSite(root, principal, (Label) item, actionPath, pageTemplate, uriResolver, baseURI, container, progressMonitor);
+					generateSite(root, principal, (Label) item, actionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
 				}
 			}			
 		}
@@ -857,7 +874,8 @@ public final class Util {
 						contentText.append(" ").append(labelText);
 					}
 				} else if (cellValue != null) {
-					contentText.append(" ").append(cellValue);					
+					String text = Jsoup.parse(cellValue.toString()).text();
+					contentText.append(" ").append(text);					
 				}
 			});
 		}
@@ -901,9 +919,9 @@ public final class Util {
 			Object xml = jsonData.get("xml");
 			if (xml instanceof String) {
 				org.w3c.dom.Document xmlDocument = mxXmlUtils.parseXml((String) xml);
-				org.w3c.dom.Element documentElement = xmlDocument.getDocumentElement();
-				String compressedFlag = documentElement.getAttribute("compressed");
-				if ("true".equals(compressedFlag)) {
+				org.w3c.dom.Element documentElement = xmlDocument.getDocumentElement(); // shall be diagram
+				NodeList mxGraphModelElements = documentElement.getElementsByTagName("mxGraphModel");				
+				if (mxGraphModelElements.getLength() == 0 || documentElement.hasAttribute("compressed") && "true".equals(documentElement.getAttribute("compressed"))) { // Excessive check for compressed, the first condition shall be sufficient.
 					try {
 						String textContent = documentElement.getTextContent();
 						if (!Base64.isBase64(textContent)) {
@@ -915,16 +933,15 @@ public final class Util {
 					    String decodedStr = URLDecoder.decode(decompressedStr, StandardCharsets.UTF_8.name());
 					    org.w3c.dom.Document modelDoc = mxXmlUtils.parseXml(decodedStr);
 						mxCodec codec = new mxCodec(modelDoc);
-						return (mxGraphModel) codec.decode(modelDoc.getDocumentElement());
+						return Objects.requireNonNull((mxGraphModel) codec.decode(modelDoc.getDocumentElement()), "Graph model is null for " + decodedStr);
 					} catch (IOException e) {
 						throw new NasdanikaException("Error decoding a drwaio diagram: " + e, e);
 					}
 				}
 				
 				mxCodec codec = new mxCodec(xmlDocument);
-				org.w3c.dom.Element diagramElement = (org.w3c.dom.Element) xmlDocument.getElementsByTagName("diagram").item(0);
-				org.w3c.dom.Element graphModelElement = (org.w3c.dom.Element) diagramElement.getElementsByTagName("mxGraphModel").item(0);
-				return (mxGraphModel) codec.decode(graphModelElement);
+				org.w3c.dom.Element graphModelElement = Objects.requireNonNull((org.w3c.dom.Element) mxGraphModelElements.item(0), "No mxGraphModel element: " + xml);
+				return Objects.requireNonNull((mxGraphModel) codec.decode(graphModelElement), "Graph model is null for " + xml);
 			}
 		}
 		return null;

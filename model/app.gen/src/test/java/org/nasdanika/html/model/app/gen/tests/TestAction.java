@@ -88,6 +88,8 @@ public class TestAction extends TestBase {
 				root, 
 				pageTemplate,
 				container,
+				null,
+				null,
 				Context.EMPTY_CONTEXT,
 				progressMonitor);
 		

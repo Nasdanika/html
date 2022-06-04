@@ -244,6 +244,8 @@ public class TestEcoreDoc {
 				root, 
 				pageTemplate,
 				container,
+				null,
+				null,
 				context,
 				progressMonitor);
 		
