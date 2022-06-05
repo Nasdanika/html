@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +27,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterOutputStream;
 
@@ -69,6 +72,7 @@ import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.Item;
 import org.nasdanika.html.model.bootstrap.Modal;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.mxgraph.io.mxCodec;
@@ -918,38 +922,56 @@ public final class Util {
 			JSONObject jsonData = new JSONObject(data);
 			Object xml = jsonData.get("xml");
 			if (xml instanceof String) {
-				org.w3c.dom.Document xmlDocument = mxXmlUtils.parseXml((String) xml);
-				org.w3c.dom.Element documentElement = xmlDocument.getDocumentElement(); // shall be diagram
-				NodeList mxGraphModelElements = documentElement.getElementsByTagName("mxGraphModel");				
-				if (mxGraphModelElements.getLength() == 0 || documentElement.hasAttribute("compressed") && "true".equals(documentElement.getAttribute("compressed"))) { // Excessive check for compressed, the first condition shall be sufficient.
-					try {
-						String textContent = documentElement.getTextContent();
-						if (!Base64.isBase64(textContent)) {
-							throw new NasdanikaException("Compressed diagram is not Base64 encoded");
-						}
-					    byte[] compressed = Base64.decodeBase64(textContent);
-					    byte[] decompressed = inflate(compressed);
-					    String decompressedStr = new String(decompressed, StandardCharsets.UTF_8);
-					    String decodedStr = URLDecoder.decode(decompressedStr, StandardCharsets.UTF_8.name());
-					    org.w3c.dom.Document modelDoc = mxXmlUtils.parseXml(decodedStr);
-						mxCodec codec = new mxCodec(modelDoc);
-						return Objects.requireNonNull((mxGraphModel) codec.decode(modelDoc.getDocumentElement()), "Graph model is null for " + decodedStr);
-					} catch (IOException e) {
-						throw new NasdanikaException("Error decoding a drwaio diagram: " + e, e);
-					}
-				}
-				
-				mxCodec codec = new mxCodec(xmlDocument);
-				org.w3c.dom.Element graphModelElement = Objects.requireNonNull((org.w3c.dom.Element) mxGraphModelElements.item(0), "No mxGraphModel element: " + xml);
-				return Objects.requireNonNull((mxGraphModel) codec.decode(graphModelElement), "Graph model is null for " + xml);
+				return parseMxGraphModel(xml);
 			}
 		}
 		return null;
+	}
+
+	public static mxGraphModel parseMxGraphModel(Object xml) {
+		org.w3c.dom.Document xmlDocument = mxXmlUtils.parseXml((String) xml);
+		org.w3c.dom.Element mxfileElement = xmlDocument.getDocumentElement(); // mxfile
+		org.w3c.dom.Element diagramElement = getChildElement(mxfileElement, "diagram");
+		org.w3c.dom.Element mxGraphModelElement = getChildElement(diagramElement, "mxGraphModel");
+		if (mxGraphModelElement == null) {
+			try {
+				String textContent = diagramElement.getTextContent();
+				if (!Base64.isBase64(textContent)) {
+					throw new NasdanikaException("Compressed diagram is not Base64 encoded");
+				}
+			    byte[] compressed = Base64.decodeBase64(textContent);
+			    byte[] decompressed = inflate(compressed);
+			    String decompressedStr = new String(decompressed, StandardCharsets.UTF_8);
+			    String decodedStr = URLDecoder.decode(decompressedStr, StandardCharsets.UTF_8.name());
+			    org.w3c.dom.Document modelDoc = mxXmlUtils.parseXml(decodedStr);
+				mxCodec codec = new mxCodec(modelDoc);
+				return Objects.requireNonNull((mxGraphModel) codec.decode(modelDoc.getDocumentElement()), "Graph model is null for " + decodedStr);
+			} catch (IOException e) {
+				throw new NasdanikaException("Error decoding a drwaio diagram: " + e, e);
+			}
+		}
+		
+		mxCodec codec = new mxCodec(xmlDocument);
+		org.w3c.dom.Element graphModelElement = Objects.requireNonNull(mxGraphModelElement, "No mxGraphModel element: " + xml);
+		return Objects.requireNonNull((mxGraphModel) codec.decode(graphModelElement), "Graph model is null for " + xml);			
 	}
 	
 	private static  byte[] inflate(byte[] content) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try (ByteArrayInputStream source = new ByteArrayInputStream(content); OutputStream target = new InflaterOutputStream(baos, new Inflater(true))) {
+	        byte[] buf = new byte[8192];
+	        int length;
+	        while ((length = source.read(buf)) > 0) {
+	            target.write(buf, 0, length);
+	        }
+		}
+		
+		return baos.toByteArray();
+	}
+	
+	private static  byte[] deflate(byte[] content) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try (ByteArrayInputStream source = new ByteArrayInputStream(content); OutputStream target = new DeflaterOutputStream(baos, new Deflater(Deflater.BEST_COMPRESSION, true))) {
 	        byte[] buf = new byte[8192];
 	        int length;
 	        while ((length = source.read(buf)) > 0) {
@@ -968,6 +990,67 @@ public final class Util {
 				visit((mxICell) root, visitor);
 			}
 		}		
+	}
+	
+	private static org.w3c.dom.Element getChildElement(org.w3c.dom.Element parent, String name) {
+		NodeList children = parent.getChildNodes();
+		for (int i = 0; i < children.getLength(); ++i) {
+			Node child = children.item(i);
+			if (child instanceof org.w3c.dom.Element && ((org.w3c.dom.Element) child).getTagName().equals(name)) {
+				return (org.w3c.dom.Element) child;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Loads graph model, traverses all cells and then saves and returns the model.
+	 * @param spec
+	 * @param cellVisitor
+	 * @return
+	 */
+	public static String filterMxGraphModel(String spec, Consumer<mxICell> cellVisitor) throws Exception {
+		org.w3c.dom.Document xmlDocument = mxXmlUtils.parseXml(spec);
+		System.out.println(spec);
+		org.w3c.dom.Element mxfileElement = xmlDocument.getDocumentElement(); // mxfile
+		org.w3c.dom.Element diagramElement = getChildElement(mxfileElement, "diagram");
+		org.w3c.dom.Element mxGraphModelElement = getChildElement(diagramElement, "mxGraphModel");
+		if (mxGraphModelElement == null) { // Compressed
+			String textContent = diagramElement.getTextContent();
+			if (!Base64.isBase64(textContent)) {
+				throw new NasdanikaException("Compressed diagram is not Base64 encoded");
+			}
+		    byte[] compressed = Base64.decodeBase64(textContent);
+		    byte[] decompressed = inflate(compressed);
+		    String decompressedStr = new String(decompressed, StandardCharsets.UTF_8);
+		    String decodedStr = URLDecoder.decode(decompressedStr, StandardCharsets.UTF_8.name());
+		    org.w3c.dom.Document modelDoc = mxXmlUtils.parseXml(decodedStr);
+			mxCodec codec = new mxCodec(modelDoc);
+			mxGraphModel graphModel = Objects.requireNonNull((mxGraphModel) codec.decode(modelDoc.getDocumentElement()), "Graph model is null for " + decodedStr);
+			Object root = graphModel.getRoot();
+			if (root instanceof mxICell) {
+				visit((mxICell) root, cellVisitor);
+			}
+			Node encodedModel = codec.encode(graphModel);
+			String encodedModelStr = mxXmlUtils.getXml(encodedModel);
+		    String urlEncodedStr = URLEncoder.encode(encodedModelStr, StandardCharsets.UTF_8.name());
+		    byte[] reCompressed = deflate(urlEncodedStr.getBytes(StandardCharsets.UTF_8));
+		    String reEncoded = Base64.encodeBase64String(reCompressed);
+			diagramElement.setTextContent(reEncoded);
+			String ret = mxXmlUtils.getXml(xmlDocument);
+			System.out.println(ret);
+			return ret;
+		}
+		
+		mxCodec codec = new mxCodec(xmlDocument);
+		mxGraphModel graphModel = Objects.requireNonNull((mxGraphModel) codec.decode(mxGraphModelElement), "Graph model is null for " + spec);
+		Object root = graphModel.getRoot();
+		if (root instanceof mxICell) {
+			visit((mxICell) root, cellVisitor);
+		}
+		Node encodedModel = codec.encode(graphModel);
+		diagramElement.replaceChild(encodedModel, mxGraphModelElement);
+		return mxXmlUtils.getXml(xmlDocument);			
 	}
 	
 	/**
