@@ -752,23 +752,23 @@ public final class Util {
 	 * @return A function resolving {@link URI} for the argument {@link Action}. Caches results.
 	 */
 	public static BiFunction<Label,URI,URI> uriResolver(Label root, Context context) {		
-		Map<Label, URI> cache = new HashMap<>();
+		Map<String, URI> cache = new HashMap<>();
 		traverse(root, context.get(Context.BASE_URI_PROPERTY, URI.class), context, cache);
 		
 		return new BiFunction<Label, URI, URI>() {
 			
 			@Override
 			public URI apply(Label label, URI base) {
-				URI uri = cache.get(label);				
+				URI uri = cache.get(label.getUuid());		
 				return base == null || uri == null ? uri : uri.deresolve(base, true, true, true);
 			}
 		
 		};
 	}
 	
-	private static void traverse(Label label, URI base, Context context, Map<Label, URI> cache) {
+	private static void traverse(Label label, URI base, Context context, Map<String, URI> cache) {
 		URI linkURI = compute(label, base, context);
-		cache.put(label, linkURI);
+		cache.put(label.getUuid(), linkURI);
 		
 		for (EObject child: resolveActionReferences(label.getChildren())) {
 			if (child instanceof Action) {
