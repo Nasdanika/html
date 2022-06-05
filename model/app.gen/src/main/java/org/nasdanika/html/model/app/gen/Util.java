@@ -971,7 +971,7 @@ public final class Util {
 	
 	private static  byte[] deflate(byte[] content) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try (ByteArrayInputStream source = new ByteArrayInputStream(content); OutputStream target = new DeflaterOutputStream(baos, new Deflater(Deflater.BEST_COMPRESSION, true))) {
+		try (ByteArrayInputStream source = new ByteArrayInputStream(content); OutputStream target = new DeflaterOutputStream(baos, new Deflater(Deflater.DEFAULT_COMPRESSION, true))) {
 	        byte[] buf = new byte[8192];
 	        int length;
 	        while ((length = source.read(buf)) > 0) {
@@ -1011,7 +1011,6 @@ public final class Util {
 	 */
 	public static String filterMxGraphModel(String spec, Consumer<mxICell> cellVisitor) throws Exception {
 		org.w3c.dom.Document xmlDocument = mxXmlUtils.parseXml(spec);
-		System.out.println(spec);
 		org.w3c.dom.Element mxfileElement = xmlDocument.getDocumentElement(); // mxfile
 		org.w3c.dom.Element diagramElement = getChildElement(mxfileElement, "diagram");
 		org.w3c.dom.Element mxGraphModelElement = getChildElement(diagramElement, "mxGraphModel");
@@ -1033,12 +1032,11 @@ public final class Util {
 			}
 			Node encodedModel = codec.encode(graphModel);
 			String encodedModelStr = mxXmlUtils.getXml(encodedModel);
-		    String urlEncodedStr = URLEncoder.encode(encodedModelStr, StandardCharsets.UTF_8.name());
+		    String urlEncodedStr = URLEncoder.encode(encodedModelStr, StandardCharsets.UTF_8.name()).replace("+", "%20"); // Hackish replacement of + with %20 for drawio viewer to understand.
 		    byte[] reCompressed = deflate(urlEncodedStr.getBytes(StandardCharsets.UTF_8));
 		    String reEncoded = Base64.encodeBase64String(reCompressed);
 			diagramElement.setTextContent(reEncoded);
 			String ret = mxXmlUtils.getXml(xmlDocument);
-			System.out.println(ret);
 			return ret;
 		}
 		
