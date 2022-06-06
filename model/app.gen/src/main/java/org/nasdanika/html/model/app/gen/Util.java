@@ -566,6 +566,12 @@ public final class Util {
 			}
 		}
 		
+		for (Action ac: action.getSections()) {
+			if (isActiveAction(ac, activeAction, inspectChildren)) {
+				return true;
+			}
+		}		
+		
 		for (EObject nc: action.getNavigation()) {
 			if (nc instanceof Action && isActiveAction((Action) nc, activeAction, inspectChildren)) {
 				return true;
