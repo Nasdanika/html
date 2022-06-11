@@ -1009,6 +1009,19 @@ public final class Util {
 		return null;
 	}
 	
+	private static List<org.w3c.dom.Element> getChildrenElements(org.w3c.dom.Element parent, String name) {
+		List<org.w3c.dom.Element> ret = new ArrayList<>();
+		NodeList children = parent.getChildNodes();
+		for (int i = 0; i < children.getLength(); ++i) {
+			Node child = children.item(i);
+			if (child instanceof org.w3c.dom.Element && ((org.w3c.dom.Element) child).getTagName().equals(name)) {
+				ret.add((org.w3c.dom.Element) child);
+			}
+		}
+		return ret;
+	}
+	
+	
 	/**
 	 * Loads graph model, traverses all cells and then saves and returns the model.
 	 * @param spec
@@ -1018,42 +1031,43 @@ public final class Util {
 	public static String filterMxGraphModel(String spec, Consumer<mxICell> cellVisitor) throws Exception {
 		org.w3c.dom.Document xmlDocument = mxXmlUtils.parseXml(spec);
 		org.w3c.dom.Element mxfileElement = xmlDocument.getDocumentElement(); // mxfile
-		org.w3c.dom.Element diagramElement = getChildElement(mxfileElement, "diagram");
-		org.w3c.dom.Element mxGraphModelElement = getChildElement(diagramElement, "mxGraphModel");
-		if (mxGraphModelElement == null) { // Compressed
-			String textContent = diagramElement.getTextContent();
-			if (!Base64.isBase64(textContent)) {
-				throw new NasdanikaException("Compressed diagram is not Base64 encoded");
+		for (org.w3c.dom.Element diagramElement: getChildrenElements(mxfileElement, "diagram")) {
+			List<org.w3c.dom.Element> mxGraphModelElements = getChildrenElements(diagramElement, "mxGraphModel");
+			if (mxGraphModelElements.isEmpty()) { // Compressed
+				String textContent = diagramElement.getTextContent();
+				if (!Base64.isBase64(textContent)) {
+					throw new NasdanikaException("Compressed diagram is not Base64 encoded");
+				}
+			    byte[] compressed = Base64.decodeBase64(textContent);
+			    byte[] decompressed = inflate(compressed);
+			    String decompressedStr = new String(decompressed, StandardCharsets.UTF_8);
+			    String decodedStr = URLDecoder.decode(decompressedStr, StandardCharsets.UTF_8.name());
+			    org.w3c.dom.Document modelDoc = mxXmlUtils.parseXml(decodedStr);
+				mxCodec codec = new mxCodec(modelDoc);
+				mxGraphModel graphModel = Objects.requireNonNull((mxGraphModel) codec.decode(modelDoc.getDocumentElement()), "Graph model is null for " + decodedStr);
+				Object root = graphModel.getRoot();
+				if (root instanceof mxICell) {
+					visit((mxICell) root, cellVisitor);
+				}
+				Node encodedModel = codec.encode(graphModel);
+				String encodedModelStr = mxXmlUtils.getXml(encodedModel);
+			    String urlEncodedStr = URLEncoder.encode(encodedModelStr, StandardCharsets.UTF_8.name()).replace("+", "%20"); // Hackish replacement of + with %20 for drawio viewer to understand.
+			    byte[] reCompressed = deflate(urlEncodedStr.getBytes(StandardCharsets.UTF_8));
+			    String reEncoded = Base64.encodeBase64String(reCompressed);
+				diagramElement.setTextContent(reEncoded);
+			} else {			
+				mxCodec codec = new mxCodec(xmlDocument);
+				for (org.w3c.dom.Element mxGraphModelElement: mxGraphModelElements) {
+					mxGraphModel graphModel = Objects.requireNonNull((mxGraphModel) codec.decode(mxGraphModelElement), "Graph model is null for " + spec);
+					Object root = graphModel.getRoot();
+					if (root instanceof mxICell) {
+						visit((mxICell) root, cellVisitor);
+					}
+					Node encodedModel = codec.encode(graphModel);
+					diagramElement.replaceChild(encodedModel, mxGraphModelElement);
+				}
 			}
-		    byte[] compressed = Base64.decodeBase64(textContent);
-		    byte[] decompressed = inflate(compressed);
-		    String decompressedStr = new String(decompressed, StandardCharsets.UTF_8);
-		    String decodedStr = URLDecoder.decode(decompressedStr, StandardCharsets.UTF_8.name());
-		    org.w3c.dom.Document modelDoc = mxXmlUtils.parseXml(decodedStr);
-			mxCodec codec = new mxCodec(modelDoc);
-			mxGraphModel graphModel = Objects.requireNonNull((mxGraphModel) codec.decode(modelDoc.getDocumentElement()), "Graph model is null for " + decodedStr);
-			Object root = graphModel.getRoot();
-			if (root instanceof mxICell) {
-				visit((mxICell) root, cellVisitor);
-			}
-			Node encodedModel = codec.encode(graphModel);
-			String encodedModelStr = mxXmlUtils.getXml(encodedModel);
-		    String urlEncodedStr = URLEncoder.encode(encodedModelStr, StandardCharsets.UTF_8.name()).replace("+", "%20"); // Hackish replacement of + with %20 for drawio viewer to understand.
-		    byte[] reCompressed = deflate(urlEncodedStr.getBytes(StandardCharsets.UTF_8));
-		    String reEncoded = Base64.encodeBase64String(reCompressed);
-			diagramElement.setTextContent(reEncoded);
-			String ret = mxXmlUtils.getXml(xmlDocument);
-			return ret;
 		}
-		
-		mxCodec codec = new mxCodec(xmlDocument);
-		mxGraphModel graphModel = Objects.requireNonNull((mxGraphModel) codec.decode(mxGraphModelElement), "Graph model is null for " + spec);
-		Object root = graphModel.getRoot();
-		if (root instanceof mxICell) {
-			visit((mxICell) root, cellVisitor);
-		}
-		Node encodedModel = codec.encode(graphModel);
-		diagramElement.replaceChild(encodedModel, mxGraphModelElement);
 		return mxXmlUtils.getXml(xmlDocument);			
 	}
 	
