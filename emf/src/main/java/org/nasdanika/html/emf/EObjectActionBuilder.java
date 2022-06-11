@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -235,7 +236,9 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		if (semanticElement instanceof ModelElement) {
 			EObject actionPrototype = ((ModelElement) semanticElement).getActionPrototype();
 			if (actionPrototype instanceof Action) {
-				return EcoreUtil.copy((Action) actionPrototype);
+				Action copy = EcoreUtil.copy((Action) actionPrototype);
+				copy.setUuid(UUID.randomUUID().toString());
+				return copy;
 			}
 			if (actionPrototype != null) {
 				ActionProvider actionProvider = Objects.requireNonNull((ActionProvider) EcoreUtil.getRegisteredAdapter(actionPrototype, ActionProvider.class), "Cannot adapt " + actionPrototype + " to " + ActionProvider.class);
