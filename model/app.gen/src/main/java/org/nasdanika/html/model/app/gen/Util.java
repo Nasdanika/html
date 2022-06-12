@@ -76,6 +76,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.mxgraph.io.mxCodec;
+import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGraphModel;
 import com.mxgraph.model.mxICell;
 import com.mxgraph.util.mxXmlUtils;
@@ -1192,6 +1193,61 @@ public final class Util {
 		};
 		
 	}
+	
+	/**
+	 * Adds / at the end of parent URI if it is not already there.
+	 */
+	private static java.util.function.Function<URI,URI> DEFAULT_BASE_CELL_URI_FILTER = baseCellURI -> {
+		if (baseCellURI == null) {
+			return baseCellURI;
+		}
+		String lastSegment = baseCellURI.lastSegment();
+		if (lastSegment != null && lastSegment.length() == 0) {
+			return baseCellURI;
+		}
+		
+		return baseCellURI.appendSegment("");
+	};
 
+	/**
+	 * Resolves cell URI relative to the base URI. If the cell is a connection the cell URI is resolved relative to the source cell URI, which is resolved
+	 * using this function. Otherwise, if the cell has a parent cell, the cell URI is resolved relative to the parent cell URI.
+	 * This method is intended to help with linking diagram elements to external URL's or diagram pages using uri's.   
+	 * @param cell
+	 * @param uriAttribute cell attribute containing URI to resolve
+	 * @param base Base URI
+	 * @param baseCellUriFilter filter for the base cell (vertex parent or edge source) URI. If null and base cell URI is not null and doesn't have a trailing /, then a trailing / is added, i.e. child URI is resolved "under" the base cell URI.
+	 * @return
+	 */
+	public static URI resolveMxICellURI(mxICell cell, String uriAttribute, URI base, java.util.function.Function<URI,URI> baseCellUriFilter) {
+		if (cell == null) {
+			return base;
+		}
+		if (baseCellUriFilter == null) {
+			baseCellUriFilter = DEFAULT_BASE_CELL_URI_FILTER;
+		}
+		mxICell baseCell = cell.getParent(); 
+		if (cell instanceof mxCell) {
+			mxCell theCell = (mxCell) cell; 
+			mxICell source = theCell.getSource(); 
+			if (source != null) { 
+				baseCell = source; 
+			}
+		}
+		URI baseCellURI = baseCell == null ? base : baseCellUriFilter.apply(resolveMxICellURI(baseCell, uriAttribute, base, baseCellUriFilter)); 
+		
+		Object cellValue = cell.getValue(); 		
+		if (cellValue instanceof org.w3c.dom.Element) {
+			org.w3c.dom.Element cellValueElement = (org.w3c.dom.Element) cellValue;
+			if (cellValueElement.hasAttribute(uriAttribute)) {
+				String uri = cellValueElement.getAttribute(uriAttribute);
+				URI cellURI = URI.createURI(uri); 
+				return baseCellURI == null ? cellURI : cellURI.resolve(baseCellURI);
+			}
+		}
+		
+		return baseCellURI;
+			
+	}
 			
 }
