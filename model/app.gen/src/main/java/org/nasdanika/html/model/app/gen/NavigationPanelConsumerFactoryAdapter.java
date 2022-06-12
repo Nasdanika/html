@@ -38,7 +38,7 @@ import org.nasdanika.html.model.app.NavigationPanelStyle;
 
 public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter<NavigationPanel> {
 
-	private static final String CLEAR_STATE_FILTER = "tree.state.filter = function(state) { delete state.core.selected; return state; };";
+	public static final String CLEAR_STATE_FILTER = "tree.state.filter = function(state) { delete state.core.selected; return state; };";
 	private static final String SEARCH_FILTER = " tree.search.search_callback = function(searchStr, node) { if (typeof window.nsdJsTreeSearchCallback === 'function') return window.nsdJsTreeSearchCallback(searchStr, node); var sf = new $.vakata.search(searchStr, true, { caseSensitive : false, fuzzy : false }); return sf.search(node.text).isMatch; };";
 	private static final String SEARCH_INPUT_SUFFIX = "_searchInput";
 	private static final String SEARCH_INPUT_TOOLTIP = "Full-text search. You can use wildcards, e.g. 'foo*' or 'f*o'; title or content fields, e.g. 'title:foo* bar'; boosts, e.g. 'foo^10 bar'; fuzzy matches, e.g. 'foo~1'; and term presence, e.g. '+foo bar -baz'";
