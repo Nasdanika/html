@@ -1021,8 +1021,7 @@ public final class Util {
 		}
 		return ret;
 	}
-	
-	
+		
 	/**
 	 * Loads graph model, traverses all cells and then saves and returns the model.
 	 * @param spec
