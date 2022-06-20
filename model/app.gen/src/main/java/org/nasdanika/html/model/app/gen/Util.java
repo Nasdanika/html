@@ -75,13 +75,6 @@ import org.nasdanika.html.model.bootstrap.Modal;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.mxgraph.io.mxCodec;
-import com.mxgraph.model.mxCell;
-import com.mxgraph.model.mxGraphModel;
-import com.mxgraph.model.mxICell;
-import com.mxgraph.util.mxXmlUtils;
-
-
 public final class Util {
 	
 	public static final String DATA_NSD_ACTION_UUID_ATTRIBUTE = "data-nsd-action-uuid";
