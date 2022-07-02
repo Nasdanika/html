@@ -3,6 +3,7 @@ package org.nasdanika.html.jstree.impl;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,6 +28,13 @@ public class DefaultJsTreeFactory implements JsTreeFactory {
 
 	public DefaultJsTreeFactory(HTMLFactory htmlFactory) {
 		this.htmlFactory = htmlFactory;
+	}
+	
+	/**
+	 * For the service loader
+	 */
+	public DefaultJsTreeFactory() {
+		this(ServiceLoader.load(HTMLFactory.class).findFirst().get());
 	}
 	
 	@Override

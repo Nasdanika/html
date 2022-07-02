@@ -1,6 +1,7 @@
 package org.nasdanika.html.bootstrap.impl;
 
 import java.util.Map;
+import java.util.ServiceLoader;
 
 import org.nasdanika.html.Event;
 import org.nasdanika.html.HTMLElement;
@@ -47,6 +48,13 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 
 	public DefaultBootstrapFactory(HTMLFactory htmlFactory) {
 		this.htmlFactory = htmlFactory;
+	}
+	
+	/**
+	 * For the service loader
+	 */
+	public DefaultBootstrapFactory() {
+		this(ServiceLoader.load(HTMLFactory.class).findFirst().get());
 	}
 	
 	@Override
