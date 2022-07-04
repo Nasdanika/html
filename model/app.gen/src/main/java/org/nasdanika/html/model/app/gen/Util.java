@@ -2,16 +2,11 @@ package org.nasdanika.html.model.app.gen;
 
 import static org.nasdanika.common.Util.isBlank;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,19 +15,15 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.zip.Deflater;
-import java.util.zip.DeflaterOutputStream;
-import java.util.zip.Inflater;
-import java.util.zip.InflaterOutputStream;
 
-import org.apache.commons.codec.binary.Base64;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -47,6 +38,8 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.drawio.ConnectionBase;
+import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.exec.resources.Container;
@@ -72,8 +65,7 @@ import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.Item;
 import org.nasdanika.html.model.bootstrap.Modal;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public final class Util {
 	
@@ -869,19 +861,25 @@ public final class Util {
 		
 		// Drawio diagrams labels
 		for (Element diagramDiv: contentQuery.select("div.mxgraph")) {
-			traverseMxGraphModel(diagramDiv, cell -> {
-				Object cellValue = cell.getValue();
-				if (cellValue instanceof org.w3c.dom.Element) {
-					String label = ((org.w3c.dom.Element) cellValue).getAttribute("label");
-					if (!org.nasdanika.common.Util.isBlank(label)) {
-						String labelText = Jsoup.parse(label).text();
-						contentText.append(" ").append(labelText);
+			try {
+				traverseDrawio(diagramDiv, element -> {
+					if (element instanceof ModelElement) {
+						ModelElement me = (ModelElement) element;
+						String meLabel = me.getLabel();
+						if (!org.nasdanika.common.Util.isBlank(meLabel)) {
+							String labelText = Jsoup.parse(meLabel).text();
+							contentText.append(" ").append(labelText);											
+						}
+						String meTooltip = me.getTooltip();
+						if (!org.nasdanika.common.Util.isBlank(meTooltip)) {
+							String tooltipText = Jsoup.parse(meTooltip).text();
+							contentText.append(" ").append(tooltipText);											
+						}
 					}
-				} else if (cellValue != null) {
-					String text = Jsoup.parse(cellValue.toString()).text();
-					contentText.append(" ").append(text);					
-				}
-			});
+				}, null);
+			} catch (Exception e) {
+				throw new NasdanikaException(e);
+			}
 		}
 		
 		if (org.nasdanika.common.Util.isBlank(contentText.toString())) {
@@ -915,153 +913,43 @@ public final class Util {
 	 * Loads {@link mxGraphModel} from mxgraph div.
 	 * @param mxGraphDiv
 	 * @return
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
 	 */
-	public static mxGraphModel loadMxGraphModel(Element mxGraphDiv) {
+	public static org.nasdanika.drawio.Document loadDrawioDocument(Element mxGraphDiv) throws Exception {
 		String data = mxGraphDiv.attr("data-mxgraph");
 		if (data != null) {
 			JSONObject jsonData = new JSONObject(data);
 			Object xml = jsonData.get("xml");
 			if (xml instanceof String) {
-				return parseMxGraphModel(xml);
+				return org.nasdanika.drawio.Document.load((String) xml);
 			}
 		}
 		return null;
 	}
 
-	public static mxGraphModel parseMxGraphModel(Object xml) {
-		org.w3c.dom.Document xmlDocument = mxXmlUtils.parseXml((String) xml);
-		org.w3c.dom.Element mxfileElement = xmlDocument.getDocumentElement(); // mxfile
-		org.w3c.dom.Element diagramElement = getChildElement(mxfileElement, "diagram");
-		org.w3c.dom.Element mxGraphModelElement = getChildElement(diagramElement, "mxGraphModel");
-		if (mxGraphModelElement == null) {
-			try {
-				String textContent = diagramElement.getTextContent();
-				if (!Base64.isBase64(textContent)) {
-					throw new NasdanikaException("Compressed diagram is not Base64 encoded");
-				}
-			    byte[] compressed = Base64.decodeBase64(textContent);
-			    byte[] decompressed = inflate(compressed);
-			    String decompressedStr = new String(decompressed, StandardCharsets.UTF_8);
-			    String decodedStr = URLDecoder.decode(decompressedStr, StandardCharsets.UTF_8.name());
-			    org.w3c.dom.Document modelDoc = mxXmlUtils.parseXml(decodedStr);
-				mxCodec codec = new mxCodec(modelDoc);
-				return Objects.requireNonNull((mxGraphModel) codec.decode(modelDoc.getDocumentElement()), "Graph model is null for " + decodedStr);
-			} catch (IOException e) {
-				throw new NasdanikaException("Error decoding a drwaio diagram: " + e, e);
-			}
-		}
-		
-		mxCodec codec = new mxCodec(xmlDocument);
-		org.w3c.dom.Element graphModelElement = Objects.requireNonNull(mxGraphModelElement, "No mxGraphModel element: " + xml);
-		return Objects.requireNonNull((mxGraphModel) codec.decode(graphModelElement), "Graph model is null for " + xml);			
-	}
-	
-	private static  byte[] inflate(byte[] content) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try (ByteArrayInputStream source = new ByteArrayInputStream(content); OutputStream target = new InflaterOutputStream(baos, new Inflater(true))) {
-	        byte[] buf = new byte[8192];
-	        int length;
-	        while ((length = source.read(buf)) > 0) {
-	            target.write(buf, 0, length);
-	        }
-		}
-		
-		return baos.toByteArray();
-	}
-	
-	private static  byte[] deflate(byte[] content) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try (ByteArrayInputStream source = new ByteArrayInputStream(content); OutputStream target = new DeflaterOutputStream(baos, new Deflater(Deflater.DEFAULT_COMPRESSION, true))) {
-	        byte[] buf = new byte[8192];
-	        int length;
-	        while ((length = source.read(buf)) > 0) {
-	            target.write(buf, 0, length);
-	        }
-		}
-		
-		return baos.toByteArray();
-	}
-	
-	public static void traverseMxGraphModel(Element mxGraphDiv, Consumer<mxICell> visitor) {
-		mxGraphModel graphModel = loadMxGraphModel(mxGraphDiv);
-		if (graphModel != null) {
-			Object root = graphModel.getRoot();
-			if (root instanceof mxICell) {
-				visit((mxICell) root, visitor);
-			}
+	public static void traverseDrawio(Element mxGraphDiv, Consumer<org.nasdanika.drawio.Element> visitor, ConnectionBase connectionBase) throws Exception {
+		org.nasdanika.drawio.Document document = loadDrawioDocument(mxGraphDiv);
+		if (document != null) {
+			document.accept(visitor, connectionBase);
 		}		
-	}
-	
-	private static org.w3c.dom.Element getChildElement(org.w3c.dom.Element parent, String name) {
-		NodeList children = parent.getChildNodes();
-		for (int i = 0; i < children.getLength(); ++i) {
-			Node child = children.item(i);
-			if (child instanceof org.w3c.dom.Element && ((org.w3c.dom.Element) child).getTagName().equals(name)) {
-				return (org.w3c.dom.Element) child;
-			}
-		}
-		return null;
-	}
-	
-	private static List<org.w3c.dom.Element> getChildrenElements(org.w3c.dom.Element parent, String name) {
-		List<org.w3c.dom.Element> ret = new ArrayList<>();
-		NodeList children = parent.getChildNodes();
-		for (int i = 0; i < children.getLength(); ++i) {
-			Node child = children.item(i);
-			if (child instanceof org.w3c.dom.Element && ((org.w3c.dom.Element) child).getTagName().equals(name)) {
-				ret.add((org.w3c.dom.Element) child);
-			}
-		}
-		return ret;
 	}
 		
 	/**
-	 * Loads graph model, traverses all cells and then saves and returns the model.
+	 * Loads document, traverses all elements and then saves and returns the document.
 	 * @param spec
-	 * @param cellVisitor
+	 * @param visitor
+	 * @param connectionBase
+	 * @param compress
 	 * @return
 	 */
-	public static String filterMxGraphModel(String spec, Consumer<mxICell> cellVisitor) throws Exception {
-		org.w3c.dom.Document xmlDocument = mxXmlUtils.parseXml(spec);
-		org.w3c.dom.Element mxfileElement = xmlDocument.getDocumentElement(); // mxfile
-		for (org.w3c.dom.Element diagramElement: getChildrenElements(mxfileElement, "diagram")) {
-			List<org.w3c.dom.Element> mxGraphModelElements = getChildrenElements(diagramElement, "mxGraphModel");
-			if (mxGraphModelElements.isEmpty()) { // Compressed
-				String textContent = diagramElement.getTextContent();
-				if (!Base64.isBase64(textContent)) {
-					throw new NasdanikaException("Compressed diagram is not Base64 encoded");
-				}
-			    byte[] compressed = Base64.decodeBase64(textContent);
-			    byte[] decompressed = inflate(compressed);
-			    String decompressedStr = new String(decompressed, StandardCharsets.UTF_8);
-			    String decodedStr = URLDecoder.decode(decompressedStr, StandardCharsets.UTF_8.name());
-			    org.w3c.dom.Document modelDoc = mxXmlUtils.parseXml(decodedStr);
-				mxCodec codec = new mxCodec(modelDoc);
-				mxGraphModel graphModel = Objects.requireNonNull((mxGraphModel) codec.decode(modelDoc.getDocumentElement()), "Graph model is null for " + decodedStr);
-				Object root = graphModel.getRoot();
-				if (root instanceof mxICell) {
-					visit((mxICell) root, cellVisitor);
-				}
-				Node encodedModel = codec.encode(graphModel);
-				String encodedModelStr = mxXmlUtils.getXml(encodedModel);
-			    String urlEncodedStr = URLEncoder.encode(encodedModelStr, StandardCharsets.UTF_8.name()).replace("+", "%20"); // Hackish replacement of + with %20 for drawio viewer to understand.
-			    byte[] reCompressed = deflate(urlEncodedStr.getBytes(StandardCharsets.UTF_8));
-			    String reEncoded = Base64.encodeBase64String(reCompressed);
-				diagramElement.setTextContent(reEncoded);
-			} else {			
-				mxCodec codec = new mxCodec(xmlDocument);
-				for (org.w3c.dom.Element mxGraphModelElement: mxGraphModelElements) {
-					mxGraphModel graphModel = Objects.requireNonNull((mxGraphModel) codec.decode(mxGraphModelElement), "Graph model is null for " + spec);
-					Object root = graphModel.getRoot();
-					if (root instanceof mxICell) {
-						visit((mxICell) root, cellVisitor);
-					}
-					Node encodedModel = codec.encode(graphModel);
-					diagramElement.replaceChild(encodedModel, mxGraphModelElement);
-				}
-			}
-		}
-		return mxXmlUtils.getXml(xmlDocument);			
+	public static String filterMxGraphModel(String spec, Consumer<org.nasdanika.drawio.Element> visitor, ConnectionBase connectionBase, Boolean compress) throws Exception {
+		org.nasdanika.drawio.Document document = org.nasdanika.drawio.Document.load(spec);
+		if (document != null) {
+			document.accept(visitor, connectionBase);
+		}	
+		return document.save(compress);
 	}
 	
 	/**
@@ -1111,30 +999,27 @@ public final class Util {
 			
 			// Drawio diagrams
 			for (Element diagramDiv: element.select("div.mxgraph")) {
-				traverseMxGraphModel(diagramDiv, cell -> {
-					Object cellValue = cell.getValue();
-					if (cellValue instanceof org.w3c.dom.Element) {
-						String link = ((org.w3c.dom.Element) cellValue).getAttribute("link");
-						if (!org.nasdanika.common.Util.isBlank(link) && !linkPredicate.test(link)) {
-							String label = ((org.w3c.dom.Element) cellValue).getAttribute("label");
-							if (org.nasdanika.common.Util.isBlank(label)) {
-								errorConsumer.accept("Broken diagram link: " + link);
-							} else {
-								errorConsumer.accept("Broken diagram link on " + label + ": " + link);											
+				try {
+					traverseDrawio(diagramDiv, docElement -> {
+						if (docElement instanceof org.nasdanika.drawio.ModelElement) {
+							org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) docElement;
+							String link = modelElement.getLink();
+							if (!org.nasdanika.common.Util.isBlank(link) && !linkPredicate.test(link)) {
+								String label = modelElement.getLabel();
+								if (org.nasdanika.common.Util.isBlank(label)) {
+									errorConsumer.accept("Broken diagram link: " + link);
+								} else {
+									errorConsumer.accept("Broken diagram link on " + label + ": " + link);											
+								}
 							}
 						}
-					}
-				});
+					}, null);
+				} catch (Exception e) {
+					throw new NasdanikaException(e);
+				}
 			}			
 		};
 	}
-	
-	private static void visit(mxICell cell, Consumer<mxICell> visitor) {
-		visitor.accept(cell);
-		for (int i = 0; i < cell.getChildCount(); ++i) {
-        	visit(cell.getChildAt(i), visitor);
-        }
-	}			
 
 	/**
 	 * Creates a predicate checking for links relative to the argument file in the argument directory. 
@@ -1184,62 +1069,6 @@ public final class Util {
 			
 		};
 		
-	}
-	
-	/**
-	 * Adds / at the end of parent URI if it is not already there.
-	 */
-	private static java.util.function.Function<URI,URI> DEFAULT_BASE_CELL_URI_FILTER = baseCellURI -> {
-		if (baseCellURI == null) {
-			return baseCellURI;
-		}
-		String lastSegment = baseCellURI.lastSegment();
-		if (lastSegment != null && lastSegment.length() == 0) {
-			return baseCellURI;
-		}
-		
-		return baseCellURI.appendSegment("");
-	};
-
-	/**
-	 * Resolves cell URI relative to the base URI. If the cell is a connection the cell URI is resolved relative to the source cell URI, which is resolved
-	 * using this function. Otherwise, if the cell has a parent cell, the cell URI is resolved relative to the parent cell URI.
-	 * This method is intended to help with linking diagram elements to external URL's or diagram pages using uri's.   
-	 * @param cell
-	 * @param uriAttribute cell attribute containing URI to resolve
-	 * @param base Base URI
-	 * @param baseCellUriFilter filter for the base cell (vertex parent or edge source) URI. If null and base cell URI is not null and doesn't have a trailing /, then a trailing / is added, i.e. child URI is resolved "under" the base cell URI.
-	 * @return
-	 */
-	public static URI resolveMxICellURI(mxICell cell, String uriAttribute, URI base, java.util.function.Function<URI,URI> baseCellUriFilter) {
-		if (cell == null) {
-			return base;
-		}
-		if (baseCellUriFilter == null) {
-			baseCellUriFilter = DEFAULT_BASE_CELL_URI_FILTER;
-		}
-		mxICell baseCell = cell.getParent(); 
-		if (cell instanceof mxCell) {
-			mxCell theCell = (mxCell) cell; 
-			mxICell source = theCell.getSource(); 
-			if (source != null) { 
-				baseCell = source; 
-			}
-		}
-		URI baseCellURI = baseCell == null ? base : baseCellUriFilter.apply(resolveMxICellURI(baseCell, uriAttribute, base, baseCellUriFilter)); 
-		
-		Object cellValue = cell.getValue(); 		
-		if (cellValue instanceof org.w3c.dom.Element) {
-			org.w3c.dom.Element cellValueElement = (org.w3c.dom.Element) cellValue;
-			if (cellValueElement.hasAttribute(uriAttribute)) {
-				String uri = cellValueElement.getAttribute(uriAttribute);
-				URI cellURI = URI.createURI(uri); 
-				return baseCellURI == null ? cellURI : cellURI.resolve(baseCellURI);
-			}
-		}
-		
-		return baseCellURI;
-			
 	}
 			
 }

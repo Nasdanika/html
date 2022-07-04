@@ -33,14 +33,14 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 				EcorePackage.Literals.EPACKAGE, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EPackageActionSupplier(e, context, ePackagePathComputer)));	
+				e -> new EPackageActionSupplier(e, context, ePackagePathComputer, this::getDiagramDialect)));	
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EClass>(
 				EcorePackage.Literals.ECLASS, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EClassActionSupplier(e, context, ePackagePathComputer, javadocResolver, this::isGenerateLoadSpecification)));		
+				e -> new EClassActionSupplier(e, context, ePackagePathComputer, javadocResolver, this::isGenerateLoadSpecification, this::getDiagramDialect)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EDataType>(
@@ -98,6 +98,10 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 	 */
 	protected boolean isGenerateLoadSpecification() {
 		return true;
+	}
+	
+	protected String getDiagramDialect() {
+		return null;
 	}
 
 }

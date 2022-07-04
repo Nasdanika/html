@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -76,8 +77,6 @@ import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.Period;
 import org.nasdanika.ncore.Temporal;
 import org.nasdanika.ncore.util.NcoreUtil;
-
-import com.ibm.icu.util.Calendar;
 
 public class EObjectActionBuilder<T extends EObject> extends AdapterImpl implements ActionBuilder {
 	

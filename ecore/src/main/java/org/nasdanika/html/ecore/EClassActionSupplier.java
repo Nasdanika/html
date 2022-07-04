@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
@@ -28,10 +29,13 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Util;
+import org.nasdanika.emf.DiagramTextGenerator;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.emf.EmfUtil.EModelElementDocumentation;
+import org.nasdanika.emf.MermaidTextGenerator;
 import org.nasdanika.emf.PlantUmlTextGenerator;
-import org.nasdanika.emf.PlantUmlTextGenerator.RelationshipDirection;
+import org.nasdanika.emf.DiagramTextGenerator.RelationshipDirection;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
@@ -47,15 +51,18 @@ import org.nasdanika.ncore.util.NcoreUtil;
 public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 	
 	private BooleanSupplier isGenerateLoadSpecification;
+	private Supplier<String> diagramDialectSupplier;
 
 	public EClassActionSupplier(
 			EClass value, 
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
 			java.util.function.Function<String, String> javadocResolver,
-			BooleanSupplier isGenerateLoadSpecification) {
+			BooleanSupplier isGenerateLoadSpecification,
+			Supplier<String> diagramDialectSupplier) {
 		super(value, context, ePackagePathComputer, javadocResolver);
 		this.isGenerateLoadSpecification = isGenerateLoadSpecification;
+		this.diagramDialectSupplier = diagramDialectSupplier;
 	}
 	
 	@Override
@@ -66,33 +73,36 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		
 		// Diagram
 		String diagramMode = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "diagram", "navigation");
-		switch (diagramMode) {
-		case "content":
-			addContent(action, generateDiagram(false, null, 1, RelationshipDirection.both, true, true, progressMonitor));
-			break;
-		case "none":
-			break;
-		case "navigation": {
-			Action diagramAction = AppFactory.eINSTANCE.createAction();
-			action.getNavigation().add(diagramAction);
-			diagramAction.setText("Diagram");
-			diagramAction.setIcon("fas fa-project-diagram");
-			diagramAction.setLocation(eObject.getName() + "-diagram.html");
-			addContent(diagramAction, generateDiagram(false, null, 1, RelationshipDirection.both, true, true, progressMonitor));
-			break;
+		String diagram = generateDiagram(1, RelationshipDirection.both, true, true, progressMonitor);
+		if (!Util.isBlank(diagram)) {
+			switch (diagramMode) {
+			case "content":
+				addContent(action, diagram);
+				break;
+			case "none":
+				break;
+			case "navigation": {
+				Action diagramAction = AppFactory.eINSTANCE.createAction();
+				action.getNavigation().add(diagramAction);
+				diagramAction.setText("Diagram");
+				diagramAction.setIcon("fas fa-project-diagram");
+				diagramAction.setLocation(eObject.getName() + "-diagram.html");
+				addContent(diagramAction, diagram);
+				break;
+			}
+			case "anonymous": {
+				Action diagramAction = AppFactory.eINSTANCE.createAction();
+				action.getAnonymous().add(diagramAction);
+				diagramAction.setText("Diagram");
+				diagramAction.setIcon("fas fa-project-diagram");
+				diagramAction.setLocation(eObject.getName() + "-diagram.html");
+				addContent(diagramAction, diagram);
+				break;			
+			}
+			default:
+				throw new IllegalArgumentException("Unsupported diagram annotation value '" + diagramMode +"' on EClass " + eObject); 			
+			}
 		}
-		case "anonymous": {
-			Action diagramAction = AppFactory.eINSTANCE.createAction();
-			action.getAnonymous().add(diagramAction);
-			diagramAction.setText("Diagram");
-			diagramAction.setIcon("fas fa-project-diagram");
-			diagramAction.setLocation(eObject.getName() + "-diagram.html");
-			addContent(diagramAction, generateDiagram(false, null, 1, RelationshipDirection.both, true, true, progressMonitor));
-			break;			
-		}
-		default:
-			throw new IllegalArgumentException("Unsupported diagram annotation value '" + diagramMode +"' on EClass " + eObject); 			
-		}		
 
 		// Generic supertypes
 		EList<EGenericType> eGenericSuperTypes = eObject.getEGenericSuperTypes();
@@ -233,72 +243,39 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 
 	private void generateAllGenericSupertypes(List<EGenericType> allGenericSupertypes, Action allGroup, ProgressMonitor progressMonitor) throws Exception {		
 		if (!allGenericSupertypes.isEmpty()) {
-			Action allSupertypesAction = AppFactory.eINSTANCE.createAction();
-			allSupertypesAction.setText("Supertypes");
-			allSupertypesAction.setLocation(eObject.getName() + "-all-supertypes.html");
-			allSupertypesAction.setSectionStyle(SectionStyle.HEADER);
-			allGroup.getChildren().add(allSupertypesAction);
-			
-			Tag list = TagName.ul.create();
-			
-			for (EGenericType superType: allGenericSupertypes) {
-				Tag listItem = TagName.li.create();
-				list.content(listItem);
-				genericType(superType, eObject, listItem.getContent(), progressMonitor);
-			}
-			addContent(allSupertypesAction, list.toString());			
-			addContent(allSupertypesAction, generateInheritanceDiagram(false,  null, 0, RelationshipDirection.both, true, true, progressMonitor));
-			
+			String inheritanceDiagram = generateInheritanceDiagram(0, RelationshipDirection.both, true, true, progressMonitor);
+			if (!Util.isBlank(inheritanceDiagram)) {
+				Action allSupertypesAction = AppFactory.eINSTANCE.createAction();
+				allSupertypesAction.setText("Supertypes");
+				allSupertypesAction.setLocation(eObject.getName() + "-all-supertypes.html");
+				allSupertypesAction.setSectionStyle(SectionStyle.HEADER);
+				allGroup.getChildren().add(allSupertypesAction);
+				
+				Tag list = TagName.ul.create();
+				
+				for (EGenericType superType: allGenericSupertypes) {
+					Tag listItem = TagName.li.create();
+					list.content(listItem);
+					genericType(superType, eObject, listItem.getContent(), progressMonitor);
+				}
+				addContent(allSupertypesAction, list.toString());			
+				addContent(allSupertypesAction, inheritanceDiagram);
+			}			
 		}
 	}
 	
 	protected String generateInheritanceDiagram(
-			boolean leftToRightDirection, 
-			String width, 
 			int depth, 
-			PlantUmlTextGenerator.RelationshipDirection relationshipDirection,
+			RelationshipDirection relationshipDirection,
 			boolean appendAttributes,
 			boolean appendOperations,
 			ProgressMonitor monitor) throws Exception {
 		
 		StringBuilder sb = new StringBuilder();
-		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, ec -> path(ec, eObject), this::getEModelElementFirstDocSentence) {
-			
-			@Override
-			protected Collection<EClass> getSubTypes(EClass eClass) {
-				return EClassActionSupplier.this.getSubTypes(eClass);
-			}
-			
-			@Override
-			protected Collection<EClass> getReferrers(EClass eClass) {
-				return EClassActionSupplier.this.getReferrers(eClass);
-			}
-			
-			@Override
-			protected Collection<EClass> getUses(EClassifier eClassifier) {
-				return EClassActionSupplier.this.getUses(eClassifier);
-			}
-			
-			@Override
-			protected boolean isAppendAttributes(EClass eClass) {
-				return appendAttributes;
-			}
-			
-			@Override
-			protected boolean isAppendOperations(EClass eClass) {
-				return appendOperations;
-			}
-			
-		};
-		
-		if (leftToRightDirection) {
-			sb.append("left to right direction").append(System.lineSeparator());
+		DiagramTextGenerator gen = getDiagramTextGenerator(sb, appendAttributes, appendOperations);
+		if (gen == null) {
+			return null;
 		}
-		
-		if (width != null) {
-			sb.append("scale ").append(width).append(" width").append(System.lineSeparator());
-		}
-			
 		List<EClass> diagramElements = new ArrayList<>();
 		diagramElements.add(eObject);
 		diagramElements.addAll(eObject.getEAllSuperTypes());
@@ -431,56 +408,93 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		}
 	}
 	
+	protected DiagramTextGenerator getDiagramTextGenerator(StringBuilder sb, boolean appendAttributes, boolean appendOperations) {
+		String dialect = diagramDialectSupplier.get();
+		if (Util.isBlank(dialect)) {
+			return null;
+		}
+		switch (dialect) {
+		case DiagramGenerator.UML_DIALECT:
+			return new PlantUmlTextGenerator(sb, ec -> path(ec, eObject), this::getEModelElementFirstDocSentence) {
+				
+				@Override
+				protected Collection<EClass> getSubTypes(EClass eClass) {
+					return EClassActionSupplier.this.getSubTypes(eClass);
+				}
+				
+				@Override
+				protected Collection<EClass> getReferrers(EClass eClass) {
+					return EClassActionSupplier.this.getReferrers(eClass);
+				}
+				
+				@Override
+				protected Collection<EClass> getUses(EClassifier eClassifier) {
+					return EClassActionSupplier.this.getUses(eClassifier);
+				}
+				
+				@Override
+				protected boolean isAppendAttributes(EClass eClass) {
+					return appendAttributes;
+				}
+				
+				@Override
+				protected boolean isAppendOperations(EClass eClass) {
+					return appendOperations;
+				}
+				
+			};
+		case DiagramGenerator.MERMAID_DIALECT:
+			return new MermaidTextGenerator(sb, ec -> path(ec, eObject), this::getEModelElementFirstDocSentence) {
+				
+				@Override
+				protected Collection<EClass> getSubTypes(EClass eClass) {
+					return EClassActionSupplier.this.getSubTypes(eClass);
+				}
+				
+				@Override
+				protected Collection<EClass> getReferrers(EClass eClass) {
+					return EClassActionSupplier.this.getReferrers(eClass);
+				}
+				
+				@Override
+				protected Collection<EClass> getUses(EClassifier eClassifier) {
+					return EClassActionSupplier.this.getUses(eClassifier);
+				}
+				
+				@Override
+				protected boolean isAppendAttributes(EClass eClass) {
+					return appendAttributes;
+				}
+				
+				@Override
+				protected boolean isAppendOperations(EClass eClass) {
+					return appendOperations;
+				}
+				
+			};
+		default:
+			throw new UnsupportedOperationException("Unsupported dialect: " + dialect);
+		}					
+	}
+	
 	protected String generateDiagram(
-			boolean leftToRightDirection, 
-			String width, 
 			int depth, 
-			PlantUmlTextGenerator.RelationshipDirection relationshipDirection,
+			DiagramTextGenerator.RelationshipDirection relationshipDirection,
 			boolean appendAttributes,
 			boolean appendOperations,
 			ProgressMonitor monitor) throws Exception {
+
+		DiagramGenerator diagramGenerator = context.get(DiagramGenerator.class);		
 		
 		StringBuilder sb = new StringBuilder();
-		PlantUmlTextGenerator gen = new PlantUmlTextGenerator(sb, ec -> path(ec, eObject), this::getEModelElementFirstDocSentence) {
-			
-			@Override
-			protected Collection<EClass> getSubTypes(EClass eClass) {
-				return EClassActionSupplier.this.getSubTypes(eClass);
-			}
-			
-			@Override
-			protected Collection<EClass> getReferrers(EClass eClass) {
-				return EClassActionSupplier.this.getReferrers(eClass);
-			}
-			
-			@Override
-			protected Collection<EClass> getUses(EClassifier eClassifier) {
-				return EClassActionSupplier.this.getUses(eClassifier);
-			}
-			
-			@Override
-			protected boolean isAppendAttributes(EClass eClass) {
-				return appendAttributes;
-			}
-			
-			@Override
-			protected boolean isAppendOperations(EClass eClass) {
-				return appendOperations;
-			}
-			
-		};
-		
-		if (leftToRightDirection) {
-			sb.append("left to right direction").append(System.lineSeparator());
+
+		DiagramTextGenerator gen = getDiagramTextGenerator(sb, appendAttributes, appendOperations);
+		if (gen == null) {
+			return null;
 		}
-		
-		if (width != null) {
-			sb.append("scale ").append(width).append(" width").append(System.lineSeparator());
-		}
-						
 		gen.appendWithRelationships(Collections.singleton(eObject), relationshipDirection, depth);
 		
-		return context.get(DiagramGenerator.class).generateUmlDiagram(sb.toString());
+		return diagramGenerator.generateUmlDiagram(sb.toString());
 	}
 		
 	/**
