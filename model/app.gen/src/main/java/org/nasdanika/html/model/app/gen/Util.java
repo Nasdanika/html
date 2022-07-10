@@ -841,8 +841,11 @@ public final class Util {
 	public static JSONObject createSearchDocument(String path, File file, Consumer<? super Element> contentConsumer, BiFunction<String, Document, Boolean> processor) throws IOException {
 		Document document = Jsoup.parse(file, "UTF-8");
 		if (processor != null && processor.apply(path, document)) {
+			Document.OutputSettings outputSettings = new Document.OutputSettings();
+			outputSettings.prettyPrint(false);
+			document.outputSettings(outputSettings);
 			try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8")) {
-				writer.write(document.outerHtml());
+				writer.write(document.html());
 			}
 		}
 		Elements contentPanelQuery = document.select("body > div > div.row.nsd-app-content-row > div.col.nsd-app-content-panel");							                                              
@@ -944,7 +947,12 @@ public final class Util {
 	 * @param compress
 	 * @return
 	 */
-	public static String filterMxGraphModel(String spec, Consumer<org.nasdanika.drawio.Element> visitor, ConnectionBase connectionBase, Boolean compress) throws Exception {
+	public static String filterDrawio(
+			String spec, 
+			Consumer<org.nasdanika.drawio.Element> visitor, 
+			ConnectionBase connectionBase, 
+			Boolean compress) throws Exception {
+		
 		org.nasdanika.drawio.Document document = org.nasdanika.drawio.Document.load(spec);
 		if (document != null) {
 			document.accept(visitor, connectionBase);
