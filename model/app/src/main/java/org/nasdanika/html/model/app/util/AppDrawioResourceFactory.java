@@ -3,14 +3,20 @@ package org.nasdanika.html.model.app.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -24,10 +30,13 @@ import org.nasdanika.drawio.ConnectionBase;
 import org.nasdanika.drawio.Document;
 import org.nasdanika.drawio.DrawioResourceFactory;
 import org.nasdanika.drawio.Element;
+import org.nasdanika.drawio.ElementAdapter;
 import org.nasdanika.drawio.Layer;
+import org.nasdanika.drawio.Model;
 import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.drawio.Node;
 import org.nasdanika.drawio.Page;
+import org.nasdanika.drawio.Root;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Interpolator;
 import org.nasdanika.exec.content.Markdown;
@@ -35,7 +44,7 @@ import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
-import org.nasdanika.ncore.util.NcoreUtil;
+import org.nasdanika.html.model.app.Label;
 
 /**
  * Creates an action model from Drawio documents
@@ -66,11 +75,15 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			if (action == null) {
 				for (ElementEntry<Map<EReference, List<Action>>> childEntry: childEntries.values()) {
 					for (Entry<EReference, List<Action>> referenceEntry: childEntry.getSemanticElement().entrySet()) {						
-						resource.getContents().addAll(referenceEntry.getValue());
+						for (Action rootAction: referenceEntry.getValue()) {
+							resource.getContents().add(rootAction);
+							addURIResolverAdapters(rootAction);
+						}
 					}
 				}				
 			} else {
 				resource.getContents().add(action);
+				addURIResolverAdapters(action);
 			}
 		} else if (element instanceof Page) {
 			action = createPageAction(resource, (Page) element, childEntries);
@@ -101,58 +114,42 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		}
 		
 		for (Entry<EReference, List<Action>> re: accumulator.entrySet()) {
-			List<Action> actions = re.getValue();
-			Comparator<Action> comparator = getActionComparator(re.getKey());
-			if (comparator != null) {
-				actions.sort(comparator);
-			}
-			((Collection<Action>) action.eGet(re.getKey())).addAll(actions);
+			((Collection<Action>) action.eGet(re.getKey())).addAll(re.getValue());
 		}
 		
 		return Collections.singletonMap(containmentReference, Collections.singletonList(action));
 	}
 	
-	protected Comparator<Action> getActionComparator(EReference containmentReference) {
-		return new Comparator<Action>() {
-
+	protected void addURIResolverAdapters(Action root) {
+		BiFunction<Label, URI, URI> uriResolver = org.nasdanika.html.model.app.util.Util.uriResolver(root);
+		class URIResolverAdapterImpl extends AdapterImpl implements URIResolverAdapter {
+						
 			@Override
-			public int compare(Action a, Action b) {
-				if (a == b) {
-					return 0;
-				}
-				if (a == null) {
-					return 1;
-				}
-				if (b == null) {
-					return -1;
-				}
-				if (Util.isBlank(a.getText())) {
-					if (Util.isBlank(b.getText())) {
-						URI aUri = NcoreUtil.getUri(a);
-						URI bUri = NcoreUtil.getUri(b);
-						if (aUri == null) {
-							if (bUri == null) {
-								return a.hashCode() - b.hashCode();
-							}
-							return 1;
-						}
-						if (bUri == null) {
-							return -1;
-						}
-						return aUri.toString().compareTo(bUri.toString());
-					}
-					
-					return 1;
-				}
-				
-				if (Util.isBlank(b.getText())) {
-					return -1;
-				}
-				
-				return a.getText().compareTo(b.getText());
+			public boolean isAdapterForType(Object type) {
+				return URIResolverAdapter.class == type;
 			}
 
-		};
+			@Override
+			public URI resolve(Action base) {
+				Action targetAction = (Action) getTarget();
+				if (targetAction == base) {
+					return null;
+				}				
+				URI baseURI = base == null ? null : uriResolver.apply(base, null);
+				return uriResolver.apply(targetAction, baseURI);
+			}
+
+		}
+		
+		root.eAdapters().add(new URIResolverAdapterImpl());
+		TreeIterator<EObject> cit = root.eAllContents();
+		while (cit.hasNext()) {
+			EObject next = cit.next();
+			if (next instanceof Action) {
+				next.eAdapters().add(new URIResolverAdapterImpl());
+			}
+		}
+			
 	}
 	
 	protected EReference getContainmentReference(Resource resource, Element element) {
@@ -220,20 +217,6 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		ret.setText(page.getName());	
 		ret.setId(page.getId());
 		ret.setLocation("pages/" + page.getId() + "/index.html");
-		
-		// Embedded diagram
-		try {
-			Document toEmbed = Document.create(true);
-			toEmbed.getPages().add(page);
-			// TODO - cross-linking - at resolve or even later?
-			
-			String embeddedDiagram = toEmbed.toHtml(null, getDiagramViewer());
-			System.out.println(embeddedDiagram);
-			addContent(ret, embeddedDiagram);
-		} catch (Exception  e) {
-			addContent(ret, "Error embedding diagram: " + e);
-			e.printStackTrace();
-		}
 		return ret;
 	}
 
@@ -305,6 +288,21 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return null;
 	}	
 	
+	/**
+	 * Adapter for {@link Action}s to resolve cross-references.
+	 * @author Pavel
+	 *
+	 */
+	public interface URIResolverAdapter extends Adapter {
+		
+		/**
+		 * @param base Base action. Can be null.
+		 * @return URI to the target action of this adapter relative to the base action.
+		 */
+		URI resolve(Action base);
+		
+	}
+	
 	@Override
 	protected void resolve(
 			Resource resource, 
@@ -312,9 +310,155 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Map<EReference, List<Action>> semanticElement,
 			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries,
 			Function<Element, Map<EReference, List<Action>>> resolver) {
-		// Content - add an inline diagram, cross-referencing in the diagram
-		
+
+		if (element instanceof Page) {
+			if (isEmbedDiagram()) {				
+				// Embedded diagram
+				for (Action action: semanticElement.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
+					Object elementAdapter = EcoreUtil.getRegisteredAdapter(action, ElementAdapter.class);					
+					if (elementAdapter instanceof ElementAdapter && element.equals(((ElementAdapter) elementAdapter).getElement())) {
+						try {
+							Document toEmbed = Document.create(true, null);
+							Page page = (Page) element;
+							toEmbed.getPages().add(page);
+							
+							Consumer<Element> visitor = e -> {
+								if (e instanceof ModelElement) {
+									String link = getModelElementLink((ModelElement) e, action, resolver);
+									if (!Util.isBlank(link)) {
+										((ModelElement) e).setLink(link);
+									}
+								}
+							};
+							
+							toEmbed.accept(visitor, null);
+							
+							String embeddedDiagram = toEmbed.toHtml(null, getDiagramViewer());
+							System.out.println(embeddedDiagram);
+							addContent(action, embeddedDiagram);
+						} catch (Exception  e) {
+							addContent(action, "Error embedding diagram: " + e);
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			
+			if (isGenerateTableOfContents()) {
+				for (Action action: semanticElement.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
+					StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
+					Model model = ((Page) element).getModel();
+					Map<Element, ElementEntry<Map<EReference, List<Action>>>> modelChildEntries = childEntries.get(model).getChildEntries();
+					Root root = model.getRoot();
+					Map<Element, ElementEntry<Map<EReference, List<Action>>>> rootChildEntries = modelChildEntries.get(root).getChildEntries();
+					for (Layer layer: root.getLayers()) { 
+						tocBuilder.append(generateTableOfContents(action, layer, rootChildEntries.get(layer).getChildEntries(), resolver));
+					}									
+					
+					addContent(action, tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator()).toString());
+				}				
+			}
+		}				
 	}
+	
+	protected String getListOpenTag(Element element) {
+		return "<ul>";
+	}
+	
+	protected String getListCloseTag(Element element) {
+		return "</ul>";
+	}	
+	
+	protected String generateTableOfContents(
+			Action pageAction, 
+			ModelElement modelElement, 
+			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries,
+			Function<Element, Map<EReference, List<Action>>> resolver) {		
+		
+		String label = modelElement.getLabel();
+		StringBuilder ret = new StringBuilder();
+		if (Util.isBlank(label)) {
+			if (modelElement instanceof Layer && childEntries != null) {
+				for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: childEntries.entrySet()) {
+					ret.append(generateTableOfContents(pageAction, (ModelElement) childEntry.getKey(), childEntry.getValue().getChildEntries(), resolver));
+				}
+			}
+		} else {		
+			ret.append("<li>").append(System.lineSeparator());
+			String link = getModelElementLink(modelElement, pageAction, resolver);
+			if (Util.isBlank(link)) {
+				ret.append(Jsoup.parse(label).text());
+			} else {
+				ret
+					.append("<a href=\"")
+					.append(link)
+					.append("\">")
+					.append(Jsoup.parse(label).text())
+					.append("</a>");				
+			}			
+
+			if (modelElement instanceof Layer) {
+				if (childEntries != null && !childEntries.isEmpty()) {
+					ret.append(getListOpenTag(modelElement)).append(System.lineSeparator());
+					for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: childEntries.entrySet()) {
+						ret.append(generateTableOfContents(pageAction, (ModelElement) childEntry.getKey(), childEntry.getValue().getChildEntries(), resolver));
+					}
+					ret.append(getListCloseTag(modelElement)).append(System.lineSeparator());
+				}
+			}
+			ret.append("</li>").append(System.lineSeparator());
+		}
+		
+		return ret.toString();
+	}
+
+	/**
+	 * Resolves link to the model element from this action.
+	 * @param modelElement Model element
+	 * @param action Source action 
+	 * @param resolver Resolver
+	 * @return
+	 */
+	protected String getModelElementLink(ModelElement modelElement, Action action, Function<Element, Map<EReference, List<Action>>> resolver) {
+		if (shallCreateLink(modelElement)) {
+			Map<EReference, List<Action>> actionMap = resolver.apply(modelElement);
+			for (Action eAction: actionMap.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
+				Object eAdapter = EcoreUtil.getRegisteredAdapter(eAction, ElementAdapter.class);					
+				if (eAdapter instanceof ElementAdapter && modelElement.equals(((ElementAdapter) eAdapter).getElement())) {
+					Object uriResolverAdapter = EcoreUtil.getRegisteredAdapter(eAction, URIResolverAdapter.class);
+					if (uriResolverAdapter instanceof URIResolverAdapter) {
+						URI eURI = ((URIResolverAdapter) uriResolverAdapter).resolve(action);
+						if (eURI != null) {
+							return eURI.toString();
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+		
+	/**
+	 * @param modelElement
+	 * @return true if a link shall be created for a given model element. This implementation returns true for {@link Node}s and {@link Connection}s without a pre-existing link.
+	 */
+	protected boolean shallCreateLink(ModelElement modelElement) {
+		return (modelElement instanceof Node || modelElement instanceof Connection) && Util.isBlank(modelElement.getLink());
+	}
+	
+	/**
+	 * @return If true, a {@link Page} diagram is added to the content of the {@link Action} created from that page. This implementation returns true.
+	 */
+	protected boolean isEmbedDiagram() {
+		return true;
+	}
+		
+	/**
+	 * @return If true, a table of contents is generated for a {@link Page} diagram. This implementation returns true;
+	 */
+	protected boolean isGenerateTableOfContents() {
+		return true;
+	}	
 	
 	/**
 	 * Creates a new action using factory. Override to, say, use a prototype action.
@@ -330,10 +474,13 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 				actionURI = actionURI.resolve(resource.getURI());
 				Action prototype = EcoreUtil.copy((Action) resourceSet.getEObject(actionURI, true));
 				prototype.setId(UUID.randomUUID().toString());
+				prototype.eAdapters().add(createElementAdapter(element));
 				return prototype;
 			}
 		}
-		return AppFactory.eINSTANCE.createAction();
+		Action action = AppFactory.eINSTANCE.createAction();
+		action.eAdapters().add(createElementAdapter(element));		
+		return action;
 	}
 
 }

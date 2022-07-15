@@ -10,10 +10,8 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.function.BiFunction;
@@ -218,7 +216,7 @@ public final class Util {
 			context = context.fork();
 			((MutableContext) context).put(Context.BASE_URI_PROPERTY, URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/"));
 		}
-		BiFunction<Label, URI, URI> uriResolver = uriResolver(root, context);		
+		BiFunction<Label, URI, URI> uriResolver = org.nasdanika.html.model.app.util.Util.uriResolver(root, context);		
 		generateSite(
 				root, 
 				principal, 
@@ -289,7 +287,7 @@ public final class Util {
 			subActionPath.add(activeAction);
 		}
 		
-		for (EObject child: resolveActionReferences(activeAction.getChildren())) {
+		for (EObject child: org.nasdanika.html.model.app.util.Util.resolveActionReferences(activeAction.getChildren())) {
 			if (child instanceof Action) {
 				generateSite(root, principal, (Action) child, subActionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
 			}
@@ -301,7 +299,7 @@ public final class Util {
 				generateSite(root, principal, (Action) section, subActionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
 			}
 			
-			for (EObject navigation: resolveActionReferences(theActiveAction.getNavigation())) {
+			for (EObject navigation: org.nasdanika.html.model.app.util.Util.resolveActionReferences(theActiveAction.getNavigation())) {
 				if (navigation instanceof Action) {
 					generateSite(root, principal, (Action) navigation, subActionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
 				}
@@ -352,7 +350,7 @@ public final class Util {
 			}
 			
 			if (root instanceof Action) {
-				List<EObject> rootNavigation = resolveActionReferences(((Action) root).getNavigation());
+				List<EObject> rootNavigation = org.nasdanika.html.model.app.util.Util.resolveActionReferences(((Action) root).getNavigation());
 				if (!rootNavigation.isEmpty()) {
 					Footer footer = appPage.getFooter();
 					if (footer == null) {
@@ -376,7 +374,7 @@ public final class Util {
 			// Navbar 
 			Label brand = createLabel(principal, activeAction, uriResolver, null, "navbar/brand", false, false);
 			if (principal instanceof Action) {
-				List<EObject> principalNavigation = resolveActionReferences(((Action) principal).getNavigation());
+				List<EObject> principalNavigation = org.nasdanika.html.model.app.util.Util.resolveActionReferences(((Action) principal).getNavigation());
 				if (brand != null || !principalNavigation.isEmpty()) {
 					NavigationBar navBar = appPage.getNavigationBar();
 					if (navBar == null) {
@@ -398,7 +396,7 @@ public final class Util {
 			}
 			
 			// Navigation panel
-			List<EObject> principalChildren = resolveActionReferences(principal.getChildren());
+			List<EObject> principalChildren = org.nasdanika.html.model.app.util.Util.resolveActionReferences(principal.getChildren());
 			if (!principalChildren.isEmpty()) {
 				NavigationPanel navPanel = appPage.getNavigationPanel();
 				if (navPanel == null) {
@@ -468,7 +466,7 @@ public final class Util {
 				contentPanel.setTitle(title);
 			}
 					
-			List<EObject> navigation = resolveActionReferences(action.getNavigation());
+			List<EObject> navigation = org.nasdanika.html.model.app.util.Util.resolveActionReferences(action.getNavigation());
 			EList<EObject> navigationItems = contentPanel.getItems();
 			navigation.forEach(navigationElement -> {
 				if (navigationElement instanceof Label) {
@@ -734,94 +732,12 @@ public final class Util {
 			ProgressMonitor progressMonitor) throws Exception {
 		
 		if (navigationPanel != null) {
-			for (EObject item: resolveActionReferences(navigationPanel.getItems())) {
+			for (EObject item: org.nasdanika.html.model.app.util.Util.resolveActionReferences(navigationPanel.getItems())) {
 				if (item instanceof Label) {
 					generateSite(root, principal, (Label) item, actionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
 				}
 			}			
 		}
-	}
-	
-	/**
-	 * Resolves URI's by traversing containment references from the root Action taking {@link ActionReference} into account.
-	 * @param context
-	 * @return A function resolving {@link URI} for the argument {@link Action}. Caches results.
-	 */
-	public static BiFunction<Label,URI,URI> uriResolver(Label root, Context context) {		
-		Map<String, URI> cache = new HashMap<>();
-		traverse(root, context.get(Context.BASE_URI_PROPERTY, URI.class), context, cache);
-		
-		return new BiFunction<Label, URI, URI>() {
-			
-			@Override
-			public URI apply(Label label, URI base) {
-				URI uri = cache.get(label.getUuid());		
-				return base == null || uri == null ? uri : uri.deresolve(base, true, true, true);
-			}
-		
-		};
-	}
-	
-	private static void traverse(Label label, URI base, Context context, Map<String, URI> cache) {
-		URI linkURI = compute(label, base, context);
-		cache.put(label.getUuid(), linkURI);
-		
-		for (EObject child: resolveActionReferences(label.getChildren())) {
-			if (child instanceof Action) {
-				traverse((Action) child, linkURI == null ? base : linkURI, context, cache);
-			}
-		}
-		
-		if (label instanceof Action) {
-			Action action = (Action) label;
-			for (EObject item: resolveActionReferences(action.getNavigation())) {
-				if (item instanceof Link) {
-					traverse((Link) item, linkURI == null ? base : linkURI, context, cache);
-				}
-			}
-			for (Action section: action.getSections()) {
-				traverse(section, linkURI == null ? base : linkURI, context, cache);
-			}
-			for (Action anonymous: action.getAnonymous()) {
-				traverse(anonymous, linkURI == null ? base : linkURI, context, cache);
-			}
-		}
-		
-		// TODO - nav panels?
-	}
-
-	private static URI compute(Label label, URI base, Context context) {
-		if (label instanceof Link) {
-			Link link = (Link) label;
-			String uriString;
-			if (link.eContainmentFeature() == AppPackage.Literals.ACTION__SECTIONS) {
-				String aName = context.interpolateToString(link.getLocation());
-				if (isBlank(aName)) {
-					return null;
-				}
-				uriString = "#" + aName;
-			} else {				
-				uriString = context.interpolateToString(link.getLocation());
-				if (isBlank(uriString)) {
-					return null;
-				}
-			}
-			URI uri = URI.createURI(uriString);
-			if (uri.isRelative() && base != null) {
-				return uri.resolve(base);
-			}
-			return uri;
-		} 
-		
-		return null;
-	}
-	
-	private static EObject resolveActionReference(EObject obj) {
-		return obj instanceof ActionReference ? ((ActionReference) obj).getTarget() : obj;
-	}
-	
-	private static List<EObject> resolveActionReferences(EList<EObject> objs) {
-		return objs.stream().map((Function<EObject, EObject>) Util::resolveActionReference).collect(Collectors.toList());
 	}
 	
 	public static JSONObject createSearchDocument(String path, File file) throws IOException {
@@ -926,7 +842,7 @@ public final class Util {
 			JSONObject jsonData = new JSONObject(data);
 			Object xml = jsonData.get("xml");
 			if (xml instanceof String) {
-				return org.nasdanika.drawio.Document.load((String) xml);
+				return org.nasdanika.drawio.Document.load((String) xml, null);
 			}
 		}
 		return null;
@@ -953,7 +869,7 @@ public final class Util {
 			ConnectionBase connectionBase, 
 			Boolean compress) throws Exception {
 		
-		org.nasdanika.drawio.Document document = org.nasdanika.drawio.Document.load(spec);
+		org.nasdanika.drawio.Document document = org.nasdanika.drawio.Document.load(spec, null);
 		if (document != null) {
 			document.accept(visitor, connectionBase);
 		}	
