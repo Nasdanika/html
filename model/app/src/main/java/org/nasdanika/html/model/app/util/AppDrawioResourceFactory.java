@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -172,6 +172,9 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 				return path;
 			}
 		}
+		if (modelElement instanceof Root) {
+			return ((Root) modelElement).getModel().getPage().getId();
+		}
 		return modelElement.getId();
 	}
 	
@@ -213,9 +216,13 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	}
 		
 	protected Action createPageAction(Resource resource, Page page, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
-		Action ret = createAction(resource, page);
+		Model model = page.getModel();
+		Map<Element, ElementEntry<Map<EReference, List<Action>>>> modelChildEntries = childEntries.get(model).getChildEntries();
+		Root root = model.getRoot();
+		Map<Element, ElementEntry<Map<EReference, List<Action>>>> rootChildEntries = modelChildEntries.get(root).getChildEntries();
+
+		Action ret = createModelElementAction(resource, root, rootChildEntries, null);
 		ret.setText(page.getName());	
-		ret.setId(page.getId());
 		ret.setLocation("pages/" + page.getId() + "/index.html");
 		return ret;
 	}
@@ -254,20 +261,25 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	}
 	
 	protected Action createLayerAction(Resource resource, Layer layer, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries, EReference containmentReference) {
-		return createModelElementAction(resource, layer, childEntries, containmentReference);
+		Action action = createModelElementAction(resource, layer, childEntries, containmentReference);
+		return Util.isBlank(action.getText()) ? null : action;
 	}
 	
 	protected Action createModelElementAction(Resource resource, ModelElement modelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries, EReference containmentReference) {
-		String label = modelElement.getLabel();
-		if (Util.isBlank(label)) {
-			return null;
-		}
 		Action ret = createAction(resource, modelElement);
 		ret.setId(modelElement.getId());
-		ret.setText(Jsoup.parse(label).text());
+		String label = modelElement.getLabel();
+		if (!Util.isBlank(label)) {
+			ret.setText(Jsoup.parse(label).text());
+		}
 		String link = modelElement.getLink();
 		if (Util.isBlank(link)) {
-			ret.setLocation(containmentReference.getName() + "/" + getPath(modelElement) + "/index.html");
+			String path = Objects.requireNonNull(getPath(modelElement), "Path is null for " + modelElement.getLabel() + " / " + modelElement.getId());
+			if (containmentReference == null) {
+				ret.setLocation(path + "/index.html");
+			} else {
+				ret.setLocation(containmentReference.getName() + "/" + path + "/index.html");
+			}
 		} else {
 			ret.setLocation(link);
 		}
@@ -314,9 +326,10 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		if (element instanceof Page) {
 			if (isEmbedDiagram()) {				
 				// Embedded diagram
+				Root root = ((Page) element).getModel().getRoot();
 				for (Action action: semanticElement.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
 					Object elementAdapter = EcoreUtil.getRegisteredAdapter(action, ElementAdapter.class);					
-					if (elementAdapter instanceof ElementAdapter && element.equals(((ElementAdapter) elementAdapter).getElement())) {
+					if (elementAdapter instanceof ElementAdapter && root.equals(((ElementAdapter) elementAdapter).getElement())) {
 						try {
 							Document toEmbed = Document.create(true, null);
 							Page page = (Page) element;
@@ -358,7 +371,20 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 					addContent(action, tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator()).toString());
 				}				
 			}
-		}				
+		}
+		
+		if (element instanceof Layer) {
+			if (isGenerateTableOfContents()) {
+				for (Action action: semanticElement.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
+					StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
+					for (ModelElement modelElement: ((Layer) element).getElements()) { 
+						tocBuilder.append(generateTableOfContents(action, modelElement, childEntries, resolver));
+					}									
+					
+					addContent(action, tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator()).toString());
+				}				
+			}			
+		}
 	}
 	
 	protected String getListOpenTag(Element element) {
@@ -396,6 +422,11 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 					.append(Jsoup.parse(label).text())
 					.append("</a>");				
 			}			
+			
+			String tooltip = modelElement.getTooltip();
+			if (!Util.isBlank(tooltip)) {
+				ret.append(" - ").append(tooltip).append(System.lineSeparator());
+			}
 
 			if (modelElement instanceof Layer) {
 				if (childEntries != null && !childEntries.isEmpty()) {
