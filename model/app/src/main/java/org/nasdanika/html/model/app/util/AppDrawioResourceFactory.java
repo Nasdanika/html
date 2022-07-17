@@ -371,17 +371,21 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 					addContent(action, tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator()).toString());
 				}				
 			}
-		}
-		
-		if (element instanceof Layer) {
+		} else if (element instanceof Layer) {
 			if (isGenerateTableOfContents()) {
 				for (Action action: semanticElement.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
-					StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
-					for (ModelElement modelElement: ((Layer) element).getElements()) { 
-						tocBuilder.append(generateTableOfContents(action, modelElement, childEntries, resolver));
-					}									
-					
-					addContent(action, tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator()).toString());
+					Object elementAdapter = EcoreUtil.getRegisteredAdapter(action, ElementAdapter.class);					
+					if (elementAdapter instanceof ElementAdapter && element.equals(((ElementAdapter) elementAdapter).getElement())) {						
+						StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
+						for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: childEntries.entrySet()) { 						
+							Element child = childEntry.getKey();
+							if (child instanceof ModelElement) {
+								tocBuilder.append(generateTableOfContents(action, (ModelElement) child, childEntry.getValue().getChildEntries(), resolver));
+							}
+						}									
+						
+						addContent(action, tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator()).toString());
+					}
 				}				
 			}			
 		}
