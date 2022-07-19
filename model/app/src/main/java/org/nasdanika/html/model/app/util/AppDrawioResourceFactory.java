@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -37,6 +38,8 @@ import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.drawio.Node;
 import org.nasdanika.drawio.Page;
 import org.nasdanika.drawio.Root;
+import org.nasdanika.exec.Configurator;
+import org.nasdanika.exec.ExecFactory;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Interpolator;
 import org.nasdanika.exec.content.Markdown;
@@ -191,40 +194,120 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return "documentation";
 	}
 	
-	protected EObject getDocumentation(Resource resource, ModelElement modelElement) {
-		String documentationProperty = getDocumentationProperty();
-		if (Util.isBlank(documentationProperty)) {
-			return null;
+	protected boolean hasDocumentation(Resource resource, Element element) {
+		if (element instanceof Page) {
+			return hasDocumentation(resource, ((Page) element).getModel().getRoot());
+		}
+		if (element instanceof ModelElement) {
+			String documentationProperty = getDocumentationProperty();
+			if (Util.isBlank(documentationProperty)) {
+				return false;
+			}
+			
+			String docProp = ((ModelElement) element).getProperty(documentationProperty);
+			return !Util.isBlank(docProp);
 		}
 		
-		String docProp = modelElement.getProperty(documentationProperty);
-		if (Util.isBlank(docProp)) {
-			return null;
+		return false;
+	}
+	
+	
+	protected EObject getDocumentation(Resource resource, Element element, String embeddedDiagram, String tableOfContents) {
+		if (element instanceof Page) {
+			return getDocumentation(resource, ((Page) element).getModel().getRoot(), embeddedDiagram, tableOfContents);
+		}
+		if (element instanceof ModelElement) {
+			String documentationProperty = getDocumentationProperty();
+			if (Util.isBlank(documentationProperty)) {
+				return null;
+			}
+			
+			String docProp = ((ModelElement) element).getProperty(documentationProperty);
+			if (Util.isBlank(docProp)) {
+				return null;
+			}
+			
+			Markdown markdown = ContentFactory.eINSTANCE.createMarkdown();
+			URI docURI = URI.createURI(docProp);
+			docURI = docURI.resolve(resource.getURI());
+			org.nasdanika.exec.content.Resource docResource = ContentFactory.eINSTANCE.createResource();
+			docResource.setLocation(docURI.toString());
+			markdown.setSource(docResource);						
+			markdown.setStyle(true);
+
+			Interpolator interpolator = ContentFactory.eINSTANCE.createInterpolator();			
+			interpolator.setSource(markdown);
+			
+			if (Util.isBlank(embeddedDiagram) && Util.isBlank(tableOfContents)) {
+				return interpolator;
+			}
+			
+			Configurator configurator = ExecFactory.eINSTANCE.createConfigurator();
+			configurator.setTarget(interpolator);
+			
+			EMap<String, EObject> properties = configurator.getProperties();
+			if (!Util.isBlank(embeddedDiagram)) {
+				Text diagramText = ContentFactory.eINSTANCE.createText();
+				diagramText.setContent(embeddedDiagram);
+				properties.put("diagram", diagramText);
+			}
+			
+			if (!Util.isBlank(tableOfContents)) {
+				Text tocText = ContentFactory.eINSTANCE.createText();
+				tocText.setContent(tableOfContents);
+				properties.put("toc", tocText);
+			}
+			
+			return configurator;			
 		}
 		
-		Markdown ret = ContentFactory.eINSTANCE.createMarkdown();
-		Interpolator interpolator = ContentFactory.eINSTANCE.createInterpolator();
-		URI docURI = URI.createURI(docProp);
-		docURI = docURI.resolve(resource.getURI());
-		org.nasdanika.exec.content.Resource docResource = ContentFactory.eINSTANCE.createResource();
-		docResource.setLocation(docURI.toString());
-		interpolator.setSource(docResource);
-		ret.setSource(interpolator);
-		ret.setStyle(true);
-		
-		return ret;
+		return null;
 	}
 		
 	protected Action createPageAction(Resource resource, Page page, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
+		Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> pageElementEntry = getPageElementEntry(resource, page, childEntries);
+		Action ret =  pageElementEntry == null ? createAction(resource, page) : createModelElementAction(resource, pageElementEntry.getKey(), pageElementEntry.getValue(), null);		
+		ret.setText(page.getName());	
+		ret.setLocation("pages/" + page.getId() + "/index.html");
+		return ret;
+	}
+	
+	/**
+	 * 
+	 * @param resource
+	 * @param page
+	 * @param childEntries
+	 * @return The "main" element of the page. This implementation returns the root. TODO: Mind-maps - auto-detection (no inbound connections), property to mark the root element.  
+	 */
+	protected Map.Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> getPageElementEntry(
+			Resource resource, 
+			Page page, 
+			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
+		
 		Model model = page.getModel();
 		Map<Element, ElementEntry<Map<EReference, List<Action>>>> modelChildEntries = childEntries.get(model).getChildEntries();
 		Root root = model.getRoot();
 		Map<Element, ElementEntry<Map<EReference, List<Action>>>> rootChildEntries = modelChildEntries.get(root).getChildEntries();
 
-		Action ret = createModelElementAction(resource, root, rootChildEntries, null);
-		ret.setText(page.getName());	
-		ret.setLocation("pages/" + page.getId() + "/index.html");
-		return ret;
+		return new Map.Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>>() {
+
+			@Override
+			public ModelElement getKey() {
+				return root;
+			}
+
+			@Override
+			public Map<Element, ElementEntry<Map<EReference, List<Action>>>> getValue() {
+				return rootChildEntries;
+			}
+
+			@Override
+			public Map<Element, ElementEntry<Map<EReference, List<Action>>>> setValue(Map<Element, ElementEntry<Map<EReference, List<Action>>>> value) {
+				throw new UnsupportedOperationException();
+			}
+
+		};
+		
 	}
 
 	/**
@@ -289,10 +372,6 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			ret.setIcon(icon);
 		}
 		
-		EObject doc = getDocumentation(resource, modelElement);
-		if (doc != null) {
-			ret.getContent().add(doc);
-		}
 		return ret;
 	}	
 	
@@ -322,72 +401,91 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Map<EReference, List<Action>> semanticElement,
 			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries,
 			Function<Element, Map<EReference, List<Action>>> resolver) {
+		
+		if (element instanceof Page) {			
+			Model model = ((Page) element).getModel();
+			Map<Element, ElementEntry<Map<EReference, List<Action>>>> modelChildEntries = childEntries.get(model).getChildEntries();
+			Root root = model.getRoot();
+			Map<Element, ElementEntry<Map<EReference, List<Action>>>> rootChildEntries = modelChildEntries.get(root).getChildEntries();
 
-		if (element instanceof Page) {
-			if (isEmbedDiagram()) {				
-				// Embedded diagram
-				Root root = ((Page) element).getModel().getRoot();
-				for (Action action: semanticElement.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
-					Object elementAdapter = EcoreUtil.getRegisteredAdapter(action, ElementAdapter.class);					
-					if (elementAdapter instanceof ElementAdapter && root.equals(((ElementAdapter) elementAdapter).getElement())) {
-						try {
-							Document toEmbed = Document.create(true, null);
-							Page page = (Page) element;
-							toEmbed.getPages().add(page);
-							
-							Consumer<Element> visitor = e -> {
-								if (e instanceof ModelElement) {
-									String link = getModelElementLink((ModelElement) e, action, resolver);
-									if (!Util.isBlank(link)) {
-										((ModelElement) e).setLink(link);
-									}
-								}
-							};
-							
-							toEmbed.accept(visitor, null);
-							
-							String embeddedDiagram = toEmbed.toHtml(null, getDiagramViewer());
-							System.out.println(embeddedDiagram);
-							addContent(action, embeddedDiagram);
-						} catch (Exception  e) {
-							addContent(action, "Error embedding diagram: " + e);
-							e.printStackTrace();
-						}
+			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
+				Object elementAdapter = EcoreUtil.getRegisteredAdapter(action, ElementAdapter.class);					
+				if (elementAdapter instanceof ElementAdapter && root.equals(((ElementAdapter) elementAdapter).getElement())) {
+
+					// Embedded diagram
+					String embeddedDiagram = generateEmbeddedDiagram(element, action, resolver);
+					if (isEmbedDiagram(resource, element)) {															
+						addContent(action, embeddedDiagram);						
 					}
+
+					// TOC
+					StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
+					for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> layerEntry: rootChildEntries.entrySet()) { 
+						tocBuilder.append(generateTableOfContents(action, (ModelElement) layerEntry.getKey(), layerEntry.getValue().getChildEntries(), resolver));
+					}					
+					tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator());
+					
+					if (isGenerateTableOfContents(resource, element)) {
+						addContent(action, tocBuilder.toString());
+					}
+					
+					EObject doc = getDocumentation(resource, element, embeddedDiagram, tocBuilder.toString());
+					if (doc != null) {
+						action.getContent().add(doc);
+					}					
 				}
+				
 			}
 			
-			if (isGenerateTableOfContents()) {
-				for (Action action: semanticElement.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
-					StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
-					Model model = ((Page) element).getModel();
-					Map<Element, ElementEntry<Map<EReference, List<Action>>>> modelChildEntries = childEntries.get(model).getChildEntries();
-					Root root = model.getRoot();
-					Map<Element, ElementEntry<Map<EReference, List<Action>>>> rootChildEntries = modelChildEntries.get(root).getChildEntries();
-					for (Layer layer: root.getLayers()) { 
-						tocBuilder.append(generateTableOfContents(action, layer, rootChildEntries.get(layer).getChildEntries(), resolver));
-					}									
-					
-					addContent(action, tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator()).toString());
-				}				
-			}
 		} else if (element instanceof Layer) {
-			if (isGenerateTableOfContents()) {
-				for (Action action: semanticElement.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
-					Object elementAdapter = EcoreUtil.getRegisteredAdapter(action, ElementAdapter.class);					
-					if (elementAdapter instanceof ElementAdapter && element.equals(((ElementAdapter) elementAdapter).getElement())) {						
-						StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
-						for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: childEntries.entrySet()) { 						
-							Element child = childEntry.getKey();
-							if (child instanceof ModelElement) {
-								tocBuilder.append(generateTableOfContents(action, (ModelElement) child, childEntry.getValue().getChildEntries(), resolver));
-							}
-						}									
-						
-						addContent(action, tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator()).toString());
+			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
+				Object elementAdapter = EcoreUtil.getRegisteredAdapter(action, ElementAdapter.class);					
+				if (elementAdapter instanceof ElementAdapter && element.equals(((ElementAdapter) elementAdapter).getElement())) {						
+					StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
+					for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: childEntries.entrySet()) { 						
+						Element child = childEntry.getKey();
+						if (child instanceof ModelElement) {
+							tocBuilder.append(generateTableOfContents(action, (ModelElement) child, childEntry.getValue().getChildEntries(), resolver));
+						}
+					}								
+					tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator());
+					
+					if (isGenerateTableOfContents(resource, element)) {
+						addContent(action, tocBuilder.toString());
 					}
-				}				
-			}			
+					
+					EObject doc = getDocumentation(resource, element, null, tocBuilder.toString());
+					if (doc != null) {
+						action.getContent().add(doc);
+					}
+				}
+			}				
+			
+		}
+	}
+
+	protected String generateEmbeddedDiagram(
+			Element element, 
+			Action action,			
+			Function<Element, Map<EReference, List<Action>>> resolver) {
+		try {
+			Document toEmbed = Document.create(true, null);
+			Page page = (Page) element;
+			toEmbed.getPages().add(page);
+			
+			Consumer<Element> visitor = e -> {
+				if (e instanceof ModelElement) {
+					String link = getModelElementLink((ModelElement) e, action, resolver);
+					if (!Util.isBlank(link)) {
+						((ModelElement) e).setLink(link);
+					}
+				}
+			};
+			
+			toEmbed.accept(visitor, null);			
+			return toEmbed.toHtml(null, getDiagramViewer());
+		} catch (Exception  e) {
+			return "Error embedding diagram: " + e;
 		}
 	}
 	
@@ -484,15 +582,15 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	/**
 	 * @return If true, a {@link Page} diagram is added to the content of the {@link Action} created from that page. This implementation returns true.
 	 */
-	protected boolean isEmbedDiagram() {
-		return true;
+	protected boolean isEmbedDiagram(Resource resource, Element element) {
+		return !hasDocumentation(resource, element);
 	}
 		
 	/**
 	 * @return If true, a table of contents is generated for a {@link Page} diagram. This implementation returns true;
 	 */
-	protected boolean isGenerateTableOfContents() {
-		return true;
+	protected boolean isGenerateTableOfContents(Resource resource, Element element) {
+		return !hasDocumentation(resource, element);
 	}	
 	
 	/**
