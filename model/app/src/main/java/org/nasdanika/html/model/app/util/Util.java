@@ -111,7 +111,7 @@ public final class Util {
 				}
 			}
 			URI uri = URI.createURI(uriString);
-			if (uri.isRelative() && base != null) {
+			if (uri.isRelative() && base != null && base.isHierarchical() && !base.isRelative()) {
 				return uri.resolve(base);
 			}
 			return uri;

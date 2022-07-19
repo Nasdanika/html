@@ -76,10 +76,12 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		if (element instanceof Document) {
 			action = createDocumentAction(resource, (Document) element, childEntries);
 			if (action == null) {
-				for (ElementEntry<Map<EReference, List<Action>>> childEntry: childEntries.values()) {
-					for (Entry<EReference, List<Action>> referenceEntry: childEntry.getSemanticElement().entrySet()) {						
+				for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: childEntries.entrySet()) {
+					for (Entry<EReference, List<Action>> referenceEntry: childEntry.getValue().getSemanticElement().entrySet()) {						
 						for (Action rootAction: referenceEntry.getValue()) {
-							resource.getContents().add(rootAction);
+							if (isRootAction(childEntry.getKey(), rootAction)) {
+								resource.getContents().add(rootAction);
+							}
 							addURIResolverAdapters(rootAction);
 						}
 					}
@@ -121,6 +123,26 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		}
 		
 		return Collections.singletonMap(containmentReference, Collections.singletonList(action));
+	}
+	
+	protected boolean isRootAction(Element element, Action action) {
+		if (action == null) {
+			return false;
+		}
+		Object elementAdapter = EcoreUtil.getRegisteredAdapter(action, ElementAdapter.class);					
+		if (elementAdapter instanceof ElementAdapter) {
+			 Element actionElement = ((ElementAdapter) elementAdapter).getElement();
+			 if (actionElement instanceof ModelElement) {
+				 String rootActionFlag = ((ModelElement) actionElement).getProperty(getRootActionFlagProperty());
+				 return Util.isBlank(rootActionFlag) || !"false".equals(rootActionFlag);
+			 }
+		}
+		
+		return true;
+	}
+	
+	protected String getRootActionFlagProperty() {
+		return "root-action";
 	}
 	
 	protected void addURIResolverAdapters(Action root) {
@@ -348,15 +370,34 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return Util.isBlank(action.getText()) ? null : action;
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected Action createModelElementAction(Resource resource, ModelElement modelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries, EReference containmentReference) {
-		Action ret = createAction(resource, modelElement);
+		Page linkedPage = modelElement.getLinkedPage();
+		Action ret;
+		if (linkedPage != null) {
+			BiFunction<Element, Map<Element, ElementEntry<Map<EReference, List<Action>>>>, ElementEntry<Map<EReference, List<Action>>>> visitor = (e, ce) -> createEntry(resource, e, ce);
+			ElementEntry<Map<EReference, List<Action>>> linkedPageEntry = linkedPage.accept(visitor, connectionBase);
+			Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> linkedPageElementEntry = getPageElementEntry(resource, linkedPage, linkedPageEntry.getChildEntries());
+			Map<EReference, List<Action>> linkedPageSemanticElement = createSemanticElement(resource, linkedPageElementEntry.getKey(), linkedPageElementEntry.getValue());
+			List<Action> linkedPageElementActions = linkedPageSemanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(linkedPageElementEntry.getKey(), a)).collect(Collectors.toList());
+			if (linkedPageElementActions.size() == 1) {
+				ret = EcoreUtil.copy(linkedPageElementActions.get(0));
+			} else {
+				ret = createAction(resource, modelElement);
+				for (Entry<EReference, List<Action>> semanticEntry: linkedPageSemanticElement.entrySet()) {
+					((Collection<Action>) ret.eGet(semanticEntry.getKey())).addAll(semanticEntry.getValue());
+				}
+			}
+		} else {
+			ret = createAction(resource, modelElement);
+		}
 		ret.setId(modelElement.getId());
 		String label = modelElement.getLabel();
 		if (!Util.isBlank(label)) {
 			ret.setText(Jsoup.parse(label).text());
 		}
 		String link = modelElement.getLink();
-		if (Util.isBlank(link)) {
+		if (Util.isBlank(link) || linkedPage != null) {
 			String path = Objects.requireNonNull(getPath(modelElement), "Path is null for " + modelElement.getLabel() + " / " + modelElement.getId());
 			if (containmentReference == null) {
 				ret.setLocation(path + "/index.html");
@@ -394,6 +435,11 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		
 	}
 	
+	protected boolean isActionForElement(Element element, Action action) {
+		Object elementAdapter = EcoreUtil.getRegisteredAdapter(action, ElementAdapter.class);					
+		return elementAdapter instanceof ElementAdapter && element.equals(((ElementAdapter) elementAdapter).getElement());			
+	}
+	
 	@Override
 	protected void resolve(
 			Resource resource, 
@@ -408,59 +454,50 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Root root = model.getRoot();
 			Map<Element, ElementEntry<Map<EReference, List<Action>>>> rootChildEntries = modelChildEntries.get(root).getChildEntries();
 
-			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
-				Object elementAdapter = EcoreUtil.getRegisteredAdapter(action, ElementAdapter.class);					
-				if (elementAdapter instanceof ElementAdapter && root.equals(((ElementAdapter) elementAdapter).getElement())) {
+			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(root, a)).collect(Collectors.toList())) {
 
-					// Embedded diagram
-					String embeddedDiagram = generateEmbeddedDiagram(element, action, resolver);
-					if (isEmbedDiagram(resource, element)) {															
-						addContent(action, embeddedDiagram);						
-					}
+				// Embedded diagram
+				String embeddedDiagram = generateEmbeddedDiagram(element, action, resolver);
+				if (isEmbedDiagram(resource, element)) {															
+					addContent(action, embeddedDiagram);						
+				}
 
-					// TOC
-					StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
-					for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> layerEntry: rootChildEntries.entrySet()) { 
-						tocBuilder.append(generateTableOfContents(action, (ModelElement) layerEntry.getKey(), layerEntry.getValue().getChildEntries(), resolver));
-					}					
-					tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator());
-					
-					if (isGenerateTableOfContents(resource, element)) {
-						addContent(action, tocBuilder.toString());
-					}
-					
-					EObject doc = getDocumentation(resource, element, embeddedDiagram, tocBuilder.toString());
-					if (doc != null) {
-						action.getContent().add(doc);
-					}					
+				// TOC
+				StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
+				for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> layerEntry: rootChildEntries.entrySet()) { 
+					tocBuilder.append(generateTableOfContents(action, (ModelElement) layerEntry.getKey(), layerEntry.getValue().getChildEntries(), resolver));
+				}					
+				tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator());
+				
+				if (isGenerateTableOfContents(resource, element)) {
+					addContent(action, tocBuilder.toString());
 				}
 				
-			}
-			
+				EObject doc = getDocumentation(resource, element, embeddedDiagram, tocBuilder.toString());
+				if (doc != null) {
+					action.getContent().add(doc);
+				}					
+			}			
 		} else if (element instanceof Layer) {
-			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
-				Object elementAdapter = EcoreUtil.getRegisteredAdapter(action, ElementAdapter.class);					
-				if (elementAdapter instanceof ElementAdapter && element.equals(((ElementAdapter) elementAdapter).getElement())) {						
-					StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
-					for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: childEntries.entrySet()) { 						
-						Element child = childEntry.getKey();
-						if (child instanceof ModelElement) {
-							tocBuilder.append(generateTableOfContents(action, (ModelElement) child, childEntry.getValue().getChildEntries(), resolver));
-						}
-					}								
-					tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator());
-					
-					if (isGenerateTableOfContents(resource, element)) {
-						addContent(action, tocBuilder.toString());
+			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(element, a)).collect(Collectors.toList())) {
+				StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
+				for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: childEntries.entrySet()) { 						
+					Element child = childEntry.getKey();
+					if (child instanceof ModelElement) {
+						tocBuilder.append(generateTableOfContents(action, (ModelElement) child, childEntry.getValue().getChildEntries(), resolver));
 					}
-					
-					EObject doc = getDocumentation(resource, element, null, tocBuilder.toString());
-					if (doc != null) {
-						action.getContent().add(doc);
-					}
+				}								
+				tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator());
+				
+				if (isGenerateTableOfContents(resource, element)) {
+					addContent(action, tocBuilder.toString());
 				}
-			}				
-			
+				
+				EObject doc = getDocumentation(resource, element, null, tocBuilder.toString());
+				if (doc != null) {
+					action.getContent().add(doc);
+				}
+			}
 		}
 	}
 
@@ -555,15 +592,12 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	protected String getModelElementLink(ModelElement modelElement, Action action, Function<Element, Map<EReference, List<Action>>> resolver) {
 		if (shallCreateLink(modelElement)) {
 			Map<EReference, List<Action>> actionMap = resolver.apply(modelElement);
-			for (Action eAction: actionMap.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
-				Object eAdapter = EcoreUtil.getRegisteredAdapter(eAction, ElementAdapter.class);					
-				if (eAdapter instanceof ElementAdapter && modelElement.equals(((ElementAdapter) eAdapter).getElement())) {
-					Object uriResolverAdapter = EcoreUtil.getRegisteredAdapter(eAction, URIResolverAdapter.class);
-					if (uriResolverAdapter instanceof URIResolverAdapter) {
-						URI eURI = ((URIResolverAdapter) uriResolverAdapter).resolve(action);
-						if (eURI != null) {
-							return eURI.toString();
-						}
+			for (Action eAction: actionMap.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(modelElement, a)).collect(Collectors.toList())) {
+				Object uriResolverAdapter = EcoreUtil.getRegisteredAdapter(eAction, URIResolverAdapter.class);
+				if (uriResolverAdapter instanceof URIResolverAdapter) {
+					URI eURI = ((URIResolverAdapter) uriResolverAdapter).resolve(action);
+					if (eURI != null) {
+						return eURI.toString();
 					}
 				}
 			}
