@@ -170,7 +170,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		TreeIterator<EObject> cit = root.eAllContents();
 		while (cit.hasNext()) {
 			EObject next = cit.next();
-			if (next instanceof Action) {
+			if (next instanceof Action /* && EcoreUtil.getRegisteredAdapter(next, URIResolverAdapter.class) == null */) {
 				next.eAdapters().add(new URIResolverAdapterImpl());
 			}
 		}
@@ -370,34 +370,15 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return Util.isBlank(action.getText()) ? null : action;
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected Action createModelElementAction(Resource resource, ModelElement modelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries, EReference containmentReference) {
-		Page linkedPage = modelElement.getLinkedPage();
-		Action ret;
-		if (linkedPage != null) {
-			BiFunction<Element, Map<Element, ElementEntry<Map<EReference, List<Action>>>>, ElementEntry<Map<EReference, List<Action>>>> visitor = (e, ce) -> createEntry(resource, e, ce);
-			ElementEntry<Map<EReference, List<Action>>> linkedPageEntry = linkedPage.accept(visitor, connectionBase);
-			Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> linkedPageElementEntry = getPageElementEntry(resource, linkedPage, linkedPageEntry.getChildEntries());
-			Map<EReference, List<Action>> linkedPageSemanticElement = createSemanticElement(resource, linkedPageElementEntry.getKey(), linkedPageElementEntry.getValue());
-			List<Action> linkedPageElementActions = linkedPageSemanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(linkedPageElementEntry.getKey(), a)).collect(Collectors.toList());
-			if (linkedPageElementActions.size() == 1) {
-				ret = EcoreUtil.copy(linkedPageElementActions.get(0));
-			} else {
-				ret = createAction(resource, modelElement);
-				for (Entry<EReference, List<Action>> semanticEntry: linkedPageSemanticElement.entrySet()) {
-					((Collection<Action>) ret.eGet(semanticEntry.getKey())).addAll(semanticEntry.getValue());
-				}
-			}
-		} else {
-			ret = createAction(resource, modelElement);
-		}
+		Action ret = createAction(resource, modelElement);
 		ret.setId(modelElement.getId());
 		String label = modelElement.getLabel();
 		if (!Util.isBlank(label)) {
 			ret.setText(Jsoup.parse(label).text());
 		}
 		String link = modelElement.getLink();
-		if (Util.isBlank(link) || linkedPage != null) {
+		if (Util.isBlank(link) || modelElement.isPageLink()) {
 			String path = Objects.requireNonNull(getPath(modelElement), "Path is null for " + modelElement.getLabel() + " / " + modelElement.getId());
 			if (containmentReference == null) {
 				ret.setLocation(path + "/index.html");
@@ -455,7 +436,6 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Map<Element, ElementEntry<Map<EReference, List<Action>>>> rootChildEntries = modelChildEntries.get(root).getChildEntries();
 
 			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(root, a)).collect(Collectors.toList())) {
-
 				// Embedded diagram
 				String embeddedDiagram = generateEmbeddedDiagram(element, action, resolver);
 				if (isEmbedDiagram(resource, element)) {															
@@ -480,6 +460,17 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			}			
 		} else if (element instanceof Layer) {
 			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(element, a)).collect(Collectors.toList())) {
+				// Embedded diagram
+				String embeddedDiagram = null;
+				
+				Page linkedPage = ((ModelElement) element).getLinkedPage();
+				if (linkedPage != null) {
+					embeddedDiagram = generateEmbeddedDiagram(linkedPage, action, resolver);
+					if (isEmbedDiagram(resource, element)) {															
+						addContent(action, embeddedDiagram);						
+					}
+				}								
+				
 				StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
 				for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: childEntries.entrySet()) { 						
 					Element child = childEntry.getKey();
@@ -493,7 +484,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 					addContent(action, tocBuilder.toString());
 				}
 				
-				EObject doc = getDocumentation(resource, element, null, tocBuilder.toString());
+				EObject doc = getDocumentation(resource, element, embeddedDiagram, tocBuilder.toString());
 				if (doc != null) {
 					action.getContent().add(doc);
 				}
@@ -610,7 +601,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	 * @return true if a link shall be created for a given model element. This implementation returns true for {@link Node}s and {@link Connection}s without a pre-existing link.
 	 */
 	protected boolean shallCreateLink(ModelElement modelElement) {
-		return (modelElement instanceof Node || modelElement instanceof Connection) && Util.isBlank(modelElement.getLink());
+		return (modelElement instanceof Node || modelElement instanceof Connection) && (Util.isBlank(modelElement.getLink()) || modelElement.isPageLink());
 	}
 	
 	/**
@@ -648,6 +639,20 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		Action action = AppFactory.eINSTANCE.createAction();
 		action.eAdapters().add(createElementAdapter(element));		
 		return action;
+	}
+	
+	@Override
+	protected Map<Element, ElementEntry<Map<EReference, List<Action>>>> getLinkedPageChildMappings(
+			Resource resource,
+			Page linkedPage,
+			ElementEntry<Map<EReference, List<Action>>> linkedPageEntry) {
+		
+		if (linkedPage == null) {
+			return super.getLinkedPageChildMappings(resource, linkedPage, linkedPageEntry);
+		}
+		
+		Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> linkedPageElementEntry = getPageElementEntry(resource, linkedPage, linkedPageEntry.getChildEntries());
+		return linkedPageElementEntry.getValue(); // Child entries of the page element.
 	}
 
 }
