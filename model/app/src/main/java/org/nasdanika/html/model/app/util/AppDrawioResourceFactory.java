@@ -12,6 +12,7 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -367,10 +368,13 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	
 	protected Action createLayerAction(Resource resource, Layer layer, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries, EReference containmentReference) {
 		Action action = createModelElementAction(resource, layer, childEntries, containmentReference);
-		return Util.isBlank(action.getText()) ? null : action;
+		return action == null || Util.isBlank(action.getText()) ? null : action;
 	}
 	
 	protected Action createModelElementAction(Resource resource, ModelElement modelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries, EReference containmentReference) {
+		if (!shallCreateAction(resource, modelElement, childEntries, containmentReference)) {
+			return null;
+		}
 		Action ret = createAction(resource, modelElement);
 		ret.setId(modelElement.getId());
 		String label = modelElement.getLabel();
@@ -427,7 +431,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Element element, 
 			Map<EReference, List<Action>> semanticElement,
 			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries,
-			Function<Element, Map<EReference, List<Action>>> resolver) {
+			Function<Predicate<Element>, Map<EReference, List<Action>>> resolver) {
 		
 		if (element instanceof Page) {			
 			Model model = ((Page) element).getModel();
@@ -495,7 +499,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	protected String generateEmbeddedDiagram(
 			Element element, 
 			Action action,			
-			Function<Element, Map<EReference, List<Action>>> resolver) {
+			Function<Predicate<Element>, Map<EReference, List<Action>>> resolver) {
 		try {
 			Document toEmbed = Document.create(true, null);
 			Page page = (Page) element;
@@ -529,7 +533,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Action pageAction, 
 			ModelElement modelElement, 
 			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries,
-			Function<Element, Map<EReference, List<Action>>> resolver) {		
+			Function<Predicate<Element>, Map<EReference, List<Action>>> resolver) {		
 		
 		String label = modelElement.getLabel();
 		StringBuilder ret = new StringBuilder();
@@ -580,9 +584,40 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	 * @param resolver Resolver
 	 * @return
 	 */
-	protected String getModelElementLink(ModelElement modelElement, Action action, Function<Element, Map<EReference, List<Action>>> resolver) {
+	protected String getModelElementLink(ModelElement modelElement, Action action, Function<Predicate<Element>, Map<EReference, List<Action>>> resolver) {
 		if (shallCreateLink(modelElement)) {
-			Map<EReference, List<Action>> actionMap = resolver.apply(modelElement);
+			// Link by cross-reference
+			String crossReferenceProperty = getCrossReferenceProperty();
+			if (!Util.isBlank(crossReferenceProperty)) {
+				String crossReferencePropertyValue = modelElement.getProperty(crossReferenceProperty);
+				if (!Util.isBlank(crossReferencePropertyValue)) {
+					int colonIdx = crossReferencePropertyValue.indexOf(":");
+					if (colonIdx != -1) {
+						Predicate<Element> predicate = e -> {
+							if (e instanceof ModelElement) {
+								String prop = ((ModelElement) e).getProperty(crossReferencePropertyValue.substring(0, colonIdx));
+								if (!Util.isBlank(prop)) {
+									return prop.equals(crossReferencePropertyValue.substring(colonIdx + 1));
+								}
+							}
+							return false;
+						};
+						Map<EReference, List<Action>> actionMap = resolver.apply(predicate);
+						for (Action eAction: actionMap.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
+							Object uriResolverAdapter = EcoreUtil.getRegisteredAdapter(eAction, URIResolverAdapter.class);
+							if (uriResolverAdapter instanceof URIResolverAdapter) {
+								URI eURI = ((URIResolverAdapter) uriResolverAdapter).resolve(action);
+								if (eURI != null) {
+									return eURI.toString();
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			// Link by equality
+			Map<EReference, List<Action>> actionMap = resolver.apply(modelElement::equals);
 			for (Action eAction: actionMap.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(modelElement, a)).collect(Collectors.toList())) {
 				Object uriResolverAdapter = EcoreUtil.getRegisteredAdapter(eAction, URIResolverAdapter.class);
 				if (uriResolverAdapter instanceof URIResolverAdapter) {
@@ -595,10 +630,22 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		}
 		return null;
 	}
+	
+	/**
+	 * @param modelElement
+	 * @return true if an action shall be created for a given model element. This implementation returns true for elements without external links and without cross-references.
+	 */
+	protected boolean shallCreateAction(Resource resource, ModelElement modelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries, EReference containmentReference) {
+		return (Util.isBlank(modelElement.getLink()) || modelElement.isPageLink()) && (Util.isBlank(getCrossReferenceProperty()) || Util.isBlank(modelElement.getProperty(getCrossReferenceProperty())));
+	}
+	
+	protected String getCrossReferenceProperty() {
+		return "xref";
+	}
 		
 	/**
 	 * @param modelElement
-	 * @return true if a link shall be created for a given model element. This implementation returns true for {@link Node}s and {@link Connection}s without a pre-existing link.
+	 * @return true if a link shall be created for a given model element. This implementation returns true for {@link Node}s and {@link Connection}s without a cross-reference or a pre-existing link which is not a page link.
 	 */
 	protected boolean shallCreateLink(ModelElement modelElement) {
 		return (modelElement instanceof Node || modelElement instanceof Connection) && (Util.isBlank(modelElement.getLink()) || modelElement.isPageLink());
