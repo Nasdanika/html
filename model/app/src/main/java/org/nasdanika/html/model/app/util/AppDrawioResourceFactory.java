@@ -380,16 +380,18 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return action == null || Util.isBlank(action.getText()) ? null : action;
 	}
 	
+	protected String getModelElementLabel(ModelElement modelElement) {
+		String label = modelElement.getLabel();
+		return Util.isBlank(label) ? null : Jsoup.parse(label).text(); 		
+	}	
+	
 	protected Action createModelElementAction(Resource resource, ModelElement modelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries, EReference containmentReference) {
 		if (!shallCreateAction(resource, modelElement, childEntries, containmentReference)) {
 			return null;
 		}
 		Action ret = createAction(resource, modelElement);
 		ret.setId(modelElement.getId());
-		String label = modelElement.getLabel();
-		if (!Util.isBlank(label)) {
-			ret.setText(Jsoup.parse(label).text());
-		}
+		ret.setText(getModelElementLabel(modelElement));
 		String link = modelElement.getLink();
 		if (Util.isBlank(link) || modelElement.isPageLink()) {
 			String path = Objects.requireNonNull(getPath(modelElement), "Path is null for " + modelElement.getLabel() + " / " + modelElement.getId());
@@ -424,29 +426,29 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		}
 		Action ret = createAction(resource, connection);
 		ret.setId(connection.getId());
-		String label = connection.getLabel();
+		String label = getModelElementLabel(connection);
 		if (Util.isBlank(label)) {
 			Node source = connection.getSource();
-			String sourceLabel = source.getLabel();
+			String sourceLabel = getModelElementLabel(source);
 			
 			Node target = connection.getTarget();
-			String targetLabel = target.getLabel();
+			String targetLabel = getModelElementLabel(target);
 			
 			if (Util.isBlank(sourceLabel) && Util.isBlank(targetLabel)) {
 				ret.setText("(unlabeled)");				
 			} else {
 				StringBuilder labelBuilder = new StringBuilder();
 				if (!Util.isBlank(sourceLabel)) {
-					labelBuilder.append(Jsoup.parse(sourceLabel).text()).append(" ");
+					labelBuilder.append(sourceLabel).append(" ");
 				}
 				labelBuilder.append("->");
 				if (!Util.isBlank(targetLabel)) {
-					labelBuilder.append(" ").append(Jsoup.parse(targetLabel).text());
+					labelBuilder.append(" ").append(targetLabel);
 				}
 				ret.setText(labelBuilder.toString());
 			}
 		} else {
-			ret.setText(Jsoup.parse(label).text());
+			ret.setText(label);
 		}
 		String link = connection.getLink();
 		if (Util.isBlank(link) || connection.isPageLink()) {
@@ -488,6 +490,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return elementAdapter instanceof ElementAdapter && element.equals(((ElementAdapter) elementAdapter).getElement());			
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void resolve(
 			Resource resource, 
@@ -549,12 +552,10 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 					sourceRow.getCells().add(sourceCell);
 					
 					Node source = ((Connection) element).getSource();
-					String sourceLabel = source.getLabel();
+					String sourceLabel = getModelElementLabel(source);
 					if (Util.isBlank(sourceLabel)) {
 						sourceLabel = "(unlabeled)";
-					} else {
-						sourceLabel = Jsoup.parse(sourceLabel).text();
-					}
+					} 
 					String sourceLink = getModelElementLink(source, action, resolver);
 					if (sourceLink == null) {
 						sourceCell.getContent().add(createText(sourceLabel));						
@@ -574,12 +575,10 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 					targetRow.getCells().add(targetCell);
 					
 					Node target = ((Connection) element).getTarget();
-					String targetLabel = target.getLabel();
+					String targetLabel = getModelElementLabel(target);
 					if (Util.isBlank(targetLabel)) {
 						targetLabel = "(unlabeled)";
-					} else {
-						targetLabel = Jsoup.parse(targetLabel).text();
-					}
+					} 
 					String targetLink = getModelElementLink(target, action, resolver);
 					if (targetLink == null) {
 						targetCell.getContent().add(createText(targetLabel));						
@@ -589,7 +588,153 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 
 					action.getContent().add(table);
 				} else if (element instanceof Node) {
-					// Inbound and outbound connections.
+					Node node = (Node) element;
+					EReference connectionsActionContainmentReference = getConnectionsActionContainmentReference(node);
+					if (connectionsActionContainmentReference != null) {
+						List<Connection> inboundConnections = node.getInboundConnections();
+						if (!inboundConnections.isEmpty()) {
+							Table table = BootstrapFactory.eINSTANCE.createTable();
+							table.setBordered(true);
+							table.getAttributes().put("style", createText("width:auto"));
+							
+							TableRow headerRow = BootstrapFactory.eINSTANCE.createTableRow();
+							table.getRows().add(headerRow);
+												
+							TableCell labelHeader = BootstrapFactory.eINSTANCE.createTableCell();
+							labelHeader.setHeader(true);
+							headerRow.getCells().add(labelHeader);
+							labelHeader.getContent().add(createText("Label"));
+	
+							TableCell sourceHeader = BootstrapFactory.eINSTANCE.createTableCell();
+							sourceHeader.setHeader(true);
+							headerRow.getCells().add(sourceHeader);
+							sourceHeader.getContent().add(createText("Source"));
+	
+							TableCell tooltipHeader = BootstrapFactory.eINSTANCE.createTableCell();
+							tooltipHeader.setHeader(true);
+							headerRow.getCells().add(tooltipHeader);
+							tooltipHeader.getContent().add(createText("Tooltip"));
+							
+							for (Connection inboundConnection: inboundConnections) { // TODO - sorting
+								TableRow connectionRow = BootstrapFactory.eINSTANCE.createTableRow();
+								table.getRows().add(connectionRow);
+													
+								TableCell labelCell = BootstrapFactory.eINSTANCE.createTableCell();
+								connectionRow.getCells().add(labelCell);
+								String connectionLabel = getModelElementLabel(inboundConnection);
+								if (Util.isBlank(connectionLabel) && hasDocumentation(resource, inboundConnection)) {
+									connectionLabel = "(unlabeled)";
+								}
+								if (!Util.isBlank(connectionLabel)) {
+									String connectionLink = getModelElementLink(inboundConnection, action, resolver);
+									if (connectionLink == null) {
+										labelCell.getContent().add(createText(connectionLabel));						
+									} else {
+										labelCell.getContent().add(createText("<a href=\"" + connectionLink + "\">" + connectionLabel + "</a>"));												
+									}
+								}
+		
+								TableCell sourceCell = BootstrapFactory.eINSTANCE.createTableCell();
+								connectionRow.getCells().add(sourceCell);
+
+								Node source = inboundConnection.getSource();
+								String sourceLabel = getModelElementLabel(source);
+								if (Util.isBlank(sourceLabel)) {
+									sourceLabel = "(unlabeled)";
+								} 
+								String sourceLink = getModelElementLink(source, action, resolver);
+								if (sourceLink == null) {
+									sourceCell.getContent().add(createText(sourceLabel));						
+								} else {
+									sourceCell.getContent().add(createText("<a href=\"" + sourceLink + "\">" + sourceLabel + "</a>"));												
+								}
+		
+								TableCell tooltipCell = BootstrapFactory.eINSTANCE.createTableCell();
+								connectionRow.getCells().add(tooltipCell);
+								String connectionTooltip = inboundConnection.getTooltip();
+								if (!Util.isBlank(connectionTooltip)) {
+									tooltipCell.getContent().add(createText(connectionTooltip));
+								}								
+							}							
+							
+							Action inboundConnectionsAction = AppFactory.eINSTANCE.createAction();
+							inboundConnectionsAction.setText("Inbound connections");
+							inboundConnectionsAction.getContent().add(table);
+							((Collection<Action>) action.eGet(connectionsActionContainmentReference)).add(inboundConnectionsAction);
+						}
+						
+						List<Connection> outboundConnections = node.getOutboundConnections();
+						if (!outboundConnections.isEmpty()) {
+							Table table = BootstrapFactory.eINSTANCE.createTable();
+							table.setBordered(true);
+							table.getAttributes().put("style", createText("width:auto"));
+							
+							TableRow headerRow = BootstrapFactory.eINSTANCE.createTableRow();
+							table.getRows().add(headerRow);
+												
+							TableCell labelHeader = BootstrapFactory.eINSTANCE.createTableCell();
+							labelHeader.setHeader(true);
+							headerRow.getCells().add(labelHeader);
+							labelHeader.getContent().add(createText("Label"));
+	
+							TableCell targetHeader = BootstrapFactory.eINSTANCE.createTableCell();
+							targetHeader.setHeader(true);
+							headerRow.getCells().add(targetHeader);
+							targetHeader.getContent().add(createText("Target"));
+	
+							TableCell tooltipHeader = BootstrapFactory.eINSTANCE.createTableCell();
+							tooltipHeader.setHeader(true);
+							headerRow.getCells().add(tooltipHeader);
+							tooltipHeader.getContent().add(createText("Tooltip"));
+							
+							for (Connection outboundConnection: outboundConnections) { // TODO - sorting
+								TableRow connectionRow = BootstrapFactory.eINSTANCE.createTableRow();
+								table.getRows().add(connectionRow);
+													
+								TableCell labelCell = BootstrapFactory.eINSTANCE.createTableCell();
+								connectionRow.getCells().add(labelCell);
+								String connectionLabel = getModelElementLabel(outboundConnection);
+								if (Util.isBlank(connectionLabel) && hasDocumentation(resource, outboundConnection)) {
+									connectionLabel = "(unlabeled)";
+								}
+								if (!Util.isBlank(connectionLabel)) {
+									String connectionLink = getModelElementLink(outboundConnection, action, resolver);
+									if (connectionLink == null) {
+										labelCell.getContent().add(createText(connectionLabel));						
+									} else {
+										labelCell.getContent().add(createText("<a href=\"" + connectionLink + "\">" + connectionLabel + "</a>"));												
+									}
+								}
+		
+								TableCell targetCell = BootstrapFactory.eINSTANCE.createTableCell();
+								connectionRow.getCells().add(targetCell);
+
+								Node target = outboundConnection.getTarget();
+								String targetLabel = getModelElementLabel(target);
+								if (Util.isBlank(targetLabel)) {
+									targetLabel = "(unlabeled)";
+								} 
+								String targetLink = getModelElementLink(target, action, resolver);
+								if (targetLink == null) {
+									targetCell.getContent().add(createText(targetLabel));						
+								} else {
+									targetCell.getContent().add(createText("<a href=\"" + targetLink + "\">" + targetLabel + "</a>"));												
+								}
+		
+								TableCell tooltipCell = BootstrapFactory.eINSTANCE.createTableCell();
+								connectionRow.getCells().add(tooltipCell);
+								String connectionTooltip = outboundConnection.getTooltip();
+								if (!Util.isBlank(connectionTooltip)) {
+									tooltipCell.getContent().add(createText(connectionTooltip));
+								}								
+							}							
+							
+							Action inboundConnectionsAction = AppFactory.eINSTANCE.createAction();
+							inboundConnectionsAction.setText("Outbound connections");
+							inboundConnectionsAction.getContent().add(table);
+							((Collection<Action>) action.eGet(connectionsActionContainmentReference)).add(inboundConnectionsAction);
+						}
+					}
 				}
 				
 				// Embedded diagram
@@ -627,6 +772,10 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 				}
 			}
 		}
+	}
+	
+	protected EReference getConnectionsActionContainmentReference(Node node) {
+		return AppPackage.Literals.ACTION__SECTIONS;
 	}
 
 	protected String generateEmbeddedDiagram(
@@ -668,7 +817,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries,
 			Function<Predicate<Element>, Map<EReference, List<Action>>> resolver) {		
 		
-		String label = modelElement.getLabel();
+		String label = getModelElementLabel(modelElement);
 		StringBuilder ret = new StringBuilder();
 		if (Util.isBlank(label)) {
 			if (modelElement instanceof Layer && childEntries != null) {
@@ -680,13 +829,13 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			ret.append("<li>").append(System.lineSeparator());
 			String link = getModelElementLink(modelElement, pageAction, resolver);
 			if (Util.isBlank(link)) {
-				ret.append(Jsoup.parse(label).text());
+				ret.append(label);
 			} else {
 				ret
 					.append("<a href=\"")
 					.append(link)
 					.append("\">")
-					.append(Jsoup.parse(label).text())
+					.append(label)
 					.append("</a>");				
 			}			
 			
