@@ -49,6 +49,10 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.bootstrap.BootstrapFactory;
+import org.nasdanika.html.model.bootstrap.Table;
+import org.nasdanika.html.model.bootstrap.TableCell;
+import org.nasdanika.html.model.bootstrap.TableRow;
 
 /**
  * Creates an action model from Drawio documents
@@ -178,8 +182,13 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			
 	}
 	
-	protected EReference getContainmentReference(Resource resource, Element element) {
-		return AppPackage.Literals.LABEL__CHILDREN;
+	/**
+	 * @param resource
+	 * @param element
+	 * @return Containment reference for this action. This implementation returns anonymous for connections and children otherwise.
+	 */
+	protected EReference getContainmentReference(Resource resource, Element element) {		
+		return element instanceof Connection ? AppPackage.Literals.ACTION__ANONYMOUS : AppPackage.Literals.LABEL__CHILDREN;
 	}
 	
 	protected Action createDocumentAction(Resource resource, Document document, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
@@ -401,8 +410,62 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return ret;
 	}	
 	
+	/**
+	 * Creates actions for documented connections.
+	 * @param resource
+	 * @param connection
+	 * @param childEntries
+	 * @param containmentReference
+	 * @return
+	 */
 	protected Action createConnectionAction(Resource resource, Connection connection, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries, EReference containmentReference) {
-		return null;
+		if (!shallCreateAction(resource, connection, childEntries, containmentReference)) {
+			return null;			
+		}
+		Action ret = createAction(resource, connection);
+		ret.setId(connection.getId());
+		String label = connection.getLabel();
+		if (Util.isBlank(label)) {
+			Node source = connection.getSource();
+			String sourceLabel = source.getLabel();
+			
+			Node target = connection.getTarget();
+			String targetLabel = target.getLabel();
+			
+			if (Util.isBlank(sourceLabel) && Util.isBlank(targetLabel)) {
+				ret.setText("(unlabeled)");				
+			} else {
+				StringBuilder labelBuilder = new StringBuilder();
+				if (!Util.isBlank(sourceLabel)) {
+					labelBuilder.append(Jsoup.parse(sourceLabel).text()).append(" ");
+				}
+				labelBuilder.append("->");
+				if (!Util.isBlank(targetLabel)) {
+					labelBuilder.append(" ").append(Jsoup.parse(targetLabel).text());
+				}
+				ret.setText(labelBuilder.toString());
+			}
+		} else {
+			ret.setText(Jsoup.parse(label).text());
+		}
+		String link = connection.getLink();
+		if (Util.isBlank(link) || connection.isPageLink()) {
+			String path = Objects.requireNonNull(getPath(connection), "Path is null for " + connection.getLabel() + " / " + connection.getId());
+			if (containmentReference == null) {
+				ret.setLocation(path + "/index.html");
+			} else {
+				ret.setLocation(containmentReference.getName() + "/" + path + "/index.html");
+			}
+		} else {
+			ret.setLocation(link);
+		}
+		ret.setDescription(connection.getTooltip());
+		String icon = getIcon(connection);
+		if (!Util.isBlank(icon)) {
+			ret.setIcon(icon);
+		}
+		
+		return ret;				
 	}	
 	
 	/**
@@ -458,12 +521,77 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 				}
 				
 				EObject doc = getDocumentation(resource, element, embeddedDiagram, tocBuilder.toString());
-				if (doc != null) {
+				if (doc == null) {
+					String rootTooltip = root.getTooltip();
+					if (!Util.isBlank(rootTooltip)) {
+						addContent(action, rootTooltip);
+					}
+				} else {
 					action.getContent().add(doc);
 				}					
 			}			
-		} else if (element instanceof Layer) {
+		} else if (element instanceof ModelElement) {
 			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(element, a)).collect(Collectors.toList())) {
+				if (element instanceof Connection) {
+					// Source and target
+					Table table = BootstrapFactory.eINSTANCE.createTable();
+					table.getAttributes().put("style", createText("width:auto"));
+					
+					TableRow sourceRow = BootstrapFactory.eINSTANCE.createTableRow();
+					table.getRows().add(sourceRow);
+					
+					TableCell sourceHeader = BootstrapFactory.eINSTANCE.createTableCell();
+					sourceHeader.setHeader(true);
+					sourceRow.getCells().add(sourceHeader);
+					sourceHeader.getContent().add(createText("Source"));
+										
+					TableCell sourceCell = BootstrapFactory.eINSTANCE.createTableCell();
+					sourceRow.getCells().add(sourceCell);
+					
+					Node source = ((Connection) element).getSource();
+					String sourceLabel = source.getLabel();
+					if (Util.isBlank(sourceLabel)) {
+						sourceLabel = "(unlabeled)";
+					} else {
+						sourceLabel = Jsoup.parse(sourceLabel).text();
+					}
+					String sourceLink = getModelElementLink(source, action, resolver);
+					if (sourceLink == null) {
+						sourceCell.getContent().add(createText(sourceLabel));						
+					} else {
+						sourceCell.getContent().add(createText("<a href=\"" + sourceLink + "\">" + sourceLabel + "</a>"));												
+					}
+					
+					TableRow targetRow = BootstrapFactory.eINSTANCE.createTableRow();
+					table.getRows().add(targetRow);
+					
+					TableCell targetHeader = BootstrapFactory.eINSTANCE.createTableCell();
+					targetHeader.setHeader(true);
+					targetRow.getCells().add(targetHeader);
+					targetHeader.getContent().add(createText("Target"));
+										
+					TableCell targetCell = BootstrapFactory.eINSTANCE.createTableCell();
+					targetRow.getCells().add(targetCell);
+					
+					Node target = ((Connection) element).getTarget();
+					String targetLabel = target.getLabel();
+					if (Util.isBlank(targetLabel)) {
+						targetLabel = "(unlabeled)";
+					} else {
+						targetLabel = Jsoup.parse(targetLabel).text();
+					}
+					String targetLink = getModelElementLink(target, action, resolver);
+					if (targetLink == null) {
+						targetCell.getContent().add(createText(targetLabel));						
+					} else {
+						targetCell.getContent().add(createText("<a href=\"" + targetLink + "\">" + targetLabel + "</a>"));												
+					}					
+
+					action.getContent().add(table);
+				} else if (element instanceof Node) {
+					// Inbound and outbound connections.
+				}
+				
 				// Embedded diagram
 				String embeddedDiagram = null;
 				
@@ -489,7 +617,12 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 				}
 				
 				EObject doc = getDocumentation(resource, element, embeddedDiagram, tocBuilder.toString());
-				if (doc != null) {
+				if (doc == null) {
+					String tooltip = ((ModelElement) element).getTooltip();
+					if (!Util.isBlank(tooltip)) {
+						addContent(action, tooltip);
+					}
+				} else {					
 					action.getContent().add(doc);
 				}
 			}
@@ -634,9 +767,12 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	/**
 	 * @param modelElement
 	 * @return true if an action shall be created for a given model element. This implementation returns true for elements without external links and without cross-references.
+	 * False is returned for undocumented connections.
 	 */
 	protected boolean shallCreateAction(Resource resource, ModelElement modelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries, EReference containmentReference) {
-		return (Util.isBlank(modelElement.getLink()) || modelElement.isPageLink()) && (Util.isBlank(getCrossReferenceProperty()) || Util.isBlank(modelElement.getProperty(getCrossReferenceProperty())));
+		return (Util.isBlank(modelElement.getLink()) || modelElement.isPageLink())
+				&& (Util.isBlank(getCrossReferenceProperty()) || Util.isBlank(modelElement.getProperty(getCrossReferenceProperty())))
+				&& !(modelElement instanceof Connection && !hasDocumentation(resource, modelElement)); // No actions for undocumented connections
 	}
 	
 	protected String getCrossReferenceProperty() {
