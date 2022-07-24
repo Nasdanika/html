@@ -7,6 +7,8 @@ module org.nasdanika.html.flow {
 	requires org.nasdanika.diagram.gen;
 	requires org.nasdanika.html.emf;
 	requires org.apache.commons.codec;
+	requires org.eclipse.emf.ecore.xmi;
+	requires org.jsoup;
 	
 	exports org.nasdanika.html.flow;	
 	

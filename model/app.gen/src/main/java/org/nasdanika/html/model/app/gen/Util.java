@@ -754,7 +754,12 @@ public final class Util {
 	 * @return Search document object for non-empty Nasdanika App pages, null otherwise.
 	 * @throws IOException
 	 */
-	public static JSONObject createSearchDocument(String path, File file, Consumer<? super Element> contentConsumer, BiFunction<String, Document, Boolean> processor) throws IOException {
+	public static JSONObject createSearchDocument(
+			String path, 
+			File file, 
+			Consumer<? super Element> contentConsumer, 
+			BiFunction<String, Document, Boolean> processor) throws IOException {
+		
 		Document document = Jsoup.parse(file, "UTF-8");
 		if (processor != null && processor.apply(path, document)) {
 			Document.OutputSettings outputSettings = new Document.OutputSettings();
