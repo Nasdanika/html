@@ -659,6 +659,11 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 							
 							Action inboundConnectionsAction = AppFactory.eINSTANCE.createAction();
 							inboundConnectionsAction.setText("Inbound connections");
+							if (connectionsActionContainmentReference == AppPackage.Literals.ACTION__SECTIONS) {
+								inboundConnectionsAction.setName("inbound-connections");
+							} else {
+								inboundConnectionsAction.setLocation("inbound-connections.html");								
+							}
 							inboundConnectionsAction.getContent().add(table);
 							((Collection<Action>) action.eGet(connectionsActionContainmentReference)).add(inboundConnectionsAction);
 						}
@@ -729,10 +734,15 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 								}								
 							}							
 							
-							Action inboundConnectionsAction = AppFactory.eINSTANCE.createAction();
-							inboundConnectionsAction.setText("Outbound connections");
-							inboundConnectionsAction.getContent().add(table);
-							((Collection<Action>) action.eGet(connectionsActionContainmentReference)).add(inboundConnectionsAction);
+							Action outboundConnectionsAction = AppFactory.eINSTANCE.createAction();
+							outboundConnectionsAction.setText("Outbound connections");
+							if (connectionsActionContainmentReference == AppPackage.Literals.ACTION__SECTIONS) {							
+								outboundConnectionsAction.setName("outbound-connections");
+							} else {
+								outboundConnectionsAction.setLocation("outbound-connections.html");								
+							}
+							outboundConnectionsAction.getContent().add(table);
+							((Collection<Action>) action.eGet(connectionsActionContainmentReference)).add(outboundConnectionsAction);
 						}
 					}
 				}
