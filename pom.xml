@@ -139,6 +139,10 @@
 									<location>${project.parent.basedir}/../core/cli/target/apidocs/</location>
 								</offlineLink>
 								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/core/modules/drawio/apidocs/</url>
+									<location>${project.parent.basedir}/../core/drawio/target/apidocs/</location>
+								</offlineLink>
+								<offlineLink>
 									<url>https://docs.nasdanika.org/modules/core/modules/emf/apidocs/</url>
 									<location>${project.parent.basedir}/../core/emf/target/apidocs/</location>
 								</offlineLink>
