@@ -26,6 +26,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
@@ -237,11 +238,27 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			if (actionPrototype instanceof Action) {
 				Action copy = EcoreUtil.copy((Action) actionPrototype);
 				copy.setUuid(UUID.randomUUID().toString());
+				TreeIterator<EObject> cit = copy.eAllContents();
+				while (cit.hasNext()) {
+					EObject next = cit.next();
+					if (next instanceof ModelElement) {
+						((ModelElement) next).setUuid(UUID.randomUUID().toString());
+					}
+				}
 				return copy;
 			}
 			if (actionPrototype != null) {
 				ActionProvider actionProvider = Objects.requireNonNull((ActionProvider) EcoreUtil.getRegisteredAdapter(actionPrototype, ActionProvider.class), "Cannot adapt " + actionPrototype + " to " + ActionProvider.class);
-				return actionProvider.execute(registry, progressMonitor);
+				Action ret = actionProvider.execute(registry, progressMonitor);
+				ret.setUuid(UUID.randomUUID().toString());				
+				TreeIterator<EObject> cit = ret.eAllContents();
+				while (cit.hasNext()) {
+					EObject next = cit.next();
+					if (next instanceof ModelElement) {
+						((ModelElement) next).setUuid(UUID.randomUUID().toString());
+					}
+				}
+				return ret;
 			}
 		}
 		return AppFactory.eINSTANCE.createAction();
