@@ -68,7 +68,6 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		this.resourceSet = resourceSet;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected Map<EReference, List<Action>> createSemanticElement(
 			Resource resource, 
@@ -114,17 +113,6 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 				}
 			}
 			return ret;
-		}
-			
-		Map<EReference, List<Action>> accumulator = new HashMap<>();
-		for (ElementEntry<Map<EReference, List<Action>>> childEntry: childEntries.values()) {
-			for (Entry<EReference, List<Action>> referenceEntry: childEntry.getSemanticElement().entrySet()) {
-				accumulator.computeIfAbsent(referenceEntry.getKey(), r -> new ArrayList<>()).addAll(referenceEntry.getValue());
-			}
-		}
-		
-		for (Entry<EReference, List<Action>> re: accumulator.entrySet()) {
-			((Collection<Action>) action.eGet(re.getKey())).addAll(re.getValue());
 		}
 		
 		return Collections.singletonMap(containmentReference, Collections.singletonList(action));
@@ -296,12 +284,82 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return null;
 	}
 		
+	@SuppressWarnings("unchecked")
 	protected Action createPageAction(Resource resource, Page page, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
 		Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> pageElementEntry = getPageElementEntry(resource, page, childEntries);
 		Action ret =  pageElementEntry == null ? createAction(resource, page) : createModelElementAction(resource, pageElementEntry.getKey(), pageElementEntry.getValue(), null);		
 		ret.setText(page.getName());	
 		ret.setLocation("pages/" + page.getId() + "/index.html");
+		
+		// Add child actions only if there is no page element
+		if (pageElementEntry == null || pageElementEntry.getKey() == page.getModel().getRoot()) {		
+			Map<EReference, List<Action>> accumulator = new HashMap<>();
+			for (ElementEntry<Map<EReference, List<Action>>> childEntry: childEntries.values()) {
+				for (Entry<EReference, List<Action>> referenceEntry: childEntry.getSemanticElement().entrySet()) {
+					accumulator.computeIfAbsent(referenceEntry.getKey(), r -> new ArrayList<>()).addAll(referenceEntry.getValue());
+				}
+			}
+			
+			for (Entry<EReference, List<Action>> re: accumulator.entrySet()) {
+				((Collection<Action>) ret.eGet(re.getKey())).addAll(re.getValue());
+			}			
+		}
 		return ret;
+	}
+	
+	/**
+	 * @param modelElement
+	 * @return true if this element is the main element on the page which "represents" the page. 
+	 */
+	protected boolean isPageElement(ModelElement modelElement) {
+		String pageElementFlagProperty = getPageElementFlagProperty();
+		if (Util.isBlank(pageElementFlagProperty)) {
+			return false;
+		}
+		String pageElementProp = modelElement.getProperty(pageElementFlagProperty);
+		return "true".equals(pageElementProp);
+	}
+
+	protected String getPageElementFlagProperty() {
+		return "page-element";
+	}
+	
+	protected Map.Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> findPageElementEntry(
+			Resource resource, 
+			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
+				
+		if (childEntries == null) {
+			return null;
+		}
+		
+		for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: childEntries.entrySet()) {
+			if (childEntry.getKey() instanceof ModelElement && isPageElement((ModelElement) childEntry.getKey())) {
+				return new Map.Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>>() {
+
+					@Override
+					public ModelElement getKey() {
+						return (ModelElement) childEntry.getKey();
+					}
+
+					@Override
+					public Map<Element, ElementEntry<Map<EReference, List<Action>>>> getValue() {
+						return childEntry.getValue().getChildEntries();
+					}
+
+					@Override
+					public Map<Element, ElementEntry<Map<EReference, List<Action>>>> setValue(Map<Element, ElementEntry<Map<EReference, List<Action>>>> value) {
+						throw new UnsupportedOperationException();
+					}
+
+				};				
+			}
+			Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> ret = findPageElementEntry(resource, childEntry.getValue().getChildEntries());
+			if (ret != null) {
+				return ret;
+			}
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -315,11 +373,16 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Resource resource, 
 			Page page, 
 			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
-		
+				
 		Model model = page.getModel();
 		Map<Element, ElementEntry<Map<EReference, List<Action>>>> modelChildEntries = childEntries.get(model).getChildEntries();
 		Root root = model.getRoot();
 		Map<Element, ElementEntry<Map<EReference, List<Action>>>> rootChildEntries = modelChildEntries.get(root).getChildEntries();
+		
+		Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> ret = findPageElementEntry(resource, rootChildEntries);
+		if (ret != null) {
+			return ret;
+		}
 
 		return new Map.Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>>() {
 
@@ -385,6 +448,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return Util.isBlank(label) ? null : Jsoup.parse(label).text(); 		
 	}	
 	
+	@SuppressWarnings("unchecked")
 	protected Action createModelElementAction(Resource resource, ModelElement modelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries, EReference containmentReference) {
 		if (!shallCreateAction(resource, modelElement, childEntries, containmentReference)) {
 			return null;
@@ -407,6 +471,17 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		String icon = getIcon(modelElement);
 		if (!Util.isBlank(icon)) {
 			ret.setIcon(icon);
+		}
+				
+		Map<EReference, List<Action>> accumulator = new HashMap<>();
+		for (ElementEntry<Map<EReference, List<Action>>> childEntry: childEntries.values()) {
+			for (Entry<EReference, List<Action>> referenceEntry: childEntry.getSemanticElement().entrySet()) {
+				accumulator.computeIfAbsent(referenceEntry.getKey(), r -> new ArrayList<>()).addAll(referenceEntry.getValue());
+			}
+		}
+		
+		for (Entry<EReference, List<Action>> re: accumulator.entrySet()) {
+			((Collection<Action>) ret.eGet(re.getKey())).addAll(re.getValue());
 		}
 		
 		return ret;
@@ -499,13 +574,10 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries,
 			Function<Predicate<Element>, Map<EReference, List<Action>>> resolver) {
 		
-		if (element instanceof Page) {			
-			Model model = ((Page) element).getModel();
-			Map<Element, ElementEntry<Map<EReference, List<Action>>>> modelChildEntries = childEntries.get(model).getChildEntries();
-			Root root = model.getRoot();
-			Map<Element, ElementEntry<Map<EReference, List<Action>>>> rootChildEntries = modelChildEntries.get(root).getChildEntries();
+		if (element instanceof Page) {
+			Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> pageElementEntry = getPageElementEntry(resource, (Page) element, childEntries);
 
-			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(root, a)).collect(Collectors.toList())) {
+			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(pageElementEntry.getKey(), a)).collect(Collectors.toList())) {
 				// Embedded diagram
 				String embeddedDiagram = generateEmbeddedDiagram(element, action, resolver);
 				if (isEmbedDiagram(resource, element)) {															
@@ -514,8 +586,8 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 
 				// TOC
 				StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
-				for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> layerEntry: rootChildEntries.entrySet()) { 
-					tocBuilder.append(generateTableOfContents(action, (ModelElement) layerEntry.getKey(), layerEntry.getValue().getChildEntries(), resolver));
+				for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: pageElementEntry.getValue().entrySet()) { 
+					tocBuilder.append(generateTableOfContents(action, (ModelElement) childEntry.getKey(), childEntry.getValue().getChildEntries(), resolver));
 				}					
 				tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator());
 				
@@ -525,7 +597,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 				
 				EObject doc = getDocumentation(resource, element, embeddedDiagram, tocBuilder.toString());
 				if (doc == null) {
-					String rootTooltip = root.getTooltip();
+					String rootTooltip = pageElementEntry.getKey().getTooltip();
 					if (!Util.isBlank(rootTooltip)) {
 						addContent(action, rootTooltip);
 					}
