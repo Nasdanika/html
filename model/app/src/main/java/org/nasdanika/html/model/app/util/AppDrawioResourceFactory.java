@@ -214,9 +214,10 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return "documentation";
 	}
 	
-	protected boolean hasDocumentation(Resource resource, Element element) {
+	protected boolean hasDocumentation(Resource resource, Element element, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
 		if (element instanceof Page) {
-			return hasDocumentation(resource, ((Page) element).getModel().getRoot());
+			Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> pageElementEntry = getPageElementEntry(resource, (Page) element, childEntries);
+			return hasDocumentation(resource, pageElementEntry.getKey(), childEntries);
 		}
 		if (element instanceof ModelElement) {
 			String documentationProperty = getDocumentationProperty();
@@ -230,11 +231,16 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		
 		return false;
 	}
-	
-	
-	protected EObject getDocumentation(Resource resource, Element element, String embeddedDiagram, String tableOfContents) {
+		
+	protected EObject getDocumentation(
+			Resource resource, 
+			Element element, 
+			String embeddedDiagram,
+			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries,			
+			String tableOfContents) {
 		if (element instanceof Page) {
-			return getDocumentation(resource, ((Page) element).getModel().getRoot(), embeddedDiagram, tableOfContents);
+			Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> pageElementEntry = getPageElementEntry(resource, (Page) element, childEntries);
+			return getDocumentation(resource, pageElementEntry.getKey(), embeddedDiagram, childEntries, tableOfContents);
 		}
 		if (element instanceof ModelElement) {
 			String documentationProperty = getDocumentationProperty();
@@ -248,8 +254,11 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			}
 			
 			Markdown markdown = ContentFactory.eINSTANCE.createMarkdown();
-			URI docURI = URI.createURI(docProp);
-			docURI = docURI.resolve(resource.getURI());
+			URI docURI = URI.createURI(docProp);			
+			URI base = resolveDocumentationBaseURI(resource, getSemanticParent((ModelElement) element));
+			if (base != null) {
+				docURI = docURI.resolve(base);
+			}
 			org.nasdanika.exec.content.Resource docResource = ContentFactory.eINSTANCE.createResource();
 			docResource.setLocation(docURI.toString());
 			markdown.setSource(docResource);						
@@ -283,27 +292,49 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		
 		return null;
 	}
+	
+	protected URI resolveDocumentationBaseURI(Resource resource, ModelElement modelElement) {
+		if (modelElement == null) {
+			return resource.getURI();
+		}
+		String documentationProperty = getDocumentationProperty();
+		if (Util.isBlank(documentationProperty)) {
+			return resolveDocumentationBaseURI(resource, getSemanticParent(modelElement));
+		}
+		String docProp = modelElement.getProperty(documentationProperty);
+		if (Util.isBlank(docProp)) {
+			return resolveDocumentationBaseURI(resource, getSemanticParent(modelElement));
+		}
 		
-	@SuppressWarnings("unchecked")
+		URI base = resolveDocumentationBaseURI(resource, getSemanticParent(modelElement));
+		URI docURI = URI.createURI(docProp);
+		return base == null ? docURI : docURI.resolve(base);
+	}
+	
+	/**
+	 * Semantic parent is used for resolution of documentation.
+	 * Element documentation URI is resolved relative to semantic ancestor documentation URI if it is set and relative to the
+	 * document otherwise.
+	 * @param element
+	 * @return
+	 */
+	protected ModelElement getSemanticParent(ModelElement element) {
+		if (element instanceof Connection) {
+			if (connectionBase == ConnectionBase.SOURCE) {
+				return ((Connection) element).getSource();
+			}
+			if (connectionBase == ConnectionBase.TARGET) {
+				return ((Connection) element).getTarget();
+			}
+		}
+		return element.getParent();
+	}
+		
 	protected Action createPageAction(Resource resource, Page page, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
 		Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> pageElementEntry = getPageElementEntry(resource, page, childEntries);
 		Action ret =  pageElementEntry == null ? createAction(resource, page) : createModelElementAction(resource, pageElementEntry.getKey(), pageElementEntry.getValue(), null);		
 		ret.setText(page.getName());	
 		ret.setLocation("pages/" + page.getId() + "/index.html");
-		
-		// Add child actions only if there is no page element
-		if (pageElementEntry == null || pageElementEntry.getKey() == page.getModel().getRoot()) {		
-			Map<EReference, List<Action>> accumulator = new HashMap<>();
-			for (ElementEntry<Map<EReference, List<Action>>> childEntry: childEntries.values()) {
-				for (Entry<EReference, List<Action>> referenceEntry: childEntry.getSemanticElement().entrySet()) {
-					accumulator.computeIfAbsent(referenceEntry.getKey(), r -> new ArrayList<>()).addAll(referenceEntry.getValue());
-				}
-			}
-			
-			for (Entry<EReference, List<Action>> re: accumulator.entrySet()) {
-				((Collection<Action>) ret.eGet(re.getKey())).addAll(re.getValue());
-			}			
-		}
 		return ret;
 	}
 	
@@ -580,7 +611,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(pageElementEntry.getKey(), a)).collect(Collectors.toList())) {
 				// Embedded diagram
 				String embeddedDiagram = generateEmbeddedDiagram(element, action, resolver);
-				if (isEmbedDiagram(resource, element)) {															
+				if (isEmbedDiagram(resource, element, childEntries)) {															
 					addContent(action, embeddedDiagram);						
 				}
 
@@ -591,11 +622,11 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 				}					
 				tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator());
 				
-				if (isGenerateTableOfContents(resource, element)) {
+				if (isGenerateTableOfContents(resource, element, childEntries)) {
 					addContent(action, tocBuilder.toString());
 				}
 				
-				EObject doc = getDocumentation(resource, element, embeddedDiagram, tocBuilder.toString());
+				EObject doc = getDocumentation(resource, element, embeddedDiagram, childEntries, tocBuilder.toString());
 				if (doc == null) {
 					String rootTooltip = pageElementEntry.getKey().getTooltip();
 					if (!Util.isBlank(rootTooltip)) {
@@ -694,7 +725,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 								TableCell labelCell = BootstrapFactory.eINSTANCE.createTableCell();
 								connectionRow.getCells().add(labelCell);
 								String connectionLabel = getModelElementLabel(inboundConnection);
-								if (Util.isBlank(connectionLabel) && hasDocumentation(resource, inboundConnection)) {
+								if (Util.isBlank(connectionLabel) && hasDocumentation(resource, inboundConnection, childEntries)) {
 									connectionLabel = "(unlabeled)";
 								}
 								if (!Util.isBlank(connectionLabel)) {
@@ -771,7 +802,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 								TableCell labelCell = BootstrapFactory.eINSTANCE.createTableCell();
 								connectionRow.getCells().add(labelCell);
 								String connectionLabel = getModelElementLabel(outboundConnection);
-								if (Util.isBlank(connectionLabel) && hasDocumentation(resource, outboundConnection)) {
+								if (Util.isBlank(connectionLabel) && hasDocumentation(resource, outboundConnection, childEntries)) {
 									connectionLabel = "(unlabeled)";
 								}
 								if (!Util.isBlank(connectionLabel)) {
@@ -825,7 +856,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 				Page linkedPage = ((ModelElement) element).getLinkedPage();
 				if (linkedPage != null) {
 					embeddedDiagram = generateEmbeddedDiagram(linkedPage, action, resolver);
-					if (isEmbedDiagram(resource, element)) {															
+					if (isEmbedDiagram(resource, element, childEntries)) {															
 						addContent(action, embeddedDiagram);						
 					}
 				}								
@@ -839,11 +870,11 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 				}								
 				tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator());
 				
-				if (isGenerateTableOfContents(resource, element)) {
+				if (isGenerateTableOfContents(resource, element, childEntries)) {
 					addContent(action, tocBuilder.toString());
 				}
 				
-				EObject doc = getDocumentation(resource, element, embeddedDiagram, tocBuilder.toString());
+				EObject doc = getDocumentation(resource, element, embeddedDiagram, childEntries, tocBuilder.toString());
 				if (doc == null) {
 					String tooltip = ((ModelElement) element).getTooltip();
 					if (!Util.isBlank(tooltip)) {
@@ -869,20 +900,33 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Page page = (Page) element;
 			toEmbed.getPages().add(page);
 			
-			Consumer<Element> visitor = e -> {
-				if (e instanceof ModelElement) {
-					String link = getModelElementLink((ModelElement) e, action, resolver);
-					if (!Util.isBlank(link)) {
-						((ModelElement) e).setLink(link);
-					}
-				}
-			};
-			
-			toEmbed.accept(visitor, null);			
+			Consumer<Element> visitor = e -> processEmbeddedDiagramElement(e, action, resolver);			
+			toEmbed.accept(visitor, connectionBase);			
 			return toEmbed.toHtml(null, getDiagramViewer());
 		} catch (Exception  e) {
 			return "Error embedding diagram: " + e;
 		}
+	}
+	
+	/**
+	 * Processes an element of the embedded diagram. 
+	 * This implementation adds a link. Override for additional behavior, e.g. change background color based on external information.
+	 * @param element
+	 * @param action
+	 * @param resolver
+	 */
+	protected void processEmbeddedDiagramElement(
+			Element element, 
+			Action action,			
+			Function<Predicate<Element>, Map<EReference, List<Action>>> resolver) {
+		
+		if (element instanceof ModelElement) {
+			ModelElement modelElement = (ModelElement) element;
+			String link = getModelElementLink(modelElement, action, resolver);
+			if (!Util.isBlank(link)) {
+				modelElement.setLink(link);
+			}
+		}		
 	}
 	
 	protected String getListOpenTag(Element element) {
@@ -1003,7 +1047,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	protected boolean shallCreateAction(Resource resource, ModelElement modelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries, EReference containmentReference) {
 		return (Util.isBlank(modelElement.getLink()) || modelElement.isPageLink())
 				&& (Util.isBlank(getCrossReferenceProperty()) || Util.isBlank(modelElement.getProperty(getCrossReferenceProperty())))
-				&& !(modelElement instanceof Connection && !hasDocumentation(resource, modelElement)); // No actions for undocumented connections
+				&& !(modelElement instanceof Connection && !hasDocumentation(resource, modelElement, childEntries)); // No actions for undocumented connections
 	}
 	
 	protected String getCrossReferenceProperty() {
@@ -1021,15 +1065,15 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	/**
 	 * @return If true, a {@link Page} diagram is added to the content of the {@link Action} created from that page. This implementation returns true.
 	 */
-	protected boolean isEmbedDiagram(Resource resource, Element element) {
-		return !hasDocumentation(resource, element);
+	protected boolean isEmbedDiagram(Resource resource, Element element, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
+		return !hasDocumentation(resource, element, childEntries);
 	}
 		
 	/**
 	 * @return If true, a table of contents is generated for a {@link Page} diagram. This implementation returns true;
 	 */
-	protected boolean isGenerateTableOfContents(Resource resource, Element element) {
-		return !hasDocumentation(resource, element);
+	protected boolean isGenerateTableOfContents(Resource resource, Element element, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
+		return !hasDocumentation(resource, element, childEntries);
 	}	
 	
 	/**
