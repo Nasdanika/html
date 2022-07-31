@@ -119,7 +119,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return Collections.singletonMap(containmentReference, Collections.singletonList(action));
 	}
 	
-	protected boolean isRootAction(Element _element, Action action) {
+	protected boolean isRootAction(Element element, Action action) {
 		if (action == null) {
 			return false;
 		}
@@ -311,8 +311,10 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		
 	protected Action createPageAction(Resource resource, Page page, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
 		Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> pageElementEntry = getPageElementEntry(resource, page, childEntries);
-		Action ret =  pageElementEntry == null ? createAction(resource, page) : createModelElementAction(resource, pageElementEntry.getKey(), pageElementEntry.getValue(), null);		
-		ret.setText(page.getName());	
+		Action ret =  pageElementEntry == null ? createAction(resource, page) : createModelElementAction(resource, pageElementEntry.getKey(), pageElementEntry.getValue(), null);
+		if (Util.isBlank(ret.getText())) {
+			ret.setText(page.getName());
+		}
 		ret.setLocation("pages/" + page.getId() + "/index.html");
 		return ret;
 	}
@@ -454,6 +456,9 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	}
 	
 	protected String getModelElementLabel(ModelElement modelElement) {
+		if (modelElement == null) {
+			return null;
+		}
 		String label = modelElement.getLabel();
 		return Util.isBlank(label) ? null : Jsoup.parse(label).text(); 		
 	}	
@@ -622,13 +627,39 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	            EReference connectionRole = getConnectionRole(connection);
 	            if (connectionRole != null) {
 		            Node connectionSource = connection.getSource();
-		            Optional<Action> sourceAction = resolver.apply((isPageElement(connectionSource) ? connectionSource.getModel().getPage() : connectionSource)::equals).values().stream().flatMap(Collection::stream).findFirst();
-		            if (sourceAction.isPresent()) {
-		                for (Action targetAction: resolver.apply(connection.getTarget()::equals).values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
-		                    ((Collection<Action>) sourceAction.get().eGet(connectionRole)).add(targetAction);
-		                }
+		            if (connectionSource != null) {
+			            Element toResolve = connectionSource;
+			            if (isPageElement(connectionSource)) {
+			            	String rootActionFlag = connectionSource.getModel().getRoot().getProperty(getRootActionFlagProperty());
+			            	if (Util.isBlank(rootActionFlag) || !"false".equals(rootActionFlag)) {
+			            		toResolve = connectionSource.getModel().getPage();
+			            	}
+			            }
+			            
+			            Optional<Action> sourceAction = resolver.apply(toResolve::equals).values().stream().flatMap(Collection::stream).findFirst();
+			            if (sourceAction.isPresent()) {
+			                Node connectionTarget = connection.getTarget();
+			                if (connectionTarget != null) {
+								for (Action targetAction: resolver.apply(connectionTarget::equals).values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
+				                    ((Collection<Action>) sourceAction.get().eGet(connectionRole)).add(targetAction);
+				                }
+			                }
+			            }
 		            }
 	            }				
+			}
+			
+			// Rearranging actions for linked pages
+			for (ModelElement modelElement: element.stream(connectionBase).filter(ModelElement.class::isInstance).map(ModelElement.class::cast).filter(ModelElement::isPageLink).collect(Collectors.toList())) {
+	            Optional<Action> linkingElementAction = resolver.apply(modelElement::equals).values().stream().flatMap(Collection::stream).findFirst();
+	            if (linkingElementAction.isPresent()) {
+	            	Page linkedPage = modelElement.getLinkedPage();
+	            	Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> pageElementEntry = getPageElementEntry(resource, linkedPage, childEntries.get(linkedPage).getChildEntries());
+		            Optional<Action> linkedElementAction = resolver.apply(pageElementEntry.getKey()::equals).values().stream().flatMap(Collection::stream).findFirst();
+		            if (linkedElementAction.isPresent()) {
+		            	linkingElementAction.get().getChildren().addAll(linkedElementAction.get().getChildren());
+		            }
+	            }
 			}
 			
 			// Adding URI resolver adapters
