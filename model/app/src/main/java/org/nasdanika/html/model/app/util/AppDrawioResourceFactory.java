@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -86,14 +89,12 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 							if (isRootAction(childEntry.getKey(), rootAction)) {
 								resource.getContents().add(rootAction);
 							}
-							addURIResolverAdapters(rootAction);
 						}
 					}
 				}				
 			} else {
 				resource.getContents().add(action);
-				addURIResolverAdapters(action);
-			}
+			}			
 		} else if (element instanceof Page) {
 			action = createPageAction(resource, (Page) element, childEntries);
 		} else if (element instanceof Node) {
@@ -118,7 +119,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return Collections.singletonMap(containmentReference, Collections.singletonList(action));
 	}
 	
-	protected boolean isRootAction(Element element, Action action) {
+	protected boolean isRootAction(Element _element, Action action) {
 		if (action == null) {
 			return false;
 		}
@@ -136,38 +137,6 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	
 	protected String getRootActionFlagProperty() {
 		return "root-action";
-	}
-	
-	protected void addURIResolverAdapters(Action root) {
-		BiFunction<Label, URI, URI> uriResolver = org.nasdanika.html.model.app.util.Util.uriResolver(root);
-		class URIResolverAdapterImpl extends AdapterImpl implements URIResolverAdapter {
-						
-			@Override
-			public boolean isAdapterForType(Object type) {
-				return URIResolverAdapter.class == type;
-			}
-
-			@Override
-			public URI resolve(Action base) {
-				Action targetAction = (Action) getTarget();
-				if (targetAction == base) {
-					return null;
-				}				
-				URI baseURI = base == null ? null : uriResolver.apply(base, null);
-				return uriResolver.apply(targetAction, baseURI);
-			}
-
-		}
-		
-		root.eAdapters().add(new URIResolverAdapterImpl());
-		TreeIterator<EObject> cit = root.eAllContents();
-		while (cit.hasNext()) {
-			EObject next = cit.next();
-			if (next instanceof Action /* && EcoreUtil.getRegisteredAdapter(next, URIResolverAdapter.class) == null */) {
-				next.eAdapters().add(new URIResolverAdapterImpl());
-			}
-		}
-			
 	}
 	
 	/**
@@ -311,6 +280,10 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		return base == null ? docURI : docURI.resolve(base);
 	}
 	
+	protected ModelElement getSemanticParent(ModelElement element) {
+		return getSemanticParent(element, new HashSet<>());
+	}
+	
 	/**
 	 * Semantic parent is used for resolution of documentation.
 	 * Element documentation URI is resolved relative to semantic ancestor documentation URI if it is set and relative to the
@@ -318,13 +291,19 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	 * @param element
 	 * @return
 	 */
-	protected ModelElement getSemanticParent(ModelElement element) {
+	protected ModelElement getSemanticParent(ModelElement element, Set<Connection> traversed) {
 		if (element instanceof Connection) {
 			if (connectionBase == ConnectionBase.SOURCE) {
 				return ((Connection) element).getSource();
 			}
 			if (connectionBase == ConnectionBase.TARGET) {
 				return ((Connection) element).getTarget();
+			}
+		} else if (element instanceof Node) {
+			for (Connection inboundConnection: ((Node) element).getInboundConnections()) {
+				if (traversed.add(inboundConnection) && getConnectionRole(inboundConnection, traversed) != null) {
+					return inboundConnection.getSource();
+				}
 			}
 		}
 		return element.getParent();
@@ -595,6 +574,38 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		Object elementAdapter = EcoreUtil.getRegisteredAdapter(action, ElementAdapter.class);					
 		return elementAdapter instanceof ElementAdapter && element.equals(((ElementAdapter) elementAdapter).getElement());			
 	}
+		
+	protected void addURIResolverAdapters(Action root) {
+		BiFunction<Label, URI, URI> uriResolver = org.nasdanika.html.model.app.util.Util.uriResolver(root);
+		class URIResolverAdapterImpl extends AdapterImpl implements URIResolverAdapter {
+						
+			@Override
+			public boolean isAdapterForType(Object type) {
+				return URIResolverAdapter.class == type;
+			}
+
+			@Override
+			public URI resolve(Action base) {
+				Action targetAction = (Action) getTarget();
+				if (targetAction == base) {
+					return null;
+				}				
+				URI baseURI = base == null ? null : uriResolver.apply(base, null);
+				return uriResolver.apply(targetAction, baseURI);
+			}
+
+		}
+		
+		root.eAdapters().add(new URIResolverAdapterImpl());
+		TreeIterator<EObject> cit = root.eAllContents();
+		while (cit.hasNext()) {
+			EObject next = cit.next();
+			if (next instanceof Action /* && EcoreUtil.getRegisteredAdapter(next, URIResolverAdapter.class) == null */) {
+				next.eAdapters().add(new URIResolverAdapterImpl());
+			}
+		}
+			
+	}	
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -605,7 +616,28 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries,
 			Function<Predicate<Element>, Map<EReference, List<Action>>> resolver) {
 		
-		if (element instanceof Page) {
+		if (element instanceof Document) {
+			// Rearranging actions for connections with role
+			for (Connection connection: element.stream(connectionBase).filter(Connection.class::isInstance).map(Connection.class::cast).collect(Collectors.toList())) {
+	            EReference connectionRole = getConnectionRole(connection);
+	            if (connectionRole != null) {
+		            Node connectionSource = connection.getSource();
+		            Optional<Action> sourceAction = resolver.apply((isPageElement(connectionSource) ? connectionSource.getModel().getPage() : connectionSource)::equals).values().stream().flatMap(Collection::stream).findFirst();
+		            if (sourceAction.isPresent()) {
+		                for (Action targetAction: resolver.apply(connection.getTarget()::equals).values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
+		                    ((Collection<Action>) sourceAction.get().eGet(connectionRole)).add(targetAction);
+		                }
+		            }
+	            }				
+			}
+			
+			// Adding URI resolver adapters
+			for (EObject root: resource.getContents()) {
+				if (root instanceof Action) {
+					addURIResolverAdapters((Action) root);
+				}
+			}
+		} else if (element instanceof Page) {
 			Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> pageElementEntry = getPageElementEntry(resource, (Page) element, childEntries);
 
 			for (Action action: semanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(pageElementEntry.getKey(), a)).collect(Collectors.toList())) {
@@ -694,7 +726,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 					Node node = (Node) element;
 					EReference connectionsActionContainmentReference = getConnectionsActionContainmentReference(node);
 					if (connectionsActionContainmentReference != null) {
-						List<Connection> inboundConnections = node.getInboundConnections();
+						List<Connection> inboundConnections = node.getInboundConnections().stream().filter(c -> getConnectionRole(c) == null).collect(Collectors.toList());
 						if (!inboundConnections.isEmpty()) {
 							Table table = BootstrapFactory.eINSTANCE.createTable();
 							table.setBordered(true);
@@ -771,7 +803,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 							((Collection<Action>) action.eGet(connectionsActionContainmentReference)).add(inboundConnectionsAction);
 						}
 						
-						List<Connection> outboundConnections = node.getOutboundConnections();
+						List<Connection> outboundConnections = node.getOutboundConnections().stream().filter(c -> getConnectionRole(c) == null).collect(Collectors.toList());
 						if (!outboundConnections.isEmpty()) {
 							Table table = BootstrapFactory.eINSTANCE.createTable();
 							table.setBordered(true);
@@ -887,6 +919,75 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		}
 	}
 	
+	protected String getConnectionRoleProperty() {
+		return "role";
+	}
+	
+	protected String getDefaultConnectionRoleProperty() {
+		return "default-connection-role";
+	}
+
+	protected EReference getConnectionRole(Connection connection) {
+		return getConnectionRole(connection, new HashSet<>());
+	}	
+	
+	/**
+	 * For mapping connections returns EReference of the source action to add target action to.
+	 * @param element
+	 * @return
+	 */
+	protected EReference getConnectionRole(Connection connection, Set<Connection> traversed) {
+		String connectionRoleProperty = getConnectionRoleProperty();
+		if (!Util.isBlank(connectionRoleProperty)) {
+			String connectionRole = connection.getProperty(connectionRoleProperty);
+			if (!Util.isBlank(connectionRole)) {
+				return resolveConnectionRole(connectionRole);
+			}
+		}
+		return getDefaultConnectionRole(getSemanticParent(connection, traversed), traversed);
+	}
+	
+	protected EReference getDefaultConnectionRole(ModelElement modelElement, Set<Connection> traversed) {
+		if (modelElement == null) {
+			return null;
+		}
+		String defaultConnectionRoleProperty = getDefaultConnectionRoleProperty();
+		if (!Util.isBlank(defaultConnectionRoleProperty)) {
+			String defaultConnectionRole = modelElement.getProperty(defaultConnectionRoleProperty);
+			if (!Util.isBlank(defaultConnectionRole)) {
+				return resolveConnectionRole(defaultConnectionRole);
+			}
+		}
+		return getDefaultConnectionRole(getSemanticParent(modelElement, traversed), traversed);		
+	}
+
+	protected EReference resolveConnectionRole(String connectionRole) {
+		switch (connectionRole) {
+		case "none": 
+			return null;
+		case "child":
+			return AppPackage.Literals.LABEL__CHILDREN;
+		case "anonymous":
+			return AppPackage.Literals.ACTION__ANONYMOUS;
+		case "float-left-navigation":
+			return AppPackage.Literals.ACTION__FLOAT_LEFT_NAVIGATION;
+		case "float-right-navigation":
+			return AppPackage.Literals.ACTION__FLOAT_RIGHT_NAVIGATION;
+		case "left-navigation":
+			return AppPackage.Literals.ACTION__LEFT_NAVIGATION;
+		case "navigation":
+			return AppPackage.Literals.ACTION__NAVIGATION;
+		case "right-navigation":
+			return AppPackage.Literals.ACTION__RIGHT_NAVIGATION;
+		case "section":
+			return AppPackage.Literals.ACTION__SECTIONS;
+		default: 
+			throw new IllegalArgumentException("Unsupported connection role: " + connectionRole);
+		}
+	}
+	
+//	protected ERe
+
 	protected EReference getConnectionsActionContainmentReference(Node node) {
 		return AppPackage.Literals.ACTION__SECTIONS;
 	}
