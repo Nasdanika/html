@@ -3,9 +3,11 @@ package org.nasdanika.html.model.app.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -292,21 +294,14 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	 * @return
 	 */
 	protected ModelElement getSemanticParent(ModelElement element, Set<Connection> traversed) {
-		if (element instanceof Connection) {
-			if (connectionBase == ConnectionBase.SOURCE) {
-				return ((Connection) element).getSource();
-			}
-			if (connectionBase == ConnectionBase.TARGET) {
-				return ((Connection) element).getTarget();
-			}
-		} else if (element instanceof Node) {
+		if (element instanceof Node) {
 			for (Connection inboundConnection: ((Node) element).getInboundConnections()) {
 				if (traversed.add(inboundConnection) && getConnectionRole(inboundConnection, traversed) != null) {
 					return inboundConnection.getSource();
 				}
 			}
 		}
-		return element.getParent();
+		return super.getSemanticParent(element, traversed);
 	}
 		
 	protected Action createPageAction(Resource resource, Page page, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
@@ -640,8 +635,28 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			            if (sourceAction.isPresent()) {
 			                Node connectionTarget = connection.getTarget();
 			                if (connectionTarget != null) {
+			        			Comparator<Element> childComparator = loadChildComparator(connectionSource, getDefaultSort());
+			        			List<Action> childActions = ((List<Action>) sourceAction.get().eGet(connectionRole));
 								for (Action targetAction: resolver.apply(connectionTarget::equals).values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
-				                    ((Collection<Action>) sourceAction.get().eGet(connectionRole)).add(targetAction);
+									Object targetActionElementAdapter = EcoreUtil.getRegisteredAdapter(targetAction, ElementAdapter.class);					
+									if (childComparator == null || targetActionElementAdapter == null || childActions.isEmpty()) {
+										childActions.add(targetAction);
+									} else {
+										Element targetElement = ((ElementAdapter) targetActionElementAdapter).getElement();
+										ListIterator<Action> listIterator = childActions.listIterator();
+										while (listIterator.hasNext()) {
+											Action next = listIterator.next();
+											Object nextElementAdapter = EcoreUtil.getRegisteredAdapter(next, ElementAdapter.class);					
+											if (nextElementAdapter instanceof ElementAdapter) {
+												 Element nextElement = ((ElementAdapter) nextElementAdapter).getElement();
+												 if (childComparator.compare(targetElement, nextElement) < 0) {
+													 listIterator.previous(); // Going back so it target is inserted before next.
+													 break;
+												 }
+											}
+										}
+										listIterator.add(targetAction);
+									}
 				                }
 			                }
 			            }
@@ -657,11 +672,14 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	            	Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> pageElementEntry = getPageElementEntry(resource, linkedPage, childEntries.get(linkedPage).getChildEntries());
 		            Optional<Action> linkedElementAction = resolver.apply(pageElementEntry.getKey()::equals).values().stream().flatMap(Collection::stream).findFirst();
 		            if (linkedElementAction.isPresent()) {
+		            	linkingElementAction.get().getAnonymous().addAll(linkedElementAction.get().getAnonymous());
 		            	linkingElementAction.get().getChildren().addAll(linkedElementAction.get().getChildren());
+		            	linkingElementAction.get().getNavigation().addAll(linkedElementAction.get().getNavigation());
+		            	linkingElementAction.get().getSections().addAll(linkedElementAction.get().getSections());
 		            }
 	            }
 			}
-			
+						
 			// Adding URI resolver adapters
 			for (EObject root: resource.getContents()) {
 				if (root instanceof Action) {
@@ -1000,24 +1018,14 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			return AppPackage.Literals.LABEL__CHILDREN;
 		case "anonymous":
 			return AppPackage.Literals.ACTION__ANONYMOUS;
-		case "float-left-navigation":
-			return AppPackage.Literals.ACTION__FLOAT_LEFT_NAVIGATION;
-		case "float-right-navigation":
-			return AppPackage.Literals.ACTION__FLOAT_RIGHT_NAVIGATION;
-		case "left-navigation":
-			return AppPackage.Literals.ACTION__LEFT_NAVIGATION;
 		case "navigation":
 			return AppPackage.Literals.ACTION__NAVIGATION;
-		case "right-navigation":
-			return AppPackage.Literals.ACTION__RIGHT_NAVIGATION;
 		case "section":
 			return AppPackage.Literals.ACTION__SECTIONS;
 		default: 
 			throw new IllegalArgumentException("Unsupported connection role: " + connectionRole);
 		}
 	}
-	
-//	protected ERe
 
 	protected EReference getConnectionsActionContainmentReference(Node node) {
 		return AppPackage.Literals.ACTION__SECTIONS;
