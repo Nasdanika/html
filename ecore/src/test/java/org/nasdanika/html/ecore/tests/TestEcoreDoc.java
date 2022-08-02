@@ -389,7 +389,7 @@ public class TestEcoreDoc {
 			writer.write("var searchDocuments = " + searchDocuments);
 		}
 		
-		if (problems.get() != 24) { // Assuming 23 known problems or false positives
+		if (problems.get() != 22) { // Assuming 22 known problems or false positives
 			fail("There are broken links: " + problems.get());
 		};
 	}
