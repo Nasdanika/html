@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -67,6 +68,9 @@ import org.nasdanika.html.model.bootstrap.TableRow;
 public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReference,List<Action>>> {
 
 	private ResourceSet resourceSet;
+		
+	protected Map<Connection, EReference> connectionRoles = new LinkedHashMap<>();
+	protected Map<ModelElement, ModelElement> semanticParents = new LinkedHashMap<>();
 
 	public AppDrawioResourceFactory(ConnectionBase connectionBase, ResourceSet resourceSet) {
 		super(connectionBase);
@@ -283,27 +287,9 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 	}
 	
 	protected ModelElement getSemanticParent(ModelElement element) {
-		return getSemanticParent(element, new HashSet<>());
+		return semanticParents.computeIfAbsent(element, super::getSemanticParent);
 	}
-	
-	/**
-	 * Semantic parent is used for resolution of documentation.
-	 * Element documentation URI is resolved relative to semantic ancestor documentation URI if it is set and relative to the
-	 * document otherwise.
-	 * @param element
-	 * @return
-	 */
-	protected ModelElement getSemanticParent(ModelElement element, Set<Connection> traversed) {
-		if (element instanceof Node) {
-			for (Connection inboundConnection: ((Node) element).getInboundConnections()) {
-				if (traversed.add(inboundConnection) && getConnectionRole(inboundConnection, traversed) != null) {
-					return inboundConnection.getSource();
-				}
-			}
-		}
-		return super.getSemanticParent(element, traversed);
-	}
-		
+			
 	protected Action createPageAction(Resource resource, Page page, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
 		Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> pageElementEntry = getPageElementEntry(resource, page, childEntries);
 		Action ret =  pageElementEntry == null ? createAction(resource, page) : createModelElementAction(resource, pageElementEntry.getKey(), pageElementEntry.getValue(), null);
@@ -603,8 +589,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			if (next instanceof Action /* && EcoreUtil.getRegisteredAdapter(next, URIResolverAdapter.class) == null */) {
 				next.eAdapters().add(new URIResolverAdapterImpl());
 			}
-		}
-			
+		}			
 	}	
 	
 	@SuppressWarnings("unchecked")
@@ -617,6 +602,49 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Function<Predicate<Element>, Map<EReference, List<Action>>> resolver) {
 		
 		if (element instanceof Document) {
+			// Resolving connection default roles by traversing from all nodes with default connection property set
+			String defaultConnectionRoleProperty = getDefaultConnectionRoleProperty();
+			if (!Util.isBlank(defaultConnectionRoleProperty)) {
+				element.stream(connectionBase)
+					.filter(Node.class::isInstance)
+					.map(Node.class::cast)
+					.forEach(node -> setDefaultConnectionRole(node, defaultConnectionRoleProperty, null, new HashSet<>()));
+			}
+			
+			// Resolving assigned connection roles.
+			String connectionRoleProperty = getConnectionRoleProperty();
+			if (!Util.isBlank(connectionRoleProperty)) {
+				element.stream(connectionBase)
+					.filter(Connection.class::isInstance)
+					.map(Connection.class::cast)
+					.forEach(connection -> {
+						String connectionRoleName = connection.getProperty(connectionRoleProperty);
+						if (!Util.isBlank(connectionRoleName)) {
+							EReference connectionRole = resolveConnectionRole(connectionRoleName);
+							if (connectionRole == null) {
+								connectionRoles.remove(connection);
+							} else {
+								connectionRoles.put(connection, connectionRole);
+							}
+						}
+					});				
+			}
+			
+			// Resolving semantic parents for nodes
+			element.stream(connectionBase)
+				.filter(Node.class::isInstance)
+				.map(Node.class::cast)
+				.forEach(node -> {
+					for (Connection inboundConnection: node.getInboundConnections()) {
+						if (connectionRoles.containsKey(inboundConnection)) {
+							Node candidate = inboundConnection.getSource();
+							if (candidate != null && !node.equals(candidate) && !isSemanticAncestor(node, candidate, new HashSet<>())) {
+								semanticParents.put(node, candidate);
+							}
+						}
+					}					
+				});
+			
 			// Rearranging actions for connections with role
 			for (Connection connection: element.stream(connectionBase).filter(Connection.class::isInstance).map(Connection.class::cast).collect(Collectors.toList())) {
 	            EReference connectionRole = getConnectionRole(connection);
@@ -967,49 +995,65 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			}
 		}
 	}
-	
-	protected String getConnectionRoleProperty() {
-		return "role";
-	}
-	
-	protected String getDefaultConnectionRoleProperty() {
-		return "default-connection-role";
+
+	/**
+	 * @param node
+	 * @param candidate
+	 * @param hashSet
+	 * @return true if there is a semantic parent path from the descendant to the ancestor
+	 */
+	protected boolean isSemanticAncestor(ModelElement ancestor, ModelElement descendant, HashSet<ModelElement> traversed) {
+		if (descendant == null || ancestor == null) {
+			return false;
+		}
+		if (traversed.add(descendant)) {
+			if (descendant.equals(ancestor)) {
+				return true; // loop
+			}
+			ModelElement semanticParent = semanticParents.get(descendant);
+			if (semanticParent == null) {
+				return false;
+			}
+			if (semanticParent.equals(ancestor)) {
+				return true;
+			}
+			return isSemanticAncestor(ancestor, semanticParent, traversed);
+		}
+		return false;
 	}
 
-	protected EReference getConnectionRole(Connection connection) {
-		return getConnectionRole(connection, new HashSet<>());
+	/**
+	 * 
+	 * @param node
+	 * @param defaultConnectionRoleProperty
+	 */
+	protected void setDefaultConnectionRole(Node node, String defaultConnectionRoleProperty, EReference defaultConnectionRole, Set<Node> traversed) {
+		if (traversed.add(node)) {
+			String defaultConnectionRoleName = node.getProperty(defaultConnectionRoleProperty);			
+			if (defaultConnectionRole == null) { // Process only nodes with default connection property set
+				if (Util.isBlank(defaultConnectionRoleName)) {
+					return;
+				}
+				defaultConnectionRole = resolveConnectionRole(defaultConnectionRoleName);
+			} else if (!Util.isBlank(defaultConnectionRoleName)) {
+				return;
+			}
+				
+			for (Connection outboundConnection: node.getOutboundConnections()) {
+				connectionRoles.put(outboundConnection, defaultConnectionRole);
+				Node target = outboundConnection.getTarget();
+				if (target != null && !target.equals(node)) {
+					setDefaultConnectionRole(target, defaultConnectionRoleProperty, defaultConnectionRole, traversed);								
+				}
+			}
+			
+			Page linkedPage = node.getLinkedPage();
+			if (linkedPage != null) {
+				// TODO - getPageElementEntry(null, linkedPage, null)
+			}
+		}
 	}	
 	
-	/**
-	 * For mapping connections returns EReference of the source action to add target action to.
-	 * @param element
-	 * @return
-	 */
-	protected EReference getConnectionRole(Connection connection, Set<Connection> traversed) {
-		String connectionRoleProperty = getConnectionRoleProperty();
-		if (!Util.isBlank(connectionRoleProperty)) {
-			String connectionRole = connection.getProperty(connectionRoleProperty);
-			if (!Util.isBlank(connectionRole)) {
-				return resolveConnectionRole(connectionRole);
-			}
-		}
-		return getDefaultConnectionRole(getSemanticParent(connection, traversed), traversed);
-	}
-	
-	protected EReference getDefaultConnectionRole(ModelElement modelElement, Set<Connection> traversed) {
-		if (modelElement == null) {
-			return null;
-		}
-		String defaultConnectionRoleProperty = getDefaultConnectionRoleProperty();
-		if (!Util.isBlank(defaultConnectionRoleProperty)) {
-			String defaultConnectionRole = modelElement.getProperty(defaultConnectionRoleProperty);
-			if (!Util.isBlank(defaultConnectionRole)) {
-				return resolveConnectionRole(defaultConnectionRole);
-			}
-		}
-		return getDefaultConnectionRole(getSemanticParent(modelElement, traversed), traversed);		
-	}
-
 	protected EReference resolveConnectionRole(String connectionRole) {
 		switch (connectionRole) {
 		case "none": 
@@ -1025,7 +1069,19 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		default: 
 			throw new IllegalArgumentException("Unsupported connection role: " + connectionRole);
 		}
+	}		
+
+	protected String getConnectionRoleProperty() {
+		return "role";
 	}
+	
+	protected String getDefaultConnectionRoleProperty() {
+		return "default-connection-role";
+	}
+
+	protected EReference getConnectionRole(Connection connection) {
+		return connectionRoles.get(connection);
+	}	
 
 	protected EReference getConnectionsActionContainmentReference(Node node) {
 		return AppPackage.Literals.ACTION__SECTIONS;
