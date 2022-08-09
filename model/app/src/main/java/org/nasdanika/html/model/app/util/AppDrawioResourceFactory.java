@@ -640,6 +640,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 							Node candidate = inboundConnection.getSource();
 							if (candidate != null && !node.equals(candidate) && !isSemanticAncestor(node, candidate, new HashSet<>())) {
 								semanticParents.put(node, candidate);
+								break;
 							}
 						}
 					}					
@@ -662,7 +663,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			            Optional<Action> sourceAction = resolver.apply(toResolve::equals).values().stream().flatMap(Collection::stream).findFirst();
 			            if (sourceAction.isPresent()) {
 			                Node connectionTarget = connection.getTarget();
-			                if (connectionTarget != null) {
+			                if (connectionTarget != null && !connectionTarget.equals(connectionSource) && connectionSource.equals(getSemanticParent(connectionTarget))) {
 			        			Comparator<Element> childComparator = loadChildComparator(connectionSource, getDefaultSort());
 			        			List<Action> childActions = ((List<Action>) sourceAction.get().eGet(connectionRole));
 								for (Action targetAction: resolver.apply(connectionTarget::equals).values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
