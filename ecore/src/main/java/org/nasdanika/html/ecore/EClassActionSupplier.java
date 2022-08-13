@@ -66,7 +66,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 	}
 	
 	@Override
-	public org.nasdanika.html.model.app.Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+	public org.nasdanika.html.model.app.Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
 		Action action = super.execute(contextEClass, progressMonitor);
 		
 		action.setSectionStyle(SectionStyle.HEADER);
@@ -241,7 +241,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		return action;
 	}
 
-	private void generateAllGenericSupertypes(List<EGenericType> allGenericSupertypes, Action allGroup, ProgressMonitor progressMonitor) throws Exception {		
+	private void generateAllGenericSupertypes(List<EGenericType> allGenericSupertypes, Action allGroup, ProgressMonitor progressMonitor) {		
 		if (!allGenericSupertypes.isEmpty()) {
 			String inheritanceDiagram = generateInheritanceDiagram(0, RelationshipDirection.both, true, true, progressMonitor);
 			if (!Util.isBlank(inheritanceDiagram)) {
@@ -269,7 +269,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			RelationshipDirection relationshipDirection,
 			boolean appendAttributes,
 			boolean appendOperations,
-			ProgressMonitor monitor) throws Exception {
+			ProgressMonitor monitor) {
 		
 		StringBuilder sb = new StringBuilder();
 		DiagramTextGenerator gen = getDiagramTextGenerator(sb, appendAttributes, appendOperations);
@@ -285,7 +285,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 	}
 	
 	
-	private void generateAllOperations(List<EOperation> allOperations, Action allGroup, ProgressMonitor progressMonitor) throws Exception {		
+	private void generateAllOperations(List<EOperation> allOperations, Action allGroup, ProgressMonitor progressMonitor) {		
 		if (!allOperations.isEmpty()) {
 			Action allOperationsAction = AppFactory.eINSTANCE.createAction();
 			allOperationsAction.setText("Operations");
@@ -300,7 +300,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		}
 	}
 
-	private void generateAllReferences(List<EReference> allReferences,	Action allGroup, ProgressMonitor progressMonitor) throws Exception {		
+	private void generateAllReferences(List<EReference> allReferences,	Action allGroup, ProgressMonitor progressMonitor) {		
 		if (!allReferences.isEmpty()) {
 			Action allReferencesAction = AppFactory.eINSTANCE.createAction();
 			allReferencesAction.setText("References");
@@ -315,7 +315,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		}
 	}
 
-	private void generateAllAttributes(List<EAttribute> allAttributes, Action allGroup,	ProgressMonitor progressMonitor) throws Exception {		
+	private void generateAllAttributes(List<EAttribute> allAttributes, Action allGroup,	ProgressMonitor progressMonitor) {		
 		if (!allAttributes.isEmpty()) {
 			Action allAttributesAction = AppFactory.eINSTANCE.createAction();
 			allAttributesAction.setText("Attributes");
@@ -333,7 +333,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 	private void generateLoadSpecification(
 			Action action, 
 			Comparator<ENamedElement> namedElementComparator,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		// Load specification
 		if (!eObject.isAbstract() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(eObject, EObjectLoader.IS_LOADABLE, "true"))) {
@@ -482,7 +482,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			DiagramTextGenerator.RelationshipDirection relationshipDirection,
 			boolean appendAttributes,
 			boolean appendOperations,
-			ProgressMonitor monitor) throws Exception {
+			ProgressMonitor monitor) {
 
 		DiagramGenerator diagramGenerator = context.get(DiagramGenerator.class);		
 		

@@ -205,7 +205,7 @@ public class AppearanceConsumerFactoryAdapter extends AdapterImpl implements Con
 	};	
 	
 	@Override
-	public Consumer<HTMLElement<?>> create(Context context) throws Exception {
+	public Consumer<HTMLElement<?>> create(Context context) {
 		MapCompoundSupplierFactory<String,Object> attributesFactory = new MapCompoundSupplierFactory<>("Attributes");
 		for (Entry<String, EObject> ae: getTarget().getAttributes()) {
 			EObject value = ae.getValue();

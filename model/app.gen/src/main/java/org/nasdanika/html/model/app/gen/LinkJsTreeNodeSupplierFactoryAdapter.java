@@ -33,7 +33,7 @@ public class LinkJsTreeNodeSupplierFactoryAdapter<M extends Link> extends LabelJ
 	}
 	
 	@Override
-	public Supplier<JsTreeNode> create(Context context) throws Exception {
+	public Supplier<JsTreeNode> create(Context context) {
 		@SuppressWarnings("resource")
 		Consumer<JsTreeNode> configurator = new Consumer<JsTreeNode>() {
 
@@ -48,7 +48,7 @@ public class LinkJsTreeNodeSupplierFactoryAdapter<M extends Link> extends LabelJ
 			}
 
 			@Override
-			public void execute(JsTreeNode jsTreeNode, ProgressMonitor progressMonitor) throws Exception {
+			public void execute(JsTreeNode jsTreeNode, ProgressMonitor progressMonitor) {
 				M semanticElement = getTarget();
 				jsTreeNode.disabled(semanticElement.isDisabled());
 				jsTreeNode.id(semanticElement.getId());

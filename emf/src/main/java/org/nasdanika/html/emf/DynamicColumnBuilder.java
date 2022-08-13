@@ -19,13 +19,12 @@ public interface DynamicColumnBuilder<T> {
 	 * @param context
 	 * @param progressMonitor
 	 * @return Map to be converted to JSON object to pass to the table columns attribute.
-	 * @throws Exception
 	 */
 	public org.nasdanika.ncore.Map buildHeader(
 			Action base, 
 			ETypedElement typedElement,
 			Context context, 
-			ProgressMonitor progressMonitor) throws Exception;
+			ProgressMonitor progressMonitor);
 
 	/**
 	 * Builds a value cell and adds it to the row object (item)
@@ -35,7 +34,6 @@ public interface DynamicColumnBuilder<T> {
 	 * @param typedElement
 	 * @param context
 	 * @param progressMonitor
-	 * @throws Exception
 	 */
 	public void buildCell(
 			T element,
@@ -43,6 +41,6 @@ public interface DynamicColumnBuilder<T> {
 			Action base, 
 			ETypedElement typedElement,
 			Context context, 
-			ProgressMonitor progressMonitor) throws Exception;
+			ProgressMonitor progressMonitor);
 	
 }

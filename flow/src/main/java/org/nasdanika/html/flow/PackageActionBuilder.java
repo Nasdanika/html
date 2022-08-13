@@ -30,7 +30,7 @@ public class PackageActionBuilder extends PackageElementActionBuilder<org.nasdan
 			Action action,
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		
 		EList<EObject> children = action.getChildren();
@@ -47,12 +47,11 @@ public class PackageActionBuilder extends PackageElementActionBuilder<org.nasdan
 	 * Creates a list of actions for sub-packages. 
 	 * @param progressMonitor
 	 * @return An empty list if there are no sub-packages. A singleton list containing a grouping action containing sub-package actions otherwise.
-	 * @throws Exception 
 	 */
 	protected List<Action> createSubPackageActions(
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		List<Package> subPackages = getTarget().getSubPackages().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
 		if (subPackages.isEmpty()) {
 			return Collections.emptyList();
@@ -72,12 +71,11 @@ public class PackageActionBuilder extends PackageElementActionBuilder<org.nasdan
 	 * Creates a list of actions for activities. 
 	 * @param progressMonitor
 	 * @return An empty list if there are no activities. A singleton list containing a grouping action containing activity actions otherwise.
-	 * @throws Exception 
 	 */
 	protected List<Action> createActivityActions(
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Collection<Activity<?>> activities = getTarget().getActivities().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
 		if (activities.isEmpty()) {
 			return Collections.emptyList();
@@ -97,12 +95,11 @@ public class PackageActionBuilder extends PackageElementActionBuilder<org.nasdan
 	 * Creates a list of actions for participants. 
 	 * @param progressMonitor
 	 * @return An empty list if there are no participants. A singleton list containing a grouping action containing participant actions otherwise.
-	 * @throws Exception 
 	 */
 	protected List<Action> createParticipantActions(
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Collection<Participant> participants = getTarget().getParticipants().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
 		if (participants.isEmpty()) {
 			return Collections.emptyList();
@@ -122,12 +119,11 @@ public class PackageActionBuilder extends PackageElementActionBuilder<org.nasdan
 	 * Creates a list of actions for resources. 
 	 * @param progressMonitor
 	 * @return An empty list if there are no resources. A singleton list containing a grouping action containing resource actions otherwise.
-	 * @throws Exception 
 	 */
 	protected List<Action> createResourceActions(
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Collection<Resource> resources = getTarget().getResources().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
 		if (resources.isEmpty()) {
 			return Collections.emptyList();
@@ -147,12 +143,11 @@ public class PackageActionBuilder extends PackageElementActionBuilder<org.nasdan
 	 * Creates a list of actions for activities. 
 	 * @param progressMonitor
 	 * @return An empty list if there are no activities. A singleton list containing a grouping action containing actvity actions otherwise.
-	 * @throws Exception 
 	 */
 	protected List<Action> createArtifactActions(
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Collection<Artifact> artifacts = getTarget().getArtifacts().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
 		if (artifacts.isEmpty()) {
 			return Collections.emptyList();

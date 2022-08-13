@@ -24,7 +24,7 @@ public class CarouselSupplierFactoryAdapter extends DivSupplierFactoryAdapter<Ca
 	}
 	
 	@Override
-	protected Function<org.nasdanika.html.Tag, org.nasdanika.html.Tag> createConfigureFunction(Context context) throws Exception {
+	protected Function<org.nasdanika.html.Tag, org.nasdanika.html.Tag> createConfigureFunction(Context context) {
 		
 		@SuppressWarnings("resource")
 		Function<BiSupplier<Tag, List<Object>>, Tag> carouselFunction = new Function<BiSupplier<Tag, List<Object>>, Tag>() {
@@ -40,7 +40,7 @@ public class CarouselSupplierFactoryAdapter extends DivSupplierFactoryAdapter<Ca
 			}
 			
 			@Override
-			public Tag execute(BiSupplier<Tag, List<Object>> input, ProgressMonitor progressMonitor) throws Exception {
+			public Tag execute(BiSupplier<Tag, List<Object>> input, ProgressMonitor progressMonitor) {
 				Tag tag = input.getFirst();
 				tag.addClass("carousel", "slide");
 				Carousel semanticElement = getTarget();

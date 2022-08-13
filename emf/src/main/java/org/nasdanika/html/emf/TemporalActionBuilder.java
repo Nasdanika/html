@@ -2,6 +2,7 @@ package org.nasdanika.html.emf;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -11,6 +12,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.html.model.app.Action;
@@ -31,13 +33,16 @@ public class TemporalActionBuilder extends EObjectActionBuilder<Temporal> {
 			Action action,
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Action ret = super.buildAction(action, registry, resolveConsumer, progressMonitor);		
 		Temporal eObj = getTarget();
 		URI uri = NcoreUtil.getUri(eObj);
 		String id = uri == null ? eObj.getUuid() : uri.toString();
-		String digest = Hex.encodeHexString(MessageDigest.getInstance("SHA-256").digest(id.getBytes(StandardCharsets.UTF_8)));
-		ret.setId(digest);
+		try {
+			String digest = Hex.encodeHexString(MessageDigest.getInstance("SHA-256").digest(id.getBytes(StandardCharsets.UTF_8)));
+			ret.setId(digest);
+		} catch (NoSuchAlgorithmException e) {
+ 		}
 		
 		String description = eObj.getDescription();
 		addContent(ret, description);
@@ -72,7 +77,7 @@ public class TemporalActionBuilder extends EObjectActionBuilder<Temporal> {
 	protected Table createPropertiesTable(
 			Action action,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Table propertiesTable = super.createPropertiesTable(action, context, progressMonitor);
 		propertiesTable.getAttributes().put("style", createText("width:auto"));
 		return propertiesTable;

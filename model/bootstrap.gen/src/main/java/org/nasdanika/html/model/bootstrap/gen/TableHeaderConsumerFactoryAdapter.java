@@ -19,7 +19,7 @@ public class TableHeaderConsumerFactoryAdapter extends TableSectionConsumerFacto
 	}
 	
 	@Override
-	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {
+	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) {
 		@SuppressWarnings("resource")
 		Consumer<org.nasdanika.html.bootstrap.Table.TableHeader> configurator = new Consumer<org.nasdanika.html.bootstrap.Table.TableHeader>() {
 			
@@ -34,7 +34,7 @@ public class TableHeaderConsumerFactoryAdapter extends TableSectionConsumerFacto
 			}
 			
 			@Override
-			public void execute(org.nasdanika.html.bootstrap.Table.TableHeader header, ProgressMonitor progressMonitor) throws Exception {
+			public void execute(org.nasdanika.html.bootstrap.Table.TableHeader header, ProgressMonitor progressMonitor) {
 				org.nasdanika.html.model.bootstrap.TableHeader semanticElement = getTarget();
 				header.light(semanticElement.isLight());
 				header.dark(semanticElement.isDark());

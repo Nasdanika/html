@@ -43,7 +43,7 @@ public class FlowActionBuilder extends ActivityActionBuilder<Flow> {
 			Action action,
 			BiConsumer<EObject, Action> registry,
 			Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		EList<EObject> children = action.getChildren(); 
@@ -228,7 +228,7 @@ public class FlowActionBuilder extends ActivityActionBuilder<Flow> {
 	protected void resolve(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		super.resolve(action, context, progressMonitor);
 		
 		if (getTarget().eContainmentFeature() == FlowPackage.Literals.ACTIVITY_ENTRY__VALUE && getTarget().eContainer().eContainmentFeature() == FlowPackage.Literals.SERVICE_PROVIDER__SERVICES) {
@@ -260,7 +260,7 @@ public class FlowActionBuilder extends ActivityActionBuilder<Flow> {
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
 			ProgressMonitor progressMonitor, 
-			FlowElement<?> element) throws Exception {
+			FlowElement<?> element) {
 		EObject item = renderValue(action, FlowPackage.Literals.FLOW__ELEMENTS, element, context, progressMonitor);
 		if (element instanceof Flow && item instanceof Label) {
 			Predicate<FlowElement<?>> isPseudoState= PseudoState.class::isInstance;

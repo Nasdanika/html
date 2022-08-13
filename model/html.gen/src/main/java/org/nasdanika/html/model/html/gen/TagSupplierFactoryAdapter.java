@@ -26,7 +26,7 @@ public class TagSupplierFactoryAdapter<T extends org.nasdanika.html.model.html.T
 			}
 			
 			@Override
-			public org.nasdanika.html.Tag execute(ProgressMonitor progressMonitor) throws Exception {
+			public org.nasdanika.html.Tag execute(ProgressMonitor progressMonitor) {
 				HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
 				String tagName = context.interpolateToString(getTarget().getName());
 				return htmlFactory.tag(tagName);

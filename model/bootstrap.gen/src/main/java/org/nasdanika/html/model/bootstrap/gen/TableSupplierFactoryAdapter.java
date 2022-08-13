@@ -34,7 +34,7 @@ public class TableSupplierFactoryAdapter extends BootstrapElementSupplierFactory
 			}
 	
 			@Override
-			public org.nasdanika.html.HTMLElement<?> execute(ProgressMonitor progressMonitor) throws Exception {
+			public org.nasdanika.html.HTMLElement<?> execute(ProgressMonitor progressMonitor) {
 				return context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE).table().toHTMLElement();
 			}
 			
@@ -42,7 +42,7 @@ public class TableSupplierFactoryAdapter extends BootstrapElementSupplierFactory
 	}
 	
 	@Override
-	protected Supplier<org.nasdanika.html.bootstrap.Table> createBootstrapElementSupplier(Context context) throws Exception {
+	protected Supplier<org.nasdanika.html.bootstrap.Table> createBootstrapElementSupplier(Context context) {
 		
 		SupplierFactory<org.nasdanika.html.HTMLElement<?>> tableSupplierFactory = this::createTableSupplier;
 		ConsumerFactory<org.nasdanika.html.HTMLElement<?>> tableConsumerFactory = new TableConsumerFactoryAdapter(getTarget(), adapterFactory);

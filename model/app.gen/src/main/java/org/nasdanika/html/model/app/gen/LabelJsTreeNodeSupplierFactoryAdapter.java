@@ -37,7 +37,7 @@ public class LabelJsTreeNodeSupplierFactoryAdapter<M extends Label> extends Adap
 	}
 
 	@Override
-	public Supplier<JsTreeNode> create(Context context) throws Exception {
+	public Supplier<JsTreeNode> create(Context context) {
 		Function<Map<EStructuralFeature, Object>, JsTreeNode> jsTreeNodeFunction = new Function<Map<EStructuralFeature, Object>, JsTreeNode>() {
 
 			@Override
@@ -51,7 +51,7 @@ public class LabelJsTreeNodeSupplierFactoryAdapter<M extends Label> extends Adap
 			}
 
 			@Override
-			public JsTreeNode execute(Map<EStructuralFeature, Object> features, ProgressMonitor progressMonitor) throws Exception {
+			public JsTreeNode execute(Map<EStructuralFeature, Object> features, ProgressMonitor progressMonitor) {
 				JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);
 				JsTreeNode ret = jsTreeFactory.jsTreeNode();
 				M semanticElement = getTarget();

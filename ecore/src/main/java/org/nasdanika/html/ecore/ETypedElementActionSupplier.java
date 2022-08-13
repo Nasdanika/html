@@ -21,7 +21,7 @@ public class ETypedElementActionSupplier<T extends ETypedElement> extends ENamed
 	}
 	
 	@Override
-	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
 		Action action = super.execute(contextEClass, progressMonitor);
 
 		StringBuilder label = new StringBuilder(eObject.getName());
@@ -39,7 +39,7 @@ public class ETypedElementActionSupplier<T extends ETypedElement> extends ENamed
 		return action;
 	}
 
-	protected Table propertiesTable(EClass contextEClass, ProgressMonitor monitor) throws Exception {		
+	protected Table propertiesTable(EClass contextEClass, ProgressMonitor monitor) {		
 		Table table = context.get(BootstrapFactory.class).table();
 		table.toHTMLElement().style().width("auto");
 		

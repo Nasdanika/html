@@ -28,7 +28,7 @@ public class TableRowConsumerFactoryAdapter extends BootstrapElementConsumerFact
 	}
 	
 	@Override
-	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {
+	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) {
 		EList<TableCell> cells = getTarget().getCells();	
 		@SuppressWarnings("rawtypes")
 		List<ConsumerFactory<HTMLElement>> cellConsumers = EObjectAdaptable.adaptToConsumerFactoryNonNull(cells, org.nasdanika.html.HTMLElement.class);
@@ -60,7 +60,7 @@ public class TableRowConsumerFactoryAdapter extends BootstrapElementConsumerFact
 			}
 
 			@Override
-			public org.nasdanika.html.bootstrap.RowContainer.Row execute(org.nasdanika.html.bootstrap.RowContainer<?,?> rowContainer, ProgressMonitor progressMonitor) throws Exception {
+			public org.nasdanika.html.bootstrap.RowContainer.Row execute(org.nasdanika.html.bootstrap.RowContainer<?,?> rowContainer, ProgressMonitor progressMonitor) {
 				TableRow semanticElement = getTarget();
 				Row ret = rowContainer.row();
 				ret.color(semanticElement.getColor());

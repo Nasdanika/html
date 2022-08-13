@@ -17,7 +17,7 @@ public class BootstrapElementConsumerFactoryAdapter<M extends org.nasdanika.html
 	}
 
 	@Override
-	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {
+	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) {
 		Appearance appearance = getTarget().getAppearance();
 		Function<HTMLElement<?>, HTMLElement<?>> configureFunction = super.createConfigureFunction(context);
 		if (appearance == null) {
@@ -48,7 +48,7 @@ public class BootstrapElementConsumerFactoryAdapter<M extends org.nasdanika.html
 	
 			@SuppressWarnings("unchecked")
 			@Override
-			public T execute(HTMLElement<?> htmlElement, ProgressMonitor progressMonitor) throws Exception {
+			public T execute(HTMLElement<?> htmlElement, ProgressMonitor progressMonitor) {
 				return (T) htmlElement.getData(org.nasdanika.html.bootstrap.BootstrapElement.class);
 			}
 			
@@ -74,7 +74,7 @@ public class BootstrapElementConsumerFactoryAdapter<M extends org.nasdanika.html
 			}
 	
 			@Override
-			public HTMLElement<?> execute(org.nasdanika.html.bootstrap.BootstrapElement<?, ?> bootstrapElement, ProgressMonitor progressMonitor) throws Exception {
+			public HTMLElement<?> execute(org.nasdanika.html.bootstrap.BootstrapElement<?, ?> bootstrapElement, ProgressMonitor progressMonitor) {
 				return bootstrapElement.toHTMLElement();
 			}
 			

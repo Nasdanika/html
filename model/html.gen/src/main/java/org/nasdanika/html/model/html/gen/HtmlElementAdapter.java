@@ -58,9 +58,8 @@ public abstract class HtmlElementAdapter<M extends org.nasdanika.html.model.html
 	 * You may chain configuration functions with <code>.then</code>
 	 * @param context
 	 * @return
-	 * @throws Exception
 	 */
-	protected Function<T, T> createConfigureFunction(Context context) throws Exception {
+	protected Function<T, T> createConfigureFunction(Context context) {
 		MapCompoundSupplierFactory<String,Object> attributesFactory = new MapCompoundSupplierFactory<>("Attributes");
 		for (Entry<String, EObject> ae: getTarget().getAttributes()) {
 			EObject value = ae.getValue();
@@ -101,7 +100,7 @@ public abstract class HtmlElementAdapter<M extends org.nasdanika.html.model.html
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public T execute(BiSupplier<T, Map<EStructuralFeature, Object>> input, ProgressMonitor progressMonitor) throws Exception {
+			public T execute(BiSupplier<T, Map<EStructuralFeature, Object>> input, ProgressMonitor progressMonitor) {
 				T ret = input.getFirst();
 				Map<EStructuralFeature, Object> config = input.getSecond();
 				for (Entry<String, Object> ae: ((Map<String,Object>) config.get(HtmlPackage.Literals.HTML_ELEMENT__ATTRIBUTES)).entrySet()) {

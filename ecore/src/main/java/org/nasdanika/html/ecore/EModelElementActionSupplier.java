@@ -112,7 +112,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	}
 
 	@Override
-	public Action execute(EClass contextClass, ProgressMonitor progressMonitor) throws Exception {		
+	public Action execute(EClass contextClass, ProgressMonitor progressMonitor) {		
 		// TODO - refactor to 
 //		EObject actionPrototype = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "action-prototype");
 //		if (actionPrototype instanceof Action) {
@@ -161,9 +161,8 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	 * Content before documentation.
 	 * @param action
 	 * @param progressMonitor
-	 * @throws Exception
 	 */
-	protected void header(Action action, ProgressMonitor progressMonitor) throws Exception {}
+	protected void header(Action action, ProgressMonitor progressMonitor) {}
 
 	@Override
 	public double size() {
@@ -297,7 +296,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	
 	// --- Handling generic types in action text --- 
 
-	protected String computeLabel(EGenericType genericType, ProgressMonitor monitor) throws Exception {
+	protected String computeLabel(EGenericType genericType, ProgressMonitor monitor) {
 		EObject container = genericType.eContainer();
 		EClassifier rawType = genericType.getERawType();
 		String rawTypeText = rawType.getName(); // rawTypeViewActionSupplierFactory == null ? rawType.getName() : rawTypeViewActionSupplierFactory.create(context).execute(monitor).getText();
@@ -401,10 +400,9 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	/**
 	 * Generates generic type text with links to classifiers.
 	 * @param eGenericType
-	 * @param accumulator
-	 * @throws Exception 
+	 * @param accumulator 
 	 */
-	protected void genericType(EGenericType eGenericType, EClassifier contextClassifier, List<Object> accumulator, ProgressMonitor monitor) throws Exception {
+	protected void genericType(EGenericType eGenericType, EClassifier contextClassifier, List<Object> accumulator, ProgressMonitor monitor) {
 		if (eGenericType == null) {
 			accumulator.add("void");
 		} else if (eGenericType.getETypeParameter() != null) {
@@ -481,7 +479,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		return Util.isBlank(path) ? eClassifier.getName() : "<a href=\"" + path + "\">" + eClassifier.getName() + "</a>";
 	}
 
-	protected void genericTypeArguments(EGenericType eGenericType, EClassifier contextClassifier, List<Object> accumulator, ProgressMonitor monitor) throws Exception {
+	protected void genericTypeArguments(EGenericType eGenericType, EClassifier contextClassifier, List<Object> accumulator, ProgressMonitor monitor) {
 		Iterator<EGenericType> it = eGenericType.getETypeArguments().iterator();
 		if (it.hasNext()) {
 			accumulator.add("&lt;");

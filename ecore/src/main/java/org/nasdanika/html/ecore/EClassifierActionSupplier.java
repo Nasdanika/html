@@ -38,7 +38,7 @@ public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElem
 	}
 	
 	@Override
-	protected void header(Action action, ProgressMonitor progressMonitor) throws Exception {
+	protected void header(Action action, ProgressMonitor progressMonitor) {
 		if (instanceClass != null) {
 			String instanceClassName = instanceClass.getName();
 			if (javadocResolver != null) {
@@ -52,7 +52,7 @@ public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElem
 	}
 	
 	@Override
-	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
 		Action action = super.execute(contextEClass, progressMonitor);
 		action.setLocation(eObject.getName() + ".html");
 		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject.getEPackage()) + "-" + eObject.getName());

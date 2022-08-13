@@ -44,7 +44,7 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 	}
 	
 	@Override
-	protected void header(Action action, ProgressMonitor progressMonitor) throws Exception {
+	protected void header(Action action, ProgressMonitor progressMonitor) {
 		Text text = ContentFactory.eINSTANCE.createText();
 		text.setContent("<div class='text-monospace'>" + eObject.getNsURI() + "</div>");
 		action.getContent().add(text);
@@ -74,7 +74,7 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 //	}
 	
 	@Override
-	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
 		Action action = super.execute(contextEClass, progressMonitor);
 		String ePackageFolder = ePackagePathComputer == null ? Hex.encodeHexString(eObject.getNsURI().getBytes(StandardCharsets.UTF_8)) : ePackagePathComputer.apply(eObject);
 		action.setLocation(ePackageFolder + "/package-summary.html");
@@ -205,7 +205,7 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 			int depth, 
 			PlantUmlTextGenerator.RelationshipDirection relationshipDirection,
 			boolean appendAttributes,
-			boolean appendOperations) throws Exception {
+			boolean appendOperations) {
 		
 		StringBuilder sb = new StringBuilder();
 		

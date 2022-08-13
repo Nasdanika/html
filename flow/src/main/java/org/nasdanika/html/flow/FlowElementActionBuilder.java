@@ -47,7 +47,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Object getTypedElementValue(ETypedElement typedElement) throws Exception {
+	protected Object getTypedElementValue(ETypedElement typedElement) {
 		Object value = super.getTypedElementValue(typedElement);
 		if (value instanceof Collection && (
 				typedElement == FlowPackage.Literals.FLOW_ELEMENT__INPUT_ARTIFACTS 
@@ -63,7 +63,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 	protected void resolve(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		super.resolve(action, context, progressMonitor);
 		
@@ -99,8 +99,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 			Diagram representation, 
 			Action action,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-			ProgressMonitor progressMonitor)
-			throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		FlowStateDiagramGenerator flowStateDiagramGenerator = new FlowStateDiagramGenerator() {
 		
@@ -170,7 +169,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 	private Action createInputsAction(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Collection<ColumnBuilder<? super EObject>> columnBuilders = new ArrayList<>();
 		columnBuilders.add(new ColumnBuilder<EObject>() {
 			
@@ -180,8 +179,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Source"));
 			}
 			
@@ -192,8 +190,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				cell.getContent().add(renderValue(base, typedElement, rowElement.eContainer().eContainer(), context, progressMonitor));				
 			}
 		});
@@ -213,7 +210,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 	private Action createOutputsAction(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Collection<ColumnBuilder<? super EObject>> columnBuilders = new ArrayList<>();
 		columnBuilders.add(new ColumnBuilder<EObject>() {
 			
@@ -223,8 +220,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Key"));
 			}
 			
@@ -235,8 +231,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				EObject renderedValue = renderValue(base, typedElement, ((Map.Entry<?,?>) rowElement).getKey(), context, progressMonitor);
 				if (renderedValue != null) {
 					cell.getContent().add(renderedValue);
@@ -252,8 +247,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Target"));
 			}
 			
@@ -264,8 +258,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				Transition transition = (Transition) ((Map.Entry<?,?>) rowElement).getValue();
 				EObject renderedValue = renderValue(base, typedElement, transition.getTarget(), context, progressMonitor);
 				if (renderedValue != null) {
@@ -282,8 +275,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Name"));
 			}
 			
@@ -294,8 +286,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				Transition value = (Transition) ((Map.Entry<?,?>) rowElement).getValue();
 				EObject renderedValue = renderValue(base, typedElement, value.getName(), context, progressMonitor);
 				if (renderedValue != null) {
@@ -312,8 +303,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Documentation"));
 			}
 			
@@ -324,8 +314,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				Transition value = (Transition) ((Map.Entry<?,?>) rowElement).getValue();
 				EObject renderedValue = renderValue(base, typedElement, value.getDocumentation(), context, progressMonitor);
 				if (renderedValue != null) {
@@ -342,8 +331,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Payload"));
 			}
 			
@@ -354,8 +342,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				Transition value = (Transition) ((Map.Entry<?,?>) rowElement).getValue();
 				EObject renderedValue = renderValue(base, typedElement, value.getPayload(), context, progressMonitor);
 				if (renderedValue != null) {
@@ -375,7 +362,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 	private Action createInvocationsAction(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Collection<ColumnBuilder<? super EObject>> columnBuilders = new ArrayList<>();
 		columnBuilders.add(new ColumnBuilder<EObject>() {
 			
@@ -385,8 +372,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Source"));
 			}
 			
@@ -397,8 +383,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				cell.getContent().add(renderValue(base, typedElement, rowElement.eContainer().eContainer(), context, progressMonitor));				
 			}
 		});
@@ -419,7 +404,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 	private Action createCallsAction(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Collection<ColumnBuilder<? super EObject>> columnBuilders = new ArrayList<>();
 		columnBuilders.add(new ColumnBuilder<EObject>() {
 			
@@ -429,8 +414,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Key"));
 			}
 			
@@ -441,8 +425,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				EObject renderedValue = renderValue(base, typedElement, ((Map.Entry<?,?>) rowElement).getKey(), context, progressMonitor);
 				if (renderedValue != null) {
 					cell.getContent().add(renderedValue);
@@ -458,8 +441,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Target"));
 			}
 			
@@ -470,8 +452,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				Transition transition = (Transition) ((Map.Entry<?,?>) rowElement).getValue();
 				EObject renderedValue = renderValue(base, typedElement, transition.getTarget(), context, progressMonitor);
 				if (renderedValue != null) {
@@ -488,8 +469,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Name"));
 			}
 			
@@ -500,8 +480,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				Transition value = (Transition) ((Map.Entry<?,?>) rowElement).getValue();
 				EObject renderedValue = renderValue(base, typedElement, value.getName(), context, progressMonitor);
 				if (renderedValue != null) {
@@ -518,8 +497,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Documentation"));
 			}
 			
@@ -530,8 +508,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				Transition value = (Transition) ((Map.Entry<?,?>) rowElement).getValue();
 				EObject renderedValue = renderValue(base, typedElement, value.getDocumentation(), context, progressMonitor);
 				if (renderedValue != null) {
@@ -548,8 +525,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Request"));
 			}
 			
@@ -560,8 +536,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				Transition value = (Transition) ((Map.Entry<?,?>) rowElement).getValue();
 				EObject renderedValue = renderValue(base, typedElement, value.getPayload(), context, progressMonitor);
 				if (renderedValue != null) {
@@ -578,8 +553,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Response"));
 			}
 			
@@ -590,8 +564,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				Call value = (Call) ((Map.Entry<?,?>) rowElement).getValue();
 				EObject renderedValue = renderValue(base, typedElement, value.getResponse(), context, progressMonitor);
 				if (renderedValue != null) {
@@ -612,7 +585,7 @@ public class FlowElementActionBuilder<T extends FlowElement<?>> extends Particip
 	private Action createArtifactResponsibilitiesAction(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		return createTableAction(
 				FlowPackage.Literals.FLOW_ELEMENT__ARTIFACT_RESPONSIBILITIES,

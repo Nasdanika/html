@@ -42,7 +42,7 @@ public class NavigationBarConsumerFactoryAdapter extends PagePartConsumerFactory
 			}
 			
 			@Override
-			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>> input, ProgressMonitor progressMonitor) throws Exception {
+			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>> input, ProgressMonitor progressMonitor) {
 				Tag ret = (Tag) input.getFirst();
 				Tag brand = (Tag) input.getSecond().get(AppPackage.Literals.NAVIGATION_BAR__BRAND);
 				@SuppressWarnings("unchecked")
@@ -65,7 +65,7 @@ public class NavigationBarConsumerFactoryAdapter extends PagePartConsumerFactory
 	 * Adapts items to suppliers, builds {@link Navs} from items and adds them to the header.
 	 */
 	@Override
-	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {
+	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) {
 		Label brand = getTarget().getBrand();
 		EList<EObject> items = getTarget().getItems();
 		if (brand == null && items.isEmpty()) {

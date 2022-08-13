@@ -18,7 +18,7 @@ public class EReferenceActionSupplier extends EStructuralFeatureActionSupplier<E
 	}
 	
 	@Override
-	protected Table propertiesTable(EClass contextEClass, ProgressMonitor monitor) throws Exception {
+	protected Table propertiesTable(EClass contextEClass, ProgressMonitor monitor) {
 		Table propertiesTable = super.propertiesTable(contextEClass, monitor);
 		EReference opposite = NcoreUtil.getOpposite(eObject);
 		if (opposite != null) {

@@ -71,7 +71,7 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 			
 			@Override
 			@SuppressWarnings("unchecked")
-			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>> execute(BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>> input, ProgressMonitor progressMonitor) throws Exception {
+			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>> execute(BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>> input, ProgressMonitor progressMonitor) {
 				HTMLElement<?> ret = (HTMLElement<?>) input.getFirst();
 				
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
@@ -411,7 +411,7 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 	 * Adapts items to suppliers, builds {@link Navs} from items and adds them to the header.
 	 */
 	@Override
-	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {
+	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) {
 		ContentPanel semanticElement = getTarget();
 		MapCompoundSupplierFactory<EStructuralFeature, Object> featuresSupplierFactory = new MapCompoundSupplierFactory<>("Features");				
 		

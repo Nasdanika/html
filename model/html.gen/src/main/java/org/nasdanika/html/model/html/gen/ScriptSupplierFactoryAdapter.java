@@ -1,11 +1,13 @@
 package org.nasdanika.html.model.html.gen;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.ExecutionException;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.FunctionFactory;
 import org.nasdanika.common.ProgressMonitor;
@@ -37,15 +39,19 @@ public class ScriptSupplierFactoryAdapter extends AdapterImpl implements Supplie
 		}
 
 		@Override
-		public org.nasdanika.html.Tag execute(InputStream input, ProgressMonitor progressMonitor) throws Exception {
+		public org.nasdanika.html.Tag execute(InputStream input, ProgressMonitor progressMonitor) {
 			HTMLFactory htmlFactory = ctx.get(HTMLFactory.class, HTMLFactory.INSTANCE);
-			return htmlFactory.tag(TagName.script, Util.toString(ctx, input));
+			try {
+				return htmlFactory.tag(TagName.script, Util.toString(ctx, input));
+			} catch (IOException e) {
+				throw new ExecutionException(e, this);
+			}
 		}
 		
 	};
 		
 	@Override
-	public Supplier<org.nasdanika.html.Tag> create(Context context) throws Exception {
+	public Supplier<org.nasdanika.html.Tag> create(Context context) {
 		EObject source = ((Filter) getTarget()).getSource();
 		SupplierFactory<InputStream> ssf = Objects.requireNonNull(EObjectAdaptable.adaptToSupplierFactory(source, InputStream.class), "Cannot adapt to SupplierFactory: " + source);
 		return ssf.then(filterFactory).create(context);

@@ -25,7 +25,7 @@ public class EDataTypeActionSupplier extends EClassifierActionSupplier<EDataType
 	}
 	
 	@Override
-	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
 		Action action = super.execute(contextEClass, progressMonitor);
 		
 		// Uses

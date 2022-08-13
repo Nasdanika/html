@@ -27,7 +27,7 @@ public class EEnumActionSupplier extends EClassifierActionSupplier<EEnum> {
 	}
 	
 	@Override
-	public org.nasdanika.html.model.app.Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+	public org.nasdanika.html.model.app.Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
 		Action action = super.execute(contextEClass, progressMonitor);
 		action.setSectionStyle(SectionStyle.HEADER);
 
@@ -41,7 +41,7 @@ public class EEnumActionSupplier extends EClassifierActionSupplier<EEnum> {
 		return action;
 	}
 	
-	protected Action createLiteralsAction(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+	protected Action createLiteralsAction(EClass contextEClass, ProgressMonitor progressMonitor) {
 		Action literalsAction = AppFactory.eINSTANCE.createAction();
 		literalsAction.setText("Literals");
 		literalsAction.setSectionStyle(SectionStyle.TABLE);
@@ -52,7 +52,7 @@ public class EEnumActionSupplier extends EClassifierActionSupplier<EEnum> {
 		return literalsAction;
 	}
 	
-	protected Action createUsesAction(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+	protected Action createUsesAction(EClass contextEClass, ProgressMonitor progressMonitor) {
 		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (uses.isEmpty()) {
 			return null;

@@ -15,7 +15,7 @@ public class AlertSupplierFactoryAdapter extends DivSupplierFactoryAdapter<Alert
 	}
 	
 	@Override
-	protected Function<org.nasdanika.html.Tag, org.nasdanika.html.Tag> createConfigureFunction(Context context) throws Exception {
+	protected Function<org.nasdanika.html.Tag, org.nasdanika.html.Tag> createConfigureFunction(Context context) {
 		
 		@SuppressWarnings("resource")
 		Consumer<org.nasdanika.html.Tag> alertConsumer = new Consumer<Tag>() {
@@ -31,7 +31,7 @@ public class AlertSupplierFactoryAdapter extends DivSupplierFactoryAdapter<Alert
 			}
 			
 			@Override
-			public void execute(Tag tag, ProgressMonitor progressMonitor) throws Exception {
+			public void execute(Tag tag, ProgressMonitor progressMonitor) {
 				tag.addClass("alert");
 				tag.addClass("alert-" + getTarget().getColor().code);
 				tag.attribute("role", "alert");

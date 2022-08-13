@@ -44,7 +44,7 @@ public class ParticipantActionBuilder extends ServiceProviderActionBuilder<Parti
 			Action action,
 			BiConsumer<EObject, Action> registry,
 			Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		EList<EObject> children = action.getChildren(); 
@@ -70,7 +70,7 @@ public class ParticipantActionBuilder extends ServiceProviderActionBuilder<Parti
 	protected void resolve(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		super.resolve(action, context, progressMonitor);
 		
 		// Responsibilities
@@ -119,7 +119,7 @@ public class ParticipantActionBuilder extends ServiceProviderActionBuilder<Parti
 			List<ParticipantResponsibility<?>> informed, 
 			Action base,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 
 		Action groupAction = AppFactory.eINSTANCE.createAction(); 			
 		String groupName = typeKey.getName();
@@ -250,7 +250,7 @@ public class ParticipantActionBuilder extends ServiceProviderActionBuilder<Parti
 			TableCell cell,
 			Action base,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		if (elements != null && !elements.isEmpty()) {
 			cell.getContent().add(renderValue(base, null, elements, context, progressMonitor));

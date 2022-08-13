@@ -47,7 +47,7 @@ public class ModalSupplierFactoryAdapter extends BootstrapElementSupplierFactory
 			}
 	
 			@Override
-			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal> execute(ProgressMonitor progressMonitor) throws Exception {
+			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal> execute(ProgressMonitor progressMonitor) {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				org.nasdanika.html.bootstrap.Modal modal = bootstrapFactory.modal();
 				org.nasdanika.html.model.bootstrap.Modal semanticElement = getTarget();
@@ -105,7 +105,7 @@ public class ModalSupplierFactoryAdapter extends BootstrapElementSupplierFactory
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected Supplier<org.nasdanika.html.bootstrap.Modal> createBootstrapElementSupplier(Context context) throws Exception {
+	protected Supplier<org.nasdanika.html.bootstrap.Modal> createBootstrapElementSupplier(Context context) {
 		MapCompoundConsumerFactory<EStructuralFeature,HTMLElement<?>> partsFactory = new MapCompoundConsumerFactory<>("Parts");
 		org.nasdanika.html.model.bootstrap.Modal semanticElement = getTarget();
 		
@@ -141,7 +141,7 @@ public class ModalSupplierFactoryAdapter extends BootstrapElementSupplierFactory
 			}
 
 			@Override
-			public void execute(org.nasdanika.html.bootstrap.Modal modal, ProgressMonitor progressMonitor) throws Exception {
+			public void execute(org.nasdanika.html.bootstrap.Modal modal, ProgressMonitor progressMonitor) {
 				Button dismisser = context.get(HTMLFactory.class, HTMLFactory.INSTANCE).button("x").addClass("close");
 				modal.getHeader().toHTMLElement().content(dismisser);
 				modal.bindDismisser(dismisser);					

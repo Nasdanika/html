@@ -38,7 +38,7 @@ public class PageSupplierFactoryAdapter extends org.nasdanika.html.model.html.ge
 			}
 			
 			@Override
-			public HTMLPage execute(BiSupplier<List<Object>,List<Object>> headAndBody, ProgressMonitor progressMonitor) throws Exception {
+			public HTMLPage execute(BiSupplier<List<Object>,List<Object>> headAndBody, ProgressMonitor progressMonitor) {
 				BootstrapFactory factory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				HTMLFactory htmlFactory = factory.getHTMLFactory();
 				Page semanticElement = (Page) getTarget();

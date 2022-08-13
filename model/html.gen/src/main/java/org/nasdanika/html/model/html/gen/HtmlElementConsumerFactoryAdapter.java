@@ -32,7 +32,7 @@ public class HtmlElementConsumerFactoryAdapter<M extends org.nasdanika.html.mode
 			}
 
 			@Override
-			public void execute(T htmlElement, ProgressMonitor progressMonitor) throws Exception {
+			public void execute(T htmlElement, ProgressMonitor progressMonitor) {
 				HtmlElementConsumerFactoryAdapter.this.build(htmlElement, context, progressMonitor);				
 			}
 		};
@@ -42,12 +42,11 @@ public class HtmlElementConsumerFactoryAdapter<M extends org.nasdanika.html.mode
 	 * Builds HTML element. This implementation does nothing.
 	 * @param htmlElement
 	 * @param progressMonitor
-	 * @throws Exception
 	 */
-	protected void build(T htmlElement, Context context, ProgressMonitor progressMonitor) throws Exception {}	
+	protected void build(T htmlElement, Context context, ProgressMonitor progressMonitor) {}	
 	
 	@Override
-	public Consumer<T> create(Context context) throws Exception {
+	public Consumer<T> create(Context context) {
 		FunctionFactory<T,T> configureFunctionFactory = this::createConfigureFunction;
 		ConsumerFactory<T> consumerFactory = this::createConsumer;
 		return configureFunctionFactory.then(consumerFactory).create(context);

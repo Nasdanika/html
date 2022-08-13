@@ -20,7 +20,7 @@ public class TableCellConsumerFactoryAdapter extends BootstrapElementConsumerFac
 	}
 	
 	@Override
-	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {		
+	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) {		
 		return getWrapper(context)
 				.then(createTableCellFunction(context))
 				.then(toHTMLElement(context))
@@ -46,7 +46,7 @@ public class TableCellConsumerFactoryAdapter extends BootstrapElementConsumerFac
 			}
 
 			@Override
-			public org.nasdanika.html.bootstrap.RowContainer.Row.Cell execute(org.nasdanika.html.bootstrap.RowContainer.Row row, ProgressMonitor progressMonitor) throws Exception {
+			public org.nasdanika.html.bootstrap.RowContainer.Row.Cell execute(org.nasdanika.html.bootstrap.RowContainer.Row row, ProgressMonitor progressMonitor) {
 				TableCell semanticElement = getTarget();
 				org.nasdanika.html.bootstrap.RowContainer.Row.Cell ret = semanticElement.isHeader() ? row.header() : row.cell();
 				int colSpan = semanticElement.getColSpan();

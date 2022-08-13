@@ -15,7 +15,7 @@ public class ENamedElementActionSupplier<T extends ENamedElement> extends EModel
 	}
 	
 	@Override
-	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
 		Action action = super.execute(contextEClass, progressMonitor);
 		Context resourceContext = EObjectAdaptable.getResourceContext(eObject);
 		String text = resourceContext.getString("label");

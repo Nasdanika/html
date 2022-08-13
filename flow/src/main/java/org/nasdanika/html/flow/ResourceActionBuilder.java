@@ -26,7 +26,7 @@ public class ResourceActionBuilder extends ServiceProviderActionBuilder<Resource
 			Action action,
 			BiConsumer<EObject, Action> registry,
 			Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		EList<EObject> children = action.getChildren(); 

@@ -28,7 +28,7 @@ public class ServiceProviderActionBuilder<T extends ServiceProvider<?>> extends 
 			Action action,
 			BiConsumer<EObject, Action> registry,
 			Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		List<Activity<?>> services = getTarget().getServices().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());
@@ -53,7 +53,7 @@ public class ServiceProviderActionBuilder<T extends ServiceProvider<?>> extends 
 	protected void resolve(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		super.resolve(action, context, progressMonitor);
 				
 		List<Activity<?>> services = getTarget().getServices().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList());

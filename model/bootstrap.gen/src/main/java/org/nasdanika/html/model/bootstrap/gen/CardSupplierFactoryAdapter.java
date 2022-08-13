@@ -39,7 +39,7 @@ public class CardSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 			}
 	
 			@Override
-			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card> execute(ProgressMonitor progressMonitor) throws Exception {
+			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card> execute(ProgressMonitor progressMonitor) {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				org.nasdanika.html.bootstrap.Card card = bootstrapFactory.card();
 				org.nasdanika.html.model.bootstrap.Card semanticElement = getTarget();
@@ -77,7 +77,7 @@ public class CardSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected Supplier<org.nasdanika.html.bootstrap.Card> createBootstrapElementSupplier(Context context) throws Exception {
+	protected Supplier<org.nasdanika.html.bootstrap.Card> createBootstrapElementSupplier(Context context) {
 		MapCompoundConsumerFactory<EStructuralFeature,HTMLElement<?>> partsFactory = new MapCompoundConsumerFactory<>("Parts");
 		org.nasdanika.html.model.bootstrap.Card semanticElement = getTarget();
 		

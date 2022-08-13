@@ -46,7 +46,7 @@ public class PageSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 			}
 			
 			@Override
-			public HTMLPage execute(BiSupplier<List<Object>,List<Object>> headAndBody, ProgressMonitor progressMonitor) throws Exception {
+			public HTMLPage execute(BiSupplier<List<Object>,List<Object>> headAndBody, ProgressMonitor progressMonitor) {
 				HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
 				Page semanticElement = (Page) getTarget();
 				String pageName = context.interpolateToString(semanticElement.getName());
@@ -78,7 +78,7 @@ public class PageSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 	}
 	
 	@Override
-	public Supplier<HTMLPage> create(Context context) throws Exception {
+	public Supplier<HTMLPage> create(Context context) {
 		Page page = (Page) getTarget();
 		MutableContext mc = context.fork();
 		mc.put(PAGE_HEAD_PROPERTY, new ArrayList<>());

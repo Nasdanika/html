@@ -21,6 +21,6 @@ public interface ActionContentProvider {
 		
 	};
 	
-	EList<EObject> getActionContent(Action action, BiFunction<Label, URI, URI> uriResolver, ProgressMonitor progressMonitor) throws Exception;
+	EList<EObject> getActionContent(Action action, BiFunction<Label, URI, URI> uriResolver, ProgressMonitor progressMonitor);
 
 }

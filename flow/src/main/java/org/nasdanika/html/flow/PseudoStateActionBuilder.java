@@ -21,7 +21,7 @@ public class PseudoStateActionBuilder<T extends PseudoState> extends FlowElement
 			Action action,
 			BiConsumer<EObject, Action> registry,
 			Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer,
-			ProgressMonitor progressMonitor) throws Exception {		
+			ProgressMonitor progressMonitor) {		
 		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		if (Util.isBlank(action.getText())) {
 			action.setText(getTarget().eClass().getName());			

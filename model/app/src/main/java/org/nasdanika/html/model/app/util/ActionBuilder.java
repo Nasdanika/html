@@ -35,49 +35,24 @@ public interface ActionBuilder extends org.nasdanika.common.Function<BiSupplier<
 			 * Passes null action.
 			 */
 			@Override
-			public Action execute(BiConsumer<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
+			public Action execute(BiConsumer<EObject, Action> registry, ProgressMonitor progressMonitor) {
 				return ActionBuilder.this.execute(BiSupplier.of(action, registry), progressMonitor);
 			}
 
 			@Override
-			public Action splitAndExecute(BiConsumer<EObject, Action> registry, ProgressMonitor progressMonitor) throws Exception {
+			public Action splitAndExecute(BiConsumer<EObject, Action> registry, ProgressMonitor progressMonitor) {
 				return ActionBuilder.this.splitAndExecute(BiSupplier.of(action, registry), progressMonitor);
 			}
 
 			@Override
-			public Action splitAndExecute(BiConsumer<EObject, Action> registry, double size, ProgressMonitor progressMonitor) throws Exception {
+			public Action splitAndExecute(BiConsumer<EObject, Action> registry, double size, ProgressMonitor progressMonitor) {
 				return ActionBuilder.this.splitAndExecute(BiSupplier.of(action, registry), size, progressMonitor);
 			}
 
-//			@Override
-//			public <V> Function<V, Action> before(java.util.function.Function<V, BiConsumer<EObject, Action>> before) {
-//				return ActionBuilder.this.before(before);
-//			}
-//
-//			@Override
-//			public <V> Function<BiConsumer<EObject, Action>, V> then(java.util.function.Function<? super Action, V> then) {
-//				return ActionBuilder.this.then(then);
-//			}
-//
-//			@Override
-//			public <V> Function<BiConsumer<EObject, Action>, V> then(Function<? super Action, V> then) {
-//				return ActionBuilder.this.then(then);
-//			}
-//
-//			@Override
-//			public Consumer<BiConsumer<EObject, Action>> then(Consumer<? super Action> then) {
-//				return ActionBuilder.this.then(then);
-//			}
-//
 			@Override
 			public Action apply(BiConsumer<EObject, Action> registry, ProgressMonitor progressMonitor) {
 				return ActionBuilder.this.apply(BiSupplier.of(action, registry), progressMonitor);
 			}
-//
-//			@Override
-//			public java.util.function.Function<BiConsumer<EObject, Action>, Action> asFunction() {
-//				return ActionBuilder.this.asFunction();
-//			}
 
 			@Override
 			public void close() throws Exception {
@@ -85,32 +60,32 @@ public interface ActionBuilder extends org.nasdanika.common.Function<BiSupplier<
 			}
 
 			@Override
-			public void commit(ProgressMonitor progressMonitor) throws Exception {
+			public void commit(ProgressMonitor progressMonitor) {
 				ActionBuilder.this.commit(progressMonitor);
 			}
 
 			@Override
-			public void splitAndCommit(ProgressMonitor progressMonitor) throws Exception {
+			public void splitAndCommit(ProgressMonitor progressMonitor) {
 				ActionBuilder.this.splitAndCommit(progressMonitor);
 			}
 
 			@Override
-			public void splitAndCommit(double size, ProgressMonitor progressMonitor) throws Exception {
+			public void splitAndCommit(double size, ProgressMonitor progressMonitor) {
 				ActionBuilder.this.splitAndCommit(size, progressMonitor);
 			}
 
 			@Override
-			public boolean rollback(ProgressMonitor progressMonitor) throws Exception {
+			public boolean rollback(ProgressMonitor progressMonitor) {
 				return ActionBuilder.this.rollback(progressMonitor);
 			}
 
 			@Override
-			public boolean splitAndRollback(ProgressMonitor progressMonitor) throws Exception {
+			public boolean splitAndRollback(ProgressMonitor progressMonitor) {
 				return ActionBuilder.this.splitAndRollback(progressMonitor);
 			}
 
 			@Override
-			public boolean splitAndRollback(double size, ProgressMonitor progressMonitor) throws Exception {
+			public boolean splitAndRollback(double size, ProgressMonitor progressMonitor) {
 				return ActionBuilder.this.splitAndRollback(size, progressMonitor);
 			}
 

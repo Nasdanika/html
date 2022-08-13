@@ -26,7 +26,7 @@ public class ListSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 	}
 
 	@Override
-	public Supplier<InputStream> create(Context ctx) throws Exception {
+	public Supplier<InputStream> create(Context ctx) {
 		SupplierFactory<JSONArray> jsf = createJsonArraySupplierFactory((org.nasdanika.ncore.List) getTarget());
 		Function<Object, String> toStringFunction = Function.fromFunction(Object::toString, "toString()", 1);
 		return jsf.create(ctx).then(toStringFunction).then(Util.TO_STREAM.create(ctx));

@@ -68,7 +68,7 @@ public class HeaderConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter
 			}
 			
 			@Override
-			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, List<Object>> input, ProgressMonitor progressMonitor) throws Exception {
+			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, List<Object>> input, ProgressMonitor progressMonitor) {
 				Tag ret = (Tag) input.getFirst();
 				Tag navs = Util.navs(input.getSecond(), context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE));
 				navs.addClass("nsd-app-header-navs");
@@ -82,7 +82,7 @@ public class HeaderConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter
 	 * Adapts items to suppliers, builds {@link Navs} from items and adds them to the header.
 	 */
 	@Override
-	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {
+	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) {
 		EList<EObject> items = getTarget().getItems();
 		if (items.isEmpty()) {
 			return super.createConfigureFunction(context);

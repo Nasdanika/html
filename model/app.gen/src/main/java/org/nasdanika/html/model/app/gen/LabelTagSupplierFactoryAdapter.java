@@ -35,7 +35,7 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 	}
 		
 	@Override
-	public Supplier<HTMLElement<?>> createHTMLElementSupplier(Context context) throws Exception {
+	public Supplier<HTMLElement<?>> createHTMLElementSupplier(Context context) {
 		Function<Map<EStructuralFeature, Object>, HTMLElement<?>> labelFunction = new Function<Map<EStructuralFeature, Object>, HTMLElement<?>>() {
 
 			@Override
@@ -49,7 +49,7 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 			}
 
 			@Override
-			public HTMLElement<?> execute(Map<EStructuralFeature, Object> features, ProgressMonitor progressMonitor) throws Exception {
+			public HTMLElement<?> execute(Map<EStructuralFeature, Object> features, ProgressMonitor progressMonitor) {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 					
 				Tag ret = (Tag) features.get(AppPackage.Literals.LABEL__TEXT);
@@ -186,9 +186,8 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 	 * @param context
 	 * @param progressMonitor
 	 * @return
-	 * @throws Exception 
 	 */
-	protected Supplier<Tag> createTextAndIconSupplier(Context context) throws Exception {
+	protected Supplier<Tag> createTextAndIconSupplier(Context context) {
 		Function<Tag,Tag> textAndIconFunction = new Function<Tag, Tag>() {
 				
 			@Override
@@ -202,7 +201,7 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 			}
 
 			@Override
-			public Tag execute(Tag modal, ProgressMonitor progressMonitor) throws Exception {
+			public Tag execute(Tag modal, ProgressMonitor progressMonitor) {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
 				Label semanticElement = getTarget();

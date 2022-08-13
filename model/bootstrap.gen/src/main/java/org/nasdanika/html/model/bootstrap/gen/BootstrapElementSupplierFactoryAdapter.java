@@ -18,7 +18,7 @@ public abstract class BootstrapElementSupplierFactoryAdapter<M extends org.nasda
 	}
 
 	@Override
-	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {
+	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) {
 		Appearance appearance = getTarget().getAppearance();
 		if (appearance == null) {
 			return super.createConfigureFunction(context);
@@ -29,7 +29,7 @@ public abstract class BootstrapElementSupplierFactoryAdapter<M extends org.nasda
 	}
 	
 	@Override
-	protected Supplier<HTMLElement<?>> createHTMLElementSupplier(Context context) throws Exception {
+	protected Supplier<HTMLElement<?>> createHTMLElementSupplier(Context context) {
 		return createBootstrapElementSupplier(context).then(new Function<T, HTMLElement<?>>() {
 
 			@Override
@@ -43,14 +43,14 @@ public abstract class BootstrapElementSupplierFactoryAdapter<M extends org.nasda
 			}
 
 			@Override
-			public HTMLElement<?> execute(T bootstrapElement, ProgressMonitor progressMonitor) throws Exception {
+			public HTMLElement<?> execute(T bootstrapElement, ProgressMonitor progressMonitor) {
 				return bootstrapElement.toHTMLElement();
 			}
 			
 		});
 	}
 		
-	protected Supplier<T> createBootstrapElementSupplier(Context context) throws Exception {
+	protected Supplier<T> createBootstrapElementSupplier(Context context) {
 		throw new UnsupportedOperationException("Override this method or createHTMLElementSupplier()");
 	}
 	
@@ -74,7 +74,7 @@ public abstract class BootstrapElementSupplierFactoryAdapter<M extends org.nasda
 	
 			@SuppressWarnings("unchecked")
 			@Override
-			public T execute(HTMLElement<?> htmlElement, ProgressMonitor progressMonitor) throws Exception {
+			public T execute(HTMLElement<?> htmlElement, ProgressMonitor progressMonitor) {
 				return (T) htmlElement.getData(org.nasdanika.html.bootstrap.BootstrapElement.class);
 			}
 			

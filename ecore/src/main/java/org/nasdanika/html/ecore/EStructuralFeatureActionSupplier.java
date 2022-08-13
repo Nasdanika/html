@@ -15,7 +15,7 @@ public class EStructuralFeatureActionSupplier<T extends EStructuralFeature> exte
 	}
 		
 	@Override
-	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) throws Exception {
+	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
 		Action action = super.execute(contextEClass, progressMonitor);
 	
 		EClass eContainingClass = eObject.getEContainingClass();
@@ -33,7 +33,7 @@ public class EStructuralFeatureActionSupplier<T extends EStructuralFeature> exte
 	}
 
 	@Override
-	protected Table propertiesTable(EClass contextEClass, ProgressMonitor monitor) throws Exception {		
+	protected Table propertiesTable(EClass contextEClass, ProgressMonitor monitor) {		
 		Table table = super.propertiesTable(contextEClass, monitor);
 		addRow(table, "Changeable").add(eObject.isChangeable());
 		addRow(table, "Derived").add(eObject.isDerived());

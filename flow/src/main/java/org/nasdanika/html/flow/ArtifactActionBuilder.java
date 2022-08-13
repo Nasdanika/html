@@ -51,7 +51,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 			Action action,
 			BiConsumer<EObject, Action> registry,
 			Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		action = super.buildAction(action, registry, resolveConsumer, progressMonitor);
 		EList<EObject> children = action.getChildren(); 
@@ -78,7 +78,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 	protected void resolve(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		super.resolve(action, context, progressMonitor);
 		
@@ -125,7 +125,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 			EList<ArtifactParticipantResponsibility> responsibilities,
 			Action base,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 
 		Action responsibilitiesAction = AppFactory.eINSTANCE.createAction(); 			
 		responsibilitiesAction.setText("Activity responsibilities");
@@ -235,7 +235,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 			TableCell cell,
 			Action base,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		if (elements != null && !elements.isEmpty()) {
 			cell.getContent().add(renderValue(base, null, elements, context, progressMonitor));
@@ -248,7 +248,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 			Action action, 
 			EReference eReference,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Collection<ColumnBuilder<? super EObject>> columnBuilders = new ArrayList<>();
 		columnBuilders.add(new ColumnBuilder<EObject>() {
 			
@@ -259,7 +259,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
 					ProgressMonitor progressMonitor)
-					throws Exception {
+					{
 				header.getContent().add(createText("Source"));
 			}
 			
@@ -270,8 +270,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				cell.getContent().add(renderValue(base, typedElement, rowElement.eContainer().eContainer(), context, progressMonitor));				
 			}
 		});
@@ -284,8 +283,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Key"));
 			}
 			
@@ -296,8 +294,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				EObject renderedValue = renderValue(base, typedElement, ((Map.Entry<?,?>) rowElement.eContainer()).getKey(), context, progressMonitor);
 				if (renderedValue != null) {
 					cell.getContent().add(renderedValue);
@@ -313,8 +310,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Target"));
 			}
 			
@@ -325,8 +321,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				EObject renderedValue = renderValue(base, typedElement, ((Transition) rowElement).getTarget(), context, progressMonitor);
 				if (renderedValue != null) {
 					cell.getContent().add(renderedValue);
@@ -342,8 +337,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Name"));
 			}
 			
@@ -354,8 +348,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				EObject renderedValue = renderValue(base, typedElement, ((Transition) rowElement).getName(), context, progressMonitor);
 				if (renderedValue != null) {
 					cell.getContent().add(renderedValue);
@@ -371,8 +364,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Documentation"));
 			}
 			
@@ -383,8 +375,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				EObject renderedValue = renderValue(base, typedElement, ((Transition) rowElement).getDocumentation(), context, progressMonitor);
 				if (renderedValue != null) {
 					cell.getContent().add(renderedValue);
@@ -405,7 +396,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 			Diagram representation, 
 			Action action,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 
 		ArtifactComponentDiagramGenerator artifactComponentDiagramGenerator = new ArtifactComponentDiagramGenerator() {
 		
@@ -454,7 +445,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 	private Action createInboundRelationshipsAction(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Collection<ColumnBuilder<? super EObject>> columnBuilders = new ArrayList<>();
 		columnBuilders.add(new ColumnBuilder<EObject>() {
 			
@@ -464,8 +455,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Source"));
 			}
 			
@@ -476,8 +466,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				cell.getContent().add(renderValue(base, typedElement, rowElement.eContainer().eContainer(), context, progressMonitor));				
 			}
 		});
@@ -503,7 +492,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 	private Action createOutboundRelationshipsAction(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Collection<ColumnBuilder<? super Map.Entry<String, Relationship>>> columnBuilders = new ArrayList<>();
 		columnBuilders.add(new ColumnBuilder<Map.Entry<String, Relationship>>() {
 			
@@ -513,8 +502,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Key"));
 			}
 			
@@ -525,8 +513,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				EObject renderedValue = renderValue(base, typedElement, rowElement.getKey(), context, progressMonitor);
 				if (renderedValue != null) {
 					cell.getContent().add(renderedValue);
@@ -542,8 +529,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Target"));
 			}
 			
@@ -554,8 +540,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				Relationship relationship = rowElement.getValue();
 				EObject renderedValue = renderValue(base, typedElement, relationship.getTarget(), context, progressMonitor);
 				if (renderedValue != null) {
@@ -572,8 +557,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Name"));
 			}
 			
@@ -584,8 +568,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				Relationship value = rowElement.getValue();
 				EObject renderedValue = renderValue(base, typedElement, value.getName(), context, progressMonitor);
 				if (renderedValue != null) {
@@ -602,8 +585,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(createText("Documentation"));
 			}
 			
@@ -614,8 +596,7 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 					Action base, 
 					ETypedElement typedElement,
 					org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-					ProgressMonitor progressMonitor)
-					throws Exception {
+					ProgressMonitor progressMonitor) {
 				Relationship value = rowElement.getValue();
 				EObject renderedValue = renderValue(base, typedElement, value.getDocumentation(), context, progressMonitor);
 				if (renderedValue != null) {

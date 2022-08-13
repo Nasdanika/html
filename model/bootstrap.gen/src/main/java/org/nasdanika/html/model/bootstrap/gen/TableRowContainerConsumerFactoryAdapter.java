@@ -19,7 +19,7 @@ public class TableRowContainerConsumerFactoryAdapter<M extends org.nasdanika.htm
 	}
 	
 	@Override
-	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {
+	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) {
 		EList<TableRow> rows = getTarget().getRows();
 		if (rows.isEmpty()) {
 			return super.createConfigureFunction(context);

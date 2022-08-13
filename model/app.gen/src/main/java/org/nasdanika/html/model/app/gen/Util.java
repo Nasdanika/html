@@ -21,6 +21,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.EList;
@@ -160,7 +161,6 @@ public final class Util {
 	 * @param context Context used for uri resolution - interpolation of action locations and names. can be null.
 	 * @param container Receiver of generated resources.
 	 * @param progressMonitor Progress monitor.
-	 * @throws Exception 
 	 */
 	public static void generateSite(
 			Label root, 
@@ -169,7 +169,7 @@ public final class Util {
 			ActionContentProvider.Factory actionContentProviderFactory,
 			PageContentProvider.Factory pageContentProviderFactory,
 			Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 	
 		Label principal = null;
 		EList<EObject> rootChildren = root.getChildren();
@@ -195,7 +195,6 @@ public final class Util {
 	 * @param context Context used for uri resolution - interpolation of action locations and names. can be null.
 	 * @param container Receiver of generated resources.
 	 * @param progressMonitor Progress monitor.
-	 * @throws Exception 
 	 */
 	public static void generateSite(
 			Label root, 
@@ -207,7 +206,7 @@ public final class Util {
 			ActionContentProvider.Factory contentProviderFactory,
 			PageContentProvider.Factory pageProviderFactory,
 			Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 	
 		if (context == null) {
 			context = Context.EMPTY_CONTEXT;
@@ -241,7 +240,6 @@ public final class Util {
 	 * @param baseURI Base URI for resolution, specifically to create relative URI's.
 	 * @param container Receiver of generated resources.
 	 * @param progressMonitor Progress monitor.
-	 * @throws Exception 
 	 */
 	public static void generateSite(
 			Label root, 
@@ -254,7 +252,7 @@ public final class Util {
 			Container container,
 			ActionContentProvider actionContentProvider,	
 			PageContentProvider pageContentProvider,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		if (activeAction instanceof Action && activeAction.eContainmentFeature() != AppPackage.Literals.ACTION__SECTIONS) {
 			URI uri = uriResolver.apply(activeAction, baseURI);				
@@ -324,7 +322,7 @@ public final class Util {
 			org.nasdanika.html.model.app.Page appPage,
 			BiFunction<Label, URI, URI> uriResolver, 
 			ActionContentProvider contentProvider,			
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		if (root != null) {
 			Label title = createLabel(root, activeAction, uriResolver, null, "header/title", false, false);
@@ -444,7 +442,7 @@ public final class Util {
 			ContentPanel contentPanel,
 			BiFunction<Label, URI, URI> uriResolver, 
 			ActionContentProvider contentProvider,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		if (!rootOrPrincipal) {
 			if (path != null && !path.isEmpty()) {
@@ -498,7 +496,12 @@ public final class Util {
 		contentPanel.setLeftNavigation(createNavigationPanel(action.getLeftNavigation()));		
 		contentPanel.setRightNavigation(createNavigationPanel(action.getRightNavigation()));
 		
-		contentPanel.getContent().addAll(contentProvider == null ? EcoreUtil.copyAll(action.getContent()) : contentProvider.getActionContent(action, uriResolver, progressMonitor));
+		try {
+			contentPanel.getContent().addAll(contentProvider == null ? EcoreUtil.copyAll(action.getContent()) : contentProvider.getActionContent(action, uriResolver, progressMonitor));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -729,7 +732,7 @@ public final class Util {
 			Container container,
 			ActionContentProvider actionContentProvider,
 			PageContentProvider pageContentProvider,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		if (navigationPanel != null) {
 			for (EObject item: org.nasdanika.html.model.app.util.Util.resolveActionReferences(navigationPanel.getItems())) {
@@ -841,7 +844,7 @@ public final class Util {
 	 * @throws SAXException 
 	 * @throws ParserConfigurationException 
 	 */
-	public static org.nasdanika.drawio.Document loadDrawioDocument(Element mxGraphDiv) throws Exception {
+	public static org.nasdanika.drawio.Document loadDrawioDocument(Element mxGraphDiv) throws ParserConfigurationException, SAXException, IOException {
 		String data = mxGraphDiv.attr("data-mxgraph");
 		if (data != null) {
 			JSONObject jsonData = new JSONObject(data);
@@ -853,7 +856,7 @@ public final class Util {
 		return null;
 	}
 
-	public static void traverseDrawio(Element mxGraphDiv, Consumer<org.nasdanika.drawio.Element> visitor, ConnectionBase connectionBase) throws Exception {
+	public static void traverseDrawio(Element mxGraphDiv, Consumer<org.nasdanika.drawio.Element> visitor, ConnectionBase connectionBase) throws ParserConfigurationException, SAXException, IOException {
 		org.nasdanika.drawio.Document document = loadDrawioDocument(mxGraphDiv);
 		if (document != null) {
 			document.accept(visitor, connectionBase);
@@ -867,12 +870,16 @@ public final class Util {
 	 * @param connectionBase
 	 * @param compress
 	 * @return
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
+	 * @throws TransformerException 
 	 */
 	public static String filterDrawio(
 			String spec, 
 			Consumer<org.nasdanika.drawio.Element> visitor, 
 			ConnectionBase connectionBase, 
-			Boolean compress) throws Exception {
+			Boolean compress) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		
 		org.nasdanika.drawio.Document document = org.nasdanika.drawio.Document.load(spec, null);
 		if (document != null) {

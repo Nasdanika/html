@@ -2,6 +2,7 @@ package org.nasdanika.html.flow;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -14,6 +15,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
+import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.diagram.Diagram;
@@ -49,13 +51,17 @@ public class PackageElementActionBuilder<T extends PackageElement<?>> extends EO
 			Action action,
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Action ret = super.buildAction(action, registry, resolveConsumer, progressMonitor);		
 		T eObj = getTarget();
 		URI uri = NcoreUtil.getUri(eObj);
 		String id = uri == null ? eObj.getUuid() : uri.toString();
-		String digest = Hex.encodeHexString(MessageDigest.getInstance("SHA-256").digest(id.getBytes(StandardCharsets.UTF_8)));
-		ret.setId(digest);
+		try {
+			String digest = Hex.encodeHexString(MessageDigest.getInstance("SHA-256").digest(id.getBytes(StandardCharsets.UTF_8)));
+			ret.setId(digest);
+		} catch (NoSuchAlgorithmException e) {
+			throw new NasdanikaException(e);
+		}
 		
 		String description = eObj.getDescription();
 		addContent(ret, description);
@@ -91,7 +97,7 @@ public class PackageElementActionBuilder<T extends PackageElement<?>> extends EO
 	protected Table createPropertiesTable(
 			Action action,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Table propertiesTable = super.createPropertiesTable(action, context, progressMonitor);
 		propertiesTable.getAttributes().put("style", createText("width:auto"));
 		return propertiesTable;
@@ -101,7 +107,7 @@ public class PackageElementActionBuilder<T extends PackageElement<?>> extends EO
 	protected void resolve(
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 
 		super.resolve(action, context, progressMonitor);
 		T semanticElement = getTarget();
@@ -172,7 +178,7 @@ public class PackageElementActionBuilder<T extends PackageElement<?>> extends EO
 			Diagram representation, 
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 	}
 	

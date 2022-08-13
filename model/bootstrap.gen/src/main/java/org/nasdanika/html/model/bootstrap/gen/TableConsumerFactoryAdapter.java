@@ -27,7 +27,7 @@ public class TableConsumerFactoryAdapter extends TableRowContainerConsumerFactor
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {
+	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) {
 		MapCompoundConsumerFactory<EStructuralFeature,HTMLElement<?>> partsFactory = new MapCompoundConsumerFactory<>("Sections");
 		org.nasdanika.html.model.bootstrap.Table semanticElement = getTarget();
 		
@@ -70,7 +70,7 @@ public class TableConsumerFactoryAdapter extends TableRowContainerConsumerFactor
 			}
 
 			@Override
-			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>> execute(org.nasdanika.html.bootstrap.Table table, ProgressMonitor progressMonitor) throws Exception {
+			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>> execute(org.nasdanika.html.bootstrap.Table table, ProgressMonitor progressMonitor) {
 				Map<EStructuralFeature, HTMLElement<?>> sectionsMap = new HashMap<>();
 				Table semanticElement = getTarget();
 				if (semanticElement.getHeader() != null) {

@@ -14,7 +14,7 @@ public class TagSupplierFactoryAdapter<T extends org.nasdanika.html.model.bootst
 	}
 	
 	@Override
-	protected Function<org.nasdanika.html.Tag, org.nasdanika.html.Tag> createConfigureFunction(Context context) throws Exception {
+	protected Function<org.nasdanika.html.Tag, org.nasdanika.html.Tag> createConfigureFunction(Context context) {
 		Appearance appearance = getTarget().getAppearance();
 		if (appearance == null) {
 			return super.createConfigureFunction(context);

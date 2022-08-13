@@ -40,6 +40,7 @@ import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.DiagnosticException;
+import org.nasdanika.common.ExecutionException;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.NullProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
@@ -127,7 +128,7 @@ public class TestAgileDocGen {
 			}
 
 			@Override
-			public void execute(EObject obj, ProgressMonitor progressMonitor) throws Exception {
+			public void execute(EObject obj, ProgressMonitor progressMonitor) {
 				org.nasdanika.flow.Package pkg = (org.nasdanika.flow.Package) obj;
 				
 				Package instance = pkg.create();
@@ -144,7 +145,11 @@ public class TestAgileDocGen {
 				}
 				assertThat(severity).isEqualTo(org.eclipse.emf.common.util.Diagnostic.OK);
 									
-				instanceModelResource.save(null);
+				try {
+					instanceModelResource.save(null);
+				} catch (IOException e) {
+					throw new ExecutionException(e, this);
+				}
 			}
 		};
 		

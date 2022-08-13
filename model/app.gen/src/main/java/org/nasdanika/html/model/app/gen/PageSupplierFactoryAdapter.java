@@ -50,7 +50,7 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 			}
 
 			@Override
-			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>> execute(ProgressMonitor progressMonitor) throws Exception {
+			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>> execute(ProgressMonitor progressMonitor) {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				Page semanticElement = getTarget();
 				Container container = semanticElement.isFluid() ? bootstrapFactory.fluidContainer() : bootstrapFactory.container();
@@ -114,7 +114,7 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 	}
 	
 	@Override
-	public Supplier<HTMLElement<?>> createHTMLElementSupplier(Context context) throws Exception {
+	public Supplier<HTMLElement<?>> createHTMLElementSupplier(Context context) {
 		MapCompoundConsumerFactory<EStructuralFeature, HTMLElement<?>> partsFactory = new MapCompoundConsumerFactory<>("Page parts");
 		Page semanticElement = (Page) getTarget();
 		

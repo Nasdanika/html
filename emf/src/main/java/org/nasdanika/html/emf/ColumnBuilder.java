@@ -16,18 +16,16 @@ public interface ColumnBuilder<T> {
 	/**
 	 * Builds a header cell.
 	 * @param header
-	 * @throws Exception
 	 */
 	public void buildHeader(
 			TableCell header,
 			Action base, 
 			ETypedElement typedElement,
 			Context context, 
-			ProgressMonitor progressMonitor) throws Exception;
+			ProgressMonitor progressMonitor);
 
 	/**
 	 * Builds a value cell
-	 * @throws Exception
 	 */
 	public void buildCell(
 			T rowElement, 
@@ -35,6 +33,6 @@ public interface ColumnBuilder<T> {
 			Action base, 
 			ETypedElement typedElement,
 			Context context, 
-			ProgressMonitor progressMonitor) throws Exception;
+			ProgressMonitor progressMonitor);
 	
 }

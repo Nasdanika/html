@@ -61,7 +61,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 			}
 			
 			@Override
-			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, List<JsTreeNode>> input, ProgressMonitor progressMonitor) throws Exception {
+			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, List<JsTreeNode>> input, ProgressMonitor progressMonitor) {
 				Tag ret = (Tag) input.getFirst();
 				
 				Tag panel;
@@ -163,7 +163,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, Map<Class<?>, Object>> input, ProgressMonitor progressMonitor) throws Exception {
+			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, Map<Class<?>, Object>> input, ProgressMonitor progressMonitor) {
 				Tag ret = (Tag) input.getFirst();
 				Tag panel;
 				if (getTarget().isCollapsible()) {
@@ -395,7 +395,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 	 * Adapts items to {@link JsTreeNode} suppliers.
 	 */
 	@Override
-	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) throws Exception {
+	protected Function<HTMLElement<?>, HTMLElement<?>> createConfigureFunction(Context context) {
 		NavigationPanel semanticElement = getTarget();
 		NavigationPanelStyle style = semanticElement.getStyle();
 		

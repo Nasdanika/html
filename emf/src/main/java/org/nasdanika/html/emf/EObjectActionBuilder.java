@@ -1,5 +1,6 @@
 package org.nasdanika.html.emf;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.time.Duration;
 import java.time.Instant;
@@ -38,6 +39,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.CollectionCompoundConsumer;
+import org.nasdanika.common.ExecutionException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.emf.DiagnosticProvider;
@@ -118,7 +120,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 				}
 
 				@Override
-				public void execute(Context registry, ProgressMonitor progressMonitor) throws Exception {
+				public void execute(Context registry, ProgressMonitor progressMonitor) {
 					EObjectActionBuilder.this.resolve((Action) getTarget(), registry, progressMonitor);					
 				}
 				
@@ -133,7 +135,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		 * Executes and removes itself from the list of adapters.
 		 */
 		@Override
-		public void execute(Context context, ProgressMonitor progressMonitor) throws Exception {
+		public void execute(Context context, ProgressMonitor progressMonitor) {
 			accumulator.execute(context, progressMonitor);		
 			((Action) getTarget()).eAdapters().remove(this);
 		}
@@ -159,7 +161,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * The resolving adapter removes itself upon resolution.  
 	 */
 	@Override
-	public Action execute(BiSupplier<Action, BiConsumer<EObject,Action>> actionAndRegistry, ProgressMonitor progressMonitor) throws Exception {
+	public Action execute(BiSupplier<Action, BiConsumer<EObject,Action>> actionAndRegistry, ProgressMonitor progressMonitor) {
 		EObjectActionResolverAdapter resolver = new EObjectActionResolverAdapter();
 		BiConsumer<EObject, Action> registry = actionAndRegistry.getSecond();
 		Action ret = buildAction(actionAndRegistry.getFirst(), registry, resolver::add, progressMonitor);
@@ -181,7 +183,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			Action action,
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<Context>> resolveConsumer, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Action ret = action == null ? newAction(registry, resolveConsumer, progressMonitor) : action;
 
 		// Diagnostic
@@ -225,12 +227,11 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param resolveConsumer
 	 * @param progressMonitor
 	 * @return
-	 * @throws Exception
 	 */
 	protected Action newAction(
 			BiConsumer<EObject,Action> registry, 
 			java.util.function.Consumer<org.nasdanika.common.Consumer<Context>> resolveConsumer, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		T semanticElement = getTarget();
 		if (semanticElement instanceof ModelElement) {
@@ -264,23 +265,19 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		return AppFactory.eINSTANCE.createAction();
 	}
 	
-	protected NavigationPanel createLeftNavigation(Context context, ProgressMonitor progressMonitor) throws Exception {
-	
+	protected NavigationPanel createLeftNavigation(Context context, ProgressMonitor progressMonitor) {	
 		return null;
 	}
 	
-	protected NavigationPanel createRightNavigation(Context context, ProgressMonitor progressMonitor) throws Exception {
-	
+	protected NavigationPanel createRightNavigation(Context context, ProgressMonitor progressMonitor) {	
 		return null;
 	}
 	
-	protected NavigationPanel createFloatLeftNavigation(Context context, ProgressMonitor progressMonitor) throws Exception {
-	
+	protected NavigationPanel createFloatLeftNavigation(Context context, ProgressMonitor progressMonitor) {	
 		return null;
 	}
 	
-	protected NavigationPanel createFloatRightNavigation(Context context, ProgressMonitor progressMonitor) throws Exception {
-	
+	protected NavigationPanel createFloatRightNavigation(Context context, ProgressMonitor progressMonitor) {	
 		return null;
 	}
 	
@@ -311,7 +308,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		return adapter instanceof DiagnosticProvider ? ((DiagnosticProvider) adapter).getFeatureDiagnostic(feature) : Collections.emptyList();
 	}
 		
-	protected void resolve(Action action, Context context, ProgressMonitor progressMonitor) throws Exception {
+	protected void resolve(Action action, Context context, ProgressMonitor progressMonitor) {
 		action.setLeftNavigation(createLeftNavigation(context, progressMonitor));
 		action.setFloatLeftNavigation(createFloatLeftNavigation(context, progressMonitor));
 		action.setRightNavigation(createRightNavigation(context, progressMonitor));
@@ -339,9 +336,8 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param context
 	 * @param progressMonitor
 	 * @return Table or null if there are no properties.
-	 * @throws Exception
 	 */
-	protected Table createPropertiesTable(Action action, Context context, ProgressMonitor progressMonitor) throws Exception {
+	protected Table createPropertiesTable(Action action, Context context, ProgressMonitor progressMonitor) {
 		List<ETypedElement> properties = getProperties();
 		if (properties == null || properties.isEmpty()) {
 			return null;
@@ -484,7 +480,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			EObject child, 
 			BiConsumer<EObject, Action> registry,
 			Consumer<org.nasdanika.common.Consumer<Context>> resolveConsumer,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		ActionProvider provider = adaptChild(child);
 		if (provider == null) {
@@ -561,11 +557,11 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		return Boolean.FALSE.equals(value);
 	}
 	
-	protected Object getTypedElementValue(ETypedElement typedElement) throws Exception {
+	protected Object getTypedElementValue(ETypedElement typedElement) {
 		return getTypedElementValue(getTarget(), typedElement);
 	}
 		
-	protected Object getTypedElementValue(EObject eObject, ETypedElement typedElement) throws Exception {		
+	protected Object getTypedElementValue(EObject eObject, ETypedElement typedElement) {		
 		if (typedElement == EcorePackage.Literals.EOBJECT___ECONTAINER) {
 			return eObject.eContainer();
 		}
@@ -579,7 +575,11 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		}
 		
 		EOperation eOp = (EOperation) typedElement;
-		return eObject.eInvoke(eOp, getArguments(eObject, eOp));
+		try {
+			return eObject.eInvoke(eOp, getArguments(eObject, eOp));
+		} catch (InvocationTargetException e) {
+			throw new ExecutionException(e, this);
+		}
 	}
 	
 	protected EList<?> getArguments(EObject eObject, EOperation eOp) {
@@ -687,14 +687,13 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param context Context
 	 * @param progressMonitor progress monitor.
 	 * @return rendered value
-	 * @throws Exception
 	 */
 	protected EObject renderValue(
 			Action base, 
 			ETypedElement typedElement,
 			Object value, 
 			Context context, 
-			ProgressMonitor progressMonitor) throws Exception {		
+			ProgressMonitor progressMonitor) {		
 		if (isEmptyValue(typedElement, value)) {
 			return null;
 		}
@@ -801,14 +800,13 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		 * @param context Context
 		 * @param progressMonitor progress monitor.
 		 * @return rendered value
-		 * @throws Exception
 		 */
 		List<EObject> createContent(
 				T element,
 				Action base, 
 				ETypedElement typedElement,
 				Context context, 
-				ProgressMonitor progressMonitor) throws Exception;		
+				ProgressMonitor progressMonitor);		
 		
 	}
 	
@@ -820,7 +818,6 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param context Context
 	 * @param progressMonitor progress monitor.
 	 * @return null for null or empty collections or a list.
-	 * @throws Exception
 	 */
 	protected <E> org.nasdanika.html.model.html.Tag renderList(
 			Collection<E> elements,
@@ -829,7 +826,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			Action base, 
 			ETypedElement typedElement,
 			Context context, 
-			ProgressMonitor progressMonitor) throws Exception {		
+			ProgressMonitor progressMonitor) {		
 		if (elements == null || elements.isEmpty()) {
 			return null;
 		}
@@ -859,14 +856,13 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param context Context
 	 * @param progressMonitor Progress montior
 	 * @return null if emap is empty or null, a table with keys and values otherwise.
-	 * @throws Exception
 	 */
 	protected Table createEMapTable(
 			ETypedElement typedElement,
 			EMap<?,?> eMap, 
 			Action action, 
 			Context context, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		if (eMap == null || eMap.isEmpty()) {
 			return null;
 		}
@@ -916,7 +912,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 					Action base, 
 					ETypedElement tElement, 
 					Context context,
-					ProgressMonitor progressMonitor) throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(label);				
 			}
 			
@@ -927,7 +923,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 					Action base, 
 					ETypedElement tElement, 
 					Context context,
-					ProgressMonitor progressMonitor) throws Exception {
+					ProgressMonitor progressMonitor) {
 				
 				Object value = getTypedElementValue(rowElement, typedElement);
 				EObject renderedValue = renderValue(base, typedElement, value, context, progressMonitor);
@@ -961,7 +957,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 					Action base, 
 					ETypedElement tElement, 
 					Context context,
-					ProgressMonitor progressMonitor) throws Exception {
+					ProgressMonitor progressMonitor) {
 				header.getContent().add(label);				
 			}
 			
@@ -972,7 +968,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 					Action base, 
 					ETypedElement tElement, 
 					Context context,
-					ProgressMonitor progressMonitor) throws Exception {
+					ProgressMonitor progressMonitor) {
 				
 				EObject renderedValue = renderValue(base, null, (Object) rowElement, context, progressMonitor);
 				if (renderedValue != null) {
@@ -1001,7 +997,6 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param progressMonitor
 	 * @param columnBuilders
 	 * @return
-	 * @throws Exception
 	 */
 	@SafeVarargs
 	public static <T> Table buildTable(
@@ -1010,7 +1005,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			ETypedElement typedElement,
 			Context context, 
 			ProgressMonitor progressMonitor,			
-			ColumnBuilder<? super T>... columnBuilders) throws Exception {
+			ColumnBuilder<? super T>... columnBuilders) {
 		return buildTable(elements, Arrays.asList(columnBuilders), base, typedElement, context, progressMonitor);
 	}
 	
@@ -1024,7 +1019,6 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param context
 	 * @param progressMonitor
 	 * @return
-	 * @throws Exception
 	 */
 	public static <T> Table buildTable(
 			Collection<? extends T> elements, 
@@ -1032,7 +1026,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			Action base, 
 			ETypedElement typedElement,
 			Context context, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Table ret = BootstrapFactory.eINSTANCE.createTable();
 		TableHeader header = BootstrapFactory.eINSTANCE.createTableHeader();
 		ret.setHeader(header);
@@ -1078,7 +1072,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 					Action base, 
 					ETypedElement tElement, 
 					Context context,
-					ProgressMonitor progressMonitor) throws Exception {
+					ProgressMonitor progressMonitor) {
 				
 				org.nasdanika.ncore.Map header = NcoreFactory.eINSTANCE.createMap();
 				if (visible) {
@@ -1096,7 +1090,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 					Action base, 
 					ETypedElement tElement, 
 					Context context,
-					ProgressMonitor progressMonitor) throws Exception {
+					ProgressMonitor progressMonitor) {
 				
 				Object value = getTypedElementValue(rowElement, typedElement);
 				EObject renderedValue = renderValue(base, typedElement, value, context, progressMonitor);
@@ -1130,7 +1124,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 					Action base, 
 					ETypedElement tElement, 
 					Context context,
-					ProgressMonitor progressMonitor) throws Exception {				
+					ProgressMonitor progressMonitor) {				
 				org.nasdanika.ncore.Map header = NcoreFactory.eINSTANCE.createMap();
 				if (visible) {
 					header.put("visible", visible);
@@ -1147,7 +1141,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 					Action base, 
 					ETypedElement tElement, 
 					Context context,
-					ProgressMonitor progressMonitor) throws Exception {
+					ProgressMonitor progressMonitor) {
 				
 				EObject renderedValue = renderValue(base, null, (Object) rowElement, context, progressMonitor);
 				if (renderedValue != null) {
@@ -1177,7 +1171,6 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param progressMonitor
 	 * @param columnBuilders
 	 * @return
-	 * @throws Exception
 	 */
 	@SafeVarargs
 	public static <T> Tag buildDynamicTable(
@@ -1188,7 +1181,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			String appId,
 			Context context, 
 			ProgressMonitor progressMonitor,			
-			DynamicColumnBuilder<? super T>... columnBuilders) throws Exception {
+			DynamicColumnBuilder<? super T>... columnBuilders) {
 		return buildDynamicTable(elements, Arrays.asList(columnBuilders), base, typedElement, configKey, appId, context, progressMonitor);
 	}
 	
@@ -1204,7 +1197,6 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param context
 	 * @param progressMonitor
 	 * @return
-	 * @throws Exception
 	 */
 	public static <T> Tag buildDynamicTable(
 			Collection<? extends T> elements, 
@@ -1214,7 +1206,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			String configKey,
 			String appId,
 			Context context, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 
 		org.nasdanika.ncore.List columns = NcoreFactory.eINSTANCE.createList();
 		for (DynamicColumnBuilder<? super T> cb: columnBuilders) {
@@ -1263,14 +1255,13 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param typedElement
 	 * @param columnBuilders
 	 * @return
-	 * @throws Exception 
 	 */
 	protected Action createTableAction(
 			ETypedElement typedElement,
 			Collection<ColumnBuilder<? super EObject>> columnBuilders,
 			Action base, 
 			Context context, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		Action ret = AppFactory.eINSTANCE.createAction();
 		configureETypedElementLabel(typedElement, ret, false);
 		
@@ -1292,14 +1283,13 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param typedElement
 	 * @param columnBuilders
 	 * @return
-	 * @throws Exception 
 	 */
 	protected Action createTableAction(
 			ETypedElement typedElement,
 			Action base, 
 			Context context, 
 			ProgressMonitor progressMonitor,						
-			ETypedElement... columnElements) throws Exception {
+			ETypedElement... columnElements) {
 		return createTableAction(
 				typedElement, 
 				createColumnBuilders(columnElements), 
@@ -1332,7 +1322,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			ETypedElement typedElement,
 			Temporal temporal, 
 			Context context, 
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 //		if (temporal instanceof Event) {
 //			return super.memberValue(member, temporal, viewGenerator, progressMonitor);

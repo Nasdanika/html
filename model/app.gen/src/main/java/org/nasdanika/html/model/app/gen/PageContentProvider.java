@@ -19,6 +19,6 @@ public interface PageContentProvider {
 		
 	};
 	
-	EObject getPageContent(org.nasdanika.html.model.bootstrap.Page page, URI baseURI, BiFunction<Label, URI, URI> uriResolver, ProgressMonitor progressMonitor) throws Exception;
+	EObject getPageContent(org.nasdanika.html.model.bootstrap.Page page, URI baseURI, BiFunction<Label, URI, URI> uriResolver, ProgressMonitor progressMonitor);
 
 }
