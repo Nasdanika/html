@@ -7,7 +7,7 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
-import org.nasdanika.common.persistence.ConfigurationException;
+import org.nasdanika.persistence.ConfigurationException;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.bootstrap.BootstrapFactory;

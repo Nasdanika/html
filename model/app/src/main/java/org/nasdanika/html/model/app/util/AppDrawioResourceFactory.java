@@ -60,6 +60,8 @@ import org.nasdanika.html.model.bootstrap.Table;
 import org.nasdanika.html.model.bootstrap.TableCell;
 import org.nasdanika.html.model.bootstrap.TableRow;
 
+// TODO - child comparators here and "sort" property. 
+
 /**
  * Creates an action model from Drawio documents
  * @author Pavel
@@ -76,12 +78,9 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		super(connectionBase);
 		this.resourceSet = resourceSet;
 	}
-
+	
 	@Override
-	protected Map<EReference, List<Action>> createSemanticElement(
-			Resource resource, 
-			Element element,
-			Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
+	protected Map<EReference, List<Action>> createSemanticElement(Resource resource, Element element, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
 		
 		EReference containmentReference = getContainmentReference(resource, element);
 		Action action = null;
@@ -635,7 +634,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 				.filter(Node.class::isInstance)
 				.map(Node.class::cast)
 				.forEach(node -> {
-					for (Connection inboundConnection: node.getInboundConnections()) {
+					for (Connection inboundConnection: node.getIncomingConnections()) {
 						if (connectionRoles.containsKey(inboundConnection)) {
 							Node candidate = inboundConnection.getSource();
 							if (candidate != null && !node.equals(candidate) && !isSemanticAncestor(node, candidate, new HashSet<>())) {
@@ -804,7 +803,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 					Node node = (Node) element;
 					EReference connectionsActionContainmentReference = getConnectionsActionContainmentReference(node);
 					if (connectionsActionContainmentReference != null) {
-						List<Connection> inboundConnections = node.getInboundConnections().stream().filter(c -> getConnectionRole(c) == null).collect(Collectors.toList());
+						List<Connection> inboundConnections = node.getIncomingConnections().stream().filter(c -> getConnectionRole(c) == null).collect(Collectors.toList());
 						if (!inboundConnections.isEmpty()) {
 							Table table = BootstrapFactory.eINSTANCE.createTable();
 							table.setBordered(true);
@@ -881,7 +880,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 							((Collection<Action>) action.eGet(connectionsActionContainmentReference)).add(inboundConnectionsAction);
 						}
 						
-						List<Connection> outboundConnections = node.getOutboundConnections().stream().filter(c -> getConnectionRole(c) == null).collect(Collectors.toList());
+						List<Connection> outboundConnections = node.getOutgoingConnections().stream().filter(c -> getConnectionRole(c) == null).collect(Collectors.toList());
 						if (!outboundConnections.isEmpty()) {
 							Table table = BootstrapFactory.eINSTANCE.createTable();
 							table.setBordered(true);
@@ -1040,7 +1039,7 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 				return;
 			}
 				
-			for (Connection outboundConnection: node.getOutboundConnections()) {
+			for (Connection outboundConnection: node.getOutgoingConnections()) {
 				connectionRoles.put(outboundConnection, defaultConnectionRole);
 				Node target = outboundConnection.getTarget();
 				if (target != null && !target.equals(node)) {

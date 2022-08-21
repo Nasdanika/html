@@ -25,7 +25,7 @@ import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
-import org.nasdanika.common.resources.BinaryEntityContainer;
+import org.nasdanika.resources.BinaryEntityContainer;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.model.html.gen.HtmlGenYamlLoadingExecutionParticipant;
 import org.yaml.snakeyaml.DumperOptions;
