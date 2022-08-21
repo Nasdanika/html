@@ -13,6 +13,8 @@
 	<properties>
 		<core.version>2022.8.1</core.version>
 		<jacoco.version>0.8.7</jacoco.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
 	</properties>	
 
 	<licenses>
