@@ -1,4 +1,4 @@
-package org.nasdanika.html.model.app.util;
+package org.nasdanika.html.model.app.drawio;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,9 +71,6 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 
 	private ResourceSet resourceSet;
 		
-	protected Map<Connection, EReference> connectionRoles = new LinkedHashMap<>();
-	protected Map<ModelElement, ModelElement> semanticParents = new LinkedHashMap<>();
-
 	public AppDrawioResourceFactory(ConnectionBase connectionBase, ResourceSet resourceSet) {
 		super(connectionBase);
 		this.resourceSet = resourceSet;
@@ -601,14 +598,6 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 			Function<Predicate<Element>, Map<EReference, List<Action>>> resolver) {
 		
 		if (element instanceof Document) {
-			// Resolving connection default roles by traversing from all nodes with default connection property set
-			String defaultConnectionRoleProperty = getDefaultConnectionRoleProperty();
-			if (!Util.isBlank(defaultConnectionRoleProperty)) {
-				element.stream(connectionBase)
-					.filter(Node.class::isInstance)
-					.map(Node.class::cast)
-					.forEach(node -> setDefaultConnectionRole(node, defaultConnectionRoleProperty, null, new HashSet<>()));
-			}
 			
 			// Resolving assigned connection roles.
 			String connectionRoleProperty = getConnectionRoleProperty();
@@ -1021,67 +1010,6 @@ public class AppDrawioResourceFactory extends DrawioResourceFactory<Map<EReferen
 		}
 		return false;
 	}
-
-	/**
-	 * 
-	 * @param node
-	 * @param defaultConnectionRoleProperty
-	 */
-	protected void setDefaultConnectionRole(Node node, String defaultConnectionRoleProperty, EReference defaultConnectionRole, Set<Node> traversed) {
-		if (traversed.add(node)) {
-			String defaultConnectionRoleName = node.getProperty(defaultConnectionRoleProperty);			
-			if (defaultConnectionRole == null) { // Process only nodes with default connection property set
-				if (Util.isBlank(defaultConnectionRoleName)) {
-					return;
-				}
-				defaultConnectionRole = resolveConnectionRole(defaultConnectionRoleName);
-			} else if (!Util.isBlank(defaultConnectionRoleName)) {
-				return;
-			}
-				
-			for (Connection outboundConnection: node.getOutgoingConnections()) {
-				connectionRoles.put(outboundConnection, defaultConnectionRole);
-				Node target = outboundConnection.getTarget();
-				if (target != null && !target.equals(node)) {
-					setDefaultConnectionRole(target, defaultConnectionRoleProperty, defaultConnectionRole, traversed);								
-				}
-			}
-			
-			Page linkedPage = node.getLinkedPage();
-			if (linkedPage != null) {
-				// TODO - getPageElementEntry(null, linkedPage, null)
-			}
-		}
-	}	
-	
-	protected EReference resolveConnectionRole(String connectionRole) {
-		switch (connectionRole) {
-		case "none": 
-			return null;
-		case "child":
-			return AppPackage.Literals.LABEL__CHILDREN;
-		case "anonymous":
-			return AppPackage.Literals.ACTION__ANONYMOUS;
-		case "navigation":
-			return AppPackage.Literals.ACTION__NAVIGATION;
-		case "section":
-			return AppPackage.Literals.ACTION__SECTIONS;
-		default: 
-			throw new IllegalArgumentException("Unsupported connection role: " + connectionRole);
-		}
-	}		
-
-	protected String getConnectionRoleProperty() {
-		return "role";
-	}
-	
-	protected String getDefaultConnectionRoleProperty() {
-		return "default-connection-role";
-	}
-
-	protected EReference getConnectionRole(Connection connection) {
-		return connectionRoles.get(connection);
-	}	
 
 	protected EReference getConnectionsActionContainmentReference(Node node) {
 		return AppPackage.Literals.ACTION__SECTIONS;

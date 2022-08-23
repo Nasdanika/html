@@ -241,7 +241,7 @@ Or it may generate both - an application page with a Vue/React application on it
 
 ### Drawio Resource Factory
 
-With ${javadoc/org.nasdanika.html.model.app.util.AppDrawioResourceFactory} action models can be loaded from [Drawio](https://www.diagrams.net/) diagrams.
+With ${javadoc/org.nasdanika.html.model.app.drawio.AppDrawioResourceFactory} action models can be loaded from [Drawio](https://www.diagrams.net/) diagrams.
 In other words, a structure of a web site/application can be defined as a diagram. 
 
 The below table contains a list of available demos which can be used as starting points for "diagram-as-a-web-application" efforts.
