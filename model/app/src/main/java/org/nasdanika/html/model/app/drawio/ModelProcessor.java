@@ -3,9 +3,9 @@ package org.nasdanika.html.model.app.drawio;
 import org.eclipse.emf.common.util.URI;
 import org.nasdanika.graph.processor.ProcessorConfig;
 
-public class RootProcessor extends ModelElementProcessor {
+public class ModelProcessor extends ElementProcessor {
 
-	protected RootProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config) {
+	protected ModelProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config) {
 		super(resourceFactory, uri, config);
 	}
 	

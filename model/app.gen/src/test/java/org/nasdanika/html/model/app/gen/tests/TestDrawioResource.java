@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONObject;
 import org.jsoup.nodes.Element;
@@ -35,6 +36,7 @@ import org.nasdanika.common.Status;
 import org.nasdanika.resources.BinaryEntityContainer;
 import org.nasdanika.resources.FileSystemContainer;
 import org.nasdanika.drawio.ConnectionBase;
+import org.nasdanika.drawio.Document;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.GitMarkerFactory;
 import org.nasdanika.emf.persistence.YamlResourceFactory;
@@ -47,7 +49,7 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.ActionReference;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
-import org.nasdanika.html.model.app.drawio.AppDrawioResourceFactory;
+import org.nasdanika.html.model.app.drawio.ResourceFactory;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
@@ -95,7 +97,21 @@ public class TestDrawioResource extends TestBase {
 		packageRegistry.put(ResourcesPackage.eINSTANCE.getNsURI(), ResourcesPackage.eINSTANCE); 
 		packageRegistry.put(NcorePackage.eINSTANCE.getNsURI(), NcorePackage.eINSTANCE); 
 		
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("drawio", new AppDrawioResourceFactory(ConnectionBase.SOURCE, resourceSet));
+		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
+			assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
+		};
+		
+		String actionsResource = "app/drawio-root-action.yml";
+		Action documentActionPrototype = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
+		
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("drawio", new ResourceFactory(ConnectionBase.SOURCE, resourceSet) {
+			@Override
+			protected Action createDocumentAction(Document document) {
+				return EcoreUtil.copy(documentActionPrototype);
+			}
+			
+		});
+		
 		EObjectLoader eObjectLoader = new EObjectLoader(null, null, resourceSet);
 		eObjectLoader.setMarkerFactory(new GitMarkerFactory());
 		Resource.Factory appYamlResourceFactory = new YamlResourceFactory(eObjectLoader, modelContext, progressMonitor);
@@ -105,18 +121,14 @@ public class TestDrawioResource extends TestBase {
 		assertThat(modelFile.isFile());
 		Resource modelResource = resourceSet.getResource(URI.createFileURI(modelFile.getCanonicalPath()), true);
 		
-		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
-			assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
-		};
+//		777
 		
-		String actionsResource = "app/drawio-root-action.yml";
-		Action root = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
-		ActionReference actionReference = AppFactory.eINSTANCE.createActionReference();
-		root.getChildren().add(actionReference);
-		Action page1 = (Action) modelResource.getContents().get(0);
-		page1.setLocation("${base-uri}index.html");
-		actionReference.setTarget(page1);
-		dumpToYaml(root);
+//		ActionReference actionReference = AppFactory.eINSTANCE.createActionReference();
+//		root.getChildren().add(actionReference);
+		Action root = (Action) modelResource.getContents().get(0);
+//		page1.setLocation("${base-uri}index.html");
+//		actionReference.setTarget(page1);
+//		dumpToYaml(root);
 		
 		Container container = ResourcesFactory.eINSTANCE.createContainer();
 		container.setName("Drawio");
@@ -235,7 +247,7 @@ public class TestDrawioResource extends TestBase {
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore("Fails command line build due to not finding services from the core drawio module. Potential solution is here: https://stackoverflow.com/questions/54087050/java-9-serviceloader-doesnt-load-test-implementation-from-test-sources-module")
+//	@Ignore("Fails command line build due to not finding services from the core drawio module. Potential solution is here: https://stackoverflow.com/questions/54087050/java-9-serviceloader-doesnt-load-test-implementation-from-test-sources-module")
 	public void testGenerateSite() throws Exception {
 		long start = System.currentTimeMillis();
 		testGenerateResourceModel();
