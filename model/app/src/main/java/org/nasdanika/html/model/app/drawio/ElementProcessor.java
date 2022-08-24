@@ -1,7 +1,6 @@
 package org.nasdanika.html.model.app.drawio;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,6 +15,11 @@ import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 
+/**
+ * Base class for processors.
+ * @author Pavel
+ *
+ */
 public class ElementProcessor {
 	
 	protected ResourceFactory resourceFactory;
@@ -24,24 +28,18 @@ public class ElementProcessor {
 	protected Map<Element, ProcessorInfo<ElementProcessor>> registry;
 	protected URI uri;
 
-	protected ElementProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config) {
+	public ElementProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config) {
 		this.resourceFactory = resourceFactory;
 		this.uri = uri;
 		this.config = config;		
 	}
 	
-	public List<EObject> getOwnSemanticElements() {
-		return Collections.emptyList();
-	}	
-
 	/**
-	 * This implementation collects semantic elements from children and passes them through.
+	 * This implementation collects semantic elements from semantic children and passes them through.
 	 * @return
 	 */
 	public List<EObject> getSemanticElements() {
-		return config
-			.getChildProcessorsInfo()
-			.values()
+		return getSemanticChildrenInfo()
 			.stream()
 			.map(ProcessorInfo::getProcessor)
 			.map(ElementProcessor::getSemanticElements)
@@ -61,17 +59,20 @@ public class ElementProcessor {
 		return parentInfo;		
 	}
 	
+	/**
+	 * Semantic children can be different from children as defined in the diagram model. For example, in a mind-map diagram
+	 * one node is a semantic child of another if there is a connection with a role between them.
+	 * @return
+	 */
 	public Collection<ProcessorInfo<ElementProcessor>> getSemanticChildrenInfo() {
 		return config.getChildProcessorsInfo().values();
 	}
 	
-	// TODO - get semantic children, children by default.
-
 	/**
-	 * Adds textual content.
+	 * Adds textual content. Helper method.
 	 * @param content
 	 */
-	protected static void addContent(Action action, String content) {
+	public static void addContent(Action action, String content) {
 		if (!Util.isBlank(content)) {
 			Text text = createText(content);
 			action.getContent().add(text);
@@ -83,7 +84,7 @@ public class ElementProcessor {
 	 * @param content
 	 * @return
 	 */
-	protected static Text createText(String content) {
+	public static Text createText(String content) {
 		Text text = ContentFactory.eINSTANCE.createText();
 		text.setContent(content);
 		return text;
@@ -126,7 +127,7 @@ public class ElementProcessor {
 	}
 	
 	/**
-	 * 
+	 * Wires semantic elements together, sorts, resolves relative paths.
 	 */
 	public void resolveSemanticElements(URI baseURI) { // Resource URI's and 
 		

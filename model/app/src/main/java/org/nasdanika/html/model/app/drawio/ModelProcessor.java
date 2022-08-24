@@ -5,7 +5,7 @@ import org.nasdanika.graph.processor.ProcessorConfig;
 
 public class ModelProcessor extends ElementProcessor {
 
-	protected ModelProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config) {
+	public ModelProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config) {
 		super(resourceFactory, uri, config);
 	}
 	

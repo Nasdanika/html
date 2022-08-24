@@ -24,6 +24,7 @@ import org.nasdanika.drawio.Document;
 import org.nasdanika.drawio.DrawioResource;
 import org.nasdanika.drawio.Layer;
 import org.nasdanika.drawio.Model;
+import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.drawio.Node;
 import org.nasdanika.drawio.Page;
 import org.nasdanika.drawio.Root;
@@ -76,36 +77,37 @@ public class ResourceFactory implements Factory {
 		
 		// Semantic parent
 		registry
-		.values()
-		.stream()
-		.map(ProcessorInfo::getProcessor)
-		.filter(Objects::nonNull)
-		.forEach(ElementProcessor::setSemanticParent);
+			.values()
+			.stream()
+			.map(ProcessorInfo::getProcessor)
+			.filter(Objects::nonNull)
+			.forEach(ElementProcessor::setSemanticParent);
 		
 		// Create element
 		registry
-		.values()
-		.stream()
-		.map(ProcessorInfo::getProcessor)
-		.filter(Objects::nonNull)
-		.forEach(ElementProcessor::createSemanticElements);
+			.values()
+			.stream()
+			.map(ProcessorInfo::getProcessor)
+			.filter(Objects::nonNull)
+			.forEach(ElementProcessor::createSemanticElements);
 		
 		// Resolve
 		registry
-		.values()
-		.stream()
-		.map(ProcessorInfo::getProcessor)
-		.filter(Objects::nonNull)
-		.forEach(ep -> ep.resolve(getBaseURI()));		
+			.values()
+			.stream()
+			.map(ProcessorInfo::getProcessor)
+			.filter(Objects::nonNull)
+			.forEach(ep -> ep.resolveSemanticElements(getBaseURI()));		
 		
+		// Returning document semantic elements
 		return registry
 				.entrySet()
 				.stream()
-				.filter(e -> !(e.getKey() instanceof Page && getPageRole((Page) e.getKey()) == null)) // Filtering out pages with role none
+				.filter(e -> e.getKey() instanceof Document)
 				.map(Map.Entry::getValue)
 				.map(ProcessorInfo::getProcessor)
 				.filter(Objects::nonNull)
-				.map(ElementProcessor::getOwnSemanticElements)
+				.map(ElementProcessor::getSemanticElements)
 				.filter(Objects::nonNull)
 				.flatMap(Collection::stream)
 				.distinct();
@@ -279,16 +281,21 @@ public class ResourceFactory implements Factory {
 		return null;
 	}
 	
-	protected EReference getPageRole(Page page) {
+	protected String getRoleName(ModelElement modelElement) {
 		String roleProperty = getRoleProperty();
-		if (!Util.isBlank(roleProperty)) {
-			Root root = page.getModel().getRoot();
-			String roleName = root.getProperty(roleProperty);
-			if (!Util.isBlank(roleName)) {
-				return resolveRole(roleName);
-			}
+		if (Util.isBlank(roleProperty)) {
+			return null;
 		}
-		return AppPackage.Literals.LABEL__CHILDREN; // Default role.		
+		return modelElement.getProperty(roleProperty);
+	}
+	
+	protected String getRoleName(Page page) {
+		return getRoleName(page.getModel().getRoot());
+	}
+	
+	protected EReference getPageRole(Page page) {
+		String roleName = getRoleName(page);
+		return Util.isBlank(roleName) ? AppPackage.Literals.LABEL__CHILDREN : resolveRole(roleName); 
 	}
 	
 }

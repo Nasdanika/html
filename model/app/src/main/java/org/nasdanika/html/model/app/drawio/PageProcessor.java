@@ -1,5 +1,6 @@
 package org.nasdanika.html.model.app.drawio;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -27,6 +28,7 @@ import org.nasdanika.exec.content.Markdown;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
 
 /**
  * Possible page types: actions, diagram, contents.
@@ -36,10 +38,24 @@ import org.nasdanika.html.model.app.Action;
  *
  */
 public class PageProcessor extends ElementProcessor {
+	
+	protected Action pageAction;
 
 	public PageProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config) {
 		super(resourceFactory, uri, config);
 	}
+	
+	@Override
+	public List<EObject> getSemanticElements() {
+		// TODO - handle page element
+		return pageAction == null ? super.getSemanticElements() : Collections.singletonList(pageAction);
+	}
+	
+	@Override
+	public void createSemanticElements() {
+		pageAction = AppFactory.eINSTANCE.createAction();
+		pageAction.setText(((Page) config.getElement()).getName());
+		pageAction.setLocation("index.html");	}
 		
 //	protected EObject getDocumentation(
 //			Resource resource, 
