@@ -66,7 +66,7 @@ public class ResourceFactory implements Factory {
 		return Document.load(inputStream, uri);
 	}	
 	
-	protected Stream<EObject> getSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {
+	protected Stream<EObject> getSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {		
 		// Default connection role
 		registry
 			.values()
@@ -296,6 +296,33 @@ public class ResourceFactory implements Factory {
 	protected EReference getPageRole(Page page) {
 		String roleName = getRoleName(page);
 		return Util.isBlank(roleName) ? AppPackage.Literals.LABEL__CHILDREN : resolveRole(roleName); 
+	}
+		
+	/**
+	 * @param modelElement
+	 * @return true if this element is the main element on the page which "represents" the page. 
+	 */
+	protected boolean isPageElement(ModelElement modelElement) {
+		String pageElementFlagProperty = getPageElementFlagProperty();
+		if (Util.isBlank(pageElementFlagProperty)) {
+			return false;
+		}
+		String pageElementProp = modelElement.getProperty(pageElementFlagProperty);
+		return "true".equals(pageElementProp);
+	}
+	
+	/**
+	 * @param page
+	 * @return Element with page-element property set to true or root if there is no such element.
+	 */
+	protected ModelElement getPageElement(Page page) {
+		Root root = page.getModel().getRoot();
+		return root.stream()
+			.filter(ModelElement.class::isInstance)
+			.map(ModelElement.class::cast)
+			.filter(this::isPageElement)
+			.findFirst()
+			.orElse(root);
 	}
 	
 }

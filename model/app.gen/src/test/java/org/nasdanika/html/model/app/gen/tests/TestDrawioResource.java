@@ -128,7 +128,11 @@ public class TestDrawioResource extends TestBase {
 		Action root = (Action) modelResource.getContents().get(0);
 //		page1.setLocation("${base-uri}index.html");
 //		actionReference.setTarget(page1);
-//		dumpToYaml(root);
+		dumpToYaml(root);
+		
+		Resource dumpRes = new XMIResourceFactoryImpl().createResource(URI.createURI("temp://blah"));
+		dumpRes.getContents().add(EcoreUtil.copy(root));
+		dumpRes.save(System.out, null);
 		
 		Container container = ResourcesFactory.eINSTANCE.createContainer();
 		container.setName("Drawio");

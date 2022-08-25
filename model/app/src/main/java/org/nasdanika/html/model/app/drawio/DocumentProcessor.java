@@ -45,8 +45,7 @@ public class DocumentProcessor extends ElementProcessor {
 		Stream<Entry<Element, ProcessorInfo<ElementProcessor>>> entriesStream = config
 			.getChildProcessorsInfo()
 			.entrySet()
-			.stream()
-			.filter(e -> !(e.getKey() instanceof Page && resourceFactory.getPageRole((Page) e.getKey()) == null)); // Filtering out pages with role none
+			.stream();
 		
 		Comparator<Page> pageComparator = resourceFactory.getPageComparator((Document) config.getElement());
 		if (pageComparator != null) {
@@ -72,7 +71,11 @@ public class DocumentProcessor extends ElementProcessor {
 				throw new UnsupportedOperationException("Diagram role is not supported yet");
 			} else {
 				EReference pageRole = resourceFactory.getPageRole(page);
-				((Collection<EObject>) documentAction.eGet(pageRole)).addAll(info.getProcessor().getSemanticElements());
+				if (pageRole != null) {
+					System.out.println(info.getConfig().getElement());			
+					List<EObject> semanticElements = info.getProcessor().getSemanticElements();
+					((Collection<EObject>) documentAction.eGet(pageRole)).addAll(semanticElements);
+				}
 			}			
 		});
 	}
