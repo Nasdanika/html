@@ -41,7 +41,7 @@ public class DocumentProcessor extends ElementProcessor {
 	 * Returns pages except the pages without a role. Sorted if comparator was provided. 
 	 */
 	@Override
-	public Collection<ProcessorInfo<ElementProcessor>> getSemanticChildrenInfo() {
+	public List<ProcessorInfo<ElementProcessor>> getSemanticChildrenInfo() {
 		Stream<Entry<Element, ProcessorInfo<ElementProcessor>>> entriesStream = config
 			.getChildProcessorsInfo()
 			.entrySet()

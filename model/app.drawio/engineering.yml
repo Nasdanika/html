@@ -1,0 +1,15 @@
+engineering-module:
+  name: Drawio
+  path: drawio
+  action-prototype: "../../../nasdanika.github.io/target/model-doc/actions/app.genmodel.xml#/"    
+  dependencies:
+    - engineering://nasdanika/modules/html/modules/models/modules/app/modules/model 
+  documentation:
+    content-interpolator:
+      source:
+        content-markdown:
+          style: true
+          source:
+            content-resource: readme.md
+       
+  

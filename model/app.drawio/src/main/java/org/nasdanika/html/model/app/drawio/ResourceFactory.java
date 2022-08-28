@@ -28,6 +28,9 @@ import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.drawio.Node;
 import org.nasdanika.drawio.Page;
 import org.nasdanika.drawio.Root;
+import org.nasdanika.drawio.comparators.AngularNodeComparator;
+import org.nasdanika.drawio.comparators.LabelModelElementComparator;
+import org.nasdanika.drawio.comparators.PropertyModelElementComparator;
 import org.nasdanika.graph.Element;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
@@ -273,6 +276,14 @@ public class ResourceFactory implements Factory {
 		return "page-element";
 	}
 	
+	protected String getDefaultSort() {
+		return "label";
+	}
+
+	protected String getSortProperty() {
+		return "sort";
+	}
+		
 	protected Action createDocumentAction(Document document) {
 		return null;
 	}
@@ -287,6 +298,11 @@ public class ResourceFactory implements Factory {
 			return null;
 		}
 		return modelElement.getProperty(roleProperty);
+	}
+	
+	protected EReference getRole(ModelElement modelElement) {
+		String roleName = getRoleName(modelElement);
+		return Util.isBlank(roleName) ? AppPackage.Literals.LABEL__CHILDREN : resolveRole(roleName); 
 	}
 	
 	protected String getRoleName(Page page) {
@@ -323,6 +339,75 @@ public class ResourceFactory implements Factory {
 			.filter(this::isPageElement)
 			.findFirst()
 			.orElse(root);
+	}
+	
+	/**
+	 * Creates comparators from type and config.
+	 * This implementation creates comparators from <code>org.nasdanika.drawio.comparators</code> package:
+	 * <ul>
+	 * <li>{@link AngularNodeComparator} - <code>clockwise</code> and <code>counterclockwise</code> types with the base angle in degrees as configuration with 90 as default value.</li>
+	 * <li>{@link LabelModelElementComparator} - <code>label</code> with optional <code>descending</code> configuration - compares label HTML plain text ignoring markup.</li>
+	 * <li>{@link PropertyModelElementComparator} - <code>property</code> with property name as required configuration. Compares using property values.
+	 * </ul>
+	 * 
+	 * Override to add support of additional sort types.
+	 * @param parent Semantic parent of nodes to sort.  
+	 * @param sortType
+	 * @param config
+	 * @return
+	 */
+	protected Comparator<Element> createComparator(Element semanticParent, String sortType, String config) {
+		if (!Util.isBlank(sortType)) {
+			switch (sortType) {
+			case "clockwise":
+			case "counterclockwise":
+				if (semanticParent instanceof Node) {
+					AngularNodeComparator nodeComparator = new AngularNodeComparator((Node) semanticParent, "clockwise".equals(config), Util.isBlank(config) ? null : Double.parseDouble(config));
+					return (a,b) -> {
+						if (a instanceof Node && b instanceof Node) {
+							return nodeComparator.compare((Node) a, (Node) b);
+						}
+						if (a == null) {
+							return b == null ? 0 : 1; 
+						}
+						if (b == null) {
+							return a == null ? 0 : -11; 
+						}
+						return a.hashCode() - b.hashCode();
+					};
+				}
+				return null;
+			case "label":
+				LabelModelElementComparator labelComparator = new LabelModelElementComparator("descending".equals(config));
+				return (a,b) -> {
+					if (a instanceof ModelElement && b instanceof ModelElement) {
+						return labelComparator.compare((ModelElement) a, (ModelElement) b);
+					}
+					if (a == null) {
+						return b == null ? 0 : 1; 
+					}
+					if (b == null) {
+						return a == null ? 0 : -11; 
+					}
+					return a.hashCode() - b.hashCode();
+				};
+			case "property":
+				PropertyModelElementComparator propertyComparator = new PropertyModelElementComparator(config, false);
+				return (a,b) -> {
+					if (a instanceof Node && b instanceof ModelElement) {
+						return propertyComparator.compare((ModelElement) a, (ModelElement) b);
+					}
+					if (a == null) {
+						return b == null ? 0 : 1; 
+					}
+					if (b == null) {
+						return a == null ? 0 : -11; 
+					}
+					return a.hashCode() - b.hashCode();
+				};
+			}				
+		}
+		return null;		
 	}
 	
 }

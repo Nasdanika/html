@@ -1,9 +1,11 @@
 package org.nasdanika.html.model.app.drawio;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -62,10 +64,16 @@ public class ElementProcessor {
 	/**
 	 * Semantic children can be different from children as defined in the diagram model. For example, in a mind-map diagram
 	 * one node is a semantic child of another if there is a connection with a role between them.
-	 * @return
+	 * @return Sorted semantic children.
 	 */
-	public Collection<ProcessorInfo<ElementProcessor>> getSemanticChildrenInfo() {
-		return config.getChildProcessorsInfo().values();
+	public List<ProcessorInfo<ElementProcessor>> getSemanticChildrenInfo() {	
+		Stream<ProcessorInfo<ElementProcessor>> infoStream = config.getChildProcessorsInfo().values().stream();
+		Comparator<ProcessorInfo<ElementProcessor>> semanticChildrenInfoComparator = getSemanticChildrenComparator();
+		if (semanticChildrenInfoComparator != null) {
+			infoStream = infoStream.sorted(semanticChildrenInfoComparator);
+		}		
+		
+		return infoStream.collect(Collectors.toList());
 	}
 	
 	/**
@@ -131,6 +139,10 @@ public class ElementProcessor {
 	 */
 	public void resolveSemanticElements(URI baseURI) { // Resource URI's and 
 		
+	}
+	
+	protected Comparator<ProcessorInfo<ElementProcessor>> getSemanticChildrenComparator() {
+		return null;
 	}
 	
 }

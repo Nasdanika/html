@@ -19,6 +19,7 @@ engineering-module:
         name: Application
         modules:
           - app/engineering.yml
+          - app.drawio/engineering.yml
           - app.gen/engineering.yml
   issues:
     components:

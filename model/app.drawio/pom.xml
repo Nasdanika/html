@@ -7,9 +7,9 @@
 	    <version>2022.8.1</version>
 	    <relativePath>../..</relativePath>
 	  </parent>
-	<artifactId>app-model</artifactId>
+	<artifactId>app-drawio</artifactId>
 	<packaging>jar</packaging>
-	<name>Nasdanika HTML Application Model</name>
+	<name>Resource factory for loading drawio diagrams as application models</name>
 	
 	<build>
 		<plugins>
@@ -39,8 +39,13 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
-			<artifactId>bootstrap-model</artifactId>
+			<artifactId>app-model</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.core</groupId>
+			<artifactId>drawio</artifactId>
+			<version>${core.version}</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.jsoup</groupId>

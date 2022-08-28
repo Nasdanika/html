@@ -247,6 +247,7 @@
 		<module>model/bootstrap.gen</module>
 		<module>model/app</module>
 		<module>model/app.gen</module>
+		<module>model/app.drawio</module>
 
 		<module>ecore</module>
 		<module>flow</module>

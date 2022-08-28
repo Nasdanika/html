@@ -19,7 +19,7 @@ import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 
-public class ConnectionProcessor extends ElementProcessor {
+public class ConnectionProcessor extends ModelElementProcessor {
 	
 	protected EReference defaultConnectionRole;
 
