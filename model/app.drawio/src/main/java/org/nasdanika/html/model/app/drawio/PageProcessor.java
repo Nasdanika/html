@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.drawio.Page;
 import org.nasdanika.graph.processor.ProcessorConfig;
@@ -17,21 +18,30 @@ import org.nasdanika.graph.processor.ProcessorConfig;
  */
 public class PageProcessor extends ElementProcessor {
 	
-
 	public PageProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config) {
 		super(resourceFactory, uri, config);
 	}
 	
 	@Override
-	public List<EObject> getSemanticElements() {
-		Page page = (Page) config.getElement();
+	public List<EObject> createSemanticElements() {
+		Page page = getElement();
 		if (resourceFactory.getPageRole(page) == null) {
 			return Collections.emptyList();
 		}
 
 		// Pass-through to the page element, root by default.
 		ModelElement pageElement = resourceFactory.getPageElement(page);
-		return registry.get(pageElement).getProcessor().getSemanticElements();
+		return registry.get(pageElement).getProcessor().createSemanticElements();
+	}
+	
+	@Override
+	public Page getElement() {
+		return (Page) super.getElement();
+	}
+	
+	@Override
+	public EReference getRole() {
+		return resourceFactory.getPageRole(getElement());
 	}
 		
 }

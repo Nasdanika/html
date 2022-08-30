@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Util;
+import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.ConnectionBase;
 import org.nasdanika.drawio.Document;
 import org.nasdanika.drawio.DrawioResource;
@@ -36,6 +37,11 @@ import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
+import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.EvaluationException;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.xml.sax.SAXException;
 
 public class ResourceFactory implements Factory {
@@ -54,8 +60,8 @@ public class ResourceFactory implements Factory {
 		return new DrawioResource<ElementProcessor>(uri, new ProcessorFactory(uri, this)) {
 
 			@Override
-			protected Stream<EObject> getSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {
-				return ResourceFactory.this.getSemanticElements(registry);
+			protected Stream<EObject> createSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {
+				return ResourceFactory.this.createSemanticElements(registry);
 			}
 			
 			protected Document loadDocument(InputStream inputStream) throws IOException, ParserConfigurationException, SAXException {
@@ -69,7 +75,7 @@ public class ResourceFactory implements Factory {
 		return Document.load(inputStream, uri);
 	}	
 	
-	protected Stream<EObject> getSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {		
+	protected Stream<EObject> createSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {		
 		// Default connection role
 		registry
 			.values()
@@ -78,7 +84,7 @@ public class ResourceFactory implements Factory {
 			.filter(Objects::nonNull)
 			.forEach(ElementProcessor::setDefaultConnectionRole);
 		
-		// Semantic parent
+		// Set semantic parents
 		registry
 			.values()
 			.stream()
@@ -86,23 +92,16 @@ public class ResourceFactory implements Factory {
 			.filter(Objects::nonNull)
 			.forEach(ElementProcessor::setSemanticParent);
 		
-		// Create element
+		// Resolve semantic URI's
 		registry
-			.values()
+			.entrySet()
 			.stream()
+			.filter(e -> e.getKey() instanceof Document)
+			.map(Map.Entry::getValue)
 			.map(ProcessorInfo::getProcessor)
-			.filter(Objects::nonNull)
-			.forEach(ElementProcessor::createSemanticElements);
+			.forEach(ep -> ep.resolveSemanticURI(getBaseURI(), getBaseURI()));		
 		
-		// Resolve
-		registry
-			.values()
-			.stream()
-			.map(ProcessorInfo::getProcessor)
-			.filter(Objects::nonNull)
-			.forEach(ep -> ep.resolveSemanticElements(getBaseURI()));		
-		
-		// Returning document semantic elements
+		// Creating document semantic elements
 		return registry
 				.entrySet()
 				.stream()
@@ -110,7 +109,7 @@ public class ResourceFactory implements Factory {
 				.map(Map.Entry::getValue)
 				.map(ProcessorInfo::getProcessor)
 				.filter(Objects::nonNull)
-				.map(ElementProcessor::getSemanticElements)
+				.map(ElementProcessor::createSemanticElements)
 				.filter(Objects::nonNull)
 				.flatMap(Collection::stream)
 				.distinct();
@@ -123,7 +122,7 @@ public class ResourceFactory implements Factory {
 	 * @return
 	 */
 	protected URI getBaseURI() {
-		return null;
+		return baseURI;
 	}
 
 	protected ElementProcessor createProcessor(
@@ -284,6 +283,10 @@ public class ResourceFactory implements Factory {
 		return "sort";
 	}
 		
+	protected String getDocumentationProperty() {
+		return "documentation";
+	}	
+		
 	protected Action createDocumentAction(Document document) {
 		return null;
 	}
@@ -408,6 +411,68 @@ public class ResourceFactory implements Factory {
 			}				
 		}
 		return null;		
+	}
+	
+	/**
+	 * @param modelElement
+	 * @return true if a link shall be created for a given model element. This implementation returns true for {@link Layers}s, {@link Node}s and {@link Connection}s without a cross-reference or a pre-existing link which is not a page link.
+	 */
+	protected boolean shallCreateLink(ModelElement modelElement) {
+		return (modelElement instanceof Layer || modelElement instanceof Connection) && (Util.isBlank(modelElement.getLink()) || modelElement.isPageLink());
+	}
+	
+	/**
+	 * For cross-reference resolution.
+	 * @param element
+	 * @param expression
+	 * @return
+	 */
+	protected boolean match(Element element, String expression) {
+		if (Util.isBlank(expression)) {
+			return true;
+		}
+		
+		ExpressionParser parser = new SpelExpressionParser();
+		Expression exp = parser.parseExpression(expression);
+		EvaluationContext evaluationContext = getEvaluationContext();
+		try {			
+			return evaluationContext == null ? exp.getValue(element, Boolean.class) : exp.getValue(evaluationContext, element, Boolean.class);
+		} catch (EvaluationException e) {
+			return false;
+		}
+	}
+	
+	protected EvaluationContext getEvaluationContext() {
+		return null;
+	}
+	
+	/**
+	 * @param modelElement
+	 * @return true if an action shall be created for a given model element. This implementation returns true for elements without external links and without cross-references.
+	 * False is returned for undocumented connections.
+	 */
+	protected boolean shallCreateAction(ModelElement modelElement) {
+		return (Util.isBlank(modelElement.getLink()) || modelElement.isPageLink())
+				&& (Util.isBlank(getCrossReferenceProperty()) || Util.isBlank(modelElement.getProperty(getCrossReferenceProperty())))
+				&& !(modelElement instanceof Connection && !hasDocumentation(modelElement)); // No actions for undocumented connections
+	}
+	
+	/**
+	 * Migrating old stuff, remove if not used. Otherwise make protected.
+	 * @return
+	 */
+	private boolean hasDocumentation(ModelElement modelElement) {
+		String documentationProperty = getDocumentationProperty();
+		if (Util.isBlank(documentationProperty)) {
+			return false;
+		}
+		
+		String docProp = modelElement.getProperty(documentationProperty);
+		return !Util.isBlank(docProp);
+	}
+	
+	protected ResourceSet getResourceSet() {
+		return resourceSet;
 	}
 	
 }

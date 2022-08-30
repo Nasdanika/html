@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.Util;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
@@ -27,26 +28,24 @@ public class ElementProcessor {
 	protected ResourceFactory resourceFactory;
 	protected ProcessorConfig<ElementProcessor> config;
 	protected ProcessorInfo<ElementProcessor> parentInfo;
+	protected ProcessorInfo<ElementProcessor> semanticParentInfo;
 	protected Map<Element, ProcessorInfo<ElementProcessor>> registry;
-	protected URI uri;
+	protected URI resourceUri;
+	
+	/**
+	 * Absolute URI of the semantic element to be created. Semantic URI is set in resolve().
+	 * When a semantic element is created its URI (location) is resolved relative to its parent URI.
+	 */
+	protected URI semanticUri;
 
-	public ElementProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config) {
+	public ElementProcessor(ResourceFactory resourceFactory, URI resourceUri, ProcessorConfig<ElementProcessor> config) {
 		this.resourceFactory = resourceFactory;
-		this.uri = uri;
+		this.resourceUri = resourceUri;
 		this.config = config;		
 	}
 	
-	/**
-	 * This implementation collects semantic elements from semantic children and passes them through.
-	 * @return
-	 */
-	public List<EObject> getSemanticElements() {
-		return getSemanticChildrenInfo()
-			.stream()
-			.map(ProcessorInfo::getProcessor)
-			.map(ElementProcessor::getSemanticElements)
-			.flatMap(Collection::stream)
-			.collect(Collectors.toList());
+	public Element getElement() {
+		return config.getElement();
 	}
 	
 	public void setParentInfo(ProcessorInfo<ElementProcessor> parentInfo) {
@@ -57,8 +56,11 @@ public class ElementProcessor {
 		this.registry = registry;
 	}
 	
+	/**
+	 * @return Semantic parent info. This implementation returns parent info. Override for elements which may have semantic parent different from the "physical" parent.
+	 */
 	public ProcessorInfo<ElementProcessor> getSemanticParentInfo() {
-		return parentInfo;		
+		return semanticParentInfo;		
 	}
 	
 	/**
@@ -66,14 +68,22 @@ public class ElementProcessor {
 	 * one node is a semantic child of another if there is a connection with a role between them.
 	 * @return Sorted semantic children.
 	 */
-	public List<ProcessorInfo<ElementProcessor>> getSemanticChildrenInfo() {	
-		Stream<ProcessorInfo<ElementProcessor>> infoStream = config.getChildProcessorsInfo().values().stream();
+	public List<ProcessorInfo<ElementProcessor>> getSemanticChildrenInfo() {
+		Stream<ProcessorInfo<ElementProcessor>> semanticChildrenInfoStream = registry
+			.values()
+			.stream()
+			.filter(ep -> {
+				ElementProcessor candidateProcessor = ep.getProcessor();
+				ProcessorInfo<ElementProcessor> candidateSemanticParentInfo = candidateProcessor.getSemanticParentInfo();
+				return candidateSemanticParentInfo != null &&  candidateSemanticParentInfo.getProcessor() == this;
+			});
+		
 		Comparator<ProcessorInfo<ElementProcessor>> semanticChildrenInfoComparator = getSemanticChildrenComparator();
 		if (semanticChildrenInfoComparator != null) {
-			infoStream = infoStream.sorted(semanticChildrenInfoComparator);
+			semanticChildrenInfoStream = semanticChildrenInfoStream.sorted(semanticChildrenInfoComparator);
 		}		
 		
-		return infoStream.collect(Collectors.toList());
+		return semanticChildrenInfoStream.collect(Collectors.toList());
 	}
 	
 	/**
@@ -98,17 +108,12 @@ public class ElementProcessor {
 		return text;
 	}
 	
-	/**
-	 * Resolves URI of this element relative to the baseURI by traversing the semantic hierarchy from the top and resolving URI's.
-	 * @param baseURI
-	 * @return
-	 */
-	public URI resolve(URI baseURI) {
+	protected URI resolveDocumentationBaseURI() {
 		ProcessorInfo<ElementProcessor> spi = getSemanticParentInfo();
 		if (spi == null || spi.getProcessor() == null) {
-			return baseURI;
+			return null;
 		}
-		return spi.getProcessor().resolve(baseURI);
+		return spi.getProcessor().resolveDocumentationBaseURI();
 	}
 	
 	// --- Lifecycle methods ---
@@ -121,27 +126,44 @@ public class ElementProcessor {
 	}
 	
 	/**
-	 * This implementation does nothing. @{NodeProcessors} override to pass nodes to connections.
+	 * This implementation sets semantic parent to parent. 
 	 */
 	public void setSemanticParent() {
-		
+		semanticParentInfo = parentInfo;
 	}
 	
 	/**
 	 * Creates semantic elements for the processor/element.
+	 * This implementation collects created semantic elements from semantic children (pass-through)
 	 */
-	public void createSemanticElements() {
-		
+	public List<EObject> createSemanticElements() {
+		return getSemanticChildrenInfo()
+				.stream()
+				.map(ProcessorInfo::getProcessor)
+				.map(ElementProcessor::createSemanticElements)
+				.flatMap(Collection::stream)
+				.collect(Collectors.toList());		
 	}
 	
 	/**
-	 * Wires semantic elements together, sorts, resolves relative paths.
+	 * Resolves semantic URI. This implementation calls resolveSemanticURIs of semantic children.
+	 * @param baseURI Base URI for top-level relative URI's. Also used as <code>${base-uri}</code> token in links.
+	 * @param semanticParentURI URI of the semantic parent. 
 	 */
-	public void resolveSemanticElements(URI baseURI) { // Resource URI's and 
-		
+	public void resolveSemanticURI(URI baseURI, URI semanticParentURI) { 
+		semanticUri = semanticParentURI;
+		getSemanticChildrenInfo().stream().map(ProcessorInfo::getProcessor).forEach(ep -> ep.resolveSemanticURI(baseURI, semanticParentURI));
+	}
+	
+	public URI getSemanticUri() {
+		return semanticUri;
 	}
 	
 	protected Comparator<ProcessorInfo<ElementProcessor>> getSemanticChildrenComparator() {
+		return null;
+	}
+	
+	public EReference getRole() {
 		return null;
 	}
 	

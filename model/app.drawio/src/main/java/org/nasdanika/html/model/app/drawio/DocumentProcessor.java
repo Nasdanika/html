@@ -21,21 +21,37 @@ import org.nasdanika.html.model.app.Action;
 
 public class DocumentProcessor extends ElementProcessor {
 	
-	protected Action documentAction;
-
 	public DocumentProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config) {
 		super(resourceFactory, uri, config);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<EObject> getSemanticElements() {
-		return documentAction == null ? super.getSemanticElements() : Collections.singletonList(documentAction);
-	}
-	
-	@Override
-	public void createSemanticElements() {
-		documentAction = resourceFactory.createDocumentAction((Document) config.getElement());
-	}
+	public List<EObject> createSemanticElements() {
+		Action documentAction = resourceFactory.createDocumentAction(getElement());
+		if (documentAction == null) {
+			return super.createSemanticElements();
+		}
+		
+		getSemanticChildrenInfo().forEach(info -> {			
+			Page page = (Page) info.getConfig().getElement();
+			String roleName = resourceFactory.getRoleName(page);
+			if ("content".equals(roleName)) {
+				// TODO
+				throw new UnsupportedOperationException("Content role is not supported yet"); 
+			} else if ("diagram".equals(roleName)) {
+				// TODO
+				throw new UnsupportedOperationException("Diagram role is not supported yet");
+			} else {
+				EReference pageRole = info.getProcessor().getRole();
+				if (pageRole != null) {
+					((Collection<EObject>) documentAction.eGet(pageRole)).addAll(info.getProcessor().createSemanticElements());
+				}
+			}			
+		});
+		
+		return Collections.singletonList(documentAction);
+	}	
 	
 	/**
 	 * Returns pages except the pages without a role. Sorted if comparator was provided. 
@@ -47,37 +63,21 @@ public class DocumentProcessor extends ElementProcessor {
 			.entrySet()
 			.stream();
 		
-		Comparator<Page> pageComparator = resourceFactory.getPageComparator((Document) config.getElement());
+		Comparator<Page> pageComparator = resourceFactory.getPageComparator(getElement());
 		if (pageComparator != null) {
 			entriesStream = entriesStream.sorted();
 		}
 		return entriesStream.map(Map.Entry::getValue).collect(Collectors.toList());
 	}
-
-	/**
-	 * Adds page actions to document according to the page role.
-	 */
-	@SuppressWarnings("unchecked")
+	
 	@Override
-	public void resolveSemanticElements(URI baseURI) {
-		getSemanticChildrenInfo().forEach(info -> {			
-			Page page = (Page) info.getConfig().getElement();
-			String roleName = resourceFactory.getRoleName(page);
-			if ("content".equals(roleName)) {
-				// TODO
-				throw new UnsupportedOperationException("Content role is not supported yet"); 
-			} else if ("diagram".equals(roleName)) {
-				// TODO
-				throw new UnsupportedOperationException("Diagram role is not supported yet");
-			} else {
-				EReference pageRole = resourceFactory.getPageRole(page);
-				if (pageRole != null) {
-					System.out.println(info.getConfig().getElement());			
-					List<EObject> semanticElements = info.getProcessor().getSemanticElements();
-					((Collection<EObject>) documentAction.eGet(pageRole)).addAll(semanticElements);
-				}
-			}			
-		});
+	protected URI resolveDocumentationBaseURI() {
+		return getElement().getURI();
+	}
+	
+	@Override
+	public Document getElement() {
+		return (Document) super.getElement();
 	}
 	
 }

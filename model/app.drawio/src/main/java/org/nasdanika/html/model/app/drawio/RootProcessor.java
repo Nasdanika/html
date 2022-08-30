@@ -2,8 +2,13 @@ package org.nasdanika.html.model.app.drawio;
 
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.function.Consumer;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.emf.common.util.URI;
+import org.nasdanika.drawio.Connection;
+import org.nasdanika.drawio.Document;
 import org.nasdanika.drawio.Root;
 import org.nasdanika.graph.Element;
 import org.nasdanika.graph.processor.ProcessorConfig;
@@ -16,8 +21,13 @@ public class RootProcessor extends ModelElementProcessor {
 	}
 	
 	@Override
+	public Root getElement() {
+		return (Root) super.getElement();
+	}
+	
+	@Override
 	protected String getText() {
-		return ((Root) config.getElement()).getModel().getPage().getName();
+		return getElement().getModel().getPage().getName();
 	}
 
 	@Override
@@ -26,7 +36,7 @@ public class RootProcessor extends ModelElementProcessor {
 		if (semanticChildrenComparator != null) { 
 			return semanticChildrenComparator;
 		}
-		Root root = (Root) config.getElement();
+		Root root = getElement();
 		return (a,b) -> {
 			Element be = b.getConfig().getElement();
 			Element ae = a.getConfig().getElement();
@@ -37,5 +47,13 @@ public class RootProcessor extends ModelElementProcessor {
 			
 		};
 	}
+//	
+//	@Override
+//	protected Document getEmbeddedDiagramDocument() throws ParserConfigurationException {
+//		Document toEmbed = Document.create(true, null);
+//		Root root = getElement();
+//		toEmbed.getPages().add(root.getModel().getPage());
+//		return toEmbed;
+//	}
 	
 }
