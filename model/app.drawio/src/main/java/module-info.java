@@ -6,6 +6,7 @@ module org.nasdanika.html.model.app.drawio {
 	requires org.nasdanika.exec;
 	requires org.eclipse.emf.common;
 	requires spring.expression;
+	requires org.nasdanika.html.model.bootstrap;
 	
 	exports org.nasdanika.html.model.app.drawio;	
 }

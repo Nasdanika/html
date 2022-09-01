@@ -6,8 +6,8 @@ import org.nasdanika.graph.processor.ProcessorConfig;
 
 public class ModelProcessor extends ElementProcessor {
 
-	public ModelProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config) {
-		super(resourceFactory, uri, config);
+	public ModelProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+		super(resourceFactory, uri, config, baseURI);
 	}
 	
 	@Override

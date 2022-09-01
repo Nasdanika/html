@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -105,7 +106,7 @@ public class TestDrawioResource extends TestBase {
 		Action documentActionPrototype = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
 		
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("drawio", new ResourceFactory(ConnectionBase.SOURCE, resourceSet) {
-			@Override
+			
 			protected Action createDocumentAction(Document document) {
 				return EcoreUtil.copy(documentActionPrototype);
 			}

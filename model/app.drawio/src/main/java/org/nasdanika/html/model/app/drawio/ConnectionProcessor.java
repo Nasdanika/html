@@ -1,5 +1,6 @@
 package org.nasdanika.html.model.app.drawio;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -29,8 +30,8 @@ public class ConnectionProcessor extends ModelElementProcessor {
 		return (Connection) super.getElement();
 	}
 
-	public ConnectionProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config) {
-		super(resourceFactory, uri, config);
+	public ConnectionProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+		super(resourceFactory, uri, config, baseURI);
 		
 		((ConnectionProcessorConfig<ElementProcessor, Handler, Handler>) config).setSourceHandler(new Handler() {
 
@@ -50,40 +51,46 @@ public class ConnectionProcessor extends ModelElementProcessor {
 	}
 		
 	@Override
-	public ProcessorInfo<ElementProcessor> getSemanticParentInfo() {
-		if (registry != null) {
-			if (resourceFactory.getConnectionBase() == ConnectionBase.SOURCE) {
-				Node source = getElement().getSource();
-				return source == null ? null : registry.get(source);
-			}
-			if (resourceFactory.getConnectionBase() == ConnectionBase.TARGET) {
-				Node target = getElement().getTarget();
-				return target == null ? null : registry.get(target);
-			}
-		}
-		return super.getSemanticParentInfo();
+	protected List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+		return Collections.emptyList();
 	}
 	
-	public void setDefaultConnectionRole(Map<Element, ProcessorInfo<ElementProcessor>> registry, EReference defaultConnectionRole, Set<Node> traversed) {
-		this.defaultConnectionRole = defaultConnectionRole;
-		Connection connection = getElement();
-		Node target = connection.getTarget();
-		if (target != null && !target.equals(connection.getSource())) {
-			((NodeProcessor) registry.get(target).getProcessor()).setDefaultConnectionRole(registry, defaultConnectionRole, traversed);
-		}
-	}
+//	@Override
+//	public ProcessorInfo<ElementProcessor> getSemanticParentInfo() {
+//		if (registry != null) {
+//			if (resourceFactory.getConnectionBase() == ConnectionBase.SOURCE) {
+//				Node source = getElement().getSource();
+//				return source == null ? null : registry.get(source);
+//			}
+//			if (resourceFactory.getConnectionBase() == ConnectionBase.TARGET) {
+//				Node target = getElement().getTarget();
+//				return target == null ? null : registry.get(target);
+//			}
+//		}
+//		return super.getSemanticParentInfo();
+//	}
+//	
+//	public void setDefaultConnectionRole(Map<Element, ProcessorInfo<ElementProcessor>> registry, EReference defaultConnectionRole, Set<Node> traversed) {
+//		this.defaultConnectionRole = defaultConnectionRole;
+//		Connection connection = getElement();
+//		Node target = connection.getTarget();
+//		if (target != null && !target.equals(connection.getSource())) {
+//			((NodeProcessor) registry.get(target).getProcessor()).setDefaultConnectionRole(registry, defaultConnectionRole, traversed);
+//		}
+//	}
+//	
+//	public EReference getConnectionRole(Connection connection) {
+//		String connectionRoleProperty = resourceFactory.getRoleProperty();		
+//		if (!Util.isBlank(connectionRoleProperty)) {
+//			String roleName = connection.getProperty(connectionRoleProperty);
+//			if (!Util.isBlank(roleName)) {
+//				return resourceFactory.resolveRole(roleName);
+//			}
+//		}
+//		
+//		return defaultConnectionRole;
+//	}
 	
-	public EReference getConnectionRole(Connection connection) {
-		String connectionRoleProperty = resourceFactory.getRoleProperty();		
-		if (!Util.isBlank(connectionRoleProperty)) {
-			String roleName = connection.getProperty(connectionRoleProperty);
-			if (!Util.isBlank(roleName)) {
-				return resourceFactory.resolveRole(roleName);
-			}
-		}
-		
-		return defaultConnectionRole;
-	}
 	
 //	/**
 //	 * Creates actions for documented connections.

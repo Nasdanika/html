@@ -2,10 +2,8 @@ package org.nasdanika.html.model.app.drawio;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -18,6 +16,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.ConnectionBase;
@@ -41,6 +40,7 @@ import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.EvaluationException;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.xml.sax.SAXException;
 
@@ -60,8 +60,8 @@ public class ResourceFactory implements Factory {
 		return new DrawioResource<ElementProcessor>(uri, new ProcessorFactory(uri, this)) {
 
 			@Override
-			protected Stream<EObject> createSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {
-				return ResourceFactory.this.createSemanticElements(registry);
+			protected Stream<EObject> getSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {
+				return ResourceFactory.this.getSemanticElements(registry);
 			}
 			
 			protected Document loadDocument(InputStream inputStream) throws IOException, ParserConfigurationException, SAXException {
@@ -75,54 +75,22 @@ public class ResourceFactory implements Factory {
 		return Document.load(inputStream, uri);
 	}	
 	
-	protected Stream<EObject> createSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {		
-		// Default connection role
-		registry
-			.values()
-			.stream()
-			.map(ProcessorInfo::getProcessor)
-			.filter(Objects::nonNull)
-			.forEach(ElementProcessor::setDefaultConnectionRole);
-		
-		// Set semantic parents
-		registry
-			.values()
-			.stream()
-			.map(ProcessorInfo::getProcessor)
-			.filter(Objects::nonNull)
-			.forEach(ElementProcessor::setSemanticParent);
-		
-		// Resolve semantic URI's
-		registry
-			.entrySet()
-			.stream()
-			.filter(e -> e.getKey() instanceof Document)
-			.map(Map.Entry::getValue)
-			.map(ProcessorInfo::getProcessor)
-			.forEach(ep -> ep.resolveSemanticURI(getBaseURI(), getBaseURI()));		
-		
-		// Creating document semantic elements
+	protected Stream<EObject> getSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {		
 		return registry
-				.entrySet()
-				.stream()
-				.filter(e -> e.getKey() instanceof Document)
-				.map(Map.Entry::getValue)
-				.map(ProcessorInfo::getProcessor)
-				.filter(Objects::nonNull)
-				.map(ElementProcessor::createSemanticElements)
-				.filter(Objects::nonNull)
-				.flatMap(Collection::stream)
-				.distinct();
+			.values()
+			.stream()
+			.map(ProcessorInfo::getProcessor)
+			.filter(DocumentProcessor.class::isInstance)
+			.map(DocumentProcessor.class::cast)
+			.flatMap(DocumentProcessor::build);
 	}
 	
-	protected URI baseURI = URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
-
 	/**
 	 * Base URI for resolving action relative references. This implementation returns a random absolute UR.
 	 * @return
 	 */
-	protected URI getBaseURI() {
-		return baseURI;
+	protected URI getBaseURI(URI resourceURI) {
+		return URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
 	}
 
 	protected ElementProcessor createProcessor(
@@ -131,23 +99,24 @@ public class ResourceFactory implements Factory {
 			Consumer<Consumer<ProcessorInfo<ElementProcessor>>> parentProcessorInfoCallbackConsumer,
 			Consumer<Consumer<Map<Element, ProcessorInfo<ElementProcessor>>>> registryCallbackConsumer) {
 		
+		URI baseURI = getBaseURI(uri);
 		ElementProcessor processor;
 		if (config.getElement() instanceof Document) {
-			processor = createDocumentProcessor(uri, config);
+			processor = createDocumentProcessor(uri, config, baseURI);
 		} else if (config.getElement() instanceof Page) {
-			processor = createPageProcessor(uri, config);
+			processor = createPageProcessor(uri, config, baseURI);
 		} else if (config.getElement() instanceof Model) {
-			processor = createModelProcessor(uri, config);
+			processor = createModelProcessor(uri, config, baseURI);
 		} else if (config.getElement() instanceof Root) {
-			processor = createRootProcessor(uri, config);
+			processor = createRootProcessor(uri, config, baseURI);
 		} else if (config.getElement() instanceof Node) {
-			processor = createNodeProcessor(uri, config);
+			processor = createNodeProcessor(uri, config, baseURI);
 		} else if (config.getElement() instanceof org.nasdanika.drawio.Connection) {
-			processor = createConnectionProcessor(uri, config);
+			processor = createConnectionProcessor(uri, config, baseURI);
 		} else if (config.getElement() instanceof Layer) {
-			processor = createLayerProcessor(uri, config);
+			processor = createLayerProcessor(uri, config, baseURI);
 		} else if (config.getElement() instanceof Model) {
-			processor = createModelProcessor(uri, config);			
+			processor = createModelProcessor(uri, config, baseURI);			
 		} else {
 			processor = null;
 		}
@@ -160,32 +129,32 @@ public class ResourceFactory implements Factory {
 		return processor;
 	}
 
-	protected ElementProcessor createLayerProcessor(URI uri, ProcessorConfig<ElementProcessor> config) {
-		return new LayerProcessor(this, uri, config);
+	protected ElementProcessor createLayerProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+		return new LayerProcessor(this, uri, config, baseURI);
 	}
 
-	protected ElementProcessor createConnectionProcessor(URI uri, ProcessorConfig<ElementProcessor> config) {
-		return new ConnectionProcessor(this, uri, config);
+	protected ElementProcessor createConnectionProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+		return new ConnectionProcessor(this, uri, config, baseURI);
 	}
 
-	protected ElementProcessor createDocumentProcessor(URI uri, ProcessorConfig<ElementProcessor> config) {
-		return new DocumentProcessor(this, uri, config);
+	protected ElementProcessor createDocumentProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+		return new DocumentProcessor(this, uri, config, baseURI);
 	}
 
-	protected ElementProcessor createNodeProcessor(URI uri, ProcessorConfig<ElementProcessor> config) {
-		return new NodeProcessor(this, uri, config);
+	protected ElementProcessor createNodeProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+		return new NodeProcessor(this, uri, config, baseURI);
 	}
 
-	protected ElementProcessor createRootProcessor(URI uri, ProcessorConfig<ElementProcessor> config) {
-		return new RootProcessor(this, uri, config);
+	protected ElementProcessor createRootProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+		return new RootProcessor(this, uri, config, baseURI);
 	}
 
-	protected ElementProcessor createModelProcessor(URI uri, ProcessorConfig<ElementProcessor> config) {
-		return new ModelProcessor(this, uri, config);
+	protected ElementProcessor createModelProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+		return new ModelProcessor(this, uri, config, baseURI);
 	}
 
-	protected ElementProcessor createPageProcessor(URI uri, ProcessorConfig<ElementProcessor> config) {
-		return new PageProcessor(this, uri, config);
+	protected ElementProcessor createPageProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+		return new PageProcessor(this, uri, config, baseURI);
 	}
 	
 	protected EReference resolveRole(String roleName) {
@@ -432,11 +401,13 @@ public class ResourceFactory implements Factory {
 			return true;
 		}
 		
-		ExpressionParser parser = new SpelExpressionParser();
-		Expression exp = parser.parseExpression(expression);
-		EvaluationContext evaluationContext = getEvaluationContext();
 		try {			
+			ExpressionParser parser = new SpelExpressionParser();
+			Expression exp = parser.parseExpression(expression);
+			EvaluationContext evaluationContext = getEvaluationContext();
 			return evaluationContext == null ? exp.getValue(element, Boolean.class) : exp.getValue(evaluationContext, element, Boolean.class);
+		} catch (ParseException e) {
+			throw new NasdanikaException("Error parsing expression '" + expression + "' in " + element + ": " + e, e);
 		} catch (EvaluationException e) {
 			return false;
 		}
@@ -474,5 +445,18 @@ public class ResourceFactory implements Factory {
 	protected ResourceSet getResourceSet() {
 		return resourceSet;
 	}
+
+	public boolean isRootPage(Page page) {
+		String rootPageFlagProperty = getRootPageFlagProperty();
+		if (Util.isBlank(rootPageFlagProperty)) {
+			return true;
+		}
+		return !"false".equals(page.getModel().getRoot().getProperty(rootPageFlagProperty));
+	}
+	
+	protected String getRootPageFlagProperty() {
+		return "root-page";
+	}
+	
 	
 }
