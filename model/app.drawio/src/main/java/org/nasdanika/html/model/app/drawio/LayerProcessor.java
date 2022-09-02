@@ -22,15 +22,16 @@ public class LayerProcessor extends ModelElementProcessor {
 	}
 
 	@Override
-	protected List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
-		Stream<ProcessorInfo<ElementProcessor>> stream = config.getChildProcessorsInfo()
-				.values()
-				.stream();
+	public List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+		Stream<ProcessorInfo<ElementProcessor>> stream = Stream.concat(
+				super.collectSemanticChildrenInfo(semanticParentInfo).stream(), 
+				config.getChildProcessorsInfo().values().stream());
 		
 		Comparator<ProcessorInfo<ElementProcessor>> semanticChildrenComparator = getSemanticChildrenComparator();
 		if (semanticChildrenComparator != null) {
 			stream = stream.sorted(semanticChildrenComparator);
 		}
+		
 		return stream
 				.map(ProcessorInfo::getProcessor)
 				.map(ModelElementProcessor.class::cast)

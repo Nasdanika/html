@@ -49,11 +49,6 @@ public class ConnectionProcessor extends ModelElementProcessor {
 			
 		});
 	}
-		
-	@Override
-	protected List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
-		return Collections.emptyList();
-	}
 	
 //	@Override
 //	public ProcessorInfo<ElementProcessor> getSemanticParentInfo() {

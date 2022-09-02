@@ -61,7 +61,7 @@ public class RootProcessor extends ModelElementProcessor {
 	}
 
 	@Override
-	protected List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+	public List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
 		return config.getChildProcessorsInfo()
 			.values()
 			.stream()

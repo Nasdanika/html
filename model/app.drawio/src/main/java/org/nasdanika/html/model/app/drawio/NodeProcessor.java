@@ -55,9 +55,9 @@ public class NodeProcessor extends LayerProcessor {
 	}
 	
 	@Override
-	protected List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+	public List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
 		List<ProcessorInfo<ElementProcessor>> sci = super.collectSemanticChildrenInfo(semanticParentInfo);
-		// TODO - connections with target-role
+		// TODO - connections with target-role 
 		return sci;
 	}
 	

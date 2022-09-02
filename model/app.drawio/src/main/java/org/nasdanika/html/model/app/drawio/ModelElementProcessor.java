@@ -35,7 +35,7 @@ import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 
-public abstract class ModelElementProcessor extends ElementProcessor {
+public class ModelElementProcessor extends ElementProcessor {
 	
 	protected List<ProcessorInfo<ElementProcessor>> semanticChildrenInfo;
 	protected ProcessorInfo<ElementProcessor> semanticParentInfo;
@@ -73,7 +73,16 @@ public abstract class ModelElementProcessor extends ElementProcessor {
 		return collectSemanticChildrenInfo(semanticParentInfo);
 	}
 	
-	protected abstract List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo);
+	public List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+		Page linkedPage = getElement().getLinkedPage();
+		if (linkedPage == null) {
+			return Collections.emptyList();
+		}
+		PageProcessor pageProcessor = (PageProcessor) registry.get(linkedPage).getProcessor();
+		ModelElement pageElement = pageProcessor.getPageElement();
+		ModelElementProcessor pageElementProcessor = (ModelElementProcessor) registry.get(pageElement).getProcessor();
+		return pageElementProcessor.collectSemanticChildrenInfo(semanticParentInfo);
+	}
 		
 	public void build() {
 		EObject semanticElement = getSemanticElement();
