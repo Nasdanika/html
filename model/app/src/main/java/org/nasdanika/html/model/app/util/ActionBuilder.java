@@ -55,7 +55,7 @@ public interface ActionBuilder extends org.nasdanika.common.Function<BiSupplier<
 			}
 
 			@Override
-			public void close() throws Exception {
+			public void close() {
 				ActionBuilder.this.close();
 			}
 

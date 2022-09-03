@@ -122,14 +122,7 @@ public class TestDrawioResource extends TestBase {
 		assertThat(modelFile.isFile());
 		Resource modelResource = resourceSet.getResource(URI.createFileURI(modelFile.getCanonicalPath()), true);
 		
-//		777
-		
-//		ActionReference actionReference = AppFactory.eINSTANCE.createActionReference();
-//		root.getChildren().add(actionReference);
 		Action root = (Action) modelResource.getContents().get(0);
-//		page1.setLocation("${base-uri}index.html");
-//		actionReference.setTarget(page1);
-		dumpToYaml(root);
 		
 		Resource dumpRes = new XMIResourceFactoryImpl().createResource(URI.createURI("temp://blah"));
 		dumpRes.getContents().add(EcoreUtil.copy(root));

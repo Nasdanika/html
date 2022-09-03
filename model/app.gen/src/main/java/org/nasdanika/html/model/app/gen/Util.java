@@ -496,12 +496,7 @@ public final class Util {
 		contentPanel.setLeftNavigation(createNavigationPanel(action.getLeftNavigation()));		
 		contentPanel.setRightNavigation(createNavigationPanel(action.getRightNavigation()));
 		
-		try {
-			contentPanel.getContent().addAll(contentProvider == null ? EcoreUtil.copyAll(action.getContent()) : contentProvider.getActionContent(action, uriResolver, progressMonitor));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		contentPanel.getContent().addAll(contentProvider == null ? EcoreUtil.copyAll(action.getContent()) : contentProvider.getActionContent(action, uriResolver, progressMonitor));
 	}
 	
 	/**
