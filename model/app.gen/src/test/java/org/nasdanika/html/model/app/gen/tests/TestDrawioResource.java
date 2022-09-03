@@ -13,7 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -26,7 +25,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONObject;
 import org.jsoup.nodes.Element;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Diagnostic;
@@ -34,8 +32,6 @@ import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
-import org.nasdanika.resources.BinaryEntityContainer;
-import org.nasdanika.resources.FileSystemContainer;
 import org.nasdanika.drawio.ConnectionBase;
 import org.nasdanika.drawio.Document;
 import org.nasdanika.emf.persistence.EObjectLoader;
@@ -47,8 +43,6 @@ import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.html.model.app.Action;
-import org.nasdanika.html.model.app.ActionReference;
-import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.drawio.ResourceFactory;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
@@ -56,6 +50,8 @@ import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.ncore.NcorePackage;
+import org.nasdanika.resources.BinaryEntityContainer;
+import org.nasdanika.resources.FileSystemContainer;
 
 import com.redfin.sitemapgenerator.ChangeFreq;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
@@ -107,6 +103,7 @@ public class TestDrawioResource extends TestBase {
 		
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("drawio", new ResourceFactory(ConnectionBase.SOURCE, resourceSet) {
 			
+			@Override
 			protected Action createDocumentAction(Document document) {
 				return EcoreUtil.copy(documentActionPrototype);
 			}

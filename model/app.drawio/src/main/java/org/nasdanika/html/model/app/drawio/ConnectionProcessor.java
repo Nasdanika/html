@@ -49,7 +49,7 @@ public class ConnectionProcessor extends ModelElementProcessor {
 	
 	@Override
 	public String getText() {
-		String text = super.getText();
+		String text = (getElement()).getLabel();
 		if (Util.isBlank(text) && hasDocumentation()) {
 			Node source = getElement().getSource();
 			String sourceText = source == null ? null : ((NodeProcessor) registry.get(source).getProcessor()).getText();

@@ -237,10 +237,16 @@ public class ModelElementProcessor extends ElementProcessor {
 			}
 			StringBuilder locationBuilder = new StringBuilder();
 			if (role != null) {
-				locationBuilder.append(role.getName()).append("/");				
+				locationBuilder.append(role.getName());				
 			}
 			if (!Util.isBlank(path)) {
-				locationBuilder.append(path).append("/");
+				if (locationBuilder.length() > 0 && locationBuilder.charAt(locationBuilder.length() - 1) != '/') {
+					locationBuilder.append("/");
+				}
+				locationBuilder.append(path);
+			}
+			if (locationBuilder.length() > 0 && locationBuilder.charAt(locationBuilder.length() - 1) != '/') {
+				locationBuilder.append("/");
 			}
 			locationBuilder.append("index.html");
 			action.setLocation(locationBuilder.toString());
@@ -324,7 +330,8 @@ public class ModelElementProcessor extends ElementProcessor {
 	 */
 	protected URI resolveDocumentationBaseURI() {
 		ProcessorInfo<ElementProcessor> spi = semanticParentInfo;				
-		URI base = spi instanceof ModelElementProcessor ? ((ModelElementProcessor) spi.getProcessor()).resolveDocumentationBaseURI() : resourceURI;
+		ElementProcessor semanticParentProcessor = spi.getProcessor();
+		URI base = semanticParentProcessor instanceof ModelElementProcessor ? ((ModelElementProcessor) semanticParentProcessor).resolveDocumentationBaseURI() : resourceURI;
 		
 		String documentationProperty = resourceFactory.getDocumentationProperty();
 		if (Util.isBlank(documentationProperty)) {
