@@ -63,7 +63,7 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Link URL relative to the ancestor URL or ``base-uri``.&#xA;&#xA;``${{{base-uri}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. &#xA;It might be useful it the parent URI is an absolute external URI.&#xA;``${{{base-uri}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{base-uri}}}index.html``."/>
+        <details key="documentation" value="Link URL relative to the ancestor URL or ``base-uri``.&#xA;&#xA;``${{{{base-uri}}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. &#xA;It might be useful it the parent URI is an absolute external URI.&#xA;``${{{{base-uri}}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{{base-uri}}}}index.html``."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="script" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">

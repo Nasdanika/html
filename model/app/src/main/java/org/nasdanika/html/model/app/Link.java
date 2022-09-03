@@ -34,9 +34,9 @@ public interface Link extends Label {
 	 * <!-- begin-model-doc -->
 	 * Link URL relative to the ancestor URL or ``base-uri``.
 	 * 
-	 * ``${{{base-uri}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. 
+	 * ``${{{{base-uri}}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. 
 	 * It might be useful it the parent URI is an absolute external URI.
-	 * ``${{{base-uri}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{base-uri}}}index.html``.
+	 * ``${{{{base-uri}}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{{base-uri}}}}index.html``.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Location</em>' attribute.
 	 * @see #setLocation(String)

@@ -59,6 +59,9 @@ public class ModelElementProcessor extends ElementProcessor {
 	
 	public String getText() {
 		String label = (getElement()).getLabel();
+		if (Util.isBlank(label) && hasDocumentation()) {
+			return "(unlabeled)";
+		}
 		return Util.isBlank(label) ? null : Jsoup.parse(label).text(); 				
 	}
 	
@@ -99,7 +102,7 @@ public class ModelElementProcessor extends ElementProcessor {
 				if (!Util.isBlank(embeddedDiagram)) {
 					addContent(action, embeddedDiagram);
 				}
-				String toc = getTableOfContents();
+				String toc = getSemanticChildrenListOfContents(this);
 				if (!Util.isBlank(toc)) {
 					addContent(action, toc);
 				}
@@ -121,117 +124,7 @@ public class ModelElementProcessor extends ElementProcessor {
 				});
 			}			
 		}		
-	}	
-	
-////@SuppressWarnings("unchecked")
-////@Override
-////protected void resolve(
-////		Resource resource, 
-////		Element element, 
-////		Map<EReference, List<Action>> semanticElement,
-////		Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries,
-////		Function<Predicate<Element>, Map<EReference, List<Action>>> resolver) {
-////	
-////					
-////		// Adding URI resolver adapters
-////		for (EObject root: resource.getContents()) {
-////			if (root instanceof Action) {
-////				addURIResolverAdapters((Action) root);
-////			}
-////		}
-////	} else if (element instanceof Page) {
-////		Entry<ModelElement, Map<Element, ElementEntry<Map<EReference, List<Action>>>>> pageElementEntry = getPageElementEntry(resource, (Page) element, childEntries);
-////
-////		for (Action action: semanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(pageElementEntry.getKey(), a)).collect(Collectors.toList())) {
-////			// Embedded diagram
-////			String embeddedDiagram = generateEmbeddedDiagram(element, action, resolver);
-////			if (isEmbedDiagram(resource, element, childEntries)) {															
-////				addContent(action, embeddedDiagram);						
-////			}
-////
-////			// TOC
-////			StringBuilder tocBuilder = new StringBuilder(getListOpenTag(element)).append(System.lineSeparator());
-////			for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: pageElementEntry.getValue().entrySet()) { 
-////				tocBuilder.append(generateTableOfContents(action, (ModelElement) childEntry.getKey(), childEntry.getValue().getChildEntries(), resolver));
-////			}					
-////			tocBuilder.append(getListCloseTag(element)).append(System.lineSeparator());
-////			
-////			if (isGenerateTableOfContents(resource, element, childEntries)) {
-////				addContent(action, tocBuilder.toString());
-////			}
-////			
-////			EObject doc = getDocumentation(resource, element, embeddedDiagram, childEntries, tocBuilder.toString());
-////			if (doc == null) {
-////				String rootTooltip = pageElementEntry.getKey().getTooltip();
-////				if (!Util.isBlank(rootTooltip)) {
-////					addContent(action, rootTooltip);
-////				}
-////			} else {
-////				action.getContent().add(doc);
-////			}					
-////		}			
-////	} else if (element instanceof ModelElement) {
-////		for (Action action: semanticElement.values().stream().flatMap(Collection::stream).filter(a -> isActionForElement(element, a)).collect(Collectors.toList())) {
-////			if (element instanceof Connection) {
-////				// Source and target
-////				Table table = BootstrapFactory.eINSTANCE.createTable();
-////				table.getAttributes().put("style", createText("width:auto"));
-////				
-////				TableRow sourceRow = BootstrapFactory.eINSTANCE.createTableRow();
-////				table.getRows().add(sourceRow);
-////				
-////				TableCell sourceHeader = BootstrapFactory.eINSTANCE.createTableCell();
-////				sourceHeader.setHeader(true);
-////				sourceRow.getCells().add(sourceHeader);
-////				sourceHeader.getContent().add(createText("Source"));
-////									
-////				TableCell sourceCell = BootstrapFactory.eINSTANCE.createTableCell();
-////				sourceRow.getCells().add(sourceCell);
-////				
-////				Node source = ((Connection) element).getSource();
-////				String sourceLabel = getModelElementLabel(source);
-////				if (Util.isBlank(sourceLabel)) {
-////					sourceLabel = "(unlabeled)";
-////				} 
-////				String sourceLink = getModelElementLink(source, action, resolver);
-////				if (sourceLink == null) {
-////					sourceCell.getContent().add(createText(sourceLabel));						
-////				} else {
-////					sourceCell.getContent().add(createText("<a href=\"" + sourceLink + "\">" + sourceLabel + "</a>"));												
-////				}
-////				
-////				TableRow targetRow = BootstrapFactory.eINSTANCE.createTableRow();
-////				table.getRows().add(targetRow);
-////				
-////				TableCell targetHeader = BootstrapFactory.eINSTANCE.createTableCell();
-////				targetHeader.setHeader(true);
-////				targetRow.getCells().add(targetHeader);
-////				targetHeader.getContent().add(createText("Target"));
-////									
-////				TableCell targetCell = BootstrapFactory.eINSTANCE.createTableCell();
-////				targetRow.getCells().add(targetCell);
-////				
-////				Node target = ((Connection) element).getTarget();
-////				String targetLabel = getModelElementLabel(target);
-////				if (Util.isBlank(targetLabel)) {
-////					targetLabel = "(unlabeled)";
-////				} 
-////				String targetLink = getModelElementLink(target, action, resolver);
-////				if (targetLink == null) {
-////					targetCell.getContent().add(createText(targetLabel));						
-////				} else {
-////					targetCell.getContent().add(createText("<a href=\"" + targetLink + "\">" + targetLabel + "</a>"));												
-////				}					
-////
-////				action.getContent().add(table);
-////			} else if (element instanceof Node) {
-////				}
-////			}
-////			
-////		}
-////	}
-////}
-	
+	}		
 	
 	protected String getSemanticID() {
 		return getElement().getId();
@@ -460,66 +353,68 @@ public class ModelElementProcessor extends ElementProcessor {
 		return "true".equals(pageElementProp);
 	}
 	
-	protected String getTableOfContents() {
-		// TODO
-		return null;
+	/**
+	 * @return
+	 */
+	protected String getSemanticChildrenListOfContents(ModelElementProcessor base) {
+		String listOpenTag = resourceFactory.getListOpenTag(getElement());
+		String listCloseTag = resourceFactory.getListCloseTag(getElement());
+		
+		if (semanticChildrenInfo == null
+				|| semanticChildrenInfo.isEmpty()
+				|| Util.isBlank(listOpenTag)
+				|| Util.isBlank(listOpenTag)) {
+			return "";
+		}
+	
+		StringBuilder tocBuilder = new StringBuilder(System.lineSeparator()).append(listOpenTag);
+		
+		for (ProcessorInfo<ElementProcessor> sci: semanticChildrenInfo) {
+			ElementProcessor childProcessor = sci.getProcessor();
+			if (childProcessor instanceof ModelElementProcessor) {
+				tocBuilder.append(((ModelElementProcessor) childProcessor).getTableOfContentsElement(base));
+			}
+		}
+		
+		tocBuilder.append(listCloseTag).append(System.lineSeparator());		
+		return tocBuilder.toString();
+	}
+	
+	/**
+	 * Creates a table of contents in the context of the base processor 
+	 * @return
+	 */
+	protected String getTableOfContentsElement(ModelElementProcessor base) {
+		String text = getText();
+		if (Util.isBlank(text)) {
+			return "";
+		}
+		
+		StringBuilder sb = new StringBuilder("<li>");		
+		String link = base == null || this == base ? null : base.getModelElementLink(getElement());
+		if (Util.isBlank(link)) {
+			sb.append(text);
+		} else {
+			sb.append("<a href=\"").append(link).append("\">").append(text).append("</a>");			
+		}
+		String tooltip = getElement().getTooltip();
+		if (!Util.isBlank(tooltip)) {
+			sb.append(" - ").append(tooltip).append(System.lineSeparator());
+		}
+		
+		sb.append(getSemanticChildrenListOfContents(base));
+		sb.append("</li>");
+		sb.append(System.lineSeparator());
+
+		return sb.toString();
 	}	
-	
-	// TODO - pass base processor for relative links resolution.
-////
-////protected String generateTableOfContents(
-////		Action pageAction, 
-////		ModelElement modelElement, 
-////		Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries,
-////		Function<Predicate<Element>, Map<EReference, List<Action>>> resolver) {		
-////	
-////	String label = getModelElementLabel(modelElement);
-////	StringBuilder ret = new StringBuilder();
-////	if (Util.isBlank(label)) {
-////		if (modelElement instanceof Layer && childEntries != null) {
-////			for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: childEntries.entrySet()) {
-////				ret.append(generateTableOfContents(pageAction, (ModelElement) childEntry.getKey(), childEntry.getValue().getChildEntries(), resolver));
-////			}
-////		}
-////	} else {		
-////		ret.append("<li>").append(System.lineSeparator());
-////		String link = getModelElementLink(modelElement, pageAction, resolver);
-////		if (Util.isBlank(link)) {
-////			ret.append(label);
-////		} else {
-////			ret
-////				.append("<a href=\"")
-////				.append(link)
-////				.append("\">")
-////				.append(label)
-////				.append("</a>");				
-////		}			
-////		
-////		String tooltip = modelElement.getTooltip();
-////		if (!Util.isBlank(tooltip)) {
-////			ret.append(" - ").append(tooltip).append(System.lineSeparator());
-////		}
-////
-////		if (modelElement instanceof Layer) {
-////			if (childEntries != null && !childEntries.isEmpty()) {
-////				ret.append(getListOpenTag(modelElement)).append(System.lineSeparator());
-////				for (Entry<Element, ElementEntry<Map<EReference, List<Action>>>> childEntry: childEntries.entrySet()) {
-////					ret.append(generateTableOfContents(pageAction, (ModelElement) childEntry.getKey(), childEntry.getValue().getChildEntries(), resolver));
-////				}
-////				ret.append(getListCloseTag(modelElement)).append(System.lineSeparator());
-////			}
-////		}
-////		ret.append("</li>").append(System.lineSeparator());
-////	}
-////	
-////	return ret.toString();
-////}
-//
-	
 	
 	protected String getEmbeddedDiagram() {
 		try {
 			Document embeddedDiagramDocument = getEmbeddedDiagramDocument();
+			if (embeddedDiagramDocument == null) {
+				return "";
+			}
 			embeddedDiagramDocument.accept(this::processEmbeddedDiagramElement, resourceFactory.getConnectionBase());		
 			return embeddedDiagramDocument.toHtml(null, resourceFactory.getDiagramViewer());
 		} catch (Exception  e) {
@@ -582,7 +477,7 @@ public class ModelElementProcessor extends ElementProcessor {
 		
 		String embeddedDiagram = getEmbeddedDiagram();
 				
-		String tableOfContents = getTableOfContents();
+		String tableOfContents = getSemanticChildrenListOfContents(this);
 		if (Util.isBlank(embeddedDiagram) && Util.isBlank(tableOfContents)) {
 			return interpolator;
 		}

@@ -1198,7 +1198,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		  (getLink_Location(),
 		   source,
 		   new String[] {
-			   "documentation", "Link URL relative to the ancestor URL or ``base-uri``.\n\n``${{{base-uri}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. \nIt might be useful it the parent URI is an absolute external URI.\n``${{{base-uri}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{base-uri}}}index.html``."
+			   "documentation", "Link URL relative to the ancestor URL or ``base-uri``.\n\n``${{{{base-uri}}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. \nIt might be useful it the parent URI is an absolute external URI.\n``${{{{base-uri}}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{{base-uri}}}}index.html``."
 		   });
 		addAnnotation
 		  (getLink_Script(),

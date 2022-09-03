@@ -197,28 +197,6 @@ public class ResourceFactory implements Factory {
 	protected String getCrossReferenceProperty() {
 		return "xref";
 	}
-		
-//	/**
-//	 * @param modelElement
-//	 * @return true if a link shall be created for a given model element. This implementation returns true for {@link Node}s and {@link Connection}s without a cross-reference or a pre-existing link which is not a page link.
-//	 */
-//	protected boolean shallCreateLink(ModelElement modelElement) {
-//		return (modelElement instanceof Node || modelElement instanceof Connection) && (Util.isBlank(modelElement.getLink()) || modelElement.isPageLink());
-//	}
-//	
-//	/**
-//	 * @return If true, a {@link Page} diagram is added to the content of the {@link Action} created from that page. This implementation returns true.
-//	 */
-//	protected boolean isEmbedDiagram(Resource resource, Element element, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
-//		return !hasDocumentation(resource, element, childEntries);
-//	}
-//		
-//	/**
-//	 * @return If true, a table of contents is generated for a {@link Page} diagram. This implementation returns true;
-//	 */
-//	protected boolean isGenerateTableOfContents(Resource resource, Element element, Map<Element, ElementEntry<Map<EReference, List<Action>>>> childEntries) {
-//		return !hasDocumentation(resource, element, childEntries);
-//	}	
 
 	/**
 	 * @return URL of the diagram viewer. If not null then a digram initialization script is added to the page. Otherwise the diagram shall be initialized by some other means.
@@ -274,7 +252,10 @@ public class ResourceFactory implements Factory {
 	
 	protected EReference getRole(ModelElement modelElement) {
 		String roleName = getRoleName(modelElement);
-		return Util.isBlank(roleName) ? AppPackage.Literals.LABEL__CHILDREN : resolveRole(roleName); 
+		if (Util.isBlank(roleName)) {
+			return modelElement instanceof Connection ? AppPackage.Literals.ACTION__ANONYMOUS : AppPackage.Literals.LABEL__CHILDREN; 
+		}
+		return resolveRole(roleName); 
 	}
 	
 	protected String getRoleName(Page page) {
