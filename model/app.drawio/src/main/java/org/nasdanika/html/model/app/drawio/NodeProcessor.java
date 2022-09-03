@@ -1,10 +1,13 @@
 package org.nasdanika.html.model.app.drawio;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EReference;
@@ -56,9 +59,23 @@ public class NodeProcessor extends LayerProcessor {
 	
 	@Override
 	public List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
-		List<ProcessorInfo<ElementProcessor>> sci = super.collectSemanticChildrenInfo(semanticParentInfo);
-		// TODO - connections with target-role 
-		return sci;
+		Stream<ProcessorInfo<ElementProcessor>> superStream = super.collectSemanticChildrenInfo(semanticParentInfo).stream();
+		Stream<ProcessorInfo<ElementProcessor>> outgoingConnectionsStream = getElement()
+				.getOutgoingConnections()
+				.stream()
+				.map(registry::get)
+				.map(ProcessorInfo::getProcessor)
+				.map(ModelElementProcessor.class::cast)
+				.flatMap(p -> p.setSemanticParentInfo(semanticParentInfo).stream());
+		
+		Stream<ProcessorInfo<ElementProcessor>> stream = Stream.concat(superStream,	outgoingConnectionsStream);
+		
+		Comparator<ProcessorInfo<ElementProcessor>> semanticChildrenComparator = getSemanticChildrenComparator();
+		if (semanticChildrenComparator != null) {
+			stream = stream.sorted(semanticChildrenComparator);
+		}
+		
+		return stream.collect(Collectors.toList());
 	}
 	
 	@SuppressWarnings("unchecked")

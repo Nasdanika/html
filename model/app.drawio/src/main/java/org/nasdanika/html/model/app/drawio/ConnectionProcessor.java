@@ -103,7 +103,7 @@ public class ConnectionProcessor extends ModelElementProcessor {
 					if (Util.isBlank(sourceLabel)) {
 						sourceLabel = "(unlabeled)";
 					} 
-					String sourceLink = sourceProcessor.getModelElementLink(getElement());
+					String sourceLink = getModelElementLink(source);
 					if (sourceLink == null) {
 						sourceCell.getContent().add(createText(sourceLabel));						
 					} else {
@@ -128,7 +128,7 @@ public class ConnectionProcessor extends ModelElementProcessor {
 					if (Util.isBlank(targetLabel)) {
 						targetLabel = "(unlabeled)";
 					} 
-					String targetLink = targetProcessor.getModelElementLink(getElement());
+					String targetLink = getModelElementLink(target);
 					if (targetLink == null) {
 						targetCell.getContent().add(createText(targetLabel));						
 					} else {
