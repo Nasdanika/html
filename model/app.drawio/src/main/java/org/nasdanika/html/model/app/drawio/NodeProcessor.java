@@ -2,11 +2,11 @@ package org.nasdanika.html.model.app.drawio;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
@@ -14,8 +14,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.Node;
-import org.nasdanika.graph.Element;
-import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
@@ -29,27 +27,7 @@ import org.nasdanika.html.model.bootstrap.TableRow;
 public class NodeProcessor extends LayerProcessor {
 
 	public NodeProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
-		super(resourceFactory, uri, config, baseURI);
-		
-		NodeProcessorConfig<ElementProcessor, Handler, Handler> nodeProcessorConfig = (NodeProcessorConfig<ElementProcessor, Handler, Handler>) config;
-		
-		for (Entry<org.nasdanika.graph.Connection, Consumer<Handler>> incomingHandlerConsumerEntry: nodeProcessorConfig.getIncomingHandlerConsumers().entrySet()) {
-			incomingHandlerConsumerEntry.getValue().accept(new Handler() {
-
-				@Override
-				public void setDefaultConnectionRole(EReference connectionRole, Predicate<Element> traversePredicate) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void setSemanticParentInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-			});
-		}
+		super(resourceFactory, uri, config, baseURI);		
 	}
 	
 	@Override
@@ -58,24 +36,26 @@ public class NodeProcessor extends LayerProcessor {
 	}
 	
 	@Override
-	public List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
-		Stream<ProcessorInfo<ElementProcessor>> superStream = super.collectSemanticChildrenInfo(semanticParentInfo).stream();
-		Stream<ProcessorInfo<ElementProcessor>> outgoingConnectionsStream = getElement()
+	public Map<ProcessorInfo<ElementProcessor>, EReference> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+		Stream<Map.Entry<ProcessorInfo<ElementProcessor>, EReference>> superStream = super.collectSemanticChildrenInfo(semanticParentInfo).entrySet().stream();
+		Stream<Map.Entry<ProcessorInfo<ElementProcessor>, EReference>> outgoingConnectionsStream = getElement()
 				.getOutgoingConnections()
 				.stream()
 				.map(registry::get)
 				.map(ProcessorInfo::getProcessor)
 				.map(ModelElementProcessor.class::cast)
-				.flatMap(p -> p.setSemanticParentInfo(semanticParentInfo).stream());
+				.flatMap(p -> p.setSemanticParentInfo(semanticParentInfo).entrySet().stream());
 		
-		Stream<ProcessorInfo<ElementProcessor>> stream = Stream.concat(superStream,	outgoingConnectionsStream);
+		Stream<Map.Entry<ProcessorInfo<ElementProcessor>, EReference>> stream = Stream.concat(superStream,	outgoingConnectionsStream);
 		
 		Comparator<ProcessorInfo<ElementProcessor>> semanticChildrenComparator = getSemanticChildrenComparator();
 		if (semanticChildrenComparator != null) {
-			stream = stream.sorted(semanticChildrenComparator);
+			stream = stream.sorted((a,b) -> semanticChildrenComparator.compare(a.getKey(), b.getKey()));
 		}
 		
-		return stream.collect(Collectors.toList());
+		Map<ProcessorInfo<ElementProcessor>, EReference> ret = new LinkedHashMap<>();
+		stream.forEach(e -> ret.put(e.getKey(), e.getValue()));
+		return ret;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -250,6 +230,34 @@ public class NodeProcessor extends LayerProcessor {
 				((Collection<Action>) getSemanticElement().eGet(connectionsActionContainmentReference)).add(outboundConnectionsAction);
 			}
 		}		
+	}
+	
+	protected String getDefaultTargetConnectionRoleName() {
+		String defaultConnectionTargetRoleProperty = resourceFactory.getDefaultConnectionTargetRoleProperty();
+		if (Util.isBlank(defaultConnectionTargetRoleProperty)) {
+			return null;
+		}
+		
+		return getElement().getProperty(defaultConnectionTargetRoleProperty);
+	}
+	
+	public void setDefaultTargetConnectionRole() {
+		String defaultConnectionTargetRoleName = getDefaultTargetConnectionRoleName();
+		if (!Util.isBlank(defaultConnectionTargetRoleName)) {
+			Set<Connection> traversed = new HashSet<>();
+			for (Connection ogc: getElement().getOutgoingConnections()) {
+				((ConnectionProcessor) registry.get(ogc).getProcessor()).setDefaultTargetRole(defaultConnectionTargetRoleName, traversed);
+			}
+		}
+	}
+	
+	public void setDefaultTargetConnectionRole(String roleName, Set<Connection> traversed) {
+		String defaultConnectionTargetRoleName = getDefaultTargetConnectionRoleName();
+		if (Util.isBlank(defaultConnectionTargetRoleName)) {
+			for (Connection ogc: getElement().getOutgoingConnections()) {
+				((ConnectionProcessor) registry.get(ogc).getProcessor()).setDefaultTargetRole(roleName, new HashSet<>());				
+			}
+		}
 	}
 	
 }

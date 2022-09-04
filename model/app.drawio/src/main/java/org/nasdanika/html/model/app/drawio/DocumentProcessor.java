@@ -3,7 +3,10 @@ package org.nasdanika.html.model.app.drawio;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
@@ -50,10 +53,8 @@ public class DocumentProcessor extends ElementProcessor {
 			pages.sort(pageComparator);
 		}
 		
-		// TODO - set default connection target role. 
-		
 		// Setting semantic hierarchy
-		List<ProcessorInfo<ElementProcessor>> semanticChildrenInfo = new ArrayList<>();
+		Map<ProcessorInfo<ElementProcessor>, EReference> semanticChildrenInfo = new LinkedHashMap<>();
 		for (Page page: pages) {
 			PageProcessor pageProcessor = (PageProcessor) registry.get(page).getProcessor();
 			if (pageProcessor.isRootPage()) {
@@ -61,16 +62,16 @@ public class DocumentProcessor extends ElementProcessor {
 				
 				ProcessorInfo<ElementProcessor> semanticParentInfo = documentAction == null ? null : ProcessorInfo.of(config, this);
 				ModelElementProcessor pageElementProcessor = (ModelElementProcessor) registry.get(pageElement).getProcessor();
-				List<ProcessorInfo<ElementProcessor>> pageElementSemanticInfo = pageElementProcessor.setSemanticParentInfo(semanticParentInfo);
-				semanticChildrenInfo.addAll(pageElementSemanticInfo);
+				Map<ProcessorInfo<ElementProcessor>, EReference> pageElementSemanticInfo = pageElementProcessor.setSemanticParentInfo(semanticParentInfo);
+				semanticChildrenInfo.putAll(pageElementSemanticInfo);
 			}
 		}
 
 		// Build semantic children recursively.
-		for (ProcessorInfo<ElementProcessor> info: semanticChildrenInfo) {
-			ModelElementProcessor processor = (ModelElementProcessor) info.getProcessor();
+		for (Entry<ProcessorInfo<ElementProcessor>, EReference> entry: semanticChildrenInfo.entrySet()) {
+			ModelElementProcessor processor = (ModelElementProcessor) entry.getKey().getProcessor();
 			if (documentAction != null) {
-				EReference role = processor.getRole();
+				EReference role = entry.getValue();
 				if (role != null) {
 					@SuppressWarnings("unchecked")
 					Collection<EObject> roleElements = (Collection<EObject>) documentAction.eGet(role);
@@ -83,6 +84,7 @@ public class DocumentProcessor extends ElementProcessor {
 		
 		if (documentAction == null) {
 			return semanticChildrenInfo
+					.keySet()
 					.stream()
 					.map(ProcessorInfo::getProcessor)
 					.map(ModelElementProcessor.class::cast)

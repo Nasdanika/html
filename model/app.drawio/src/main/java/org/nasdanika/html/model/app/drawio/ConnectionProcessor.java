@@ -1,6 +1,6 @@
 package org.nasdanika.html.model.app.drawio;
 
-import java.util.function.Predicate;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -8,10 +8,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.Node;
-import org.nasdanika.graph.Element;
-import org.nasdanika.graph.processor.ConnectionProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorConfig;
-import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.Table;
@@ -20,8 +17,6 @@ import org.nasdanika.html.model.bootstrap.TableRow;
 
 public class ConnectionProcessor extends ModelElementProcessor {
 	
-	protected EReference defaultConnectionRole;
-	
 	@Override
 	public Connection getElement() {
 		return (Connection) super.getElement();
@@ -29,22 +24,6 @@ public class ConnectionProcessor extends ModelElementProcessor {
 
 	public ConnectionProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
 		super(resourceFactory, uri, config, baseURI);
-		
-		((ConnectionProcessorConfig<ElementProcessor, Handler, Handler>) config).setSourceHandler(new Handler() {
-
-			@Override
-			public void setDefaultConnectionRole(EReference connectionRole, Predicate<Element> traversePredicate) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void setSemanticParentInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
 	}
 	
 	@Override
@@ -142,5 +121,28 @@ public class ConnectionProcessor extends ModelElementProcessor {
 		super.build();
 	}
 	
+	private String defaultConnectionTargetRoleName;
+
+	public void setDefaultTargetRole(String defaultConnectionTargetRoleName, Set<Connection> traversed) {
+		if (traversed.add(getElement())) {
+			this.defaultConnectionTargetRoleName = defaultConnectionTargetRoleName;
+			Node target = getElement().getTarget();
+			if (target != null) {
+				NodeProcessor targetProcessor = (NodeProcessor) registry.get(target).getProcessor();
+				targetProcessor.setDefaultTargetConnectionRole(defaultConnectionTargetRoleName, traversed);
+			}
+		}
+	}
+	
+	public EReference getTargetRole() {
+		String targetRoleProperty = resourceFactory.getTargetRoleProperty();
+		if (!Util.isBlank(targetRoleProperty)) {
+			String targetRolePropertyName = getElement().getProperty(targetRoleProperty);
+			if (!Util.isBlank(targetRolePropertyName)) {
+				return resourceFactory.resolveRole(targetRolePropertyName);
+			}
+		}
+		return Util.isBlank(defaultConnectionTargetRoleName) ? null : resourceFactory.resolveRole(defaultConnectionTargetRoleName);
+	}
 
 }

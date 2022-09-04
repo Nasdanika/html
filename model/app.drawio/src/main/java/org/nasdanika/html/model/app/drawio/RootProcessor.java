@@ -1,14 +1,12 @@
 package org.nasdanika.html.model.app.drawio;
 
 import java.util.Comparator;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.emf.common.util.URI;
-import org.nasdanika.drawio.Document;
+import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.drawio.Root;
 import org.nasdanika.graph.Element;
 import org.nasdanika.graph.processor.ProcessorConfig;
@@ -48,28 +46,23 @@ public class RootProcessor extends ModelElementProcessor {
 	}
 	
 	@Override
-	protected Document getEmbeddedDiagramDocument() throws ParserConfigurationException {
-		Document toEmbed = Document.create(true, null);
-		Root root = getElement();
-		toEmbed.getPages().add(root.getModel().getPage());
-		return toEmbed;
-	}
-	
-	@Override
 	protected String getSemanticID() {
 		return getElement().getModel().getPage().getId();
 	}
 
 	@Override
-	public List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
-		return config.getChildProcessorsInfo()
+	public Map<ProcessorInfo<ElementProcessor>, EReference> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+		Map<ProcessorInfo<ElementProcessor>, EReference> ret = new LinkedHashMap<>();
+		config.getChildProcessorsInfo()
 			.values()
 			.stream()
 			.sorted(getSemanticChildrenComparator())
 			.map(ProcessorInfo::getProcessor)
 			.map(ModelElementProcessor.class::cast)
-			.flatMap(p -> p.setSemanticParentInfo(semanticParentInfo).stream())
-			.collect(Collectors.toList());
+			.flatMap(p -> p.setSemanticParentInfo(semanticParentInfo).entrySet().stream())
+			.forEach(e -> ret.put(e.getKey(), e.getValue()));
+		
+		return ret;
 	}
 	
 }

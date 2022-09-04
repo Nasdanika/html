@@ -185,6 +185,14 @@ public class ResourceFactory implements Factory {
 	protected String getRoleProperty() {
 		return "role";
 	}
+
+	protected String getTargetRoleProperty() {
+		return "target-role";
+	}
+
+	protected String getDefaultConnectionTargetRoleProperty() {
+		return "default-connection-target-role";
+	}
 	
 	protected String getDefaultConnectionRoleProperty() {
 		return "default-connection-role";

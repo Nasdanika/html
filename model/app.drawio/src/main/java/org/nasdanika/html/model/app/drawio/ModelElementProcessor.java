@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,7 +39,7 @@ import org.nasdanika.html.model.app.AppFactory;
 
 public class ModelElementProcessor extends ElementProcessor {
 	
-	protected List<ProcessorInfo<ElementProcessor>> semanticChildrenInfo;
+	protected Map<ProcessorInfo<ElementProcessor>, EReference> semanticChildrenInfo;
 	protected ProcessorInfo<ElementProcessor> semanticParentInfo;
 	protected EObject semanticElement;
 
@@ -65,21 +67,25 @@ public class ModelElementProcessor extends ElementProcessor {
 		return Util.isBlank(label) ? null : Jsoup.parse(label).text(); 				
 	}
 	
-	public List<ProcessorInfo<ElementProcessor>> setSemanticParentInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+	/**
+	 * @param semanticParentInfo
+	 * @return Linked map of info to child role.
+	 */
+	public Map<ProcessorInfo<ElementProcessor>, EReference> setSemanticParentInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
 		if (isSemantic()) {
 			this.semanticParentInfo = semanticParentInfo;
 			ProcessorInfo<ElementProcessor> info = ProcessorInfo.of(config, this);
 			semanticChildrenInfo = collectSemanticChildrenInfo(info);
-			return Collections.singletonList(info);
+			return Collections.singletonMap(info, getRole());
 		}
 
 		return collectSemanticChildrenInfo(semanticParentInfo);
 	}
 	
-	public List<ProcessorInfo<ElementProcessor>> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+	public Map<ProcessorInfo<ElementProcessor>, EReference> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
 		Page linkedPage = getElement().getLinkedPage();
 		if (linkedPage == null) {
-			return Collections.emptyList();
+			return Collections.emptyMap();
 		}
 		PageProcessor pageProcessor = (PageProcessor) registry.get(linkedPage).getProcessor();
 		ModelElement pageElement = pageProcessor.getPageElement();
@@ -112,16 +118,16 @@ public class ModelElementProcessor extends ElementProcessor {
 			
 			// Adding children to roles and building
 			if (semanticChildrenInfo != null) {
-				semanticChildrenInfo.forEach(info -> {			
-					ModelElementProcessor processor = (ModelElementProcessor) info.getProcessor();
-					EReference childRole = processor.getRole();
+				for (Entry<ProcessorInfo<ElementProcessor>, EReference> childEntry: semanticChildrenInfo.entrySet()) {
+					ModelElementProcessor processor = (ModelElementProcessor) childEntry.getKey().getProcessor();
+					EReference childRole = childEntry.getValue();
 					if (childRole != null) {
 						@SuppressWarnings("unchecked")
 						Collection<EObject> roleElements = (Collection<EObject>) action.eGet(childRole);
 						roleElements.addAll(processor.getSemanticElements());
 					}
 					processor.build();
-				});
+				}
 			}			
 		}		
 	}		
@@ -131,12 +137,21 @@ public class ModelElementProcessor extends ElementProcessor {
 	}
 	
 	protected Document getEmbeddedDiagramDocument() throws ParserConfigurationException {
+		Page page = getElement().getModel().getPage();
+		ModelElement pageElement = resourceFactory.getPageElement(page);
+		if (getElement().equals(pageElement)) {
+			Document toEmbed = Document.create(true, null);
+			toEmbed.getPages().add(page);
+			return toEmbed;
+		}		
+		
 		Page linkedPage = getElement().getLinkedPage();
 		if (linkedPage == null) {
 			return null;
 		}
-		Root root = linkedPage.getModel().getRoot();
-		return ((ModelElementProcessor) registry.get(root).getProcessor()).getEmbeddedDiagramDocument();
+		PageProcessor linkedPageProcessor = (PageProcessor) registry.get(linkedPage).getProcessor();
+		ModelElement linkedPageElement = linkedPageProcessor.getPageElement();
+		return ((ModelElementProcessor) registry.get(linkedPageElement).getProcessor()).getEmbeddedDiagramDocument();
 	}
 	
 	protected Comparator<ProcessorInfo<ElementProcessor>> getSemanticChildrenComparator() {
@@ -183,6 +198,7 @@ public class ModelElementProcessor extends ElementProcessor {
 		EObject semanticElement = getSemanticElement();
 		if (semanticElement == null) {
 			return semanticChildrenInfo
+					.keySet()
 					.stream()
 					.map(ProcessorInfo::getProcessor)
 					.map(ModelElementProcessor.class::cast)
@@ -376,7 +392,7 @@ public class ModelElementProcessor extends ElementProcessor {
 	
 		StringBuilder tocBuilder = new StringBuilder(System.lineSeparator()).append(listOpenTag);
 		
-		for (ProcessorInfo<ElementProcessor> sci: semanticChildrenInfo) {
+		for (ProcessorInfo<ElementProcessor> sci: semanticChildrenInfo.keySet()) {
 			ElementProcessor childProcessor = sci.getProcessor();
 			if (childProcessor instanceof ModelElementProcessor) {
 				tocBuilder.append(((ModelElementProcessor) childProcessor).getTableOfContentsElement(base));
