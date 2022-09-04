@@ -1,6 +1,8 @@
 package org.nasdanika.html.model.app.drawio;
 
-import java.util.Set;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -8,7 +10,9 @@ import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.Node;
+import org.nasdanika.graph.Element;
 import org.nasdanika.graph.processor.ProcessorConfig;
+import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.Table;
@@ -123,13 +127,13 @@ public class ConnectionProcessor extends ModelElementProcessor {
 	
 	private String defaultConnectionTargetRoleName;
 
-	public void setDefaultTargetRole(String defaultConnectionTargetRoleName, Set<Connection> traversed) {
-		if (traversed.add(getElement())) {
+	public void setDefaultTargetRole(Map<Element, ProcessorInfo<ElementProcessor>> registry, String defaultConnectionTargetRoleName, Predicate<Connection> traversed) {
+		if (traversed.test(getElement())) {
 			this.defaultConnectionTargetRoleName = defaultConnectionTargetRoleName;
 			Node target = getElement().getTarget();
 			if (target != null) {
 				NodeProcessor targetProcessor = (NodeProcessor) registry.get(target).getProcessor();
-				targetProcessor.setDefaultTargetConnectionRole(defaultConnectionTargetRoleName, traversed);
+				targetProcessor.setDefaultTargetConnectionRole(registry, defaultConnectionTargetRoleName, traversed);
 			}
 		}
 	}
@@ -143,6 +147,21 @@ public class ConnectionProcessor extends ModelElementProcessor {
 			}
 		}
 		return Util.isBlank(defaultConnectionTargetRoleName) ? null : resourceFactory.resolveRole(defaultConnectionTargetRoleName);
+	}
+	
+	@Override
+	public Map<ProcessorInfo<ElementProcessor>, EReference> setSemanticParentInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+		Node target = getElement().getTarget();
+		if (target == null) {
+			return super.setSemanticParentInfo(semanticParentInfo);			
+		}
+		EReference targetRole = getTargetRole();
+		if (targetRole == null) {
+			return super.setSemanticParentInfo(semanticParentInfo);
+		}
+		Map<ProcessorInfo<ElementProcessor>, EReference> ret = new LinkedHashMap<>();
+		((ModelElementProcessor) registry.get(target).getProcessor()).setSemanticParentInfo(semanticParentInfo).entrySet().forEach(e -> ret.put(e.getKey(), targetRole));
+		return ret;
 	}
 
 }

@@ -45,8 +45,6 @@ public class DocumentProcessor extends ElementProcessor {
 	public Stream<EObject> build() {
 		Action documentAction  = resourceFactory.createDocumentAction(getElement());
 		
-		// Set semantic hierarchy
-		
 		List<Page> pages = new ArrayList<>(getElement().getPages());
 		Comparator<Page> pageComparator = resourceFactory.getPageComparator(getElement());
 		if (pageComparator != null) {

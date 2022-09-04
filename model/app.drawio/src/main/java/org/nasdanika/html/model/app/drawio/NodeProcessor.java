@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
@@ -14,6 +16,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.Node;
+import org.nasdanika.graph.Element;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
@@ -64,7 +67,10 @@ public class NodeProcessor extends LayerProcessor {
 		super.build();
 		EReference connectionsActionContainmentReference = resourceFactory.getConnectionsActionContainmentReference(getElement());
 		if (connectionsActionContainmentReference != null) {
-			List<Connection> incomingConnections = getElement().getIncomingConnections(); // TODO - filtering - do not show mapping connections
+			List<Connection> incomingConnections = getElement().getIncomingConnections()
+					.stream()
+					.filter(c -> ((ConnectionProcessor) registry.get(c).getProcessor()).getTargetRole() == null)
+					.collect(Collectors.toList()); 
 			if (!incomingConnections.isEmpty()) {
 				Table table = BootstrapFactory.eINSTANCE.createTable();
 				table.setBordered(true);
@@ -147,7 +153,10 @@ public class NodeProcessor extends LayerProcessor {
 				((Collection<Action>) getSemanticElement().eGet(connectionsActionContainmentReference)).add(incomingConnectionsAction);
 			}
 			
-			List<Connection> outgoingConnections = getElement().getOutgoingConnections(); // TODO - filtering, do not show mapping connections
+			List<Connection> outgoingConnections = getElement().getOutgoingConnections()
+					.stream()
+					.filter(c -> ((ConnectionProcessor) registry.get(c).getProcessor()).getTargetRole() == null)
+					.collect(Collectors.toList()); 
 			if (!outgoingConnections.isEmpty()) {
 				Table table = BootstrapFactory.eINSTANCE.createTable();
 				table.setBordered(true);
@@ -241,21 +250,24 @@ public class NodeProcessor extends LayerProcessor {
 		return getElement().getProperty(defaultConnectionTargetRoleProperty);
 	}
 	
-	public void setDefaultTargetConnectionRole() {
+	@Override
+	public void setRegistry(Map<Element, ProcessorInfo<ElementProcessor>> registry) {
+		super.setRegistry(registry);
+		
 		String defaultConnectionTargetRoleName = getDefaultTargetConnectionRoleName();
 		if (!Util.isBlank(defaultConnectionTargetRoleName)) {
 			Set<Connection> traversed = new HashSet<>();
 			for (Connection ogc: getElement().getOutgoingConnections()) {
-				((ConnectionProcessor) registry.get(ogc).getProcessor()).setDefaultTargetRole(defaultConnectionTargetRoleName, traversed);
+				((ConnectionProcessor) registry.get(ogc).getProcessor()).setDefaultTargetRole(registry, defaultConnectionTargetRoleName, traversed::add);
 			}
 		}
 	}
 	
-	public void setDefaultTargetConnectionRole(String roleName, Set<Connection> traversed) {
+	public void setDefaultTargetConnectionRole(Map<Element, ProcessorInfo<ElementProcessor>> registry, String roleName, Predicate<Connection> traversed) {
 		String defaultConnectionTargetRoleName = getDefaultTargetConnectionRoleName();
 		if (Util.isBlank(defaultConnectionTargetRoleName)) {
 			for (Connection ogc: getElement().getOutgoingConnections()) {
-				((ConnectionProcessor) registry.get(ogc).getProcessor()).setDefaultTargetRole(roleName, new HashSet<>());				
+				((ConnectionProcessor) registry.get(ogc).getProcessor()).setDefaultTargetRole(registry, roleName, traversed);				
 			}
 		}
 	}

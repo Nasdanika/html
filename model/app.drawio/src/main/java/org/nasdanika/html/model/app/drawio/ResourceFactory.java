@@ -323,7 +323,7 @@ public class ResourceFactory implements Factory {
 			case "clockwise":
 			case "counterclockwise":
 				if (semanticParent instanceof Node) {
-					AngularNodeComparator nodeComparator = new AngularNodeComparator((Node) semanticParent, "clockwise".equals(config), Util.isBlank(config) ? null : Double.parseDouble(config));
+					AngularNodeComparator nodeComparator = new AngularNodeComparator((Node) semanticParent, "clockwise".equals(sortType), Util.isBlank(config) ? null : Double.parseDouble(config));
 					return (a,b) -> {
 						if (a instanceof Node && b instanceof Node) {
 							return nodeComparator.compare((Node) a, (Node) b);

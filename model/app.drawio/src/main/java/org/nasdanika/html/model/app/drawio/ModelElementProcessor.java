@@ -3,9 +3,11 @@ package org.nasdanika.html.model.app.drawio;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -73,6 +75,11 @@ public class ModelElementProcessor extends ElementProcessor {
 	 */
 	public Map<ProcessorInfo<ElementProcessor>, EReference> setSemanticParentInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
 		if (isSemantic()) {
+			ElementProcessor spp = semanticParentInfo.getProcessor();
+			if (spp instanceof ModelElementProcessor && ((ModelElementProcessor) spp).isSemanticDescendant(getElement(), new HashSet<>()::add)) {
+				return Collections.emptyMap();
+			}
+			
 			this.semanticParentInfo = semanticParentInfo;
 			ProcessorInfo<ElementProcessor> info = ProcessorInfo.of(config, this);
 			semanticChildrenInfo = collectSemanticChildrenInfo(info);
@@ -458,6 +465,7 @@ public class ModelElementProcessor extends ElementProcessor {
 			if (getElement().equals(modelElement) || modelElement.isPageLink()) {
 				modelElement.setLink(null);
 			}
+			
 			if (Util.isBlank(modelElement.getLink())) {
 				String link = getModelElementLink(modelElement);
 				if (!Util.isBlank(link)) {
@@ -532,6 +540,19 @@ public class ModelElementProcessor extends ElementProcessor {
 	 * @return
 	 */
 	protected String getModelElementLink(ModelElement modelElement) {
+		// Do not link to self or linked page's page element.
+		if (getElement().getId().equals(modelElement.getId())) {
+			return null;
+		}
+		Page linkedPage = getElement().getLinkedPage();
+		if (linkedPage != null) {
+			PageProcessor linkedPageProcessor = (PageProcessor) registry.get(linkedPage).getProcessor();
+			ModelElement linkedPageElement = linkedPageProcessor.getPageElement();
+			if (modelElement.getId().equals(linkedPageElement.getId())) {
+				return null;
+			}
+		}
+
 		if (resourceFactory.shallCreateLink(modelElement)) {
 			// Link by cross-reference
 			String crossReferenceProperty = resourceFactory.getCrossReferenceProperty();
@@ -594,5 +615,32 @@ public class ModelElementProcessor extends ElementProcessor {
 		text.setContent(content);
 		return text;
 	}
+	
+	public ProcessorInfo<ElementProcessor> getSemanticParentInfo() {
+		return semanticParentInfo;
+	}
+		
+	/**
+	 * 
+	 * @param semanticAncestor
+	 * @param traversed
+	 * @return True if this processor's element is the same as the argument semanticAncestor or direct or transitive semantic child for the semantic ancestor.
+	 */
+	public boolean isSemanticDescendant(ModelElement semanticAncestor, Predicate<ModelElement> traversed) {
+		if (getElement().equals(semanticAncestor)) {
+			return true;
+		}
+		if (semanticParentInfo != null && traversed.test(getElement())) {
+			if (semanticParentInfo.getConfig().getElement().equals(semanticAncestor)) {
+				return true;
+			}
+			ElementProcessor spp = getSemanticParentInfo().getProcessor();
+			if (spp instanceof ModelElementProcessor) {
+				return ((ModelElementProcessor) spp).isSemanticDescendant(semanticAncestor, traversed);
+			}
+			return false;
+		}
+		return false;
+	}	
 	
 }
