@@ -26,7 +26,6 @@ import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.NavigationPanel;
-import org.nasdanika.html.model.bootstrap.Modal;
 import org.nasdanika.html.model.bootstrap.gen.BootstrapElementSupplierFactoryAdapter;
 
 public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapElementSupplierFactoryAdapter<M, BootstrapElement<?,?>> {
@@ -79,21 +78,7 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 				
 				Object decorator = features.get(AppPackage.Literals.LABEL__DECORATOR);
 				HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
-				if (decorator != null) {
-//					@SuppressWarnings("unchecked")
-//					List<Object> pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);
-//					pageBody.add(decorator);
-//					
-//					Tag trigger = htmlFactory.tag(TagName.sup).addClass("far fa-question-circle", "nsd-label-help").style("cursor", "pointer");
-//					if (!Util.isBlank(tooltip)) {
-//						trigger.attribute("title", tooltip);
-//					}
-//					if (decorator.getId() == null) {
-//						decorator.id(htmlFactory.nextId());
-//					}
-//					trigger.attribute("data-toggle", "modal");
-//					trigger.attribute("data-target", "#" + decorator.getId());
-					
+				if (decorator != null) {					
 					if (TagName.span.name().equalsIgnoreCase(ret.getTagName())) {
 						ret.accept(decorator);
 					} else {

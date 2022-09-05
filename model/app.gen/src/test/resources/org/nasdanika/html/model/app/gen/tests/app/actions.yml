@@ -17,7 +17,25 @@ app-action:
               icon: fa fa-cog
               text: First navigation action
               id: p1
-              location: first-navigation-action/index.html 
+              location: first-navigation-action/index.html
+              decorator:
+                app-link:
+                  icon: far fa-question-circle
+                  tooltip: Some quick info
+                  attributes:
+                    style:
+                      content-text: "vertical-align:super;font-size:small"
+                  modal:                             
+                    header:
+                      content:
+                        content-text: Very informative indeed!
+                      appearance:
+                        background: LIGHT                              
+                    body:
+                      content:
+                        content-text: Extensive description of the first navigation action...
+                    size: large
+                    centered: true                                         
               content:
                 content-markdown: 
                   style: true
@@ -28,10 +46,24 @@ app-action:
               sections:
                 - text: Section 1
                   name: section-1 
-                  help:
-                    app-label:
+                  decorator:
+                    app-link:
                       icon: far fa-question-circle
-                      tooltip: Some helpful tooltip 
+                      tooltip: Some quick info
+                      attributes:
+                        style:
+                          content-text: "vertical-align:super;font-size:x-small"
+                      modal:                             
+                        header:
+                          content:
+                            content-text: Very informative indeed!
+                          appearance:
+                            background: LIGHT                              
+                        body:
+                          content:
+                            content-text: Extensive description...
+                        size: large
+                        centered: true                            
                   content:
                     content-text: I'm section 1                   
                   sections:

@@ -63,7 +63,6 @@ import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.Item;
-import org.nasdanika.html.model.bootstrap.Modal;
 import org.xml.sax.SAXException;
 
 public final class Util {
@@ -325,7 +324,7 @@ public final class Util {
 			ProgressMonitor progressMonitor) {
 		
 		if (root != null) {
-			Label title = createLabel(root, activeAction, uriResolver, null, "header/title", false, false);
+			Label title = createLabel(root, activeAction, uriResolver, null, "header/title", false, false, false);
 			EList<EObject> rootChildren = root.getChildren();
 			if (title != null || rootChildren.size() > 1) {
 				// Header
@@ -340,7 +339,7 @@ public final class Util {
 				List<EObject> headerItems = header.getItems();
 				rootChildren.listIterator(1).forEachRemaining(rac -> {
 					if (rac instanceof Action) {
-						headerItems.add(createLabel((Action) rac, activeAction, uriResolver, null, "header/navigation", true, false));
+						headerItems.add(createLabel((Action) rac, activeAction, uriResolver, null, "header/navigation", true, false, false));
 					} else {
 						headerItems.add(EcoreUtil.copy(rac));
 					}
@@ -358,7 +357,7 @@ public final class Util {
 					EList<EObject> footerItems = footer.getItems();
 					rootNavigation.forEach(ran -> {
 						if (ran instanceof Action) {
-							footerItems.add(createLabel((Action) ran, activeAction, uriResolver, null, "footer/navigation", true, false));
+							footerItems.add(createLabel((Action) ran, activeAction, uriResolver, null, "footer/navigation", true, false, false));
 						} else {
 							footerItems.add(EcoreUtil.copy(ran));
 						}
@@ -370,7 +369,7 @@ public final class Util {
 		
 		if (principal != null) {
 			// Navbar 
-			Label brand = createLabel(principal, activeAction, uriResolver, null, "navbar/brand", false, false);
+			Label brand = createLabel(principal, activeAction, uriResolver, null, "navbar/brand", false, false, false);
 			if (principal instanceof Action) {
 				List<EObject> principalNavigation = org.nasdanika.html.model.app.util.Util.resolveActionReferences(((Action) principal).getNavigation());
 				if (brand != null || !principalNavigation.isEmpty()) {
@@ -385,7 +384,7 @@ public final class Util {
 					EList<EObject> navBarItems = navBar.getItems();
 					principalNavigation.forEach(principalNavigationElement -> {
 						if (principalNavigationElement instanceof Action) {
-							navBarItems.add(createLabel((Action) principalNavigationElement, activeAction, uriResolver, null, "navbar/item", true, false));
+							navBarItems.add(createLabel((Action) principalNavigationElement, activeAction, uriResolver, null, "navbar/item", true, false, false));
 						} else {
 							navBarItems.add(EcoreUtil.copy(principalNavigationElement));
 						}
@@ -408,7 +407,7 @@ public final class Util {
 				List<EObject> navPanelItems = navPanel.getItems();
 				principalChildren.forEach(principalChild -> {
 					if (principalChild instanceof Label) {
-						navPanelItems.add(createLabel((Label) principalChild, activeAction, uriResolver, navItemIdProvider, "nav-panel", true, true));
+						navPanelItems.add(createLabel((Label) principalChild, activeAction, uriResolver, navItemIdProvider, "nav-panel", true, true, false));
 					} else {
 						navPanelItems.add(EcoreUtil.copy(principalChild));
 					}
@@ -448,19 +447,19 @@ public final class Util {
 			if (path != null && !path.isEmpty()) {
 				EList<Label> breadcrumb = contentPanel.getBreadcrumb();
 				path.forEach(pathElement -> {
-					Label element = createLabel(pathElement, action, uriResolver, null, "content-panel/breadcrumb", false, false);
+					Label element = createLabel(pathElement, action, uriResolver, null, "content-panel/breadcrumb", false, false, false);
 					if (element != null) {
 						breadcrumb.add(element);
 					}
 				});
-				Label tail = createLabel(action, action, uriResolver, null, "content-panel/breadcrumb", false, false);		
+				Label tail = createLabel(action, action, uriResolver, null, "content-panel/breadcrumb", false, false, false);		
 				tail.setActive(true);
 				breadcrumb.add(tail);
 			}
 	
 			if (!isBlank(action.getText()) || !isBlank(action.getIcon())) {
 				Label title = org.nasdanika.common.Util.isBlank(action.getName()) ? AppFactory.eINSTANCE.createLabel() : AppFactory.eINSTANCE.createLink(); 
-				configureLabel(action, action, uriResolver, null, "content-panel/title", title, false, false);
+				configureLabel(action, action, uriResolver, null, "content-panel/title", title, false, false, true);
 				contentPanel.setTitle(title);
 			}
 					
@@ -468,7 +467,7 @@ public final class Util {
 			EList<EObject> navigationItems = contentPanel.getItems();
 			navigation.forEach(navigationElement -> {
 				if (navigationElement instanceof Label) {
-					navigationItems.add(createLabel((Label) navigationElement, action, uriResolver, null, "content-panel/navigation-item", true, false));
+					navigationItems.add(createLabel((Label) navigationElement, action, uriResolver, null, "content-panel/navigation-item", true, false, false));
 				} else {
 					navigationItems.add(EcoreUtil.copy(navigationElement));
 				}
@@ -579,7 +578,8 @@ public final class Util {
 			String appearancePath, 
 			Label label, 
 			boolean recursive,
-			boolean inNavPanel) {
+			boolean inNavPanel,
+			boolean decorate) {
 		Appearance aa = source.getAppearance();
 		if (aa != null) {
 			label.setAppearance(aa.effectiveAppearance(appearancePath));
@@ -588,10 +588,9 @@ public final class Util {
 		label.setColor(source.getColor());
 		label.setDescription(source.getDescription());
 		label.setDisabled(source.isDisabled());
-		Object decorator = source.getDecorator();
-		if (decorator != null) {
-//		label.setHelp(value); TODO - make links in help relative.
-			throw new UnsupportedOperationException("Decorator is not supported yet");
+		Label decorator = source.getDecorator();
+		if (decorator != null && decorate) {
+			label.setDecorator(EcoreUtil.copy(decorator));
 		}
 		label.setIcon(source.getIcon());
 		if (idProvider != null) {
@@ -628,7 +627,7 @@ public final class Util {
 				}
 				if (actionChild instanceof Action) {
 					Action childAction = (Action) actionChild;
-					labelChildren.add(createLabel(childAction, activeAction, uriResolver, idProvider, "header/navigation", recursive, inNavPanel));
+					labelChildren.add(createLabel(childAction, activeAction, uriResolver, idProvider, "header/navigation", recursive, inNavPanel, false));
 					
 					// Second level - headers, separators.
 				} else {
@@ -702,7 +701,8 @@ public final class Util {
 			Function<Label, String> idProvider, 
 			String appearancePath,
 			boolean recursive,
-			boolean inNavPanel) {
+			boolean inNavPanel,
+			boolean decorate) {
 		
 		URI activeActionURI = uriResolver.apply(activeAction, null);
 		URI uri = uriResolver.apply(source, activeActionURI);
@@ -711,7 +711,7 @@ public final class Util {
 			return null;
 		}
 		Label label = isLink(source, uri) ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
-		configureLabel(source, activeAction, uriResolver, idProvider, appearancePath, label, recursive, inNavPanel);
+		configureLabel(source, activeAction, uriResolver, idProvider, appearancePath, label, recursive, inNavPanel, decorate);
 				
 		return label;
 	}

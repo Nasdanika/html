@@ -53,36 +53,47 @@ resources-container:
                         icon: fa fa-cog
                         text: Hello
                         tooltip: A friendly app
-#                        help: 
-#                          header:
-#                            content:
-#                              content-text: Very informative indeed!
-#                            appearance:
-#                              background: LIGHT                              
-#                          body:
-#                            content:
-#                              content-text: Extensive description...
-#                          size: large
-#                          centered: true                             
+                        decorator:
+                          app-label:
+                            icon: far fa-question-circle
+                            tooltip: Some quick info
+                            attributes:
+                              style:
+                                content-text: "vertical-align:super;font-size:x-small"                              
                         notification: 33
                     - app-link:
                         text: Location link (href)
                         location: https://nasdanika.org
-#                        help: 
-#                          header:
-#                            content:
-#                              content-text: Very informative indeed!
-#                            appearance:
-#                              background: LIGHT                              
-#                          body:
-#                            content:
-#                              content-text: Extensive description...
-#                          size: large
-#                          centered: true                             
+                        decorator:
+                          app-link:
+                            icon: far fa-question-circle
+                            tooltip: Some quick info
+                            location: https://nasdanika.org
+                            attributes:
+                              style:
+                                content-text: "vertical-align:super;font-size:x-small"                              
                     - app-link:
                         text: Location link with confirmation
                         location: https://nasdanika.org
                         confirmation: Are you sure?
+                        decorator:
+                          app-link:
+                            icon: far fa-question-circle
+                            tooltip: Some quick info
+                            attributes:
+                              style:
+                                content-text: "vertical-align:super;font-size:x-small"
+                            modal:                             
+                              header:
+                                content:
+                                  content-text: Very informative indeed!
+                                appearance:
+                                  background: LIGHT                              
+                              body:
+                                content:
+                                  content-text: Extensive description...
+                              size: large
+                              centered: true                             
                     - app-link:
                         text: Script link
                         script: alert("Here I am")
