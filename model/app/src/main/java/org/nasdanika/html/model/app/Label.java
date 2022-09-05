@@ -6,7 +6,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.Item;
-import org.nasdanika.html.model.bootstrap.Modal;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,16 +40,21 @@ public interface Label extends BootstrapElement, Item {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Help modal.
+	 * Help label, link, or action.
+	 * In all cases the icon is displayed in superscript to the right of the containing label text.
+	 * If label, then the icon would have the tooltip of the help label.
+	 * If link, then a click would navigate to help contents.
+	 * If action, then help content will be generated from the action. 
+	 * Help can be displayed in a modal.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Help</em>' containment reference.
-	 * @see #setHelp(Modal)
+	 * @see #setHelp(Label)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Help()
 	 * @model containment="true"
 	 *        annotation="urn:org.nasdanika homogenous='true'"
 	 * @generated
 	 */
-	Modal getHelp();
+	Label getHelp();
 
 	/**
 	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}' containment reference.
@@ -60,7 +64,7 @@ public interface Label extends BootstrapElement, Item {
 	 * @see #getHelp()
 	 * @generated
 	 */
-	void setHelp(Modal value);
+	void setHelp(Label value);
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.

@@ -16,7 +16,6 @@ import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Item;
-import org.nasdanika.html.model.bootstrap.Modal;
 import org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl;
 
 /**
@@ -219,8 +218,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 * @generated
 	 */
 	@Override
-	public Modal getHelp() {
-		return (Modal)eDynamicGet(AppPackage.LABEL__HELP, AppPackage.Literals.LABEL__HELP, true, true);
+	public Label getHelp() {
+		return (Label)eDynamicGet(AppPackage.LABEL__HELP, AppPackage.Literals.LABEL__HELP, true, true);
 	}
 
 	/**
@@ -228,7 +227,7 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetHelp(Modal newHelp, NotificationChain msgs) {
+	public NotificationChain basicSetHelp(Label newHelp, NotificationChain msgs) {
 		msgs = eDynamicInverseAdd((InternalEObject)newHelp, AppPackage.LABEL__HELP, msgs);
 		return msgs;
 	}
@@ -239,7 +238,7 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 * @generated
 	 */
 	@Override
-	public void setHelp(Modal newHelp) {
+	public void setHelp(Label newHelp) {
 		eDynamicSet(AppPackage.LABEL__HELP, AppPackage.Literals.LABEL__HELP, newHelp);
 	}
 
@@ -465,7 +464,7 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				getChildren().addAll((Collection<? extends EObject>)newValue);
 				return;
 			case AppPackage.LABEL__HELP:
-				setHelp((Modal)newValue);
+				setHelp((Label)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -510,7 +509,7 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				getChildren().clear();
 				return;
 			case AppPackage.LABEL__HELP:
-				setHelp((Modal)null);
+				setHelp((Label)null);
 				return;
 		}
 		super.eUnset(featureID);

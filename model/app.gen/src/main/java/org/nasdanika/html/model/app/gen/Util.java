@@ -63,7 +63,6 @@ import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.Item;
-import org.nasdanika.html.model.bootstrap.Modal;
 import org.xml.sax.SAXException;
 
 public final class Util {
@@ -588,10 +587,10 @@ public final class Util {
 		label.setColor(source.getColor());
 		label.setDescription(source.getDescription());
 		label.setDisabled(source.isDisabled());
-		Modal help = source.getHelp();
+		Label help = source.getHelp();
 		if (help != null) {
 //		label.setHelp(value); TODO - make links in help relative.
-			throw new UnsupportedOperationException("Help modals not supported yet");
+			throw new UnsupportedOperationException("Help is not supported yet");
 		}
 		label.setIcon(source.getIcon());
 		if (idProvider != null) {

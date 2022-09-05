@@ -165,7 +165,7 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 		MapCompoundSupplierFactory<EStructuralFeature, Object> featuresFactory = new MapCompoundSupplierFactory<>("Features");
 		
 		M semanticElement = getTarget();
-		org.nasdanika.html.model.bootstrap.Modal help = semanticElement.getHelp();
+		Label help = semanticElement.getHelp();
 		if (help != null) {
 			featuresFactory.put(AppPackage.Literals.LABEL__HELP, EObjectAdaptable.adaptToSupplierFactoryNonNull(help, Tag.class));
 		}
