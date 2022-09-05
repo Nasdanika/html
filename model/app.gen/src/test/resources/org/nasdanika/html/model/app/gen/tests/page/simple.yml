@@ -53,32 +53,32 @@ resources-container:
                         icon: fa fa-cog
                         text: Hello
                         tooltip: A friendly app
-                        help: 
-                          header:
-                            content:
-                              content-text: Very informative indeed!
-                            appearance:
-                              background: LIGHT                              
-                          body:
-                            content:
-                              content-text: Extensive description...
-                          size: large
-                          centered: true                             
+#                        help: 
+#                          header:
+#                            content:
+#                              content-text: Very informative indeed!
+#                            appearance:
+#                              background: LIGHT                              
+#                          body:
+#                            content:
+#                              content-text: Extensive description...
+#                          size: large
+#                          centered: true                             
                         notification: 33
                     - app-link:
                         text: Location link (href)
                         location: https://nasdanika.org
-                        help: 
-                          header:
-                            content:
-                              content-text: Very informative indeed!
-                            appearance:
-                              background: LIGHT                              
-                          body:
-                            content:
-                              content-text: Extensive description...
-                          size: large
-                          centered: true                             
+#                        help: 
+#                          header:
+#                            content:
+#                              content-text: Very informative indeed!
+#                            appearance:
+#                              background: LIGHT                              
+#                          body:
+#                            content:
+#                              content-text: Extensive description...
+#                          size: large
+#                          centered: true                             
                     - app-link:
                         text: Location link with confirmation
                         location: https://nasdanika.org
@@ -95,6 +95,20 @@ resources-container:
                           body:
                             content:
                               content-text: Here we go!
+                        decorator:      
+                          app-link:
+                            tooltip: Modal link
+                            icon: far fa-question-circle
+                            attributes:
+                              style:
+                                content-text: "vertical-align:super;font-size:small"  
+                            modal: 
+                              header:
+                                content:
+                                  content-text: Info
+                              body:
+                                content:
+                                  content-text: Here we go!
                 footer:
                   content:
                     content-text: Footer

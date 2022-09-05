@@ -100,8 +100,8 @@ public class LabelJsTreeNodeSupplierFactoryAdapter<M extends Label> extends Adap
 				
 				ret.selected(semanticElement.isActive());
 				
-				Tag help = (Tag) features.get(AppPackage.Literals.LABEL__HELP);
-				if (help != null) {
+				Tag decorator = (Tag) features.get(AppPackage.Literals.LABEL__DECORATOR);
+				if (decorator != null) {
 					// TODO - Context menu item.
 				}
 				
@@ -123,9 +123,9 @@ public class LabelJsTreeNodeSupplierFactoryAdapter<M extends Label> extends Adap
 		MapCompoundSupplierFactory<EStructuralFeature, Object> featuresFactory = new MapCompoundSupplierFactory<>("Features");
 		
 		M semanticElement = getTarget();
-		Label help = semanticElement.getHelp();
-		if (help != null) {
-			featuresFactory.put(AppPackage.Literals.LABEL__HELP, EObjectAdaptable.adaptToSupplierFactoryNonNull(help, Tag.class));
+		Label decorator = semanticElement.getDecorator();
+		if (decorator != null) {
+			featuresFactory.put(AppPackage.Literals.LABEL__DECORATOR, EObjectAdaptable.adaptToSupplierFactoryNonNull(decorator, Tag.class));
 		}
 		
 		List<EObject> children = semanticElement.getChildren();

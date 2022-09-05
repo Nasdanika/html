@@ -223,16 +223,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
-	public EReference getLabel_Help() {
-		return (EReference)labelEClass.getEStructuralFeatures().get(7);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EAttribute getLabel_Id() {
 		return (EAttribute)labelEClass.getEStructuralFeatures().get(0);
 	}
@@ -295,6 +285,16 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	@Override
 	public EReference getLabel_Children() {
 		return (EReference)labelEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getLabel_Decorator() {
+		return (EReference)labelEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -904,7 +904,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(labelEClass, LABEL__OUTLINE);
 		createEAttribute(labelEClass, LABEL__NOTIFICATION);
 		createEReference(labelEClass, LABEL__CHILDREN);
-		createEReference(labelEClass, LABEL__HELP);
+		createEReference(labelEClass, LABEL__DECORATOR);
 
 		linkEClass = createEClass(LINK);
 		createEAttribute(linkEClass, LINK__LOCATION);
@@ -1034,7 +1034,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getLabel_Outline(), ecorePackage.getEBoolean(), "outline", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLabel_Notification(), ecorePackage.getEString(), "notification", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLabel_Children(), ecorePackage.getEObject(), null, "children", null, 0, -1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getLabel_Help(), this.getLabel(), null, "help", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLabel_Decorator(), this.getLabel(), null, "decorator", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(linkEClass, Link.class, "Link", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getLink_Location(), ecorePackage.getEString(), "location", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1189,10 +1189,10 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Label children to build UI elements like trees, lists, navigation bars and drop-downs."
 		   });
 		addAnnotation
-		  (getLabel_Help(),
+		  (getLabel_Decorator(),
 		   source,
 		   new String[] {
-			   "documentation", "Help label, link, or action.\nIn all cases the icon is displayed in superscript to the right of the containing label text.\nIf label, then the icon would have the tooltip of the help label.\nIf link, then a click would navigate to help contents.\nIf action, then help content will be generated from the action. \nHelp can be displayed in a modal."
+			   "documentation", "Decorator label or link. If present, is rendered next to the containing label. For example, a help icon with a tooltip, link, or modal."
 		   });
 		addAnnotation
 		  (getLink_Location(),
@@ -1485,12 +1485,6 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		   source,
 		   new String[] {
 			   "default-feature", "true"
-		   });
-		addAnnotation
-		  (getLabel_Help(),
-		   source,
-		   new String[] {
-			   "homogenous", "true"
 		   });
 		addAnnotation
 		  (getLink_Script(),

@@ -235,13 +235,13 @@ public interface AppPackage extends EPackage {
 	int LABEL__CHILDREN = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 9;
 
 	/**
-	 * The feature id for the '<em><b>Help</b></em>' containment reference.
+	 * The feature id for the '<em><b>Decorator</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__HELP = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 10;
+	int LABEL__DECORATOR = BootstrapPackage.BOOTSTRAP_ELEMENT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Label</em>' class.
@@ -434,13 +434,13 @@ public interface AppPackage extends EPackage {
 	int LINK__CHILDREN = LABEL__CHILDREN;
 
 	/**
-	 * The feature id for the '<em><b>Help</b></em>' containment reference.
+	 * The feature id for the '<em><b>Decorator</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK__HELP = LABEL__HELP;
+	int LINK__DECORATOR = LABEL__DECORATOR;
 
 	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
@@ -1675,13 +1675,13 @@ public interface AppPackage extends EPackage {
 	int ACTION__CHILDREN = LINK__CHILDREN;
 
 	/**
-	 * The feature id for the '<em><b>Help</b></em>' containment reference.
+	 * The feature id for the '<em><b>Decorator</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__HELP = LINK__HELP;
+	int ACTION__DECORATOR = LINK__DECORATOR;
 
 	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
@@ -2009,15 +2009,15 @@ public interface AppPackage extends EPackage {
 	EReference getLabel_Children();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.nasdanika.html.model.app.Label#getDecorator <em>Decorator</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Help</em>'.
-	 * @see org.nasdanika.html.model.app.Label#getHelp()
+	 * @return the meta object for the containment reference '<em>Decorator</em>'.
+	 * @see org.nasdanika.html.model.app.Label#getDecorator()
 	 * @see #getLabel()
 	 * @generated
 	 */
-	EReference getLabel_Help();
+	EReference getLabel_Decorator();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.Link <em>Link</em>}'.
@@ -2724,12 +2724,12 @@ public interface AppPackage extends EPackage {
 		EReference LABEL__CHILDREN = eINSTANCE.getLabel_Children();
 
 		/**
-		 * The meta object literal for the '<em><b>Help</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Decorator</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference LABEL__HELP = eINSTANCE.getLabel_Help();
+		EReference LABEL__DECORATOR = eINSTANCE.getLabel_Decorator();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.LinkImpl <em>Link</em>}' class.

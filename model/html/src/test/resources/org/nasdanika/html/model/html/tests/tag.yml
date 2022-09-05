@@ -5,3 +5,6 @@ html-tag:
   attributes:
     class:
       content-text: row
+    style:
+      content-text: "text-decoration: none;vertical-align: super" 
+      

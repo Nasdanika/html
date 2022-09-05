@@ -27,7 +27,11 @@ app-action:
                        
               sections:
                 - text: Section 1
-                  #name: section-1 
+                  name: section-1 
+                  help:
+                    app-label:
+                      icon: far fa-question-circle
+                      tooltip: Some helpful tooltip 
                   content:
                     content-text: I'm section 1                   
                   sections:

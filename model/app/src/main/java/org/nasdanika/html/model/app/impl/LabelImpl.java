@@ -36,7 +36,7 @@ import org.nasdanika.html.model.bootstrap.impl.BootstrapElementImpl;
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#isOutline <em>Outline</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getNotification <em>Notification</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getChildren <em>Children</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getHelp <em>Help</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LabelImpl#getDecorator <em>Decorator</em>}</li>
  * </ul>
  *
  * @generated
@@ -218,36 +218,6 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 * @generated
 	 */
 	@Override
-	public Label getHelp() {
-		return (Label)eDynamicGet(AppPackage.LABEL__HELP, AppPackage.Literals.LABEL__HELP, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetHelp(Label newHelp, NotificationChain msgs) {
-		msgs = eDynamicInverseAdd((InternalEObject)newHelp, AppPackage.LABEL__HELP, msgs);
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setHelp(Label newHelp) {
-		eDynamicSet(AppPackage.LABEL__HELP, AppPackage.Literals.LABEL__HELP, newHelp);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public String getId() {
 		return (String)eDynamicGet(AppPackage.LABEL__ID, AppPackage.Literals.LABEL__ID, true, true);
 	}
@@ -272,8 +242,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 		switch (featureID) {
 			case AppPackage.LABEL__CHILDREN:
 				return ((InternalEList<?>)getChildren()).basicRemove(otherEnd, msgs);
-			case AppPackage.LABEL__HELP:
-				return basicSetHelp(null, msgs);
+			case AppPackage.LABEL__DECORATOR:
+				return basicSetDecorator(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -395,6 +365,36 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 * @generated
 	 */
 	@Override
+	public Label getDecorator() {
+		return (Label)eDynamicGet(AppPackage.LABEL__DECORATOR, AppPackage.Literals.LABEL__DECORATOR, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetDecorator(Label newDecorator, NotificationChain msgs) {
+		msgs = eDynamicInverseAdd((InternalEObject)newDecorator, AppPackage.LABEL__DECORATOR, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setDecorator(Label newDecorator) {
+		eDynamicSet(AppPackage.LABEL__DECORATOR, AppPackage.Literals.LABEL__DECORATOR, newDecorator);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AppPackage.LABEL__ACTIVE:
@@ -417,8 +417,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return getNotification();
 			case AppPackage.LABEL__CHILDREN:
 				return getChildren();
-			case AppPackage.LABEL__HELP:
-				return getHelp();
+			case AppPackage.LABEL__DECORATOR:
+				return getDecorator();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -463,8 +463,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				getChildren().clear();
 				getChildren().addAll((Collection<? extends EObject>)newValue);
 				return;
-			case AppPackage.LABEL__HELP:
-				setHelp((Label)newValue);
+			case AppPackage.LABEL__DECORATOR:
+				setDecorator((Label)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -508,8 +508,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 			case AppPackage.LABEL__CHILDREN:
 				getChildren().clear();
 				return;
-			case AppPackage.LABEL__HELP:
-				setHelp((Label)null);
+			case AppPackage.LABEL__DECORATOR:
+				setDecorator((Label)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -543,8 +543,8 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 				return NOTIFICATION_EDEFAULT == null ? getNotification() != null : !NOTIFICATION_EDEFAULT.equals(getNotification());
 			case AppPackage.LABEL__CHILDREN:
 				return !getChildren().isEmpty();
-			case AppPackage.LABEL__HELP:
-				return getHelp() != null;
+			case AppPackage.LABEL__DECORATOR:
+				return getDecorator() != null;
 		}
 		return super.eIsSet(featureID);
 	}

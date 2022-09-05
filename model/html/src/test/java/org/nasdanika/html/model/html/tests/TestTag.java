@@ -26,7 +26,7 @@ public class TestTag extends TestBase {
 						.first()
 							.isInstanceOf(Text.class);
 					
-					assertThat(tag.getAttributes()).hasSize(1);
+					assertThat(tag.getAttributes()).hasSize(2);
 					assertThat(tag.getAttributes().get("class")).isInstanceOf(Text.class);
 					
 				},

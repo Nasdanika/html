@@ -26,6 +26,7 @@ import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.NavigationPanel;
+import org.nasdanika.html.model.bootstrap.Modal;
 import org.nasdanika.html.model.bootstrap.gen.BootstrapElementSupplierFactoryAdapter;
 
 public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapElementSupplierFactoryAdapter<M, BootstrapElement<?,?>> {
@@ -76,27 +77,27 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 					ret.attribute("title", tooltip);
 				}				
 				
-				Tag help = (Tag) features.get(AppPackage.Literals.LABEL__HELP);
+				Object decorator = features.get(AppPackage.Literals.LABEL__DECORATOR);
 				HTMLFactory htmlFactory = bootstrapFactory.getHTMLFactory();
-				if (help != null) {
-					@SuppressWarnings("unchecked")
-					List<Object> pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);
-					pageBody.add(help);
-					
-					Tag trigger = htmlFactory.tag(TagName.sup).addClass("far fa-question-circle", "nsd-label-help").style("cursor", "pointer");
-					if (!Util.isBlank(tooltip)) {
-						trigger.attribute("title", tooltip);
-					}
-					if (help.getId() == null) {
-						help.id(htmlFactory.nextId());
-					}
-					trigger.attribute("data-toggle", "modal");
-					trigger.attribute("data-target", "#" + help.getId());
+				if (decorator != null) {
+//					@SuppressWarnings("unchecked")
+//					List<Object> pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);
+//					pageBody.add(decorator);
+//					
+//					Tag trigger = htmlFactory.tag(TagName.sup).addClass("far fa-question-circle", "nsd-label-help").style("cursor", "pointer");
+//					if (!Util.isBlank(tooltip)) {
+//						trigger.attribute("title", tooltip);
+//					}
+//					if (decorator.getId() == null) {
+//						decorator.id(htmlFactory.nextId());
+//					}
+//					trigger.attribute("data-toggle", "modal");
+//					trigger.attribute("data-target", "#" + decorator.getId());
 					
 					if (TagName.span.name().equalsIgnoreCase(ret.getTagName())) {
-						ret.accept(trigger);
+						ret.accept(decorator);
 					} else {
-						ret = htmlFactory.span(ret, trigger);
+						ret = htmlFactory.span(ret, decorator);
 					}
 				}
 								
@@ -165,9 +166,9 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 		MapCompoundSupplierFactory<EStructuralFeature, Object> featuresFactory = new MapCompoundSupplierFactory<>("Features");
 		
 		M semanticElement = getTarget();
-		Label help = semanticElement.getHelp();
-		if (help != null) {
-			featuresFactory.put(AppPackage.Literals.LABEL__HELP, EObjectAdaptable.adaptToSupplierFactoryNonNull(help, Tag.class));
+		Label decorator = semanticElement.getDecorator();
+		if (decorator != null) {
+			featuresFactory.put(AppPackage.Literals.LABEL__DECORATOR, EObjectAdaptable.adaptToSupplierFactoryNonNull(decorator, Object.class));
 		}
 		
 		List<EObject> children = semanticElement.getChildren();

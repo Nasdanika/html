@@ -47,13 +47,10 @@
         <details key="documentation" value="Label children to build UI elements like trees, lists, navigation bars and drop-downs."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="help" eType="#//Label"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="decorator" eType="#//Label"
         containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Help label, link, or action.&#xA;In all cases the icon is displayed in superscript to the right of the containing label text.&#xA;If label, then the icon would have the tooltip of the help label.&#xA;If link, then a click would navigate to help contents.&#xA;If action, then help content will be generated from the action. &#xA;Help can be displayed in a modal."/>
-      </eAnnotations>
-      <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="documentation" value="Decorator label or link. If present, is rendered next to the containing label. For example, a help icon with a tooltip, link, or modal."/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>

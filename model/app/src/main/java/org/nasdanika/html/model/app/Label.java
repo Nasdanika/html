@@ -27,7 +27,7 @@ import org.nasdanika.html.model.bootstrap.Item;
  *   <li>{@link org.nasdanika.html.model.app.Label#isOutline <em>Outline</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getNotification <em>Notification</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Label#getChildren <em>Children</em>}</li>
- *   <li>{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Label#getDecorator <em>Decorator</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getLabel()
@@ -35,37 +35,6 @@ import org.nasdanika.html.model.bootstrap.Item;
  * @generated
  */
 public interface Label extends BootstrapElement, Item {
-	/**
-	 * Returns the value of the '<em><b>Help</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Help label, link, or action.
-	 * In all cases the icon is displayed in superscript to the right of the containing label text.
-	 * If label, then the icon would have the tooltip of the help label.
-	 * If link, then a click would navigate to help contents.
-	 * If action, then help content will be generated from the action. 
-	 * Help can be displayed in a modal.
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Help</em>' containment reference.
-	 * @see #setHelp(Label)
-	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Help()
-	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
-	 * @generated
-	 */
-	Label getHelp();
-
-	/**
-	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getHelp <em>Help</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Help</em>' containment reference.
-	 * @see #getHelp()
-	 * @generated
-	 */
-	void setHelp(Label value);
-
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -230,5 +199,30 @@ public interface Label extends BootstrapElement, Item {
 	 * @generated
 	 */
 	EList<EObject> getChildren();
+
+	/**
+	 * Returns the value of the '<em><b>Decorator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Decorator label or link. If present, is rendered next to the containing label. For example, a help icon with a tooltip, link, or modal.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Decorator</em>' containment reference.
+	 * @see #setDecorator(Label)
+	 * @see org.nasdanika.html.model.app.AppPackage#getLabel_Decorator()
+	 * @model containment="true"
+	 * @generated
+	 */
+	Label getDecorator();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Label#getDecorator <em>Decorator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Decorator</em>' containment reference.
+	 * @see #getDecorator()
+	 * @generated
+	 */
+	void setDecorator(Label value);
 
 } // Label
