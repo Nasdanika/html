@@ -446,6 +446,15 @@ public class ResourceFactory implements Factory {
 	protected String getRootPageFlagProperty() {
 		return "root-page";
 	}
+
+	/**
+	 * @param sourceProcessor
+	 * @param target
+	 * @return Link to the target from the source. This implementation returns null. Override to resolve external references.
+	 */
+	protected String getExternalReference(ProcessorInfo<ElementProcessor> sourceInfo, ModelElement target) {
+		return null;
+	}
 	
 	
 }

@@ -282,7 +282,7 @@ public class ModelElementProcessor extends ElementProcessor {
 	
 	/**
 	 * 
-	 * @return Absolute URI resolve relative to the semantic parent and eventually the baseURI.
+	 * @return Absolute URI resolved relative to the semantic parent and eventually the baseURI.
 	 */
 	public URI getURI() {
 		EObject se = getSemanticElement();
@@ -554,6 +554,11 @@ public class ModelElementProcessor extends ElementProcessor {
 		}
 
 		if (resourceFactory.shallCreateLink(modelElement)) {
+			// External reference
+			String externalReference = resourceFactory.getExternalReference(ProcessorInfo.of(config, this), modelElement);
+			if (externalReference != null) {
+				return externalReference;
+			}
 			// Link by cross-reference
 			String crossReferenceProperty = resourceFactory.getCrossReferenceProperty();
 			if (!Util.isBlank(crossReferenceProperty)) {
