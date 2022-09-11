@@ -206,17 +206,17 @@ resources-file:
                   icon: fa fa-cog
                   text: Hello
                   tooltip: A friendly app
-                  help: 
-                    header:
-                      content:
-                        content-text: Very informative indeed!
-                      appearance:
-                        background: LIGHT                              
-                    body:
-                      content:
-                        content-text: Extensive description...
-                    size: large
-                    centered: true                             
+#                  help: 
+#                    header:
+#                      content:
+#                        content-text: Very informative indeed!
+#                      appearance:
+#                        background: LIGHT                              
+#                    body:
+#                      content:
+#                        content-text: Extensive description...
+#                    size: large
+#                    centered: true                             
                   notification: 33
               - app-link:
                   text: Location link (href)

@@ -58,9 +58,10 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
 			java.util.function.Function<String, String> javadocResolver,
+			java.util.function.Function<String, Object> ePackageResolver,
 			BooleanSupplier isGenerateLoadSpecification,
 			Supplier<String> diagramDialectSupplier) {
-		super(value, context, ePackagePathComputer, javadocResolver);
+		super(value, context, ePackagePathComputer, javadocResolver, ePackageResolver);
 		this.isGenerateLoadSpecification = isGenerateLoadSpecification;
 		this.diagramDialectSupplier = diagramDialectSupplier;
 	}

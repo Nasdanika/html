@@ -1,9 +1,7 @@
 engineering-product:
   name: HTML
   path: html
-  releases:
-     "2021-12-3":
-       name: "2021.12.3"
+  action-prototype: "javadoc-action-prototype.xml#/"
   modules:
       - bootstrap/engineering.yml
       - ecore/engineering.yml

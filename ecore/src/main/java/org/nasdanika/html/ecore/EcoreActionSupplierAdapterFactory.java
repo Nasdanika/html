@@ -40,21 +40,21 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 				EcorePackage.Literals.ECLASS, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EClassActionSupplier(e, context, ePackagePathComputer, javadocResolver, this::isGenerateLoadSpecification, this::getDiagramDialect)));		
+				e -> new EClassActionSupplier(e, context, ePackagePathComputer, javadocResolver, this::getEPackage, this::isGenerateLoadSpecification, this::getDiagramDialect)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EDataType>(
 				EcorePackage.Literals.EDATA_TYPE, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EDataTypeActionSupplier(e, context, ePackagePathComputer, javadocResolver)));		
+				e -> new EDataTypeActionSupplier(e, context, ePackagePathComputer, javadocResolver, this::getEPackage)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EEnum>(
 				EcorePackage.Literals.EENUM, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EEnumActionSupplier(e, context, ePackagePathComputer, javadocResolver)));		
+				e -> new EEnumActionSupplier(e, context, ePackagePathComputer, javadocResolver, this::getEPackage)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EEnumLiteral>(
@@ -102,6 +102,10 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 	
 	protected String getDiagramDialect() {
 		return null;
+	}
+	
+	protected Object getEPackage(String nsURI) {
+		return EPackage.Registry.INSTANCE.get(nsURI);
 	}
 
 }

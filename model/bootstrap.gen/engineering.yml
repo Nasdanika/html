@@ -1,13 +1,6 @@
 engineering-module:
-   name: Generation Adapters
-   path: gen
-   action-prototype: "../../javadoc-action-prototype.xml#/"
-   dependencies:
-     - engineering://nasdanika/modules/html/modules/models/modules/bootstrap/modules/model
-     - engineering://nasdanika/modules/html/modules/models/modules/html/modules/gen
-     - engineering://nasdanika/modules/html/modules/bootstrap
-   issues:
-     slide-captions:
-       name: Carousel slide captions
+  name: Generation Adapters
+  path: gen
+  action-prototype: "javadoc-action-prototype.xml#/"
      
    

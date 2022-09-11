@@ -1,9 +1,7 @@
 engineering-module:
   name: Drawio
   path: drawio
-  action-prototype: "../../../nasdanika.github.io/target/model-doc/actions/app.genmodel.xml#/"    
-  dependencies:
-    - engineering://nasdanika/modules/html/modules/models/modules/app/modules/model 
+  action-prototype: "javadoc-action-prototype.xml#/"
   documentation:
     content-interpolator:
       source:

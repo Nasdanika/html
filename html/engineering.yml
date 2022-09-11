@@ -1,7 +1,5 @@
 engineering-module:
   name: HTML
   path: html
-  action-prototype: "../javadoc-action-prototype.xml#/"
-  dependencies:
-    - engineering://nasdanika/modules/core/modules/common
+  action-prototype: "javadoc-action-prototype.xml#/"
                 

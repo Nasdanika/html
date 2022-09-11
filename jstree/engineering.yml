@@ -1,7 +1,5 @@
 engineering-module:
   name: jsTree
   path: jstree
-  action-prototype: "../javadoc-action-prototype.xml#/"
-  dependencies:
-    - engineering://nasdanika/modules/html/modules/html
+  action-prototype: "javadoc-action-prototype.xml#/"
   

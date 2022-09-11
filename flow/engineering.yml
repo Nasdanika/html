@@ -1,43 +1,6 @@
 engineering-module:
   name: Flow
   path: flow
-  action-prototype: "../javadoc-action-prototype.xml#/"
-  dependencies:
-    - engineering://nasdanika/modules/html/modules/emf
-  issues:
-    generation-api:
-      name: Generation API
-      description: |+2
-        Convert unit tests into a generation API in the main codebase and documentation. Consider also Maven plug-in and CLI. 
-    unresolved-proxies:
-      name: Unresolved proxies
-      description: NPE at FlowStateDiagramGenerator.wire() in the grouping lambda because of unresolved proxy. Unresolved proxies shall be caught earlier in the pipeline. 
-    predicate:
-      name: Predicate
-      description: |+2
-        Add support of filtered generation using a predicate service in Context. Perhaps have a specialized interface instead of java function predicate to avoid accidental clash.
-        Also the predicate interface may have a method for filtering typed elements - structural features and operations. E.g. hide URI's. Perhaps have this interface in the same 
-        package with EObjectActionProvider or even as a nested interface. getPredicate() returns a predicate which accepts everything - to avoid null checks all over.  
-    drawio:
-      name: Generation of Drawio diagrams
-      description: |+2
-        Configuration (properties) for layers and tooltips. For tooltips interpolation. Participant layers instead of grouping. 
-        There are also options for role/resource decorations also placed into layers. 
-        Perhaps support of custom generators - either exec call or Java service or support of Java service in exec, if not already there - either with a selector or the service method shall indicate
-        whether it generated anything or just pass to all available until returns non-null.
-        Adapting to a generator is another option. Taking a generator from the context is yet another - the most consistent with the current approach.
-        That generator shall use style and properties - default implementation with ability to customize.   
-    rest-api:
-      name: REST API
-      description: |+2
-        Generation of REST API - a collection of JSON and JS files to be used in SPA's, e.g. Vue.js - generate specifically for Vue.js? Separate gen module, e.g. gen.vue?
-        In this case rename this one to gen.html?  
-    mermaid:
-      name: Mermaid
-      description: |+2
-        Support of Mermaid - state diagrams, flow charts, sequence diagrams.  
-    participant-sorting:
-      name: Participant Sorting
-      description: An option to sort participants by the order they appear in activities, i.e. sort activities as they are sorted now and then sort participants. Manage via appearance (which is also a TODO). Take children into consideration.
+  action-prototype: "javadoc-action-prototype.xml#/"
 
 

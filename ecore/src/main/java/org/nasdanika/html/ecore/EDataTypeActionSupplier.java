@@ -20,8 +20,9 @@ public class EDataTypeActionSupplier extends EClassifierActionSupplier<EDataType
 			EDataType value, 
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
-			java.util.function.Function<String, String> javadocResolver) {
-		super(value, context, ePackagePathComputer, javadocResolver);
+			java.util.function.Function<String, String> javadocResolver,
+			java.util.function.Function<String, Object> ePackageResolver) {
+		super(value, context, ePackagePathComputer, javadocResolver, ePackageResolver);
 	}
 	
 	@Override

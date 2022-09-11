@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
@@ -17,14 +18,17 @@ public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElem
 
 	private Function<String, String> javadocResolver;
 	protected Class<?> instanceClass;
+	private Function<String, Object> ePackageResolver;
 
 	public EClassifierActionSupplier(
 			T value, 
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
-			java.util.function.Function<String, String> javadocResolver) {
+			java.util.function.Function<String, String> javadocResolver,
+			java.util.function.Function<String, Object> ePackageResolver) {
 		super(value, context, ePackagePathComputer);
 		this.javadocResolver = javadocResolver;
+		this.ePackageResolver = ePackageResolver;
 		instanceClass = value.getInstanceClass();
 		if (instanceClass == null) {
 			EPackage registeredPackage = getRegisteredPackage(value);
@@ -68,9 +72,9 @@ public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElem
 		return getUses(eObject);
 	}
 
-	private static EPackage getRegisteredPackage(EClassifier eObject) {
+	private EPackage getRegisteredPackage(EClassifier eObject) {
 		String nsURI = eObject.getEPackage().getNsURI();
-		Object value = EPackage.Registry.INSTANCE.get(nsURI);
+		Object value = ePackageResolver.apply(nsURI);
 		if (value instanceof EPackage) {
 			return (EPackage) value;
 		}

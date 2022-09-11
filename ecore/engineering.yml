@@ -1,7 +1,7 @@
 engineering-module:
   name: Ecore
   path: ecore
-  action-prototype: "../javadoc-action-prototype.xml#/"
+  action-prototype: "javadoc-action-prototype.xml#/"
   documentation: 
     content-interpolator:
       source:
@@ -9,28 +9,3 @@ engineering-module:
           style: true
           source:
             content-resource: ecore.md
-  dependencies:
-    - engineering://nasdanika/modules/html/modules/emf
-  issues:
-    action-template:
-      name: Action template
-      description: |+2
-        Annnotation to load documentation action from a template, e.g. YAML or XML, instead of creating with a factory.
-        The action will then be populated as usual. This would allow to, say, have engineering issues at model element level.  
-    engineering-generation-target:
-      name: Engineering generation target
-      description: |+2
-        Generate engineering model instead of action model. This would allow to link issues, owners, etc. to model elements.
-        Need support for merging.
-    emaps:
-      name: Display EMaps directly to the value class with a different relationship, e.g. ``#--``
-    ekeys:
-      name: EKeys as qualifiers - similar to EMaps. Report in documentation. 
-    association-classes:
-      name: Consider support of association classes using annotations. E.g. an annotation on the association class with target reference name. Say ``association-class-reference`` key with reference name.  
-    action-template-annotation:
-      name: Action template annotation - location of an action resource to load a template from instead of using AppFactory.createAction(). Would allow to merge, say, navigation actions.
-    javadoc:
-      name: Javadoc link to instance class.
-
-

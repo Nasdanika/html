@@ -1,33 +1,5 @@
 engineering-module:
   name: EMF
   path: emf
-  action-prototype: "../javadoc-action-prototype.xml#/"
-  dependencies:
-    - engineering://nasdanika/modules/html/modules/html
-    - engineering://nasdanika/modules/core/modules/emf
-  issues:
-    hierarchical-tables:    
-      name: Hierarchical tables
-      description: RowBuilder provider similar as for lists. Perhaps needs to take depth argument so can build indent in the first column.
-    temporal-rendering:
-      name: Temporal rendering
-      description: |+2
-        Implement for relative temporals, generate start/end actions for period subclasses if start/end temporals have offset, base, bounds, or derivatives.
-        Also info icon in render value navigating to the respective actions. 
-    uri-copy-to-clipboard:
-      name: URI copy to clipboard icon
-      description: navigator.clipboard.writeText("Australia"); far fa-clipboard or far fa-copy as on GitHub. Use data-uri attribute? this.getAttribute('data-uri')
-      releases: engineering://nasdanika/modules/html/releases/2021-12-3
-      status: engineering://nasdanika/issue-statuses/done
-    uri-copy-to-clipboard-relative:
-      name: Relative URI copy to clipboard
-      description: Drop-down or a dialog with a base URI field to compute relative URI's. Use of relative URI's may be preferred in models which are intended to be reused and the root URI may change.
-    facets:
-      name: Facets
-      description: |+2
-        Either ModelElement or Faceted interface have a containment facets link - to mix-in behavior instead of inheritance.
-        Facets are adapted to something like ActionBuilderFacet to participate in action building - properties table, etc.
-        May have facets annotation at EClass level with optional prefixes. E.g. EClass B inherits from A and defines that C is a facet. 
-        C is created and its features are populated only if none of A features match. 
-        If there is a prefix then C's feature keys are prefixed with that prefix.  
+  action-prototype: "javadoc-action-prototype.xml#/"
         

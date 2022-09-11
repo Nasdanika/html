@@ -1,11 +1,4 @@
 engineering-module:
   name: Bootstrap
   path: bootstrap
-  action-prototype: "../javadoc-action-prototype.xml#/"
-  dependencies:
-    - engineering://nasdanika/modules/html/modules/html
-  issues:
-    upgrade-to-bootstrap-5:
-      name: Updgrade to Bootstrap 5
-      description: https://getbootstrap.com/docs/5.0/migration/
-      effort: 40
+  action-prototype: "javadoc-action-prototype.xml#/"
