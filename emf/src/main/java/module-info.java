@@ -1,4 +1,3 @@
-
 module org.nasdanika.html.emf {
 	
 	requires transitive org.nasdanika.html.model.app;

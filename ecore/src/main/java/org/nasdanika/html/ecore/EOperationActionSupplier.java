@@ -82,7 +82,7 @@ public class EOperationActionSupplier extends ETypedElementActionSupplier<EOpera
 				for (EGenericType genericException: eGenericExceptions) {
 					Tag listItem = TagName.li.create();
 					list.content(listItem);
-					genericType(genericException, contextEClass, listItem.getContent(), progressMonitor);
+					genericType(genericException, contextEClass, listItem.getContent()::add, progressMonitor);
 				}
 				addContent(action, gstf.toString());
 			}				

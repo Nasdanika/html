@@ -31,11 +31,11 @@ import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.emf.DiagramTextGenerator;
+import org.nasdanika.emf.DiagramTextGenerator.RelationshipDirection;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.emf.EmfUtil.EModelElementDocumentation;
 import org.nasdanika.emf.MermaidTextGenerator;
 import org.nasdanika.emf.PlantUmlTextGenerator;
-import org.nasdanika.emf.DiagramTextGenerator.RelationshipDirection;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
@@ -46,6 +46,7 @@ import org.nasdanika.html.bootstrap.Table;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.SectionStyle;
+import org.nasdanika.html.model.app.gen.DynamicTableBuilder;
 import org.nasdanika.ncore.util.NcoreUtil;
 
 public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
@@ -117,7 +118,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			for (EGenericType superType: eGenericSuperTypes) {
 				Tag listItem = TagName.li.create();
 				list.content(listItem);
-				genericType(superType, eObject, listItem.getContent(), progressMonitor);
+				genericType(superType, eObject, listItem.getContent()::add, progressMonitor);
 			}
 			addContent(action, gstf.toString());
 		}
@@ -257,7 +258,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				for (EGenericType superType: allGenericSupertypes) {
 					Tag listItem = TagName.li.create();
 					list.content(listItem);
-					genericType(superType, eObject, listItem.getContent(), progressMonitor);
+					genericType(superType, eObject, listItem.getContent()::add, progressMonitor);
 				}
 				addContent(allSupertypesAction, list.toString());			
 				addContent(allSupertypesAction, inheritanceDiagram);
@@ -324,6 +325,29 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			allAttributesAction.setSectionStyle(SectionStyle.HEADER);
 			allGroup.getChildren().add(allAttributesAction);
 			
+			DynamicTableBuilder<EAttribute> tableBuilder = new DynamicTableBuilder<>();
+			tableBuilder
+				.addStringColumnBuilder("name", true, "Name", ENamedElement::getName)
+				.addStringColumnBuilder("type", true, "Type", attr -> {
+					EGenericType genericType = attr.getEGenericType(); 
+					if (genericType == null) {
+						return null;
+					}
+					StringBuilder sb = new StringBuilder();
+					genericType(genericType, eObject, sb::append, progressMonitor);
+					return sb.toString();
+				})
+				.addStringColumnBuilder("cardinality", true, "Cardinality", EModelElementActionSupplier::cardinality)
+				.addBooleanColumnBuilder("changeable", true, "Changeable", EStructuralFeature::isChangeable)
+				.addBooleanColumnBuilder("derived", true, "Derived", EStructuralFeature::isDerived)
+				.addStringColumnBuilder("declaring-class", true, "Declaring Class", attr -> {
+					return link(attr.getEContainingClass(), eObject);
+				})
+				.addStringColumnBuilder("description", true, "Description", this::getEModelElementFirstDocSentence);
+				// Other things not visible?
+			
+			allAttributesAction.getContent().add(tableBuilder.build(allAttributes, eObject.getEPackage().getNsURI().hashCode() + "-" + eObject.getName() + "-all-attributes", "all-attributes-table", progressMonitor));
+			
 			EList<Action> attributes = allAttributesAction.getSections();
 			for (EStructuralFeature sf: allAttributes) {
 				attributes.add(adaptChild(sf).execute(eObject, progressMonitor));
@@ -364,7 +388,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				Table table = context.get(BootstrapFactory.class).table();
 				table.toHTMLElement().style().width("auto");
 				
-				genericType(sf.getEGenericType(), eObject, ETypedElementActionSupplier.addRow(table, "Type"), progressMonitor);
+				genericType(sf.getEGenericType(), eObject, ETypedElementActionSupplier.addRow(table, "Type")::add, progressMonitor);
 				
 				boolean isDefaultFeature = EObjectLoader.isDefaultFeature(eObject, sf);
 				if (isDefaultFeature) {

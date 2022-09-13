@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.common.notify.Notifier;
@@ -402,21 +402,21 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	 * @param eGenericType
 	 * @param accumulator 
 	 */
-	protected void genericType(EGenericType eGenericType, EClassifier contextClassifier, List<Object> accumulator, ProgressMonitor monitor) {
+	protected void genericType(EGenericType eGenericType, EClassifier contextClassifier, Consumer<String> accumulator, ProgressMonitor monitor) {
 		if (eGenericType == null) {
-			accumulator.add("void");
+			accumulator.accept("void");
 		} else if (eGenericType.getETypeParameter() != null) {
-			accumulator.add(eGenericType.getETypeParameter().getName());
+			accumulator.accept(eGenericType.getETypeParameter().getName());
 		} else if (eGenericType.getEClassifier() != null) {
-			accumulator.add(link(eGenericType.getEClassifier(), contextClassifier));
+			accumulator.accept(link(eGenericType.getEClassifier(), contextClassifier));
 			genericTypeArguments(eGenericType, contextClassifier, accumulator, monitor);
 		} else {
-			accumulator.add('?');
+			accumulator.accept("?");
 			if (eGenericType.getELowerBound() != null) {
-				accumulator.add(" super ");
+				accumulator.accept(" super ");
 				genericType(eGenericType.getELowerBound(), contextClassifier, accumulator, monitor);
 			} else if (eGenericType.getEUpperBound() != null) {
-				accumulator.add(" extends ");
+				accumulator.accept(" extends ");
 				genericType(eGenericType.getEUpperBound(), contextClassifier, accumulator, monitor);
 			}
 		}
@@ -479,17 +479,17 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		return Util.isBlank(path) ? eClassifier.getName() : "<a href=\"" + path + "\">" + eClassifier.getName() + "</a>";
 	}
 
-	protected void genericTypeArguments(EGenericType eGenericType, EClassifier contextClassifier, List<Object> accumulator, ProgressMonitor monitor) {
+	protected void genericTypeArguments(EGenericType eGenericType, EClassifier contextClassifier, Consumer<String> accumulator, ProgressMonitor monitor) {
 		Iterator<EGenericType> it = eGenericType.getETypeArguments().iterator();
 		if (it.hasNext()) {
-			accumulator.add("&lt;");
+			accumulator.accept("&lt;");
 			while (it.hasNext()) {
 				genericType(it.next(), contextClassifier, accumulator, monitor);
 				if (it.hasNext()) {
-					accumulator.add(",");
+					accumulator.accept(",");
 				}
 			}
-			accumulator.add("&gt;");
+			accumulator.accept("&gt;");
 		}
 	}
 	

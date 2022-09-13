@@ -45,7 +45,7 @@ public class ETypedElementActionSupplier<T extends ETypedElement> extends ENamed
 		
 		EGenericType genericType = eObject.getEGenericType(); 
 		if (genericType != null) {
-			genericType(genericType, contextEClass, addRow(table, "Type"), monitor);
+			genericType(genericType, contextEClass, addRow(table, "Type")::add, monitor);
 		}
 		
 		addRow(table, "Cardinality").add(cardinality(eObject));

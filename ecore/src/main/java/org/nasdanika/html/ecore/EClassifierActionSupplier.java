@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
