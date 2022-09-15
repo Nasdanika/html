@@ -10,7 +10,7 @@
 	<artifactId>app-model-gen</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Application Model Generation Adapters</name>
-
+	<url>https://docs.nasdanika.org/modules/html/modules/models/modules/app/modules/gen/index.html</url>
 	<build>
 	    <plugins>
 			<plugin>

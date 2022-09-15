@@ -10,7 +10,7 @@
 	<artifactId>html-model</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML Model</name>
-
+	<url>https://docs.nasdanika.org/modules/html/modules/models/modules/html/modules/model/index.html</url>
 	<build>
 		<plugins>
 			<plugin>

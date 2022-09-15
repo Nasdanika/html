@@ -1,8 +1,10 @@
 package org.nasdanika.html.ecore;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
 import org.nasdanika.common.Context;
@@ -12,8 +14,12 @@ import org.nasdanika.html.model.app.Action;
 
 public class EParameterActionSupplier extends ETypedElementActionSupplier<EParameter> {
 
-	public EParameterActionSupplier(EParameter value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
-		super(value, context, ePackagePathComputer);
+	public EParameterActionSupplier(
+			EParameter value, 
+			Context context, 
+			java.util.function.Function<EPackage,String> ePackagePathComputer,
+			Predicate<EModelElement> elementPredicate) {
+		super(value, context, ePackagePathComputer, elementPredicate);
 	}
 	
 	@Override

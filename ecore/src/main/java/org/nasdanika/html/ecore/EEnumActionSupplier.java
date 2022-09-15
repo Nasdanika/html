@@ -1,12 +1,15 @@
 package org.nasdanika.html.ecore;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
@@ -23,8 +26,10 @@ public class EEnumActionSupplier extends EClassifierActionSupplier<EEnum> {
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
 			java.util.function.Function<String, String> javadocResolver,
-			java.util.function.Function<String, Object> ePackageResolver) {
-		super(value, context, ePackagePathComputer, javadocResolver, ePackageResolver);
+			java.util.function.Function<String, Object> ePackageResolver,
+			Predicate<EModelElement> elementPredicate) {
+		super(value, context, ePackagePathComputer, javadocResolver, ePackageResolver, elementPredicate);
+		this.elementPredicate = elementPredicate;
 	}
 	
 	@Override
@@ -47,7 +52,7 @@ public class EEnumActionSupplier extends EClassifierActionSupplier<EEnum> {
 		literalsAction.setText("Literals");
 		literalsAction.setSectionStyle(SectionStyle.TABLE);
 		EList<Action> literals = literalsAction.getSections();
-		for (EEnumLiteral literal: eObject.getELiterals()) {
+		for (EEnumLiteral literal: retainDocumentable(eObject.getELiterals())) {
 			literals.add(adaptChild(literal).execute(contextEClass, progressMonitor));
 		}
 		return literalsAction;

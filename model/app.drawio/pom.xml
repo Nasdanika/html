@@ -10,7 +10,7 @@
 	<artifactId>app-model-drawio</artifactId>
 	<packaging>jar</packaging>
 	<name>Resource factory for loading drawio diagrams as application models</name>
-	
+	<url>https://docs.nasdanika.org/modules/html/modules/models/modules/app/modules/drawio/index.html</url>	
 	<build>
 		<plugins>
 			<plugin>

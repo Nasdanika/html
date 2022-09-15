@@ -4,12 +4,14 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
@@ -27,8 +29,12 @@ import org.nasdanika.html.model.app.SectionStyle;
 
 public class EOperationActionSupplier extends ETypedElementActionSupplier<EOperation> implements EcoreActionSupplier  {
 
-	public EOperationActionSupplier(EOperation value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
-		super(value, context, ePackagePathComputer);
+	public EOperationActionSupplier(
+			EOperation value, 
+			Context context, 
+			java.util.function.Function<EPackage,String> ePackagePathComputer,
+			Predicate<EModelElement> elementPredicate) {
+		super(value, context, ePackagePathComputer, elementPredicate);
 	}
 	
 	@Override

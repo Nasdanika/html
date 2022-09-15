@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
@@ -37,9 +39,9 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 			EPackage value, 
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer, 
-			Supplier<String> diagramDialectSupplier) {
-		
-		super(value, context, ePackagePathComputer);
+			Predicate<EModelElement> elementPredicate,
+			Supplier<String> diagramDialectSupplier) {		
+		super(value, context, ePackagePathComputer, elementPredicate);
 		this.diagramDialectSupplier = diagramDialectSupplier;
 	}
 	
@@ -116,11 +118,11 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 //		addContent(data, Collections.singletonMap("component-list-of-contents", Collections.singletonMap("tooltip", true))); 
 		
 		EList<EObject> children = action.getChildren();
-		for (EPackage subPackage: eObject.getESubpackages().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+		for (EPackage subPackage: eObject.getESubpackages().stream().filter(elementPredicate).sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
 			children.add(adaptChild(subPackage).execute(contextEClass, progressMonitor));
 		}
 	
-		for (EClassifier eClassifier: eObject.getEClassifiers().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+		for (EClassifier eClassifier: eObject.getEClassifiers().stream().filter(elementPredicate).sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
 			children.add(adaptChild(eClassifier).execute(contextEClass, progressMonitor));			
 		}
 		
@@ -134,7 +136,7 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 		}
 		switch (dialect) {
 		case DiagramGenerator.UML_DIALECT:
-			return new PlantUmlTextGenerator(sb, eClassifierLinkResolver, this::getEModelElementFirstDocSentence) {
+			return new PlantUmlTextGenerator(sb, elementPredicate, eClassifierLinkResolver, this::getEModelElementFirstDocSentence) {
 				
 				@Override
 				protected Collection<EClass> getSubTypes(EClass eClass) {
@@ -163,7 +165,7 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 									
 			};
 		case DiagramGenerator.MERMAID_DIALECT:
-			return new MermaidTextGenerator(sb, eClassifierLinkResolver, this::getEModelElementFirstDocSentence) {
+			return new MermaidTextGenerator(sb, elementPredicate, eClassifierLinkResolver, this::getEModelElementFirstDocSentence) {
 				
 				@Override
 				protected Collection<EClass> getSubTypes(EClass eClass) {

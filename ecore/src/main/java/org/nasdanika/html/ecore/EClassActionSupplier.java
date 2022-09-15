@@ -9,25 +9,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
+import org.nasdanika.common.MarkdownHelper;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.emf.DiagramTextGenerator;
@@ -60,9 +65,11 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
 			java.util.function.Function<String, String> javadocResolver,
 			java.util.function.Function<String, Object> ePackageResolver,
+			Predicate<EModelElement> elementPredicate,
 			BooleanSupplier isGenerateLoadSpecification,
 			Supplier<String> diagramDialectSupplier) {
-		super(value, context, ePackagePathComputer, javadocResolver, ePackageResolver);
+		super(value, context, ePackagePathComputer, javadocResolver, ePackageResolver, elementPredicate);
+		this.elementPredicate = elementPredicate;
 		this.isGenerateLoadSpecification = isGenerateLoadSpecification;
 		this.diagramDialectSupplier = diagramDialectSupplier;
 	}
@@ -107,7 +114,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		}
 
 		// Generic supertypes
-		EList<EGenericType> eGenericSuperTypes = eObject.getEGenericSuperTypes();
+		EList<EGenericType> eGenericSuperTypes =  eObject.getEGenericSuperTypes();
 		if (!eGenericSuperTypes.isEmpty()) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
 			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create("Supertypes")).attribute("name", "supertypes"));
@@ -192,36 +199,26 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			generateLoadSpecification(action, namedElementComparator, progressMonitor);
 		}
 		
-//		TODO - Table (list) of contents
-//		Map<String, Object> locConfig = new LinkedHashMap<>();
-//		locConfig.put("tooltip", true);
-//		locConfig.put("header", "Members");		
-//		locConfig.put("role", Action.Role.SECTION);		
-//		addContent(data, Collections.singletonMap("component-list-of-contents", locConfig));
+		List<EAttribute> sortedAttributes = eObject.getEAttributes().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		
 		EList<Action> sections = action.getSections();
 		if (!eObject.getEAttributes().isEmpty()) {
-			Action attributesCategory = AppFactory.eINSTANCE.createAction();
-			attributesCategory.setText("Attributes");
-			attributesCategory.setName("attributes");
-			attributesCategory.setSectionStyle(SectionStyle.HEADER);
-			sections.add(attributesCategory);
-			EList<Action> attributes = attributesCategory.getSections();
-			for (EStructuralFeature sf: eObject.getEAttributes().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				attributes.add(adaptChild(sf).execute(null, progressMonitor));
-			}
+			Action attributeSummaryCategory = AppFactory.eINSTANCE.createAction();
+			attributeSummaryCategory.setText("Attribute summary");
+			attributeSummaryCategory.setName("attribute-summary");
+			attributeSummaryCategory.setSectionStyle(SectionStyle.HEADER);
+			sections.add(attributeSummaryCategory);
+			attributeSummaryCategory.getContent().add(buildDynamicAttributesTable(sortedAttributes, progressMonitor));			
 		}
 		
+		List<EReference> sortedReferences = eObject.getEReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList());
 		if (!eObject.getEReferences().isEmpty()) {
-			Action referencesCategory = AppFactory.eINSTANCE.createAction();
-			referencesCategory.setText("References");
-			referencesCategory.setName("references");
-			referencesCategory.setSectionStyle(SectionStyle.HEADER);
-			sections.add(referencesCategory);
-			EList<Action> references = referencesCategory.getSections();			
-			for (EStructuralFeature sf: eObject.getEReferences().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-				references.add(adaptChild(sf).execute(null, progressMonitor));
-			}
+			Action referenceSummaryCategory = AppFactory.eINSTANCE.createAction();
+			referenceSummaryCategory.setText("Reference summary");
+			referenceSummaryCategory.setName("reference-summary");
+			referenceSummaryCategory.setSectionStyle(SectionStyle.HEADER);
+			sections.add(referenceSummaryCategory);
+			referenceSummaryCategory.getContent().add(buildDynamicReferencesTable(sortedReferences, progressMonitor));			
 		}
 		
 		if (!eObject.getEOperations().isEmpty()) {
@@ -233,6 +230,31 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			EList<Action> operations = operationsCategory.getSections();			
 			for (EOperation eOp: eObject.getEOperations().stream().sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
 				operations.add(adaptChild(eOp).execute(null, progressMonitor));			
+			}
+		}
+		
+		if (!eObject.getEAttributes().isEmpty()) {
+			Action attributeDetailsCategory = AppFactory.eINSTANCE.createAction();
+			attributeDetailsCategory.setText("Attribute details");
+			attributeDetailsCategory.setName("attribute-details");
+			attributeDetailsCategory.setSectionStyle(SectionStyle.HEADER);
+			sections.add(attributeDetailsCategory);
+			EList<Action> attributes = attributeDetailsCategory.getSections();
+			
+			for (EStructuralFeature sf: sortedAttributes) {
+				attributes.add(adaptChild(sf).execute(null, progressMonitor));
+			}
+		}
+		
+		if (!eObject.getEReferences().isEmpty()) {
+			Action referenceDetailsCategory = AppFactory.eINSTANCE.createAction();
+			referenceDetailsCategory.setText("Reference details");
+			referenceDetailsCategory.setName("reference-details");
+			referenceDetailsCategory.setSectionStyle(SectionStyle.HEADER);
+			sections.add(referenceDetailsCategory);
+			EList<Action> references = referenceDetailsCategory.getSections();			
+			for (EStructuralFeature sf: sortedReferences) {
+				references.add(adaptChild(sf).execute(null, progressMonitor));
 			}
 		}
 		
@@ -310,10 +332,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			allReferencesAction.setSectionStyle(SectionStyle.HEADER);
 			allGroup.getChildren().add(allReferencesAction);
 			
-			EList<Action> references = allReferencesAction.getSections();			
-			for (EStructuralFeature sf: allReferences) {
-				references.add(adaptChild(sf).execute(eObject, progressMonitor));
-			}
+			allReferencesAction.getContent().add(buildDynamicReferencesTable(allReferences, progressMonitor));
 		}
 	}
 
@@ -325,35 +344,64 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			allAttributesAction.setSectionStyle(SectionStyle.HEADER);
 			allGroup.getChildren().add(allAttributesAction);
 			
-			DynamicTableBuilder<EAttribute> tableBuilder = new DynamicTableBuilder<>();
-			tableBuilder
-				.addStringColumnBuilder("name", true, "Name", ENamedElement::getName)
-				.addStringColumnBuilder("type", true, "Type", attr -> {
-					EGenericType genericType = attr.getEGenericType(); 
-					if (genericType == null) {
-						return null;
-					}
-					StringBuilder sb = new StringBuilder();
-					genericType(genericType, eObject, sb::append, progressMonitor);
-					return sb.toString();
-				})
-				.addStringColumnBuilder("cardinality", true, "Cardinality", EModelElementActionSupplier::cardinality)
-				.addBooleanColumnBuilder("changeable", true, "Changeable", EStructuralFeature::isChangeable)
-				.addBooleanColumnBuilder("derived", true, "Derived", EStructuralFeature::isDerived)
-				.addStringColumnBuilder("declaring-class", true, "Declaring Class", attr -> {
-					return link(attr.getEContainingClass(), eObject);
-				})
-				.addStringColumnBuilder("description", true, "Description", this::getEModelElementFirstDocSentence);
-				// Other things not visible?
-			
-			allAttributesAction.getContent().add(tableBuilder.build(allAttributes, eObject.getEPackage().getNsURI().hashCode() + "-" + eObject.getName() + "-all-attributes", "all-attributes-table", progressMonitor));
-			
-			EList<Action> attributes = allAttributesAction.getSections();
-			for (EStructuralFeature sf: allAttributes) {
-				attributes.add(adaptChild(sf).execute(eObject, progressMonitor));
-			}
+			allAttributesAction.getContent().add(buildDynamicAttributesTable(allAttributes,	progressMonitor));
 		}
 	}
+
+	protected org.nasdanika.html.model.html.Tag buildDynamicAttributesTable(List<EAttribute> attributes,	ProgressMonitor progressMonitor) {
+		@SuppressWarnings("unchecked")
+		DynamicTableBuilder<EAttribute> attributesTableBuilder = new DynamicTableBuilder<>();
+		attributesTableBuilder
+			.addStringColumnBuilder("name", true, true, "Name", attr -> link(attr, eObject))
+			.addStringColumnBuilder("type", true, true, "Type", attr -> {
+				EGenericType genericType = attr.getEGenericType(); 
+				if (genericType == null) {
+					return null;
+				}
+				StringBuilder sb = new StringBuilder();
+				genericType(genericType, eObject, sb::append, progressMonitor);
+				return sb.toString();
+			})
+			.addStringColumnBuilder("cardinality", true, true, "Cardinality", EModelElementActionSupplier::cardinality)
+			.addBooleanColumnBuilder("changeable", true, true, "Changeable", EStructuralFeature::isChangeable)
+			.addBooleanColumnBuilder("derived", true, true, "Derived", EStructuralFeature::isDerived)
+			.addStringColumnBuilder("declaring-class", true, true, "Declaring Class", attr -> link(attr.getEContainingClass(), eObject))
+			.addStringColumnBuilder("description", true, false, "Description", this::getEModelElementFirstDocSentence);
+			// Other things not visible?
+		
+		org.nasdanika.html.model.html.Tag attributesTable = attributesTableBuilder.build(attributes, eObject.getEPackage().getNsURI().hashCode() + "-" + eObject.getName() + "-attributes", "attributes-table", progressMonitor);
+		return attributesTable;
+	}
+	
+	protected org.nasdanika.html.model.html.Tag buildDynamicReferencesTable(List<EReference> references, ProgressMonitor progressMonitor) {
+		@SuppressWarnings("unchecked")
+		DynamicTableBuilder<EReference> referencesTableBuilder = new DynamicTableBuilder<>();
+		referencesTableBuilder
+			.addStringColumnBuilder("name", true, true, "Name", ref -> link(ref, eObject))
+			.addStringColumnBuilder("type", true, true, "Type", ref -> {
+				EGenericType genericType = ref.getEGenericType(); 
+				if (genericType == null) {
+					return null;
+				}
+				StringBuilder sb = new StringBuilder();
+				genericType(genericType, eObject, sb::append, progressMonitor);
+				return sb.toString();
+			})
+			.addStringColumnBuilder("cardinality", true, true, "Cardinality", EModelElementActionSupplier::cardinality)
+			.addBooleanColumnBuilder("changeable", true, true, "Changeable", EStructuralFeature::isChangeable)
+			.addBooleanColumnBuilder("derived", true, true, "Derived", EStructuralFeature::isDerived)
+			.addStringColumnBuilder("declaring-class", true, true, "Declaring Class", ref -> link(ref.getEContainingClass(), eObject))
+			.addStringColumnBuilder("opposite", true, true, "Opposite", ref -> {
+				EReference opposite = NcoreUtil.getOpposite(ref);
+				return opposite == null ? null : link(opposite, eObject);				
+			})
+			.addStringColumnBuilder("description", true, false, "Description", this::getEModelElementFirstDocSentence);
+			// Other things not visible?
+		
+		org.nasdanika.html.model.html.Tag referencesTable = referencesTableBuilder.build(references, eObject.getEPackage().getNsURI().hashCode() + "-" + eObject.getName() + "-references", "references-table", progressMonitor);
+		return referencesTable;
+	}
+	
 
 	private void generateLoadSpecification(
 			Action action, 
@@ -372,12 +420,52 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				loadSpecificationAction.getContent().add(interpolatedMarkdown(loadDoc.getDocumentation(), loadDoc.getLocation(), progressMonitor));
 			}
 			
-			Tag toc = TagName.ul.create();
-			
 			Predicate<EStructuralFeature> predicate = sf -> sf.isChangeable() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, "true"));
-			for (EStructuralFeature sf: eObject.getEAllStructuralFeatures().stream().filter(predicate).sorted(namedElementComparator).collect(Collectors.toList())) {
+			List<EStructuralFeature> sortedFeatures = eObject.getEAllStructuralFeatures().stream().filter(predicate).sorted(namedElementComparator).collect(Collectors.toList());
+			
+			Function<EStructuralFeature, String> keyExtractor = sf -> NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, NcoreUtil.getFeatureKey(eObject, sf));
+			Predicate<EStructuralFeature> homogenousPredicate = sf -> "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENOUS)) || NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.REFERENCE_TYPE) != null;
+			Predicate<EStructuralFeature> strictContainmentPredicate = homogenousPredicate.and(sf -> "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_STRICT_CONTAINMENT)));
+			Function<EStructuralFeature, Object[]> exclusiveWithExtractor = sf -> EObjectLoader.getExclusiveWith(eObject, sf, EObjectLoader.LOAD_KEY_PROVIDER);
+			
+			@SuppressWarnings("unchecked")
+			DynamicTableBuilder<EStructuralFeature> loadSpecificationTableBuilder = new DynamicTableBuilder<>();
+			loadSpecificationTableBuilder
+				.addStringColumnBuilder("key", true, true, "Key", sf -> {
+					String key = keyExtractor.apply(sf);
+					return TagName.a.create(key).attribute("href", "#key-section-" + key).attribute("style", "font-weight:bold", EObjectLoader.isDefaultFeature(eObject, sf)).toString();
+				})
+				.addStringColumnBuilder("type", true, true, "Type", attr -> {
+					EGenericType genericType = attr.getEGenericType(); 
+					if (genericType == null) {
+						return null;
+					}
+					StringBuilder sb = new StringBuilder();
+					genericType(genericType, eObject, sb::append, progressMonitor);
+					return sb.toString();
+				})
+				.addStringColumnBuilder("cardinality", true, false, "Cardinality", EModelElementActionSupplier::cardinality)
+				.addBooleanColumnBuilder("homogenous", true, false, "Homogenous", homogenousPredicate)
+				.addBooleanColumnBuilder("strict-containment", true, false, "Strict Containment", strictContainmentPredicate)
+				.addStringColumnBuilder("exclusive-with", true, false, "Exclusive With", sf -> {
+					Object[] exclusiveWith = exclusiveWithExtractor.apply(sf);
+					if (exclusiveWith.length == 0) {
+						return null;
+					}
+					Tag ul = TagName.ul.create();
+					for (Object exw: exclusiveWith) {
+						ul.content(TagName.li.create(exw));
+					}
+					return ul.toString();				
+				})
+				.addStringColumnBuilder("description", true, false, "Description", this::getEStructuralFeatureFirstLoadDocSentence);
+				// Other things not visible?
+			
+			org.nasdanika.html.model.html.Tag loadSpecificationTable = loadSpecificationTableBuilder.build(sortedFeatures, eObject.getEPackage().getNsURI().hashCode() + "-" + eObject.getName() + "-load-specification", "load-specification-table", progressMonitor);						
+			
+			for (EStructuralFeature sf: sortedFeatures) {
 				Action featureAction = AppFactory.eINSTANCE.createAction();
-				String key = NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, NcoreUtil.getFeatureKey(eObject, sf));
+				String key = keyExtractor.apply(sf);
 				featureAction.setText(key);
 				String sectionAnchor = "key-section-" + key;
 				
@@ -394,19 +482,18 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				if (isDefaultFeature) {
 					ETypedElementActionSupplier.addRow(table, "Default").add("true");				
 				}
-				toc.accept(TagName.li.create(TagName.a.create(key).attribute("href", "#" + sectionAnchor).attribute("style", "font-weight:bold", isDefaultFeature)));
 				
-				boolean isHomogenous = "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENOUS)) || NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.REFERENCE_TYPE) != null;
+				boolean isHomogenous = homogenousPredicate.test(sf);
 				if (isHomogenous) {
 					ETypedElementActionSupplier.addRow(table, "Homogenous").add("true");									
 				}
 				
-				boolean isStrictContainment = isHomogenous && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_STRICT_CONTAINMENT));			
+				boolean isStrictContainment = strictContainmentPredicate.test(sf);			
 				if (isStrictContainment) {
 					ETypedElementActionSupplier.addRow(table, "Strict containment").add("true");									
 				}
 				
-				Object[] exclusiveWith = EObjectLoader.getExclusiveWith(eObject, sf, EObjectLoader.LOAD_KEY_PROVIDER);
+				Object[] exclusiveWith = exclusiveWithExtractor.apply(sf);
 				if (exclusiveWith.length != 0) {
 					Tag ul = TagName.ul.create();
 					for (Object exw: exclusiveWith) {
@@ -417,21 +504,45 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 
 				addContent(featureAction, table.toString());
 				
-				EModelElementDocumentation featureLoadDoc = EmfUtil.getLoadDocumentation(sf);
-				if (featureLoadDoc == null) {
-//					featureLoadDoc = EObjectAdaptable.getResourceContext(sf).getString("documentation", EcoreUtil.getDocumentation(sf));
-//					if (Util.isBlank(featureLoadDoc)) {
-						featureLoadDoc = EmfUtil.getDocumentation(sf);
-//					}					
-				}
+				EModelElementDocumentation featureLoadDoc = getFeatureLoadDoc(sf);
 				if (featureLoadDoc != null) {
 					featureAction.getContent().add(interpolatedMarkdown(context.interpolateToString(featureLoadDoc.getDocumentation()), featureLoadDoc.getLocation(), progressMonitor));
 				}
 			}	
 			
-			addContent(loadSpecificationAction, toc.toString());
+			loadSpecificationAction.getContent().add(loadSpecificationTable);
 		}
 	}
+	
+	protected EModelElementDocumentation getFeatureLoadDoc(EStructuralFeature sf) {
+		EModelElementDocumentation featureLoadDoc = EmfUtil.getLoadDocumentation(sf);
+		return featureLoadDoc == null ? EmfUtil.getDocumentation(sf) : featureLoadDoc;
+	}	
+	
+	protected String getEStructuralFeatureFirstLoadDocSentence(EStructuralFeature sf) {
+		EModelElementDocumentation documentation = getFeatureLoadDoc(sf);
+		if (documentation == null) {
+			return null;
+		}
+		
+		MarkdownHelper markdownHelper = new MarkdownHelper() {
+			
+			@Override
+			protected URI getResourceBase() {
+				return documentation.getLocation();
+			}
+			
+			@Override
+			protected DiagramGenerator getDiagramGenerator() {
+				return context == null ? super.getDiagramGenerator() : context.get(DiagramGenerator.class, super.getDiagramGenerator()); 
+			}
+			
+		};
+		
+		String ret = markdownHelper.firstPlainTextSentence(documentation.getDocumentation());
+		return String.join(" ", ret.split("\\R")); // Replacing new lines, shall they be in the first sentence, with spaces.		
+	}
+	
 	
 	protected DiagramTextGenerator getDiagramTextGenerator(StringBuilder sb, boolean appendAttributes, boolean appendOperations) {
 		String dialect = diagramDialectSupplier.get();
@@ -440,7 +551,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		}
 		switch (dialect) {
 		case DiagramGenerator.UML_DIALECT:
-			return new PlantUmlTextGenerator(sb, ec -> path(ec, eObject), this::getEModelElementFirstDocSentence) {
+			return new PlantUmlTextGenerator(sb, elementPredicate, ec -> path(ec, eObject), this::getEModelElementFirstDocSentence) {
 				
 				@Override
 				protected Collection<EClass> getSubTypes(EClass eClass) {
@@ -469,7 +580,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				
 			};
 		case DiagramGenerator.MERMAID_DIALECT:
-			return new MermaidTextGenerator(sb, ec -> path(ec, eObject), this::getEModelElementFirstDocSentence) {
+			return new MermaidTextGenerator(sb, elementPredicate, ec -> path(ec, eObject), this::getEModelElementFirstDocSentence) {
 				
 				@Override
 				protected Collection<EClass> getSubTypes(EClass eClass) {

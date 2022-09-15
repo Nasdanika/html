@@ -1,5 +1,5 @@
 engineering-module:
   name: Model
   path: model
-  action-prototype: "javadoc-action-prototype.xml#/"
+  action-prototype: "../../../nasdanika.github.io/target/model-doc/actions/app.genmodel.xml#/"    
   

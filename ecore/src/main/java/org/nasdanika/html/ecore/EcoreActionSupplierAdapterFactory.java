@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
@@ -33,63 +34,108 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 				EcorePackage.Literals.EPACKAGE, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EPackageActionSupplier(e, context, ePackagePathComputer, this::getDiagramDialect)));	
+				e -> new EPackageActionSupplier(
+						e, 
+						context, 
+						ePackagePathComputer, 
+						this::shallDocument,
+						this::getDiagramDialect)));	
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EClass>(
 				EcorePackage.Literals.ECLASS, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EClassActionSupplier(e, context, ePackagePathComputer, javadocResolver, this::getEPackage, this::isGenerateLoadSpecification, this::getDiagramDialect)));		
+				e -> new EClassActionSupplier(
+						e, 
+						context, 
+						ePackagePathComputer, 
+						javadocResolver, 
+						this::getEPackage, 
+						this::shallDocument,
+						this::isGenerateLoadSpecification, 
+						this::getDiagramDialect)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EDataType>(
 				EcorePackage.Literals.EDATA_TYPE, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EDataTypeActionSupplier(e, context, ePackagePathComputer, javadocResolver, this::getEPackage)));		
+				e -> new EDataTypeActionSupplier(
+						e, 
+						context, 
+						ePackagePathComputer, 
+						javadocResolver, 
+						this::getEPackage,
+						this::shallDocument)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EEnum>(
 				EcorePackage.Literals.EENUM, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EEnumActionSupplier(e, context, ePackagePathComputer, javadocResolver, this::getEPackage)));		
+				e -> new EEnumActionSupplier(
+						e, 
+						context, 
+						ePackagePathComputer, 
+						javadocResolver,
+						this::getEPackage,
+						this::shallDocument)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EEnumLiteral>(
 				EcorePackage.Literals.EENUM_LITERAL, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EEnumLiteralActionSupplier(e, context, ePackagePathComputer)));		
+				e -> new EEnumLiteralActionSupplier(
+						e, 
+						context, 
+						ePackagePathComputer,
+						this::shallDocument)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EAttribute>(
 				EcorePackage.Literals.EATTRIBUTE, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EAttributeActionSupplier(e, context, ePackagePathComputer)));		
+				e -> new EAttributeActionSupplier(
+						e,
+						context,
+						ePackagePathComputer,
+						this::shallDocument)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EReference>(
 				EcorePackage.Literals.EREFERENCE, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EReferenceActionSupplier(e, context, ePackagePathComputer)));		
+				e -> new EReferenceActionSupplier(
+						e, 
+						context,
+						ePackagePathComputer,
+						this::shallDocument)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EOperation>(
 				EcorePackage.Literals.EOPERATION, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EOperationActionSupplier(e, context, ePackagePathComputer)));		
+				e -> new EOperationActionSupplier(
+						e, 
+						context, 
+						ePackagePathComputer,
+						this::shallDocument)));		
 
 		registerAdapterFactory(
 			new FunctionAdapterFactory<EcoreActionSupplier, EParameter>(
 				EcorePackage.Literals.EPARAMETER, 
 				EcoreActionSupplier.class, 
 				this.getClass().getClassLoader(), 
-				e -> new EParameterActionSupplier(e, context, ePackagePathComputer)));	
+				e -> new EParameterActionSupplier(
+						e,
+						context,
+						ePackagePathComputer,
+						this::shallDocument)));	
 	}
 	
 	/**
@@ -107,5 +153,15 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 	protected Object getEPackage(String nsURI) {
 		return EPackage.Registry.INSTANCE.get(nsURI);
 	}
+	
+	/**
+	 * Override to selectively document models, i.e. provide a specific view.
+	 * @param modelElement
+	 * @return
+	 */
+	protected boolean shallDocument(EModelElement modelElement) {
+		return true;
+	}
+	
 
 }

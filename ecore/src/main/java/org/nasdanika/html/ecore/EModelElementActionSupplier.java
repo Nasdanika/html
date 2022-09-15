@@ -5,8 +5,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.common.notify.Notifier;
@@ -20,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -54,9 +58,14 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 
 	protected Context context;
 
-	protected java.util.function.Function<EPackage,String> ePackagePathComputer; 
+	protected java.util.function.Function<EPackage,String> ePackagePathComputer;
+	protected Predicate<EModelElement> elementPredicate;
 		
-	public EModelElementActionSupplier(T value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
+	public EModelElementActionSupplier(
+			T value, 
+			Context context, 
+			java.util.function.Function<EPackage,String> ePackagePathComputer,
+			Predicate<EModelElement> elementPredicate) {
 		super(value);
 		this.context = context.fork();
 		PropertyComputer eClassifierPropertyComputer = new PropertyComputer() {
@@ -109,6 +118,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		};
 		((MutableContext) this.context).put("classifier", eClassifierPropertyComputer);
 		this.ePackagePathComputer = ePackagePathComputer;
+		this.elementPredicate = elementPredicate;
 	}
 
 	@Override
@@ -427,6 +437,9 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	 * @return Relative path to the argument {@link EClassifier} or null if the classifier is not part of the documentation resource set.
 	 */
 	protected String path(EClassifier eClassifier, EClassifier contextClassifier) {
+		if (!elementPredicate.test(eClassifier)) {
+			return null;
+		}
 		// TODO - resolution of external eClassifiers for federated/hierarchical documentation - from the adapter factory.
 		Resource targetResource = eClassifier.eResource();
 		if (targetResource == null) {
@@ -478,6 +491,16 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		String path = path(eClassifier, contextClassifier);
 		return Util.isBlank(path) ? eClassifier.getName() : "<a href=\"" + path + "\">" + eClassifier.getName() + "</a>";
 	}
+	
+	/**
+	 * @return Link to {@link EClassifier} if it is part of the doc or plain text if it is not.
+	 */
+	protected String link(EStructuralFeature feature, EClassifier contextClassifier) {
+		String path = path(feature.getEContainingClass(), contextClassifier);
+		String fragment = "#" + feature.eClass().getName() + "-" + feature.getName();
+		path = Util.isBlank(path) ? fragment : path + fragment;
+		return  "<a href=\"" + path + "\">" + feature.getName() + "</a>";
+	}
 
 	protected void genericTypeArguments(EGenericType eGenericType, EClassifier contextClassifier, Consumer<String> accumulator, ProgressMonitor monitor) {
 		Iterator<EGenericType> it = eGenericType.getETypeArguments().iterator();
@@ -522,5 +545,15 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		text.setContent(content);
 		action.getContent().add(text);
 	}
+	
+	/**
+	 * Filters the collection retaining only model elements which shall be documented.
+	 * @param <T>
+	 * @param elements
+	 * @return
+	 */
+	protected <T extends EModelElement> List<T> retainDocumentable(Collection<T> elements) {
+		return elements.stream().filter(elementPredicate).collect(Collectors.toList());
+	}		
 	
 }

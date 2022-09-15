@@ -11,6 +11,7 @@
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML Flow documentation generation</name>
 	<description>Classes for generating Flow models documentation as YAML action spec.</description>
+	<url>https://docs.nasdanika.org/modules/html/modules/flow/index.html</url>
 	<build>
 	    <plugins>
 			<plugin>

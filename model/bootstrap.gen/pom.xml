@@ -10,7 +10,7 @@
 	<artifactId>bootstrap-model-gen</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika Bootstrap Model Generation Adapters</name>
-
+	<url>https://docs.nasdanika.org/modules/html/modules/models/modules/bootstrap/modules/gen/index.html</url>
 	<build>
 	    <plugins>
 			<plugin>

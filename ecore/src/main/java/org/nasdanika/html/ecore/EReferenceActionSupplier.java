@@ -1,8 +1,11 @@
 package org.nasdanika.html.ecore;
 
+import java.util.function.Predicate;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.Context;
@@ -13,8 +16,12 @@ import org.nasdanika.ncore.util.NcoreUtil;
 
 public class EReferenceActionSupplier extends EStructuralFeatureActionSupplier<EReference> {
 
-	public EReferenceActionSupplier(EReference value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
-		super(value, context, ePackagePathComputer);
+	public EReferenceActionSupplier(
+			EReference value, 
+			Context context, 
+			java.util.function.Function<EPackage,String> ePackagePathComputer,
+			Predicate<EModelElement> elementPredicate) {
+		super(value, context, ePackagePathComputer, elementPredicate);
 	}
 	
 	@Override
@@ -22,12 +29,7 @@ public class EReferenceActionSupplier extends EStructuralFeatureActionSupplier<E
 		Table propertiesTable = super.propertiesTable(contextEClass, monitor);
 		EReference opposite = NcoreUtil.getOpposite(eObject);
 		if (opposite != null) {
-			String oPath = path(opposite.getEContainingClass(), contextEClass);
-			if (Util.isBlank(oPath)) {
-				addRow(propertiesTable, "Opposite").add(opposite.getName());
-			} else {
-				addRow(propertiesTable, "Opposite").add("<a href=\"" + oPath + "#EReference-" + opposite.getName() +"\">" + opposite.getName() + "</a>");				
-			}
+			addRow(propertiesTable, "Opposite").add(link(opposite, contextEClass));				
 		}	
 		EList<EAttribute> eKeys = eObject.getEKeys();
 		if (!eKeys.isEmpty()) {

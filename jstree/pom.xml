@@ -11,6 +11,7 @@
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML JsTree</name>
 	<description>Classes for generating JsTree nodes and context menus.</description>
+	<url>https://docs.nasdanika.org/modules/html/modules/jstree/index.html</url>
 	<build>
 	    <plugins>
 			<plugin>

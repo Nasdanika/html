@@ -6,6 +6,7 @@ module org.nasdanika.html.ecore {
 	requires org.eclipse.emf.codegen.ecore;
 	requires org.eclipse.emf.ecore.xmi;
 	requires org.nasdanika.html.model.html;
+	requires org.nasdanika.ncore;
 	
 	exports org.nasdanika.html.ecore;
 	

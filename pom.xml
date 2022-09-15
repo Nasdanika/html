@@ -8,7 +8,7 @@
 	<name>Nasdanika HTML Parent</name>
 	<description>Classes for generating HTML UI.</description>
 
-	<url>https://nasdanika.org</url>
+	<url>https://docs.nasdanika.org/modules/html/index.html</url>
 		
 	<properties>
 		<core.version>2022.9.0</core.version>

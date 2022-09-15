@@ -1,6 +1,9 @@
 package org.nasdanika.html.ecore;
 
+import java.util.function.Predicate;
+
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.Context;
@@ -10,8 +13,12 @@ import org.nasdanika.html.model.app.Action;
 
 public class EStructuralFeatureActionSupplier<T extends EStructuralFeature> extends ETypedElementActionSupplier<T> implements EcoreActionSupplier {
 
-	public EStructuralFeatureActionSupplier(T value, Context context, java.util.function.Function<EPackage,String> ePackagePathComputer) {
-		super(value, context, ePackagePathComputer);
+	public EStructuralFeatureActionSupplier(
+			T value, 
+			Context context, 
+			java.util.function.Function<EPackage,String> ePackagePathComputer,
+			Predicate<EModelElement> elementPredicate) {
+		super(value, context, ePackagePathComputer, elementPredicate);
 	}
 		
 	@Override

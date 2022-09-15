@@ -11,6 +11,7 @@
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML EMF library</name>
 	<description>Classes for generating HTML Application UI from Ecore model elements.</description>
+	<url>https://docs.nasdanika.org/modules/html/modules/emf/index.html</url>
 	<build>
 	    <plugins>
 			<plugin>

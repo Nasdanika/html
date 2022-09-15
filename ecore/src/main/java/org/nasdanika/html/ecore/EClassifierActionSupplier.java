@@ -3,9 +3,11 @@ package org.nasdanika.html.ecore;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
@@ -24,8 +26,9 @@ public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElem
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
 			java.util.function.Function<String, String> javadocResolver,
-			java.util.function.Function<String, Object> ePackageResolver) {
-		super(value, context, ePackagePathComputer);
+			java.util.function.Function<String, Object> ePackageResolver,
+			Predicate<EModelElement> elementPredicate) {
+		super(value, context, ePackagePathComputer, elementPredicate);
 		this.javadocResolver = javadocResolver;
 		this.ePackageResolver = ePackageResolver;
 		instanceClass = value.getInstanceClass();

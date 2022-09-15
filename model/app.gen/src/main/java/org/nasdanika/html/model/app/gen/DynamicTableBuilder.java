@@ -3,15 +3,14 @@ package org.nasdanika.html.model.app.gen;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.HTMLFactory;
-import org.nasdanika.html.model.app.gen.DynamicTableBuilder.ColumnBuilder;
 import org.nasdanika.html.model.html.HtmlFactory;
 import org.nasdanika.html.model.html.Script;
 import org.nasdanika.html.model.html.Tag;
@@ -57,13 +56,13 @@ public class DynamicTableBuilder<T> {
 		}
 	}
 	
-	public DynamicTableBuilder(ColumnBuilder<? super T>... columnBuilders) {
+	public DynamicTableBuilder(@SuppressWarnings("unchecked") ColumnBuilder<? super T>... columnBuilders) {
 		for (ColumnBuilder<? super T> columnBuilder: columnBuilders) {
 			this.columnBuilders.add(columnBuilder);
 		}
 	}	
 
-	public DynamicTableBuilder<T> addColumnBuilders(ColumnBuilder<? super T>... columnBuilders) {
+	public DynamicTableBuilder<T> addColumnBuilders(@SuppressWarnings("unchecked") ColumnBuilder<? super T>... columnBuilders) {
 		for (ColumnBuilder<? super T> columnBuilder: columnBuilders) {
 			this.columnBuilders.add(columnBuilder);
 		}
@@ -78,6 +77,7 @@ public class DynamicTableBuilder<T> {
 	public DynamicTableBuilder<T> addColumnBuilder(
 			String key, 
 			boolean visible, 
+			boolean sortable,
 			EObject headerLabel,
 			Function<T, EObject> cellValueProvider) {		
 		return addColumnBuilder(new ColumnBuilder<T>() {
@@ -87,6 +87,9 @@ public class DynamicTableBuilder<T> {
 				org.nasdanika.ncore.Map header = NcoreFactory.eINSTANCE.createMap();
 				if (visible) {
 					header.put("visible", visible);
+				}
+				if (sortable) {
+					header.put("sortable", sortable);
 				}
 				header.put("key", key); 
 				header.put("label", headerLabel);
@@ -107,23 +110,25 @@ public class DynamicTableBuilder<T> {
 	public DynamicTableBuilder<T> addColumnBuilder(
 			String key, 
 			boolean visible, 
+			boolean sortable,
 			String headerLabel,
 			Function<T, EObject> cellValueProvider) {
 		
 		Text text = ContentFactory.eINSTANCE.createText();
 		text.setContent(headerLabel);
-		return addColumnBuilder(key, visible, text, cellValueProvider);
+		return addColumnBuilder(key, visible, sortable, text, cellValueProvider);
 	}
 	
 	public DynamicTableBuilder<T> addStringColumnBuilder(
 			String key, 
 			boolean visible, 
+			boolean sortable,
 			String headerLabel,
 			Function<T, String> cellValueProvider) {
 		
 		Text text = ContentFactory.eINSTANCE.createText();
 		text.setContent(headerLabel);
-		return addColumnBuilder(key, visible, text, element -> {
+		return addColumnBuilder(key, visible, sortable, text, element -> {
 			String cellValue = cellValueProvider.apply(element);
 			if (cellValue == null) {
 				return null;
@@ -137,14 +142,14 @@ public class DynamicTableBuilder<T> {
 	public DynamicTableBuilder<T> addBooleanColumnBuilder(
 			String key, 
 			boolean visible, 
+			boolean sortable,
 			String headerLabel,
-			Function<T, Boolean> cellValueProvider) {
+			Predicate<T> cellValueProvider) {
 		
 		Text text = ContentFactory.eINSTANCE.createText();
 		text.setContent(headerLabel);
-		return addColumnBuilder(key, visible, text, element -> {
-			Boolean cellValue = cellValueProvider.apply(element);
-			if (Boolean.TRUE.equals(cellValue)) {
+		return addColumnBuilder(key, visible, sortable, text, element -> {
+			if (cellValueProvider.test(element)) {
 				Text txt = ContentFactory.eINSTANCE.createText();
 				txt.setContent("<i class=\"fas fa-check\"></i>");
 				return txt;
