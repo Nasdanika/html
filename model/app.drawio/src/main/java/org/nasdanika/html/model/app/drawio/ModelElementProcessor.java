@@ -560,9 +560,9 @@ public class ModelElementProcessor extends ElementProcessor {
 				return externalReference;
 			}
 			// Link by cross-reference
-			String crossReferenceProperty = resourceFactory.getCrossReferenceProperty();
-			if (!Util.isBlank(crossReferenceProperty)) {
-				String crossReferencePropertyValue = modelElement.getProperty(crossReferenceProperty);
+			String selectorProperty = resourceFactory.getSelectorProperty();
+			if (!Util.isBlank(selectorProperty)) {
+				String crossReferencePropertyValue = modelElement.getProperty(selectorProperty);
 				if (!Util.isBlank(crossReferencePropertyValue)) {
 					Optional<ModelElementProcessor> processorOptional = registry
 						.entrySet()

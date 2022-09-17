@@ -202,8 +202,8 @@ public class ResourceFactory implements Factory {
 		return connectionBase;
 	}
 	
-	protected String getCrossReferenceProperty() {
-		return "xref";
+	protected String getSelectorProperty() {
+		return "selector";
 	}
 
 	/**
@@ -413,7 +413,7 @@ public class ResourceFactory implements Factory {
 	 */
 	protected boolean shallCreateAction(ModelElement modelElement) {
 		return (Util.isBlank(modelElement.getLink()) || modelElement.isPageLink())
-				&& (Util.isBlank(getCrossReferenceProperty()) || Util.isBlank(modelElement.getProperty(getCrossReferenceProperty())))
+				&& (Util.isBlank(getSelectorProperty()) || Util.isBlank(modelElement.getProperty(getSelectorProperty())))
 				&& !(modelElement instanceof Connection && !hasDocumentation(modelElement)); // No actions for undocumented connections
 	}
 	
