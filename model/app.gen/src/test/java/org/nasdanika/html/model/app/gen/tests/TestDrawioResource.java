@@ -242,7 +242,6 @@ public class TestDrawioResource extends TestBase {
 	 * @throws Exception
 	 */
 	@Test
-//	@Ignore("Fails command line build due to not finding services from the core drawio module. Potential solution is here: https://stackoverflow.com/questions/54087050/java-9-serviceloader-doesnt-load-test-implementation-from-test-sources-module")
 	public void testGenerateSite() throws Exception {
 		long start = System.currentTimeMillis();
 		testGenerateResourceModel();
