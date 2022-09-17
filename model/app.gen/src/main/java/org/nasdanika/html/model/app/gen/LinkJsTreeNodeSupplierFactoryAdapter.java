@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.ExecutionException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.SupplierFactory;
@@ -14,6 +15,7 @@ import org.nasdanika.html.jstree.JsTreeNode;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Link;
+import org.nasdanika.html.model.html.gen.ContentConsumer;
 
 public class LinkJsTreeNodeSupplierFactoryAdapter<M extends Link> extends LabelJsTreeNodeSupplierFactoryAdapter<M> {
 	
@@ -64,7 +66,15 @@ public class LinkJsTreeNodeSupplierFactoryAdapter<M extends Link> extends LabelJ
 			
 						@SuppressWarnings("unchecked")
 						List<Object> pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);
-						pageBody.add(modal);
+						if (pageBody != null) {
+							pageBody.add(modal);
+						} else {
+							ContentConsumer contentConsumer = context.get(ContentConsumer.class);
+							if (contentConsumer == null) {
+								throw new ExecutionException("Cannot contribute a modal - there is neither page body nor content consumer in the context");
+							}
+							contentConsumer.accept(modal);
+						}
 					} else {									
 						String location = context.interpolateToString(semanticElement.getLocation());
 						String confirmation = context.interpolateToString(semanticElement.getConfirmation());

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.ExecutionException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
@@ -14,6 +15,7 @@ import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Link;
+import org.nasdanika.html.model.html.gen.ContentConsumer;
 
 public class LinkTagSupplierFactoryAdapter<M extends Link> extends LabelTagSupplierFactoryAdapter<M> {
 	
@@ -49,7 +51,15 @@ public class LinkTagSupplierFactoryAdapter<M extends Link> extends LabelTagSuppl
 	
 				@SuppressWarnings("unchecked")
 				List<Object> pageBody = context.get(org.nasdanika.html.model.html.gen.PageSupplierFactoryAdapter.PAGE_BODY_PROPERTY, List.class);
-				pageBody.add(modal);
+				if (pageBody != null) {
+					pageBody.add(modal);
+				} else {
+					ContentConsumer contentConsumer = context.get(ContentConsumer.class);
+					if (contentConsumer == null) {
+						throw new ExecutionException("Cannot contribute a modal - there is neither page body nor content consumer in the context");
+					}
+					contentConsumer.accept(modal);
+				}
 			} else {	
 				String name = context.interpolateToString(semanticElement.getName());
 				if (!Util.isBlank(name)) {
