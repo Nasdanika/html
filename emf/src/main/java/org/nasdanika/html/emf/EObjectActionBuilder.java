@@ -444,6 +444,49 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	protected void configureETypedElementLabel(ETypedElement eTypedElement, Label label, boolean inModal) {
 		label.setText(typedElementLabelText(eTypedElement));		
 		label.setIcon(typedElementIcon(eTypedElement));
+		
+//        icon: far fa-question-circle
+//        tooltip: Some quick info
+//        attributes:
+//          style:
+//            content-text: "vertical-align:super;font-size:small"
+//        modal:                             
+//          header:
+//            content:
+//              content-text: Very informative indeed!
+//            appearance:
+//              background: LIGHT                              
+//          body:
+//            content:
+//              content-text: Extensive description of the first navigation action...
+//          size: large
+//          centered: true                                         		
+		
+		// Tooltip help example
+//		Label helpDecorator = AppFactory.eINSTANCE.createLabel();
+//		helpDecorator.setTooltip("Purum/param");
+//		helpDecorator.setIcon("far fa-question-circle");
+//		helpDecorator.getAttributes().put("style", createText("vertical-align:super;font-size:small"));
+//		label.setDecorator(helpDecorator);
+		
+		// Modal help example
+//		Link helpDecorator = AppFactory.eINSTANCE.createLink();
+//		helpDecorator.setTooltip("Purum/param");
+//		helpDecorator.setIcon("far fa-question-circle");
+//		helpDecorator.getAttributes().put("style", createText("vertical-align:super;font-size:x-small;margin-left:0.2em"));
+//		Modal helpModal = BootstrapFactory.eINSTANCE.createModal();
+//		helpModal.setSize("large");
+//		helpModal.setCentered(true);
+//		BootstrapElement header = BootstrapFactory.eINSTANCE.createBootstrapElement();
+//		header.getContent().add(createText("Very informative"));
+//		helpModal.setHeader(header);
+//		BootstrapElement body = BootstrapFactory.eINSTANCE.createBootstrapElement();
+//		body.getContent().add(createText("Extensive description"));		
+//		helpModal.setBody(body);
+//		helpDecorator.setModal(helpModal);
+//		
+//		label.setDecorator(helpDecorator);
+		
 		// TODO - tooltip, description
 	}
 	
