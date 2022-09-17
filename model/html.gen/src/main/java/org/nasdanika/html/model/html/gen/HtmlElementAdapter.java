@@ -30,7 +30,7 @@ import org.nasdanika.html.model.html.HtmlPackage;
  * @param <T>
  */
 public abstract class HtmlElementAdapter<M extends org.nasdanika.html.model.html.HtmlElement, T extends org.nasdanika.html.HTMLElement<?>> extends AdapterImpl {
-	
+		
 	protected AdapterFactory adapterFactory;
 	
 	protected AdapterFactory getRootAdapterFactory() {
