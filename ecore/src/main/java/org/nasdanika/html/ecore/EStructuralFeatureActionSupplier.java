@@ -1,9 +1,11 @@
 package org.nasdanika.html.ecore;
 
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.Context;
@@ -17,8 +19,9 @@ public class EStructuralFeatureActionSupplier<T extends EStructuralFeature> exte
 			T value, 
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
-			Predicate<EModelElement> elementPredicate) {
-		super(value, context, ePackagePathComputer, elementPredicate);
+			Predicate<EModelElement> elementPredicate,
+			BiFunction<ENamedElement, String, String> labelProvider) {
+		super(value, context, ePackagePathComputer, elementPredicate, labelProvider);
 	}
 		
 	@Override

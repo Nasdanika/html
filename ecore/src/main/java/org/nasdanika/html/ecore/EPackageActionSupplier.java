@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -15,8 +16,10 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ProgressMonitor;
@@ -34,15 +37,19 @@ import org.nasdanika.ncore.util.NcoreUtil;
 public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage> {
 
 	private Supplier<String> diagramDialectSupplier;
+	private Function<EClassifier, EReference> eClassifierRoleProvider;
 
 	public EPackageActionSupplier(
 			EPackage value, 
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer, 
 			Predicate<EModelElement> elementPredicate,
-			Supplier<String> diagramDialectSupplier) {		
-		super(value, context, ePackagePathComputer, elementPredicate);
+			BiFunction<ENamedElement, String, String> labelProvider,
+			Supplier<String> diagramDialectSupplier,
+			Function<EClassifier, EReference> eClassifierRoleProvider) {		
+		super(value, context, ePackagePathComputer, elementPredicate, labelProvider);
 		this.diagramDialectSupplier = diagramDialectSupplier;
+		this.eClassifierRoleProvider = eClassifierRoleProvider;
 	}
 	
 	@Override
@@ -51,30 +58,8 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 		text.setContent("<div class='text-monospace'>" + eObject.getNsURI() + "</div>");
 		action.getContent().add(text);
 	}
-	
-	
-//	private static void dump(EPackage ePackage, int offset) {
-//		String prefix = "";
-//		for (int i = 0; i < offset; ++i) {
-//			prefix += "\t";
-//		}
-//		System.out.println(prefix + ePackage.getName());
-//		for (EPackage sp: ePackage.getESubpackages()) {
-//			dump(sp, offset + 1);
-//		}
-//		for (EClassifier ec: ePackage.getEClassifiers()) {
-//			System.out.println(prefix + "\t" + ec.getName());
-//			if (ec instanceof EClass) {
-//				for (EStructuralFeature sf: ((EClass) ec).getEStructuralFeatures()) {
-//					System.out.println(prefix + "\t\t" + sf.getName());
-//				}
-//				for (EOperation op: ((EClass) ec).getEOperations()) {
-//					System.out.println(prefix + "\t\t" + op.getName() + "()");
-//				}
-//			}
-//		}
-//	}
-	
+		
+	@SuppressWarnings("unchecked")
 	@Override
 	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
 		Action action = super.execute(contextEClass, progressMonitor);
@@ -123,7 +108,9 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 		}
 	
 		for (EClassifier eClassifier: eObject.getEClassifiers().stream().filter(elementPredicate).sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
-			children.add(adaptChild(eClassifier).execute(contextEClass, progressMonitor));			
+			Action eClassifierAction = adaptChild(eClassifier).execute(contextEClass, progressMonitor);
+			EReference eClassifierRole = eClassifierRoleProvider.apply(eClassifier);
+			((Collection<Object>) action.eGet(eClassifierRole)).add(eClassifierAction);
 		}
 		
 		return action;
@@ -136,7 +123,7 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 		}
 		switch (dialect) {
 		case DiagramGenerator.UML_DIALECT:
-			return new PlantUmlTextGenerator(sb, elementPredicate, eClassifierLinkResolver, this::getEModelElementFirstDocSentence) {
+			return new PlantUmlTextGenerator(sb, elementPredicate, eClassifierLinkResolver, this::getEModelElementFirstDocSentence, labelProvider) {
 				
 				@Override
 				protected Collection<EClass> getSubTypes(EClass eClass) {

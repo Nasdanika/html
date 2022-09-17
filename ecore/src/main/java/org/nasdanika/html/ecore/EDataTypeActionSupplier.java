@@ -1,12 +1,14 @@
 package org.nasdanika.html.ecore;
 
 import java.util.Collection;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
@@ -24,8 +26,9 @@ public class EDataTypeActionSupplier extends EClassifierActionSupplier<EDataType
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
 			java.util.function.Function<String, String> javadocResolver,
 			java.util.function.Function<String, Object> ePackageResolver,
-			Predicate<EModelElement> elementPredicate) {
-		super(value, context, ePackagePathComputer, javadocResolver, ePackageResolver, elementPredicate);
+			Predicate<EModelElement> elementPredicate,
+			BiFunction<ENamedElement, String, String> labelProvider) {
+		super(value, context, ePackagePathComputer, javadocResolver, ePackageResolver, elementPredicate, labelProvider);
 	}
 	
 	@Override

@@ -3,10 +3,12 @@ package org.nasdanika.html.ecore;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -19,6 +21,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
@@ -45,8 +48,13 @@ import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.ncore.Marker;
+import org.nasdanika.ncore.util.NcoreUtil; 
 
 public class EModelElementActionSupplier<T extends EModelElement> extends EObjectActionSupplier<T> {
+		
+	protected BiFunction<ENamedElement, String, String> labelProvider;	
+	
+	protected Comparator<ENamedElement> eNamedElementComparator = (a,b) -> labelProvider.apply(a, a.getName()).compareTo(labelProvider.apply(b, b.getName()));
 	
 	public static final String ICONS_BASE = "https://www.nasdanika.org/resources/images/ecore/";
 		
@@ -65,7 +73,8 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 			T value, 
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
-			Predicate<EModelElement> elementPredicate) {
+			Predicate<EModelElement> elementPredicate,
+			BiFunction<ENamedElement, String, String> labelProvider) {
 		super(value);
 		this.context = context.fork();
 		PropertyComputer eClassifierPropertyComputer = new PropertyComputer() {
@@ -119,6 +128,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		((MutableContext) this.context).put("classifier", eClassifierPropertyComputer);
 		this.ePackagePathComputer = ePackagePathComputer;
 		this.elementPredicate = elementPredicate;
+		this.labelProvider = labelProvider;
 	}
 
 	@Override
@@ -236,12 +246,20 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		String ret = /* context.computingContext().get(MarkdownHelper.class, markdownHelper) */ markdownHelper.firstPlainTextSentence(documentation.getDocumentation());
 		return String.join(" ", ret.split("\\R")); // Replacing new lines, shall they be in the first sentence, with spaces.		
 	}
-		
+
 	/**
 	 * In situations where classes referencing this class are known this method can be overridden. 
 	 * @return
 	 */	
 	protected Collection<EClass> getReferrers(EClass eClass) {
+		return getReferrers(eClass, true);
+	}
+	
+	/**
+	 * In situations where classes referencing this class are known this method can be overridden. 
+	 * @return
+	 */	
+	private Collection<EClass> getReferrers(EClass eClass, boolean includeAssociations) {
 		TreeIterator<?> acit;
 		Resource eResource = eClass.eResource();
 		if (eResource == null) {
@@ -257,7 +275,20 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		Set<EClass> ret = new HashSet<>();
 		acit.forEachRemaining(obj -> {
 			if (obj instanceof EReference && ((EReference) obj).getEReferenceType() == eClass) {
-				ret.add(((EReference) obj).getEContainingClass());
+				EClass referrer = ((EReference) obj).getEContainingClass();
+				if (includeAssociations) {
+					for (EClass superReferrer: getReferrers(referrer, false)) {
+						for (EReference superReference: superReferrer.getEReferences()) {
+							if (superReference.getEReferenceType() == referrer) {
+								EClass associationTarget = NcoreUtil.getAssociationTarget(superReference);
+								if (associationTarget == eClass) {
+									ret.add(superReferrer);
+								}
+							}
+						}
+					}
+				}
+				ret.add(referrer);
 			}
 		});
 		return ret;
@@ -309,7 +340,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	protected String computeLabel(EGenericType genericType, ProgressMonitor monitor) {
 		EObject container = genericType.eContainer();
 		EClassifier rawType = genericType.getERawType();
-		String rawTypeText = rawType.getName(); // rawTypeViewActionSupplierFactory == null ? rawType.getName() : rawTypeViewActionSupplierFactory.create(context).execute(monitor).getText();
+		String rawTypeText = labelProvider.apply(rawType, rawType.getName()); // rawTypeViewActionSupplierFactory == null ? rawType.getName() : rawTypeViewActionSupplierFactory.create(context).execute(monitor).getText();
 		if (container == null || !container.eIsSet(genericType.eContainingFeature())) {
 			return rawTypeText;
 		}
@@ -331,7 +362,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 			}
 		} else {
 			ETypeParameter typeParameter = genericType.getETypeParameter();
-			String name = typeParameter != null ? typeParameter.getName() : "?";
+			String name = typeParameter != null ? labelProvider.apply(typeParameter, typeParameter.getName()) : "?";
 			label.append(name);
 
 			if (genericType.getELowerBound() != null) {
@@ -367,7 +398,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	}	
 	
 	protected String genericName(ETypeParameter typeParameter) {
-		StringBuilder ret = new StringBuilder(typeParameter.getName());
+		StringBuilder ret = new StringBuilder(labelProvider.apply(typeParameter, typeParameter.getName()));
 		for (EGenericType bound : typeParameter.getEBounds()) {
 			if (bound.getEUpperBound() != null) {
 				ret.append(" extends ").append(genericName(bound.getEUpperBound()));
@@ -382,10 +413,14 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	
 	protected String genericName(EGenericType eGenericType) {
 		StringBuilder ret = new StringBuilder();
-		if (eGenericType.getETypeParameter() != null) {
-			ret.append(eGenericType.getETypeParameter().getName());
-		} else if (eGenericType.getEClassifier() != null) {
-			ret.append(eGenericType.getEClassifier().getName());			
+		ETypeParameter eTypeParameter = eGenericType.getETypeParameter();
+		if (eTypeParameter != null) {			
+			ret.append(labelProvider.apply(eTypeParameter, eTypeParameter.getName()));
+		} else {
+			EClassifier eClassifier = eGenericType.getEClassifier();
+			if (eClassifier != null) {
+				ret.append(labelProvider.apply(eClassifier, eClassifier.getName()));			
+			}
 		}
 		ret.append(genericTypeArguments(eGenericType));
 		return ret.toString();
@@ -415,19 +450,22 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	protected void genericType(EGenericType eGenericType, EClassifier contextClassifier, Consumer<String> accumulator, ProgressMonitor monitor) {
 		if (eGenericType == null) {
 			accumulator.accept("void");
-		} else if (eGenericType.getETypeParameter() != null) {
-			accumulator.accept(eGenericType.getETypeParameter().getName());
-		} else if (eGenericType.getEClassifier() != null) {
-			accumulator.accept(link(eGenericType.getEClassifier(), contextClassifier));
-			genericTypeArguments(eGenericType, contextClassifier, accumulator, monitor);
 		} else {
-			accumulator.accept("?");
-			if (eGenericType.getELowerBound() != null) {
-				accumulator.accept(" super ");
-				genericType(eGenericType.getELowerBound(), contextClassifier, accumulator, monitor);
-			} else if (eGenericType.getEUpperBound() != null) {
-				accumulator.accept(" extends ");
-				genericType(eGenericType.getEUpperBound(), contextClassifier, accumulator, monitor);
+			ETypeParameter eTypeParameter = eGenericType.getETypeParameter();
+			if (eTypeParameter != null) {
+				accumulator.accept(labelProvider.apply(eTypeParameter, eTypeParameter.getName()));
+			} else if (eGenericType.getEClassifier() != null) {
+				accumulator.accept(link(eGenericType.getEClassifier(), contextClassifier));
+				genericTypeArguments(eGenericType, contextClassifier, accumulator, monitor);
+			} else {
+				accumulator.accept("?");
+				if (eGenericType.getELowerBound() != null) {
+					accumulator.accept(" super ");
+					genericType(eGenericType.getELowerBound(), contextClassifier, accumulator, monitor);
+				} else if (eGenericType.getEUpperBound() != null) {
+					accumulator.accept(" extends ");
+					genericType(eGenericType.getEUpperBound(), contextClassifier, accumulator, monitor);
+				}
 			}
 		}
 	}
@@ -489,7 +527,8 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	 */
 	protected String link(EClassifier eClassifier, EClassifier contextClassifier) {
 		String path = path(eClassifier, contextClassifier);
-		return Util.isBlank(path) ? eClassifier.getName() : "<a href=\"" + path + "\">" + eClassifier.getName() + "</a>";
+		String label = labelProvider.apply(eClassifier, eClassifier.getName());
+		return Util.isBlank(path) ? label : "<a href=\"" + path + "\">" + label + "</a>";
 	}
 	
 	/**
@@ -499,7 +538,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		String path = path(feature.getEContainingClass(), contextClassifier);
 		String fragment = "#" + feature.eClass().getName() + "-" + feature.getName();
 		path = Util.isBlank(path) ? fragment : path + fragment;
-		return  "<a href=\"" + path + "\">" + feature.getName() + "</a>";
+		return  "<a href=\"" + path + "\">" + labelProvider.apply(feature, feature.getName()) + "</a>";
 	}
 
 	protected void genericTypeArguments(EGenericType eGenericType, EClassifier contextClassifier, Consumer<String> accumulator, ProgressMonitor monitor) {

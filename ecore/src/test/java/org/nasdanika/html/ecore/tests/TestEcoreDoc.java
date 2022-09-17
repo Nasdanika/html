@@ -27,6 +27,8 @@ import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModel;
 import org.eclipse.emf.codegen.ecore.genmodel.GenPackage;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -116,7 +118,17 @@ public class TestEcoreDoc {
 		DiagramGenerator diagramGenerator = createDiagramGenerator(progressMonitor);
 		context.register(DiagramGenerator.class, diagramGenerator);
 		
-		ecoreModelsResourceSet.getAdapterFactories().add(new EcoreActionSupplierAdapterFactory(context, getEPackagePath, org.nasdanika.common.Util.createNasdanikaJavadocResolver(new File("../.."), progressMonitor)));
+		ecoreModelsResourceSet.getAdapterFactories().add(new EcoreActionSupplierAdapterFactory(context, getEPackagePath, org.nasdanika.common.Util.createNasdanikaJavadocResolver(new File("../.."), progressMonitor)) {
+			
+//			@Override
+//			protected boolean isDocumentable(EModelElement modelElement) {
+//				if (modelElement instanceof EClass) {
+//					return !"Note".equals(((EClass) modelElement).getName());
+//				}
+//				return super.isDocumentable(modelElement);
+//			}
+			
+		});
 		
 		// Physical location relative to the projects (git) root folder -> logical (workspace) name 
 		Map<String,String> bundleMap = new LinkedHashMap<>();
