@@ -75,9 +75,11 @@ public class ModelElementProcessor extends ElementProcessor {
 	 */
 	public Map<ProcessorInfo<ElementProcessor>, EReference> setSemanticParentInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
 		if (isSemantic()) {
-			ElementProcessor spp = semanticParentInfo.getProcessor();
-			if (spp instanceof ModelElementProcessor && ((ModelElementProcessor) spp).isSemanticDescendant(getElement(), new HashSet<>()::add)) {
-				return Collections.emptyMap();
+			if (semanticParentInfo != null) {
+				ElementProcessor spp = semanticParentInfo.getProcessor();
+				if (spp instanceof ModelElementProcessor && ((ModelElementProcessor) spp).isSemanticDescendant(getElement(), new HashSet<>()::add)) {
+					return Collections.emptyMap();
+				}
 			}
 			
 			this.semanticParentInfo = semanticParentInfo;
@@ -352,8 +354,7 @@ public class ModelElementProcessor extends ElementProcessor {
 	 * Returns documentation URI for this element or for its ancestor.
 	 */
 	protected URI resolveDocumentationBaseURI() {
-		ProcessorInfo<ElementProcessor> spi = semanticParentInfo;				
-		ElementProcessor semanticParentProcessor = spi.getProcessor();
+		ElementProcessor semanticParentProcessor = semanticParentInfo == null ? null : semanticParentInfo.getProcessor();
 		URI base = semanticParentProcessor instanceof ModelElementProcessor ? ((ModelElementProcessor) semanticParentProcessor).resolveDocumentationBaseURI() : resourceURI;
 		
 		String documentationProperty = resourceFactory.getDocumentationProperty();
