@@ -602,8 +602,15 @@ public final class Util {
 		label.setText(source.getText());
 		label.setTooltip(source.getTooltip());
 
+		Action effectiveSourceAction = null;
 		if (source instanceof Action) {
-			String sourceUUID = source.getUuid();
+			effectiveSourceAction = (Action) source;
+		} else if (source instanceof Link) {
+			effectiveSourceAction = ((Link) source).getAction();
+		}				
+				
+		if (effectiveSourceAction != null) {
+			String sourceUUID = effectiveSourceAction.getUuid();
 			if (!org.nasdanika.common.Util.isBlank(sourceUUID)) {
 				Text text = ContentFactory.eINSTANCE.createText();
 				text.setContent(sourceUUID);			
@@ -621,23 +628,41 @@ public final class Util {
 		
 		if (recursive) {
 			EList<EObject> labelChildren = label.getChildren();
-			for (EObject actionChild: source.getChildren()) {
-				if (actionChild instanceof ActionReference) {
-					actionChild = ((ActionReference) actionChild).getTarget();
+			for (EObject sourceChild: source.getChildren()) {
+				if (sourceChild instanceof ActionReference) {
+					sourceChild = ((ActionReference) sourceChild).getTarget();
 				}
-				if (actionChild instanceof Action) {
-					Action childAction = (Action) actionChild;
+				if (sourceChild instanceof Action) {
+					Action childAction = (Action) sourceChild;
 					labelChildren.add(createLabel(childAction, activeAction, uriResolver, idProvider, "header/navigation", recursive, inNavPanel, false));
 					
 					// Second level - headers, separators.
 				} else {
-					labelChildren.add(EcoreUtil.copy(actionChild));
+					labelChildren.add(EcoreUtil.copy(sourceChild));
 				}							
 			}			
 		}
 		
-		label.setActive(source instanceof Action && inNavPanel ? isActiveAction((Action) source, activeAction, !hasActiveChildren(label)) : source.isActive());		
+		label.setActive(effectiveSourceAction != null && inNavPanel ? isActiveAction(effectiveSourceAction, activeAction, !hasActiveChildren(label)) && !hasActiveChildren(source, activeAction) : source.isActive());		
 	}
+	
+	private static boolean hasActiveChildren(Label label, Label activeAction) {
+		for (EObject child: label.getChildren()) { 
+			if (child instanceof Label) { 
+				Label cl = (Label) child; 
+				if (cl instanceof Link) {
+					Action linkAction = ((Link) cl).getAction();
+					if (linkAction != null && isActiveAction(linkAction, activeAction, true)) {
+						return true;
+					}
+					if (hasActiveChildren(cl, activeAction)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}	
 	
 	private static boolean hasActiveChildren(Label label) {
 		for (EObject child: label.getChildren()) {
@@ -658,7 +683,14 @@ public final class Util {
 			Link target) {
 		
 		URI activeActionURI = uriResolver.apply(activeAction, null);
-		URI uri = uriResolver.apply(source, activeActionURI);
+		Label uriSource = source;
+		if (uriSource instanceof Link) {
+			Action linkAction = ((Link) uriSource).getAction();
+			if (linkAction != null) {
+				uriSource = linkAction;
+			}
+		}
+		URI uri = uriResolver.apply(uriSource, activeActionURI);		
 		
 		if (uri != null) {
 			target.setLocation(uri.toString());
@@ -705,7 +737,15 @@ public final class Util {
 			boolean decorate) {
 		
 		URI activeActionURI = uriResolver.apply(activeAction, null);
-		URI uri = uriResolver.apply(source, activeActionURI);
+		
+		Label uriSource = source;
+		if (uriSource instanceof Link) {
+			Action linkAction = ((Link) uriSource).getAction();
+			if (linkAction != null) {
+				uriSource = linkAction;
+			}
+		}
+		URI uri = uriResolver.apply(uriSource, activeActionURI);		
 		
 		if (isBlank(source.getText()) && isBlank(source.getIcon()) && !recursive) {
 			return null;
