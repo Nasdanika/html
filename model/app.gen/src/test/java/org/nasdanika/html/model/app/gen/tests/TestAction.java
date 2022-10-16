@@ -30,20 +30,22 @@ import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
-import org.nasdanika.resources.BinaryEntityContainer;
-import org.nasdanika.resources.FileSystemContainer;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.content.ContentPackage;
 import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.ncore.NcorePackage;
+import org.nasdanika.resources.BinaryEntityContainer;
+import org.nasdanika.resources.FileSystemContainer;
 
 import com.redfin.sitemapgenerator.ChangeFreq;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
@@ -71,6 +73,19 @@ public class TestAction extends TestBase {
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		String actionsResource = "app/actions.yml";
 		Action root = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
+		
+		// Adding a link to principal children pointing to p111
+		root.eAllContents().forEachRemaining(source -> {
+			if (source instanceof Action && "principal-id".equals(((Action) source).getId())) {
+				root.eAllContents().forEachRemaining(target -> {
+					if (target instanceof Action && "hc".equals(((Action) target).getId())) {
+						Link actionLink = ((Action) target).createLink();
+						((Action) source).getChildren().add(actionLink);
+					}					
+				});				
+			}
+		});
+		
 		dumpToYaml(root);
 		
 		Container container = ResourcesFactory.eINSTANCE.createContainer();
@@ -93,8 +108,7 @@ public class TestAction extends TestBase {
 				Context.EMPTY_CONTEXT,
 				progressMonitor);
 		
-		modelResource.save(null);
-		
+		modelResource.save(null);		
 	}
 	
 	/**

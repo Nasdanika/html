@@ -87,7 +87,18 @@ app-action:
                     app-action:
                       text: Navigation 1.1.1
                       id: p111
-                      location: children/1/index.html 
+                      location: children/1/index.html                     
+                      navigation:
+                        app-action:
+                          text: Navigation 1.1.1-1 
+                          id: p111-1
+                          location: navigation/0/index.html
+                          content:
+                            content-markdown: 
+                              style: true
+                              source:
+                                content-text: |+2
+                                  Navigation 1.1.1-1                          
           - app-action:
               icon: fa fa-cog
               text: Second navigation action
@@ -105,7 +116,7 @@ app-action:
                   icon: fa fa-cog
                   text: Navigation 2.1
                   id: p211
-                  location: children/0/index.html 
+                  location: children/0/index.html
                   sections:
                     - text: Section 1
                       location: section-1 
@@ -135,6 +146,7 @@ app-action:
                     children:
                       - app-action:
                           text: Header child
+                          id: hc
                           location: navbar/drop-down/header/first/index.html 
                           sections:
                             - text: Section 1
