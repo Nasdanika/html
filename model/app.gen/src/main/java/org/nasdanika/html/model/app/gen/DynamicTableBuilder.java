@@ -56,7 +56,8 @@ public class DynamicTableBuilder<T> {
 		}
 	}
 	
-	public DynamicTableBuilder(@SuppressWarnings("unchecked") ColumnBuilder<? super T>... columnBuilders) {
+	@SafeVarargs
+	public DynamicTableBuilder(ColumnBuilder<? super T>... columnBuilders) {
 		for (ColumnBuilder<? super T> columnBuilder: columnBuilders) {
 			this.columnBuilders.add(columnBuilder);
 		}
