@@ -2,6 +2,7 @@
  */
 package org.nasdanika.html.model.app.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -16,7 +17,9 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.nasdanika.exec.resources.Resource;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.SectionStyle;
 
@@ -351,6 +354,24 @@ public class ActionImpl extends LinkImpl implements Action {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public Link createLink() {
+		Link actionLink = AppFactory.eINSTANCE.createLink();
+		
+		actionLink.setIcon(getIcon());				
+		actionLink.setText(getText());
+		actionLink.setTooltip(getTooltip());
+		actionLink.setAction(this);
+		actionLink.setUuid(getUuid()); // For JsTree
+
+		return actionLink;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -547,6 +568,20 @@ public class ActionImpl extends LinkImpl implements Action {
 				return isModalActivator() != MODAL_ACTIVATOR_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case AppPackage.ACTION___CREATE_LINK:
+				return createLink();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //ActionImpl

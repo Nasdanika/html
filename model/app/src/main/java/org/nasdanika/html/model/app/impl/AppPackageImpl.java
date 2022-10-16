@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EValidator;
@@ -365,6 +366,16 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	@Override
 	public EAttribute getLink_Target() {
 		return (EAttribute)linkEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getLink_Action() {
+		return (EReference)linkEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -843,6 +854,16 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 	 * @generated
 	 */
 	@Override
+	public EOperation getAction__CreateLink() {
+		return actionEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getActionReference() {
 		return actionReferenceEClass;
 	}
@@ -913,6 +934,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEAttribute(linkEClass, LINK__NAME);
 		createEAttribute(linkEClass, LINK__CONFIRMATION);
 		createEAttribute(linkEClass, LINK__TARGET);
+		createEReference(linkEClass, LINK__ACTION);
 
 		pageEClass = createEClass(PAGE);
 		createEAttribute(pageEClass, PAGE__FLUID);
@@ -968,6 +990,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		createEReference(actionEClass, ACTION__RESOURCES);
 		createEAttribute(actionEClass, ACTION__INLINE);
 		createEAttribute(actionEClass, ACTION__MODAL_ACTIVATOR);
+		createEOperation(actionEClass, ACTION___CREATE_LINK);
 
 		actionReferenceEClass = createEClass(ACTION_REFERENCE);
 
@@ -1043,6 +1066,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEAttribute(getLink_Name(), ecorePackage.getEString(), "name", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Confirmation(), ecorePackage.getEString(), "confirmation", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getLink_Target(), ecorePackage.getEString(), "target", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLink_Action(), this.getAction(), null, "action", null, 0, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(pageEClass, Page.class, "Page", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPage_Fluid(), ecorePackage.getEBoolean(), "fluid", null, 0, 1, Page.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1098,6 +1122,8 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		initEReference(getAction_Resources(), theResourcesPackage.getResource(), null, "resources", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_Inline(), ecorePackage.getEBoolean(), "inline", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAction_ModalActivator(), ecorePackage.getEBoolean(), "modalActivator", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getAction__CreateLink(), this.getLink(), "createLink", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(actionReferenceEClass, ActionReference.class, "ActionReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1228,7 +1254,13 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		  (getLink_Target(),
 		   source,
 		   new String[] {
-			   "documentation", "Link name attribute if not blank for referencing sections."
+			   "documentation", "Link target"
+		   });
+		addAnnotation
+		  (getLink_Action(),
+		   source,
+		   new String[] {
+			   "documentation", "Link to an action."
 		   });
 		addAnnotation
 		  (pageEClass,
@@ -1393,6 +1425,12 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "documentation", "Actions form a hierarchy. Application pages are generated from actions. "
 		   });
 		addAnnotation
+		  (getAction__CreateLink(),
+		   source,
+		   new String[] {
+			   "documentation", "Creates a link pointing to this action and populated with action\'s attributes. "
+		   });
+		addAnnotation
 		  (getAction_SectionColumns(),
 		   source,
 		   new String[] {
@@ -1506,7 +1544,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 			   "exclusive-with", "script modal location"
 		   });
 		addAnnotation
-		  (getLink_Target(),
+		  (getLink_Action(),
 		   source,
 		   new String[] {
 			   "exclusive-with", "script modal location"

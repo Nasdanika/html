@@ -5,6 +5,7 @@ package org.nasdanika.html.model.app.impl;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.bootstrap.Modal;
@@ -23,6 +24,7 @@ import org.nasdanika.html.model.bootstrap.Modal;
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getConfirmation <em>Confirmation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getTarget <em>Target</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.impl.LinkImpl#getAction <em>Action</em>}</li>
  * </ul>
  *
  * @generated
@@ -233,6 +235,35 @@ public class LinkImpl extends LabelImpl implements Link {
 	 * @generated
 	 */
 	@Override
+	public Action getAction() {
+		return (Action)eDynamicGet(AppPackage.LINK__ACTION, AppPackage.Literals.LINK__ACTION, true, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Action basicGetAction() {
+		return (Action)eDynamicGet(AppPackage.LINK__ACTION, AppPackage.Literals.LINK__ACTION, false, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setAction(Action newAction) {
+		eDynamicSet(AppPackage.LINK__ACTION, AppPackage.Literals.LINK__ACTION, newAction);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case AppPackage.LINK__MODAL:
@@ -261,6 +292,9 @@ public class LinkImpl extends LabelImpl implements Link {
 				return getConfirmation();
 			case AppPackage.LINK__TARGET:
 				return getTarget();
+			case AppPackage.LINK__ACTION:
+				if (resolve) return getAction();
+				return basicGetAction();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -290,6 +324,9 @@ public class LinkImpl extends LabelImpl implements Link {
 				return;
 			case AppPackage.LINK__TARGET:
 				setTarget((String)newValue);
+				return;
+			case AppPackage.LINK__ACTION:
+				setAction((Action)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -321,6 +358,9 @@ public class LinkImpl extends LabelImpl implements Link {
 			case AppPackage.LINK__TARGET:
 				setTarget(TARGET_EDEFAULT);
 				return;
+			case AppPackage.LINK__ACTION:
+				setAction((Action)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -345,6 +385,8 @@ public class LinkImpl extends LabelImpl implements Link {
 				return CONFIRMATION_EDEFAULT == null ? getConfirmation() != null : !CONFIRMATION_EDEFAULT.equals(getConfirmation());
 			case AppPackage.LINK__TARGET:
 				return TARGET_EDEFAULT == null ? getTarget() != null : !TARGET_EDEFAULT.equals(getTarget());
+			case AppPackage.LINK__ACTION:
+				return basicGetAction() != null;
 		}
 		return super.eIsSet(featureID);
 	}

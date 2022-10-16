@@ -308,4 +308,15 @@ public interface Action extends Link {
 	 */
 	void setModalActivator(boolean value);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Creates a link pointing to this action and populated with action's attributes. 
+	 * <!-- end-model-doc -->
+	 * @model required="true"
+	 * @generated
+	 */
+	Link createLink();
+
 } // Action

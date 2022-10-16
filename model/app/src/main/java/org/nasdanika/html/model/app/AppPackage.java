@@ -5,6 +5,7 @@ package org.nasdanika.html.model.app;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -497,13 +498,22 @@ public interface AppPackage extends EPackage {
 	int LINK__TARGET = LABEL_FEATURE_COUNT + 5;
 
 	/**
+	 * The feature id for the '<em><b>Action</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__ACTION = LABEL_FEATURE_COUNT + 6;
+
+	/**
 	 * The number of structural features of the '<em>Link</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK_FEATURE_COUNT = LABEL_FEATURE_COUNT + 6;
+	int LINK_FEATURE_COUNT = LABEL_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of operations of the '<em>Link</em>' class.
@@ -1738,6 +1748,15 @@ public interface AppPackage extends EPackage {
 	int ACTION__TARGET = LINK__TARGET;
 
 	/**
+	 * The feature id for the '<em><b>Action</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__ACTION = LINK__ACTION;
+
+	/**
 	 * The feature id for the '<em><b>Section Columns</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1855,13 +1874,22 @@ public interface AppPackage extends EPackage {
 	int ACTION_FEATURE_COUNT = LINK_FEATURE_COUNT + 12;
 
 	/**
+	 * The operation id for the '<em>Create Link</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION___CREATE_LINK = LINK_OPERATION_COUNT + 0;
+
+	/**
 	 * The number of operations of the '<em>Action</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_OPERATION_COUNT = LINK_OPERATION_COUNT + 0;
+	int ACTION_OPERATION_COUNT = LINK_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.nasdanika.html.model.app.impl.ActionReferenceImpl <em>Action Reference</em>}' class.
@@ -2094,6 +2122,17 @@ public interface AppPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getLink_Target();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.nasdanika.html.model.app.Link#getAction <em>Action</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Action</em>'.
+	 * @see org.nasdanika.html.model.app.Link#getAction()
+	 * @see #getLink()
+	 * @generated
+	 */
+	EReference getLink_Action();
 
 	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.Page <em>Page</em>}'.
@@ -2605,6 +2644,16 @@ public interface AppPackage extends EPackage {
 	EAttribute getAction_ModalActivator();
 
 	/**
+	 * Returns the meta object for the '{@link org.nasdanika.html.model.app.Action#createLink() <em>Create Link</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Create Link</em>' operation.
+	 * @see org.nasdanika.html.model.app.Action#createLink()
+	 * @generated
+	 */
+	EOperation getAction__CreateLink();
+
+	/**
 	 * Returns the meta object for class '{@link org.nasdanika.html.model.app.ActionReference <em>Action Reference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2788,6 +2837,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute LINK__TARGET = eINSTANCE.getLink_Target();
+
+		/**
+		 * The meta object literal for the '<em><b>Action</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LINK__ACTION = eINSTANCE.getLink_Action();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.PageImpl <em>Page</em>}' class.
@@ -3180,6 +3237,14 @@ public interface AppPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ACTION__MODAL_ACTIVATOR = eINSTANCE.getAction_ModalActivator();
+
+		/**
+		 * The meta object literal for the '<em><b>Create Link</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation ACTION___CREATE_LINK = eINSTANCE.getAction__CreateLink();
 
 		/**
 		 * The meta object literal for the '{@link org.nasdanika.html.model.app.impl.ActionReferenceImpl <em>Action Reference</em>}' class.

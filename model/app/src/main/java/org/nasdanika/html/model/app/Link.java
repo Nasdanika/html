@@ -20,6 +20,7 @@ import org.nasdanika.html.model.bootstrap.Modal;
  *   <li>{@link org.nasdanika.html.model.app.Link#getName <em>Name</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Link#getConfirmation <em>Confirmation</em>}</li>
  *   <li>{@link org.nasdanika.html.model.app.Link#getTarget <em>Target</em>}</li>
+ *   <li>{@link org.nasdanika.html.model.app.Link#getAction <em>Action</em>}</li>
  * </ul>
  *
  * @see org.nasdanika.html.model.app.AppPackage#getLink()
@@ -162,12 +163,12 @@ public interface Link extends Label {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Link name attribute if not blank for referencing sections.
+	 * Link target
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Target</em>' attribute.
 	 * @see #setTarget(String)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Target()
-	 * @model annotation="urn:org.nasdanika exclusive-with='script modal location'"
+	 * @model
 	 * @generated
 	 */
 	String getTarget();
@@ -181,5 +182,30 @@ public interface Link extends Label {
 	 * @generated
 	 */
 	void setTarget(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Action</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Link to an action.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Action</em>' reference.
+	 * @see #setAction(Action)
+	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Action()
+	 * @model annotation="urn:org.nasdanika exclusive-with='script modal location'"
+	 * @generated
+	 */
+	Action getAction();
+
+	/**
+	 * Sets the value of the '{@link org.nasdanika.html.model.app.Link#getAction <em>Action</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Action</em>' reference.
+	 * @see #getAction()
+	 * @generated
+	 */
+	void setAction(Action value);
 
 } // Link
