@@ -2,7 +2,7 @@ package org.nasdanika.html.model.html.gen.tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.PrintStreamProgressMonitor;

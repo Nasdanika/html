@@ -2,7 +2,7 @@ package org.nasdanika.html.model.html.tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.nasdanika.common.Status;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.model.html.Tag;

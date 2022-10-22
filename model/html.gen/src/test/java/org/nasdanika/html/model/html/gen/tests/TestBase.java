@@ -1,6 +1,6 @@
 package org.nasdanika.html.model.html.gen.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.OutputStreamWriter;
 import java.net.URL;

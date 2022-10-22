@@ -252,7 +252,13 @@ app-action:
               children:
                 - app-action:
                     text: Separator child
-                    location: ${base-uri}footer-nav/drop-down/separator/first/index.html 
+                    location: ${base-uri}footer-nav/drop-down/separator/first/index.html
+    - app-link:
+        text: Sources
+        icon: fab fa-github
+        location: https://github.com/Nasdanika/html
+        
+                     
           
 
           

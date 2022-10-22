@@ -132,6 +132,15 @@
 		</plugins>
 	</build>
 
+	<dependencies>
+		<dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <version>5.9.1</version>
+		    <scope>test</scope>
+		</dependency>		
+	</dependencies>
+
 	<organization>
 		<name>Nasdanika</name>
 		<url>https://nasdanika.org</url>
