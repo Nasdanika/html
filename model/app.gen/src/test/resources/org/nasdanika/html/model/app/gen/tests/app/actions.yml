@@ -123,6 +123,22 @@ app-action:
                       sections:
                         - text: Section 1.1
                           location: section-1-
+          - app-label:
+              icon: fa fa-cog
+              text: Third card
+              id: p2
+              children:
+                app-action:
+                  icon: fa fa-cog
+                  text: Navigation 3.1
+                  id: p311
+                  location: third-card/children/0/index.html
+                  sections:
+                    - text: Section 1
+                      location: section-1 
+                      sections:
+                        - text: Section 1.1
+                          location: section-1-
         navigation:
           - app-action:
               icon: fa fa-user
@@ -207,7 +223,7 @@ app-action:
         attributes:
           class:
             content-text: nsd-test-class
-    - app-action:
+    - app-label:
         text: Drop-down
         children:
           - app-action:

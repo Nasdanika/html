@@ -285,8 +285,8 @@ public final class Util {
 		}
 		
 		for (EObject child: org.nasdanika.html.model.app.util.Util.resolveActionReferences(activeAction.getChildren())) {
-			if (child instanceof Action) {
-				generateSite(root, principal, (Action) child, subActionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
+			if (child instanceof Label) {
+				generateSite(root, principal, (Label) child, subActionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
 			}
 		}
 				
@@ -297,8 +297,8 @@ public final class Util {
 			}
 			
 			for (EObject navigation: org.nasdanika.html.model.app.util.Util.resolveActionReferences(theActiveAction.getNavigation())) {
-				if (navigation instanceof Action) {
-					generateSite(root, principal, (Action) navigation, subActionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
+				if (navigation instanceof Label) {
+					generateSite(root, principal, (Label) navigation, subActionPath, pageTemplate, uriResolver, baseURI, container, actionContentProvider, pageContentProvider, progressMonitor);
 				}
 			}
 			
@@ -338,8 +338,8 @@ public final class Util {
 				}
 				List<EObject> headerItems = header.getItems();
 				rootChildren.listIterator(1).forEachRemaining(rac -> {
-					if (rac instanceof Action) {
-						headerItems.add(createLabel((Action) rac, activeAction, uriResolver, null, "header/navigation", true, false, false));
+					if (rac instanceof Label) {
+						headerItems.add(createLabel((Label) rac, activeAction, uriResolver, null, "header/navigation", true, false, false));
 					} else {
 						headerItems.add(EcoreUtil.copy(rac));
 					}
@@ -356,8 +356,8 @@ public final class Util {
 					}
 					EList<EObject> footerItems = footer.getItems();
 					rootNavigation.forEach(ran -> {
-						if (ran instanceof Action) {
-							footerItems.add(createLabel((Action) ran, activeAction, uriResolver, null, "footer/navigation", true, false, false));
+						if (ran instanceof Label) {
+							footerItems.add(createLabel((Label) ran, activeAction, uriResolver, null, "footer/navigation", true, false, false));
 						} else {
 							footerItems.add(EcoreUtil.copy(ran));
 						}
@@ -383,8 +383,8 @@ public final class Util {
 					}
 					EList<EObject> navBarItems = navBar.getItems();
 					principalNavigation.forEach(principalNavigationElement -> {
-						if (principalNavigationElement instanceof Action) {
-							navBarItems.add(createLabel((Action) principalNavigationElement, activeAction, uriResolver, null, "navbar/item", true, false, false));
+						if (principalNavigationElement instanceof Label) {
+							navBarItems.add(createLabel((Label) principalNavigationElement, activeAction, uriResolver, null, "navbar/item", true, false, false));
 						} else {
 							navBarItems.add(EcoreUtil.copy(principalNavigationElement));
 						}
@@ -525,7 +525,7 @@ public final class Util {
 		
 		if (label instanceof Link) {
 			Link link = (Link) label;
-			return !isBlank(link.getScript()) || link.getModal() != null || !isBlank(link.getName());
+			return !isBlank(link.getLocation()) || !isBlank(link.getScript()) || link.getModal() != null || !isBlank(link.getName());
 		}
 		
 		return false;
@@ -705,7 +705,10 @@ public final class Util {
 			}
 			target.setName(sourceLink.getName());
 			target.setScript(sourceLink.getScript());
-			target.setTarget(sourceLink.getTarget());		
+			target.setTarget(sourceLink.getTarget());	
+			if (org.nasdanika.common.Util.isBlank(target.getLocation())) {
+				target.setLocation(sourceLink.getLocation());
+			}
 		}
 		if (source instanceof Action) {
 			Action action = (Action) source;

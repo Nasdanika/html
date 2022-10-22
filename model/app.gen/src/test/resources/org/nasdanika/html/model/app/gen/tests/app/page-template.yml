@@ -23,6 +23,6 @@ bootstrap-page:
     app-page:
       fluid: true
       navigation-panel:
-        style: TREE #COLLAPSIBLE_CARDS
+        style: COLLAPSIBLE_CARDS
         collapsible: true
  

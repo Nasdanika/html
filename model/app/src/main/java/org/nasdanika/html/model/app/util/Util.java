@@ -71,16 +71,16 @@ public final class Util {
 		cache.put(label.getUuid(), linkURI);
 		
 		for (EObject child: resolveActionReferences(label.getChildren())) {
-			if (child instanceof Action) {
-				traverse((Action) child, linkURI == null ? base : linkURI, context, cache);
+			if (child instanceof Label) {
+				traverse((Label) child, linkURI == null ? base : linkURI, context, cache);
 			}
 		}
 		
 		if (label instanceof Action) {
 			Action action = (Action) label;
 			for (EObject item: resolveActionReferences(action.getNavigation())) {
-				if (item instanceof Link) {
-					traverse((Link) item, linkURI == null ? base : linkURI, context, cache);
+				if (item instanceof Label) {
+					traverse((Label) item, linkURI == null ? base : linkURI, context, cache);
 				}
 			}
 			for (Action section: action.getSections()) {
