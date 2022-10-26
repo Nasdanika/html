@@ -563,12 +563,12 @@ public class ModelElementProcessor extends ElementProcessor {
 			// Link by cross-reference
 			String selectorProperty = resourceFactory.getSelectorProperty();
 			if (!Util.isBlank(selectorProperty)) {
-				String crossReferencePropertyValue = modelElement.getProperty(selectorProperty);
-				if (!Util.isBlank(crossReferencePropertyValue)) {
+				String selectorPropertyValue = modelElement.getProperty(selectorProperty);
+				if (!Util.isBlank(selectorPropertyValue)) {
 					Optional<ModelElementProcessor> processorOptional = registry
 						.entrySet()
 						.stream()
-						.filter(e -> resourceFactory.match(e.getKey(), crossReferencePropertyValue))
+						.filter(e -> resourceFactory.match(e.getKey(), selectorPropertyValue))
 						.map(e -> e.getValue().getProcessor())
 						.filter(ModelElementProcessor.class::isInstance)
 						.map(ModelElementProcessor.class::cast)

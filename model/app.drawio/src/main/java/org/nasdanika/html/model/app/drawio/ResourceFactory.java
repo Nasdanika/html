@@ -207,7 +207,7 @@ public class ResourceFactory implements Factory {
 	}
 
 	/**
-	 * @return URL of the diagram viewer. If not null then a digram initialization script is added to the page. Otherwise the diagram shall be initialized by some other means.
+	 * @return URL of the diagram viewer. If not null then a diagram initialization script is added to the page. Otherwise the diagram shall be initialized by some other means.
 	 */
 	protected String getDiagramViewer() {
 		return "https://cdn.jsdelivr.net/gh/Nasdanika/drawio@dev/src/main/webapp/js/viewer-static.min.js";
@@ -353,7 +353,7 @@ public class ResourceFactory implements Factory {
 					return a.hashCode() - b.hashCode();
 				};
 			case "property":
-				PropertyModelElementComparator propertyComparator = new PropertyModelElementComparator(config, false);
+				PropertyModelElementComparator propertyComparator = new PropertyModelElementComparator(config, "descending".equals(config));
 				return (a,b) -> {
 					if (a instanceof Node && b instanceof ModelElement) {
 						return propertyComparator.compare((ModelElement) a, (ModelElement) b);
