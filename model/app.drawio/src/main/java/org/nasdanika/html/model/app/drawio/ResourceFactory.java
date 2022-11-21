@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -93,11 +92,7 @@ public class ResourceFactory implements Factory {
 		return URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
 	}
 
-	protected ElementProcessor createProcessor(
-			URI uri,
-			ProcessorConfig<ElementProcessor> config,
-			Consumer<Consumer<ProcessorInfo<ElementProcessor>>> parentProcessorInfoCallbackConsumer,
-			Consumer<Consumer<Map<Element, ProcessorInfo<ElementProcessor>>>> registryCallbackConsumer) {
+	protected ElementProcessor createProcessor(URI uri, ProcessorConfig<ElementProcessor> config) {
 		
 		URI baseURI = getBaseURI(uri);
 		ElementProcessor processor;
@@ -122,8 +117,8 @@ public class ResourceFactory implements Factory {
 		}
 		
 		if (processor != null) {
-			parentProcessorInfoCallbackConsumer.accept(processor::setParentInfo);
-			registryCallbackConsumer.accept(processor::setRegistry);
+			config.getParentProcessorInfo().thenAccept(processor::setParentInfo);
+			config.getRegistry().thenAccept(processor::setRegistry);
 		}
 
 		return processor;
