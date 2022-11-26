@@ -1,6 +1,7 @@
 package org.nasdanika.html.model.app.drawio;
 
 import org.eclipse.emf.common.util.URI;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.Connection;
 import org.nasdanika.graph.processor.NopEndpointProcessorFactory;
 import org.nasdanika.graph.processor.ProcessorConfig;
@@ -17,8 +18,8 @@ class ProcessorFactory implements NopEndpointProcessorFactory<ElementProcessor, 
 	}
 	
 	@Override
-	public ProcessorInfo<ElementProcessor> createProcessor(ProcessorConfig<ElementProcessor> config) {
-		return ProcessorInfo.of(config, resourceFactory.createProcessor(uri, config));
+	public ProcessorInfo<ElementProcessor> createProcessor(ProcessorConfig<ElementProcessor> config, ProgressMonitor progressMonitor) {
+		return ProcessorInfo.of(config, resourceFactory.createProcessor(uri, config, progressMonitor));
 	}
 	
 	@Override

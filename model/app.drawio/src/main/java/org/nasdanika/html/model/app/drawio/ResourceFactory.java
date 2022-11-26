@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.NasdanikaException;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.ConnectionBase;
@@ -56,7 +57,8 @@ public class ResourceFactory implements Factory {
 
 	@Override
 	public Resource createResource(URI uri) {
-		return new DrawioResource<ElementProcessor>(uri, new ProcessorFactory(uri, this)) {
+		ProcessorFactory processorFactory = new ProcessorFactory(uri, this);
+		return new DrawioResource<ElementProcessor>(uri) {
 
 			@Override
 			protected Stream<EObject> getSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {
@@ -65,7 +67,12 @@ public class ResourceFactory implements Factory {
 			
 			protected Document loadDocument(InputStream inputStream) throws IOException, ParserConfigurationException, SAXException {
 				return ResourceFactory.this.loadDocument(inputStream, getURI());
-			}			
+			}
+
+			@Override
+			protected org.nasdanika.graph.processor.ProcessorFactory<ElementProcessor, ?, ?> getProcessorFactory() {
+				return processorFactory;
+			}
 			
 		};
 	}
@@ -92,7 +99,7 @@ public class ResourceFactory implements Factory {
 		return URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
 	}
 
-	protected ElementProcessor createProcessor(URI uri, ProcessorConfig<ElementProcessor> config) {
+	protected ElementProcessor createProcessor(URI uri, ProcessorConfig<ElementProcessor> config, ProgressMonitor progressMonitor) {
 		
 		URI baseURI = getBaseURI(uri);
 		ElementProcessor processor;
