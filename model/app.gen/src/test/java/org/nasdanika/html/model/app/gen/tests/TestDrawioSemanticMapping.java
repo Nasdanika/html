@@ -71,12 +71,13 @@ public class TestDrawioSemanticMapping extends TestBase {
 //		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
 		
 		File semanticMappingDiagramFile = new File("test-semantic-mapping/semantic-mapping.drawio");		
-		URI semanticMappingDrawioResourceURI = URI.createFileURI(semanticMappingDiagramFile.getCanonicalPath());		
+		URI semanticMappingDrawioResourceURI = URI.createFileURI(semanticMappingDiagramFile.getCanonicalPath());//.appendFragment("Page-1");		
 		Resource semanticMappingDrawioResource = resourceSet.getResource(semanticMappingDrawioResourceURI, true);
 		EList<EObject> contents = semanticMappingDrawioResource.getContents();
 		System.out.println(contents.size());
 		EObject first = contents.get(0);
 		System.out.println(first);
+		
 	}
 	
 }
