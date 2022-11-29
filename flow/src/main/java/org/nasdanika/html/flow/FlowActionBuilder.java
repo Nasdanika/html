@@ -117,24 +117,24 @@ public class FlowActionBuilder extends ActivityActionBuilder<Flow> {
 			return da - db;
 		}
 		
-		for (Marker am: a.getMarkers()) {
-			for (Marker bm: b.getMarkers()) {
-				if (am != null 
-						&& bm != null 
-						&& !Util.isBlank(am.getLocation())
-						&& am.getLocation().equals(bm.getLocation())) {
-					
-					int lineDiff = am.getLine() - bm.getLine();
-					if (lineDiff != 0) {
-						return lineDiff;
-					}
-					int colDiff = am.getColumn() - bm.getColumn();
-					if (colDiff != 0) {
-						return colDiff;
-					}			
-				}
-			}
-		}
+//		for (Marker am: a.getMarkers()) {
+//			for (Marker bm: b.getMarkers()) {
+//				if (am != null 
+//						&& bm != null 
+//						&& !Util.isBlank(am.getLocation())
+//						&& am.getLocation().equals(bm.getLocation())) {
+//					
+//					int lineDiff = am.getLine() - bm.getLine();
+//					if (lineDiff != 0) {
+//						return lineDiff;
+//					}
+//					int colDiff = am.getColumn() - bm.getColumn();
+//					if (colDiff != 0) {
+//						return colDiff;
+//					}			
+//				}
+//			}
+//		}
 		
 		return NamedElementComparator.INSTANCE.compare(a, b);
 	}

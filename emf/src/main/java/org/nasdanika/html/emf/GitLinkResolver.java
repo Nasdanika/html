@@ -1,5 +1,6 @@
 package org.nasdanika.html.emf;
 
+import org.nasdanika.common.Util;
 import org.nasdanika.ncore.GitMarker;
 
 /**
@@ -17,7 +18,18 @@ public interface GitLinkResolver {
 		@Override
 		public String resolve(GitMarker marker, String remoteURL) {
 			if (remoteURL.startsWith("https://github.com")) {
-				return remoteURL.substring(0, remoteURL.length() - 4) + "/blob/" + marker.getHead() + "/" + marker.getPath() + "#L" + marker.getLine(); 
+				String lineFragment = "";
+				String position = marker.getPosition();
+				if (!Util.isBlank(position)) {
+					int colonIdx = position.indexOf(':');
+					String line = colonIdx == -1 ? position : position.substring(0, colonIdx);
+					try {
+						lineFragment = "#L" + Integer.parseInt(line);
+					} catch (NumberFormatException e) {
+						// NOP
+					}
+				}				
+				return remoteURL.substring(0, remoteURL.length() - 4) + "/blob/" + marker.getHead() + "/" + marker.getPath() + lineFragment; 
 			}
 			return null;
 		}

@@ -669,6 +669,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			gitLinkResolver = GitLinkResolver.INSTANCE;
 		}
 		String remoteLocation = gitLinkResolver.resolve(marker, remoteUrl);
+		String position = marker.getPosition();
 		EList<String> headRefs = marker.getHeadRefs();
 		if (remoteLocation == null) {			
 			org.nasdanika.html.Table table = HTMLFactory.INSTANCE.table();
@@ -681,13 +682,11 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			pathRow.header("Path");
 			pathRow.cell(marker.getPath());
 			
-			Row lineRow = table.row();
-			lineRow.header("Line");
-			lineRow.cell(marker.getLine());
-			
-			Row colRow = table.row();
-			colRow.header("Column");
-			colRow.cell(marker.getColumn());
+			if (!Util.isBlank(position)) {
+				Row positionRow = table.row();			
+				positionRow.header("Positon");
+				positionRow.cell(position);
+			}
 			
 			if (!headRefs.isEmpty()) {
 				Row refsRow = table.row();
@@ -703,11 +702,8 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		}
 		
 		StringBuilder textBuilder = new StringBuilder(marker.getPath());			
-		if (marker.getLine() > 0) {
-			textBuilder.append(" ").append(marker.getLine());
-			if (marker.getColumn() > 0) {
-				textBuilder.append(":").append(marker.getColumn());
-			}
+		if (!Util.isBlank(position)) {
+			textBuilder.append(" ").append(position);
 		}
 		
 		Link link = AppFactory.eINSTANCE.createLink();
@@ -774,11 +770,9 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		if (value instanceof Marker) {
 			Marker marker = (Marker) value;
 			StringBuilder textBuilder = new StringBuilder(marker.getLocation());
-			if (marker.getLine() > 0) {
-				textBuilder.append(" ").append(marker.getLine());
-				if (marker.getColumn() > 0) {
-					textBuilder.append(":").append(marker.getColumn());
-				}
+			String position = marker.getPosition();			
+			if (!Util.isBlank(position)) {
+				textBuilder.append(" ").append(position);
 			}
 			return createText(textBuilder.toString());
 		}
