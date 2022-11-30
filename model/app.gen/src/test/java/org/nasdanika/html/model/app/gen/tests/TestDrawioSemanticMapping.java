@@ -1,11 +1,15 @@
 package org.nasdanika.html.model.app.gen.tests;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import javax.xml.transform.TransformerException;
+
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -13,18 +17,24 @@ import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.jupiter.api.Test;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.drawio.Document;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.YamlLoadingDrawioResourceFactory;
 import org.nasdanika.emf.persistence.YamlLoadingDrawioResource;
 import org.nasdanika.emf.persistence.YamlResourceFactory;
+import org.nasdanika.graph.Element;
+import org.nasdanika.graph.processor.LinkedResourcesAdapter;
+import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.Period;
@@ -41,19 +51,38 @@ public class TestDrawioSemanticMapping extends TestBase {
 			Period period = (Period) eObject;
 			String description = period.getDescription();
 			
-			// For testing, use content-type annotation later
+			// For testing, use content-type annotation later - resource-uri content type
 			if (description != null && description.endsWith(".drawio")) {
-				URI drawioURI = URI.createURI(description);
-				if (drawioURI.isRelative() && base != null && !base.isRelative()) {
-					drawioURI = drawioURI.resolve(base);
+				URI resourceURI = URI.createURI(description);
+				if (resourceURI.isRelative() && base != null && !base.isRelative()) {
+					resourceURI = resourceURI.resolve(base);
 				}
-				Resource drawioResource = resourceSet.getResource(drawioURI, true);
-				// TODO - add to LinkedResources adapter here so it get linked with children.
-				if (drawioResource instanceof YamlLoadingDrawioResource) {
-					((YamlLoadingDrawioResource<EObject>) drawioResource).setParent(eObject);
+				Resource linkedResource = resourceSet.getResource(resourceURI, true);
+				if (linkedResource instanceof YamlLoadingDrawioResource) {
+					((YamlLoadingDrawioResource<EObject>) linkedResource).setParent(eObject);
 				}
 				
-				// TODO - inject diagram into the description
+				// Injection of diagram document. TODO - handle pages.
+				ProcessorConfig<?> resourceProcessorConfig = (ProcessorConfig<?>) EcoreUtil.getRegisteredAdapter(linkedResource, ProcessorConfig.class);
+				if (resourceProcessorConfig != null) {
+					Element element = resourceProcessorConfig.getElement();
+					if (element instanceof Document) {
+						try {
+							String docStr = ((Document) element).save(true);
+							((Period) eObject).setDescription(docStr);
+						} catch (TransformerException | IOException e) {
+							throw new NasdanikaException(e);
+						}
+					}
+				}				
+				
+				// Adding to linked resources adapter for setting children in createSemanticElement				
+				LinkedResourcesAdapter linkedResourcesAdapter = (LinkedResourcesAdapter) EcoreUtil.getRegisteredAdapter(eObject, LinkedResourcesAdapter.class);
+				if (linkedResourcesAdapter == null) {
+					linkedResourcesAdapter = new LinkedResourcesAdapter();
+					eObject.eAdapters().add(linkedResourcesAdapter);
+				}
+				linkedResourcesAdapter.getLinkedResources().add(linkedResource);
 			}
 		}
 	}
