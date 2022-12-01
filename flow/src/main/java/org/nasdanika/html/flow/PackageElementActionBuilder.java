@@ -113,42 +113,42 @@ public class PackageElementActionBuilder<T extends PackageElement<?>> extends EO
 		T semanticElement = getTarget();
 
 		// Representations
-		for (Diagram representation: semanticElement.getRepresentations().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList())) {
-			if (representation.getElements().isEmpty()) {
-				populateRepresentation(representation, action, context, progressMonitor);
-			}			
-			Action representationAction;
-			if (Util.isBlank(representation.getName())) {
-				representationAction = action;
-			} else {
-				representationAction = AppFactory.eINSTANCE.createAction();
-				representationAction.setText(representation.getName());
-				action.getSections().add(representationAction); // TODO - support of navigation/navigation-modal - get from properties.
-			}
-			String rDescr = representation.getDescription();
-			if (Util.isBlank(rDescr)) {
-				addContent(representationAction, createGenerator().generate(representation));				
-			} else {
-				Table table = BootstrapFactory.eINSTANCE.createTable();
-				representationAction.getContent().add(table);
-				table.setBordered(true);
-				TableSection body = BootstrapFactory.eINSTANCE.createTableSection();
-				table.setBody(body);
-				table.getAttributes().put("style", createText("width:auto"));				
-				
-				TableRow diagramRow = BootstrapFactory.eINSTANCE.createTableRow();
-				body.getRows().add(diagramRow);
-				TableCell diagramCell = BootstrapFactory.eINSTANCE.createTableCell();
-				diagramRow.getCells().add(diagramCell);				
-				diagramCell.getContent().add(createText(createGenerator().generate(representation)));
-				
-				TableRow descriptionRow = BootstrapFactory.eINSTANCE.createTableRow();
-				body.getRows().add(descriptionRow);
-				TableCell descriptionCell = BootstrapFactory.eINSTANCE.createTableCell();
-				descriptionRow.getCells().add(descriptionCell);				
-				descriptionCell.getContent().add(createText(rDescr));								
-			}
-		}
+//		for (Diagram representation: semanticElement.getRepresentations().values().stream().sorted(NamedElementComparator.INSTANCE).collect(Collectors.toList())) {
+//			if (representation.getElements().isEmpty()) {
+//				populateRepresentation(representation, action, context, progressMonitor);
+//			}			
+//			Action representationAction;
+//			if (Util.isBlank(representation.getName())) {
+//				representationAction = action;
+//			} else {
+//				representationAction = AppFactory.eINSTANCE.createAction();
+//				representationAction.setText(representation.getName());
+//				action.getSections().add(representationAction); // TODO - support of navigation/navigation-modal - get from properties.
+//			}
+//			String rDescr = representation.getDescription();
+//			if (Util.isBlank(rDescr)) {
+//				addContent(representationAction, createGenerator().generate(representation));				
+//			} else {
+//				Table table = BootstrapFactory.eINSTANCE.createTable();
+//				representationAction.getContent().add(table);
+//				table.setBordered(true);
+//				TableSection body = BootstrapFactory.eINSTANCE.createTableSection();
+//				table.setBody(body);
+//				table.getAttributes().put("style", createText("width:auto"));				
+//				
+//				TableRow diagramRow = BootstrapFactory.eINSTANCE.createTableRow();
+//				body.getRows().add(diagramRow);
+//				TableCell diagramCell = BootstrapFactory.eINSTANCE.createTableCell();
+//				diagramRow.getCells().add(diagramCell);				
+//				diagramCell.getContent().add(createText(createGenerator().generate(representation)));
+//				
+//				TableRow descriptionRow = BootstrapFactory.eINSTANCE.createTableRow();
+//				body.getRows().add(descriptionRow);
+//				TableCell descriptionCell = BootstrapFactory.eINSTANCE.createTableCell();
+//				descriptionRow.getCells().add(descriptionCell);				
+//				descriptionCell.getContent().add(createText(rDescr));								
+//			}
+//		}
 		
 		// Adding documentation here so it appears under the properties table
 		action.getContent().addAll(EcoreUtil.copyAll(semanticElement.getDocumentation()));				

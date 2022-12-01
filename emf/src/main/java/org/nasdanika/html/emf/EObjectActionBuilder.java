@@ -322,6 +322,15 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		
 		// Content
 		
+		/*
+		 * TODO - iterate over representations
+		 * for drawio representations - decode, go trough the elements and for elements with target-uri property:
+		 * - find the target in the resource set
+		 * - if found - get its action
+		 * - if action is present - set link if the link is blank (or is a page link?), set tooltip if the tooltip is blank.
+		 * then encode the representation and add to this action's representation under the same key to be used in action rendering.
+		 */
+		
 		// Properties table
 		Table propertiesTable = createPropertiesTable(action, context, progressMonitor);
 		if (propertiesTable != null) {
