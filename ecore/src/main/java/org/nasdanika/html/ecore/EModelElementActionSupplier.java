@@ -47,7 +47,6 @@ import org.nasdanika.exec.content.Markdown;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
-import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.util.NcoreUtil; 
 
 public class EModelElementActionSupplier<T extends EModelElement> extends EObjectActionSupplier<T> {
@@ -212,7 +211,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		
 		// Creating a marker with EObject resource location for resource resolution in Markdown
 		if (location != null) {
-			Marker marker = context.get(MarkerFactory.class, MarkerFactory.INSTANCE).createMarker(location.toString(), progressMonitor);
+			org.nasdanika.ncore.Marker marker = context.get(MarkerFactory.class, MarkerFactory.INSTANCE).createMarker(location.toString(), progressMonitor);
 			ret.getMarkers().add(marker);
 		}
 		
@@ -587,11 +586,11 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	
 	/**
 	 * Filters the collection retaining only model elements which shall be documented.
-	 * @param <T>
+	 * @param <M>
 	 * @param elements
 	 * @return
 	 */
-	protected <T extends EModelElement> List<T> retainDocumentable(Collection<T> elements) {
+	protected <M extends EModelElement> List<M> retainDocumentable(Collection<M> elements) {
 		return elements.stream().filter(elementPredicate).collect(Collectors.toList());
 	}		
 	
