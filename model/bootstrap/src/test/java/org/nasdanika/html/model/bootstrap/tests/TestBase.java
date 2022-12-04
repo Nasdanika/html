@@ -24,7 +24,7 @@ import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Util;
-import org.nasdanika.html.model.bootstrap.util.BootstrapYamlLoadingExecutionParticipant;
+import org.nasdanika.html.model.bootstrap.util.BootstrapObjectLoaderExecutionParticipant;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.DumperOptions.FlowStyle;
 import org.yaml.snakeyaml.Yaml;
@@ -106,7 +106,7 @@ public class TestBase {
 		// Outputs to console, send to file if desired.
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		
-		class TestCommand extends BootstrapYamlLoadingExecutionParticipant implements Command {
+		class TestCommand extends BootstrapObjectLoaderExecutionParticipant implements Command {
 
 			public TestCommand(Context context) {
 				super(context);

@@ -62,7 +62,7 @@ import org.nasdanika.html.ecore.GenModelResourceSet;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
-import org.nasdanika.html.model.app.gen.AppGenYamlSupplier;
+import org.nasdanika.html.model.app.gen.AppGenObjectLoaderSupplier;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
@@ -285,7 +285,7 @@ public class TestEcoreDoc {
 		
 		// Diagnosing loaded resources. 
 		try {
-			return org.nasdanika.common.Util.call(new AppGenYamlSupplier(resourceURI, context), progressMonitor, diagnosticConsumer);
+			return org.nasdanika.common.Util.call(new AppGenObjectLoaderSupplier(resourceURI, context), progressMonitor, diagnosticConsumer);
 		} catch (DiagnosticException e) {
 			System.err.println("******************************");
 			System.err.println("*      Diagnostic failed     *");

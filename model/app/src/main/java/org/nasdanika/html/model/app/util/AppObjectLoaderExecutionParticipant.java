@@ -5,17 +5,16 @@ import java.util.Collection;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.html.model.app.AppPackage;
-import org.nasdanika.html.model.bootstrap.util.BootstrapYamlLoadingExecutionParticipant;
+import org.nasdanika.html.model.bootstrap.util.BootstrapObjectLoaderExecutionParticipant;
 
 /**
- * {@link YamlLoadingSupplier} for Bootstrap.
- * Registers exec- loader. 
+ * Registers {@link AppPackage}
  * @author Pavel
  *
  */
-public abstract class AppYamlLoadingExecutionParticipant extends BootstrapYamlLoadingExecutionParticipant {
+public abstract class AppObjectLoaderExecutionParticipant extends BootstrapObjectLoaderExecutionParticipant {
 
-	public AppYamlLoadingExecutionParticipant(Context context) {
+	public AppObjectLoaderExecutionParticipant(Context context) {
 		super(context);
 	}
 

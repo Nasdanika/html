@@ -6,9 +6,9 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.emf.persistence.YamlResourceFactory;
-import org.nasdanika.exec.util.ExecYamlLoadingExecutionParticipant;
+import org.nasdanika.exec.util.ExecObjectLoaderExecutionParticipant;
 import org.nasdanika.html.model.html.HtmlPackage;
+import org.nasdanika.persistence.ObjectLoaderResourceFactory;
 
 /**
  * {@link YamlLoadingSupplier} for Engineering {@link EPackage}s.
@@ -16,16 +16,16 @@ import org.nasdanika.html.model.html.HtmlPackage;
  * @author Pavel
  *
  */
-public abstract class HtmlGenYamlLoadingExecutionParticipant extends ExecYamlLoadingExecutionParticipant {
+public abstract class HtmlGenObjectLoaderExecutionParticipant extends ExecObjectLoaderExecutionParticipant {
 
-	public HtmlGenYamlLoadingExecutionParticipant(Context context) {
+	public HtmlGenObjectLoaderExecutionParticipant(Context context) {
 		super(context);
 	}
 	
 	@Override
-	protected YamlResourceFactory createYamlResorceFactory(ResourceSet resourceSet, ProgressMonitor progressMonitor) {
+	protected ObjectLoaderResourceFactory createObjectLoaderResorceFactory(ResourceSet resourceSet, ProgressMonitor progressMonitor) {
 		resourceSet.getAdapterFactories().add(new HtmlAdapterFactory());
-		return super.createYamlResorceFactory(resourceSet, progressMonitor);
+		return super.createObjectLoaderResorceFactory(resourceSet, progressMonitor);
 	}
 
 	@Override

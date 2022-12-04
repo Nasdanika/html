@@ -36,7 +36,6 @@ import org.nasdanika.drawio.ConnectionBase;
 import org.nasdanika.drawio.Document;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.GitMarkerFactory;
-import org.nasdanika.emf.persistence.YamlResourceFactory;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.content.ContentPackage;
 import org.nasdanika.exec.resources.Container;
@@ -50,6 +49,8 @@ import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.ncore.NcorePackage;
+import org.nasdanika.persistence.ObjectLoader;
+import org.nasdanika.persistence.ObjectLoaderResourceFactory;
 import org.nasdanika.resources.BinaryEntityContainer;
 import org.nasdanika.resources.FileSystemContainer;
 
@@ -112,8 +113,25 @@ public class TestDrawioResource extends TestBase {
 		
 		EObjectLoader eObjectLoader = new EObjectLoader(null, null, resourceSet);
 		eObjectLoader.setMarkerFactory(new GitMarkerFactory());
-		Resource.Factory appYamlResourceFactory = new YamlResourceFactory(eObjectLoader, modelContext, progressMonitor);
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("yml", appYamlResourceFactory);
+		Resource.Factory appObjectLoaderResourceFactory = new ObjectLoaderResourceFactory() {
+
+			@Override
+			protected ObjectLoader getObjectLoader(Resource resource) {
+				return eObjectLoader;
+			}
+			
+			@Override
+			protected Context getContext(Resource resource) {
+				return modelContext;
+			}
+			
+			@Override
+			protected ProgressMonitor getProgressMonitor(Resource resource) {
+				return progressMonitor;
+			}
+			
+		};
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("yml", appObjectLoaderResourceFactory);
 		
 		File modelFile = new File("src/test/resources/org/nasdanika/html/model/app/gen/tests/app/aws-containers.drawio");
 		assertThat(modelFile.isFile());

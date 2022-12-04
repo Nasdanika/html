@@ -14,16 +14,17 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.persistence.EObjectLoader;
-import org.nasdanika.emf.persistence.YamlLoadingDrawioResourceFactory;
-import org.nasdanika.emf.persistence.YamlResourceFactory;
+import org.nasdanika.emf.persistence.NcoreDrawioResourceFactory;
 import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreResourceSet;
+import org.nasdanika.persistence.ObjectLoader;
+import org.nasdanika.persistence.ObjectLoaderResourceFactory;
 
 public class TestDrawioSemanticMapping extends TestBase {
 	
 	@Test
-	public void testYamlLoadingDrawioResourceFactory() throws Exception {
+	public void testObjectLoaderDrawioResourceFactory() throws Exception {
 		Context context = Context.EMPTY_CONTEXT;
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		
@@ -34,29 +35,46 @@ public class TestDrawioSemanticMapping extends TestBase {
 		
 		EObjectLoader loader = new EObjectLoader(null, null, resourceSet);
 		
-		YamlResourceFactory yamlResourceFactory = new YamlResourceFactory(loader, context, progressMonitor);
-		extensionToFactoryMap.put("yml", yamlResourceFactory);
+		ObjectLoaderResourceFactory objectLoaderResourceFactory = new ObjectLoaderResourceFactory() {
+			
+			@Override
+			protected ObjectLoader getObjectLoader(Resource resource) {
+				return loader;
+			}
+			
+			@Override
+			protected Context getContext(Resource resource) {
+				return context;
+			}
+			
+			@Override
+			protected ProgressMonitor getProgressMonitor(Resource resource) {
+				return progressMonitor;
+			}
+			
+		};
+		
+		extensionToFactoryMap.put("yml", objectLoaderResourceFactory);
+		extensionToFactoryMap.put("json", objectLoaderResourceFactory);		
+		resourceSet.getResourceFactoryRegistry().getProtocolToFactoryMap().put("data", objectLoaderResourceFactory);
 
-		YamlLoadingDrawioResourceFactory<ModelElement> yamlLoadingDrawioResourceFactory = new YamlLoadingDrawioResourceFactory<>(loader, context, progressMonitor) {
+		NcoreDrawioResourceFactory<ModelElement> ncoreDrawioResourceFactory = new NcoreDrawioResourceFactory<>() {
+
+			@Override
+			protected ResourceSet getResourceSet() {
+				return resourceSet;
+			}
+
+			@Override
+			protected ProgressMonitor getProgressMonitor(URI uri) {
+				return progressMonitor.split("Loading " + uri, 1);
+			}
 			
-			protected void configureSemanticElement(
-					org.nasdanika.graph.processor.ProcessorConfig<ModelElement> config, 
-					ModelElement semanticElement, 
-					Resource resource, 
-					ProgressMonitor progressMonitor) {
-				
-//				if (config.getElement() instanceof org.nasdanika.drawio.ModelElement) {
-//					semanticElement.setDescription(((org.nasdanika.drawio.ModelElement) config.getElement()).getTooltip());
-//				}
-//				if (semanticElement instanceof NamedElement && config.getElement() instanceof org.nasdanika.drawio.ModelElement) {
-//					((NamedElement) semanticElement).setName(((org.nasdanika.drawio.ModelElement) config.getElement()).getLabel()); // Jsoup plain text?
-//				}
-				
-				// TODO - graph adapter, semantic-uuid property  
-			};			
-			
-		};		
-		extensionToFactoryMap.put("drawio", yamlLoadingDrawioResourceFactory);
+		};
+		
+		extensionToFactoryMap.put("drawio", ncoreDrawioResourceFactory);
+		
+		
 		
 		resourceSet.getPackageRegistry().put(NcorePackage.eNS_URI, NcorePackage.eINSTANCE);
 //		resourceSet.getPackageRegistry().put(ExecPackage.eNS_URI, ExecPackage.eINSTANCE);
@@ -74,7 +92,8 @@ public class TestDrawioSemanticMapping extends TestBase {
 		EList<EObject> contents = semanticMappingDrawioResource.getContents();
 		System.out.println(contents.size());
 		EObject first = contents.get(0);
-		System.out.println(first);		
+		String uriFragment = semanticMappingDrawioResource.getURIFragment(first);
+		System.out.println(first + " " + uriFragment);		
 	}
 	
 }

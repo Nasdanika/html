@@ -60,7 +60,7 @@ import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.Package;
-import org.nasdanika.flow.util.FlowYamlSupplier;
+import org.nasdanika.flow.util.FlowObjectLoaderSupplier;
 import org.nasdanika.html.emf.EObjectActionResolver;
 import org.nasdanika.html.flow.FlowActionProviderAdapterFactory;
 import org.nasdanika.html.model.app.Action;
@@ -69,7 +69,7 @@ import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.app.gen.Util;
 import org.nasdanika.html.model.app.util.ActionProvider;
-import org.nasdanika.html.model.app.util.AppYamlSupplier;
+import org.nasdanika.html.model.app.util.AppObjectLoaderSupplier;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.ncore.NcorePackage;
@@ -106,7 +106,7 @@ public class TestAgileDocGen {
 		URI resourceURI = URI.createURI(getClass().getResource("agile/" + name + ".yml").toString()); 
 			
 		@SuppressWarnings("resource")
-		Supplier<EObject> flowSupplier = new FlowYamlSupplier(resourceURI, context) {
+		Supplier<EObject> flowSupplier = new FlowObjectLoaderSupplier(resourceURI, context) {
 			
 			@Override
 			protected boolean isDiagnoseModel() {
@@ -278,7 +278,7 @@ public class TestAgileDocGen {
 		
 		// Diagnosing loaded resources. 
 		try {
-			return Objects.requireNonNull(org.nasdanika.common.Util.call(new AppYamlSupplier(resourceURI, context), progressMonitor, diagnosticConsumer), "Loaded null from: " + resource);
+			return Objects.requireNonNull(org.nasdanika.common.Util.call(new AppObjectLoaderSupplier(resourceURI, context), progressMonitor, diagnosticConsumer), "Loaded null from: " + resource);
 		} catch (DiagnosticException e) {
 			System.err.println("******************************");
 			System.err.println("*      Diagnostic failed     *");

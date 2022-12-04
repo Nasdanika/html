@@ -1,4 +1,4 @@
-package org.nasdanika.html.model.app.gen;
+package org.nasdanika.html.model.app.util;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -14,11 +14,11 @@ import org.nasdanika.common.Supplier;
  * @author Pavel
  *
  */
-public class AppGenYamlSupplier extends AppGenYamlLoadingExecutionParticipant implements Supplier<EObject> {
+public class AppObjectLoaderSupplier extends AppObjectLoaderExecutionParticipant implements Supplier<EObject> {
 
 	private URI uri;
 	
-	public AppGenYamlSupplier(URI uri, Context context) {
+	public AppObjectLoaderSupplier(URI uri, Context context) {
 		super(context);
 		this.uri = uri;
 	}

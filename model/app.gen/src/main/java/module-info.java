@@ -10,6 +10,7 @@ module org.nasdanika.html.model.app.gen {
 	requires transitive org.jsoup;
 	requires org.eclipse.emf.ecore.xmi;
 	requires org.eclipse.emf.ecore;
+	requires org.nasdanika.persistence;
 	
 	exports org.nasdanika.html.model.app.gen;	
 }

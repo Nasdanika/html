@@ -4,18 +4,17 @@ import java.util.Collection;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
-import org.nasdanika.exec.util.ExecYamlLoadingExecutionParticipant;
+import org.nasdanika.exec.util.ExecObjectLoaderExecutionParticipant;
 import org.nasdanika.html.model.html.HtmlPackage;
 
 /**
- * {@link YamlLoadingSupplier} for Engineering {@link EPackage}s.
- * Registers exec- loader. 
+ * Registers {@link HtmlPackage} 
  * @author Pavel
  *
  */
-public abstract class HtmlYamlLoadingExecutionParticipant extends ExecYamlLoadingExecutionParticipant {
+public abstract class HtmlObjectLoaderExecutionParticipant extends ExecObjectLoaderExecutionParticipant {
 
-	public HtmlYamlLoadingExecutionParticipant(Context context) {
+	public HtmlObjectLoaderExecutionParticipant(Context context) {
 		super(context);
 	}
 
