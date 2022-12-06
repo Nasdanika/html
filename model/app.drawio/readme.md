@@ -90,7 +90,7 @@ An alternative is to subclass the resource factory and explicitly select root re
 ##### selector
 
 Use ``selector`` property to link a diagram element to an element on another diagram (page).
-``selector`` value shall be a [Spring boolean expression](https://docs.spring.io/spring-framework/docs/5.3.22/reference/html/core.html#expressions).
+``selector`` value shall be a [Spring boolean expression](https://docs.spring.io/spring-framework/docs/5.3.24/reference/html/core.html#expressions).
 The expression is evaluated in the context of a diagram element. 
 
 Selectors allow to "reuse" the same element in multiple diagrams.

@@ -15,6 +15,7 @@ import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.NcoreDrawioResourceFactory;
+import org.nasdanika.graph.processor.emf.PropertySourceEObjectFactoryResource;
 import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreResourceSet;
@@ -64,10 +65,10 @@ public class TestDrawioSemanticMapping extends TestBase {
 			protected ResourceSet getResourceSet() {
 				return resourceSet;
 			}
-
+			
 			@Override
-			protected ProgressMonitor getProgressMonitor(URI uri) {
-				return progressMonitor.split("Loading " + uri, 1);
+			protected ProgressMonitor getProgressMonitor(PropertySourceEObjectFactoryResource<ModelElement> resource) {
+				return progressMonitor.split("Loading " + resource.getURI(), 1);
 			}
 			
 		};
