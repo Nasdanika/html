@@ -108,6 +108,11 @@ public class TestDrawioResource extends TestBase {
 			protected Action createDocumentAction(Document document) {
 				return EcoreUtil.copy(documentActionPrototype);
 			}
+
+			@Override
+			protected ProgressMonitor getProgressMonitor(URI uri) {
+				return progressMonitor.split("Loading " + uri, 1);
+			}
 			
 		});
 		

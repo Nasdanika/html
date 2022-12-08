@@ -7,10 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Predicate;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -38,8 +38,9 @@ import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.graph.processor.emf.SemanticProcessor;
 
-public class ModelElementProcessor extends ElementProcessor {
+public class ModelElementProcessor extends ElementProcessor implements SemanticProcessor<EObject> {
 	
 	protected Map<ProcessorInfo<ElementProcessor>, EReference> semanticChildrenInfo;
 	protected ProcessorInfo<ElementProcessor> semanticParentInfo;
@@ -203,6 +204,7 @@ public class ModelElementProcessor extends ElementProcessor {
 		return Util.isBlank(iconProperty) ? null : modelElement.getProperty(iconProperty);
 	}
 
+	@Override
 	public List<EObject> getSemanticElements() {
 		EObject semanticElement = getSemanticElement();
 		if (semanticElement == null) {

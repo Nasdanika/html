@@ -2,6 +2,7 @@ package org.nasdanika.html.model.app.drawio;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,9 +18,10 @@ import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.drawio.Page;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
+import org.nasdanika.graph.processor.emf.SemanticProcessor;
 import org.nasdanika.html.model.app.Action;
 
-public class DocumentProcessor extends ElementProcessor {
+public class DocumentProcessor extends ElementProcessor implements SemanticProcessor<EObject> {
 	
 	private Action documentAction;
 
@@ -35,8 +37,9 @@ public class DocumentProcessor extends ElementProcessor {
 	/**
 	 * @return Semantic element for this processor. Can be created in advance or on access.
 	 */
-	public EObject getSemanticElement() {
-		return documentAction;
+	@Override
+	public Collection<EObject> getSemanticElements() {
+		return Collections.singleton(documentAction);
 	}	
 
 	/**

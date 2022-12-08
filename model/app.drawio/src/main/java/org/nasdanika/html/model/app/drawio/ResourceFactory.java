@@ -44,7 +44,7 @@ import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.xml.sax.SAXException;
 
-public class ResourceFactory implements Factory {
+public abstract class ResourceFactory implements Factory {
 	
 	private ResourceSet resourceSet;
 	private ConnectionBase connectionBase;
@@ -58,7 +58,7 @@ public class ResourceFactory implements Factory {
 	@Override
 	public Resource createResource(URI uri) {
 		ProcessorFactory processorFactory = new ProcessorFactory(uri, this);
-		return new DrawioResource<ElementProcessor>(uri) {
+		return new DrawioResource<ElementProcessor, EObject>(uri) {
 
 			@Override
 			protected Stream<EObject> getSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {
@@ -73,9 +73,16 @@ public class ResourceFactory implements Factory {
 			protected org.nasdanika.graph.processor.ProcessorFactory<ElementProcessor, ?, ?> getProcessorFactory() {
 				return processorFactory;
 			}
+
+			@Override
+			protected ProgressMonitor getProgressMonitor() {
+				return ResourceFactory.this.getProgressMonitor(uri);
+			}
 			
 		};
 	}
+	
+	protected abstract ProgressMonitor getProgressMonitor(URI uri);	
 	
 	protected Document loadDocument(InputStream inputStream, URI uri) throws IOException, ParserConfigurationException, SAXException {
 		return Document.load(inputStream, uri);
