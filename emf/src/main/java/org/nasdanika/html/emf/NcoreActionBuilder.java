@@ -2,19 +2,20 @@ package org.nasdanika.html.emf;
 
 
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -30,13 +31,11 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Document;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.Label;
 import org.nasdanika.ncore.Documented;
 import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.util.NcoreUtil;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 /**
@@ -115,9 +114,6 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		}
 	}
 	
-	private static final String DRAWIO = "data:drawio";	
-	private static final String BASE64 = ";base64,";
-	
 	/**
 	 * Processes semantic element representations in order to add them to the action.  
 	 * @return Processed representation or null if the representation shall not be stored at the action.
@@ -129,18 +125,10 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			ProgressMonitor progressMonitor) {
 		
 		// Processing drawio data URI's
-		if (representation.startsWith(DRAWIO +";") || representation.startsWith(DRAWIO +",")) {
-			representation = representation.substring(DRAWIO.length());				
-			if (representation.startsWith(BASE64)) {
-				representation = new String(Base64.decodeBase64(URLDecoder.decode(representation.substring(BASE64.length()), StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
-			} else {
-				representation = URLDecoder.decode(representation.substring(1), StandardCharsets.UTF_8);
-			}
-			T semanticElement = getTarget();
-			Resource semanticResource = semanticElement.eResource();
-			URI documentBase = semanticResource == null ? null : semanticResource.getURI();
+		URI representationURI = URI.createURI(representation);
+		if (Document.isDataURI(representationURI)) {
 			try {
-				org.nasdanika.drawio.Document document = org.nasdanika.drawio.Document.load(representation, documentBase);
+				Document document = Document.load(representationURI);				
 				Document processedDocument = processDrawioRepresentation(document, action, context, progressMonitor);
 				if (processedDocument == null) {
 					return null;
@@ -154,8 +142,8 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		return representation;
 	}
 	
-	protected org.nasdanika.drawio.Document processDrawioRepresentation(
-			org.nasdanika.drawio.Document document, 
+	protected Document processDrawioRepresentation(
+			Document document, 
 			Action action, 
 			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
 			ProgressMonitor progressMonitor) {
@@ -178,7 +166,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				String targetURI = modelElement.getProperty("target-uri");
 				if (!Util.isBlank(targetURI)) {
 					URI tURI = URI.createURI(targetURI);
-					EObject uriTarget = findSemanticElementByURI(tURI);
+					EObject uriTarget = findByURI(tURI, getTarget());
 					if (uriTarget != null) {
 						if (uriTarget != null) {
 							Action uriTargetAction = context.getAction(uriTarget);
@@ -187,18 +175,30 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 								if (!Util.isBlank(uriTargetActionUUID)) {
 									modelElement.setProperty("action-uuid", uriTargetActionUUID);
 								}
+								if (Util.isBlank(modelElement.getTooltip())) {
+									String uriTargetActionDescription = uriTargetAction.getDescription();
+									if (!Util.isBlank(uriTargetActionDescription)) {
+										modelElement.setTooltip(uriTargetActionDescription);
+									}									
+								}
 							}
 						}						
 					}
 				}				
 			} else {
-				ModelElement semanticModelElement = findSemanticElementByUUID(semanticUUID);
+				ModelElement semanticModelElement = findByUUID(semanticUUID, getTarget());
 				if (semanticModelElement != null) {
 					Action semanticModelElementAction = context.getAction(semanticModelElement);
 					if (semanticModelElementAction != null) {
 						String semanticModelElementActionUUID = semanticModelElementAction.getUuid();
 						if (!Util.isBlank(semanticModelElementActionUUID)) {
 							modelElement.setProperty("action-uuid", semanticModelElementActionUUID);
+						}
+						if (Util.isBlank(modelElement.getTooltip())) {
+							String semanticModelElementDescription = semanticModelElementAction.getDescription();
+							if (!Util.isBlank(semanticModelElementDescription)) {
+								modelElement.setTooltip(semanticModelElementDescription);
+							}									
 						}
 					}
 				}
@@ -218,8 +218,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	/**
 	 * @return all contents iterator at the highest available level - resource set, resource, or the semantic element.
 	 */
-	private TreeIterator<? extends Notifier> getAllContents() {
-		T semanticElement = getTarget();
+	private static TreeIterator<? extends Notifier> getAllContents(EObject semanticElement) {
 		Resource resource = semanticElement.eResource();
 		if (resource == null) {
 			return semanticElement.eAllContents();
@@ -233,12 +232,11 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		return resourceSet.getAllContents();
 	}
 	
-	private ModelElement findSemanticElementByUUID(String uuid) {
+	private static ModelElement findByUUID(String uuid, EObject semanticElement) {
 		if (Util.isBlank(uuid)) {
 			return null;			
 		}
 		
-		T semanticElement = getTarget();
 		if (semanticElement instanceof ModelElement) {
 			String semanticElementUUID = ((ModelElement) semanticElement).getUuid();
 			if (uuid.equals(semanticElementUUID)) {
@@ -246,7 +244,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			}
 		}
 		
-		TreeIterator<? extends Notifier> rscit = getAllContents();
+		TreeIterator<? extends Notifier> rscit = getAllContents(semanticElement);
 		while (rscit.hasNext()) {
 			Notifier next = rscit.next();
 			if (next instanceof ModelElement) {
@@ -260,8 +258,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		return null;
 	}
 	
-	private EObject findSemanticElementByURI(URI uri) {		
-		T semanticElement = getTarget();
+	private static EObject findByURI(URI uri, EObject semanticElement) {		
 		URI semanticURI = NcoreUtil.getUri(semanticElement);
 		if (semanticURI != null) {
 			if (uri.isRelative() && !semanticURI.isRelative()) {
@@ -273,7 +270,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			
 		}
 		
-		TreeIterator<? extends Notifier> rscit = getAllContents();
+		TreeIterator<? extends Notifier> rscit = getAllContents(semanticElement);
 		while (rscit.hasNext()) {
 			Notifier next = rscit.next();
 			if (next instanceof EObject) {
@@ -295,6 +292,52 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * For drawio representations resolves and sets links for model elements with action-uuid property and empty link. Returns a map of representation keys to corresponding drawio documents.
+	 * @param action
+	 * @param uriResolver
+	 * @param progressMonitor
+	 * @return
+	 */
+	public static Map<String, Document> resolveRepresentationLinks(Action action, BiFunction<Label, URI, URI> uriResolver, ProgressMonitor progressMonitor) {
+		Map<String, Document> ret = new LinkedHashMap<>();
+		for (Entry<String, String> actionRepresentationEntry: action.getRepresentations()) {
+			URI representationURI = URI.createURI(actionRepresentationEntry.getValue());
+			if (Document.isDataURI(representationURI)) {
+				try {
+					Document document = Document.load(representationURI);
+					document.accept(element -> resolveLink(element, action, uriResolver, progressMonitor));
+					ret.put(actionRepresentationEntry.getKey(), document);
+				} catch (ParserConfigurationException | SAXException | IOException e) {
+					throw new NasdanikaException("Error loading drawio document: " + e, e);
+				}
+			}
+		}
+		return ret;
+	}
+
+	private static void resolveLink(
+			org.nasdanika.graph.Element element, 
+			Action action, 
+			BiFunction<Label, URI, URI> uriResolver, 
+			ProgressMonitor progressMonitor) {
+
+		if (element instanceof org.nasdanika.drawio.ModelElement) {
+			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
+			String actionUUID = modelElement.getProperty("action-uuid");			
+			if (Util.isBlank(modelElement.getLink()) && !Util.isBlank(actionUUID)) {
+				ModelElement targetAction = findByUUID(actionUUID, action);
+				if (targetAction instanceof Label) {
+					URI actionURI = uriResolver.apply(action, (URI) null);
+					URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
+					if (targetURI != null) {
+						modelElement.setLink(targetURI.toString());
+					}
+				}
+			}
+		}		
 	}
 	
 }
