@@ -5,6 +5,7 @@ import static org.nasdanika.common.Util.isBlank;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -59,7 +60,10 @@ public final class Util {
 			
 			@Override
 			public URI apply(Label label, URI base) {
-				URI uri = cache.get(label.getUuid());		
+				URI uri = cache.get(label.getUuid());	
+				if (Objects.equals(base, uri)) {
+					return null;
+				}
 				return base == null || uri == null ? uri : uri.deresolve(base, true, true, true);
 			}
 		
