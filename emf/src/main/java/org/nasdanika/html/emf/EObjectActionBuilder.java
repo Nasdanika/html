@@ -202,8 +202,8 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			diagnosticAlert.setColor(getSeverityColor(de.getSeverity()));
 			diagnosticAlert.getContent().add(createText(StringEscapeUtils.escapeHtml4(de.getMessage())));
 			ret.getContent().add(diagnosticAlert);
-		}		
-		
+		}	
+				
 		// Anonymous
 		
 		// Children

@@ -1,0 +1,300 @@
+package org.nasdanika.html.emf;
+
+
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.function.BiConsumer;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.NasdanikaException;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Util;
+import org.nasdanika.drawio.Document;
+import org.nasdanika.html.model.app.Action;
+import org.nasdanika.ncore.Documented;
+import org.nasdanika.ncore.ModelElement;
+import org.nasdanika.ncore.NamedElement;
+import org.nasdanika.ncore.util.NcoreUtil;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+
+/**
+ * Handles Ncore-specific cases - {@link NamedElement} and {@link Documented}
+ * @author Pavel
+ *
+ * @param <T>
+ */
+public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<T> {
+	
+	public NcoreActionBuilder(T target, Context context) {
+		super(target, context);		
+	}
+	
+	@Override
+	protected Action buildAction(
+			Action action,
+			BiConsumer<EObject,Action> registry, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<org.nasdanika.html.emf.EObjectActionResolver.Context>> resolveConsumer, 
+			ProgressMonitor progressMonitor) {
+		Action ret = super.buildAction(action, registry, resolveConsumer, progressMonitor);		
+		
+		T semanticElement = getTarget();
+		
+		URI uri = NcoreUtil.getUri(semanticElement);
+		String id = uri == null ? null : uri.toString();
+		
+		if (semanticElement instanceof ModelElement) {
+			ModelElement modelElement = (ModelElement) semanticElement;
+			ret.setTooltip(modelElement.getDescription()); // Escape?
+			
+			if (id == null) {
+				id = modelElement.getUuid();
+			}
+		}
+
+		if (!Util.isBlank(id)) {
+			try {
+				String digest = Hex.encodeHexString(MessageDigest.getInstance("SHA-256").digest(id.getBytes(StandardCharsets.UTF_8)));
+				ret.setId(digest);
+			} catch (NoSuchAlgorithmException e) {
+	 		}
+		}
+		
+		BiSupplier<EObject, String> cPath = NcoreUtil.containmentPath(semanticElement);
+		if (cPath == null || Util.isBlank(cPath.getSecond())) {
+			ret.setLocation("${base-uri}index.html");
+		} else {
+			ret.setLocation(cPath.getSecond() + "/index.html");
+		}		
+		
+		if (semanticElement instanceof NamedElement) {
+			ret.setText(((NamedElement) semanticElement).getName()); // Escape?
+		}
+		
+		return ret;
+	}
+	
+	@Override
+	protected void resolve(Action action, org.nasdanika.html.emf.EObjectActionResolver.Context context,	ProgressMonitor progressMonitor) {
+		super.resolve(action, context, progressMonitor);
+		
+		T semanticElement = getTarget();
+		if (semanticElement instanceof Documented) {
+			List<EObject> documentation = ((Documented) semanticElement).getDocumentation();
+			action.getContent().addAll(EcoreUtil.copyAll(documentation)); // TODO - wrap into a group in order to inject uri's properties, optionally save into its own resource.
+		}
+		
+		if (semanticElement instanceof ModelElement) {
+			for (Entry<String, String> semanticRepresentationEntry: ((ModelElement) semanticElement).getRepresentations()) {
+				String actionRepresentation = processRepresentation(semanticRepresentationEntry.getValue(), action, context, progressMonitor);
+				if (!Util.isBlank(actionRepresentation)) {
+					action.getRepresentations().put(semanticRepresentationEntry.getKey(), actionRepresentation);
+				}
+			}
+		}
+	}
+	
+	private static final String DRAWIO = "data:drawio";	
+	private static final String BASE64 = ";base64,";
+	
+	/**
+	 * Processes semantic element representations in order to add them to the action.  
+	 * @return Processed representation or null if the representation shall not be stored at the action.
+	 */
+	protected String processRepresentation(
+			String representation, 
+			Action action, 
+			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
+			ProgressMonitor progressMonitor) {
+		
+		// Processing drawio data URI's
+		if (representation.startsWith(DRAWIO +";") || representation.startsWith(DRAWIO +",")) {
+			representation = representation.substring(DRAWIO.length());				
+			if (representation.startsWith(BASE64)) {
+				representation = new String(Base64.decodeBase64(URLDecoder.decode(representation.substring(BASE64.length()), StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
+			} else {
+				representation = URLDecoder.decode(representation.substring(1), StandardCharsets.UTF_8);
+			}
+			T semanticElement = getTarget();
+			Resource semanticResource = semanticElement.eResource();
+			URI documentBase = semanticResource == null ? null : semanticResource.getURI();
+			try {
+				org.nasdanika.drawio.Document document = org.nasdanika.drawio.Document.load(representation, documentBase);
+				Document processedDocument = processDrawioRepresentation(document, action, context, progressMonitor);
+				if (processedDocument == null) {
+					return null;
+				}
+				return processedDocument.toDataURI(true).toString();
+			} catch (ParserConfigurationException | SAXException | IOException | TransformerException e) {
+				throw new NasdanikaException("Error loading drawio document: " + e, e);
+			}
+		}
+		
+		return representation;
+	}
+	
+	protected org.nasdanika.drawio.Document processDrawioRepresentation(
+			org.nasdanika.drawio.Document document, 
+			Action action, 
+			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
+			ProgressMonitor progressMonitor) {
+		
+		document.accept(element -> processDrawioElement(element, action, context, progressMonitor));
+		
+		return document;
+	}
+
+	protected void processDrawioElement(
+			org.nasdanika.graph.Element element, 
+			Action action, 
+			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
+			ProgressMonitor progressMonitor) {
+
+		if (element instanceof org.nasdanika.drawio.ModelElement) {
+			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
+			String semanticUUID = modelElement.getProperty("semantic-uuid");
+			if (Util.isBlank(semanticUUID)) {
+				String targetURI = modelElement.getProperty("target-uri");
+				if (!Util.isBlank(targetURI)) {
+					URI tURI = URI.createURI(targetURI);
+					EObject uriTarget = findSemanticElementByURI(tURI);
+					if (uriTarget != null) {
+						if (uriTarget != null) {
+							Action uriTargetAction = context.getAction(uriTarget);
+							if (uriTargetAction != null) {
+								String uriTargetActionUUID = uriTargetAction.getUuid();
+								if (!Util.isBlank(uriTargetActionUUID)) {
+									modelElement.setProperty("action-uuid", uriTargetActionUUID);
+								}
+							}
+						}						
+					}
+				}				
+			} else {
+				ModelElement semanticModelElement = findSemanticElementByUUID(semanticUUID);
+				if (semanticModelElement != null) {
+					Action semanticModelElementAction = context.getAction(semanticModelElement);
+					if (semanticModelElementAction != null) {
+						String semanticModelElementActionUUID = semanticModelElementAction.getUuid();
+						if (!Util.isBlank(semanticModelElementActionUUID)) {
+							modelElement.setProperty("action-uuid", semanticModelElementActionUUID);
+						}
+					}
+				}
+			}
+			
+			// Dumping attributes
+//			System.out.println(element);
+//			Element xmlElement = ((org.nasdanika.drawio.ModelElement) element).getElement();
+//			NamedNodeMap attributes = xmlElement.getAttributes();
+//			for (int i = 0; i< attributes.getLength(); ++i) {
+//				Node attrNode = attributes.item(i);
+//				System.out.println("\t" + attrNode);
+//			}			
+		}		
+	}
+	
+	/**
+	 * @return all contents iterator at the highest available level - resource set, resource, or the semantic element.
+	 */
+	private TreeIterator<? extends Notifier> getAllContents() {
+		T semanticElement = getTarget();
+		Resource resource = semanticElement.eResource();
+		if (resource == null) {
+			return semanticElement.eAllContents();
+		}
+		
+		ResourceSet resourceSet = resource.getResourceSet();
+		if (resourceSet == null) {
+			return resource.getAllContents();
+		}		
+		
+		return resourceSet.getAllContents();
+	}
+	
+	private ModelElement findSemanticElementByUUID(String uuid) {
+		if (Util.isBlank(uuid)) {
+			return null;			
+		}
+		
+		T semanticElement = getTarget();
+		if (semanticElement instanceof ModelElement) {
+			String semanticElementUUID = ((ModelElement) semanticElement).getUuid();
+			if (uuid.equals(semanticElementUUID)) {
+				return (ModelElement) semanticElement;
+			}
+		}
+		
+		TreeIterator<? extends Notifier> rscit = getAllContents();
+		while (rscit.hasNext()) {
+			Notifier next = rscit.next();
+			if (next instanceof ModelElement) {
+				String nextUUID = ((ModelElement) next).getUuid();
+				if (uuid.equals(nextUUID)) {
+					return (ModelElement) next;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	private EObject findSemanticElementByURI(URI uri) {		
+		T semanticElement = getTarget();
+		URI semanticURI = NcoreUtil.getUri(semanticElement);
+		if (semanticURI != null) {
+			if (uri.isRelative() && !semanticURI.isRelative()) {
+				uri = uri.resolve(semanticURI);
+			}
+			if (Objects.equals(semanticURI, uri)) {
+				return semanticElement;
+			}
+			
+		}
+		
+		TreeIterator<? extends Notifier> rscit = getAllContents();
+		while (rscit.hasNext()) {
+			Notifier next = rscit.next();
+			if (next instanceof EObject) {
+				EObject nextEObject = (EObject) next;
+				URI nextUri = NcoreUtil.getUri(nextEObject);
+				if (nextUri != null && nextUri.equals(uri)) {
+					return nextEObject;
+				}
+				if (next instanceof ModelElement) {
+					String uuid = ((ModelElement) next).getUuid();
+					if (!Util.isBlank(uuid)) {
+						URI uuidUri = URI.createURI("uuid:" + uuid);
+						if (uuidUri.equals(uri)) {
+							return nextEObject;
+						}
+					}
+				}				
+			}
+		}
+		
+		return null;
+	}
+	
+}

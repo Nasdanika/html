@@ -6,9 +6,6 @@ import java.util.Collections;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.Context;
 import org.nasdanika.emf.ComposedAdapterFactory;
@@ -16,11 +13,11 @@ import org.nasdanika.emf.DiagnosticProvider;
 import org.nasdanika.emf.DiagnosticProviderAdapter;
 import org.nasdanika.emf.FunctionAdapterFactory;
 import org.nasdanika.html.model.app.util.ActionProvider;
+import org.nasdanika.ncore.Composite;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.Temporal;
 
 /**
- * Provides adapters for the Ecore types - {@link EPackage}, {@link EClass}, {@link EStructuralFeature}, {@link EOperation}, ...
  * @author Pavel
  *
  */
@@ -34,6 +31,13 @@ public class ActionProviderAdapterFactory extends ComposedAdapterFactory {
 				ActionProvider.class, 
 				this.getClass().getClassLoader(), 
 				e -> new TemporalActionBuilder(e, context).asActionProvider()));
+		
+		registerAdapterFactory(
+				new FunctionAdapterFactory<ActionProvider, Composite>(
+					NcorePackage.Literals.COMPOSITE, 
+					ActionProvider.class, 
+					this.getClass().getClassLoader(), 
+					e -> new CompositeActionBuilder<Composite>(e, context).asActionProvider()));
 	}
 	
 	@Override
