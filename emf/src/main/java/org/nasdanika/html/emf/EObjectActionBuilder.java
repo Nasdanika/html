@@ -334,7 +334,12 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		// Properties table
 		Table propertiesTable = createPropertiesTable(action, context, progressMonitor);
 		if (propertiesTable != null) {
-			action.getContent().add(propertiesTable);
+			Action infoAction = AppFactory.eINSTANCE.createAction();
+			infoAction.setIcon("fas fa-info-circle");
+			infoAction.setText("Info");
+			infoAction.getContent().add(propertiesTable);
+			infoAction.setLocation("info.html");
+			action.getNavigation().add(infoAction);
 		}
 		
 		// Resources
