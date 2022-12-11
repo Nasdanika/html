@@ -210,6 +210,9 @@ public final class Util {
 		if (context == null) {
 			context = Context.EMPTY_CONTEXT;
 		}
+		if (activeAction instanceof Action) {
+			context = Context.singleton(Action.class, (Action) activeAction);
+		}
 		if (context.get(Context.BASE_URI_PROPERTY) == null) {
 			context = context.fork();
 			((MutableContext) context).put(Context.BASE_URI_PROPERTY, URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/"));
