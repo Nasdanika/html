@@ -61,7 +61,7 @@ public class DocumentProcessor extends ElementProcessor implements SemanticProce
 			if (pageProcessor.isRootPage()) {
 				ModelElement pageElement = pageProcessor.getPageElement();
 				
-				ProcessorInfo<ElementProcessor> semanticParentInfo = documentAction == null ? null : ProcessorInfo.of(config, this);
+				ProcessorInfo<ElementProcessor> semanticParentInfo = documentAction == null ? null : ProcessorInfo.of(config, this, null);
 				ModelElementProcessor pageElementProcessor = (ModelElementProcessor) registry.get(pageElement).getProcessor();
 				Map<ProcessorInfo<ElementProcessor>, EReference> pageElementSemanticInfo = pageElementProcessor.setSemanticParentInfo(semanticParentInfo);
 				semanticChildrenInfo.putAll(pageElementSemanticInfo);

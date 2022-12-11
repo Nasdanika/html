@@ -19,7 +19,7 @@ class ProcessorFactory implements NopEndpointProcessorFactory<ElementProcessor, 
 	
 	@Override
 	public ProcessorInfo<ElementProcessor> createProcessor(ProcessorConfig<ElementProcessor> config, ProgressMonitor progressMonitor) {
-		return ProcessorInfo.of(config, resourceFactory.createProcessor(uri, config, progressMonitor));
+		return ProcessorInfo.of(config, resourceFactory.createProcessor(uri, config, progressMonitor), null);
 	}
 	
 	@Override

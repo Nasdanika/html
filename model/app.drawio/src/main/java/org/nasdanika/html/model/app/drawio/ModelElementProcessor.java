@@ -84,7 +84,7 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 			}
 			
 			this.semanticParentInfo = semanticParentInfo;
-			ProcessorInfo<ElementProcessor> info = ProcessorInfo.of(config, this);
+			ProcessorInfo<ElementProcessor> info = ProcessorInfo.of(config, this, null);
 			semanticChildrenInfo = collectSemanticChildrenInfo(info);
 			return Collections.singletonMap(info, getRole());
 		}
@@ -558,7 +558,7 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 
 		if (resourceFactory.shallCreateLink(modelElement)) {
 			// External reference
-			String externalReference = resourceFactory.getExternalReference(ProcessorInfo.of(config, this), modelElement);
+			String externalReference = resourceFactory.getExternalReference(ProcessorInfo.of(config, this, null), modelElement);
 			if (externalReference != null) {
 				return externalReference;
 			}
