@@ -82,9 +82,9 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		
 		BiSupplier<EObject, String> cPath = NcoreUtil.containmentPath(semanticElement);
 		if (cPath == null || Util.isBlank(cPath.getSecond())) {
-			ret.setLocation("${base-uri}index.html");
+			ret.setLocation("${base-uri}index." + getHtmlExtension());
 		} else {
-			ret.setLocation(cPath.getSecond() + "/index.html");
+			ret.setLocation(cPath.getSecond() + "/index." + getHtmlExtension());
 		}		
 		
 		if (semanticElement instanceof NamedElement) {
@@ -176,9 +176,9 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 									modelElement.setProperty("action-uuid", uriTargetActionUUID);
 								}
 								if (Util.isBlank(modelElement.getTooltip())) {
-									String uriTargetActionDescription = uriTargetAction.getDescription();
-									if (!Util.isBlank(uriTargetActionDescription)) {
-										modelElement.setTooltip(uriTargetActionDescription);
+									String uriTargetActionTooltip = uriTargetAction.getTooltip();
+									if (!Util.isBlank(uriTargetActionTooltip)) {
+										modelElement.setTooltip(uriTargetActionTooltip);
 									}									
 								}
 							}

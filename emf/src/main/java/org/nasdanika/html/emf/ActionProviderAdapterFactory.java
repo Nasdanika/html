@@ -30,14 +30,28 @@ public class ActionProviderAdapterFactory extends ComposedAdapterFactory {
 				NcorePackage.Literals.TEMPORAL, 
 				ActionProvider.class, 
 				this.getClass().getClassLoader(), 
-				e -> new TemporalActionBuilder(e, context).asActionProvider()));
+				e -> new TemporalActionBuilder(e, context) {
+					
+					@Override
+					protected String getHtmlExtension() {
+						return ActionProviderAdapterFactory.this.getHtmlExtension();
+					}
+					
+				}.asActionProvider()));
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<ActionProvider, Composite>(
 					NcorePackage.Literals.COMPOSITE, 
 					ActionProvider.class, 
 					this.getClass().getClassLoader(), 
-					e -> new CompositeActionBuilder<Composite>(e, context).asActionProvider()));
+					e -> new CompositeActionBuilder<Composite>(e, context) {
+						
+						@Override
+						protected String getHtmlExtension() {
+							return ActionProviderAdapterFactory.this.getHtmlExtension();
+						}
+						
+					}.asActionProvider()));
 	}
 	
 	@Override
@@ -59,6 +73,14 @@ public class ActionProviderAdapterFactory extends ComposedAdapterFactory {
 
 	protected Collection<Diagnostic> getFeatureDiagnostic(Notifier target, EStructuralFeature feature) {
 		return Collections.emptyList();
+	}
+	
+	/**
+	 * Allows to customize html extension of actions. E.g. set it to aspx to be servable from OneDrive.
+	 * @return
+	 */
+	protected String getHtmlExtension() {
+		return "html";
 	}
 	
 }
