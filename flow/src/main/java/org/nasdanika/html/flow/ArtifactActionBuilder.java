@@ -10,15 +10,12 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
-import org.nasdanika.diagram.Diagram;
-import org.nasdanika.diagram.DiagramElement;
 import org.nasdanika.flow.Artifact;
 import org.nasdanika.flow.ArtifactParticipantResponsibility;
 import org.nasdanika.flow.FlowElement;
@@ -26,7 +23,6 @@ import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.Participant;
 import org.nasdanika.flow.Relationship;
 import org.nasdanika.flow.Transition;
-import org.nasdanika.flow.util.ArtifactComponentDiagramGenerator;
 import org.nasdanika.html.emf.ColumnBuilder;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
@@ -389,57 +385,6 @@ public class ArtifactActionBuilder extends ParticipantResponsibilityActionBuilde
 				action, 
 				context, 
 				progressMonitor);
-	}
-	
-	@Override
-	protected void populateRepresentation(
-			Diagram representation, 
-			Action action,
-			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
-			ProgressMonitor progressMonitor) {
-
-		ArtifactComponentDiagramGenerator artifactComponentDiagramGenerator = new ArtifactComponentDiagramGenerator() {
-		
-			@Override
-			protected String getArtifactLocation(Artifact semanticElement) {
-				Action elementAction = context.getAction(semanticElement);
-				if (elementAction == null) {
-					return null;
-				}
-				
-				URI uri = context.resolve(elementAction, action);
-				return uri == null ? null : uri.toString();
-			}
-			
-			@Override
-			protected String getArtifactTooltip(Artifact semanticElement) {
-				Action elementAction = context.getAction(semanticElement);
-				return elementAction == null ? null : elementAction.getDescription();
-			}
-
-			@Override
-			protected DiagramElement createDiagramElement(
-					Artifact semanticElement,
-					Map<Artifact, DiagramElement> semanticMap, 
-					Artifact contextElement,
-					int depth) {
-				
-				DiagramElement ret = super.createDiagramElement(semanticElement, semanticMap, contextElement, depth);
-				String text = ret.getText();
-				int initialLineLength = 25;
-				if (text != null && text.length() > initialLineLength) {
-					ret.setText(Util.wrap(text, initialLineLength, 2, "\\n"));
-				}
-				return ret;
-			}
-						
-		};
-		
-		populateRepresentation(representation, artifactComponentDiagramGenerator);
-	}
-	
-	protected void populateRepresentation(Diagram representation, ArtifactComponentDiagramGenerator artifactComponentDiagramGenerator) {
-		artifactComponentDiagramGenerator.generateDiagram(getTarget(), representation);
 	}
 
 	private Action createInboundRelationshipsAction(

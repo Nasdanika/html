@@ -5,7 +5,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.common.util.URI;
@@ -14,24 +13,15 @@ import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
-import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
-import org.nasdanika.diagram.Diagram;
-import org.nasdanika.diagram.gen.Generator;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.PackageElement;
 import org.nasdanika.html.emf.EObjectActionBuilder;
 import org.nasdanika.html.model.app.Action;
-import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.SectionStyle;
-import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.Table;
-import org.nasdanika.html.model.bootstrap.TableCell;
-import org.nasdanika.html.model.bootstrap.TableRow;
-import org.nasdanika.html.model.bootstrap.TableSection;
-import org.nasdanika.ncore.util.NamedElementComparator;
 import org.nasdanika.ncore.util.NcoreUtil;
 
 public class PackageElementActionBuilder<T extends PackageElement<?>> extends EObjectActionBuilder<T> {
@@ -152,34 +142,6 @@ public class PackageElementActionBuilder<T extends PackageElement<?>> extends EO
 		
 		// Adding documentation here so it appears under the properties table
 		action.getContent().addAll(EcoreUtil.copyAll(semanticElement.getDocumentation()));				
-	}
-	
-	/**
-	 * Creates a diagram {@link Generator}.
-	 * @return
-	 */
-	protected Generator createGenerator() {
-		return new Generator() {
-			
-			@Override
-			protected DiagramGenerator getDiagramGenerator() {
-				return context == null ? super.getDiagramGenerator() : context.get(DiagramGenerator.class, super.getDiagramGenerator()); 
-			}
-			
-		};
-	}
-	
-	/**
-	 * Populates empty representations. An empty representation indicates that it has to be auto-populated. 
-	 * Non-empty representations indicate that they were pre-populated, e.g. manually, and should not be auto-populated. 
-	 * @param representation
-	 */
-	protected void populateRepresentation(
-			Diagram representation, 
-			Action action, 
-			org.nasdanika.html.emf.EObjectActionResolver.Context context,
-			ProgressMonitor progressMonitor) {
-		
 	}
 	
 }

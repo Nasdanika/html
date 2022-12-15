@@ -16,20 +16,17 @@ import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
-import org.nasdanika.diagram.Diagram;
 import org.nasdanika.flow.Call;
 import org.nasdanika.flow.Flow;
 import org.nasdanika.flow.FlowElement;
 import org.nasdanika.flow.FlowPackage;
 import org.nasdanika.flow.PseudoState;
 import org.nasdanika.flow.Transition;
-import org.nasdanika.flow.util.FlowStateDiagramGenerator;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.NavigationPanelStyle;
-import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.util.NamedElementComparator;
 
 public class FlowActionBuilder extends ActivityActionBuilder<Flow> {
@@ -213,15 +210,6 @@ public class FlowActionBuilder extends ActivityActionBuilder<Flow> {
 			}
 		}
 		return distance;
-	}
-		
-	@Override
-	protected void populateRepresentation(Diagram representation, FlowStateDiagramGenerator flowStateDiagramGenerator) {
-		if (getTarget().isPartition()) {
-			super.populateRepresentation(representation, flowStateDiagramGenerator);
-		} else {
-			flowStateDiagramGenerator.generateDiagram(getTarget(), representation, null);
-		}
 	}
 	
 	@Override
