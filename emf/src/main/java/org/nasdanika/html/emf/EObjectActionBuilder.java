@@ -805,15 +805,15 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			}
 			
 			URI location = context.resolve(valueAction, base);
-			if (location == null) { 
-				throw new IllegalArgumentException("Cannot resolve value action URI: " + value);
+			Label label = location == null ? AppFactory.eINSTANCE.createLabel() : AppFactory.eINSTANCE.createLink();
+			label.setText(valueAction.getText());
+			label.setIcon(valueAction.getIcon());
+			label.setTooltip(valueAction.getTooltip());
+
+			if (label instanceof Link) {
+				((Link) label).setLocation(location.toString());
 			}
-			Link link = AppFactory.eINSTANCE.createLink();
-			link.setText(valueAction.getText());
-			link.setIcon(valueAction.getIcon());
-			link.setTooltip(valueAction.getTooltip());
-			link.setLocation(location.toString());
-			return link;
+			return label;
 		} else if (value instanceof EMap) {
 			return createEMapTable(typedElement, (EMap<?,?>) value, base, context, progressMonitor);
 		} else if (value instanceof Collection) {

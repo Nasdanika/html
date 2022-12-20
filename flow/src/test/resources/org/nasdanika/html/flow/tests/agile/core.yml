@@ -78,19 +78,6 @@ flow-package:
     development:
       flow-flow:
         name: Agile development
-        representations:
-#          flow:
-#            hide-empty-description: true
-#            vertical: false
-#            name: PlantUML Diagram
-#            description: Generated diagram
-#          generated: 
-#            type: drawio
-#            name: Agile Development
-#            description: Generated diagram
-          manual: 
-            type: "drawio:./agile-development.drawio"
-            description: Generated and then manually edited diagram
         elements:
           create:
             flow-activity:
@@ -104,11 +91,6 @@ flow-package:
               accountable: product-owner
               consulted: lead-developer
               informed: [developer, tester]                
- #             representations:
- #               flow:
- #                 hide-empty-description: true
- #                 vertical: false
- #                 context: 1
               outputs: 
                 groom:
                   target: groom
@@ -174,10 +156,6 @@ flow-package:
           develop:
             flow-flow:
               name: Develop a story
-#              representations:
-#                context:
-#                  context: 1
-#                  hide-empty-description: true
               partition: true
               description: Developer creates or modifies source code to implement story functionality.
               participants: developer

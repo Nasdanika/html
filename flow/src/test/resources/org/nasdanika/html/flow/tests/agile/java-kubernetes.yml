@@ -17,19 +17,11 @@ flow-package:
     kubernetes-cluster:
       name: Cluster
       partition: true
-      representations:
-        #uml: {}
-        drawio: 
-          type: drawio:./cluster.drawio
       children:
         node-a: 
           name: Node A
           description: Web requests processing node
           partition: true
-          style:
-            type: node
-            dashed: true
-            color: lightblue
           children:
             container-1: 
               name: Container A.1
@@ -42,26 +34,14 @@ flow-package:
                       target: ../../container-2/children/tomcat
                       description: Reverse proxy
                       name: Pass request
-                      style:
-                        type: "#-->>" 
             container-2: 
               name: Container A.2              
               partition: true
               children:
                 tomcat:
                   name: Tomcat
-                  style:
-                    stereotype: Servlet Container
-                    properties:
-                      drawio:
-                        width: 150
-                        height: 200
-                        style:
-                          shape: mxgraph.aws3d.cloudfront
         node-b: 
           name: Node B
-          style:
-            type: node
           partition: true
           children:
             container-1: 

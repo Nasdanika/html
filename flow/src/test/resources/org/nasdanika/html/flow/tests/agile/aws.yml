@@ -11,15 +11,6 @@ flow-package:
       name: AWS
       description: Amazon Web Services
       partition: true
-      representations:
-        component: 
-          type: "drawio:./aws.drawio"
-#        grouped:
-#          description: Generated component diagram with depth 1.              
-#          depth: 1
-#        generated: 
-#          type: "drawio"
-#          description: Generated drawio diagram
       children:
         cloud:
           name: AWS Cloud
@@ -59,26 +50,10 @@ flow-package:
               name: AWS Parameter Store
             core-ou:
               name: Core OU
-#              representations:
-#                context:
-#                  description: Context diagram.
-#                  context: 1    
-#                  depth: 0          
               relationships:
                 shared-services-account: ../../shared-services-account
                 log-archive-account: ../../log-archive-account
                 security-account: ../../security-account
-          representations:
-#            component:
-#              description: Component diagram.              
-            generated: 
-              type: "drawio"
-              name: AWS Cloud Components
-              description: Generated diagram
-            manual: 
-              type: "drawio:aws/cloud-components.drawio"
-              name: AWS Cloud Components
-              description: Generated and then manually edited diagram
         shared-services-account:
           partition: true
           name: Shared Services Account

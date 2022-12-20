@@ -73,9 +73,7 @@ public class TestDrawioSemanticMapping extends TestBase {
 		};
 		
 		extensionToFactoryMap.put("drawio", ncoreDrawioResourceFactory);
-		
-		
-		
+						
 		resourceSet.getPackageRegistry().put(NcorePackage.eNS_URI, NcorePackage.eINSTANCE);
 //		resourceSet.getPackageRegistry().put(ExecPackage.eNS_URI, ExecPackage.eINSTANCE);
 //		resourceSet.getPackageRegistry().put(ContentPackage.eNS_URI, ContentPackage.eINSTANCE);
