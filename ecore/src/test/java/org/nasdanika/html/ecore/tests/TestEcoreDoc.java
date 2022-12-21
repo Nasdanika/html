@@ -132,7 +132,6 @@ public class TestEcoreDoc {
 		Map<String,String> bundleMap = new LinkedHashMap<>();
 		bundleMap.put("core/ncore", "org.nasdanika.ncore");
 		bundleMap.put("core/exec", "org.nasdanika.exec");
-		bundleMap.put("core/flow", "org.nasdanika.flow");
 
 		File modelDir = new File("target/models").getAbsoluteFile();
 		modelDir.mkdirs();

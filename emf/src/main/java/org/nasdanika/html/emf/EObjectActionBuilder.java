@@ -47,7 +47,9 @@ import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
+import org.nasdanika.html.Event;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.emf.EObjectActionResolver.Context;
@@ -411,8 +413,8 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	}
 	
 	protected boolean isSet(EStructuralFeature feature) {
-		if (feature == NcorePackage.Literals.MODEL_ELEMENT__URI) {
-			return NcoreUtil.getUri(getTarget()) != null;
+		if (feature == NcorePackage.Literals.MODEL_ELEMENT__URIS) {
+			return !NcoreUtil.getUris(getTarget()).isEmpty();
 		}
 		return getTarget().eIsSet((EStructuralFeature) feature);
 	}
@@ -423,7 +425,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			properties.add(NcorePackage.Literals.MARKED__MARKERS);
 		}
 		if (getTarget() instanceof ModelElement) {
-			properties.add(NcorePackage.Literals.MODEL_ELEMENT__URI);
+			properties.add(NcorePackage.Literals.MODEL_ELEMENT__URIS);
 		}
 		if (getTarget() instanceof Period) {
 			properties.add(NcorePackage.Literals.PERIOD__START);
@@ -622,8 +624,8 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			return eObject.eContainer();
 		}
 		
-		if (typedElement == NcorePackage.Literals.MODEL_ELEMENT__URI) {
-			return NcoreUtil.getUri(eObject);
+		if (typedElement == NcorePackage.Literals.MODEL_ELEMENT__URIS) {
+			return NcoreUtil.getUris(eObject);
 		}
 		
 		if (typedElement instanceof EStructuralFeature) {
@@ -828,8 +830,15 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			return renderList((Collection<?>) value, true, null, base, typedElement, context, progressMonitor);
 		}
 		
-		if (typedElement == NcorePackage.Literals.MODEL_ELEMENT__URI) {
-			return createText(value + " <i class='far fa-copy nsd-copy-to-clipboard' style='cursor:pointer' title='Copy URI to clipboard' onclick='navigator.clipboard.writeText(\"" + StringEscapeUtils.escapeHtml4(String.valueOf(value)) + "\")'/>");
+		if (typedElement == NcorePackage.Literals.MODEL_ELEMENT__URIS) {
+			HTMLFactory htmlFactory = HTMLFactory.INSTANCE;
+			org.nasdanika.html.Tag clipboardIcon = htmlFactory.tag(TagName.i)
+					.addClass("far", "fa-copy", "nsd-copy-to-clipboard")
+					.style("cursor", "pointer")
+					.attribute("title", "Copy URI to clipboard")
+					.on(Event.click, "navigator.clipboard.writeText(\"" + StringEscapeUtils.escapeHtml4(String.valueOf(value)) + "\")");  
+			
+			return createText(value + " " + clipboardIcon);
 		}
 		
 		return createText(String.valueOf(value));

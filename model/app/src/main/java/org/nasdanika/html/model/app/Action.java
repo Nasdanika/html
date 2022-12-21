@@ -312,7 +312,7 @@ public interface Action extends Link {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Creates a link pointing to this action and populated with action's attributes. 
+	 * Creates a link pointing to this action and populated with action's text, icon, tooltip, and uuid attributes. 
 	 * <!-- end-model-doc -->
 	 * @model required="true"
 	 * @generated

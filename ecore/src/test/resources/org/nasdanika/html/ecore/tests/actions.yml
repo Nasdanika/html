@@ -1,6 +1,6 @@
 app-action:
   icon: https://docs.nasdanika.org/images/nasdanika-logo.png
-  uri: nasdanika:test/action/s1/s2
+  uris: nasdanika:test/action/s1/s2
   text: Nasdanika
   location: ../index.html #https://www.nasdanika.org 
   tooltip: Root action
@@ -16,7 +16,6 @@ app-action:
         children:
           - app-action-reference: "../../../../../../../target/model-doc/actions/ncore.genmodel.xml#/"
           - app-action-reference: "../../../../../../../target/model-doc/actions/exec.genmodel.xml#/"
-          - app-action-reference: "../../../../../../../target/model-doc/actions/flow.genmodel.xml#/"
     - app-action:
         location: ${base-uri}search.html
         icon: fas fa-search

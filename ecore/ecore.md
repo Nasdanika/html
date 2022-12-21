@@ -21,7 +21,6 @@ Traceability from documentation to model sources stored in a version control sys
 
 * [Ncore](https://docs.nasdanika.org/modules/core/modules/ncore/index.html)
 * [Diagram](https://docs.nasdanika.org/modules/core/modules/diagram/modules/model/index.html)
-* [Flow](../../../core/modules/flow/index.html)
 * [Exec](https://docs.nasdanika.org/modules/core/modules/exec/modules/model/index.html)
 * [HTML](https://docs.nasdanika.org/modules/html/modules/models/modules/html/modules/model/index.html)
 * [Bootstrap](https://docs.nasdanika.org/modules/html/modules/models/modules/bootstrap/modules/model/index.html)

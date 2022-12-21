@@ -60,8 +60,8 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		
 		T semanticElement = getTarget();
 		
-		URI uri = NcoreUtil.getUri(semanticElement);
-		String id = uri == null ? null : uri.toString();
+		List<URI> uris = NcoreUtil.getUris(semanticElement);
+		String id = uris.isEmpty() ? null : uris.get(0).toString();
 		
 		if (semanticElement instanceof ModelElement) {
 			ModelElement modelElement = (ModelElement) semanticElement;
@@ -259,15 +259,13 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	}
 	
 	private static EObject findByURI(URI uri, EObject semanticElement) {		
-		URI semanticURI = NcoreUtil.getUri(semanticElement);
-		if (semanticURI != null) {
+		for (URI semanticURI: NcoreUtil.getUris(semanticElement)) {
 			if (uri.isRelative() && !semanticURI.isRelative()) {
 				uri = uri.resolve(semanticURI);
 			}
 			if (Objects.equals(semanticURI, uri)) {
 				return semanticElement;
-			}
-			
+			}				
 		}
 		
 		TreeIterator<? extends Notifier> rscit = getAllContents(semanticElement);
@@ -275,9 +273,10 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			Notifier next = rscit.next();
 			if (next instanceof EObject) {
 				EObject nextEObject = (EObject) next;
-				URI nextUri = NcoreUtil.getUri(nextEObject);
-				if (nextUri != null && nextUri.equals(uri)) {
-					return nextEObject;
+				for (URI nextUri: NcoreUtil.getUris(nextEObject)) {
+					if (nextUri != null && nextUri.equals(uri)) {
+						return nextEObject;
+					}
 				}
 				if (next instanceof ModelElement) {
 					String uuid = ((ModelElement) next).getUuid();

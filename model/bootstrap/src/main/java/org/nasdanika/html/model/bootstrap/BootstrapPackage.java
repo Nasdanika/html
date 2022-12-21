@@ -83,13 +83,13 @@ public interface BootstrapPackage extends EPackage {
 	int BOOTSTRAP_ELEMENT__MARKERS = HtmlPackage.HTML_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BOOTSTRAP_ELEMENT__URI = HtmlPackage.HTML_ELEMENT__URI;
+	int BOOTSTRAP_ELEMENT__URIS = HtmlPackage.HTML_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -117,6 +117,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE = HtmlPackage.HTML_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOTSTRAP_ELEMENT__REPRESENTATIONS = HtmlPackage.HTML_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -183,13 +192,13 @@ public interface BootstrapPackage extends EPackage {
 	int PAGE__MARKERS = HtmlPackage.PAGE__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__URI = HtmlPackage.PAGE__URI;
+	int PAGE__URIS = HtmlPackage.PAGE__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -217,6 +226,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int PAGE__ACTION_PROTOTYPE = HtmlPackage.PAGE__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__REPRESENTATIONS = HtmlPackage.PAGE__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Head</b></em>' containment reference list.
@@ -811,13 +829,13 @@ public interface BootstrapPackage extends EPackage {
 	int TAG__MARKERS = HtmlPackage.TAG__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TAG__URI = HtmlPackage.TAG__URI;
+	int TAG__URIS = HtmlPackage.TAG__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -845,6 +863,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TAG__ACTION_PROTOTYPE = HtmlPackage.TAG__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TAG__REPRESENTATIONS = HtmlPackage.TAG__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1250,13 +1277,13 @@ public interface BootstrapPackage extends EPackage {
 	int MODAL__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODAL__URI = BOOTSTRAP_ELEMENT__URI;
+	int MODAL__URIS = BOOTSTRAP_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1284,6 +1311,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int MODAL__ACTION_PROTOTYPE = BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODAL__REPRESENTATIONS = BOOTSTRAP_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1403,13 +1439,13 @@ public interface BootstrapPackage extends EPackage {
 	int DIV__MARKERS = TAG__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DIV__URI = TAG__URI;
+	int DIV__URIS = TAG__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1437,6 +1473,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int DIV__ACTION_PROTOTYPE = TAG__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DIV__REPRESENTATIONS = TAG__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1502,13 +1547,13 @@ public interface BootstrapPackage extends EPackage {
 	int ITEM__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ITEM__URI = NcorePackage.MODEL_ELEMENT__URI;
+	int ITEM__URIS = NcorePackage.MODEL_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1536,6 +1581,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ITEM__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ITEM__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
@@ -1592,13 +1646,13 @@ public interface BootstrapPackage extends EPackage {
 	int ACTION_GROUP_ITEM__MARKERS = ITEM__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_GROUP_ITEM__URI = ITEM__URI;
+	int ACTION_GROUP_ITEM__URIS = ITEM__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1626,6 +1680,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION_GROUP_ITEM__ACTION_PROTOTYPE = ITEM__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_GROUP_ITEM__REPRESENTATIONS = ITEM__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
@@ -1691,13 +1754,13 @@ public interface BootstrapPackage extends EPackage {
 	int LINK_ACTION_GROUP_ITEM__MARKERS = ACTION_GROUP_ITEM__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK_ACTION_GROUP_ITEM__URI = ACTION_GROUP_ITEM__URI;
+	int LINK_ACTION_GROUP_ITEM__URIS = ACTION_GROUP_ITEM__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1725,6 +1788,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK_ACTION_GROUP_ITEM__ACTION_PROTOTYPE = ACTION_GROUP_ITEM__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK_ACTION_GROUP_ITEM__REPRESENTATIONS = ACTION_GROUP_ITEM__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
@@ -1799,13 +1871,13 @@ public interface BootstrapPackage extends EPackage {
 	int CONTENT_ACTION_GROUP_ITEM__MARKERS = ACTION_GROUP_ITEM__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_ACTION_GROUP_ITEM__URI = ACTION_GROUP_ITEM__URI;
+	int CONTENT_ACTION_GROUP_ITEM__URIS = ACTION_GROUP_ITEM__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1833,6 +1905,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_ACTION_GROUP_ITEM__ACTION_PROTOTYPE = ACTION_GROUP_ITEM__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_ACTION_GROUP_ITEM__REPRESENTATIONS = ACTION_GROUP_ITEM__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
@@ -1907,13 +1988,13 @@ public interface BootstrapPackage extends EPackage {
 	int ACTION_GROUP__MARKERS = DIV__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION_GROUP__URI = DIV__URI;
+	int ACTION_GROUP__URIS = DIV__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1941,6 +2022,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION_GROUP__ACTION_PROTOTYPE = DIV__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION_GROUP__REPRESENTATIONS = DIV__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2024,13 +2114,13 @@ public interface BootstrapPackage extends EPackage {
 	int CONTAINER__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTAINER__URI = BOOTSTRAP_ELEMENT__URI;
+	int CONTAINER__URIS = BOOTSTRAP_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2058,6 +2148,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTAINER__ACTION_PROTOTYPE = BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINER__REPRESENTATIONS = BOOTSTRAP_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2132,13 +2231,13 @@ public interface BootstrapPackage extends EPackage {
 	int ROW__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROW__URI = BOOTSTRAP_ELEMENT__URI;
+	int ROW__URIS = BOOTSTRAP_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2166,6 +2265,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ROW__ACTION_PROTOTYPE = BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROW__REPRESENTATIONS = BOOTSTRAP_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2267,13 +2375,13 @@ public interface BootstrapPackage extends EPackage {
 	int COLUMN__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COLUMN__URI = BOOTSTRAP_ELEMENT__URI;
+	int COLUMN__URIS = BOOTSTRAP_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2301,6 +2409,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int COLUMN__ACTION_PROTOTYPE = BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COLUMN__REPRESENTATIONS = BOOTSTRAP_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2366,13 +2483,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_ROW_CONTAINER__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_ROW_CONTAINER__URI = BOOTSTRAP_ELEMENT__URI;
+	int TABLE_ROW_CONTAINER__URIS = BOOTSTRAP_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2400,6 +2517,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_ROW_CONTAINER__ACTION_PROTOTYPE = BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_ROW_CONTAINER__REPRESENTATIONS = BOOTSTRAP_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2465,13 +2591,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_SECTION__MARKERS = TABLE_ROW_CONTAINER__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_SECTION__URI = TABLE_ROW_CONTAINER__URI;
+	int TABLE_SECTION__URIS = TABLE_ROW_CONTAINER__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2499,6 +2625,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_SECTION__ACTION_PROTOTYPE = TABLE_ROW_CONTAINER__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_SECTION__REPRESENTATIONS = TABLE_ROW_CONTAINER__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2564,13 +2699,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_HEADER__MARKERS = TABLE_SECTION__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_HEADER__URI = TABLE_SECTION__URI;
+	int TABLE_HEADER__URIS = TABLE_SECTION__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2598,6 +2733,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_HEADER__ACTION_PROTOTYPE = TABLE_SECTION__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_HEADER__REPRESENTATIONS = TABLE_SECTION__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2753,13 +2897,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE__MARKERS = TABLE_ROW_CONTAINER__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE__URI = TABLE_ROW_CONTAINER__URI;
+	int TABLE__URIS = TABLE_ROW_CONTAINER__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2787,6 +2931,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE__ACTION_PROTOTYPE = TABLE_ROW_CONTAINER__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE__REPRESENTATIONS = TABLE_ROW_CONTAINER__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2933,13 +3086,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_ROW__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_ROW__URI = BOOTSTRAP_ELEMENT__URI;
+	int TABLE_ROW__URIS = BOOTSTRAP_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2967,6 +3120,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_ROW__ACTION_PROTOTYPE = BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_ROW__REPRESENTATIONS = BOOTSTRAP_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -3050,13 +3212,13 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_CELL__MARKERS = BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TABLE_CELL__URI = BOOTSTRAP_ELEMENT__URI;
+	int TABLE_CELL__URIS = BOOTSTRAP_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -3084,6 +3246,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_CELL__ACTION_PROTOTYPE = BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TABLE_CELL__REPRESENTATIONS = BOOTSTRAP_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -3185,13 +3356,13 @@ public interface BootstrapPackage extends EPackage {
 	int CARD__MARKERS = DIV__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CARD__URI = DIV__URI;
+	int CARD__URIS = DIV__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -3219,6 +3390,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int CARD__ACTION_PROTOTYPE = DIV__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CARD__REPRESENTATIONS = DIV__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -3311,13 +3491,13 @@ public interface BootstrapPackage extends EPackage {
 	int ALERT__MARKERS = DIV__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ALERT__URI = DIV__URI;
+	int ALERT__URIS = DIV__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -3345,6 +3525,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ALERT__ACTION_PROTOTYPE = DIV__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ALERT__REPRESENTATIONS = DIV__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -3419,13 +3608,13 @@ public interface BootstrapPackage extends EPackage {
 	int BADGE__MARKERS = DIV__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BADGE__URI = DIV__URI;
+	int BADGE__URIS = DIV__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -3453,6 +3642,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int BADGE__ACTION_PROTOTYPE = DIV__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BADGE__REPRESENTATIONS = DIV__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -3545,13 +3743,13 @@ public interface BootstrapPackage extends EPackage {
 	int BUTTON__MARKERS = DIV__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BUTTON__URI = DIV__URI;
+	int BUTTON__URIS = DIV__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -3579,6 +3777,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int BUTTON__ACTION_PROTOTYPE = DIV__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BUTTON__REPRESENTATIONS = DIV__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -3899,13 +4106,13 @@ public interface BootstrapPackage extends EPackage {
 	int CAROUSEL__MARKERS = DIV__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CAROUSEL__URI = DIV__URI;
+	int CAROUSEL__URIS = DIV__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -3933,6 +4140,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int CAROUSEL__ACTION_PROTOTYPE = DIV__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CAROUSEL__REPRESENTATIONS = DIV__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -4062,13 +4278,13 @@ public interface BootstrapPackage extends EPackage {
 	int SLIDE__MARKERS = DIV__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SLIDE__URI = DIV__URI;
+	int SLIDE__URIS = DIV__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -4096,6 +4312,15 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int SLIDE__ACTION_PROTOTYPE = DIV__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SLIDE__REPRESENTATIONS = DIV__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.

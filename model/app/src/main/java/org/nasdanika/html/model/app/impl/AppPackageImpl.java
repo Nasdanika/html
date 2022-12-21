@@ -1428,7 +1428,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		  (getAction__CreateLink(),
 		   source,
 		   new String[] {
-			   "documentation", "Creates a link pointing to this action and populated with action\'s attributes. "
+			   "documentation", "Creates a link pointing to this action and populated with action\'s text, icon, tooltip, and uuid attributes. "
 		   });
 		addAnnotation
 		  (getAction_SectionColumns(),

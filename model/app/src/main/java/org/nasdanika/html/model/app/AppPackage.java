@@ -83,13 +83,13 @@ public interface AppPackage extends EPackage {
 	int LABEL__MARKERS = BootstrapPackage.BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__URI = BootstrapPackage.BOOTSTRAP_ELEMENT__URI;
+	int LABEL__URIS = BootstrapPackage.BOOTSTRAP_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -117,6 +117,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int LABEL__ACTION_PROTOTYPE = BootstrapPackage.BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__REPRESENTATIONS = BootstrapPackage.BOOTSTRAP_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -282,13 +291,13 @@ public interface AppPackage extends EPackage {
 	int LINK__MARKERS = LABEL__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK__URI = LABEL__URI;
+	int LINK__URIS = LABEL__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -316,6 +325,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK__ACTION_PROTOTYPE = LABEL__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__REPRESENTATIONS = LABEL__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -544,13 +562,13 @@ public interface AppPackage extends EPackage {
 	int PAGE__MARKERS = BootstrapPackage.BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__URI = BootstrapPackage.BOOTSTRAP_ELEMENT__URI;
+	int PAGE__URIS = BootstrapPackage.BOOTSTRAP_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -578,6 +596,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int PAGE__ACTION_PROTOTYPE = BootstrapPackage.BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__REPRESENTATIONS = BootstrapPackage.BOOTSTRAP_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -707,13 +734,13 @@ public interface AppPackage extends EPackage {
 	int PAGE_PART__MARKERS = BootstrapPackage.BOOTSTRAP_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_PART__URI = BootstrapPackage.BOOTSTRAP_ELEMENT__URI;
+	int PAGE_PART__URIS = BootstrapPackage.BOOTSTRAP_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -741,6 +768,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int PAGE_PART__ACTION_PROTOTYPE = BootstrapPackage.BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE_PART__REPRESENTATIONS = BootstrapPackage.BOOTSTRAP_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -816,13 +852,13 @@ public interface AppPackage extends EPackage {
 	int HEADER__MARKERS = PAGE_PART__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HEADER__URI = PAGE_PART__URI;
+	int HEADER__URIS = PAGE_PART__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -850,6 +886,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int HEADER__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HEADER__REPRESENTATIONS = PAGE_PART__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -934,13 +979,13 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_BAR__MARKERS = PAGE_PART__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_BAR__URI = PAGE_PART__URI;
+	int NAVIGATION_BAR__URIS = PAGE_PART__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -968,6 +1013,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int NAVIGATION_BAR__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_BAR__REPRESENTATIONS = PAGE_PART__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1079,13 +1133,13 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL__MARKERS = PAGE_PART__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_PANEL__URI = PAGE_PART__URI;
+	int NAVIGATION_PANEL__URIS = PAGE_PART__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1113,6 +1167,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int NAVIGATION_PANEL__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_PANEL__REPRESENTATIONS = PAGE_PART__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1233,13 +1296,13 @@ public interface AppPackage extends EPackage {
 	int CONTENT_PANEL__MARKERS = PAGE_PART__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_PANEL__URI = PAGE_PART__URI;
+	int CONTENT_PANEL__URIS = PAGE_PART__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1267,6 +1330,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_PANEL__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_PANEL__REPRESENTATIONS = PAGE_PART__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1423,13 +1495,13 @@ public interface AppPackage extends EPackage {
 	int FOOTER__MARKERS = PAGE_PART__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FOOTER__URI = PAGE_PART__URI;
+	int FOOTER__URIS = PAGE_PART__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1457,6 +1529,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int FOOTER__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FOOTER__REPRESENTATIONS = PAGE_PART__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1532,13 +1613,13 @@ public interface AppPackage extends EPackage {
 	int ACTION__MARKERS = LINK__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__URI = LINK__URI;
+	int ACTION__URIS = LINK__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -1566,6 +1647,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION__ACTION_PROTOTYPE = LINK__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__REPRESENTATIONS = LINK__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.

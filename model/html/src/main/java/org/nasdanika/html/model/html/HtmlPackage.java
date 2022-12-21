@@ -81,13 +81,13 @@ public interface HtmlPackage extends EPackage {
 	int HTML_ELEMENT__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__URI = NcorePackage.MODEL_ELEMENT__URI;
+	int HTML_ELEMENT__URIS = NcorePackage.MODEL_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -115,6 +115,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int HTML_ELEMENT__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HTML_ELEMENT__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -172,13 +181,13 @@ public interface HtmlPackage extends EPackage {
 	int TAG__MARKERS = HTML_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TAG__URI = HTML_ELEMENT__URI;
+	int TAG__URIS = HTML_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -206,6 +215,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int TAG__ACTION_PROTOTYPE = HTML_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TAG__REPRESENTATIONS = HTML_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -272,13 +290,13 @@ public interface HtmlPackage extends EPackage {
 	int PAGE__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__URI = NcorePackage.MODEL_ELEMENT__URI;
+	int PAGE__URIS = NcorePackage.MODEL_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -306,6 +324,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int PAGE__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Head</b></em>' containment reference list.
@@ -408,13 +435,13 @@ public interface HtmlPackage extends EPackage {
 	int STYLESHEET__MARKERS = ContentPackage.FILTER__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STYLESHEET__URI = ContentPackage.FILTER__URI;
+	int STYLESHEET__URIS = ContentPackage.FILTER__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -442,6 +469,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int STYLESHEET__ACTION_PROTOTYPE = ContentPackage.FILTER__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STYLESHEET__REPRESENTATIONS = ContentPackage.FILTER__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Source</b></em>' containment reference.
@@ -490,13 +526,13 @@ public interface HtmlPackage extends EPackage {
 	int STYLESHEET_REFERENCE__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STYLESHEET_REFERENCE__URI = NcorePackage.MODEL_ELEMENT__URI;
+	int STYLESHEET_REFERENCE__URIS = NcorePackage.MODEL_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -524,6 +560,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int STYLESHEET_REFERENCE__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STYLESHEET_REFERENCE__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' attribute.
@@ -572,13 +617,13 @@ public interface HtmlPackage extends EPackage {
 	int SCRIPT__MARKERS = ContentPackage.FILTER__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SCRIPT__URI = ContentPackage.FILTER__URI;
+	int SCRIPT__URIS = ContentPackage.FILTER__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -606,6 +651,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCRIPT__ACTION_PROTOTYPE = ContentPackage.FILTER__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT__REPRESENTATIONS = ContentPackage.FILTER__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Source</b></em>' containment reference.
@@ -654,13 +708,13 @@ public interface HtmlPackage extends EPackage {
 	int SCRIPT_REFERENCE__MARKERS = NcorePackage.MODEL_ELEMENT__MARKERS;
 
 	/**
-	 * The feature id for the '<em><b>Uri</b></em>' attribute.
+	 * The feature id for the '<em><b>Uris</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SCRIPT_REFERENCE__URI = NcorePackage.MODEL_ELEMENT__URI;
+	int SCRIPT_REFERENCE__URIS = NcorePackage.MODEL_ELEMENT__URIS;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -688,6 +742,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCRIPT_REFERENCE__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+
+	/**
+	 * The feature id for the '<em><b>Representations</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT_REFERENCE__REPRESENTATIONS = NcorePackage.MODEL_ELEMENT__REPRESENTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Src</b></em>' attribute.
