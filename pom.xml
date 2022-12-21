@@ -185,7 +185,6 @@
 		<module>model/app.drawio</module>
 
 		<module>ecore</module>
-		<module>flow</module>
 	</modules>	
 
 
