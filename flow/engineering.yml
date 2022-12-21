@@ -1,6 +1,0 @@
-engineering-module:
-  name: Flow
-  path: flow
-  action-prototype: "javadoc-action-prototype.xml#/"
-
-
