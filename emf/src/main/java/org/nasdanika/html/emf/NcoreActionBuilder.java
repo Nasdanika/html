@@ -260,7 +260,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	
 	private static EObject findByURI(URI uri, EObject semanticElement) {		
 		for (URI semanticURI: NcoreUtil.getUris(semanticElement)) {
-			if (uri.isRelative() && !semanticURI.isRelative()) {
+			if (uri.isRelative() && !semanticURI.isRelative() && semanticURI.isHierarchical()) {
 				uri = uri.resolve(semanticURI);
 			}
 			if (Objects.equals(semanticURI, uri)) {
