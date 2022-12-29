@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.util.AppObjectLoaderExecutionParticipant;
 import org.nasdanika.html.model.bootstrap.util.BootstrapObjectLoaderExecutionParticipant;
 import org.nasdanika.persistence.ObjectLoaderResourceFactory;
 
@@ -16,7 +17,7 @@ import org.nasdanika.persistence.ObjectLoaderResourceFactory;
  * @author Pavel
  *
  */
-public abstract class AppGenObjectLoaderExecutionParticipant extends BootstrapObjectLoaderExecutionParticipant {
+public abstract class AppGenObjectLoaderExecutionParticipant extends AppObjectLoaderExecutionParticipant {
 
 	public AppGenObjectLoaderExecutionParticipant(Context context) {
 		super(context);
@@ -26,13 +27,6 @@ public abstract class AppGenObjectLoaderExecutionParticipant extends BootstrapOb
 	protected ObjectLoaderResourceFactory createObjectLoaderResorceFactory(ResourceSet resourceSet, ProgressMonitor progressMonitor) {
 		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
 		return super.createObjectLoaderResorceFactory(resourceSet, progressMonitor);
-	}
-
-	@Override
-	protected Collection<EPackage> getEPackages() {
-		Collection<EPackage> ret = super.getEPackages(); 
-		ret.add(AppPackage.eINSTANCE);
-		return ret;
 	}
 	
 }

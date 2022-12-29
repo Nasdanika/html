@@ -460,6 +460,8 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		label.setText(typedElementLabelText(eTypedElement));		
 		label.setIcon(typedElementIcon(eTypedElement));
 		
+		// TODO - default handling delegating to, say, helpModalHeader(), ... with default implementations.
+		
 //        icon: far fa-question-circle
 //        tooltip: Some quick info
 //        attributes:

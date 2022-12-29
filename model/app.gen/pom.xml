@@ -57,6 +57,11 @@
 			<artifactId>jstree</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
+		<dependency>
+		  <groupId>com.github.dfabulich</groupId>
+		  <artifactId>sitemapgen4j</artifactId>
+		  <version>1.1.2</version>
+		</dependency>	
 
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
@@ -70,11 +75,5 @@
 			<version>3.23.1</version>
 			<scope>test</scope>
 		</dependency>		
-		<dependency>
-		  <groupId>com.github.dfabulich</groupId>
-		  <artifactId>sitemapgen4j</artifactId>
-		  <version>1.1.2</version>
-			<scope>test</scope>
-		</dependency>	
 	</dependencies>
 </project>

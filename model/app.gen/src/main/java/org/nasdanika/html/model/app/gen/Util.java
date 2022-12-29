@@ -4,20 +4,28 @@ import static org.nasdanika.common.Util.isBlank;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,21 +35,32 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.drawio.ConnectionBase;
 import org.nasdanika.drawio.ModelElement;
+import org.nasdanika.emf.persistence.EObjectLoader;
+import org.nasdanika.emf.persistence.GitMarkerFactory;
+import org.nasdanika.emf.persistence.MarkerFactory;
+import org.nasdanika.emf.persistence.NcoreDrawioResourceFactory;
+import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.ContentPackage;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.exec.resources.Container;
+import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.html.Button;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
@@ -62,8 +81,17 @@ import org.nasdanika.html.model.app.NavigationBar;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.SectionStyle;
 import org.nasdanika.html.model.bootstrap.Appearance;
+import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Item;
+import org.nasdanika.html.model.html.HtmlPackage;
+import org.nasdanika.ncore.NcorePackage;
+import org.nasdanika.ncore.util.NcoreResourceSet;
+import org.nasdanika.persistence.ObjectLoaderResourceFactory;
 import org.xml.sax.SAXException;
+
+import com.redfin.sitemapgenerator.ChangeFreq;
+import com.redfin.sitemapgenerator.WebSitemapGenerator;
+import com.redfin.sitemapgenerator.WebSitemapUrl;
 
 public final class Util {
 	
@@ -1046,6 +1074,234 @@ public final class Util {
 			
 		};
 		
+	}
+
+	/**
+	 * Inserts search json and search script tags into the document.
+	 * @param path
+	 * @param doc
+	 * @return
+	 */
+	public static boolean configureSearch(
+			String path, 
+			Document doc,
+			String searchDocumentsPath,
+			Supplier<InputStream> searchScriptSupplier) {
+		Element head = doc.head();
+		URI base = URI.createURI("temp://" + UUID.randomUUID() + "/");
+		URI searchScriptURI = URI.createURI(searchDocumentsPath).resolve(base);
+		URI thisURI = URI.createURI(path).resolve(base);
+		URI relativeSearchScriptURI = searchScriptURI.deresolve(thisURI, true, true, true);
+		head.append(System.lineSeparator() + "<script src=\"" + relativeSearchScriptURI + "\"></script>" + System.lineSeparator());
+		head.append(System.lineSeparator() + "<script src=\"https://unpkg.com/lunr/lunr.js\"></script>" + System.lineSeparator());
+				
+		try (InputStream in = searchScriptSupplier.get()) {
+			head.append(System.lineSeparator() + "<script>" + System.lineSeparator() + DefaultConverter.INSTANCE.toString(in) + System.lineSeparator() + "</script>" + System.lineSeparator());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Inserts search json and search script tags into the document. Uses search.js resource for the search script.
+	 * @param path
+	 * @param doc
+	 * @return
+	 */
+	public static boolean configureSearch(
+			String path, 
+			Document doc,
+			String searchDocumentsPath) {
+		return configureSearch(
+				path, 
+				doc, 
+				searchDocumentsPath, 
+				() -> Util.class.getResourceAsStream("search.js"));
+	}
+	
+	/**
+	 * Generates sitemap and search index for lunrjs by scanning files in a directory.
+	 * @param dir Directory to scan
+	 * @param base URI prefix for file paths with or without dangling /  
+	 * @throws IOException
+	 */
+	public static JSONObject generateSitemapAndSearch(
+			File dir,
+			String domain,
+			BiPredicate<File, String> siteMapPredicate,
+			ChangeFreq changeFrequency,
+			BiPredicate<File, String> searchPredicate,
+			BiConsumer<String,String> errorConsumer,
+			BiFunction<String, Document, Boolean> searchConfigurator) throws IOException {
+		
+		// Site map and search index
+		JSONObject searchDocuments = new JSONObject();
+		
+		WebSitemapGenerator wsg = new WebSitemapGenerator(domain, dir);
+		boolean[] isSiteMapEmpty = { true };
+		BiConsumer<File, String> listener = new BiConsumer<File, String>() {
+			
+			@Override
+			public void accept(File file, String path) {
+				if (siteMapPredicate.test(file, path)) {
+					try {
+						WebSitemapUrl url = new WebSitemapUrl.Options(domain + "/" + path).lastMod(new Date(file.lastModified())).changeFreq(changeFrequency).build();
+						wsg.addUrl(url); 
+						isSiteMapEmpty[0] = false;
+					} catch (MalformedURLException e) {
+						throw new NasdanikaException(e);
+					}
+				}
+				
+				if (searchPredicate.test(file, path)) {
+					try {
+						Predicate<String> predicate = createRelativeLinkPredicate(file, dir);						
+						Consumer<? super Element> inspector = createInspector(predicate, error -> errorConsumer.accept(path, error));
+						
+						JSONObject searchDocument = createSearchDocument(path, file, inspector, searchConfigurator);
+						if (searchDocument != null) {
+							searchDocuments.put(path, searchDocument);
+						}
+					} catch (IOException e) {
+						throw new NasdanikaException(e);
+					}
+				}
+			}
+		};
+		org.nasdanika.common.Util.walk(null, listener, dir.listFiles());
+		if (!isSiteMapEmpty[0]) {
+			wsg.write();
+		}
+		return searchDocuments;
+	}
+	
+	public static JSONObject generateSitemapAndSearch(
+			File dir,
+			String domain,
+			BiPredicate<File, String> siteMapPredicate,
+			ChangeFreq changeFrequency,
+			BiPredicate<File, String> searchPredicate,
+			BiConsumer<String,String> errorConsumer,
+			String searchDocumentsPath,
+			Supplier<InputStream> searchScriptSupplier) throws IOException {
+		
+		return generateSitemapAndSearch(
+				dir, 
+				domain, 
+				siteMapPredicate, 
+				changeFrequency, 
+				searchPredicate, 
+				errorConsumer, 
+				(path, doc) -> configureSearch(path, doc, searchDocumentsPath, searchScriptSupplier));
+	}
+		
+	/**
+	 * Generates sitemap and search using search.js resource.
+	 * @param dir
+	 * @param domain
+	 * @param siteMapPredicate
+	 * @param changeFrequency
+	 * @param searchPredicate
+	 * @param errorConsumer
+	 * @param searchDocumentsPath
+	 * @throws IOException
+	 */
+	public static JSONObject generateSitemapAndSearch(
+			File dir,
+			String domain,
+			BiPredicate<File, String> siteMapPredicate,
+			ChangeFreq changeFrequency,
+			BiPredicate<File, String> searchPredicate,
+			BiConsumer<String,String> errorConsumer,
+			String searchDocumentsPath) throws IOException {
+		
+		return generateSitemapAndSearch(
+				dir, 
+				domain, 
+				siteMapPredicate, 
+				changeFrequency, 
+				searchPredicate, 
+				errorConsumer, 
+				(path, doc) -> configureSearch(path, doc, searchDocumentsPath));
+	}
+	
+	public static void generateSitemapAndSearch(
+			File dir,
+			String domain,
+			BiPredicate<File, String> siteMapPredicate,
+			ChangeFreq changeFrequency,
+			BiPredicate<File, String> searchPredicate,
+			BiConsumer<String,String> errorConsumer) throws IOException {				
+
+		String searchDocumentsPath = "search-documents.js";
+		JSONObject searchDocuments = generateSitemapAndSearch(dir, domain, siteMapPredicate, changeFrequency, searchPredicate, errorConsumer, searchDocumentsPath);		
+		try (FileWriter writer = new FileWriter(new File(dir, searchDocumentsPath))) {
+			writer.write("var searchDocuments = " + searchDocuments);
+		}
+	}
+
+	/**
+	 * Creates {@link NcoreResourceSet} with {@link XMIResourceFactoryImpl}, {@link ObjectLoaderResourceFactory} handling yml, json extensions and data scheme.
+	 * {@link NcoreDrawioResourceFactory} for drawio extension. Uses {@link GitMarkerFactory} for {@link EObjectLoader}.
+	 * Registers {@link AppAdapterFactory}.
+	 * Registers Ncore, Exec, and HTML packages.
+	 * @param progressMonitor
+	 * @return
+	 */	
+	public static ResourceSet createResourceSet(ProgressMonitor progressMonitor) {
+		ResourceSet resourceSet = new NcoreResourceSet();
+		
+		EObjectLoader eObjectLoader = new EObjectLoader(null, null, resourceSet);
+		GitMarkerFactory markerFactory = new GitMarkerFactory();
+		eObjectLoader.setMarkerFactory(markerFactory);
+		Resource.Factory objectLoaderResourceFactory = new ObjectLoaderResourceFactory() { 
+			
+			@Override
+			protected org.nasdanika.persistence.ObjectLoader getObjectLoader(Resource resource) {
+				return eObjectLoader;
+			}
+			
+		};
+		Map<String, Object> extensionToFactoryMap = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();
+		extensionToFactoryMap.put("yml", objectLoaderResourceFactory);
+		extensionToFactoryMap.put("json", objectLoaderResourceFactory);
+		resourceSet.getResourceFactoryRegistry().getProtocolToFactoryMap().put("data", objectLoaderResourceFactory);
+		
+		NcoreDrawioResourceFactory<EObject> ncoreDrawioResourceFactory = new NcoreDrawioResourceFactory<EObject>() {
+			
+			@Override
+			protected ResourceSet getResourceSet() {
+				return resourceSet;
+			}
+			
+			@Override
+			protected ProgressMonitor getProgressMonitor(URI uri) {
+				return progressMonitor;
+			}
+			
+			@Override
+			protected MarkerFactory getMarkerFactory() {
+				return markerFactory;
+			}
+			
+		};
+		
+		extensionToFactoryMap.put("drawio", ncoreDrawioResourceFactory);		
+		extensionToFactoryMap.put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+		
+		resourceSet.getPackageRegistry().put(NcorePackage.eNS_URI, NcorePackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(ExecPackage.eNS_URI, ExecPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(ContentPackage.eNS_URI, ContentPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(ResourcesPackage.eNS_URI, ResourcesPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(HtmlPackage.eNS_URI, HtmlPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(BootstrapPackage.eNS_URI, BootstrapPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
+		
+		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
+		
+		return resourceSet;
 	}
 			
 }

@@ -212,7 +212,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		// Creating a marker with EObject resource location for resource resolution in Markdown
 		if (location != null) {
 			org.nasdanika.ncore.Marker marker = context.get(MarkerFactory.class, MarkerFactory.INSTANCE).createMarker(location.toString(), progressMonitor);
-			ret.getMarkers().add(marker);
+			ret.getMarkers().add(marker); 
 		}
 		
 		return ret;
