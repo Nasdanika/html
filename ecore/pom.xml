@@ -63,6 +63,11 @@
 			<artifactId>org.eclipse.emf.codegen.ecore</artifactId>
 			<version>2.30.0</version>
 		</dependency>
+		<dependency>
+		  <groupId>com.github.dfabulich</groupId>
+		  <artifactId>sitemapgen4j</artifactId>
+		  <version>1.1.2</version>
+		</dependency>	
 		
 		<dependency>
 			<groupId>org.assertj</groupId>
@@ -70,12 +75,6 @@
 			<version>3.23.1</version>
 			<scope>test</scope>
 		</dependency>				
-		<dependency>
-		  <groupId>com.github.dfabulich</groupId>
-		  <artifactId>sitemapgen4j</artifactId>
-		  <version>1.1.2</version>
-			<scope>test</scope>
-		</dependency>	
 	</dependencies>
 </project>
 
