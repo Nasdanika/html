@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -37,6 +38,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONObject;
@@ -44,13 +46,18 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DefaultConverter;
+import org.nasdanika.common.Diagnostic;
+import org.nasdanika.common.DiagnosticException;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Status;
 import org.nasdanika.drawio.ConnectionBase;
 import org.nasdanika.drawio.ModelElement;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.GitMarkerFactory;
 import org.nasdanika.emf.persistence.MarkerFactory;
@@ -87,6 +94,7 @@ import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreResourceSet;
 import org.nasdanika.persistence.ObjectLoaderResourceFactory;
+import org.nasdanika.resources.BinaryEntityContainer;
 import org.xml.sax.SAXException;
 
 import com.redfin.sitemapgenerator.ChangeFreq;
@@ -1303,5 +1311,49 @@ public final class Util {
 		
 		return resourceSet;
 	}
+	
+	
+	/**
+	 * Generates files (binary entities) from a resource model .
+	 * @throws org.eclipse.emf.common.util.DiagnosticException 
+	 * @throws Exception
+	 */
+	public static void generateContainer(
+			URI resourceModelURI, 
+			BinaryEntityContainer container, 
+			Context context, 
+			ProgressMonitor progressMonitor) throws org.eclipse.emf.common.util.DiagnosticException {
+		
+		ResourceSet resourceSet = createResourceSet(progressMonitor);		
+		resourceSet.getAdapterFactories().add(new AppAdapterFactory());				
+		Resource containerResource = resourceSet.getResource(resourceModelURI, true);
+		for (EObject eObject : containerResource.getContents()) {
+			Diagnostician diagnostician = new Diagnostician();
+			org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(eObject);
+			if (diagnostic.getSeverity() == org.eclipse.emf.common.util.Diagnostic.ERROR) {
+				throw new org.eclipse.emf.common.util.DiagnosticException(diagnostic);
+			};
+			// Diagnosing loaded resources. 
+			try {
+				ConsumerFactory<BinaryEntityContainer> consumerFactory = Objects.requireNonNull(EObjectAdaptable.adaptToConsumerFactory(eObject, BinaryEntityContainer.class), "Cannot adapt to ConsumerFactory");
+				Diagnostic callDiagnostic = org.nasdanika.common.Util.call(consumerFactory.create(context), container, progressMonitor);
+				if (callDiagnostic.getStatus() == Status.FAIL || callDiagnostic.getStatus() == Status.ERROR) {
+					System.err.println("***********************");
+					System.err.println("*      Diagnostic     *");
+					System.err.println("***********************");
+					callDiagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
+				}
+				if (callDiagnostic.getStatus() != Status.SUCCESS) {
+					throw new DiagnosticException(callDiagnostic);
+				};
+			} catch (DiagnosticException e) {
+				System.err.println("******************************");
+				System.err.println("*      Diagnostic failed     *");
+				System.err.println("******************************");
+				e.getDiagnostic().dump(System.err, 4, Status.FAIL);
+				throw e;
+			}
+		}
+	}	
 			
 }
