@@ -671,9 +671,9 @@ public final class Util {
 				if (sourceChild instanceof ActionReference) {
 					sourceChild = ((ActionReference) sourceChild).getTarget();
 				}
-				if (sourceChild instanceof Action) {
-					Action childAction = (Action) sourceChild;
-					labelChildren.add(createLabel(childAction, activeAction, uriResolver, idProvider, "header/navigation", recursive, inNavPanel, false));
+				if (sourceChild instanceof Label) {
+					Label childLabel = (Label) sourceChild;
+					labelChildren.add(createLabel(childLabel, activeAction, uriResolver, idProvider, "header/navigation", recursive, inNavPanel, false));
 					
 					// Second level - headers, separators.
 				} else {
@@ -792,7 +792,7 @@ public final class Util {
 		if (isBlank(source.getText()) && isBlank(source.getIcon()) && !recursive) {
 			return null;
 		}
-		Label label = isLink(source, uri) ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
+		Label label = source != activeAction && isLink(source, uri) ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
 		configureLabel(source, activeAction, uriResolver, idProvider, appearancePath, label, recursive, inNavPanel, decorate);
 				
 		return label;

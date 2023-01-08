@@ -3,6 +3,7 @@ package org.nasdanika.html.model.app.gen;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
+import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.html.Tag;
 
@@ -10,6 +11,9 @@ public class LinkSupplierFactoryProviderAdapter<M extends Link> extends LabelSup
 
 	public LinkSupplierFactoryProviderAdapter(M link, AdapterFactory adapterFactory) {
 		super(link, adapterFactory);
+		if (link instanceof Action) {
+			throw new IllegalArgumentException("Actions must be converted to links first: " + link.getText());
+		}
 	}
 
 	@SuppressWarnings("unchecked")

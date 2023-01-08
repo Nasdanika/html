@@ -355,7 +355,7 @@ public class LabelImpl extends BootstrapElementImpl implements Label {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList<EObject> getChildren() {
+	public EList<EObject> getChildren() {		
 		return (EList<EObject>)eDynamicGet(AppPackage.LABEL__CHILDREN, AppPackage.Literals.LABEL__CHILDREN, true, true);
 	}
 

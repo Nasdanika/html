@@ -22,7 +22,7 @@ public class LinkJsTreeNodeSupplierFactoryAdapter<M extends Link> extends LabelJ
 	public LinkJsTreeNodeSupplierFactoryAdapter(M link) {
 		super(link);
 		if (link instanceof Action) {
-			throw new IllegalArgumentException("Actions must be converted to links first");
+			throw new IllegalArgumentException("Actions must be converted to links first: " + link.getText());
 		}
 	}
 	
