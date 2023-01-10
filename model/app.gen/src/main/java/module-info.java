@@ -4,6 +4,7 @@ module org.nasdanika.html.model.app.gen {
 	requires transitive org.nasdanika.html.model.app;
 	requires transitive org.nasdanika.html.model.bootstrap.gen;
 	requires transitive org.nasdanika.html.jstree;
+	requires transitive org.nasdanika.html.emf;
 	requires transitive org.nasdanika.drawio;
 	requires transitive sitemapgen4j;
 	requires org.apache.commons.codec;

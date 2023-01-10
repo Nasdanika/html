@@ -307,7 +307,11 @@ public final class Util {
 							buildAppPage(root, principal, (Action) activeAction, actionPath, (org.nasdanika.html.model.app.Page) be, uriResolver, actionContentProvider, progressMonitor);						
 						}
 					}
-					file.getContents().add(pageContentProvider == null ? bootstrapPage : pageContentProvider.getPageContent(bootstrapPage, baseURI, uriResolver, progressMonitor));
+					if (pageContentProvider == null) {
+						file.getContents().add(bootstrapPage);
+					} else {
+						file.getContents().addAll(pageContentProvider.getPageContent(bootstrapPage, baseURI, uriResolver, progressMonitor));						
+					}
 					
 					if (activeAction instanceof Action) {
 						for (org.nasdanika.exec.resources.Resource res: ((Action) activeAction).getResources()) {
@@ -1258,7 +1262,7 @@ public final class Util {
 	 * @param progressMonitor
 	 * @return
 	 */	
-	public static ResourceSet createResourceSet(ProgressMonitor progressMonitor) {
+	public static ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
 		ResourceSet resourceSet = new NcoreResourceSet();
 		
 		EObjectLoader eObjectLoader = new EObjectLoader(null, null, resourceSet);
@@ -1269,6 +1273,11 @@ public final class Util {
 			@Override
 			protected org.nasdanika.persistence.ObjectLoader getObjectLoader(Resource resource) {
 				return eObjectLoader;
+			}
+			
+			@Override
+			protected Context getContext(Resource resource) {
+				return context == null ? Context.EMPTY_CONTEXT : context;
 			}
 			
 		};
@@ -1306,12 +1315,11 @@ public final class Util {
 		resourceSet.getPackageRegistry().put(HtmlPackage.eNS_URI, HtmlPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(BootstrapPackage.eNS_URI, BootstrapPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
-		
+		 
 		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
 		
 		return resourceSet;
 	}
-	
 	
 	/**
 	 * Generates files (binary entities) from a resource model .
@@ -1324,36 +1332,64 @@ public final class Util {
 			Context context, 
 			ProgressMonitor progressMonitor) throws org.eclipse.emf.common.util.DiagnosticException {
 		
-		ResourceSet resourceSet = createResourceSet(progressMonitor);		
+		ResourceSet resourceSet = createResourceSet(context, progressMonitor);		
 		resourceSet.getAdapterFactories().add(new AppAdapterFactory());				
 		Resource containerResource = resourceSet.getResource(resourceModelURI, true);
+		generateContainer(containerResource, container, context, progressMonitor);
+	}
+		
+	/**
+	 * Generates files (binary entities) from a resource model .
+	 * @throws org.eclipse.emf.common.util.DiagnosticException 
+	 * @throws Exception
+	 */
+	public static void generateContainer(
+			Resource containerResource, 
+			BinaryEntityContainer container, 
+			Context context, 
+			ProgressMonitor progressMonitor) throws org.eclipse.emf.common.util.DiagnosticException {
+		
 		for (EObject eObject : containerResource.getContents()) {
-			Diagnostician diagnostician = new Diagnostician();
-			org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(eObject);
-			if (diagnostic.getSeverity() == org.eclipse.emf.common.util.Diagnostic.ERROR) {
-				throw new org.eclipse.emf.common.util.DiagnosticException(diagnostic);
-			};
-			// Diagnosing loaded resources. 
-			try {
-				ConsumerFactory<BinaryEntityContainer> consumerFactory = Objects.requireNonNull(EObjectAdaptable.adaptToConsumerFactory(eObject, BinaryEntityContainer.class), "Cannot adapt to ConsumerFactory");
-				Diagnostic callDiagnostic = org.nasdanika.common.Util.call(consumerFactory.create(context), container, progressMonitor);
-				if (callDiagnostic.getStatus() == Status.FAIL || callDiagnostic.getStatus() == Status.ERROR) {
-					System.err.println("***********************");
-					System.err.println("*      Diagnostic     *");
-					System.err.println("***********************");
-					callDiagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
-				}
-				if (callDiagnostic.getStatus() != Status.SUCCESS) {
-					throw new DiagnosticException(callDiagnostic);
-				};
-			} catch (DiagnosticException e) {
-				System.err.println("******************************");
-				System.err.println("*      Diagnostic failed     *");
-				System.err.println("******************************");
-				e.getDiagnostic().dump(System.err, 4, Status.FAIL);
-				throw e;
-			}
+			generateContainer(eObject, container, context, progressMonitor);
 		}
-	}	
+	}		
+		
+	/**
+	 * Generates files (binary entities) from a resource model .
+	 * @throws org.eclipse.emf.common.util.DiagnosticException 
+	 * @throws Exception
+	 */
+	public static void generateContainer(
+			EObject eObj, 
+			BinaryEntityContainer container, 
+			Context context, 
+			ProgressMonitor progressMonitor) throws org.eclipse.emf.common.util.DiagnosticException {
+		
+		Diagnostician diagnostician = new Diagnostician();
+		org.eclipse.emf.common.util.Diagnostic diagnostic = diagnostician.validate(eObj);
+		if (diagnostic.getSeverity() == org.eclipse.emf.common.util.Diagnostic.ERROR) {
+			throw new org.eclipse.emf.common.util.DiagnosticException(diagnostic);
+		};
+		// Diagnosing loaded resources. 
+		try {
+			ConsumerFactory<BinaryEntityContainer> consumerFactory = Objects.requireNonNull(EObjectAdaptable.adaptToConsumerFactory(eObj, BinaryEntityContainer.class), "Cannot adapt to ConsumerFactory");
+			Diagnostic callDiagnostic = org.nasdanika.common.Util.call(consumerFactory.create(context), container, progressMonitor);
+			if (callDiagnostic.getStatus() == Status.FAIL || callDiagnostic.getStatus() == Status.ERROR) {
+				System.err.println("***********************");
+				System.err.println("*      Diagnostic     *");
+				System.err.println("***********************");
+				callDiagnostic.dump(System.err, 4, Status.FAIL, Status.ERROR);
+			}
+			if (callDiagnostic.getStatus() != Status.SUCCESS) {
+				throw new DiagnosticException(callDiagnostic);
+			};
+		} catch (DiagnosticException e) {
+			System.err.println("******************************");
+			System.err.println("*      Diagnostic failed     *");
+			System.err.println("******************************");
+			e.getDiagnostic().dump(System.err, 4, Status.FAIL);
+			throw e;
+		}
+	}		
 			
 }
