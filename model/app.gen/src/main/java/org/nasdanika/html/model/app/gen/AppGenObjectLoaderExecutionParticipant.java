@@ -1,14 +1,10 @@
 package org.nasdanika.html.model.app.gen;
 
-import java.util.Collection;
-
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.util.AppObjectLoaderExecutionParticipant;
-import org.nasdanika.html.model.bootstrap.util.BootstrapObjectLoaderExecutionParticipant;
 import org.nasdanika.persistence.ObjectLoaderResourceFactory;
 
 /**

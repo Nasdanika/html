@@ -7,7 +7,7 @@ window.nsdJsTreeSearchCallback = function(str, node) {
 	} 
     let searchResult = this.search(str); 
     for (const sr in searchResult) {
-        if (searchResult[sr].ref === node.original['data-nsd-action-uuid']) {
+        if (searchResult[sr].ref === node.original['data-nsd-label-uuid']) {
             return true;
         } 
     } 

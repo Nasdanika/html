@@ -103,7 +103,7 @@ import com.redfin.sitemapgenerator.WebSitemapUrl;
 
 public final class Util {
 	
-	public static final String DATA_NSD_ACTION_UUID_ATTRIBUTE = "data-nsd-action-uuid";
+	public static final String DATA_NSD_LABEL_UUID_ATTRIBUTE = "data-nsd-label-uuid";
 
 	// Util
 	private Util() {
@@ -247,11 +247,10 @@ public final class Util {
 			context = Context.EMPTY_CONTEXT;
 		}
 		if (activeAction instanceof Action) {
-			context = Context.singleton(Action.class, (Action) activeAction);
+			context = Context.singleton(Action.class, (Action) activeAction).compose(context);
 		}
 		if (context.get(Context.BASE_URI_PROPERTY) == null) {
-			context = context.fork();
-			((MutableContext) context).put(Context.BASE_URI_PROPERTY, URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/"));
+        	context = Context.singleton(Context.BASE_URI_PROPERTY, URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/")).compose(context);
 		}
 		BiFunction<Label, URI, URI> uriResolver = org.nasdanika.html.model.app.util.Util.uriResolver(root, context);		
 		generateSite(
@@ -470,7 +469,7 @@ public final class Util {
 			if (!org.nasdanika.common.Util.isBlank(activeActionUUID)) {
 				Text text = ContentFactory.eINSTANCE.createText();
 				text.setContent(activeActionUUID);
-				contentPanel.getAttributes().put(DATA_NSD_ACTION_UUID_ATTRIBUTE, text);
+				contentPanel.getAttributes().put(DATA_NSD_LABEL_UUID_ATTRIBUTE, text);
 			}
 		}
 		
@@ -657,7 +656,7 @@ public final class Util {
 			if (!org.nasdanika.common.Util.isBlank(sourceUUID)) {
 				Text text = ContentFactory.eINSTANCE.createText();
 				text.setContent(sourceUUID);			
-				label.getAttributes().put(DATA_NSD_ACTION_UUID_ATTRIBUTE, text);
+				label.getAttributes().put(DATA_NSD_LABEL_UUID_ATTRIBUTE, text);
 			}
 		}
 		
@@ -907,7 +906,7 @@ public final class Util {
 			searchDocument.put("path", String.join("/", breadcrumbQuery.stream().map(e -> StringEscapeUtils.escapeHtml4(e.text())).collect(Collectors.toList())));
 		}
 		for (Element element: contentPanelQuery) {
-			String actionUUID = element.attr(DATA_NSD_ACTION_UUID_ATTRIBUTE);
+			String actionUUID = element.attr(DATA_NSD_LABEL_UUID_ATTRIBUTE);
 			if (!org.nasdanika.common.Util.isBlank(actionUUID)) {
 				searchDocument.put("action-uuid", actionUUID);
 				break;

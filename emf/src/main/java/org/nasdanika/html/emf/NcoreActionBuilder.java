@@ -202,16 +202,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 						}
 					}
 				}
-			}
-			
-			// Dumping attributes
-//			System.out.println(element);
-//			Element xmlElement = ((org.nasdanika.drawio.ModelElement) element).getElement();
-//			NamedNodeMap attributes = xmlElement.getAttributes();
-//			for (int i = 0; i< attributes.getLength(); ++i) {
-//				Node attrNode = attributes.item(i);
-//				System.out.println("\t" + attrNode);
-//			}			
+			}			
 		}		
 	}
 	
@@ -294,7 +285,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	}
 	
 	/**
-	 * For drawio representations resolves and sets links for model elements with action-uuid property and empty link. Returns a map of representation keys to corresponding drawio documents.
+	 * For drawio representations resolves and sets links for model elements with action-uuid or action-uri property and empty link. Returns a map of representation keys to corresponding drawio documents.
 	 * @param action
 	 * @param uriResolver
 	 * @param progressMonitor
@@ -333,9 +324,33 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 					URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
 					if (targetURI != null) {
 						modelElement.setLink(targetURI.toString());
+						if (Util.isBlank(modelElement.getTooltip())) {
+							String actionTooltip = ((Label) targetAction).getTooltip();
+							if (!Util.isBlank(actionTooltip)) {
+								modelElement.setTooltip(actionTooltip);
+							}
+						}
 					}
 				}
 			}
+			String aURI = modelElement.getProperty("action-uri");			
+			if (Util.isBlank(modelElement.getLink()) && !Util.isBlank(aURI)) {
+				EObject targetAction = findByURI(URI.createURI(aURI), action);
+				if (targetAction instanceof Label) {
+					URI actionURI = uriResolver.apply(action, (URI) null);
+					URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
+					if (targetURI != null) {
+						modelElement.setLink(targetURI.toString());
+						if (Util.isBlank(modelElement.getTooltip())) {
+							String actionTooltip = ((Label) targetAction).getTooltip();
+							if (!Util.isBlank(actionTooltip)) {
+								modelElement.setTooltip(actionTooltip);
+							}
+						}
+					}
+				}
+			}
+			
 		}		
 	}
 	

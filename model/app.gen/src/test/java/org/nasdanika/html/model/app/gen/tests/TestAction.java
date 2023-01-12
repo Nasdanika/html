@@ -36,7 +36,6 @@ import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.html.model.app.Action;
-import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;

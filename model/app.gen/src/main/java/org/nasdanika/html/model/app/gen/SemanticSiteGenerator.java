@@ -35,12 +35,12 @@ import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.util.ActionProvider;
 
 /**
- * Generates a web site from a semantic model.
+ * Generates site content from a semantic model.
  * @author Pavel
  *
  */
 public class SemanticSiteGenerator extends SiteGenerator {
-		
+	
 	/**
 	 * Creates a resource set for loading the semantic model. 
 	 * Override to customize, e.g. add a resource factory specific for the semantic model.
@@ -85,7 +85,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 	 * @throws Exception
 	 */
 	
-	protected BiSupplier<Resource, Map<EObject,Action>>  generateActionModel(
+	protected BiSupplier<Resource, Map<EObject,Label>>  generateActionModel(
 			Resource semanticModelResource,
 			URI actionModelURI,
 			Context context, 
@@ -147,7 +147,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		
 		org.eclipse.emf.ecore.resource.Resource actionModelResource = actionModelsResourceSet.createResource(actionModelURI);
 		
-		Map<EObject,Action> registry = new HashMap<>();
+		Map<EObject,Label> registry = new HashMap<>();
 		for (EObject semanticElement: semanticModelResource.getContents()) {
 			Action action = EObjectAdaptable.adaptTo(semanticElement, ActionProvider.class).execute(registry::put, progressMonitor);
 			Context uriResolverContext = Context.singleton(Context.BASE_URI_PROPERTY, URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/"));
@@ -158,7 +158,8 @@ public class SemanticSiteGenerator extends SiteGenerator {
 	
 					@Override
 					public Action getAction(EObject semanticElement) {
-						return registry.get(semanticElement);
+						Label label = registry.get(semanticElement);
+						return label instanceof Action ? (Action) label : null;
 					}
 	
 					@Override
@@ -175,7 +176,45 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		
 		return BiSupplier.of(actionModelResource, registry);
 	}	
+		
+	/**
+	 * Generates a resource model from an action model.
+	 * @throws IOException 
+	 * @throws Exception
+	 */
+	protected Resource generateResourceModel(
+			Resource actionResource, 
+			Map<EObject, Label> registry,
+			URI rootActionURI,
+			URI pageTemplateURI,
+			URI resourceURI, 
+			String containerName,
+			File resourceWorkDir,
+			Context context, 
+			ProgressMonitor progressMonitor) throws IOException {
+		
+		Action root;
+		if (rootActionURI == null) {
+			root = (Action) actionResource.getContents().get(0);
+		} else {
+			Context rootActionContext = context.compose(Context.singleton("action-resource", actionResource.getURI().toString()));
+			ResourceSet rootActionResourceSet = createResourceSet(rootActionContext, progressMonitor);
+			root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);
+		}
+		
+		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) actionResource.getResourceSet().getEObject(pageTemplateURI, true);
+		
+		return generateResourceModel(root, registry, pageTemplate, resourceURI, containerName, resourceWorkDir, context, progressMonitor);
+	}		
 	
+	protected MutableContext createContext(ProgressMonitor progressMonitor) {
+		return Context.EMPTY_CONTEXT.fork();
+	}
+
+	protected PrintStreamProgressMonitor createProgressMonitor() {
+		return new PrintStreamProgressMonitor();
+	}
+		
 	public Map<String, Collection<String>> generate(
 		URI semanticModelURI,
 		URI rootActionURI,
@@ -214,18 +253,18 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			modelsDir.mkdirs();
 			actionModelsDir.mkdirs();
 			resourceModelsDir.mkdirs();
-			
-			MutableContext context = Context.EMPTY_CONTEXT.fork();		
-			context.put("model-name", modelName);
 	
-			try (ProgressMonitor progressMonitor = new PrintStreamProgressMonitor()) {						
+			try (ProgressMonitor progressMonitor = createProgressMonitor()) {				
+				MutableContext context = createContext(progressMonitor);		
+				context.put("model-name", modelName);
+				
 				URI modelsURI = URI.createFileURI(modelsDir.getAbsolutePath() + "/");							
 				URI copyURI = URI.createURI(modelName + ".xml").resolve(modelsURI);		
 				Resource semanticModelResource = loadSemanticModel(semanticModelURI, copyURI, context, progressMonitor.split("Loading semantic model", 1));
 				
 				URI actionModelsURI = URI.createFileURI(actionModelsDir.getAbsolutePath() + "/");	
 				URI actionModelURI = URI.createURI(modelName + ".xml").resolve(actionModelsURI);
-				BiSupplier<Resource, Map<EObject, Action>> rootActionAndRegistry = generateActionModel(semanticModelResource, actionModelURI, context, progressMonitor.split("Generating action model", 1));
+				BiSupplier<Resource, Map<EObject, Label>> rootActionAndRegistry = generateActionModel(semanticModelResource, actionModelURI, context, progressMonitor.split("Generating action model", 1));
 				
 				URI resourceModelsURI = URI.createFileURI(resourceModelsDir.getAbsolutePath() + "/");	
 				URI resourceURI = URI.createURI(modelName + ".xml").resolve(resourceModelsURI);
@@ -264,5 +303,4 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		}
 	}
 	
-
 }

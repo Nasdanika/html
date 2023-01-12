@@ -19,34 +19,31 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.xml.transform.TransformerException;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notifier;
+import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
-import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.DiagnosticException;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.NasdanikaException;
-import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.PropertyComputer;
 import org.nasdanika.common.Status;
@@ -56,9 +53,6 @@ import org.nasdanika.drawio.Layer;
 import org.nasdanika.drawio.LayerElement;
 import org.nasdanika.drawio.Page;
 import org.nasdanika.drawio.comparators.LabelModelElementComparator;
-import org.nasdanika.emf.EObjectAdaptable;
-import org.nasdanika.emf.EmfUtil;
-import org.nasdanika.emf.persistence.NcoreObjectLoaderSupplier;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ReconcileAction;
@@ -66,8 +60,6 @@ import org.nasdanika.exec.resources.ResourcesFactory;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
-import org.nasdanika.html.emf.ActionProviderAdapterFactory;
-import org.nasdanika.html.emf.EObjectActionResolver;
 import org.nasdanika.html.emf.NcoreActionBuilder;
 import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
@@ -75,8 +67,8 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
-import org.nasdanika.html.model.app.util.ActionProvider;
 import org.nasdanika.html.model.html.gen.ContentConsumer;
+import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.util.NcoreUtil;
 import org.nasdanika.resources.FileSystemContainer;
 
@@ -100,10 +92,9 @@ public class SiteGenerator {
 	 * @throws Exception
 	 */
 	protected Resource generateResourceModel(
-			Resource actionResource, 
-			Map<EObject, Action> registry,
-			URI rootActionURI,
-			URI pageTemplateURI,
+			Action root, 
+			Map<EObject, Label> registry,
+			org.nasdanika.html.model.bootstrap.Page pageTemplate,
 			URI resourceURI, 
 			String containerName,
 			File resourceWorkDir,
@@ -122,10 +113,6 @@ public class SiteGenerator {
 			};
 		};
 		
-		Context rootActionContext = context.compose(Context.singleton("action-resource", actionResource.getURI().toString()));
-		ResourceSet rootActionResourceSet = createResourceSet(rootActionContext, progressMonitor);
-		Action root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);
-		
 		Container container = ResourcesFactory.eINSTANCE.createContainer();
 		container.setName(containerName);
 		container.setReconcileAction(ReconcileAction.OVERWRITE);
@@ -133,8 +120,6 @@ public class SiteGenerator {
 		ResourceSet resourceSet = createResourceSet(context, progressMonitor);
 		Resource modelResource = resourceSet.createResource(resourceURI);
 		modelResource.getContents().add(container);
-		
-		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) actionResource.getResourceSet().getEObject(pageTemplateURI, true);
 		
 		// Generating content file from action content 
 		
@@ -208,6 +193,30 @@ public class SiteGenerator {
 	}
 	
 	/**
+	 * Filters registry entries for inclusion into the search site map tree. 
+	 * This implementation returns true if a semantic element is mapped to a label or one of its children is mapped to a label, i.e. an intermediate node is required to put that child into the tree.
+	 * @param semanticElement
+	 * @param label
+	 * @return
+	 */
+	protected boolean isSiteMapTreeNode(EObject semanticElement, Label label, Map<EObject, Label> registry) {
+		// Action with location
+		if (label instanceof Action && !org.nasdanika.common.Util.isBlank(((Action) label).getLocation())) {
+			return true;
+		}
+		
+		TreeIterator<EObject> cit = semanticElement.eAllContents();
+		while (cit.hasNext()) {
+			EObject next = cit.next();
+			if (isSiteMapTreeNode(next, registry.get(next), registry)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Computes site map tree script - context property computer
 	 * @param context
 	 * @return
@@ -217,37 +226,61 @@ public class SiteGenerator {
 			Context context, 
 			Action action, 
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Action> registry,
+			Map<EObject, Label> registry,
 			ProgressMonitor progressMonitor) {
 		// TODO - actions from action prototype, e.g. Ecore doc actions, to the tree.
 		
 		JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);
+		int maxLength = 50;
 		Map<EObject, JsTreeNode> nodeMap = new HashMap<>();
-		for (Entry<EObject, Action> re: registry.entrySet()) {
-			Action treeAction = re.getValue();
-			
-			Link link = AppFactory.eINSTANCE.createLink();
-			String treeActionText = treeAction.getText();
-			int maxLength = 50;
-			link.setText(treeActionText.length() > maxLength ? treeActionText.substring(0, maxLength) + "..." : treeActionText);
-			link.setIcon(treeAction.getIcon());
-			
-			URI bURI = uriResolver.apply(action, (URI) null);
-			URI tURI = uriResolver.apply(treeAction, bURI);
-			if (tURI != null) {
-				link.setLocation(tURI.toString());
-			}
-			LinkJsTreeNodeSupplierFactoryAdapter<Link> adapter = new LinkJsTreeNodeSupplierFactoryAdapter<>(link);
-			
-			try {
-				JsTreeNode jsTreeNode = adapter.create(context).execute(progressMonitor);
-				jsTreeNode.attribute(Util.DATA_NSD_ACTION_UUID_ATTRIBUTE, treeAction.getUuid());
-				nodeMap.put(re.getKey(), jsTreeNode);
-			} catch (Exception e) {
-				throw new NasdanikaException(e);
+		for (Entry<EObject, Label> re: registry.entrySet().stream().filter(e -> isSiteMapTreeNode(e.getKey(), e.getValue(), registry)).collect(Collectors.toList())) {
+			Label treeLabel = re.getValue();			
+			EObject key = re.getKey();
+			if (treeLabel == null) {
+				JsTreeNode jsTreeNode = jsTreeFactory.jsTreeNode();
+				String nodeText;
+				if (key instanceof NamedElement) {
+					nodeText = StringEscapeUtils.escapeHtml4(((NamedElement) key).getName());
+				} else {
+					nodeText = key.eClass().getName();
+				}
+				if (org.nasdanika.common.Util.isBlank(nodeText)) {
+					nodeText = "(blank)";
+				}
+				jsTreeNode.text(nodeText.length() > maxLength ? nodeText.substring(0, maxLength) + "..." : nodeText);
+				nodeMap.put(key, jsTreeNode);
+			} else {			
+				Label label = treeLabel instanceof Link ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
+				String treeLabelText = treeLabel.getText();
+				if (org.nasdanika.common.Util.isBlank(treeLabelText)) {
+					treeLabelText = "(blank)";
+				}
+				label.setText(treeLabelText.length() > maxLength ? treeLabelText.substring(0, maxLength) + "..." : treeLabelText);
+				label.setIcon(treeLabel.getIcon());
+				
+				LabelJsTreeNodeSupplierFactoryAdapter<?> adapter;
+				if (label instanceof Link) {
+					URI bURI = uriResolver.apply(action, (URI) null);
+					URI tURI = uriResolver.apply(treeLabel, bURI);
+					if (tURI != null) {
+						((Link) label).setLocation(tURI.toString());
+					}
+					adapter = new LinkJsTreeNodeSupplierFactoryAdapter<Link>((Link) label);
+				} else {
+					adapter = new LabelJsTreeNodeSupplierFactoryAdapter<>(label);				
+				}
+				
+				try {
+					JsTreeNode jsTreeNode = adapter.create(context).execute(progressMonitor);
+					jsTreeNode.attribute(Util.DATA_NSD_LABEL_UUID_ATTRIBUTE, treeLabel.getUuid());
+					nodeMap.put(key, jsTreeNode);
+				} catch (Exception e) {
+					throw new NasdanikaException(e);
+				}
 			}
 		}
 		
+		// Organizing JsTreeNodes into a tree.
 		Map<EObject, JsTreeNode> roots = new HashMap<>(nodeMap);
 		
 		Map<EObject,Map<String,List<JsTreeNode>>> refMap = new HashMap<>();
@@ -297,7 +330,7 @@ public class SiteGenerator {
 		jsTree.put("state", Collections.singletonMap("key", "nsd-site-map-tree"));
 		
 		// Deletes selection from state
-		String filter = NavigationPanelConsumerFactoryAdapter.CLEAR_STATE_FILTER + " tree.search.search_callback = (results, node) => results.split(' ').includes(node.original['data-nsd-action-uuid']);";
+		String filter = NavigationPanelConsumerFactoryAdapter.CLEAR_STATE_FILTER + " tree.search.search_callback = (results, node) => results.split(' ').includes(node.original['data-nsd-label-uuid']);";
 		
 		return jsTreeFactory.bind("#nsd-site-map-tree", jsTree, filter, null).toString();					
 	}
@@ -382,21 +415,21 @@ public class SiteGenerator {
 			Action action,
 			URI baseSemanticURI,
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Action> registry) {
+			Map<EObject, Label> registry) {
 		int spaceIdx = path.indexOf(' ');
 		URI targetURI = URI.createURI(spaceIdx == -1 ? path : path.substring(0, spaceIdx));
 		if (baseSemanticURI != null && targetURI.isRelative()) {
 			targetURI = targetURI.resolve(baseSemanticURI.appendSegment(""));
 		}	
 		URI bURI = uriResolver.apply(action, (URI) null);						
-		for (Entry<EObject, Action> registryEntry: registry.entrySet()) {
+		for (Entry<EObject, Label> registryEntry: registry.entrySet()) {
 			for (URI semanticURI: NcoreUtil.getUris(registryEntry.getKey())) {
 				if (Objects.equals(targetURI, semanticURI)) {
-					Action targetAction = registryEntry.getValue();
+					Label targetLabel = registryEntry.getValue();
 					HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
-					URI targetActionURI = uriResolver.apply(targetAction, bURI);
-					Tag tag = htmlFactory.tag(targetActionURI == null ? TagName.span : TagName.a, spaceIdx == -1 ? targetAction.getText() : path.substring(spaceIdx + 1));
-					String targetActionTooltip = targetAction.getTooltip();
+					URI targetActionURI = uriResolver.apply(targetLabel, bURI);
+					Tag tag = htmlFactory.tag(targetActionURI == null ? TagName.span : TagName.a, spaceIdx == -1 ? targetLabel.getText() : path.substring(spaceIdx + 1));
+					String targetActionTooltip = targetLabel.getTooltip();
 					if (!org.nasdanika.common.Util.isBlank(targetActionTooltip)) {
 						tag.attribute("title", targetActionTooltip);
 					}
@@ -417,18 +450,18 @@ public class SiteGenerator {
 			Action action,
 			URI baseSemanticURI,
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Action> registry) {
+			Map<EObject, Label> registry) {
 
 		URI targetURI = URI.createURI(path);
 		if (baseSemanticURI != null && targetURI.isRelative()) {
 			targetURI = targetURI.resolve(baseSemanticURI.appendSegment(""));
 		}	
 		URI bURI = uriResolver.apply(action, (URI) null);						
-		for (Entry<EObject, Action> registryEntry: registry.entrySet()) {
+		for (Entry<EObject, Label> registryEntry: registry.entrySet()) {
 			for (URI semanticURI: NcoreUtil.getUris(registryEntry.getKey())) {
 				if (Objects.equals(targetURI, semanticURI)) {
-					Action targetAction = registryEntry.getValue();
-					URI targetActionURI = uriResolver.apply(targetAction, bURI);
+					Label targetLabel = registryEntry.getValue();
+					URI targetActionURI = uriResolver.apply(targetLabel, bURI);
 					if (targetActionURI != null) {
 						return targetActionURI.toString();
 					}
@@ -448,7 +481,7 @@ public class SiteGenerator {
 	protected EList<EObject> getActionContent(
 			Action action, 
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Action> registry,
+			Map<EObject, Label> registry,
 			File resourceWorkDir,
 			Context context,
 			java.util.function.Consumer<Diagnostic> diagnosticConsumer,
@@ -497,7 +530,7 @@ public class SiteGenerator {
 	protected Context createActionContentContext(
 			Action action, 
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Action> registry,
+			Map<EObject, Label> registry,
 			ContentConsumer contentConsumer,
 			Context context,
 			ProgressMonitor progressMonitor) {
@@ -525,7 +558,7 @@ public class SiteGenerator {
 		Optional<URI> baseSemanticURI = registry
 				.entrySet()
 				.stream()
-				.filter(e -> Objects.equals(e.getValue().getUuid(), action.getUuid()))
+				.filter(e -> e.getValue() != null && Objects.equals(e.getValue().getUuid(), action.getUuid()))
 				.flatMap(e -> NcoreUtil.getUris(e.getKey()).stream())
 				.filter(Objects::nonNull)
 				.filter(u -> !u.isRelative() && u.isHierarchical())
@@ -612,5 +645,5 @@ public class SiteGenerator {
 	protected boolean isSearch(File file, String path) {
 		return path.endsWith(".html") && !"search.html".equals(path);
 	}
-
+	
 }
