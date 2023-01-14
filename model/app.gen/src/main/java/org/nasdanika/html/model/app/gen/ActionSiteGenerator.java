@@ -18,6 +18,7 @@ import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.ActionReference;
 import org.nasdanika.html.model.app.Label;
 
 /**
@@ -105,14 +106,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 				Action root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);	
 				
 				Map<EObject,Label> registry = new HashMap<>();
-				registry.put(root, root);
-				TreeIterator<EObject> ait = root.eAllContents();
-				while (ait.hasNext()) {
-					EObject next = ait.next();
-					if (next instanceof Label) {
-						registry.put(next, (Label) next);
-					}
-				}
+				buildRegistry(root, registry);
 				
 				org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) rootActionResourceSet.getEObject(pageTemplateURI, true);
 				
@@ -147,6 +141,24 @@ public class ActionSiteGenerator extends SiteGenerator {
 		} finally {
 			if (cleanWorkDir) {
 				org.nasdanika.common.Util.delete(workDir);
+			}
+		}
+	}
+
+	protected void buildRegistry(Action action, Map<EObject, Label> registry) {
+		if (!registry.containsKey(action)) {
+			registry.put(action, action);
+			TreeIterator<EObject> ait = action.eAllContents();
+			while (ait.hasNext()) {
+				EObject next = ait.next();
+				if (next instanceof Label) {
+					registry.put(next, (Label) next);
+				}
+				if (next instanceof ActionReference) {
+					Action refTarget = ((ActionReference) next).getTarget();
+					registry.put(next, null);
+					buildRegistry(refTarget, registry);
+				}
 			}
 		}
 	}

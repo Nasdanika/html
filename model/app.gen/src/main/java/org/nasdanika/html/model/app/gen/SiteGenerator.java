@@ -27,7 +27,6 @@ import javax.xml.transform.TransformerException;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -70,6 +69,7 @@ import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.html.gen.ContentConsumer;
 import org.nasdanika.ncore.NamedElement;
+import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreUtil;
 import org.nasdanika.resources.FileSystemContainer;
 
@@ -243,25 +243,29 @@ public class SiteGenerator {
 	
 	/**
 	 * Filters registry entries for inclusion into the search site map tree. 
-	 * This implementation returns true if a semantic element is mapped to a label or one of its children is mapped to a label, i.e. an intermediate node is required to put that child into the tree.
+	 * This implementation returns true if a semantic element is mapped to an action or one of its descendants is mapped to an active, i.e. an intermediate node is required to put that child into the tree.
 	 * @param semanticElement
 	 * @param label
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	protected boolean isSiteMapTreeNode(EObject semanticElement, Label label, Map<EObject, Label> registry) {
 		// Action with location
 		if (label instanceof Action && !org.nasdanika.common.Util.isBlank(((Action) label).getLocation())) {
 			return true;
 		}
 		
-		TreeIterator<EObject> cit = semanticElement.eAllContents();
-		while (cit.hasNext()) {
-			EObject next = cit.next();
-			if (isSiteMapTreeNode(next, registry.get(next), registry)) {
-				return true;
+		for (EReference eRef: semanticElement.eClass().getEAllReferences()) {
+			if (isParentReference(eRef)) {
+				Object eRefValue = semanticElement.eGet(eRef);
+				for (Object ve: eRefValue instanceof Collection ? (Collection<Object>) eRefValue : Collections.singletonList(eRefValue)) {
+					if (ve instanceof EObject && isSiteMapTreeNode((EObject) ve, registry.get(ve), registry)) {
+						return true;
+					}
+				}
 			}
 		}
-		
+				
 		return false;
 	}
 	
@@ -336,7 +340,7 @@ public class SiteGenerator {
 		for (EObject eObj: new ArrayList<>(nodeMap.keySet())) {
 			Map<String,List<JsTreeNode>> rMap = new TreeMap<>();					
 			for (EReference eRef: eObj.eClass().getEAllReferences()) {
-				if (eRef.isContainment()) {
+				if (isParentReference(eRef)) {
 					Object eRefValue = eObj.eGet(eRef);
 					List<JsTreeNode> refNodes = new ArrayList<>();
 					for (Object ve: eRefValue instanceof Collection ? (Collection<Object>) eRefValue : Collections.singletonList(eRefValue)) {
@@ -382,6 +386,10 @@ public class SiteGenerator {
 		String filter = NavigationPanelConsumerFactoryAdapter.CLEAR_STATE_FILTER + " tree.search.search_callback = (results, node) => results.split(' ').includes(node.original['data-nsd-label-uuid']);";
 		
 		return jsTreeFactory.bind("#nsd-site-map-tree", jsTree, filter, null).toString();					
+	}
+	
+	protected boolean isParentReference(EReference eReference) {
+		return eReference.isContainment() || eReference == NcorePackage.Literals.REFERENCE__TARGET;
 	}
 	
 	/**
