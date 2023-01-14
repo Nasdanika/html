@@ -54,6 +54,7 @@ import org.nasdanika.drawio.LayerElement;
 import org.nasdanika.drawio.Page;
 import org.nasdanika.drawio.comparators.LabelModelElementComparator;
 import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.Text;
 import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ReconcileAction;
 import org.nasdanika.exec.resources.ResourcesFactory;
@@ -135,6 +136,14 @@ public class SiteGenerator {
 				context,
 				progressMonitor);
 		
+		JSONObject semanticMap = semanticMap(root, registry, context);
+		if (semanticMap != null) {
+			org.nasdanika.exec.resources.File semanticMapFile = container.getFile("semantic-map.json");
+			Text semanticMapText = ContentFactory.eINSTANCE.createText();
+			semanticMapText.setContent(semanticMap.toString(4));
+			semanticMapFile.getContents().add(semanticMapText);
+		}
+		
 		modelResource.save(null);
 		
 		// Page model to XML conversion
@@ -152,6 +161,46 @@ public class SiteGenerator {
 		}
 		
 		return modelResource;
+	}
+
+	/**
+	 * Creates a semantic map of semantic URI's to text, tooltip, and location of pages corresponding to the URI.
+	 * Override to create aggregated semantic maps.
+	 * @param root
+	 * @param registry
+	 * @param context
+	 * @return
+	 */
+	protected JSONObject semanticMap(Action root, Map<EObject, Label> registry, Context context) {
+		// Semantic map
+		JSONObject semanticMap = new JSONObject();		
+		URI baseURI = URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/semantic-map.json");
+		Context semanticMapContext = Context.singleton(Context.BASE_URI_PROPERTY, baseURI).compose(context);
+		BiFunction<Label, URI, URI> uriResolver = org.nasdanika.html.model.app.util.Util.uriResolver(root, semanticMapContext);				
+		
+		for (Entry<EObject, Label> re: registry.entrySet()) {
+			for (URI uri: NcoreUtil.getUris(re.getKey())) {
+				JSONObject value = new JSONObject();
+				Label label = re.getValue();
+				String labelText = label.getText();
+				if (!org.nasdanika.common.Util.isBlank(labelText)) {
+					value.put("text", labelText);
+				}
+				String labelTooltip = label.getTooltip();
+				if (!org.nasdanika.common.Util.isBlank(labelTooltip)) {
+					value.put("tooltip", labelTooltip);
+				}
+				if (label instanceof Link) {					
+					URI linkURI = uriResolver.apply(label, baseURI);
+					if (linkURI != null) {
+						value.put("location", linkURI.toString());
+					}
+				}
+				
+				semanticMap.put(uri.toString(), value);
+			}
+		}
+		return semanticMap;
 	}
 	
 	/**
@@ -408,6 +457,18 @@ public class SiteGenerator {
 		return null; 		
 	}
 	
+	/**
+	 * Computes semantic link. This implementation uses the registry and uriResolver. 
+	 * Override to add support of resolving external semantic links, e.g. loaded from semantic maps of dependency sites.
+	 * @param context
+	 * @param key
+	 * @param path
+	 * @param action
+	 * @param baseSemanticURI
+	 * @param uriResolver
+	 * @param registry
+	 * @return
+	 */
 	protected String computeSemanticLink(
 			Context context, 
 			String key, 
@@ -440,10 +501,33 @@ public class SiteGenerator {
 				}
 			}
 		}
-		return null;
+		return computeSemanticLink(targetURI, bURI, context);
 	}
 	
-	protected String computeSemanticReferfence(
+	/**
+	 * Computes semantic links for external URI's. This implementation returns null;
+	 * @param targetURI 
+	 * @param baseURI Base URI to deresolve link's reference to make it relative.
+	 * @param context
+	 * @return
+	 */
+	protected String computeSemanticLink(URI targetURI, URI baseURI, Context context) { 
+		return null;
+	}	
+
+	/**
+	 * Computes semantic reference. This implementation uses the registry and uriResolver. 
+	 * Override to add support of resolving external semantic references, e.g. loaded from semantic maps of dependency sites.
+	 * @param context
+	 * @param key
+	 * @param path
+	 * @param action
+	 * @param baseSemanticURI
+	 * @param uriResolver
+	 * @param registry
+	 * @return
+	 */
+	protected URI computeSemanticReferfence(
 			Context context, 
 			String key, 
 			String path,
@@ -463,14 +547,25 @@ public class SiteGenerator {
 					Label targetLabel = registryEntry.getValue();
 					URI targetActionURI = uriResolver.apply(targetLabel, bURI);
 					if (targetActionURI != null) {
-						return targetActionURI.toString();
+						return targetActionURI;
 					}
 				}
 			}
 		}
-		return null;
+		URI ref = computeSemanticReference(targetURI, context);		
+		return ref == null || bURI == null ? ref : ref.deresolve(bURI, true, true, true);
 	}
-		
+
+	/**
+	 * Computes semantic links for external URI's. This implementation returns null;
+	 * @param targetURI
+	 * @param context
+	 * @return
+	 */
+	protected URI computeSemanticReference(URI targetURI, Context context) { 
+		return null;
+	}	
+	
 	/**
 	 * {@link ActionContentProvider} method
 	 * @param action
@@ -584,7 +679,8 @@ public class SiteGenerator {
 			@Override
 			public <T> T compute(Context propertyComputerContext, String key, String path, Class<T> type) {
 				if (type == null || type.isAssignableFrom(String.class)) {
-					return (T) computeSemanticReferfence(propertyComputerContext, key, path, action, baseSemanticURI.orElse(null), uriResolver, registry);
+					URI sRef = computeSemanticReferfence(propertyComputerContext, key, path, action, baseSemanticURI.orElse(null), uriResolver, registry);
+					return sRef == null ? null : (T) sRef.toString();
 				}
 				return null;
 			}
