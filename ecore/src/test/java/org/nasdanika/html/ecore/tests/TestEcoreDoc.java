@@ -1,7 +1,6 @@
 package org.nasdanika.html.ecore.tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -9,8 +8,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;

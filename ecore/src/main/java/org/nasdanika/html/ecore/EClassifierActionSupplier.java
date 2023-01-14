@@ -65,6 +65,7 @@ public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElem
 		Action action = super.execute(contextEClass, progressMonitor);
 		action.setLocation(eObject.getName() + ".html");
 		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject.getEPackage()) + "-" + eObject.getName());
+		action.getUris().add(eObject.getEPackage().getNsURI() + "#" + eObject.getName());
 		return action;
 	}
 	

@@ -66,6 +66,7 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 		String ePackageFolder = ePackagePathComputer == null ? Hex.encodeHexString(eObject.getNsURI().getBytes(StandardCharsets.UTF_8)) : ePackagePathComputer.apply(eObject);
 		action.setLocation(ePackageFolder + "/package-summary.html");
 		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject));
+		action.getUris().add(eObject.getNsURI());
 		
 		String diagramMode = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "diagram", "navigation");
 		String diagram = generateDiagram(0, RelationshipDirection.both, true, true);
