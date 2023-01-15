@@ -93,6 +93,7 @@ import org.nasdanika.html.model.bootstrap.Item;
 import org.nasdanika.html.model.html.HtmlPackage;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreResourceSet;
+import org.nasdanika.ncore.util.NcoreUtil;
 import org.nasdanika.persistence.ObjectLoaderResourceFactory;
 import org.nasdanika.resources.BinaryEntityContainer;
 import org.xml.sax.SAXException;
@@ -538,6 +539,12 @@ public final class Util {
 		contentPanel.setRightNavigation(createNavigationPanel(action.getRightNavigation()));
 		
 		contentPanel.getContent().addAll(contentProvider == null ? EcoreUtil.copyAll(action.getContent()) : contentProvider.getActionContent(action, uriResolver, progressMonitor));
+		
+		List<URI> actionURIs = NcoreUtil.getUris(action);
+		if (!actionURIs.isEmpty()) {
+			String urisStr = String.join(" ", actionURIs.stream().map(Object::toString).collect(Collectors.toList()));
+			contentPanel.getAttributes().put("data-nsd-action-uris", NcoreUtil.wrapString(urisStr));
+		}
 	}
 	
 	/**
@@ -823,8 +830,8 @@ public final class Util {
 		}
 	}
 	
-	public static JSONObject createSearchDocument(String path, File file) throws IOException {
-		return createSearchDocument(path, file, null, null);
+	public static JSONObject createSearchDocument(String path, File file, Consumer<Exception> errorConsumer) throws IOException {
+		return createSearchDocument(path, file, null, null, errorConsumer);
 	}
 	
 	/**
@@ -841,7 +848,8 @@ public final class Util {
 			String path, 
 			File file, 
 			Consumer<? super Element> contentConsumer, 
-			BiFunction<String, Document, Boolean> processor) throws IOException {
+			BiFunction<String, Document, Boolean> processor,
+			Consumer<Exception> errorConsumer) throws IOException {
 		
 		Document document = Jsoup.parse(file, "UTF-8");
 		if (processor != null && processor.apply(path, document)) {
@@ -885,7 +893,11 @@ public final class Util {
 					}
 				}, null);
 			} catch (Exception e) {
-				throw new NasdanikaException(e);
+				if (errorConsumer == null) {
+					e.printStackTrace();
+				} else {
+					errorConsumer.accept(e);
+				}
 			}
 		}
 		
@@ -1031,7 +1043,7 @@ public final class Util {
 						}
 					}, null);
 				} catch (Exception e) {
-					throw new NasdanikaException(e);
+					errorConsumer.accept("Error traversing drawio " + diagramDiv + ": " + e);
 				}
 			}			
 		};
@@ -1171,7 +1183,7 @@ public final class Util {
 						Predicate<String> predicate = createRelativeLinkPredicate(file, dir);						
 						Consumer<? super Element> inspector = createInspector(predicate, error -> errorConsumer.accept(path, error));
 						
-						JSONObject searchDocument = createSearchDocument(path, file, inspector, searchConfigurator);
+						JSONObject searchDocument = createSearchDocument(path, file, inspector, searchConfigurator, e -> errorConsumer.accept(path, "Error creating search document: " + e));
 						if (searchDocument != null) {
 							searchDocuments.put(path, searchDocument);
 						}

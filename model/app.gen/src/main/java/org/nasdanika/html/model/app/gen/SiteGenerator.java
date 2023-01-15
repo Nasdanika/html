@@ -22,6 +22,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -653,11 +654,21 @@ public class SiteGenerator {
 				try {
 					org.nasdanika.drawio.Document valueDocument = (org.nasdanika.drawio.Document) representationEntry.getValue();
 					mctx.put("representations/" + representationEntry.getKey() + "/diagram", valueDocument.save(true));
-					Object toc = computeTableOfContents((org.nasdanika.drawio.Document) representationEntry.getValue(), mctx);
+					Object toc = computeTableOfContents(valueDocument, mctx);
 					if (toc != null) {
 						mctx.put("representations/" + representationEntry.getKey() + "/toc", toc.toString());
 					}
-				} catch (TransformerException | IOException e) {
+					
+					for (Page page: valueDocument.getPages()) {
+						org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true, null);
+						pageDocument.getPages().add(page);
+						mctx.put("representations/" + representationEntry.getKey() + "/" + page.getName() + "/diagram", pageDocument.save(true));
+						Object pageToc = computeTableOfContents(pageDocument, mctx);
+						if (toc != null) {
+							mctx.put("representations/" + representationEntry.getKey() + "/" + page.getName() + "/toc", pageToc.toString());
+						}
+					}
+				} catch (TransformerException | IOException | ParserConfigurationException e) {
 					throw new NasdanikaException("Error saving document");
 				}
 			} else {
