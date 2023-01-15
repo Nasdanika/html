@@ -1,0 +1,17 @@
+app-action:
+  text: HTML
+  uris: nasdanika://html
+  location: html/index.html
+  children:
+     - bootstrap/actions.yml
+     - ecore/actions.yml
+     - emf/actions.yml
+     - html/actions.yml
+     - jstree/actions.yml
+     - model/actions.yml
+  navigation:
+    - app-link:
+        text: Javadoc
+        uris: javadoc
+        icon: fab fa-java
+        location: apidocs/index.html

@@ -61,6 +61,7 @@ import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.GitMarkerFactory;
 import org.nasdanika.emf.persistence.MarkerFactory;
 import org.nasdanika.emf.persistence.NcoreDrawioResourceFactory;
+import org.nasdanika.emf.persistence.TextResourceFactory;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.ContentPackage;
@@ -1304,6 +1305,13 @@ public final class Util {
 		};
 		
 		extensionToFactoryMap.put("drawio", ncoreDrawioResourceFactory);		
+
+		// For handling textual representations
+		TextResourceFactory textResourceFactory = new TextResourceFactory();
+		extensionToFactoryMap.put("txt", textResourceFactory);		
+		extensionToFactoryMap.put("puml", textResourceFactory);								
+		extensionToFactoryMap.put("mermaid", textResourceFactory);		
+		
 		extensionToFactoryMap.put(org.eclipse.emf.ecore.resource.Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		
 		resourceSet.getPackageRegistry().put(NcorePackage.eNS_URI, NcorePackage.eINSTANCE);

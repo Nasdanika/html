@@ -1,0 +1,10 @@
+app-action:
+  text: jsTree
+  location: jstree/index.html
+  uris: jstree
+  navigation:
+    - app-link:
+        text: Javadoc
+        uris: javadoc
+        icon: fab fa-java
+        location: ../apidocs/org.nasdanika.html.jstree/module-summary.html

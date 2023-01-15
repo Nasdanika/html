@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -279,18 +278,11 @@ public class SemanticSiteGenerator extends SiteGenerator {
 						context, 
 						progressMonitor.split("Generating resource model", 1));
 				
-	
-				// Cleanup docs, keep CNAME, favicon.ico, and images directory. Copy from target/model-doc/site/nasdanika
-				Predicate<String> cleanPredicate = path -> {
-					return !"CNAME".equals(path) && !"favicon.ico".equals(path) && !path.startsWith("images/");
-				};
-				
-				
 				return generateContainer(
 						resourceModel,
 						siteWorkDir,
 						outputDir,
-						cleanPredicate,
+						this::isDeleteOutputPath,
 						siteMapDomain,
 						modelName, 
 						context, 
@@ -301,6 +293,16 @@ public class SemanticSiteGenerator extends SiteGenerator {
 				org.nasdanika.common.Util.delete(workDir);
 			}
 		}
+	}
+	
+	/**
+	 * Clean predicate for the output directory. This implementation returns true. 
+	 * Override to return false for paths which shall not be cleaned (deleted).
+	 * @param path File/directory path in the output directory.
+	 * @return
+	 */
+	protected boolean isDeleteOutputPath(String path) {
+		return true;
 	}
 	
 }

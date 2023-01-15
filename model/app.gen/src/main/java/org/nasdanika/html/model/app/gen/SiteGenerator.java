@@ -180,24 +180,26 @@ public class SiteGenerator {
 		
 		for (Entry<EObject, Label> re: registry.entrySet()) {
 			for (URI uri: NcoreUtil.getUris(re.getKey())) {
-				JSONObject value = new JSONObject();
 				Label label = re.getValue();
-				String labelText = label.getText();
-				if (!org.nasdanika.common.Util.isBlank(labelText)) {
-					value.put("text", labelText);
-				}
-				String labelTooltip = label.getTooltip();
-				if (!org.nasdanika.common.Util.isBlank(labelTooltip)) {
-					value.put("tooltip", labelTooltip);
-				}
-				if (label instanceof Link) {					
-					URI linkURI = uriResolver.apply(label, baseURI);
-					if (linkURI != null) {
-						value.put("location", linkURI.toString());
+				if (label != null) {
+					JSONObject value = new JSONObject();
+					String labelText = label.getText();
+					if (!org.nasdanika.common.Util.isBlank(labelText)) {
+						value.put("text", labelText);
 					}
+					String labelTooltip = label.getTooltip();
+					if (!org.nasdanika.common.Util.isBlank(labelTooltip)) {
+						value.put("tooltip", labelTooltip);
+					}
+					if (label instanceof Link) {					
+						URI linkURI = uriResolver.apply(label, baseURI);
+						if (linkURI != null) {
+							value.put("location", linkURI.toString());
+						}
+					}
+					
+					semanticMap.put(uri.toString(), value);
 				}
-				
-				semanticMap.put(uri.toString(), value);
 			}
 		}
 		return semanticMap;
@@ -645,16 +647,21 @@ public class SiteGenerator {
 			mctx.register(ContentConsumer.class, contentConsumer);
 		}
 		
-		Map<String, org.nasdanika.drawio.Document> representations = NcoreActionBuilder.resolveRepresentationLinks(action, uriResolver, progressMonitor);
-		for (Entry<String, org.nasdanika.drawio.Document> representationEntry: representations.entrySet()) {
-			try {
-				mctx.put("representations/" + representationEntry.getKey() + "/diagram", representationEntry.getValue().save(true));
-				Object toc = computeTableOfContents(representationEntry.getValue(), mctx);
-				if (toc != null) {
-					mctx.put("representations/" + representationEntry.getKey() + "/toc", toc.toString());
+		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(action, uriResolver, progressMonitor);
+		for (Entry<String, Object> representationEntry: representations.entrySet()) {
+			if (representationEntry.getValue() instanceof org.nasdanika.drawio.Document) {
+				try {
+					org.nasdanika.drawio.Document valueDocument = (org.nasdanika.drawio.Document) representationEntry.getValue();
+					mctx.put("representations/" + representationEntry.getKey() + "/diagram", valueDocument.save(true));
+					Object toc = computeTableOfContents((org.nasdanika.drawio.Document) representationEntry.getValue(), mctx);
+					if (toc != null) {
+						mctx.put("representations/" + representationEntry.getKey() + "/toc", toc.toString());
+					}
+				} catch (TransformerException | IOException e) {
+					throw new NasdanikaException("Error saving document");
 				}
-			} catch (TransformerException | IOException e) {
-				throw new NasdanikaException("Error saving document");
+			} else {
+				mctx.put("representations/" + representationEntry.getKey(), representationEntry.getValue());				
 			}
 		}
 		

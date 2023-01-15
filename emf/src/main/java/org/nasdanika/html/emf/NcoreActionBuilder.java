@@ -26,10 +26,13 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.PropertyComputer;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Document;
+import org.nasdanika.emf.persistence.TextResourceFactory;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.ncore.Documented;
@@ -291,8 +294,8 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	 * @param progressMonitor
 	 * @return
 	 */
-	public static Map<String, Document> resolveRepresentationLinks(Action action, BiFunction<Label, URI, URI> uriResolver, ProgressMonitor progressMonitor) {
-		Map<String, Document> ret = new LinkedHashMap<>();
+	public static Map<String, Object> resolveRepresentationLinks(Action action, BiFunction<Label, URI, URI> uriResolver, ProgressMonitor progressMonitor) {
+		Map<String, Object> ret = new LinkedHashMap<>();
 		for (Entry<String, String> actionRepresentationEntry: action.getRepresentations()) {
 			URI representationURI = URI.createURI(actionRepresentationEntry.getValue());
 			if (Document.isDataURI(representationURI)) {
@@ -303,9 +306,99 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				} catch (ParserConfigurationException | SAXException | IOException e) {
 					throw new NasdanikaException("Error loading drawio document: " + e, e);
 				}
+			} else if (TextResourceFactory.isDataURI(representationURI)) {
+				Resource textResource = new TextResourceFactory().createResource(representationURI);
+				try {
+					textResource.load(null);
+				} catch (IOException e) {
+					throw new NasdanikaException("Error loading text resource from data URI: " + e, e);
+				}
+				StringBuilder textBuilder = new StringBuilder();
+				for (EObject eObj: textResource.getContents()) {
+					if (eObj instanceof org.nasdanika.ncore.String) {
+						String text = ((org.nasdanika.ncore.String) eObj).getValue();
+						if (text != null) {
+							textBuilder.append(text);
+						}
+					} else {
+						throw new UnsupportedOperationException("Unsupported contents: " + eObj);
+					}
+				}
+				
+				MutableContext context = Context.EMPTY_CONTEXT.fork();
+				
+				PropertyComputer actionUUIDPropertyComputer = new PropertyComputer() {
+					
+					@SuppressWarnings("unchecked")
+					@Override
+					public <T> T compute(Context propertyComputerContext, String key, String path, Class<T> type) {
+						if (type == null || type.isAssignableFrom(String.class)) {
+							URI ret = resolveActionUUIDLink(path, action, uriResolver);
+							return ret == null ? null : (T) ret.toString();
+						}
+						return null;
+					}
+				};
+				
+				context.put("action-uuid", actionUUIDPropertyComputer);
+				
+				PropertyComputer actionURIPropertyComputer = new PropertyComputer() {
+					
+					@SuppressWarnings("unchecked")
+					@Override
+					public <T> T compute(Context propertyComputerContext, String key, String path, Class<T> type) {
+						if (type == null || type.isAssignableFrom(String.class)) {
+							URI ret = resolveActionURILink(path, action, uriResolver);
+							return ret == null ? null : (T) ret.toString();
+						}
+						return null;
+					}
+				};
+				
+				context.put("action-uri", actionURIPropertyComputer);								
+				
+				ret.put(actionRepresentationEntry.getKey(), context.computingContext().interpolateToString(textBuilder.toString()));
 			}
 		}
 		return ret;
+	}
+	
+	private static URI resolveActionUUIDLink(
+			String actionUUID,
+			Action action, 
+			BiFunction<Label, URI, URI> uriResolver) {
+
+		if (!Util.isBlank(actionUUID)) {
+			ModelElement targetAction = findByUUID(actionUUID, action);
+			if (targetAction instanceof Label) {
+				URI actionURI = uriResolver.apply(action, (URI) null);
+				URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
+				if (targetURI != null) {
+					return targetURI;
+				}
+			}
+		}
+		
+		return null;
+	}
+		
+	private static URI resolveActionURILink(
+			String aURI,
+			Action action, 
+			BiFunction<Label, URI, URI> uriResolver) {
+
+		if (!Util.isBlank(aURI)) {
+			EObject targetAction = findByURI(URI.createURI(aURI), action);
+			if (targetAction instanceof Label) {
+				URI actionURI = uriResolver.apply(action, (URI) null);
+				URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
+				if (targetURI != null) {
+					return targetURI;
+				}
+			}
+		}
+		
+		return null;
 	}
 
 	private static void resolveLink(

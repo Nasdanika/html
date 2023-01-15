@@ -196,7 +196,7 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 				for (EObject semanticAncestor = semanticElement.eContainer(); semanticAncestor != null; semanticAncestor = semanticAncestor.eContainer()) {
 					if (semanticAncestor instanceof NavigationPanel) {
 						int labelTrimLength = ((NavigationPanel) semanticAncestor).getLabelTrimLength();
-						if (labelTrimLength > 0 && text.length() > labelTrimLength) {
+						if (labelTrimLength > 0 && !Util.isBlank(text) && text.length() > labelTrimLength) {
 							text = text.substring(0, labelTrimLength - 3) + "...";
 						}
 						break;

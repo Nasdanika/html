@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -62,7 +61,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 		return Context.EMPTY_CONTEXT.fork();
 	}
 
-	protected PrintStreamProgressMonitor createProgressMonitor() {
+	protected ProgressMonitor createProgressMonitor() {
 		return new PrintStreamProgressMonitor();
 	}
 			
@@ -122,17 +121,11 @@ public class ActionSiteGenerator extends SiteGenerator {
 						context, 
 						progressMonitor.split("Generating resource model", 1));
 				
-	
-				// Cleanup docs, keep CNAME, favicon.ico, and images directory. Copy from target/model-doc/site/nasdanika
-				Predicate<String> cleanPredicate = path -> {
-					return !"CNAME".equals(path) && !"favicon.ico".equals(path) && !path.startsWith("images/");
-				};
-				
 				return generateContainer(
 						resourceModel,
 						siteWorkDir,
 						outputDir,
-						cleanPredicate,
+						this::isDeleteOutputPath,
 						siteMapDomain,
 						modelName, 
 						context, 
@@ -143,6 +136,16 @@ public class ActionSiteGenerator extends SiteGenerator {
 				org.nasdanika.common.Util.delete(workDir);
 			}
 		}
+	}
+	
+	/**
+	 * Clean predicate for the output directory. This implementation returns true. 
+	 * Override to return false for paths which shall not be cleaned (deleted).
+	 * @param path File/directory path in the output directory.
+	 * @return
+	 */
+	protected boolean isDeleteOutputPath(String path) {
+		return true;
 	}
 
 	protected void buildRegistry(Action action, Map<EObject, Label> registry) {
