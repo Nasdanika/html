@@ -128,15 +128,6 @@ public class SiteGenerator {
 		File pagesDir = new File(resourceWorkDir, "pages");
 		pagesDir.mkdirs();
 		
-		Util.generateSite(
-				root, 
-				pageTemplate,
-				container,
-				contentProviderContext -> (cAction, uriResolver, pMonitor) -> getActionContent(cAction, uriResolver, registry, resourceWorkDir, contentProviderContext, diagnosticConsumer, pMonitor),
-				contentProviderContext -> (page, baseURI, uriResolver, pMonitor) -> getPageContent(page, baseURI, uriResolver, pagesDir, contentProviderContext, progressMonitor),
-				context,
-				progressMonitor);
-		
 		JSONObject semanticMap = semanticMap(root, registry, context);
 		if (semanticMap != null) {
 			org.nasdanika.exec.resources.File semanticMapFile = container.getFile("semantic-map.json");
@@ -144,6 +135,15 @@ public class SiteGenerator {
 			semanticMapText.setContent(semanticMap.toString(4));
 			semanticMapFile.getContents().add(semanticMapText);
 		}
+		
+		Util.generateSite(
+				root, 
+				pageTemplate,
+				container,
+				contentProviderContext -> (cAction, uriResolver, pMonitor) -> getActionContent(cAction, uriResolver, registry, resourceWorkDir, contentProviderContext, diagnosticConsumer, pMonitor),
+				contentProviderContext -> (page, baseURI, uriResolver, pMonitor) -> getPageContent(page, baseURI, uriResolver, pagesDir, contentProviderContext, progressMonitor),
+				Context.singleton("semantic-map", semanticMap.toString()).compose(context),
+				progressMonitor);
 		
 		modelResource.save(null);
 		
