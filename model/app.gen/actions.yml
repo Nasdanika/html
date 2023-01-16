@@ -1,10 +1,10 @@
 app-action:
   text: Gen
-  location: gen/index.html
+  location: app/gen/index.html
   uris: gen
   navigation:
     - app-link:
         text: Javadoc
         uris: javadoc
         icon: fab fa-java
-        location: ../apidocs/org.nasdanika.html.model.gen/module-summary.html
+        location: ../../apidocs/org.nasdanika.html.model.app.gen/module-summary.html
