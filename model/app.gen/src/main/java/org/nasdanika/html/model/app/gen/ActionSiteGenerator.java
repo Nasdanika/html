@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
-import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.model.app.Action;
@@ -57,8 +56,8 @@ public class ActionSiteGenerator extends SiteGenerator {
 		return generateResourceModel(root, registry, pageTemplate, resourceURI, containerName, resourceWorkDir, context, progressMonitor);
 	}	
 	
-	protected MutableContext createContext(ProgressMonitor progressMonitor) {
-		return Context.EMPTY_CONTEXT.fork();
+	protected Context createContext(ProgressMonitor progressMonitor) {
+		return Context.EMPTY_CONTEXT;
 	}
 
 	protected ProgressMonitor createProgressMonitor() {
@@ -98,8 +97,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 			resourceModelsDir.mkdirs();
 	
 			try (ProgressMonitor progressMonitor = createProgressMonitor()) {				
-				MutableContext context = createContext(progressMonitor);		
-				context.put("model-name", modelName);
+				Context context = Context.singleton("model-name", modelName).compose(createContext(progressMonitor));		
 				
 				ResourceSet rootActionResourceSet = createResourceSet(context, progressMonitor);
 				Action root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);	

@@ -625,6 +625,71 @@ public class SiteGenerator {
 		progressMonitor.worked(1, "[Action content] " + action.getText() + " -> " + fileName);
 		return ECollections.singletonEList(contentResource);					
 	}
+	
+	
+	/**
+	 * Computes semantic link. This implementation uses the registry and uriResolver. 
+	 * Override to add support of resolving external semantic links, e.g. loaded from semantic maps of dependency sites.
+	 * @param context
+	 * @param key
+	 * @param path
+	 * @param action
+	 * @param baseSemanticURI
+	 * @param uriResolver
+	 * @param registry
+	 * @return
+	 */
+	protected Object computeRepresentation(
+			Map<String, Object> representations,
+			Context context, 
+			String key, 
+			String path, 
+			Action action,
+			URI baseSemanticURI,
+			BiFunction<Label, URI, URI> uriResolver,
+			Map<EObject, Label> registry) {
+
+		String[] pathSegments = path.split("/");
+		if (pathSegments.length == 1) {
+			// Non drawio representation, just a key
+			return representations.get(path);
+		}
+		try {
+			org.nasdanika.drawio.Document valueDocument = (org.nasdanika.drawio.Document) representations.get(pathSegments[0]);
+			if (pathSegments.length == 2) {
+				// Document
+				if ("diagram".equals(pathSegments[1])) {
+					return valueDocument.save(true);
+				}
+				
+				if ("toc".equals(pathSegments[1])) {
+					return String.valueOf(computeTableOfContents(valueDocument, context));
+				}
+				return null;
+			} 
+			
+			if (pathSegments.length == 3) {
+				// Page
+				for (Page page: valueDocument.getPages()) {				
+					org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true, null);
+					pageDocument.getPages().add(page);
+					if ("diagram".equals(pathSegments[2])) {
+						return pageDocument.save(true);
+					}
+					
+					if ("toc".equals(pathSegments[2])) {
+						return String.valueOf(computeTableOfContents(pageDocument, context));
+					}
+				}
+			}
+		} catch (TransformerException | IOException | ParserConfigurationException e) {
+			throw new NasdanikaException(e);
+		}
+		
+		return null;
+		
+	}
+	
 
 	/**
 	 * Registers semantic-link and semantic-ref property computers
@@ -648,34 +713,6 @@ public class SiteGenerator {
 			mctx.register(ContentConsumer.class, contentConsumer);
 		}
 		
-		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(action, uriResolver, progressMonitor);
-		for (Entry<String, Object> representationEntry: representations.entrySet()) {
-			if (representationEntry.getValue() instanceof org.nasdanika.drawio.Document) {
-				try {
-					org.nasdanika.drawio.Document valueDocument = (org.nasdanika.drawio.Document) representationEntry.getValue();
-					mctx.put("representations/" + representationEntry.getKey() + "/diagram", valueDocument.save(true));
-					Object toc = computeTableOfContents(valueDocument, mctx);
-					if (toc != null) {
-						mctx.put("representations/" + representationEntry.getKey() + "/toc", toc.toString());
-					}
-					
-					for (Page page: valueDocument.getPages()) {
-						org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true, null);
-						pageDocument.getPages().add(page);
-						mctx.put("representations/" + representationEntry.getKey() + "/" + page.getName() + "/diagram", pageDocument.save(true));
-						Object pageToc = computeTableOfContents(pageDocument, mctx);
-						if (toc != null) {
-							mctx.put("representations/" + representationEntry.getKey() + "/" + page.getName() + "/toc", pageToc.toString());
-						}
-					}
-				} catch (TransformerException | IOException | ParserConfigurationException e) {
-					throw new NasdanikaException("Error saving document");
-				}
-			} else {
-				mctx.put("representations/" + representationEntry.getKey(), representationEntry.getValue());				
-			}
-		}
-		
 		Optional<URI> baseSemanticURI = registry
 				.entrySet()
 				.stream()
@@ -684,6 +721,22 @@ public class SiteGenerator {
 				.filter(Objects::nonNull)
 				.filter(u -> !u.isRelative() && u.isHierarchical())
 				.findFirst();									
+		
+		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(action, uriResolver, progressMonitor);
+		
+		PropertyComputer representationsPropertyComputer = new PropertyComputer() {
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public <T> T compute(Context ctx, String key, String path, Class<T> type) {
+				if (type == null || type.isAssignableFrom(String.class)) {
+					return (T) computeRepresentation(representations, ctx, key, path, action, baseSemanticURI.orElse(null), uriResolver, registry);			
+				}
+				return null;
+			}
+		}; 
+		
+		mctx.put("representations", representationsPropertyComputer);
 		
 		PropertyComputer semanticLinkPropertyComputer = new PropertyComputer() {
 			

@@ -9,6 +9,7 @@ app-label:
            - "../../nasdanika.github.io/target/model-doc/actions/app.genmodel.xml#/"
            - app.drawio/actions.yml
            - app.gen/actions.yml
+           - app.gen.maven/actions.yml
      - app-label:
          text: Bootstrap
          uris: bootstrap

@@ -1162,13 +1162,13 @@ public final class Util {
 		// Site map and search index
 		JSONObject searchDocuments = new JSONObject();
 		
-		WebSitemapGenerator wsg = new WebSitemapGenerator(domain, dir);
+		WebSitemapGenerator wsg = org.nasdanika.common.Util.isBlank(domain) ? null : new WebSitemapGenerator(domain, dir);
 		boolean[] isSiteMapEmpty = { true };
 		BiConsumer<File, String> listener = new BiConsumer<File, String>() {
 			
 			@Override
 			public void accept(File file, String path) {
-				if (siteMapPredicate.test(file, path)) {
+				if (wsg != null && (siteMapPredicate == null || siteMapPredicate.test(file, path))) {
 					try {
 						WebSitemapUrl url = new WebSitemapUrl.Options(domain + "/" + path).lastMod(new Date(file.lastModified())).changeFreq(changeFrequency).build();
 						wsg.addUrl(url); 

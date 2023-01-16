@@ -183,6 +183,7 @@
 		<module>model/app</module>
 		<module>model/app.gen</module>
 		<module>model/app.drawio</module>
+		<module>model/app.gen.maven</module>
 
 		<module>ecore</module>
 	</modules>	
