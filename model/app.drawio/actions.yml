@@ -1,10 +1,16 @@
 app-action:
   text: Drawio
-  location: drawio/index.html
+  location: app/drawio/index.html
   uris: drawio
+  content:
+    content-markdown:
+      source:
+        content-resource:
+          location: readme.md
+          interpolate: true
   navigation:
     - app-link:
         text: Javadoc
         uris: javadoc
         icon: fab fa-java
-        location: ../apidocs/org.nasdanika.html.model.app.drawio/module-summary.html
+        location: ../../apidocs/org.nasdanika.html.model.app.drawio/module-summary.html

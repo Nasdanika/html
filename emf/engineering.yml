@@ -1,5 +1,0 @@
-engineering-module:
-  name: EMF
-  path: emf
-  action-prototype: "javadoc-action-prototype.xml#/"
-        

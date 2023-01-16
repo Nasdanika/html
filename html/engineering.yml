@@ -1,5 +1,0 @@
-engineering-module:
-  name: HTML
-  path: html
-  action-prototype: "javadoc-action-prototype.xml#/"
-                
