@@ -670,15 +670,17 @@ public class SiteGenerator {
 			
 			if (pathSegments.length == 3) {
 				// Page
-				for (Page page: valueDocument.getPages()) {				
-					org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true, null);
-					pageDocument.getPages().add(page);
-					if ("diagram".equals(pathSegments[2])) {
-						return pageDocument.save(true);
-					}
-					
-					if ("toc".equals(pathSegments[2])) {
-						return String.valueOf(computeTableOfContents(pageDocument, context));
+				for (Page page: valueDocument.getPages()) {
+					if (pathSegments[1].equals(page.getName())) {
+						org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true, null);
+						pageDocument.getPages().add(page);
+						if ("diagram".equals(pathSegments[2])) {
+							return pageDocument.save(true);
+						}
+						
+						if ("toc".equals(pathSegments[2])) {
+							return String.valueOf(computeTableOfContents(pageDocument, context));
+						}
 					}
 				}
 			}
@@ -688,8 +690,7 @@ public class SiteGenerator {
 		
 		return null;
 		
-	}
-	
+	}	
 
 	/**
 	 * Registers semantic-link and semantic-ref property computers
