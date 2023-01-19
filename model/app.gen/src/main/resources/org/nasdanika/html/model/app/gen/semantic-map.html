@@ -1,0 +1,110 @@
+     	<div id="semantic-map-app" class="container-fluid">
+     		<div class="row">
+     			<div class="col">
+					<b-form-group
+			          label="Filter"
+			          label-for="filter-input"
+			          label-cols-sm="auto"
+			          label-align-sm="right"
+			          label-size="sm"
+			          class="mb-0"
+					  description="You can use wildcards, e.g. 'foo*' or 'f*o'; title or content fields, e.g. 'title:foo* bar'; boosts, e.g. 'foo^10 bar'; fuzzy matches, e.g. 'foo~1'; and term presence, e.g. '+foo bar -baz'"	          
+			        >
+			          <b-input-group size="sm">
+			            <b-form-input
+			              id="filter-input"
+			              v-model="filter"
+			              type="search"
+			              placeholder="Type to Search"
+			            ></b-form-input>
+			
+			            <b-input-group-append>
+			              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+			            </b-input-group-append>
+			          </b-input-group>
+			        </b-form-group>
+			        
+				    <b-table striped hover :items="items" :fields="fields">
+				      <template #cell(element)="data">
+				        <a :href="data.value.location">{{data.value.text}}</span>
+				      </template>	
+				      <template #cell(uri)="data">
+				        {{data.value.value}} <i class="far fa-copy nsd-copy-to-clipboard" style="cursor:pointer" title="Copy URI to clipboard" :onclick="data.value.onClick"></i> 
+				      </template>	
+				    </b-table>
+	        	</div>
+	        </div>	        
+     	</div>
+     
+		<script>		      
+			new Vue({
+				  el: '#semantic-map-app',
+				  data: {
+			        	filter: null,
+			        	semanticMap: ${semantic-map},
+			        	fields: [
+			                {
+			                  key: 'element',
+			                  label: "Element",
+			                  sortable: false
+			                },
+			                {
+			                  key: 'uri',
+			                  label: "URI",
+			                  sortable: true
+			                },
+			                {
+			                  key: 'description',
+			                  label: 'Description',
+			                  sortable: true
+			                }
+			              ]
+				  },				  
+				  computed: {
+					items: function() {
+						const ret = []; 
+						for (let uri in this.semanticMap) {
+							let semanticEntry = this.semanticMap[uri];
+							let item = {
+								uri: {
+									value: uri,
+									onClick: "navigator.clipboard.writeText('" + uri +"')"
+								},
+								description: semanticEntry.tooltip,
+								element: {
+									location: semanticEntry.location,
+									text: semanticEntry.text
+								}
+							};
+							ret.push(item);
+						}
+						
+						return ret.filter(item => {
+							if (this.filter) {
+								if (item.uri.value && item.uri.value.toLowerCase().includes(this.filter.toLowerCase())) {
+									return true;
+								}
+								if (item.description && item.description.toLowerCase().includes(this.filter.toLowerCase())) {
+									return true;
+								}
+								if (item.element.text && item.element.text.toLowerCase().includes(this.filter.toLowerCase())) {
+									return true;
+								}
+								return false;
+							}
+							return true;
+						}).sort((a, b) => {
+							if (a.element.text) {
+								if (b.element.text) {
+									return a.element.text.localeCompare(b.element.text);
+								}					
+								return -1;
+							}
+							return 1;
+						}); 						
+					}
+				  }
+			});   			
+		</script>
+				
+		
