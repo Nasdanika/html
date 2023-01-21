@@ -105,7 +105,7 @@ public final class Util {
 			if (link.eContainmentFeature() == AppPackage.Literals.ACTION__SECTIONS) {
 				String aName = context.interpolateToString(link.getLocation());
 				if (isBlank(aName)) {
-					return null;
+					aName = "uuid-" + label.getUuid();
 				}
 				uriString = "#" + aName;
 			} else {				
