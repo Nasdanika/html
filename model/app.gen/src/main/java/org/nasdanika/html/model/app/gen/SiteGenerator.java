@@ -656,30 +656,32 @@ public class SiteGenerator {
 		}
 		try {
 			org.nasdanika.drawio.Document valueDocument = (org.nasdanika.drawio.Document) representations.get(pathSegments[0]);
-			if (pathSegments.length == 2) {
-				// Document
-				if ("diagram".equals(pathSegments[1])) {
-					return valueDocument.save(true);
-				}
+			if (valueDocument != null) {
+				if (pathSegments.length == 2) {
+					// Document
+					if ("diagram".equals(pathSegments[1])) {
+						return valueDocument.save(true);
+					}
+					
+					if ("toc".equals(pathSegments[1])) {
+						return String.valueOf(computeTableOfContents(valueDocument, context));
+					}
+					return null;
+				} 
 				
-				if ("toc".equals(pathSegments[1])) {
-					return String.valueOf(computeTableOfContents(valueDocument, context));
-				}
-				return null;
-			} 
-			
-			if (pathSegments.length == 3) {
-				// Page
-				for (Page page: valueDocument.getPages()) {
-					if (pathSegments[1].equals(page.getName())) {
-						org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true, null);
-						pageDocument.getPages().add(page);
-						if ("diagram".equals(pathSegments[2])) {
-							return pageDocument.save(true);
-						}
-						
-						if ("toc".equals(pathSegments[2])) {
-							return String.valueOf(computeTableOfContents(pageDocument, context));
+				if (pathSegments.length == 3) {
+					// Page
+					for (Page page: valueDocument.getPages()) {
+						if (pathSegments[1].equals(page.getName())) {
+							org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true, null);
+							pageDocument.getPages().add(page);
+							if ("diagram".equals(pathSegments[2])) {
+								return pageDocument.save(true);
+							}
+							
+							if ("toc".equals(pathSegments[2])) {
+								return String.valueOf(computeTableOfContents(pageDocument, context));
+							}
 						}
 					}
 				}
