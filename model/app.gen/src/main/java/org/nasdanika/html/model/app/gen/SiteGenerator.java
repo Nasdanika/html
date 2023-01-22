@@ -198,6 +198,10 @@ public class SiteGenerator {
 							value.put("location", linkURI.toString());
 						}
 					}
+					String labelIcon = label.getIcon();
+					if (!org.nasdanika.common.Util.isBlank(labelIcon)) {
+						value.put("icon", labelIcon);
+					}
 					
 					semanticMap.put(uri.toString(), value);
 				}
