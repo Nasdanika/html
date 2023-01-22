@@ -28,8 +28,15 @@
 				      <template #cell(element)="data">
 				        <a :href="data.value.location">{{data.value.text}}</span>
 				      </template>	
-				      <template #cell(uri)="data">
-				        {{data.value.value}} <i class="far fa-copy nsd-copy-to-clipboard" style="cursor:pointer" title="Copy URI to clipboard" :onclick="data.value.onClick"></i> 
+				      <template #cell(uris)="data">
+				      	<span v-if="data.value.length == 1">
+					        {{data.value[0].value}} <i class="far fa-copy nsd-copy-to-clipboard" style="cursor:pointer" title="Copy URI to clipboard" :onclick="data.value[0].onClick"></i> 
+				      	</span>
+				      	<ul v-else>
+				      		<li v-for="item in data.value">
+						        {{item.value}} <i class="far fa-copy nsd-copy-to-clipboard" style="cursor:pointer" title="Copy URI to clipboard" :onclick="item.onClick"></i> 
+				      		</li>
+				      	</ul>
 				      </template>	
 				    </b-table>
 	        	</div>
@@ -49,7 +56,7 @@
 			                  sortable: false
 			                },
 			                {
-			                  key: 'uri',
+			                  key: 'uris',
 			                  label: "URI",
 			                  sortable: true
 			                },
@@ -60,29 +67,41 @@
 			                }
 			              ]
 				  },				  
-				  computed: {
+				  computed: {			
 					items: function() {
-						const ret = []; 
+						const grouped = {};
 						for (let uri in this.semanticMap) {
 							let semanticEntry = this.semanticMap[uri];
-							let item = {
-								uri: {
-									value: uri,
-									onClick: "navigator.clipboard.writeText('" + uri +"')"
-								},
-								description: semanticEntry.tooltip,
-								element: {
-									location: semanticEntry.location,
-									text: semanticEntry.text
-								}
-							};
-							ret.push(item);
+							let group = grouped[semanticEntry.location];
+							if (!group) {
+								group = {
+									uris: [],
+									description: semanticEntry.tooltip,
+									element: {
+										location: semanticEntry.location,
+										text: semanticEntry.text,
+										icon: semanticEntry.icon
+									}
+								};
+								grouped[semanticEntry.location] = group;
+							}
+							group.uris.push({
+								value: uri,
+								onClick: "navigator.clipboard.writeText('" + uri +"')"							
+							});
+						}						
+						
+						const ret = []; 
+						for (let location in grouped) {
+							ret.push(grouped[location]);
 						}
 						
 						return ret.filter(item => {
 							if (this.filter) {
-								if (item.uri.value && item.uri.value.toLowerCase().includes(this.filter.toLowerCase())) {
-									return true;
+								for (let uriItem in item.uris) {
+									if (uri && uri.toLowerCase().includes(this.filter.toLowerCase())) {
+										return true;
+									}									
 								}
 								if (item.description && item.description.toLowerCase().includes(this.filter.toLowerCase())) {
 									return true;
