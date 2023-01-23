@@ -26,11 +26,18 @@
 			        
 				    <b-table striped hover :items="items" :fields="fields">
 				      <template #cell(element)="data">
-				        <a :href="data.value.location">{{data.value.text}}</span>
+				        <a :href="data.value.location">
+					      	<span v-if="data.value.icon">
+					      		<img v-if="data.value.icon.includes('/')" :src="data.value.icon"/>
+					      		<i v-else :class="data.value.icon"></i>
+					      	</span>
+				        	{{data.value.text}}
+				        </span>
 				      </template>	
 				      <template #cell(uris)="data">
 				      	<span v-if="data.value.length == 1">
-					        {{data.value[0].value}} <i class="far fa-copy nsd-copy-to-clipboard" style="cursor:pointer" title="Copy URI to clipboard" :onclick="data.value[0].onClick"></i> 
+					        {{data.value[0].value}}
+					        <i class="far fa-copy nsd-copy-to-clipboard" style="cursor:pointer" title="Copy URI to clipboard" :onclick="data.value[0].onClick"></i> 
 				      	</span>
 				      	<ul v-else>
 				      		<li v-for="item in data.value">
