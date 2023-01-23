@@ -778,7 +778,7 @@ public final class Util {
 	 * @param appearancePath 
 	 * @return
 	 */
-	private static Label createLabel(
+	public static Label createLabel(
 			Label source, 
 			Label activeAction, 
 			BiFunction<Label, URI, URI> uriResolver, 

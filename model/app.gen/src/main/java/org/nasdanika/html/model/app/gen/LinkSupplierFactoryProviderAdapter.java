@@ -5,7 +5,7 @@ import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Link;
-import org.nasdanika.html.model.html.Tag;
+import org.nasdanika.html.Tag;
 
 public class LinkSupplierFactoryProviderAdapter<M extends Link> extends LabelSupplierFactoryProviderAdapter<M> {
 

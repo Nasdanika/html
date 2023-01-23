@@ -53,6 +53,7 @@ import org.nasdanika.drawio.Layer;
 import org.nasdanika.drawio.LayerElement;
 import org.nasdanika.drawio.Page;
 import org.nasdanika.drawio.comparators.LabelModelElementComparator;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.exec.resources.Container;
@@ -491,7 +492,8 @@ public class SiteGenerator {
 			Action action,
 			URI baseSemanticURI,
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Label> registry) {
+			Map<EObject, Label> registry,
+			ProgressMonitor progressMonitor) {
 		int spaceIdx = path.indexOf(' ');
 		URI targetURI = URI.createURI(spaceIdx == -1 ? path : path.substring(0, spaceIdx));
 		if (baseSemanticURI != null && targetURI.isRelative()) {
@@ -502,15 +504,22 @@ public class SiteGenerator {
 			for (URI semanticURI: NcoreUtil.getUris(registryEntry.getKey())) {
 				if (Objects.equals(targetURI, semanticURI)) {
 					Label targetLabel = registryEntry.getValue();
-					HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
-					URI targetActionURI = uriResolver.apply(targetLabel, bURI);
-					Tag tag = htmlFactory.tag(targetActionURI == null ? TagName.span : TagName.a, spaceIdx == -1 ? targetLabel.getText() : path.substring(spaceIdx + 1));
-					String targetActionTooltip = targetLabel.getTooltip();
-					if (!org.nasdanika.common.Util.isBlank(targetActionTooltip)) {
-						tag.attribute("title", targetActionTooltip);
-					}
-					if (targetActionURI != null) {
-						tag.attribute("href", targetActionURI.toString());
+					Label tLabel = Util.createLabel(targetLabel, action, uriResolver, null, null, false, false, false);
+					SupplierFactory<Tag> tagSupplierFactory = EObjectAdaptable.adaptToSupplierFactory(tLabel, Tag.class, new AppAdapterFactory());
+					Tag tag; 
+					if (tagSupplierFactory == null) {
+						HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
+						URI targetActionURI = uriResolver.apply(targetLabel, bURI);
+						tag = htmlFactory.tag(targetActionURI == null ? TagName.span : TagName.a, spaceIdx == -1 ? targetLabel.getText() : path.substring(spaceIdx + 1));
+						String targetActionTooltip = targetLabel.getTooltip();
+						if (!org.nasdanika.common.Util.isBlank(targetActionTooltip)) {
+							tag.attribute("title", targetActionTooltip);
+						}
+						if (targetActionURI != null) {
+							tag.attribute("href", targetActionURI.toString());
+						}
+					} else {
+						tag = tagSupplierFactory.create(context).execute(progressMonitor);
 					}
 					return tag.toString(); 
 				}
@@ -659,7 +668,7 @@ public class SiteGenerator {
 			return representations.get(path);
 		}
 		try {
-			org.nasdanika.drawio.Document valueDocument = (org.nasdanika.drawio.Document) representations.get(pathSegments[0]);
+			org.nasdanika.drawio.Document valueDocument = (org.nasdanika.drawio.Document) representations.get(pathSegments[0]);			
 			if (valueDocument != null) {
 				if (pathSegments.length == 2) {
 					// Document
@@ -677,7 +686,7 @@ public class SiteGenerator {
 					// Page
 					for (Page page: valueDocument.getPages()) {
 						if (pathSegments[1].equals(page.getName())) {
-							org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true, null);
+							org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true, valueDocument.getURI());
 							pageDocument.getPages().add(page);
 							if ("diagram".equals(pathSegments[2])) {
 								return pageDocument.save(true);
@@ -694,8 +703,7 @@ public class SiteGenerator {
 			throw new NasdanikaException(e);
 		}
 		
-		return null;
-		
+		return null;		
 	}	
 
 	/**
@@ -751,7 +759,7 @@ public class SiteGenerator {
 			@Override
 			public <T> T compute(Context ctx, String key, String path, Class<T> type) {
 				if (type == null || type.isAssignableFrom(String.class)) {
-					return (T) computeSemanticLink(ctx, key, path, action, baseSemanticURI.orElse(null), uriResolver, registry);			
+					return (T) computeSemanticLink(ctx, key, path, action, baseSemanticURI.orElse(null), uriResolver, registry, progressMonitor);			
 				}
 				return null;
 			}
