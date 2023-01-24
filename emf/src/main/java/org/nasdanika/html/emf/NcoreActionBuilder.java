@@ -426,9 +426,10 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 					}
 				}
 			}
-			String aURI = modelElement.getProperty("action-uri");			
-			if (Util.isBlank(modelElement.getLink()) && !Util.isBlank(aURI)) {
-				EObject targetAction = findByURI(URI.createURI(aURI), action);
+			
+			URI aURI = resolveActionURI(modelElement);
+			if (Util.isBlank(modelElement.getLink()) && aURI != null) {
+				EObject targetAction = findByURI(aURI, action);
 				if (targetAction instanceof Label) {
 					URI actionURI = uriResolver.apply(action, (URI) null);
 					URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
@@ -445,6 +446,29 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			}
 			
 		}		
+	}
+	
+	private static URI resolveActionURI(org.nasdanika.drawio.ModelElement modelElement) {
+		String aURI = modelElement.getProperty("action-uri");
+		if (Util.isBlank(aURI)) {
+			return null;
+		}
+		URI actionURI = URI.createURI(aURI);
+		if (actionURI.isRelative()) {
+			URI actionBaseURI = resolveActionBaseURI(modelElement.getParent());
+			if (actionBaseURI != null && !actionBaseURI.isRelative() && actionBaseURI.isHierarchical()) {
+				return actionURI.resolve(actionBaseURI);
+			}
+		}
+		return actionURI;
+	}
+	
+	private static URI resolveActionBaseURI(org.nasdanika.drawio.ModelElement modelElement) {
+		if (modelElement == null) {
+			return null;
+		}
+		String aURI = modelElement.getProperty("action-uri");
+		return Util.isBlank(aURI) ? resolveActionBaseURI(modelElement.getParent()) : resolveActionURI(modelElement);
 	}
 	
 }
