@@ -183,28 +183,28 @@ public class SiteGenerator {
 		for (Entry<EObject, Label> re: registry.entrySet()) {
 			for (URI uri: NcoreUtil.getUris(re.getKey())) {
 				Label label = re.getValue();
-				if (label != null) {
-					JSONObject value = new JSONObject();
-					String labelText = label.getText();
-					if (!org.nasdanika.common.Util.isBlank(labelText)) {
-						value.put("text", labelText);
-					}
-					String labelTooltip = label.getTooltip();
-					if (!org.nasdanika.common.Util.isBlank(labelTooltip)) {
-						value.put("tooltip", labelTooltip);
-					}
-					if (label instanceof Link) {					
-						URI linkURI = uriResolver.apply(label, baseURI);
-						if (linkURI != null) {
-							value.put("location", linkURI.toString());
+				if (label instanceof Link) {
+					URI linkURI = uriResolver.apply(label, baseURI);
+					if (linkURI != null) {
+						JSONObject value = new JSONObject();
+						String labelText = label.getText();
+						if (!org.nasdanika.common.Util.isBlank(labelText)) {
+							value.put("text", labelText);
 						}
+						String labelTooltip = label.getTooltip();
+						if (!org.nasdanika.common.Util.isBlank(labelTooltip)) {
+							value.put("tooltip", labelTooltip);
+						}
+						if (label instanceof Link) {					
+								value.put("location", linkURI.toString());
+						}
+						String labelIcon = label.getIcon();
+						if (!org.nasdanika.common.Util.isBlank(labelIcon)) {
+							value.put("icon", labelIcon);
+						}
+						
+						semanticMap.put(uri.toString(), value);
 					}
-					String labelIcon = label.getIcon();
-					if (!org.nasdanika.common.Util.isBlank(labelIcon)) {
-						value.put("icon", labelIcon);
-					}
-					
-					semanticMap.put(uri.toString(), value);
 				}
 			}
 		}
