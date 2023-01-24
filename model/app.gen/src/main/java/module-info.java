@@ -14,5 +14,6 @@ module org.nasdanika.html.model.app.gen {
 	requires org.eclipse.emf.ecore;
 	requires org.nasdanika.persistence;
 	
-	exports org.nasdanika.html.model.app.gen;	
+	exports org.nasdanika.html.model.app.gen;
+	opens org.nasdanika.html.model.app.gen;
 }
