@@ -106,6 +106,7 @@
 						return ret.filter(item => {
 							if (this.filter) {
 								for (let uriItem in item.uris) {
+									let uri = item.uris[uriItem].value;
 									if (uri && uri.toLowerCase().includes(this.filter.toLowerCase())) {
 										return true;
 									}									
