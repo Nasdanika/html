@@ -8,8 +8,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -154,16 +156,21 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			Adapter resolver = EcoreUtil.getExistingAdapter(action, EObjectActionResolver.class);
 			if (resolver instanceof EObjectActionResolver) {														
 				org.nasdanika.html.emf.EObjectActionResolver.Context resolverContext = new org.nasdanika.html.emf.EObjectActionResolver.Context() {
-	
-					@Override
-					public Action getAction(EObject semanticElement) {
-						Label label = registry.get(semanticElement);
-						return label instanceof Action ? (Action) label : null;
-					}
-	
+		
 					@Override
 					public URI resolve(Action action, URI base) {
 						return uriResolver.apply(action, base);
+					}
+
+					@Override
+					public Action getAction(Predicate<EObject> semanticElementPredicate) {
+						for (Entry<EObject, Label> re: registry.entrySet()) {
+							if (semanticElementPredicate.test(re.getKey())) {
+								Label label = re.getValue();
+								return label instanceof Action ? (Action) label : null;
+							}						
+						}
+						return null;
 					}
 					
 				};

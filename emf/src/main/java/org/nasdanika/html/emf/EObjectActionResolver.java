@@ -1,8 +1,13 @@
 package org.nasdanika.html.emf;
 
+import java.util.Objects;
+import java.util.function.Predicate;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.common.Util;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.ncore.ModelElement;
 
 /**
  * Marker interface for adapters attached to actions created by
@@ -27,7 +32,12 @@ public interface EObjectActionResolver extends org.nasdanika.common.Consumer<org
 	 */
 	interface Context {
 		
-		Action getAction(EObject semanticElement);
+		default Action getAction(EObject semanticElement) {
+			return getAction(e -> Objects.equals(e, semanticElement) 
+					|| e instanceof ModelElement && semanticElement instanceof ModelElement && !Util.isBlank(((ModelElement) e).getUuid()) && ((ModelElement) e).getUuid().equals(((ModelElement) semanticElement).getUuid()));
+		}
+		
+		Action getAction(Predicate<EObject> semanticElementPredicate);
 		
 		URI resolve(Action action, URI base);
 
