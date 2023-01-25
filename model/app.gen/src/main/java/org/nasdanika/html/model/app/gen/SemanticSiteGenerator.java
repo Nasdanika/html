@@ -8,8 +8,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
@@ -196,6 +198,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			URI resourceURI, 
 			String containerName,
 			File resourceWorkDir,
+			BiConsumer<org.nasdanika.drawio.ModelElement, String> representationLinkResolutionErrorConsumer,						
 			Context context, 
 			ProgressMonitor progressMonitor) throws IOException {
 		
@@ -210,7 +213,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		
 		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) actionResource.getResourceSet().getEObject(pageTemplateURI, true);
 		
-		return generateResourceModel(root, registry, pageTemplate, resourceURI, containerName, resourceWorkDir, context, progressMonitor);
+		return generateResourceModel(root, registry, pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);
 	}		
 	
 	protected MutableContext createContext(ProgressMonitor progressMonitor) {
@@ -274,6 +277,9 @@ public class SemanticSiteGenerator extends SiteGenerator {
 				
 				URI resourceModelsURI = URI.createFileURI(resourceModelsDir.getAbsolutePath() + "/");	
 				URI resourceURI = URI.createURI(modelName + ".xml").resolve(resourceModelsURI);
+				
+				Map<String, Collection<String>> errors = new TreeMap<>();
+
 				Resource resourceModel = generateResourceModel(
 						rootActionAndRegistry.getFirst(), 
 						rootActionAndRegistry.getSecond(), 
@@ -282,10 +288,13 @@ public class SemanticSiteGenerator extends SiteGenerator {
 						resourceURI, 
 						modelName, 
 						resourceModelsDir,
+						(modelElement, error) ->  {
+							errors.computeIfAbsent(modelElement.getMarkers().toString(), p -> new ArrayList<>()).add(error);
+						},
 						context, 
 						progressMonitor.split("Generating resource model", 1));
 				
-				return generateContainer(
+				Map<String, Collection<String>> containerErrors = generateContainer(
 						resourceModel,
 						siteWorkDir,
 						outputDir,
@@ -294,6 +303,9 @@ public class SemanticSiteGenerator extends SiteGenerator {
 						modelName, 
 						context, 
 						progressMonitor.split("Generating container", 1));
+
+				containerErrors.forEach((path, pathErrors) -> errors.computeIfAbsent(path, p -> new ArrayList<>()).addAll(pathErrors));
+				return errors;
 			}
 		} finally {
 			if (cleanWorkDir) {

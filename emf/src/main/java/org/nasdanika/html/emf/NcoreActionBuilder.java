@@ -30,6 +30,7 @@ import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.PropertyComputer;
+import org.nasdanika.common.Status;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Document;
 import org.nasdanika.emf.persistence.TextResourceFactory;
@@ -294,14 +295,18 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	 * @param progressMonitor
 	 * @return
 	 */
-	public static Map<String, Object> resolveRepresentationLinks(Action action, BiFunction<Label, URI, URI> uriResolver, ProgressMonitor progressMonitor) {
+	public static Map<String, Object> resolveRepresentationLinks(
+			Action action, 
+			BiFunction<Label, URI, URI> uriResolver,
+			BiConsumer<org.nasdanika.drawio.ModelElement, String> resolutionErrorConsumer,			
+			ProgressMonitor progressMonitor) {
 		Map<String, Object> ret = new LinkedHashMap<>();
 		for (Entry<String, String> actionRepresentationEntry: action.getRepresentations()) {
 			URI representationURI = URI.createURI(actionRepresentationEntry.getValue());
 			if (Document.isDataURI(representationURI)) {
 				try {
 					Document document = Document.load(representationURI);
-					document.accept(element -> resolveLink(element, action, uriResolver, progressMonitor));
+					document.accept(element -> resolveLink(element, action, uriResolver, resolutionErrorConsumer, progressMonitor));
 					ret.put(actionRepresentationEntry.getKey(), document);
 				} catch (ParserConfigurationException | SAXException | IOException e) {
 					throw new NasdanikaException("Error loading drawio document: " + e, e);
@@ -404,7 +409,8 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	private static void resolveLink(
 			org.nasdanika.graph.Element element, 
 			Action action, 
-			BiFunction<Label, URI, URI> uriResolver, 
+			BiFunction<Label, URI, URI> uriResolver,
+			BiConsumer<org.nasdanika.drawio.ModelElement, String> resolutionErrorConsumer,
 			ProgressMonitor progressMonitor) {
 
 		if (element instanceof org.nasdanika.drawio.ModelElement) {
@@ -424,6 +430,12 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 							}
 						}
 					}
+				} else {
+					String message = "Action with UUID " + actionUUID + " not found";
+					progressMonitor.worked(Status.ERROR, 1, message, modelElement);
+					if (resolutionErrorConsumer != null) {
+						resolutionErrorConsumer.accept(modelElement, message);
+					}
 				}
 			}
 			
@@ -442,6 +454,12 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 							}
 						}
 					}
+				} else {
+					String message = "Action with URI " + aURI + " not found";
+					progressMonitor.worked(Status.ERROR, 1, message, modelElement);
+					if (resolutionErrorConsumer != null) {
+						resolutionErrorConsumer.accept(modelElement, message);
+					}					
 				}
 			}
 			

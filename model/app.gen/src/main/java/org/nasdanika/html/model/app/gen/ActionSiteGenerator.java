@@ -3,9 +3,12 @@ package org.nasdanika.html.model.app.gen;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.BiConsumer;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -15,6 +18,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Status;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.ActionReference;
 import org.nasdanika.html.model.app.Label;
@@ -39,6 +43,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 			URI resourceURI, 
 			String containerName,
 			File resourceWorkDir,
+			BiConsumer<org.nasdanika.drawio.ModelElement, String> representationLinkResolutionErrorConsumer,						
 			Context context, 
 			ProgressMonitor progressMonitor) throws IOException {
 		
@@ -53,7 +58,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 		
 		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) actionResource.getResourceSet().getEObject(pageTemplateURI, true);
 		
-		return generateResourceModel(root, registry, pageTemplate, resourceURI, containerName, resourceWorkDir, context, progressMonitor);
+		return generateResourceModel(root, registry, pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);
 	}	
 	
 	protected Context createContext(ProgressMonitor progressMonitor) {
@@ -109,6 +114,9 @@ public class ActionSiteGenerator extends SiteGenerator {
 				
 				URI resourceModelsURI = URI.createFileURI(resourceModelsDir.getAbsolutePath() + "/");	
 				URI resourceURI = URI.createURI(modelName + ".xml").resolve(resourceModelsURI);
+				
+				Map<String, Collection<String>> errors = new TreeMap<>();
+				
 				Resource resourceModel = generateResourceModel(
 						root, 
 						registry, 
@@ -116,10 +124,13 @@ public class ActionSiteGenerator extends SiteGenerator {
 						resourceURI, 
 						modelName, 
 						resourceModelsDir,
+						(modelElement, error) ->  {
+							errors.computeIfAbsent(modelElement.getMarkers().toString(), p -> new ArrayList<>()).add(error);
+						},
 						context, 
 						progressMonitor.split("Generating resource model", 1));
 				
-				return generateContainer(
+				Map<String, Collection<String>> containerErrors = generateContainer(
 						resourceModel,
 						siteWorkDir,
 						outputDir,
@@ -128,6 +139,9 @@ public class ActionSiteGenerator extends SiteGenerator {
 						modelName, 
 						context, 
 						progressMonitor.split("Generating container", 1));
+				
+				containerErrors.forEach((path, pathErrors) -> errors.computeIfAbsent(path, p -> new ArrayList<>()).addAll(pathErrors));
+				return errors;
 			}
 		} finally {
 			if (cleanWorkDir) {

@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -101,6 +102,7 @@ public class SiteGenerator {
 			URI resourceURI, 
 			String containerName,
 			File resourceWorkDir,
+			BiConsumer<org.nasdanika.drawio.ModelElement, String> representationLinkResolutionErrorConsumer,						
 			Context context, 
 			ProgressMonitor progressMonitor) throws IOException {
 		
@@ -141,7 +143,7 @@ public class SiteGenerator {
 				root, 
 				pageTemplate,
 				container,
-				contentProviderContext -> (cAction, uriResolver, pMonitor) -> getActionContent(cAction, uriResolver, registry, resourceWorkDir, contentProviderContext, diagnosticConsumer, pMonitor),
+				contentProviderContext -> (cAction, uriResolver, pMonitor) -> getActionContent(cAction, uriResolver, registry, resourceWorkDir, contentProviderContext, diagnosticConsumer, representationLinkResolutionErrorConsumer, pMonitor),
 				contentProviderContext -> (page, baseURI, uriResolver, pMonitor) -> getPageContent(page, baseURI, uriResolver, pagesDir, contentProviderContext, progressMonitor),
 				Context.singleton("semantic-map", semanticMap.toString()).compose(context),
 				progressMonitor);
@@ -604,11 +606,12 @@ public class SiteGenerator {
 			File resourceWorkDir,
 			Context context,
 			java.util.function.Consumer<Diagnostic> diagnosticConsumer,
+			BiConsumer<org.nasdanika.drawio.ModelElement, String> representationLinkResolutionErrorConsumer,						
 			ProgressMonitor progressMonitor) {
 
 		List<Object> contentContributions = new ArrayList<>();
 		
-		Context actionContentContext = createActionContentContext(action, uriResolver, registry, (ContentConsumer) contentContributions::add, context, progressMonitor);
+		Context actionContentContext = createActionContentContext(action, uriResolver, registry, (ContentConsumer) contentContributions::add, representationLinkResolutionErrorConsumer, context, progressMonitor);
 		
 		File contentDir = new File(resourceWorkDir, "content");
 		contentDir.mkdirs();
@@ -705,7 +708,7 @@ public class SiteGenerator {
 		
 		return null;		
 	}	
-
+	
 	/**
 	 * Registers semantic-link and semantic-ref property computers
 	 * @param action
@@ -718,6 +721,7 @@ public class SiteGenerator {
 			BiFunction<Label, URI, URI> uriResolver,
 			Map<EObject, Label> registry,
 			ContentConsumer contentConsumer,
+			BiConsumer<org.nasdanika.drawio.ModelElement, String> representationLinkResolutionErrorConsumer,						
 			Context context,
 			ProgressMonitor progressMonitor) {
 		
@@ -737,7 +741,7 @@ public class SiteGenerator {
 				.filter(u -> !u.isRelative() && u.isHierarchical())
 				.findFirst();									
 		
-		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(action, uriResolver, progressMonitor);
+		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(action, uriResolver, representationLinkResolutionErrorConsumer, progressMonitor);
 		
 		PropertyComputer representationsPropertyComputer = new PropertyComputer() {
 			
