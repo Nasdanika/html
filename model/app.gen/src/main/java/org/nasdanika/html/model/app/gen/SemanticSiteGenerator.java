@@ -198,7 +198,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			URI resourceURI, 
 			String containerName,
 			File resourceWorkDir,
-			BiConsumer<org.nasdanika.drawio.ModelElement, String> representationLinkResolutionErrorConsumer,						
+			BiConsumer<String, String> representationLinkResolutionErrorConsumer,						
 			Context context, 
 			ProgressMonitor progressMonitor) throws IOException {
 		
@@ -288,8 +288,8 @@ public class SemanticSiteGenerator extends SiteGenerator {
 						resourceURI, 
 						modelName, 
 						resourceModelsDir,
-						(modelElement, error) ->  {
-							errors.computeIfAbsent(modelElement.getMarkers().toString(), p -> new ArrayList<>()).add(error);
+						(location, error) ->  {
+							errors.computeIfAbsent(location, p -> new ArrayList<>()).add(error);
 						},
 						context, 
 						progressMonitor.split("Generating resource model", 1));

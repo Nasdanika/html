@@ -12,12 +12,14 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.codec.binary.Hex;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -37,6 +39,7 @@ import org.nasdanika.emf.persistence.TextResourceFactory;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.ncore.Documented;
+import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.util.NcoreUtil;
@@ -50,6 +53,9 @@ import org.xml.sax.SAXException;
  */
 public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<T> {
 	
+	private static final String ACTION_URI_KEY = "action-uri";
+	private static final String ACTION_UUID_KEY = "action-uuid";
+
 	public NcoreActionBuilder(T target, Context context) {
 		super(target, context);		
 	}
@@ -177,7 +183,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 							if (uriTargetAction != null) {
 								String uriTargetActionUUID = uriTargetAction.getUuid();
 								if (!Util.isBlank(uriTargetActionUUID)) {
-									modelElement.setProperty("action-uuid", uriTargetActionUUID);
+									modelElement.setProperty(ACTION_UUID_KEY, uriTargetActionUUID);
 								}
 								if (Util.isBlank(modelElement.getTooltip())) {
 									String uriTargetActionTooltip = uriTargetAction.getTooltip();
@@ -196,7 +202,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 					if (semanticModelElementAction != null) {
 						String semanticModelElementActionUUID = semanticModelElementAction.getUuid();
 						if (!Util.isBlank(semanticModelElementActionUUID)) {
-							modelElement.setProperty("action-uuid", semanticModelElementActionUUID);
+							modelElement.setProperty(ACTION_UUID_KEY, semanticModelElementActionUUID);
 						}
 						if (Util.isBlank(modelElement.getTooltip())) {
 							String semanticModelElementDescription = semanticModelElementAction.getDescription();
@@ -289,6 +295,42 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	}
 	
 	/**
+	 * Constructs action identifying string for error reporting.
+	 * @param action
+	 * @return
+	 */
+	public static String actionMarker(Action action) {
+		StringBuilder actionMarker = new StringBuilder("[Action] ");
+		String text = action.getText();
+		if (!org.nasdanika.common.Util.isBlank(text)) {
+			actionMarker.append(text);
+		}
+		String location = action.getLocation();
+		if (!org.nasdanika.common.Util.isBlank(location)) {
+			if (!org.nasdanika.common.Util.isBlank(text)) {
+				actionMarker.append(", ");
+			}
+			actionMarker.append("location=").append(location);
+		}
+		EList<Marker> markers = action.getMarkers();
+		if (!markers.isEmpty()) {
+			if (!org.nasdanika.common.Util.isBlank(text)) {
+				actionMarker.append(", ");
+			}
+			actionMarker.append("markers=").append(markers);			
+		}
+		List<URI> uris = NcoreUtil.getUris(action);
+		if (!uris.isEmpty()) {
+			if (!org.nasdanika.common.Util.isBlank(text)) {
+				actionMarker.append(", ");
+			}
+			actionMarker.append("uris=").append(markers);			
+		}
+		
+		return actionMarker.toString();
+	}	
+	
+	/**
 	 * For drawio representations resolves and sets links for model elements with action-uuid or action-uri property and empty link. Returns a map of representation keys to corresponding drawio documents.
 	 * @param action
 	 * @param uriResolver
@@ -298,15 +340,23 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	public static Map<String, Object> resolveRepresentationLinks(
 			Action action, 
 			BiFunction<Label, URI, URI> uriResolver,
-			BiConsumer<org.nasdanika.drawio.ModelElement, String> resolutionErrorConsumer,			
+			BiConsumer<String, String> resolutionErrorConsumer,			
 			ProgressMonitor progressMonitor) {
+
+		String actionMarker = NcoreActionBuilder.actionMarker(action);		
 		Map<String, Object> ret = new LinkedHashMap<>();
+		
 		for (Entry<String, String> actionRepresentationEntry: action.getRepresentations()) {
 			URI representationURI = URI.createURI(actionRepresentationEntry.getValue());
 			if (Document.isDataURI(representationURI)) {
 				try {
 					Document document = Document.load(representationURI);
-					document.accept(element -> resolveLink(element, action, uriResolver, resolutionErrorConsumer, progressMonitor));
+					document.accept(element -> resolveLink(
+							element, 
+							action, 
+							uriResolver, 
+							(modelElement, error) -> resolutionErrorConsumer.accept(modelElement.getMarkers().toString(), error), 
+							progressMonitor));
 					ret.put(actionRepresentationEntry.getKey(), document);
 				} catch (ParserConfigurationException | SAXException | IOException e) {
 					throw new NasdanikaException("Error loading drawio document: " + e, e);
@@ -338,14 +388,19 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 					@Override
 					public <T> T compute(Context propertyComputerContext, String key, String path, Class<T> type) {
 						if (type == null || type.isAssignableFrom(String.class)) {
-							URI ret = resolveActionUUIDLink(path, action, uriResolver);
+							URI ret = resolveActionUUIDLink(
+									path,
+									action,
+									uriResolver,
+									error -> resolutionErrorConsumer.accept(actionMarker, error), 
+									progressMonitor);
 							return ret == null ? null : (T) ret.toString();
 						}
 						return null;
 					}
 				};
 				
-				context.put("action-uuid", actionUUIDPropertyComputer);
+				context.put(ACTION_UUID_KEY, actionUUIDPropertyComputer);
 				
 				PropertyComputer actionURIPropertyComputer = new PropertyComputer() {
 					
@@ -353,14 +408,19 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 					@Override
 					public <T> T compute(Context propertyComputerContext, String key, String path, Class<T> type) {
 						if (type == null || type.isAssignableFrom(String.class)) {
-							URI ret = resolveActionURILink(path, action, uriResolver);
+							URI ret = resolveActionURILink(
+									path, 
+									action, 
+									uriResolver, 
+									error -> resolutionErrorConsumer.accept(actionMarker, error), 
+									progressMonitor);
 							return ret == null ? null : (T) ret.toString();
 						}
 						return null;
 					}
 				};
 				
-				context.put("action-uri", actionURIPropertyComputer);								
+				context.put(ACTION_URI_KEY, actionURIPropertyComputer);								
 				
 				ret.put(actionRepresentationEntry.getKey(), context.computingContext().interpolateToString(textBuilder.toString()));
 			}
@@ -371,7 +431,9 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	private static URI resolveActionUUIDLink(
 			String actionUUID,
 			Action action, 
-			BiFunction<Label, URI, URI> uriResolver) {
+			BiFunction<Label, URI, URI> uriResolver,
+			Consumer<String> propertyResolutionErrorConsumer,
+			ProgressMonitor progressMonitor) {
 
 		if (!Util.isBlank(actionUUID)) {
 			ModelElement targetAction = findByUUID(actionUUID, action);
@@ -381,6 +443,12 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				if (targetURI != null) {
 					return targetURI;
 				}
+			} else {
+				String message = "Unresolved action UUID: " + actionUUID;
+				progressMonitor.worked(Status.ERROR, 1, message, action);
+				if (propertyResolutionErrorConsumer != null) {
+					propertyResolutionErrorConsumer.accept(message);
+				}				
 			}
 		}
 		
@@ -390,7 +458,9 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	private static URI resolveActionURILink(
 			String aURI,
 			Action action, 
-			BiFunction<Label, URI, URI> uriResolver) {
+			BiFunction<Label, URI, URI> uriResolver,
+			Consumer<String> propertyResolutionErrorConsumer,
+			ProgressMonitor progressMonitor) {
 
 		if (!Util.isBlank(aURI)) {
 			EObject targetAction = findByURI(URI.createURI(aURI), action);
@@ -400,6 +470,12 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				if (targetURI != null) {
 					return targetURI;
 				}
+			} else {
+				String message = "Unresolved action URI: " + aURI;
+				progressMonitor.worked(Status.ERROR, 1, message, action);
+				if (propertyResolutionErrorConsumer != null) {
+					propertyResolutionErrorConsumer.accept(message);
+				}				
 			}
 		}
 		
@@ -415,7 +491,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 
 		if (element instanceof org.nasdanika.drawio.ModelElement) {
 			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
-			String actionUUID = modelElement.getProperty("action-uuid");			
+			String actionUUID = modelElement.getProperty(ACTION_UUID_KEY);			
 			if (Util.isBlank(modelElement.getLink()) && !Util.isBlank(actionUUID)) {
 				ModelElement targetAction = findByUUID(actionUUID, action);
 				if (targetAction instanceof Label) {
@@ -467,7 +543,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	}
 	
 	private static URI resolveActionURI(org.nasdanika.drawio.ModelElement modelElement) {
-		String aURI = modelElement.getProperty("action-uri");
+		String aURI = modelElement.getProperty(ACTION_URI_KEY);
 		if (Util.isBlank(aURI)) {
 			return null;
 		}
@@ -485,7 +561,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		if (modelElement == null) {
 			return null;
 		}
-		String aURI = modelElement.getProperty("action-uri");
+		String aURI = modelElement.getProperty(ACTION_URI_KEY);
 		return Util.isBlank(aURI) ? resolveActionBaseURI(modelElement.getParent()) : resolveActionURI(modelElement);
 	}
 	

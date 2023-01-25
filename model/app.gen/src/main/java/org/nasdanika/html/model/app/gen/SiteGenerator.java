@@ -18,6 +18,7 @@ import java.util.TreeMap;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -102,7 +103,7 @@ public class SiteGenerator {
 			URI resourceURI, 
 			String containerName,
 			File resourceWorkDir,
-			BiConsumer<org.nasdanika.drawio.ModelElement, String> representationLinkResolutionErrorConsumer,						
+			BiConsumer<String, String> representationLinkResolutionErrorConsumer,						
 			Context context, 
 			ProgressMonitor progressMonitor) throws IOException {
 		
@@ -178,7 +179,7 @@ public class SiteGenerator {
 	protected JSONObject semanticMap(Action root, Map<EObject, Label> registry, Context context) {
 		// Semantic map
 		JSONObject semanticMap = new JSONObject();		
-		URI baseURI = URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/semantic-map.json");
+		URI baseURI = URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
 		Context semanticMapContext = Context.singleton(Context.BASE_URI_PROPERTY, baseURI).compose(context);
 		BiFunction<Label, URI, URI> uriResolver = org.nasdanika.html.model.app.util.Util.uriResolver(root, semanticMapContext);				
 		
@@ -495,6 +496,7 @@ public class SiteGenerator {
 			URI baseSemanticURI,
 			BiFunction<Label, URI, URI> uriResolver,
 			Map<EObject, Label> registry,
+			Consumer<String> propertyResolutionErrorConsumer,
 			ProgressMonitor progressMonitor) {
 		int spaceIdx = path.indexOf(' ');
 		URI targetURI = URI.createURI(spaceIdx == -1 ? path : path.substring(0, spaceIdx));
@@ -527,7 +529,16 @@ public class SiteGenerator {
 				}
 			}
 		}
-		return computeSemanticLink(targetURI, bURI, context);
+		String semanticLink = computeSemanticLink(targetURI, bURI, context);
+		if (semanticLink == null) {
+			String message = "Unresolved semantic URI: " + targetURI;
+			progressMonitor.worked(Status.ERROR, 1, message, action);
+			if (propertyResolutionErrorConsumer != null) {
+				propertyResolutionErrorConsumer.accept(message);
+			}
+		}
+		
+		return semanticLink;
 	}
 	
 	/**
@@ -560,7 +571,9 @@ public class SiteGenerator {
 			Action action,
 			URI baseSemanticURI,
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Label> registry) {
+			Map<EObject, Label> registry,
+			Consumer<String> propertyResolutionErrorConsumer,
+			ProgressMonitor progressMonitor) {
 
 		URI targetURI = URI.createURI(path);
 		if (baseSemanticURI != null && targetURI.isRelative()) {
@@ -579,6 +592,13 @@ public class SiteGenerator {
 			}
 		}
 		URI ref = computeSemanticReference(targetURI, context);		
+		if (ref == null) {
+			String message = "Unresolved semantic URI: " + targetURI;
+			progressMonitor.worked(Status.ERROR, 1, message, action);
+			if (propertyResolutionErrorConsumer != null) {
+				propertyResolutionErrorConsumer.accept(message);
+			}
+		}
 		return ref == null || bURI == null ? ref : ref.deresolve(bURI, true, true, true);
 	}
 
@@ -606,12 +626,19 @@ public class SiteGenerator {
 			File resourceWorkDir,
 			Context context,
 			java.util.function.Consumer<Diagnostic> diagnosticConsumer,
-			BiConsumer<org.nasdanika.drawio.ModelElement, String> representationLinkResolutionErrorConsumer,						
+			BiConsumer<String, String> representationLinkResolutionErrorConsumer,						
 			ProgressMonitor progressMonitor) {
 
 		List<Object> contentContributions = new ArrayList<>();
 		
-		Context actionContentContext = createActionContentContext(action, uriResolver, registry, (ContentConsumer) contentContributions::add, representationLinkResolutionErrorConsumer, context, progressMonitor);
+		Context actionContentContext = createActionContentContext(
+				action, 
+				uriResolver, 
+				registry, 
+				(ContentConsumer) contentContributions::add, 
+				representationLinkResolutionErrorConsumer, 
+				context, 
+				progressMonitor);
 		
 		File contentDir = new File(resourceWorkDir, "content");
 		contentDir.mkdirs();
@@ -721,10 +748,12 @@ public class SiteGenerator {
 			BiFunction<Label, URI, URI> uriResolver,
 			Map<EObject, Label> registry,
 			ContentConsumer contentConsumer,
-			BiConsumer<org.nasdanika.drawio.ModelElement, String> representationLinkResolutionErrorConsumer,						
+			BiConsumer<String, String> propertyLinkResolutionErrorConsumer,						
 			Context context,
 			ProgressMonitor progressMonitor) {
 		
+		String actionMarker = NcoreActionBuilder.actionMarker(action);
+				
 		MutableContext mctx = context.fork();
 		mctx.put("nsd-site-map-tree-script", (Function<Context, String>) ctx -> computeSiteMapTreeScript(ctx, action, uriResolver, registry, progressMonitor));
 		
@@ -741,7 +770,11 @@ public class SiteGenerator {
 				.filter(u -> !u.isRelative() && u.isHierarchical())
 				.findFirst();									
 		
-		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(action, uriResolver, representationLinkResolutionErrorConsumer, progressMonitor);
+		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(
+				action, 
+				uriResolver, 
+				propertyLinkResolutionErrorConsumer, 
+				progressMonitor);
 		
 		PropertyComputer representationsPropertyComputer = new PropertyComputer() {
 			
@@ -763,7 +796,16 @@ public class SiteGenerator {
 			@Override
 			public <T> T compute(Context ctx, String key, String path, Class<T> type) {
 				if (type == null || type.isAssignableFrom(String.class)) {
-					return (T) computeSemanticLink(ctx, key, path, action, baseSemanticURI.orElse(null), uriResolver, registry, progressMonitor);			
+					return (T) computeSemanticLink(
+							ctx, 
+							key, 
+							path, 
+							action, 
+							baseSemanticURI.orElse(null), 
+							uriResolver, 
+							registry, 
+							error -> propertyLinkResolutionErrorConsumer.accept(actionMarker, error), 
+							progressMonitor);			
 				}
 				return null;
 			}
@@ -777,7 +819,16 @@ public class SiteGenerator {
 			@Override
 			public <T> T compute(Context propertyComputerContext, String key, String path, Class<T> type) {
 				if (type == null || type.isAssignableFrom(String.class)) {
-					URI sRef = computeSemanticReferfence(propertyComputerContext, key, path, action, baseSemanticURI.orElse(null), uriResolver, registry);
+					URI sRef = computeSemanticReferfence(
+							propertyComputerContext, 
+							key, 
+							path, 
+							action, 
+							baseSemanticURI.orElse(null), 
+							uriResolver, 
+							registry, 
+							error -> propertyLinkResolutionErrorConsumer.accept(actionMarker, error), 
+							progressMonitor);
 					return sRef == null ? null : (T) sRef.toString();
 				}
 				return null;
