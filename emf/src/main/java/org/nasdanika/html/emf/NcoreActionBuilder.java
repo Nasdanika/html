@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +56,8 @@ import org.xml.sax.SAXException;
  */
 public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<T> {
 	
+	private static final String TARGET_URI_KEY = "target-uri";
+	private static final String SEMANTIC_UUID_KEY = "semantic-uuid";
 	private static final String ACTION_URI_KEY = "action-uri";
 	private static final String ACTION_UUID_KEY = "action-uuid";
 
@@ -171,30 +176,39 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 
 		if (element instanceof org.nasdanika.drawio.ModelElement) {
 			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
-			String semanticUUID = modelElement.getProperty("semantic-uuid");
+			String semanticUUID = modelElement.getProperty(SEMANTIC_UUID_KEY);
 			if (Util.isBlank(semanticUUID)) {
-				String targetURI = modelElement.getProperty("target-uri");
-				if (!Util.isBlank(targetURI)) {
-					URI tURI = URI.createURI(targetURI);
-					EObject uriTarget = findByURI(tURI, getTarget());
-					if (uriTarget != null) {
+				String targetUriPropertyValue = modelElement.getProperty(TARGET_URI_KEY);
+				if (!Util.isBlank(targetUriPropertyValue)) {
+					boolean found = false;
+					for (URI tURI: resolveURIs(TARGET_URI_KEY, modelElement, NcoreUtil.getUris(action))) {
+						EObject uriTarget = findByURI(tURI, getTarget());
 						if (uriTarget != null) {
-							Action uriTargetAction = context.getAction(uriTarget);
-							if (uriTargetAction != null) {
-								String uriTargetActionUUID = uriTargetAction.getUuid();
-								if (!Util.isBlank(uriTargetActionUUID)) {
-									modelElement.setProperty(ACTION_UUID_KEY, uriTargetActionUUID);
+							if (uriTarget != null) {
+								Action uriTargetAction = context.getAction(uriTarget);
+								if (uriTargetAction != null) {
+									String uriTargetActionUUID = uriTargetAction.getUuid();
+									if (!Util.isBlank(uriTargetActionUUID)) {
+										modelElement.setProperty(ACTION_UUID_KEY, uriTargetActionUUID);
+									}
+									if (Util.isBlank(modelElement.getTooltip())) {
+										String uriTargetActionTooltip = uriTargetAction.getTooltip();
+										if (!Util.isBlank(uriTargetActionTooltip)) {
+											modelElement.setTooltip(uriTargetActionTooltip);
+										}									
+									}
+									found = true;
+									break;
 								}
-								if (Util.isBlank(modelElement.getTooltip())) {
-									String uriTargetActionTooltip = uriTargetAction.getTooltip();
-									if (!Util.isBlank(uriTargetActionTooltip)) {
-										modelElement.setTooltip(uriTargetActionTooltip);
-									}									
-								}
-							}
-						}						
+							}						
+						}
+					}				
+					if (!found) {
+						String message = "Action with URI " + targetUriPropertyValue + " not found";
+						progressMonitor.worked(Status.ERROR, 1, message, modelElement);
+						// TODO - some other form of reporting?
 					}
-				}				
+				}
 			} else {
 				ModelElement semanticModelElement = findByUUID(semanticUUID, getTarget());
 				if (semanticModelElement != null) {
@@ -258,15 +272,29 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		
 		return null;
 	}
-	
-	private static EObject findByURI(URI uri, EObject semanticElement) {		
-		for (URI semanticURI: NcoreUtil.getUris(semanticElement)) {
+		
+	/**
+	 * @param uriResolver returns a list of target URI's potentially resolving them relative to the semantic element URI.
+	 * @param semanticElement
+	 * @return
+	 */
+	private static EObject findByURI(URI uri, EObject semanticElement) {	
+		List<URI> semanticURIs = NcoreUtil.getUris(semanticElement);
+		
+		Collection<URI> uris = new HashSet<>();
+		uris.add(uri);		
+		for (URI semanticURI: semanticURIs) {
 			if (uri.isRelative() && !semanticURI.isRelative() && semanticURI.isHierarchical()) {
-				uri = uri.resolve(semanticURI);
+				 uris.add(uri.resolve(semanticURI));
 			}
-			if (Objects.equals(semanticURI, uri)) {
-				return semanticElement;
-			}				
+		}		
+		
+		for (URI semanticURI: semanticURIs) {
+			for (URI u: uris) {
+				if (Objects.equals(semanticURI, u)) {
+					return semanticElement;
+				}
+			}
 		}
 		
 		TreeIterator<? extends Notifier> rscit = getAllContents(semanticElement);
@@ -275,17 +303,23 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			if (next instanceof EObject) {
 				EObject nextEObject = (EObject) next;
 				for (URI nextUri: NcoreUtil.getUris(nextEObject)) {
-					if (nextUri != null && nextUri.equals(uri)) {
-						return nextEObject;
+					if (nextUri != null) {
+						for (URI u: uris) {
+							if (nextUri.equals(u)) {
+								return nextEObject;								
+							}
+						}
 					}
 				}
 				if (next instanceof ModelElement) {
 					String uuid = ((ModelElement) next).getUuid();
 					if (!Util.isBlank(uuid)) {
 						URI uuidUri = URI.createURI("uuid:" + uuid);
-						if (uuidUri.equals(uri)) {
-							return nextEObject;
-						}
+						for (URI u: uris) {
+							if (uuidUri.equals(u)) {
+								return nextEObject;
+							}
+						}						
 					}
 				}				
 			}
@@ -355,7 +389,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 							element, 
 							action, 
 							uriResolver, 
-							(modelElement, error) -> resolutionErrorConsumer.accept(modelElement.getMarkers().toString(), error), 
+							(modelElement, error) -> resolutionErrorConsumer.accept(modelElement.toString() + " " + modelElement.getMarkers().toString(), error), 
 							progressMonitor));
 					ret.put(actionRepresentationEntry.getKey(), document);
 				} catch (ParserConfigurationException | SAXException | IOException e) {
@@ -514,55 +548,72 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 					}
 				}
 			}
-			
-			URI aURI = resolveActionURI(modelElement);
-			if (Util.isBlank(modelElement.getLink()) && aURI != null) {
-				EObject targetAction = findByURI(aURI, action);
-				if (targetAction instanceof Label) {
-					URI actionURI = uriResolver.apply(action, (URI) null);
-					URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
-					if (targetURI != null) {
-						modelElement.setLink(targetURI.toString());
-						if (Util.isBlank(modelElement.getTooltip())) {
-							String actionTooltip = ((Label) targetAction).getTooltip();
-							if (!Util.isBlank(actionTooltip)) {
-								modelElement.setTooltip(actionTooltip);
+
+			String actionUriPropertyValue = modelElement.getProperty(ACTION_URI_KEY);
+			if (!Util.isBlank(actionUriPropertyValue)) {
+				boolean found = false;
+				for (URI aURI: resolveURIs(ACTION_URI_KEY, modelElement, NcoreUtil.getUris(action))) {
+					if (Util.isBlank(modelElement.getLink()) && aURI != null) {
+						EObject targetAction = findByURI(aURI, action);
+						if (targetAction instanceof Label) {
+							URI actionURI = uriResolver.apply(action, (URI) null);
+							URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
+							if (targetURI != null) {
+								modelElement.setLink(targetURI.toString());
+								if (Util.isBlank(modelElement.getTooltip())) {
+									String actionTooltip = ((Label) targetAction).getTooltip();
+									if (!Util.isBlank(actionTooltip)) {
+										modelElement.setTooltip(actionTooltip);
+									}
+								}
 							}
+							found = true;
+							break;
 						}
 					}
-				} else {
-					String message = "Action with URI " + aURI + " not found";
+				}		
+				if (!found) {
+					String message = "Action with URI " + actionUriPropertyValue + " not found";
 					progressMonitor.worked(Status.ERROR, 1, message, modelElement);
 					if (resolutionErrorConsumer != null) {
 						resolutionErrorConsumer.accept(modelElement, message);
 					}					
 				}
 			}
-			
 		}		
 	}
 	
-	private static URI resolveActionURI(org.nasdanika.drawio.ModelElement modelElement) {
-		String aURI = modelElement.getProperty(ACTION_URI_KEY);
+	/**
+	 * Resolves model element URI specified in the property name relative to parents which have the same property and ultimately relative to the bases - uri's of the representation's containing semantic element.
+	 * @param propertyName
+	 * @param modelElement
+	 * @param bases
+	 * @return
+	 */
+	private static Collection<URI> resolveURIs(String propertyName, org.nasdanika.drawio.ModelElement modelElement, Collection<URI> bases) {
+		String aURI = modelElement.getProperty(propertyName);
 		if (Util.isBlank(aURI)) {
-			return null;
+			return Collections.emptySet();
 		}
 		URI actionURI = URI.createURI(aURI);
+		Collection<URI> ret = new HashSet<>();
+		ret.add(actionURI);
 		if (actionURI.isRelative()) {
-			URI actionBaseURI = resolveActionBaseURI(modelElement.getParent());
-			if (actionBaseURI != null && !actionBaseURI.isRelative() && actionBaseURI.isHierarchical()) {
-				return actionURI.resolve(actionBaseURI);
+			for (URI actionBaseURI: resolveBaseURIs(propertyName, modelElement.getParent(), bases)) {			
+				if (actionBaseURI != null && !actionBaseURI.isRelative() && actionBaseURI.isHierarchical()) {
+					ret.add(actionURI.resolve(actionBaseURI));
+				}
 			}
 		}
-		return actionURI;
+		return ret;
 	}
 	
-	private static URI resolveActionBaseURI(org.nasdanika.drawio.ModelElement modelElement) {
+	private static Collection<URI> resolveBaseURIs(String propertyName, org.nasdanika.drawio.ModelElement modelElement, Collection<URI> bases) {
 		if (modelElement == null) {
-			return null;
+			return bases;
 		}
-		String aURI = modelElement.getProperty(ACTION_URI_KEY);
-		return Util.isBlank(aURI) ? resolveActionBaseURI(modelElement.getParent()) : resolveActionURI(modelElement);
+		String aURI = modelElement.getProperty(propertyName);
+		return Util.isBlank(aURI) ? resolveBaseURIs(propertyName, modelElement.getParent(), bases) : resolveURIs(propertyName, modelElement, bases);
 	}
 	
 }
