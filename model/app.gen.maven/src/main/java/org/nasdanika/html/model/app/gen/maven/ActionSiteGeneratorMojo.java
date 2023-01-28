@@ -4,14 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.ServiceLoader;
 import java.util.concurrent.CancellationException;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -24,9 +21,11 @@ import org.eclipse.emf.common.util.DiagnosticException;
 import org.eclipse.emf.common.util.URI;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
+import org.nasdanika.common.DiagramGeneratorImpl;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
+import org.nasdanika.common.Util;
 import org.nasdanika.html.model.app.gen.ActionSiteGenerator;
 
 /**
@@ -52,7 +51,10 @@ public class ActionSiteGeneratorMojo extends AbstractMojo {
 	
 	@Parameter()	
 	private String siteMapDomain;
-		
+	
+	@Parameter()	
+	private String drawioViewer;	
+	
 	@Parameter(required = false)	
 	private int errors;
 	
@@ -176,7 +178,18 @@ public class ActionSiteGeneratorMojo extends AbstractMojo {
 			
 			@Override
 			protected Context createContext(ProgressMonitor progressMonitor) {
-				DiagramGenerator diagramGenerator = DiagramGenerator.INSTANCE;				
+				DiagramGenerator diagramGenerator;
+				if (Util.isBlank(drawioViewer)) {
+					diagramGenerator = DiagramGenerator.INSTANCE;
+				} else {
+					diagramGenerator = new DiagramGeneratorImpl() {
+						
+						protected String getDrawioViewer() {
+							return drawioViewer;
+						};
+						
+					};
+				}
 				if (diagramGenerators != null) {
 					for (DiagramGenerator dg: diagramGenerators) {
 						diagramGenerator = dg.compose(diagramGenerator);
