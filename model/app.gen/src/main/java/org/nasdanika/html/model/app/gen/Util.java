@@ -1090,7 +1090,7 @@ public final class Util {
 				Document document = Jsoup.parse(targetFile, StandardCharsets.UTF_8.name());
 				Elements namedAnchors = document.select("[name='" + fragment.substring(1) + "']");
 				Elements idAnchors = document.select("[id='" + fragment.substring(1) + "']");
-				return namedAnchors.size() + idAnchors.size() == 1;
+				return namedAnchors.size() + idAnchors.size() > 0; // Ignoring duplicate fragment anchors
 			} catch (IOException e) {
 				throw new NasdanikaException("Error parsing " + targetFile.getAbsolutePath(), e);
 			}

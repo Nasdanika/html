@@ -316,7 +316,6 @@ public class TestEcoreDoc {
 	/**
 	 * 
 	 * @param siteDir
-	 * @return Number of broken links.
 	 * @throws IOException
 	 */
 	private void generateSitemapAndSearch(File siteDir) throws IOException {
