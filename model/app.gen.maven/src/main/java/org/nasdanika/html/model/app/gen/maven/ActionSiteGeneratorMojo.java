@@ -242,7 +242,7 @@ public class ActionSiteGeneratorMojo extends AbstractMojo {
 				}
 			}
 			if (errorCount != this.errors) {
-				throw new MojoExecutionException("There are site" + errorCount + " site errors");
+				throw new MojoExecutionException("There are " + errorCount + " site errors");
 			}
 		} catch (IOException | DiagnosticException ex) {
 			throw new MojoExecutionException(ex);
