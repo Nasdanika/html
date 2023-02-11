@@ -601,6 +601,11 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		if (actionURI.isRelative()) {
 			for (URI actionBaseURI: resolveBaseURIs(propertyName, modelElement.getParent(), bases)) {			
 				if (actionBaseURI != null && !actionBaseURI.isRelative() && actionBaseURI.isHierarchical()) {
+					String cLastSegment = actionBaseURI.lastSegment();
+					if (cLastSegment == null || cLastSegment.length() > 0) {
+						actionBaseURI = actionBaseURI.appendSegment("");
+					}
+					
 					ret.add(actionURI.resolve(actionBaseURI));
 				}
 			}
