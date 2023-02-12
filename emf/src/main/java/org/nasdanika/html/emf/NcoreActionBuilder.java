@@ -38,6 +38,7 @@ import org.nasdanika.common.PropertyComputer;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Document;
+import org.nasdanika.emf.persistence.NcoreDrawioResourceFactory;
 import org.nasdanika.emf.persistence.TextResourceFactory;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
@@ -57,9 +58,8 @@ import org.xml.sax.SAXException;
 public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<T> {
 	
 	private static final String TARGET_URI_KEY = "target-uri";
-	private static final String SEMANTIC_UUID_KEY = "semantic-uuid";
 	private static final String ACTION_URI_KEY = "action-uri";
-	private static final String ACTION_UUID_KEY = "action-uuid";
+	public static final String ACTION_UUID_KEY = "action-uuid";
 
 	public NcoreActionBuilder(T target, Context context) {
 		super(target, context);		
@@ -176,7 +176,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 
 		if (element instanceof org.nasdanika.drawio.ModelElement) {
 			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
-			String semanticUUID = modelElement.getProperty(SEMANTIC_UUID_KEY);
+			String semanticUUID = modelElement.getProperty(NcoreDrawioResourceFactory.SEMANTIC_UUID_KEY);
 			if (Util.isBlank(semanticUUID)) {
 				String targetUriPropertyValue = modelElement.getProperty(TARGET_URI_KEY);
 				if (!Util.isBlank(targetUriPropertyValue)) {
@@ -211,9 +211,17 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				}
 			} else {
 				ModelElement semanticModelElement = findByUUID(semanticUUID, getTarget());
-				if (semanticModelElement != null) {
+				if (semanticModelElement == null) {
+					String message = "Semantic element with UUID " + semanticUUID + " not found";
+					progressMonitor.worked(Status.ERROR, 1, message, modelElement);
+					// TODO - some other form of reporting?					
+				} else {
 					Action semanticModelElementAction = context.getAction(semanticModelElement);
-					if (semanticModelElementAction != null) {
+					if (semanticModelElementAction == null) {
+						String message = "Action for a semantic element with UUID " + semanticUUID + " not found: " + semanticModelElement;
+						progressMonitor.worked(Status.ERROR, 1, message, modelElement);
+						// TODO - some other form of reporting?					
+					} else {
 						String semanticModelElementActionUUID = semanticModelElementAction.getUuid();
 						if (!Util.isBlank(semanticModelElementActionUUID)) {
 							modelElement.setProperty(ACTION_UUID_KEY, semanticModelElementActionUUID);
@@ -525,26 +533,33 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 
 		if (element instanceof org.nasdanika.drawio.ModelElement) {
 			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
-			String actionUUID = modelElement.getProperty(ACTION_UUID_KEY);			
-			if (Util.isBlank(modelElement.getLink()) && !Util.isBlank(actionUUID)) {
-				ModelElement targetAction = findByUUID(actionUUID, action);
-				if (targetAction instanceof Label) {
-					URI actionURI = uriResolver.apply(action, (URI) null);
-					URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
-					if (targetURI != null) {
-						modelElement.setLink(targetURI.toString());
-						if (Util.isBlank(modelElement.getTooltip())) {
-							String actionTooltip = ((Label) targetAction).getTooltip();
-							if (!Util.isBlank(actionTooltip)) {
-								modelElement.setTooltip(actionTooltip);
+			if (Util.isBlank(modelElement.getLink())) {
+				String actionUUID = modelElement.getProperty(ACTION_UUID_KEY);			
+				if (Util.isBlank(actionUUID)) {
+					// For semantic mapping to actions 
+					actionUUID =  modelElement.getProperty(NcoreDrawioResourceFactory.SEMANTIC_UUID_KEY); 
+				}
+
+				if (!Util.isBlank(actionUUID)) {
+					ModelElement targetAction = findByUUID(actionUUID, action);
+					if (targetAction instanceof Label) {
+						URI actionURI = uriResolver.apply(action, (URI) null);
+						URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
+						if (targetURI != null) {
+							modelElement.setLink(targetURI.toString());
+							if (Util.isBlank(modelElement.getTooltip())) {
+								String actionTooltip = ((Label) targetAction).getTooltip();
+								if (!Util.isBlank(actionTooltip)) {
+									modelElement.setTooltip(actionTooltip);
+								}
 							}
 						}
-					}
-				} else {
-					String message = "Action with UUID " + actionUUID + " not found";
-					progressMonitor.worked(Status.ERROR, 1, message, modelElement);
-					if (resolutionErrorConsumer != null) {
-						resolutionErrorConsumer.accept(modelElement, message);
+					} else {
+						String message = "Action with UUID " + actionUUID + " not found";
+						progressMonitor.worked(Status.ERROR, 1, message, modelElement);
+						if (resolutionErrorConsumer != null) {
+							resolutionErrorConsumer.accept(modelElement, message);
+						}
 					}
 				}
 			}
