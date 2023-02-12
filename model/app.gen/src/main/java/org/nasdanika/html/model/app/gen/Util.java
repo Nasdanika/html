@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -68,6 +69,8 @@ import org.nasdanika.exec.content.ContentPackage;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ResourcesPackage;
+import org.nasdanika.graph.processor.ProcessorConfig;
+import org.nasdanika.graph.processor.emf.SemanticProcessor;
 import org.nasdanika.html.Button;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
@@ -75,6 +78,7 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Breakpoint;
 import org.nasdanika.html.bootstrap.Color;
+import org.nasdanika.html.emf.NcoreActionBuilder;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.ActionReference;
 import org.nasdanika.html.model.app.AppFactory;
@@ -920,7 +924,7 @@ public final class Util {
 		for (Element element: contentPanelQuery) {
 			String actionUUID = element.attr(DATA_NSD_LABEL_UUID_ATTRIBUTE);
 			if (!org.nasdanika.common.Util.isBlank(actionUUID)) {
-				searchDocument.put("action-uuid", actionUUID);
+				searchDocument.put(NcoreActionBuilder.ACTION_UUID_KEY, actionUUID);
 				break;
 			}
 		}
@@ -1264,6 +1268,81 @@ public final class Util {
 			writer.write("var searchDocuments = " + searchDocuments);
 		}
 	}
+	
+	public interface SemanticElementFactory {
+
+		Collection<EObject> createSemanticElements(
+				ProcessorConfig<SemanticProcessor<EObject>> config,
+				ProgressMonitor progressMonitor,
+				BiFunction<ProcessorConfig<SemanticProcessor<EObject>>, ProgressMonitor, Collection<EObject>> defaultFactory);
+	}
+	
+	/**
+	 * Can be passed to createResourceSet to customize drawio semantic elements.
+	 * @author Pavel
+	 *
+	 */
+	public interface SemanticElementConfigurator {
+		
+		Collection<EObject> configureSemanticElements(
+				URI uri,
+				ProcessorConfig<SemanticProcessor<EObject>> config, 
+				Collection<EObject> semanticElements, 
+				ProgressMonitor progressMonitor);
+		
+	}
+	
+	/**
+	 * If semantic element is an {@link Action} and there are C4 properties, configured the action with those properties. 
+	 * @param uri
+	 * @param config
+	 * @param semanticElements
+	 * @param progressMonitor
+	 * @return
+	 */
+	public static Collection<EObject> configureC4Actions(
+			URI uri,
+			ProcessorConfig<SemanticProcessor<EObject>> config, 
+			Collection<EObject> semanticElements, 
+			ProgressMonitor progressMonitor) {
+	
+		if (semanticElements == null) {
+			return semanticElements;
+		}
+		
+		for (EObject semanticElement: semanticElements) {
+			if (semanticElement instanceof Label) {
+				Label label = (Label) semanticElement;
+				org.nasdanika.graph.Element element = config.getElement();
+				if (element instanceof ModelElement) {
+					ModelElement modelElement = (ModelElement) element;
+					if (org.nasdanika.common.Util.isBlank(label.getText())) {
+						label.setText(modelElement.getProperty("c4Name"));
+						if (org.nasdanika.common.Util.isBlank(label.getText())) {
+							label.setText(modelElement.getProperty("c4Type"));
+						}
+					}
+					if (org.nasdanika.common.Util.isBlank(label.getTooltip())) {
+						label.setTooltip(modelElement.getProperty("c4Description"));						
+					}
+					if (org.nasdanika.common.Util.isBlank(label.getIcon())) {
+						String c4Type = modelElement.getProperty("c4Type");
+						if (c4Type != null) {
+							switch (c4Type) {
+							case "Database":
+								label.setIcon("fas fa-database");
+								break;
+							case "Person":
+								label.setIcon("fas fa-user");
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return semanticElements;
+	} 
 
 	/**
 	 * Creates {@link NcoreResourceSet} with {@link XMIResourceFactoryImpl}, {@link ObjectLoaderResourceFactory} handling yml, json extensions and data scheme.
@@ -1274,6 +1353,15 @@ public final class Util {
 	 * @return
 	 */	
 	public static ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
+		return createResourceSet(context, progressMonitor, null, Util::configureC4Actions);
+	}
+	
+	public static ResourceSet createResourceSet(
+			Context context, 
+			ProgressMonitor progressMonitor, 
+			SemanticElementFactory semanticElementFactory,
+			SemanticElementConfigurator semanticElementConfigurator) {
+		
 		ResourceSet resourceSet = new NcoreResourceSet();
 		
 		EObjectLoader eObjectLoader = new EObjectLoader(null, null, resourceSet);
@@ -1312,6 +1400,24 @@ public final class Util {
 			@Override
 			protected MarkerFactory getMarkerFactory() {
 				return markerFactory;
+			}
+			
+			@Override
+			protected Collection<EObject> createSemanticElements(
+					ProcessorConfig<SemanticProcessor<EObject>> config,
+					ProgressMonitor progressMonitor,
+					BiFunction<ProcessorConfig<SemanticProcessor<EObject>>, ProgressMonitor, Collection<EObject>> defaultFactory) {
+				
+				return semanticElementFactory == null ? super.createSemanticElements(config, progressMonitor, defaultFactory) : semanticElementFactory.createSemanticElements(config, progressMonitor, defaultFactory);
+			}
+			
+			@Override
+			protected Collection<EObject> configureSemanticElements(
+					URI uri,
+					ProcessorConfig<SemanticProcessor<EObject>> config, Collection<EObject> semanticElements,
+					ProgressMonitor progressMonitor) {
+				Collection<EObject> configuredSemanticElements = super.configureSemanticElements(uri, config, semanticElements, progressMonitor);				
+				return semanticElementConfigurator == null ? configuredSemanticElements : semanticElementConfigurator.configureSemanticElements(uri, config, configuredSemanticElements, progressMonitor);
 			}
 			
 		};
