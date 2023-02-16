@@ -60,6 +60,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	private static final String TARGET_URI_KEY = "target-uri";
 	private static final String ACTION_URI_KEY = "action-uri";
 	public static final String ACTION_UUID_KEY = "action-uuid";
+	private static final String URI_BASE_SUFFIX = "-base";
 
 	public NcoreActionBuilder(T target, Context context) {
 		super(target, context);		
@@ -181,7 +182,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				String targetUriPropertyValue = modelElement.getProperty(TARGET_URI_KEY);
 				if (!Util.isBlank(targetUriPropertyValue)) {
 					boolean found = false;
-					for (URI tURI: resolveURIs(TARGET_URI_KEY, modelElement, NcoreUtil.getUris(action))) {
+					for (URI tURI: resolveURIs(TARGET_URI_KEY, modelElement, NcoreUtil.getUris(action), false)) {
 						EObject uriTarget = findByURI(tURI, getTarget());
 						if (uriTarget != null) {
 							if (uriTarget != null) {
@@ -567,7 +568,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			String actionUriPropertyValue = modelElement.getProperty(ACTION_URI_KEY);
 			if (!Util.isBlank(actionUriPropertyValue)) {
 				boolean found = false;
-				for (URI aURI: resolveURIs(ACTION_URI_KEY, modelElement, NcoreUtil.getUris(action))) {
+				for (URI aURI: resolveURIs(ACTION_URI_KEY, modelElement, NcoreUtil.getUris(action), false)) {
 					if (Util.isBlank(modelElement.getLink()) && aURI != null) {
 						EObject targetAction = findByURI(aURI, action);
 						if (targetAction instanceof Label) {
@@ -605,10 +606,15 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	 * @param bases
 	 * @return
 	 */
-	private static Collection<URI> resolveURIs(String propertyName, org.nasdanika.drawio.ModelElement modelElement, Collection<URI> bases) {
-		String aURI = modelElement.getProperty(propertyName);
+	private static Collection<URI> resolveURIs(String propertyName, org.nasdanika.drawio.ModelElement modelElement, Collection<URI> bases, boolean asBase) {
+		String aURI = modelElement.getProperty(propertyName);		
 		if (Util.isBlank(aURI)) {
-			return Collections.emptySet();
+			if (asBase) {
+				aURI = modelElement.getProperty(propertyName + URI_BASE_SUFFIX);						
+			}
+			if (Util.isBlank(aURI)) {
+				return Collections.emptySet();
+			}
 		}
 		URI actionURI = URI.createURI(aURI);
 		Collection<URI> ret = new HashSet<>();
@@ -633,7 +639,10 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			return bases;
 		}
 		String aURI = modelElement.getProperty(propertyName);
-		return Util.isBlank(aURI) ? resolveBaseURIs(propertyName, modelElement.getParent(), bases) : resolveURIs(propertyName, modelElement, bases);
+		if (Util.isBlank(aURI)) {
+			aURI = modelElement.getProperty(propertyName + URI_BASE_SUFFIX);						
+		}
+		return Util.isBlank(aURI) ? resolveBaseURIs(propertyName, modelElement.getParent(), bases) : resolveURIs(propertyName, modelElement, bases, true);
 	}
 	
 }
