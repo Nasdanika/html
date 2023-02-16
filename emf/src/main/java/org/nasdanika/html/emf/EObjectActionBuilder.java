@@ -54,6 +54,7 @@ import org.nasdanika.html.RowContainer.Row;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.emf.EObjectActionResolver.Context;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.ActionReference;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
@@ -238,6 +239,10 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		T semanticElement = getTarget();
 		if (semanticElement instanceof ModelElement) {
 			EObject actionPrototype = ((ModelElement) semanticElement).getActionPrototype();
+			if (actionPrototype instanceof ActionReference) {
+				actionPrototype = ((ActionReference) actionPrototype).getTarget();
+			} 
+			
 			if (actionPrototype instanceof Action) {
 				Action copy = EcoreUtil.copy((Action) actionPrototype);
 				copy.setUuid(UUID.randomUUID().toString());
