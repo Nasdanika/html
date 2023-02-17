@@ -1188,7 +1188,9 @@ public final class Util {
 						Consumer<? super Element> inspector = createInspector(predicate, error -> errorConsumer.accept(path, error));
 						
 						JSONObject searchDocument = createSearchDocument(path, file, inspector, searchConfigurator, e -> errorConsumer.accept(path, "Error creating search document: " + e));
-						if (searchDocument != null) {
+						if (searchDocument == null) {
+							errorConsumer.accept(path, "Blank page");
+						} else {
 							searchDocuments.put(path, searchDocument);
 						}
 					} catch (IOException e) {
