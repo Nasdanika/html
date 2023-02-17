@@ -37,18 +37,20 @@ $(document).ready(function() {
       }
     });
     
-    $('.nsd-collapsible').on('shown.bs.collapse', function () {
-       var localStorage = window.localStorage;
-       if (localStorage) {
-         localStorage.removeItem(this.id + ":collapsed");
-      }
+    $('.nsd-collapsible').on('shown.bs.collapse', function (e) {
+        var localStorage = window.localStorage;
+        if (localStorage) {
+        	localStorage.removeItem(this.id + ":collapsed");
+        }
+        e.stopPropagation();
     });
         
-    $('.nsd-collapsible').on('hidden.bs.collapse', function () {
-       var localStorage = window.localStorage;
-       if (localStorage) {
-         localStorage.setItem(this.id + ":collapsed", "true");
-      }
+    $('.nsd-collapsible').on('hidden.bs.collapse', function (e) {
+        var localStorage = window.localStorage;
+        if (localStorage) {
+        	localStorage.setItem(this.id + ":collapsed", "true");
+        }
+        e.stopPropagation();
     });
 
     if (hljs) {
