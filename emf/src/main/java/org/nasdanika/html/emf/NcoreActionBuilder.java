@@ -57,8 +57,8 @@ import org.xml.sax.SAXException;
  */
 public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<T> {
 	
-	private static final String TARGET_URI_KEY = "target-uri";
-	private static final String ACTION_URI_KEY = "action-uri";
+	public static final String TARGET_URI_KEY = "target-uri";
+	public static final String ACTION_URI_KEY = "action-uri";
 	public static final String ACTION_UUID_KEY = "action-uuid";
 	private static final String URI_BASE_SUFFIX = "-base";
 
@@ -606,7 +606,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	 * @param bases
 	 * @return
 	 */
-	private static Collection<URI> resolveURIs(String propertyName, org.nasdanika.drawio.ModelElement modelElement, Collection<URI> bases, boolean asBase) {
+	public static Collection<URI> resolveURIs(String propertyName, org.nasdanika.drawio.ModelElement modelElement, Collection<URI> bases, boolean asBase) {
 		String aURI = modelElement.getProperty(propertyName);		
 		if (Util.isBlank(aURI)) {
 			if (asBase) {

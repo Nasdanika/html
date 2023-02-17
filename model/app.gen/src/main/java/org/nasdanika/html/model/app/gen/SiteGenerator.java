@@ -3,17 +3,20 @@ package org.nasdanika.html.model.app.gen;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -53,6 +56,7 @@ import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.Layer;
 import org.nasdanika.drawio.LayerElement;
+import org.nasdanika.drawio.Node;
 import org.nasdanika.drawio.Page;
 import org.nasdanika.drawio.comparators.LabelModelElementComparator;
 import org.nasdanika.emf.EObjectAdaptable;
@@ -61,6 +65,7 @@ import org.nasdanika.exec.content.Text;
 import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ReconcileAction;
 import org.nasdanika.exec.resources.ResourcesFactory;
+import org.nasdanika.graph.Element;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
@@ -75,7 +80,13 @@ import org.nasdanika.html.model.html.gen.ContentConsumer;
 import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreUtil;
+import org.nasdanika.persistence.Marker;
 import org.nasdanika.resources.FileSystemContainer;
+import org.w3c.dom.Attr;
+import org.w3c.dom.NamedNodeMap;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.DumperOptions.FlowStyle;
+import org.yaml.snakeyaml.Yaml;
 
 import com.redfin.sitemapgenerator.ChangeFreq;
 
@@ -477,6 +488,169 @@ public class SiteGenerator {
 	}
 	
 	/**
+	 * Computes a table of contents for a Drawio element
+	 * @param element
+	 * @param context
+	 * @return
+	 */
+	protected String computeInfo(Action action, org.nasdanika.drawio.Element element, Context context) {
+		DumperOptions dumperOptions = new DumperOptions();
+		dumperOptions.setDefaultFlowStyle(FlowStyle.BLOCK); dumperOptions.setIndent(4);
+		Map<String, Object> infoMap = new LinkedHashMap<>();
+		Map<String, Object> actionMap = new LinkedHashMap<>();
+		if (!org.nasdanika.common.Util.isBlank(action.getText())) {
+			actionMap.put("text", action.getText());
+		}
+		List<URI> actionURIs = NcoreUtil.getUris(action);
+		if (actionURIs.size() == 1) {
+			actionMap.put("uri", actionURIs.get(0).toString());
+		} else if (!actionURIs.isEmpty()) {
+			actionMap.put("uris", actionURIs.stream().map(Object::toString).collect(Collectors.toList()));			
+		}
+		infoMap.put("action", actionMap);
+		Map<String, Object> elementInfo = element.accept((el, childInfo) -> this.elementInfo(el, childInfo, actionURIs));
+		if (elementInfo != null) {
+			infoMap.put("element", elementInfo);
+		}
+		StringWriter out = new StringWriter();
+		try (out) {
+			new Yaml(dumperOptions).dump(infoMap, out);
+		} catch (Exception e) {
+			return "Error computing representation info: " + e;			
+		}
+		return out.toString();
+	}
+	
+	private Map<String, Object> elementInfo(Element element, Map<? extends Element, Map<String, Object>> childInfo, List<URI> actionURIs) {
+		Map<String, Object> info = new LinkedHashMap<>();
+		info.put("type", element.getClass().getName());
+		if (element instanceof org.nasdanika.drawio.Element) {
+			org.nasdanika.drawio.Element drawioElement = (org.nasdanika.drawio.Element) element;
+			URI uri = drawioElement.getURI();
+			if (uri != null) {
+				info.put("uri", uri.toString());
+			}
+			List<? extends Marker> markers = drawioElement.getMarkers();
+			if (markers != null && !markers.isEmpty()) {
+				info.put("markers", markers.stream().map(Object::toString).toArray());				
+			}
+		}
+		if (element instanceof org.nasdanika.drawio.Page) {
+			org.nasdanika.drawio.Page page = (org.nasdanika.drawio.Page) element;
+			String pageName = page.getName();
+			if (!org.nasdanika.common.Util.isBlank(pageName)) {
+				info.put("name", pageName);
+			}
+			String id = page.getId();
+			if (!org.nasdanika.common.Util.isBlank(id)) {
+				info.put("id", id);
+			}
+		}
+		if (element instanceof org.nasdanika.drawio.ModelElement) {
+			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
+			String id = modelElement.getId();
+			if (!org.nasdanika.common.Util.isBlank(id)) {
+				info.put("id", id);
+			}
+			
+			String label = modelElement.getLabel();
+			if (!org.nasdanika.common.Util.isBlank(label)) {
+				info.put("label", label);
+			}
+			
+			String tooltip = modelElement.getTooltip();
+			if (!org.nasdanika.common.Util.isBlank(tooltip)) {
+				info.put("tooltip", tooltip);
+			}
+			
+			if (modelElement.isPageLink()) {
+				info.put("linked-page", modelElement.getLinkedPage().toString());
+			} else {
+				String link = modelElement.getLink();
+				if (!org.nasdanika.common.Util.isBlank(link)) {
+					info.put("link", link);
+				}				
+			}
+			Map<String, String> style = modelElement.getStyle();
+			if (style != null && !style.isEmpty()) {
+				info.put("style", style);
+			}
+			
+			Set<String> tags = modelElement.getTags();
+			if (tags != null && !tags.isEmpty()) {
+				info.put("tags", tags);
+			}
+			
+			info.put("visible", modelElement.isVisible());		
+
+			// Properties
+			NamedNodeMap attributes = modelElement.getElement().getAttributes();
+			if (attributes != null) {
+				Map<String, String> properties = new LinkedHashMap<>();
+				for (int i = 0; i < attributes.getLength(); ++i) {
+					org.w3c.dom.Node attribute = attributes.item(i);
+					if (attribute instanceof Attr) {
+						String propertyName = ((Attr) attribute).getName();
+						String propertyValue = modelElement.getProperty(propertyName);
+						if (!org.nasdanika.common.Util.isBlank(propertyValue)) {
+							properties.put(propertyName, propertyValue);
+						}
+					}
+				}
+				if (!properties.isEmpty()) {
+					info.put("properties", properties);
+				}
+			}
+			
+			Collection<URI> elementActionURIs = NcoreActionBuilder.resolveURIs(NcoreActionBuilder.ACTION_URI_KEY, modelElement, actionURIs, false);
+			if (elementActionURIs != null && !elementActionURIs.isEmpty()) {
+				info.put("action-uris", elementActionURIs.stream().map(Object::toString).toArray());
+			}
+			
+			Collection<URI> elementActionUriBases = NcoreActionBuilder.resolveURIs(NcoreActionBuilder.ACTION_URI_KEY, modelElement, actionURIs, true);
+			if (elementActionUriBases != null && !elementActionUriBases.isEmpty()) {
+				info.put("action-uri-bases", elementActionUriBases.stream().map(Object::toString).toArray());
+			}
+			
+			Collection<URI> elementTargetURIs = NcoreActionBuilder.resolveURIs(NcoreActionBuilder.TARGET_URI_KEY, modelElement, actionURIs, false);
+			if (elementTargetURIs != null && !elementTargetURIs.isEmpty()) {
+				info.put("target-uris", elementTargetURIs.stream().map(Object::toString).toArray());
+			}
+			
+			Collection<URI> elementTargetUriBases = NcoreActionBuilder.resolveURIs(NcoreActionBuilder.TARGET_URI_KEY, modelElement, actionURIs, true);
+			if (elementTargetUriBases != null && !elementTargetUriBases.isEmpty()) {
+				info.put("target-uri-bases", elementTargetUriBases.stream().map(Object::toString).toArray());
+			}
+			
+		}
+		if (element instanceof Connection) {
+			Node source = ((Connection) element).getSource();
+			if (source != null) {
+				info.put("source", source.toString());
+			}
+			Node target = ((Connection) element).getTarget();
+			if (target != null) {
+				info.put("target", target.toString());
+			}
+		}
+		if (element instanceof Node) {
+			List<Connection> incomingConnections = ((Node) element).getIncomingConnections();
+			if (incomingConnections != null && !incomingConnections.isEmpty()) {
+				info.put("incoming-connections", incomingConnections.stream().map(Object::toString).toArray());
+			}
+			List<Connection> outgoingConnections = ((Node) element).getOutgoingConnections();
+			if (outgoingConnections != null && !outgoingConnections.isEmpty()) {
+				info.put("outgoing-connections", outgoingConnections.stream().map(Object::toString).toArray());
+			}
+		}
+		
+		if (childInfo != null && !childInfo.isEmpty()) {
+			info.put("children", childInfo.values().stream().toArray());
+		}
+		return info;
+	}
+	
+	/**
 	 * Computes semantic link. This implementation uses the registry and uriResolver. 
 	 * Override to add support of resolving external semantic links, e.g. loaded from semantic maps of dependency sites.
 	 * @param context
@@ -709,6 +883,11 @@ public class SiteGenerator {
 					if ("toc".equals(pathSegments[1])) {
 						return String.valueOf(computeTableOfContents(valueDocument, context));
 					}
+										
+					if ("info".equals(pathSegments[1])) {
+						return computeInfo(action, valueDocument, context);
+					}
+					
 					return null;
 				} 
 				
@@ -724,6 +903,10 @@ public class SiteGenerator {
 							
 							if ("toc".equals(pathSegments[2])) {
 								return String.valueOf(computeTableOfContents(pageDocument, context));
+							}
+							
+							if ("info".equals(pathSegments[2])) {
+								return computeInfo(action, pageDocument, context);
 							}
 						}
 					}
