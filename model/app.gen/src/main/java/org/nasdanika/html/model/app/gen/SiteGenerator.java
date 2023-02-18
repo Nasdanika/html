@@ -507,6 +507,10 @@ public class SiteGenerator {
 		} else if (!actionURIs.isEmpty()) {
 			actionMap.put("uris", actionURIs.stream().map(Object::toString).collect(Collectors.toList()));			
 		}
+		EList<org.nasdanika.ncore.Marker> actionMarkers = action.getMarkers();
+		if (actionMarkers != null && !actionMarkers.isEmpty()) {
+			actionMap.put("markers", actionMarkers.stream().map(am -> DefaultConverter.INSTANCE.toMap(am, null)).toArray());
+		}
 		infoMap.put("action", actionMap);
 		Map<String, Object> elementInfo = element.accept((el, childInfo) -> this.elementInfo(el, childInfo, actionURIs));
 		if (elementInfo != null) {
@@ -517,7 +521,7 @@ public class SiteGenerator {
 			new Yaml(dumperOptions).dump(infoMap, out);
 		} catch (Exception e) {
 			return "Error computing representation info: " + e;			
-		}
+		}		
 		return out.toString();
 	}
 	
@@ -532,7 +536,7 @@ public class SiteGenerator {
 			}
 			List<? extends Marker> markers = drawioElement.getMarkers();
 			if (markers != null && !markers.isEmpty()) {
-				info.put("markers", markers.stream().map(Object::toString).toArray());				
+				info.put("markers", markers.stream().map(em -> em instanceof EObject ? DefaultConverter.INSTANCE.toMap((EObject) em, null) : String.valueOf(em)).toArray());				
 			}
 		}
 		if (element instanceof org.nasdanika.drawio.Page) {
