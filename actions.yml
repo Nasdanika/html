@@ -14,4 +14,8 @@ app-action:
         text: Javadoc
         uris: javadoc
         icon: fab fa-java
-        location: apidocs/index.html
+        location: maven-site/apidocs/index.html
+    - app-link:
+        text: Maven site
+        uris: maven-site
+        location: ../maven-site/index.html

@@ -8,3 +8,7 @@ app-action:
         uris: javadoc
         icon: fab fa-java
         location: ../../apidocs/org.nasdanika.html.model.app.gen.maven/module-summary.html
+    - app-link:
+        text: Maven site
+        uris: maven-site
+        location: ../../maven-site/model/site-generator-maven-plugin/index.html

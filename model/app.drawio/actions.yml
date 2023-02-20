@@ -13,4 +13,4 @@ app-action:
         text: Javadoc
         uris: javadoc
         icon: fab fa-java
-        location: ../../apidocs/org.nasdanika.html.model.app.drawio/module-summary.html
+        location: ../../maven-site/apidocs/org.nasdanika.html.model.app.drawio/module-summary.html
