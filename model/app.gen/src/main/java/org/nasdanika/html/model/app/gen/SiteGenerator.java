@@ -34,6 +34,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -155,8 +156,8 @@ public class SiteGenerator {
 				root, 
 				pageTemplate,
 				container,
-				contentProviderContext -> (cAction, uriResolver, pMonitor) -> getActionContent(cAction, uriResolver, registry, resourceWorkDir, contentProviderContext, diagnosticConsumer, representationLinkResolutionErrorConsumer, pMonitor),
-				contentProviderContext -> (page, baseURI, uriResolver, pMonitor) -> getPageContent(page, baseURI, uriResolver, pagesDir, contentProviderContext, progressMonitor),
+				contentProviderContext -> (cAction, uriResolver, pMonitor) -> getActionContent(cAction, semanticMapURIResolver(uriResolver), registry, resourceWorkDir, contentProviderContext, diagnosticConsumer, representationLinkResolutionErrorConsumer, pMonitor),
+				contentProviderContext -> (page, baseURI, uriResolver, pMonitor) -> getPageContent(page, baseURI, semanticMapURIResolver(uriResolver), pagesDir, contentProviderContext, progressMonitor),
 				Context.singleton("semantic-map", semanticMap.toString()).compose(context),
 				progressMonitor);
 		
@@ -178,6 +179,34 @@ public class SiteGenerator {
 		
 		return modelResource;
 	}
+	
+	protected BiFunction<Label, URI, URI> semanticMapURIResolver(BiFunction<Label, URI, URI> uriResolver) {		
+		return (label, base) -> {
+			URI ret = uriResolver.apply(label, base);
+			return ret == null ? resolveSemanticMapping(label, base) : ret;
+		};
+	}
+	
+	protected boolean isSemanticMapLink(Link link) {
+		return false;
+	}
+
+	/**
+	 * Resolves URI from a semantic map (external definitions)
+	 * @param label
+	 * @param base
+	 * @return
+	 */
+	protected URI resolveSemanticMapping(Label label, URI base) {
+		if (label instanceof Link && isSemanticMapLink((Link) label)) {
+			String linkLocation = ((Link) label).getLocation();
+			if (!org.nasdanika.common.Util.isBlank(linkLocation)) {
+				URI locationURI = URI.createURI(linkLocation);
+				return base == null || locationURI == null ? locationURI : locationURI.deresolve(base, true, true, true);
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Creates a semantic map of semantic URI's to text, tooltip, and location of pages corresponding to the URI.
@@ -197,29 +226,29 @@ public class SiteGenerator {
 		for (Entry<EObject, Label> re: registry.entrySet()) {
 			for (URI uri: NcoreUtil.getUris(re.getKey())) {
 				Label label = re.getValue();
-				if (label instanceof Link) {
-					URI linkURI = uriResolver.apply(label, baseURI);
-					if (linkURI != null) {
-						JSONObject value = new JSONObject();
-						String labelText = label.getText();
-						if (!org.nasdanika.common.Util.isBlank(labelText)) {
-							value.put("text", labelText);
-						}
-						String labelTooltip = label.getTooltip();
-						if (!org.nasdanika.common.Util.isBlank(labelTooltip)) {
-							value.put("tooltip", labelTooltip);
-						}
-						if (label instanceof Link) {					
-								value.put("location", linkURI.toString());
-						}
-						String labelIcon = label.getIcon();
-						if (!org.nasdanika.common.Util.isBlank(labelIcon)) {
-							value.put("icon", labelIcon);
-						}
-						
-						semanticMap.put(uri.toString(), value);
-					}
+				JSONObject value = new JSONObject();
+				String labelText = label.getText();
+				if (!org.nasdanika.common.Util.isBlank(labelText)) {
+					value.put("text", labelText);
 				}
+				String labelTooltip = label.getTooltip();
+				if (!org.nasdanika.common.Util.isBlank(labelTooltip)) {
+					value.put("tooltip", labelTooltip);
+				}
+				String labelIcon = label.getIcon();
+				if (!org.nasdanika.common.Util.isBlank(labelIcon)) {
+					value.put("icon", labelIcon);
+				}				
+				URI linkURI = uriResolver.apply(label, baseURI);
+				if (linkURI != null) {
+					value.put("location", linkURI.toString());
+				}
+				JSONObject type = new JSONObject();
+				EClass labelClass = label.eClass();
+				type.put("name", labelClass.getName());
+				type.put("ns-uri", labelClass.getEPackage().getNsURI());
+				value.put("type", type);
+				semanticMap.put(uri.toString(), value);
 			}
 		}
 		return semanticMap;

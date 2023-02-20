@@ -20,7 +20,7 @@ app-action:
                 ${representations/aws/diagram}
                 ```
                 
-                Here we go!
+                Here we go: ${semantic-ref/aws://cloud/children/6}
                   
         representations: 
           aws: aws.drawio  

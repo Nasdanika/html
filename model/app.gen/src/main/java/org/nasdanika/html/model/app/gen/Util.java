@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -36,7 +38,11 @@ import javax.xml.transform.TransformerException;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.Diagnostician;
@@ -1516,6 +1522,103 @@ public final class Util {
 			e.getDiagnostic().dump(System.err, 4, Status.FAIL);
 			throw e;
 		}
-	}		
+	}
+	
+	/**
+	 * Loads a semantic map (EObject -> Label) from JSON or YAML resource. The resource is considered to by YAML if its URI ends with .yml or .yaml case insensitive. 
+	 * @param uri Semantic map URI. Link locations in the map are resolved relative to this URI.
+	 * @param factory Factory for creating key {@link EObject}s if map entries have <code>type</code> key. Keys must implement {@link org.nasdanika.ncore.ModelElement} so URI's can be injected into them.
+	 * @return
+	 * @throws IOException 
+	 */
+	@SuppressWarnings("unchecked")
+	public static Map<org.nasdanika.ncore.ModelElement, Label> loadSemanticMap(URI uri, BiFunction<String,String,org.nasdanika.ncore.ModelElement> factory) throws IOException {
+		String lastSegment = uri.lastSegment().toLowerCase();
+		Map<String, Object> semanticMap;
+		if (lastSegment.endsWith(".yml") || lastSegment.endsWith(".yaml")) {
+			Object yamlObj = DefaultConverter.INSTANCE.loadYAML(uri);
+			if (yamlObj instanceof Map) {
+				semanticMap = (Map<String, Object>) yamlObj;						
+			} else {
+				throw new IllegalArgumentException("Not a YAML map at " + uri); 
+			}
+		} else {
+			JSONObject jsonObject = DefaultConverter.INSTANCE.loadJSONObject(uri);
+			semanticMap = jsonObject.toMap();
+		}
+		
+		Map<URI, org.nasdanika.ncore.ModelElement> groupedByLocation = new HashMap<>();
+		Map<org.nasdanika.ncore.ModelElement, Label> ret = new LinkedHashMap<>();
+		for (Entry<String, Object> se: semanticMap.entrySet()) {
+			Map<String, Object> value = (Map<String, Object>) se.getValue();
+			Map<String,String> type = (Map<String, String>) value.get("type");
+			org.nasdanika.ncore.ModelElement semanticElement = null;
+			if (type != null) {
+				semanticElement = factory.apply(type.get("ns-uri"), type.get("name"));
+			}
+			String location = (String) value.get("location");
+			if (org.nasdanika.common.Util.isBlank(location)) {
+				Label label = AppFactory.eINSTANCE.createLabel();
+				label.setText((String) value.get("text"));
+				label.setIcon((String) value.get("icon"));
+				label.setTooltip((String) value.get("tooltip"));
+				if (semanticElement == null) {
+					semanticElement = label;
+				}
+				semanticElement.getUris().add(se.getKey());
+				ret.put(semanticElement, label);
+			} else {
+				URI locationURI = URI.createURI(location).resolve(uri);
+				org.nasdanika.ncore.ModelElement semEl = groupedByLocation.get(uri);
+				if (semEl == null) {
+					Link link = AppFactory.eINSTANCE.createLink();
+					link = AppFactory.eINSTANCE.createLink();
+					link.setText((String) value.get("text"));
+					link.setIcon((String) value.get("icon"));
+					link.setTooltip((String) value.get("tooltip"));
+					link.setLocation(locationURI.toString());
+					if (semanticElement == null) {
+						semanticElement = link;
+					}
+					ret.put(semanticElement, link);
+					groupedByLocation.put(locationURI, semanticElement);
+					semEl = semanticElement;
+				}
+				semEl.getUris().add(se.getKey());
+			}
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * Loads a semantic map (EObject -> Label) from JSON or YAML resource. The resource is considered to by YAML if its URI ends with .yml or .yaml case insensitive. 
+	 * @param uri Semantic map URI. Link locations in the map are resolved relative to this URI.
+	 * @param resouceSet Resource set to use the package registry to create semantic elements.
+	 * @return
+	 * @throws IOException 
+	 */
+	public static Map<org.nasdanika.ncore.ModelElement, Label> loadSemanticMap(URI uri, ResourceSet resourceSet) throws IOException {
+		return loadSemanticMap(uri, (nsURI, name) -> createModelElement(resourceSet, nsURI, name));
+	}
+	
+	private static org.nasdanika.ncore.ModelElement createModelElement(ResourceSet resourceSet, String nsURI, String name) {
+		if (resourceSet == null) {
+			return null;
+		}
+		
+		Registry packageRegisry = resourceSet.getPackageRegistry();
+		EPackage ePkg = packageRegisry.getEPackage(nsURI);
+		if (ePkg == null) {
+			throw new IllegalArgumentException("EPackage not found for namespace URI: " + nsURI);
+		}
+		
+		EClassifier eClassifier = ePkg.getEClassifier(name);
+		if (eClassifier instanceof EClass) {
+			return (org.nasdanika.ncore.ModelElement) ePkg.getEFactoryInstance().create((EClass) eClassifier);
+		}		
+		
+		throw new IllegalArgumentException("EClass '" + name + "' not found for namespace URI: " + nsURI);
+	}
 			
 }

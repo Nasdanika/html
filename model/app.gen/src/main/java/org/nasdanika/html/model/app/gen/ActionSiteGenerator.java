@@ -159,6 +159,11 @@ public class ActionSiteGenerator extends SiteGenerator {
 		return true;
 	}
 
+	/**
+	 * Builds registry from the action and its contained labels.
+	 * @param action
+	 * @param registry
+	 */
 	protected void buildRegistry(Action action, Map<EObject, Label> registry) {
 		if (!registry.containsKey(action)) {
 			registry.put(action, action);
