@@ -221,7 +221,7 @@ public class SiteGenerator {
 		JSONObject semanticMap = new JSONObject();		
 		URI baseURI = URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
 		Context semanticMapContext = Context.singleton(Context.BASE_URI_PROPERTY, baseURI).compose(context);
-		BiFunction<Label, URI, URI> uriResolver = org.nasdanika.html.model.app.util.Util.uriResolver(root, semanticMapContext);				
+		BiFunction<Label, URI, URI> uriResolver = semanticMapURIResolver(org.nasdanika.html.model.app.util.Util.uriResolver(root, semanticMapContext));				
 		
 		for (Entry<EObject, Label> re: registry.entrySet()) {
 			for (URI uri: NcoreUtil.getUris(re.getKey())) {
