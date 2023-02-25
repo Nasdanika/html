@@ -18,4 +18,4 @@ app-action:
     - app-link:
         text: Maven site
         uris: maven-site
-        location: ../maven-site/index.html
+        location: maven-site/index.html
