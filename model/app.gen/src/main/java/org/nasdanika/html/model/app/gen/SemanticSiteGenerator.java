@@ -68,7 +68,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			URI copyURI,
 			Context context, 
 			ProgressMonitor progressMonitor) throws IOException {		
-		ResourceSet resourceSet = Util.createResourceSet(context, progressMonitor);		
+		ResourceSet resourceSet = createSemanticModelResourceSet(context, progressMonitor);		
 		Resource resource = resourceSet.getResource(uri, true);
 
 		if (copyURI == null) {
@@ -101,7 +101,50 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			throw new org.eclipse.emf.common.util.DiagnosticException(instanceDiagnostic);
 		}
 		
-		semanticModelResourceSet.getAdapterFactories().add(new ActionProviderAdapterFactory(context) {
+		semanticModelResourceSet.getAdapterFactories().add(createActionProviderAdapterFactory(context, instanceDiagnostic));
+		
+		ResourceSet actionModelsResourceSet = createResourceSet(context, progressMonitor);
+		
+		org.eclipse.emf.ecore.resource.Resource actionModelResource = actionModelsResourceSet.createResource(actionModelURI);
+		
+		Map<EObject,Label> registry = new HashMap<>();
+		for (EObject semanticElement: semanticModelResource.getContents()) {
+			Action action = EObjectAdaptable.adaptTo(semanticElement, ActionProvider.class).execute(registry::put, progressMonitor);
+			Context uriResolverContext = Context.singleton(Context.BASE_URI_PROPERTY, URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/"));
+			BiFunction<Label, URI, URI> uriResolver = org.nasdanika.html.model.app.util.Util.uriResolver(action, uriResolverContext);
+			Adapter resolver = EcoreUtil.getExistingAdapter(action, EObjectActionResolver.class);
+			if (resolver instanceof EObjectActionResolver) {														
+				org.nasdanika.html.emf.EObjectActionResolver.Context resolverContext = new org.nasdanika.html.emf.EObjectActionResolver.Context() {
+		
+					@Override
+					public URI resolve(Action action, URI base) {
+						return uriResolver.apply(action, base);
+					}
+
+					@Override
+					public Action getAction(Predicate<EObject> semanticElementPredicate) {
+						for (Entry<EObject, Label> re: registry.entrySet()) {
+							if (semanticElementPredicate.test(re.getKey())) {
+								Label label = re.getValue();
+								return label instanceof Action ? (Action) label : null;
+							}						
+						}
+						return null;
+					}
+					
+				};
+				((EObjectActionResolver) resolver).execute(resolverContext, progressMonitor);
+			}
+			actionModelResource.getContents().add(action);
+		}
+		actionModelResource.save(null);
+		
+		return BiSupplier.of(actionModelResource, registry);
+	}
+
+	protected ActionProviderAdapterFactory createActionProviderAdapterFactory(Context context,
+			org.eclipse.emf.common.util.Diagnostic instanceDiagnostic) {
+		return new ActionProviderAdapterFactory(context) {
 			
 			private void collect(Notifier target, org.eclipse.emf.common.util.Diagnostic source, Collection<org.eclipse.emf.common.util.Diagnostic> accumulator) {
 				List<?> data = source.getData();
@@ -144,45 +187,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 				return ret;
 			}
 			
-		});
-		
-		ResourceSet actionModelsResourceSet = createResourceSet(context, progressMonitor);
-		
-		org.eclipse.emf.ecore.resource.Resource actionModelResource = actionModelsResourceSet.createResource(actionModelURI);
-		
-		Map<EObject,Label> registry = new HashMap<>();
-		for (EObject semanticElement: semanticModelResource.getContents()) {
-			Action action = EObjectAdaptable.adaptTo(semanticElement, ActionProvider.class).execute(registry::put, progressMonitor);
-			Context uriResolverContext = Context.singleton(Context.BASE_URI_PROPERTY, URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/"));
-			BiFunction<Label, URI, URI> uriResolver = org.nasdanika.html.model.app.util.Util.uriResolver(action, uriResolverContext);
-			Adapter resolver = EcoreUtil.getExistingAdapter(action, EObjectActionResolver.class);
-			if (resolver instanceof EObjectActionResolver) {														
-				org.nasdanika.html.emf.EObjectActionResolver.Context resolverContext = new org.nasdanika.html.emf.EObjectActionResolver.Context() {
-		
-					@Override
-					public URI resolve(Action action, URI base) {
-						return uriResolver.apply(action, base);
-					}
-
-					@Override
-					public Action getAction(Predicate<EObject> semanticElementPredicate) {
-						for (Entry<EObject, Label> re: registry.entrySet()) {
-							if (semanticElementPredicate.test(re.getKey())) {
-								Label label = re.getValue();
-								return label instanceof Action ? (Action) label : null;
-							}						
-						}
-						return null;
-					}
-					
-				};
-				((EObjectActionResolver) resolver).execute(resolverContext, progressMonitor);
-			}
-			actionModelResource.getContents().add(action);
-		}
-		actionModelResource.save(null);
-		
-		return BiSupplier.of(actionModelResource, registry);
+		};
 	}	
 		
 	/**
