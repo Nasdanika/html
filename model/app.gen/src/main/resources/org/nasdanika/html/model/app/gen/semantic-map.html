@@ -24,6 +24,15 @@
 			          </b-input-group>
 			        </b-form-group>
 			        
+				    <b-form-checkbox
+				      id="uri-checkbox"
+				      v-model="uriField"
+				      name="uri-checkbox"
+				      value="true"
+				    >
+				      URI
+				    </b-form-checkbox>			        
+			        
 				    <b-table striped hover :items="items" :fields="fields">
 				      <template #cell(element)="data">
 				        <a :href="data.value.location">
@@ -56,25 +65,32 @@
 				  data: {
 			        	filter: null,
 			        	semanticMap: ${semantic-map},
-			        	fields: [
+			        	uriField: false
+				  },				  
+				  computed: {			
+					fields: function() {
+			        	let fields = [
 			                {
 			                  key: 'element',
 			                  label: "Element",
 			                  sortable: false
 			                },
 			                {
-			                  key: 'uris',
-			                  label: "URI",
-			                  sortable: true
-			                },
-			                {
 			                  key: 'description',
 			                  label: 'Description',
 			                  sortable: true
 			                }
-			              ]
-				  },				  
-				  computed: {			
+			              ];
+			        	
+			        	if (this.uriField) {
+			        		fields.push(			                {
+				                  key: 'uris',
+				                  label: "URI",
+				                  sortable: true
+				            });
+			        	}
+						return fields;
+					},  
 					items: function() {
 						const grouped = {};
 						for (let uri in this.semanticMap) {
