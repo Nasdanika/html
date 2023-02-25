@@ -42,7 +42,6 @@ public class CompositeActionBuilder<T extends Composite> extends NcoreActionBuil
 		for (Composite child: getTarget().getChildren()) {
 			children.add(createChildAction(child, registry, resolveConsumer, progressMonitor));
 		}
-	}
-	
+	}	
 	
 }
