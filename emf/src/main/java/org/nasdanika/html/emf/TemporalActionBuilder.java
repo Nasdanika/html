@@ -42,19 +42,22 @@ public class TemporalActionBuilder extends NcoreActionBuilder<Temporal> {
 	}
 	
 	@Override
-	protected List<ETypedElement> getProperties() {
-		List<ETypedElement> propertiew = super.getProperties();
-		propertiew.add(NcorePackage.Literals.TEMPORAL__BASE);
-		propertiew.add(NcorePackage.Literals.TEMPORAL__OFFSET);
-		return propertiew;
+	protected List<ETypedElement> getProperties(String type) {
+		List<ETypedElement> properties = super.getProperties(type);
+		if (HEAD_PROPERTY_TABLE_KEY.equals(type)) {
+			properties.add(NcorePackage.Literals.TEMPORAL__BASE);
+			properties.add(NcorePackage.Literals.TEMPORAL__OFFSET);
+		}
+		return properties;
 	}
 	
 	@Override
 	protected Table createPropertiesTable(
 			Action action,
+			String type,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context,
 			ProgressMonitor progressMonitor) {
-		Table propertiesTable = super.createPropertiesTable(action, context, progressMonitor);
+		Table propertiesTable = super.createPropertiesTable(action, type, context, progressMonitor);
 		propertiesTable.getAttributes().put("style", createText("width:auto"));
 		return propertiesTable;
 	}

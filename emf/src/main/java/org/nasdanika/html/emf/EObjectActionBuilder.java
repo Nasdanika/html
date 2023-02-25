@@ -86,6 +86,9 @@ import org.nasdanika.ncore.util.NcoreUtil;
 
 public class EObjectActionBuilder<T extends EObject> extends AdapterImpl implements ActionBuilder {
 	
+	protected static final String INFO_PROPERTY_TABLE_KEY = "info";
+	protected static final String HEAD_PROPERTY_TABLE_KEY = "head";
+	
 	protected org.nasdanika.common.Context context;
 
 	public EObjectActionBuilder(T target, org.nasdanika.common.Context context) {
@@ -328,14 +331,18 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		}
 		
 		// Content
+		Table headPropertiesTable = createPropertiesTable(action, HEAD_PROPERTY_TABLE_KEY, context, progressMonitor);
+		if (headPropertiesTable != null) {
+			action.getContent().add(headPropertiesTable);
+		}
 		
 		// Properties table
-		Table propertiesTable = createPropertiesTable(action, context, progressMonitor);
-		if (propertiesTable != null) {
+		Table infoPropertiesTable = createPropertiesTable(action, INFO_PROPERTY_TABLE_KEY, context, progressMonitor);
+		if (infoPropertiesTable != null) {
 			Action infoAction = AppFactory.eINSTANCE.createAction();
 			infoAction.setIcon("fas fa-info-circle");
 			infoAction.setText("Info");
-			infoAction.getContent().add(propertiesTable);
+			infoAction.getContent().add(infoPropertiesTable);
 			infoAction.setLocation("info." + getHtmlExtension());
 			action.getNavigation().add(infoAction);
 		}
@@ -353,12 +360,13 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	
 	/**
 	 * Creates a properties table from properties
+	 * @param type Table id/discriminator, e.g. "head" or "info"
 	 * @param context
 	 * @param progressMonitor
 	 * @return Table or null if there are no properties.
 	 */
-	protected Table createPropertiesTable(Action action, Context context, ProgressMonitor progressMonitor) {
-		List<ETypedElement> properties = getProperties();
+	protected Table createPropertiesTable(Action action, String type, Context context, ProgressMonitor progressMonitor) {
+		List<ETypedElement> properties = getProperties(type);
 		if (properties == null || properties.isEmpty()) {
 			return null;
 		}
@@ -424,19 +432,26 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		return getTarget().eIsSet((EStructuralFeature) feature);
 	}
 	
-	protected List<ETypedElement> getProperties() {
+	protected List<ETypedElement> getProperties(String type) {	
 		List<ETypedElement> properties = new ArrayList<>();
-		if (getTarget() instanceof Marked) {
-			properties.add(NcorePackage.Literals.MARKED__MARKERS);
-		}
-		if (getTarget() instanceof ModelElement) {
-			properties.add(NcorePackage.Literals.MODEL_ELEMENT__URIS);
-		}
-		if (getTarget() instanceof Period) {
-			properties.add(NcorePackage.Literals.PERIOD__START);
-			properties.add(NcorePackage.Literals.PERIOD__END);
-			properties.add(NcorePackage.Literals.PERIOD__DURATION);
-			
+		switch (type) {
+		case INFO_PROPERTY_TABLE_KEY:
+			// TODO - type
+			if (getTarget() instanceof Marked) {
+				properties.add(NcorePackage.Literals.MARKED__MARKERS);
+			}
+			if (getTarget() instanceof ModelElement) {
+				properties.add(NcorePackage.Literals.MODEL_ELEMENT__URIS);
+			}
+			break;
+		case HEAD_PROPERTY_TABLE_KEY:
+			if (getTarget() instanceof Period) {
+				properties.add(NcorePackage.Literals.PERIOD__START);
+				properties.add(NcorePackage.Literals.PERIOD__END);
+				properties.add(NcorePackage.Literals.PERIOD__DURATION);
+				
+			}
+			break;			
 		}
 //		ret.add(NcorePackage.Literals.MODEL_ELEMENT__UUID);
 		return properties;
