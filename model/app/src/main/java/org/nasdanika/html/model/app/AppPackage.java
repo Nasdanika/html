@@ -110,7 +110,7 @@ public interface AppPackage extends EPackage {
 	int LABEL__UUID = BootstrapPackage.BOOTSTRAP_ELEMENT__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -126,6 +126,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int LABEL__REPRESENTATIONS = BootstrapPackage.BOOTSTRAP_ELEMENT__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LABEL__ANNOTATIONS = BootstrapPackage.BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -318,7 +327,7 @@ public interface AppPackage extends EPackage {
 	int LINK__UUID = LABEL__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -334,6 +343,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK__REPRESENTATIONS = LABEL__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__ANNOTATIONS = LABEL__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -589,7 +607,7 @@ public interface AppPackage extends EPackage {
 	int PAGE__UUID = BootstrapPackage.BOOTSTRAP_ELEMENT__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -605,6 +623,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int PAGE__REPRESENTATIONS = BootstrapPackage.BOOTSTRAP_ELEMENT__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__ANNOTATIONS = BootstrapPackage.BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -761,7 +788,7 @@ public interface AppPackage extends EPackage {
 	int PAGE_PART__UUID = BootstrapPackage.BOOTSTRAP_ELEMENT__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -777,6 +804,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int PAGE_PART__REPRESENTATIONS = BootstrapPackage.BOOTSTRAP_ELEMENT__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE_PART__ANNOTATIONS = BootstrapPackage.BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -879,7 +915,7 @@ public interface AppPackage extends EPackage {
 	int HEADER__UUID = PAGE_PART__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -895,6 +931,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int HEADER__REPRESENTATIONS = PAGE_PART__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HEADER__ANNOTATIONS = PAGE_PART__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1006,7 +1051,7 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_BAR__UUID = PAGE_PART__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1022,6 +1067,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int NAVIGATION_BAR__REPRESENTATIONS = PAGE_PART__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_BAR__ANNOTATIONS = PAGE_PART__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1160,7 +1214,7 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL__UUID = PAGE_PART__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1176,6 +1230,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int NAVIGATION_PANEL__REPRESENTATIONS = PAGE_PART__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NAVIGATION_PANEL__ANNOTATIONS = PAGE_PART__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1323,7 +1386,7 @@ public interface AppPackage extends EPackage {
 	int CONTENT_PANEL__UUID = PAGE_PART__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1339,6 +1402,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_PANEL__REPRESENTATIONS = PAGE_PART__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTENT_PANEL__ANNOTATIONS = PAGE_PART__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1522,7 +1594,7 @@ public interface AppPackage extends EPackage {
 	int FOOTER__UUID = PAGE_PART__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1538,6 +1610,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int FOOTER__REPRESENTATIONS = PAGE_PART__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FOOTER__ANNOTATIONS = PAGE_PART__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1640,7 +1721,7 @@ public interface AppPackage extends EPackage {
 	int ACTION__UUID = LINK__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' reference.
+	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1656,6 +1737,15 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION__REPRESENTATIONS = LINK__REPRESENTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__ANNOTATIONS = LINK__ANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
