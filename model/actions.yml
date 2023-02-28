@@ -10,6 +10,7 @@ app-label:
            - app.drawio/actions.yml
            - app.gen/actions.yml
            - app.gen.maven/actions.yml
+           - app.gen.maven.archetype/actions.yml
      - app-label:
          text: Bootstrap
          uris: bootstrap
