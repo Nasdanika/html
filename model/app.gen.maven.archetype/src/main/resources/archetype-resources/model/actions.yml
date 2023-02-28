@@ -1,0 +1,145 @@
+app-action:
+  icon: https://docs.nasdanika.org/images/nasdanika-logo.png
+  text: Nasdanika
+  location: https://www.nasdanika.org 
+  tooltip: Root action
+  children:
+    - app-action:
+        icon: fab fa-aws
+        text: My AWS Solution
+        location: ${base-uri}index.html 
+        tooltip: Principal action
+        uris: nasdanika://my-aws-solution
+        content:
+          content-markdown: 
+            source:
+              content-text: |+2
+                This is a demo of a web site generated from an action model with representations.
+                Diagram elements below are linked to the pages (actions) of respective components. 
+                
+                ```drawio
+                ${representations/aws/diagram}
+                ```
+                
+                In this demo only this page (then principal action) has a representation.
+                In general there might be multiple representations per action.
+                Connections can also be linked to pages or page sections.
+                
+                ## Table of Contents
+                
+                This table of contents was generated from the diagram.
+                It reflects the containment hierarchy of diagram elements.                
+                
+                ${representations/aws/toc}
+        representations: 
+          aws: aws.drawio  
+        children:
+          - app-action:
+              icon: fas fa-cloud
+              text: AWS Cloud
+              location: cloud/index.html
+              uris: aws://cloud
+              content:
+                content-markdown:
+                  source:
+                    content-resource: readme.md              
+              children:
+                - app-action:
+                    text: S3 Bucket
+                    location: s3.html
+                    uris: aws://services/s3
+                    content:
+                      content-markdown:
+                        source:
+                          content-resource:
+                            location: s3.md
+                            interpolate: true
+                - app-action:
+                    text: CodePipeline
+                    location: code-pipeline.html
+                    uris: aws://services/code-pipeline
+                - app-action:
+                    text: Organizations
+                    location: organizations.html
+                - app-action:
+                    text: Single Sign-on
+                    location: sso.html
+                - app-action:
+                    text: Account Baseline
+                    location: account-baseline.html
+                - app-action:
+                    text: Service Catalog
+                    location: service-catalog.html
+                - app-action:
+                    text: Parameter Store
+                    location: parameter-store.html
+                - app-action:
+                    text: Core OU
+                    location: core-ou.html
+                    uris: core-ou              
+          - app-label:
+              text: Accounts
+              uris: my-solution://accounts
+              children:
+                - app-action:
+                    text: Shared Services
+                    location: accounts/shared-services/index.html
+                    uris: shared-services
+                    children:
+                      - app-action:
+                          text: Account Baseline
+                          location: account-baseline.html
+                      - app-action:
+                          text: VPC
+                          location: vpc.html
+                - app-action:
+                    text: Log Archive
+                    location: accounts/log-archive/index.html
+                    children:
+                      - app-action:
+                          text: Account Baseline
+                          location: account-baseline.html
+                      - app-action:
+                          text: Aggregate CloudTrail and Config Logs
+                          location: cloud-trail-and-config-logs.html
+                - app-action:
+                    text: Security
+                    location: accounts/security/index.html
+                    children:
+                      - app-action:
+                          text: Account Baseline
+                          location: account-baseline.html
+                      - app-action:
+                          text: Security Cross-Account Roles
+                          icon: fas fa-key
+                          location: security-cross-account-roles.html
+                      - app-action:
+                          text: GuardDuty
+                          location: guard-duty.html
+                      - app-action:
+                          text: SNS
+                          tooltip: Simple Notification Service
+                          location: sns.html                      
+    - app-action:
+        location: ${base-uri}search.html
+        icon: fas fa-search
+        text: Search
+        content:
+          content-interpolator:
+            source:
+              content-resource: classpath://org/nasdanika/html/model/app/gen/search.html
+    - app-action:
+        location: ${base-uri}semantic-map.html
+        text: Glossary
+        icon: fas fa-book
+        content:
+          content-interpolator:
+            source:
+              content-resource: classpath://org/nasdanika/html/model/app/gen/semantic-map.html
+  navigation:
+    - app-action:
+        icon: fab fa-github
+        text: Source
+        location: https://github.com/Nasdanika/demo-action-site
+          
+          

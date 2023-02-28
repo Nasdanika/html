@@ -1,14 +1,3 @@
-app-action:
+app-link:
   text: Action Site Generator Maven Plugin
-  location: app/gen.maven/index.html
-  uris: gen/maven
-  navigation:
-    - app-link:
-        text: Javadoc
-        uris: javadoc
-        icon: fab fa-java
-        location: ../../apidocs/org.nasdanika.html.model.app.gen.maven/module-summary.html
-    - app-link:
-        text: Maven site
-        uris: maven-site
-        location: ../../maven-site/model/site-generator-maven-plugin/index.html
+  location: ../../maven-site/model/site-generator-maven-plugin/plugin-info.html
