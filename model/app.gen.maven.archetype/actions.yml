@@ -1,0 +1,5 @@
+app-action:
+  text: Action Site Generator Maven Plugin Archetype
+  location: app/gen.maven.archetype/index.html
+  uris: gen-archetype
+
