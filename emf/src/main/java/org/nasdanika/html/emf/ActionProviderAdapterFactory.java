@@ -1,7 +1,8 @@
 package org.nasdanika.html.emf;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -54,6 +55,13 @@ public class ActionProviderAdapterFactory extends ComposedAdapterFactory {
 					}.asActionProvider()));
 	}
 	
+	protected Diagnostic diagnostic;
+	
+	public ActionProviderAdapterFactory(Context context, Diagnostic diagnostic) {
+		this(context);
+		this.diagnostic = diagnostic;
+	}
+	
 	@Override
 	public Adapter adaptNew(Notifier target, Object type) {
 		if (type == DiagnosticProvider.class) {
@@ -67,14 +75,6 @@ public class ActionProviderAdapterFactory extends ComposedAdapterFactory {
 		return super.isFactoryForType(type) || type == DiagnosticProvider.class;
 	}
 	
-	protected Collection<Diagnostic> getDiagnostic(Notifier target) {
-		return Collections.emptyList();
-	}
-
-	protected Collection<Diagnostic> getFeatureDiagnostic(Notifier target, EStructuralFeature feature) {
-		return Collections.emptyList();
-	}
-	
 	/**
 	 * Allows to customize html extension of actions. E.g. set it to aspx to be servable from OneDrive.
 	 * @return
@@ -82,5 +82,53 @@ public class ActionProviderAdapterFactory extends ComposedAdapterFactory {
 	protected String getHtmlExtension() {
 		return "html";
 	}
+	
+	// Diagnostic
+	private static void collect(Notifier target, org.eclipse.emf.common.util.Diagnostic source, Collection<org.eclipse.emf.common.util.Diagnostic> accumulator) {
+		if (source != null) {
+			List<?> data = source.getData();
+			if (source.getChildren().isEmpty()
+					&& source.getSeverity() > org.eclipse.emf.common.util.Diagnostic.OK 
+					&& data != null 
+					&& data.size() == 1 
+					&& data.get(0) == target) {
+				accumulator.add(source);
+			}
+			for (org.eclipse.emf.common.util.Diagnostic child: source.getChildren()) {
+				collect(target, child, accumulator);
+			}
+		}
+	}
+	
+	protected Collection<org.eclipse.emf.common.util.Diagnostic> getDiagnostic(Notifier target) {
+		Collection<org.eclipse.emf.common.util.Diagnostic> ret = new ArrayList<>();
+		collect(target, diagnostic, ret);
+		return ret;
+	}
+	
+	private static void collect(Notifier target, EStructuralFeature feature, org.eclipse.emf.common.util.Diagnostic source, Collection<org.eclipse.emf.common.util.Diagnostic> accumulator) {
+		if (source != null) {
+			List<?> data = source.getData();
+			if (source.getChildren().isEmpty() 
+					&& source.getSeverity() > org.eclipse.emf.common.util.Diagnostic.OK 
+					&& data != null 
+					&& data.size() > 1 
+					&& data.get(0) == target 
+					&& data.get(1) == feature) {
+				accumulator.add(source);
+			}
+			for (org.eclipse.emf.common.util.Diagnostic child: source.getChildren()) {
+				collect(target, feature, child, accumulator);
+			}
+		}
+	}
+
+	protected Collection<org.eclipse.emf.common.util.Diagnostic> getFeatureDiagnostic(Notifier target, EStructuralFeature feature) {
+		Collection<org.eclipse.emf.common.util.Diagnostic> ret = new ArrayList<>();
+		collect(target, feature, diagnostic, ret);
+		return ret;
+	}
+	
+	
 	
 }
