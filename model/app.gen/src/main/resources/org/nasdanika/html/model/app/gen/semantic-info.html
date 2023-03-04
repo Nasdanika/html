@@ -25,12 +25,21 @@
 			        </b-form-group>
 			        
 				    <b-form-checkbox
-				      id="uri-checkbox"
-				      v-model="uriField"
-				      name="uri-checkbox"
+				      id="identifiers-checkbox"
+				      v-model="identifierField"
+				      name="identifier-checkbox"
 				      value="true"
 				    >
-				      URI
+				      Identifier(s)
+				    </b-form-checkbox>			        
+			        
+				    <b-form-checkbox
+				      id="hideUUID-checkbox"
+				      v-model="hideUUID"
+				      name="hideUUID-checkbox"
+				      value="true"
+				    >
+				      Hide UUID
 				    </b-form-checkbox>			        
 			        
 				    <b-table striped hover :items="items" :fields="fields">
@@ -43,14 +52,14 @@
 				        	{{data.value.name}}
 				        </span>
 				      </template>	
-				      <template #cell(uris)="data">
+				      <template #cell(identifiers)="data">
 				      	<span v-if="data.value.length == 1">
 					        {{data.value[0].value}}
-					        <i class="far fa-copy nsd-copy-to-clipboard" style="cursor:pointer" title="Copy URI to clipboard" :onclick="data.value[0].onClick"></i> 
+					        <i class="far fa-copy nsd-copy-to-clipboard" style="cursor:pointer" title="Copy identifier to clipboard" :onclick="data.value[0].onClick"></i> 
 				      	</span>
 				      	<ul v-else>
 				      		<li v-for="item in data.value">
-						        {{item.value}} <i class="far fa-copy nsd-copy-to-clipboard" style="cursor:pointer" title="Copy URI to clipboard" :onclick="item.onClick"></i> 
+						        {{item.value}} <i class="far fa-copy nsd-copy-to-clipboard" style="cursor:pointer" title="Copy identifier to clipboard" :onclick="item.onClick"></i> 
 				      		</li>
 				      	</ul>
 				      </template>	
@@ -65,7 +74,8 @@
 				  data: {
 			        	filter: null,
 			        	semanticInfo: ${semantic-info},
-			        	uriField: false
+			        	identifierField: false,
+			        	hideUUID: true
 				  },				  
 				  computed: {			
 					fields: function() {
@@ -82,10 +92,10 @@
 			                }
 			              ];
 			        	
-			        	if (this.uriField) {
+			        	if (this.identifierField) {
 			        		fields.push(			                {
-				                  key: 'uris',
-				                  label: "URI",
+				                  key: 'identifiers',
+				                  label: "Identifier(s)",
 				                  sortable: true
 				            });
 			        	}
@@ -96,7 +106,7 @@
 						for (let idx in this.semanticInfo) {
 							let semanticEntry = this.semanticInfo[idx];
 							let entry = {
-								uris: [],
+								identifiers: [],
 								element: {}
 							};
 							
@@ -113,12 +123,15 @@
 								entry.description = semanticEntry.description;
 							}
 							
-							if (semanticEntry.uris) {
-								for (let uIdx in semanticEntry.uris) {
-									let uri = semanticEntry.uris[uIdx];
-									entry.uris.push({
-										value: uri,
-										onClick: "navigator.clipboard.writeText('" + uri +"')"							
+							if (semanticEntry.identifiers) {
+								for (let iIdx in semanticEntry.identifiers) {
+									let identifier = semanticEntry.identifiers[iIdx];
+									if (this.hideUUID && identifier && identifier.startsWith("uuid:")) {
+										continue;
+									}
+									entry.identifiers.push({
+										value: identifier,
+										onClick: "navigator.clipboard.writeText('" + identifier +"')"							
 									});
 								}
 							}
@@ -128,9 +141,9 @@
 						
 						return ret.filter(item => {
 							if (this.filter) {
-								for (let uriItem in item.uris) {
-									let uri = item.uris[uriItem].value;
-									if (uri && uri.toLowerCase().includes(this.filter.toLowerCase())) {
+								for (let identifierItem in item.identifiers) {
+									let identifier = item.identifiers[identifierItem].value;
+									if (identifier && identifier.toLowerCase().includes(this.filter.toLowerCase())) {
 										return true;
 									}									
 								}
