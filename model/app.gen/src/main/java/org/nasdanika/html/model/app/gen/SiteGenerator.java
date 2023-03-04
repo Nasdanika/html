@@ -236,32 +236,34 @@ public class SiteGenerator {
 
 		if (semanticInfoSource != null) {
 			for (Entry<SemanticInfo, ?> nextEntry: semanticInfoSource) {
-				Object nextValue = nextEntry.getValue();
-				if (nextValue instanceof Label) {
-					Label label = (Label) nextValue;
-					SemanticInfo semanticElementAnnotation = nextEntry.getKey();
-					if (semanticElementAnnotation != null) {
-						JSONObject value = semanticElementAnnotation.toJSON();
-						
-						String labelText = label.getText();
-						if (!org.nasdanika.common.Util.isBlank(labelText)) {
-							value.put(ContainerInfo.NAME_KEY, labelText);
-						}
-						String labelTooltip = label.getTooltip();
-						if (!org.nasdanika.common.Util.isBlank(labelTooltip)) {
-							value.put(SemanticInfo.DESCRIPTION_KEY, labelTooltip);
-						}
-						String labelIcon = label.getIcon();
-						if (!org.nasdanika.common.Util.isBlank(labelIcon)) {
-							value.put(SemanticInfo.ICON_KEY, labelIcon);
+				if (nextEntry != null) {
+					Object nextValue = nextEntry.getValue();
+					if (nextValue instanceof Label) {
+						Label label = (Label) nextValue;
+						SemanticInfo semanticElementAnnotation = nextEntry.getKey();
+						if (semanticElementAnnotation != null) {
+							JSONObject value = semanticElementAnnotation.toJSON();
+							
+							String labelText = label.getText();
+							if (!org.nasdanika.common.Util.isBlank(labelText)) {
+								value.put(ContainerInfo.NAME_KEY, labelText);
+							}
+							String labelTooltip = label.getTooltip();
+							if (!org.nasdanika.common.Util.isBlank(labelTooltip)) {
+								value.put(SemanticInfo.DESCRIPTION_KEY, labelTooltip);
+							}
+							String labelIcon = label.getIcon();
+							if (!org.nasdanika.common.Util.isBlank(labelIcon)) {
+								value.put(SemanticInfo.ICON_KEY, labelIcon);
+							}				
+							URI linkURI = uriResolver.apply(label, baseURI);
+							if (linkURI != null) {
+								value.put(SemanticInfo.LOCATION_KEY, linkURI.toString());
+							}
+							
+							semanticInfo.put(value);								
 						}				
-						URI linkURI = uriResolver.apply(label, baseURI);
-						if (linkURI != null) {
-							value.put(SemanticInfo.LOCATION_KEY, linkURI.toString());
-						}
-						
-						semanticInfo.put(value);								
-					}				
+					}
 				}
 			}
 		}
@@ -357,37 +359,39 @@ public class SiteGenerator {
 		
 		if (semanticInfoSource != null) {
 			for (Entry<SemanticInfo, ?> entry: semanticInfoSource) {
-				Object value = entry.getValue();
-				if (value instanceof Label) {
-					Label treeLabel = (Label) value;
-					SemanticInfo semanticElementAnnotation = entry.getKey();
-					if (semanticElementAnnotation != null) {
-						Label label = treeLabel instanceof Link ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
-						String treeLabelText = treeLabel.getText();
-						if (org.nasdanika.common.Util.isBlank(treeLabelText)) {
-							treeLabelText = "(blank)";
-						}
-						label.setText(treeLabelText.length() > maxLength ? treeLabelText.substring(0, maxLength) + "..." : treeLabelText);
-						label.setIcon(treeLabel.getIcon());
-						
-						LabelJsTreeNodeSupplierFactoryAdapter<?> adapter;
-						if (label instanceof Link) {
-							URI bURI = uriResolver.apply(action, (URI) null);
-							URI tURI = uriResolver.apply(treeLabel, bURI);
-							if (tURI != null) {
-								((Link) label).setLocation(tURI.toString());
+				if (entry != null) {
+					Object value = entry.getValue();
+					if (value instanceof Label) {
+						Label treeLabel = (Label) value;
+						SemanticInfo semanticElementAnnotation = entry.getKey();
+						if (semanticElementAnnotation != null) {
+							Label label = treeLabel instanceof Link ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
+							String treeLabelText = treeLabel.getText();
+							if (org.nasdanika.common.Util.isBlank(treeLabelText)) {
+								treeLabelText = "(blank)";
 							}
-							adapter = new LinkJsTreeNodeSupplierFactoryAdapter<Link>((Link) label);
-						} else {
-							adapter = new LabelJsTreeNodeSupplierFactoryAdapter<>(label);				
-						}
-						
-						try {
-							JsTreeNode jsTreeNode = adapter.create(context).execute(progressMonitor);
-							jsTreeNode.attribute(Util.DATA_NSD_LABEL_UUID_ATTRIBUTE, treeLabel.getUuid());
-							nodeMap.put(semanticElementAnnotation, jsTreeNode);
-						} catch (Exception e) {
-							throw new NasdanikaException(e);
+							label.setText(treeLabelText.length() > maxLength ? treeLabelText.substring(0, maxLength) + "..." : treeLabelText);
+							label.setIcon(treeLabel.getIcon());
+							
+							LabelJsTreeNodeSupplierFactoryAdapter<?> adapter;
+							if (label instanceof Link) {
+								URI bURI = uriResolver.apply(action, (URI) null);
+								URI tURI = uriResolver.apply(treeLabel, bURI);
+								if (tURI != null) {
+									((Link) label).setLocation(tURI.toString());
+								}
+								adapter = new LinkJsTreeNodeSupplierFactoryAdapter<Link>((Link) label);
+							} else {
+								adapter = new LabelJsTreeNodeSupplierFactoryAdapter<>(label);				
+							}
+							
+							try {
+								JsTreeNode jsTreeNode = adapter.create(context).execute(progressMonitor);
+								jsTreeNode.attribute(Util.DATA_NSD_LABEL_UUID_ATTRIBUTE, treeLabel.getUuid());
+								nodeMap.put(semanticElementAnnotation, jsTreeNode);
+							} catch (Exception e) {
+								throw new NasdanikaException(e);
+							}
 						}
 					}
 				}
@@ -751,31 +755,33 @@ public class SiteGenerator {
 	
 			if (semanticInfoSource != null) {
 				for (Entry<SemanticInfo, ?> entry: semanticInfoSource) {
-					Object value = entry.getValue();
-					if (value instanceof Label) {
-						Label targetLabel = (Label) value;
-						SemanticInfo semanticElementAnnotation = entry.getKey();
-						if (semanticElementAnnotation != null) {
-							for (URI semanticURI: semanticElementAnnotation.getURIs()) {
-								if (Objects.equals(targetURI, semanticURI)) {
-									Label tLabel = Util.createLabel(targetLabel, action, uriResolver, null, null, false, false, false);
-									SupplierFactory<Tag> tagSupplierFactory = EObjectAdaptable.adaptToSupplierFactory(tLabel, Tag.class, new AppAdapterFactory());
-									Tag tag; 
-									if (tagSupplierFactory == null) {
-										HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
-										URI targetActionURI = uriResolver.apply(targetLabel, bURI);
-										tag = htmlFactory.tag(targetActionURI == null ? TagName.span : TagName.a, spaceIdx == -1 ? targetLabel.getText() : path.substring(spaceIdx + 1));
-										String targetActionTooltip = targetLabel.getTooltip();
-										if (!org.nasdanika.common.Util.isBlank(targetActionTooltip)) {
-											tag.attribute("title", targetActionTooltip);
+					if (entry != null) {
+						Object value = entry.getValue();
+						if (value instanceof Label) {
+							Label targetLabel = (Label) value;
+							SemanticInfo semanticElementAnnotation = entry.getKey();
+							if (semanticElementAnnotation != null) {
+								for (URI semanticURI: semanticElementAnnotation.getURIs()) {
+									if (Objects.equals(targetURI, semanticURI)) {
+										Label tLabel = Util.createLabel(targetLabel, action, uriResolver, null, null, false, false, false);
+										SupplierFactory<Tag> tagSupplierFactory = EObjectAdaptable.adaptToSupplierFactory(tLabel, Tag.class, new AppAdapterFactory());
+										Tag tag; 
+										if (tagSupplierFactory == null) {
+											HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
+											URI targetActionURI = uriResolver.apply(targetLabel, bURI);
+											tag = htmlFactory.tag(targetActionURI == null ? TagName.span : TagName.a, spaceIdx == -1 ? targetLabel.getText() : path.substring(spaceIdx + 1));
+											String targetActionTooltip = targetLabel.getTooltip();
+											if (!org.nasdanika.common.Util.isBlank(targetActionTooltip)) {
+												tag.attribute("title", targetActionTooltip);
+											}
+											if (targetActionURI != null) {
+												tag.attribute("href", targetActionURI.toString());
+											}
+										} else {
+											tag = tagSupplierFactory.create(context).execute(progressMonitor);
 										}
-										if (targetActionURI != null) {
-											tag.attribute("href", targetActionURI.toString());
-										}
-									} else {
-										tag = tagSupplierFactory.create(context).execute(progressMonitor);
+										return tag.toString(); 
 									}
-									return tag.toString(); 
 								}
 							}
 						}
@@ -843,16 +849,18 @@ public class SiteGenerator {
 			URI bURI = uriResolver.apply(action, (URI) null);		
 			if (semanticInfoSource != null) {
 				for (Entry<SemanticInfo, ?> entry: semanticInfoSource) {
-					Object value = entry.getValue();
-					if (value instanceof Label) {
-						Label targetLabel = (Label) value;
-						SemanticInfo semanticElementAnnotation = entry.getKey();
-						if (semanticElementAnnotation != null) {
-							for (URI semanticURI: semanticElementAnnotation.getURIs()) {
-								if (Objects.equals(targetURI, semanticURI)) {
-									URI targetActionURI = uriResolver.apply(targetLabel, bURI);
-									if (targetActionURI != null) {
-										return targetActionURI;
+					if (entry != null) {
+						Object value = entry.getValue();
+						if (value instanceof Label) {
+							Label targetLabel = (Label) value;
+							SemanticInfo semanticElementAnnotation = entry.getKey();
+							if (semanticElementAnnotation != null) {
+								for (URI semanticURI: semanticElementAnnotation.getURIs()) {
+									if (Objects.equals(targetURI, semanticURI)) {
+										URI targetActionURI = uriResolver.apply(targetLabel, bURI);
+										if (targetActionURI != null) {
+											return targetActionURI;
+										}
 									}
 								}
 							}
