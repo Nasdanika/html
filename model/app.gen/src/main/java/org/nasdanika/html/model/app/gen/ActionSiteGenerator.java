@@ -5,22 +5,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
 
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.model.app.Action;
-import org.nasdanika.html.model.app.ActionReference;
-import org.nasdanika.html.model.app.Label;
+import org.nasdanika.ncore.util.SemanticInfo;
 
 /**
  * Generates a web site from an action model as a semantic model.
@@ -36,7 +32,6 @@ public class ActionSiteGenerator extends SiteGenerator {
 	 */
 	protected Resource generateResourceModel(
 			Resource actionResource, 
-			Map<EObject, Label> registry,
 			URI rootActionURI,
 			URI pageTemplateURI,
 			URI resourceURI, 
@@ -57,7 +52,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 		
 		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) actionResource.getResourceSet().getEObject(pageTemplateURI, true);
 		
-		return generateResourceModel(root, registry, pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);
+		return generateResourceModel(root, asIterable(actionResource.getResourceSet(), this::semanticInfo), pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);
 	}	
 	
 	protected Context createContext(ProgressMonitor progressMonitor) {
@@ -106,9 +101,6 @@ public class ActionSiteGenerator extends SiteGenerator {
 				ResourceSet rootActionResourceSet = createResourceSet(context, progressMonitor);
 				Action root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);	
 				
-				Map<EObject,Label> registry = new HashMap<>();
-				buildRegistry(root, registry);
-				
 				org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) rootActionResourceSet.getEObject(pageTemplateURI, true);
 				
 				URI resourceModelsURI = URI.createFileURI(resourceModelsDir.getAbsolutePath() + "/");	
@@ -118,7 +110,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 				
 				Resource resourceModel = generateResourceModel(
 						root, 
-						registry, 
+						semanticInfoSource(rootActionResourceSet), 
 						pageTemplate,
 						resourceURI, 
 						modelName, 
@@ -158,28 +150,15 @@ public class ActionSiteGenerator extends SiteGenerator {
 	protected boolean isDeleteOutputPath(String path) {
 		return true;
 	}
-
+	
 	/**
-	 * Builds registry from the action and its contained labels.
-	 * @param action
-	 * @param registry
+	 * Override to load semantic info from external sources. This implementation iterates over the resource set and returns
+	 * entries created by selfInfo 
+	 * @param resourceSet
+	 * @return
 	 */
-	protected void buildRegistry(Action action, Map<EObject, Label> registry) {
-		if (!registry.containsKey(action)) {
-			registry.put(action, action);
-			TreeIterator<EObject> ait = action.eAllContents();
-			while (ait.hasNext()) {
-				EObject next = ait.next();
-				if (next instanceof Label) {
-					registry.put(next, (Label) next);
-				}
-				if (next instanceof ActionReference) {
-					Action refTarget = ((ActionReference) next).getTarget();
-					registry.put(next, null);
-					buildRegistry(refTarget, registry);
-				}
-			}
-		}
+	protected Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource(ResourceSet resourceSet) {
+		return asIterable(resourceSet, this::semanticInfo);
 	}
 	
 }

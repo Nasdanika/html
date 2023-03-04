@@ -5,25 +5,23 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.PrintStreamProgressMonitor;
@@ -63,7 +61,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 	 * @return Loaded model
 	 * @throws Exception
 	 */
-	protected Resource loadSemanticModel(
+	public Resource loadSemanticModel(
 			URI uri,
 			URI copyURI,
 			Context context, 
@@ -71,6 +69,8 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		ResourceSet resourceSet = createSemanticModelResourceSet(context, progressMonitor);		
 		Resource resource = resourceSet.getResource(uri, true);
 
+		processSemanticModel(resource, context, progressMonitor);
+		
 		if (copyURI == null) {
 			return resource;
 		}
@@ -80,15 +80,24 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		copyResource.save(null);
 		return copyResource;
 	}
+	
+	/**
+	 * Override to processes semantic model. E.g. loads documentation resources and embeds/inlines them as text, embeds/inlines markdown images and diagrams.
+	 * @param resource
+	 * @param context
+	 * @param progressMonitor
+	 */
+	protected void processSemanticModel(Resource resource, Context context, ProgressMonitor progressMonitor) {
+		
+	}
 		
 	/**
 	 * Adapts the semantic model to an action model.
 	 * @throws org.eclipse.emf.common.util.DiagnosticException 
 	 * @throws IOException 
 	 * @throws Exception
-	 */
-	
-	protected BiSupplier<Resource, Map<EObject,Label>>  generateActionModel(
+	 */	
+	public Resource generateActionModel(
 			Resource semanticModelResource,
 			URI actionModelURI,
 			Context context, 
@@ -101,7 +110,9 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			throw new org.eclipse.emf.common.util.DiagnosticException(instanceDiagnostic);
 		}
 		
-		semanticModelResourceSet.getAdapterFactories().add(createActionProviderAdapterFactory(context, instanceDiagnostic));
+		for (org.eclipse.emf.common.notify.AdapterFactory adapterFactory: createActionProviderAdapterFactories(context, instanceDiagnostic)) {
+			semanticModelResourceSet.getAdapterFactories().add(adapterFactory);
+		}
 		
 		ResourceSet actionModelsResourceSet = createResourceSet(context, progressMonitor);
 		
@@ -139,55 +150,11 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		}
 		actionModelResource.save(null);
 		
-		return BiSupplier.of(actionModelResource, registry);
+		return actionModelResource;
 	}
 
-	protected ActionProviderAdapterFactory createActionProviderAdapterFactory(Context context,
-			org.eclipse.emf.common.util.Diagnostic instanceDiagnostic) {
-		return new ActionProviderAdapterFactory(context) {
-			
-			private void collect(Notifier target, org.eclipse.emf.common.util.Diagnostic source, Collection<org.eclipse.emf.common.util.Diagnostic> accumulator) {
-				List<?> data = source.getData();
-				if (source.getChildren().isEmpty()
-						&& source.getSeverity() > org.eclipse.emf.common.util.Diagnostic.OK 
-						&& data != null 
-						&& data.size() == 1 
-						&& data.get(0) == target) {
-					accumulator.add(source);
-				}
-				for (org.eclipse.emf.common.util.Diagnostic child: source.getChildren()) {
-					collect(target, child, accumulator);
-				}
-			}
-			
-			protected Collection<org.eclipse.emf.common.util.Diagnostic> getDiagnostic(Notifier target) {
-				Collection<org.eclipse.emf.common.util.Diagnostic> ret = new ArrayList<>();
-				collect(target, instanceDiagnostic, ret);
-				return ret;
-			}
-			
-			private void collect(Notifier target, EStructuralFeature feature, org.eclipse.emf.common.util.Diagnostic source, Collection<org.eclipse.emf.common.util.Diagnostic> accumulator) {
-				List<?> data = source.getData();
-				if (source.getChildren().isEmpty() 
-						&& source.getSeverity() > org.eclipse.emf.common.util.Diagnostic.OK 
-						&& data != null 
-						&& data.size() > 1 
-						&& data.get(0) == target 
-						&& data.get(1) == feature) {
-					accumulator.add(source);
-				}
-				for (org.eclipse.emf.common.util.Diagnostic child: source.getChildren()) {
-					collect(target, feature, child, accumulator);
-				}
-			}
-
-			protected Collection<org.eclipse.emf.common.util.Diagnostic> getFeatureDiagnostic(Notifier target, EStructuralFeature feature) {
-				Collection<org.eclipse.emf.common.util.Diagnostic> ret = new ArrayList<>();
-				collect(target, feature, instanceDiagnostic, ret);
-				return ret;
-			}
-			
-		};
+	protected List<org.eclipse.emf.common.notify.AdapterFactory> createActionProviderAdapterFactories(Context context, org.eclipse.emf.common.util.Diagnostic instanceDiagnostic) {
+		return Collections.singletonList(new ActionProviderAdapterFactory(context, instanceDiagnostic));
 	}	
 		
 	/**
@@ -197,7 +164,6 @@ public class SemanticSiteGenerator extends SiteGenerator {
 	 */
 	protected Resource generateResourceModel(
 			Resource actionResource, 
-			Map<EObject, Label> registry,
 			URI rootActionURI,
 			URI pageTemplateURI,
 			URI resourceURI, 
@@ -218,7 +184,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		
 		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) actionResource.getResourceSet().getEObject(pageTemplateURI, true);
 		
-		return generateResourceModel(root, registry, pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);
+		return generateResourceModel(root, asIterable(actionResource, this::semanticInfo), pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);
 	}		
 	
 	protected MutableContext createContext(ProgressMonitor progressMonitor) {
@@ -278,7 +244,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 				
 				URI actionModelsURI = URI.createFileURI(actionModelsDir.getAbsolutePath() + "/");	
 				URI actionModelURI = URI.createURI(modelName + ".xml").resolve(actionModelsURI);
-				BiSupplier<Resource, Map<EObject, Label>> rootActionAndRegistry = generateActionModel(semanticModelResource, actionModelURI, context, progressMonitor.split("Generating action model", 1));
+				Resource actionResource = generateActionModel(semanticModelResource, actionModelURI, context, progressMonitor.split("Generating action model", 1));
 				
 				URI resourceModelsURI = URI.createFileURI(resourceModelsDir.getAbsolutePath() + "/");	
 				URI resourceURI = URI.createURI(modelName + ".xml").resolve(resourceModelsURI);
@@ -286,8 +252,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 				Map<String, Collection<String>> errors = new TreeMap<>();
 
 				Resource resourceModel = generateResourceModel(
-						rootActionAndRegistry.getFirst(), 
-						rootActionAndRegistry.getSecond(), 
+						actionResource, 
 						rootActionURI,
 						pageTemplateURI,
 						resourceURI, 

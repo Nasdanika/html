@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -30,11 +30,10 @@ import java.util.stream.Stream;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.apache.commons.text.StringEscapeUtils;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -42,6 +41,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.nasdanika.common.Context;
@@ -78,9 +78,12 @@ import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.html.gen.ContentConsumer;
-import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.NcorePackage;
+import org.nasdanika.ncore.util.ContainerInfo;
 import org.nasdanika.ncore.util.NcoreUtil;
+import org.nasdanika.ncore.util.SemanticIdentity;
+import org.nasdanika.ncore.util.SemanticInfo;
+import org.nasdanika.ncore.util.SemanticMap;
 import org.nasdanika.persistence.Marker;
 import org.nasdanika.resources.FileSystemContainer;
 import org.w3c.dom.Attr;
@@ -92,6 +95,14 @@ import org.yaml.snakeyaml.Yaml;
 import com.redfin.sitemapgenerator.ChangeFreq;
 
 public class SiteGenerator {
+	
+	/**
+	 * Override to return contributors
+	 * @return
+	 */
+	protected List<SiteGeneratorContributor> getContribuors() {
+		return Collections.emptyList();
+	}
 	
 	/**
 	 * Creates a resource set for loading models.
@@ -110,7 +121,7 @@ public class SiteGenerator {
 	 */
 	protected Resource generateResourceModel(
 			Action root, 
-			Map<EObject, Label> registry,
+			Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource,
 			org.nasdanika.html.model.bootstrap.Page pageTemplate,
 			URI resourceURI, 
 			String containerName,
@@ -144,11 +155,11 @@ public class SiteGenerator {
 		File pagesDir = new File(resourceWorkDir, "pages");
 		pagesDir.mkdirs();
 		
-		JSONObject semanticMap = semanticMap(root, registry, context);
-		if (semanticMap != null) {
-			org.nasdanika.exec.resources.File semanticMapFile = container.getFile("semantic-map.json");
+		JSONArray semanticInfo = semanticInfo(root, semanticInfoSource, context);
+		if (semanticInfo != null) {
+			org.nasdanika.exec.resources.File semanticMapFile = container.getFile("semantic-info.json");
 			Text semanticMapText = ContentFactory.eINSTANCE.createText();
-			semanticMapText.setContent(semanticMap.toString(4));
+			semanticMapText.setContent(semanticInfo.toString(4));
 			semanticMapFile.getContents().add(semanticMapText);
 		}
 		
@@ -156,9 +167,9 @@ public class SiteGenerator {
 				root, 
 				pageTemplate,
 				container,
-				contentProviderContext -> (cAction, uriResolver, pMonitor) -> getActionContent(cAction, semanticMapURIResolver(uriResolver), registry, resourceWorkDir, contentProviderContext, diagnosticConsumer, representationLinkResolutionErrorConsumer, pMonitor),
-				contentProviderContext -> (page, baseURI, uriResolver, pMonitor) -> getPageContent(page, baseURI, semanticMapURIResolver(uriResolver), pagesDir, contentProviderContext, progressMonitor),
-				Context.singleton("semantic-map", semanticMap.toString()).compose(context),
+				contentProviderContext -> (cAction, uriResolver, pMonitor) -> getActionContent(cAction, semanticInfoURIResolver(uriResolver), semanticInfoSource, resourceWorkDir, contentProviderContext, diagnosticConsumer, representationLinkResolutionErrorConsumer, pMonitor),
+				contentProviderContext -> (page, baseURI, uriResolver, pMonitor) -> getPageContent(page, baseURI, semanticInfoURIResolver(uriResolver), pagesDir, contentProviderContext, progressMonitor),
+				Context.singleton("semantic-info", semanticInfo.toString()).compose(context),
 				progressMonitor);
 		
 		modelResource.save(null);
@@ -180,25 +191,25 @@ public class SiteGenerator {
 		return modelResource;
 	}
 	
-	protected BiFunction<Label, URI, URI> semanticMapURIResolver(BiFunction<Label, URI, URI> uriResolver) {		
+	protected BiFunction<Label, URI, URI> semanticInfoURIResolver(BiFunction<Label, URI, URI> uriResolver) {		
 		return (label, base) -> {
 			URI ret = uriResolver.apply(label, base);
-			return ret == null ? resolveSemanticMapping(label, base) : ret;
+			return ret == null ? resolveSemanticInfo(label, base) : ret;
 		};
 	}
 	
-	protected boolean isSemanticMapLink(Link link) {
+	protected boolean isSemanticInfoLink(Link link) {
 		return false;
 	}
 
 	/**
-	 * Resolves URI from a semantic map (external definitions)
+	 * Resolves URI from a semantic info (external definitions)
 	 * @param label
 	 * @param base
 	 * @return
 	 */
-	protected URI resolveSemanticMapping(Label label, URI base) {
-		if (label instanceof Link && isSemanticMapLink((Link) label)) {
+	protected URI resolveSemanticInfo(Label label, URI base) {
+		if (label instanceof Link && isSemanticInfoLink((Link) label)) {
 			String linkLocation = ((Link) label).getLocation();
 			if (!org.nasdanika.common.Util.isBlank(linkLocation)) {
 				URI locationURI = URI.createURI(linkLocation);
@@ -209,49 +220,52 @@ public class SiteGenerator {
 	}
 
 	/**
-	 * Creates a semantic map of semantic URI's to text, tooltip, and location of pages corresponding to the URI.
+	 * Creates a semantic info array.
 	 * Override to create aggregated semantic maps.
 	 * @param root
 	 * @param registry
 	 * @param context
 	 * @return
 	 */
-	protected JSONObject semanticMap(Action root, Map<EObject, Label> registry, Context context) {
-		// Semantic map
-		JSONObject semanticMap = new JSONObject();		
+	protected JSONArray semanticInfo(Action root, Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource, Context context) {
+		// Semantic info
+		JSONArray semanticInfo = new JSONArray();		
 		URI baseURI = URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
 		Context semanticMapContext = Context.singleton(Context.BASE_URI_PROPERTY, baseURI).compose(context);
-		BiFunction<Label, URI, URI> uriResolver = semanticMapURIResolver(org.nasdanika.html.model.app.util.Util.uriResolver(root, semanticMapContext));				
-		
-		for (Entry<EObject, Label> re: registry.entrySet()) {
-			for (URI uri: NcoreUtil.getUris(re.getKey())) {
-				Label label = re.getValue();
-				JSONObject value = new JSONObject();
-				String labelText = label.getText();
-				if (!org.nasdanika.common.Util.isBlank(labelText)) {
-					value.put("text", labelText);
+		BiFunction<Label, URI, URI> uriResolver = semanticInfoURIResolver(org.nasdanika.html.model.app.util.Util.uriResolver(root, semanticMapContext));		
+
+		if (semanticInfoSource != null) {
+			for (Entry<SemanticInfo, ?> nextEntry: semanticInfoSource) {
+				Object nextValue = nextEntry.getValue();
+				if (nextValue instanceof Label) {
+					Label label = (Label) nextValue;
+					SemanticInfo semanticElementAnnotation = nextEntry.getKey();
+					if (semanticElementAnnotation != null) {
+						JSONObject value = semanticElementAnnotation.toJSON();
+						
+						String labelText = label.getText();
+						if (!org.nasdanika.common.Util.isBlank(labelText)) {
+							value.put(ContainerInfo.NAME_KEY, labelText);
+						}
+						String labelTooltip = label.getTooltip();
+						if (!org.nasdanika.common.Util.isBlank(labelTooltip)) {
+							value.put(SemanticInfo.DESCRIPTION_KEY, labelTooltip);
+						}
+						String labelIcon = label.getIcon();
+						if (!org.nasdanika.common.Util.isBlank(labelIcon)) {
+							value.put(SemanticInfo.ICON_KEY, labelIcon);
+						}				
+						URI linkURI = uriResolver.apply(label, baseURI);
+						if (linkURI != null) {
+							value.put(SemanticInfo.LOCATION_KEY, linkURI.toString());
+						}
+						
+						semanticInfo.put(value);								
+					}				
 				}
-				String labelTooltip = label.getTooltip();
-				if (!org.nasdanika.common.Util.isBlank(labelTooltip)) {
-					value.put("tooltip", labelTooltip);
-				}
-				String labelIcon = label.getIcon();
-				if (!org.nasdanika.common.Util.isBlank(labelIcon)) {
-					value.put("icon", labelIcon);
-				}				
-				URI linkURI = uriResolver.apply(label, baseURI);
-				if (linkURI != null) {
-					value.put("location", linkURI.toString());
-				}
-				JSONObject type = new JSONObject();
-				EClass labelClass = label.eClass();
-				type.put("name", labelClass.getName());
-				type.put("ns-uri", labelClass.getEPackage().getNsURI());
-				value.put("type", type);
-				semanticMap.put(uri.toString(), value);
 			}
 		}
-		return semanticMap;
+		return semanticInfo;
 	}
 	
 	/**
@@ -292,135 +306,152 @@ public class SiteGenerator {
 		}		
 	}
 	
-	/**
-	 * Filters registry entries for inclusion into the search site map tree. 
-	 * This implementation returns true if a semantic element is mapped to an action or one of its descendants is mapped to an active, i.e. an intermediate node is required to put that child into the tree.
-	 * @param semanticElement
-	 * @param label
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	protected boolean isSiteMapTreeNode(EObject semanticElement, Label label, Map<EObject, Label> registry) {
-		// Action with location
-		if (label instanceof Action && !org.nasdanika.common.Util.isBlank(((Action) label).getLocation())) {
-			return true;
-		}
-		
-		for (EReference eRef: semanticElement.eClass().getEAllReferences()) {
-			if (isParentReference(eRef)) {
-				Object eRefValue = semanticElement.eGet(eRef);
-				for (Object ve: eRefValue instanceof Collection ? (Collection<Object>) eRefValue : Collections.singletonList(eRefValue)) {
-					if (ve instanceof EObject && isSiteMapTreeNode((EObject) ve, registry.get(ve), registry)) {
-						return true;
-					}
-				}
+	private static <K,V> Map.Entry<K, V> mapEntry(K key, V value) {
+		return new Entry<K, V>() {
+
+			@Override
+			public K getKey() {
+				return key;
 			}
-		}
-				
-		return false;
+
+			@Override
+			public V getValue() {
+				return value;
+			}
+
+			@Override
+			public V setValue(V value) {
+				throw new UnsupportedOperationException();
+			}
+			
+		};
 	}
 	
+	// Helper method
+	private static String containmentRef(SemanticIdentity se) {
+		if (se instanceof SemanticInfo) {
+			ContainerInfo cInfo = ((SemanticInfo) se).getContainerInfo();
+			if (cInfo != null) {
+				return cInfo.getName();
+			}
+		}
+		return null;
+	}
+		
 	/**
 	 * Computes site map tree script - context property computer
 	 * @param context
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	protected String computeSiteMapTreeScript(
 			Context context, 
 			Action action, 
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Label> registry,
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			ProgressMonitor progressMonitor) {
 		// TODO - actions from action prototype, e.g. Ecore doc actions, to the tree.
 		
 		JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);
 		int maxLength = 50;
-		Map<EObject, JsTreeNode> nodeMap = new HashMap<>();
-		for (Entry<EObject, Label> re: registry.entrySet().stream().filter(e -> isSiteMapTreeNode(e.getKey(), e.getValue(), registry)).collect(Collectors.toList())) {
-			Label treeLabel = re.getValue();			
-			EObject key = re.getKey();
-			if (treeLabel == null) {
-				JsTreeNode jsTreeNode = jsTreeFactory.jsTreeNode();
-				String nodeText;
-				if (key instanceof NamedElement) {
-					nodeText = StringEscapeUtils.escapeHtml4(((NamedElement) key).getName());
-				} else {
-					nodeText = key.eClass().getName();
-				}
-				if (org.nasdanika.common.Util.isBlank(nodeText)) {
-					nodeText = "(blank)";
-				}
-				jsTreeNode.text(nodeText.length() > maxLength ? nodeText.substring(0, maxLength) + "..." : nodeText);
-				nodeMap.put(key, jsTreeNode);
-			} else {			
-				Label label = treeLabel instanceof Link ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
-				String treeLabelText = treeLabel.getText();
-				if (org.nasdanika.common.Util.isBlank(treeLabelText)) {
-					treeLabelText = "(blank)";
-				}
-				label.setText(treeLabelText.length() > maxLength ? treeLabelText.substring(0, maxLength) + "..." : treeLabelText);
-				label.setIcon(treeLabel.getIcon());
-				
-				LabelJsTreeNodeSupplierFactoryAdapter<?> adapter;
-				if (label instanceof Link) {
-					URI bURI = uriResolver.apply(action, (URI) null);
-					URI tURI = uriResolver.apply(treeLabel, bURI);
-					if (tURI != null) {
-						((Link) label).setLocation(tURI.toString());
-					}
-					adapter = new LinkJsTreeNodeSupplierFactoryAdapter<Link>((Link) label);
-				} else {
-					adapter = new LabelJsTreeNodeSupplierFactoryAdapter<>(label);				
-				}
-				
-				try {
-					JsTreeNode jsTreeNode = adapter.create(context).execute(progressMonitor);
-					jsTreeNode.attribute(Util.DATA_NSD_LABEL_UUID_ATTRIBUTE, treeLabel.getUuid());
-					nodeMap.put(key, jsTreeNode);
-				} catch (Exception e) {
-					throw new NasdanikaException(e);
-				}
-			}
-		}
+		SemanticMap<JsTreeNode> nodeMap = new SemanticMap<>();
 		
-		// Organizing JsTreeNodes into a tree.
-		Map<EObject, JsTreeNode> roots = new HashMap<>(nodeMap);
-		
-		Map<EObject,Map<String,List<JsTreeNode>>> refMap = new HashMap<>();
-		for (EObject eObj: new ArrayList<>(nodeMap.keySet())) {
-			Map<String,List<JsTreeNode>> rMap = new TreeMap<>();					
-			for (EReference eRef: eObj.eClass().getEAllReferences()) {
-				if (isParentReference(eRef)) {
-					Object eRefValue = eObj.eGet(eRef);
-					List<JsTreeNode> refNodes = new ArrayList<>();
-					for (Object ve: eRefValue instanceof Collection ? (Collection<Object>) eRefValue : Collections.singletonList(eRefValue)) {
-						JsTreeNode refNode = roots.remove(ve);
-						if (refNode != null) {
-							refNodes.add(refNode);
+		if (semanticInfoSource != null) {
+			for (Entry<SemanticInfo, ?> entry: semanticInfoSource) {
+				Object value = entry.getValue();
+				if (value instanceof Label) {
+					Label treeLabel = (Label) value;
+					SemanticInfo semanticElementAnnotation = entry.getKey();
+					if (semanticElementAnnotation != null) {
+						Label label = treeLabel instanceof Link ? AppFactory.eINSTANCE.createLink() : AppFactory.eINSTANCE.createLabel();
+						String treeLabelText = treeLabel.getText();
+						if (org.nasdanika.common.Util.isBlank(treeLabelText)) {
+							treeLabelText = "(blank)";
+						}
+						label.setText(treeLabelText.length() > maxLength ? treeLabelText.substring(0, maxLength) + "..." : treeLabelText);
+						label.setIcon(treeLabel.getIcon());
+						
+						LabelJsTreeNodeSupplierFactoryAdapter<?> adapter;
+						if (label instanceof Link) {
+							URI bURI = uriResolver.apply(action, (URI) null);
+							URI tURI = uriResolver.apply(treeLabel, bURI);
+							if (tURI != null) {
+								((Link) label).setLocation(tURI.toString());
+							}
+							adapter = new LinkJsTreeNodeSupplierFactoryAdapter<Link>((Link) label);
+						} else {
+							adapter = new LabelJsTreeNodeSupplierFactoryAdapter<>(label);				
+						}
+						
+						try {
+							JsTreeNode jsTreeNode = adapter.create(context).execute(progressMonitor);
+							jsTreeNode.attribute(Util.DATA_NSD_LABEL_UUID_ATTRIBUTE, treeLabel.getUuid());
+							nodeMap.put(semanticElementAnnotation, jsTreeNode);
+						} catch (Exception e) {
+							throw new NasdanikaException(e);
 						}
 					}
-					if (!refNodes.isEmpty()) {
-						rMap.put(org.nasdanika.common.Util.nameToLabel(eRef.getName()) , refNodes);
-					}
 				}
-			}
-			if (!rMap.isEmpty()) {
-				refMap.put(eObj, rMap);
 			}
 		}
 		
-		for (Entry<EObject, JsTreeNode> ne: nodeMap.entrySet()) {
-			Map<String, List<JsTreeNode>> refs = refMap.get(ne.getKey());
-			if (refs != null) {
-				for (Entry<String, List<JsTreeNode>> ref: refs.entrySet()) {
-					JsTreeNode refNode = jsTreeFactory.jsTreeNode();
-					refNode.text(ref.getKey());
-					refNode.children().addAll(ref.getValue());
-					ne.getValue().children().add(refNode);
-				}
-			}
-		}
+		Map<ContainerInfo, List<Entry<SemanticIdentity, JsTreeNode>>> groupedByContainer = org.nasdanika.common.Util.groupBy(nodeMap.entrySet(), sea -> sea instanceof SemanticInfo ? ((SemanticInfo) sea.getKey()).getContainerInfo() : null);
+		Map<ContainerInfo, Map<String, List<Entry<SemanticIdentity, JsTreeNode>>>> groupedByContainerAndReferenceName = new LinkedHashMap<>();
+		groupedByContainer
+			.entrySet()
+			.stream()
+			.map(e -> mapEntry(e.getKey(), org.nasdanika.common.Util.groupBy(e.getValue(), ve -> SiteGenerator.containmentRef(ve.getKey()))))
+			.forEach(e -> groupedByContainerAndReferenceName.put(e.getKey(), e.getValue()));
+		
+		// Organizing JsTreeNodes into a tree.
+		Map<SemanticIdentity, JsTreeNode> roots = new HashMap<>();
+		
+		// TODO - iterate over grouped, create JSNodes for references, ...
+//		
+//		Map<SemanticElementIdentity,Map<String,List<JsTreeNode>>> refMap = new HashMap<>();
+//		Map<String,Map<String,List<JsTreeNode>>> orphans = new HashMap<>();
+//		
+//		for (SemanticElementAnnotation semanticElementAnnotation: new ArrayList<>(nodeMap.keySet())) {
+//			// Finding parent container and containment reference
+//			ContainerInfo containerInfo = semanticElementAnnotation.getContainerInfo();
+//			if (containerInfo != null) {
+//				
+//				
+//				String refName = containerInfo.getReference();
+//			}
+//			
+//			
+//			Map<String,List<JsTreeNode>> rMap = new TreeMap<>();					
+//			for (EReference eRef: eObj.eClass().getEAllReferences()) {
+//				if (isParentReference(eRef)) {
+//					Object eRefValue = eObj.eGet(eRef);
+//					List<JsTreeNode> refNodes = new ArrayList<>();
+//					for (Object ve: eRefValue instanceof Collection ? (Collection<Object>) eRefValue : Collections.singletonList(eRefValue)) {
+//						JsTreeNode refNode = roots.remove(ve);
+//						if (refNode != null) {
+//							refNodes.add(refNode);
+//						}
+//					}
+//					if (!refNodes.isEmpty()) {
+//						rMap.put(org.nasdanika.common.Util.nameToLabel(eRef.getName()) , refNodes);
+//					}
+//				}
+//			}
+//			if (!rMap.isEmpty()) {
+//				refMap.put(eObj, rMap);
+//			}
+//		}
+//		
+//		for (Entry<EObject, JsTreeNode> ne: nodeMap.entrySet()) {
+//			Map<String, List<JsTreeNode>> refs = refMap.get(ne.getKey());
+//			if (refs != null) {
+//				for (Entry<String, List<JsTreeNode>> ref: refs.entrySet()) {
+//					JsTreeNode refNode = jsTreeFactory.jsTreeNode();
+//					refNode.text(ref.getKey());
+//					refNode.children().addAll(ref.getValue());
+//					ne.getValue().children().add(refNode);
+//				}
+//			}
+//		}
 		
 		JSONObject jsTree = jsTreeFactory.buildJsTree(roots.values());
 
@@ -517,7 +548,7 @@ public class SiteGenerator {
 	}
 	
 	/**
-	 * Computes a table of contents for a Drawio element
+	 * Computes a info YAML dump for a Drawio element
 	 * @param element
 	 * @param context
 	 * @return
@@ -700,52 +731,71 @@ public class SiteGenerator {
 			String key, 
 			String path, 
 			Action action,
-			URI baseSemanticURI,
+			Collection<URI> baseSemanticURIs,
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Label> registry,
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			Consumer<String> propertyResolutionErrorConsumer,
 			ProgressMonitor progressMonitor) {
 		int spaceIdx = path.indexOf(' ');
-		URI targetURI = URI.createURI(spaceIdx == -1 ? path : path.substring(0, spaceIdx));
-		if (baseSemanticURI != null && targetURI.isRelative()) {
-			targetURI = targetURI.resolve(baseSemanticURI.appendSegment(""));
-		}	
-		URI bURI = uriResolver.apply(action, (URI) null);						
-		for (Entry<EObject, Label> registryEntry: registry.entrySet()) {
-			for (URI semanticURI: NcoreUtil.getUris(registryEntry.getKey())) {
-				if (Objects.equals(targetURI, semanticURI)) {
-					Label targetLabel = registryEntry.getValue();
-					Label tLabel = Util.createLabel(targetLabel, action, uriResolver, null, null, false, false, false);
-					SupplierFactory<Tag> tagSupplierFactory = EObjectAdaptable.adaptToSupplierFactory(tLabel, Tag.class, new AppAdapterFactory());
-					Tag tag; 
-					if (tagSupplierFactory == null) {
-						HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
-						URI targetActionURI = uriResolver.apply(targetLabel, bURI);
-						tag = htmlFactory.tag(targetActionURI == null ? TagName.span : TagName.a, spaceIdx == -1 ? targetLabel.getText() : path.substring(spaceIdx + 1));
-						String targetActionTooltip = targetLabel.getTooltip();
-						if (!org.nasdanika.common.Util.isBlank(targetActionTooltip)) {
-							tag.attribute("title", targetActionTooltip);
+		String targetUriStr = spaceIdx == -1 ? path : path.substring(0, spaceIdx);
+
+		if (baseSemanticURIs == null || baseSemanticURIs.isEmpty()) {
+			baseSemanticURIs = Collections.singleton(null);
+		}
+		for (URI baseSemanticURI: baseSemanticURIs) {
+			URI targetURI = URI.createURI(targetUriStr);
+			if (baseSemanticURI != null && targetURI.isRelative()) {
+				targetURI = targetURI.resolve(baseSemanticURI.appendSegment(""));
+			}	
+			URI bURI = uriResolver.apply(action, (URI) null);				
+	
+			if (semanticInfoSource != null) {
+				for (Entry<SemanticInfo, ?> entry: semanticInfoSource) {
+					Object value = entry.getValue();
+					if (value instanceof Label) {
+						Label targetLabel = (Label) value;
+						SemanticInfo semanticElementAnnotation = entry.getKey();
+						if (semanticElementAnnotation != null) {
+							for (URI semanticURI: semanticElementAnnotation.getURIs()) {
+								if (Objects.equals(targetURI, semanticURI)) {
+									Label tLabel = Util.createLabel(targetLabel, action, uriResolver, null, null, false, false, false);
+									SupplierFactory<Tag> tagSupplierFactory = EObjectAdaptable.adaptToSupplierFactory(tLabel, Tag.class, new AppAdapterFactory());
+									Tag tag; 
+									if (tagSupplierFactory == null) {
+										HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
+										URI targetActionURI = uriResolver.apply(targetLabel, bURI);
+										tag = htmlFactory.tag(targetActionURI == null ? TagName.span : TagName.a, spaceIdx == -1 ? targetLabel.getText() : path.substring(spaceIdx + 1));
+										String targetActionTooltip = targetLabel.getTooltip();
+										if (!org.nasdanika.common.Util.isBlank(targetActionTooltip)) {
+											tag.attribute("title", targetActionTooltip);
+										}
+										if (targetActionURI != null) {
+											tag.attribute("href", targetActionURI.toString());
+										}
+									} else {
+										tag = tagSupplierFactory.create(context).execute(progressMonitor);
+									}
+									return tag.toString(); 
+								}
+							}
 						}
-						if (targetActionURI != null) {
-							tag.attribute("href", targetActionURI.toString());
-						}
-					} else {
-						tag = tagSupplierFactory.create(context).execute(progressMonitor);
 					}
-					return tag.toString(); 
 				}
 			}
-		}
-		String semanticLink = computeSemanticLink(targetURI, bURI, context);
-		if (semanticLink == null) {
-			String message = "Unresolved semantic URI: " + targetURI;
-			progressMonitor.worked(Status.ERROR, 1, message, action);
-			if (propertyResolutionErrorConsumer != null) {
-				propertyResolutionErrorConsumer.accept(message);
+					
+			String semanticLink = computeSemanticLink(targetURI, bURI, context);
+			if (semanticLink != null) {
+				return semanticLink;
 			}
 		}
 		
-		return semanticLink;
+		String message = "Unresolved semantic URI: " + targetUriStr;
+		progressMonitor.worked(Status.ERROR, 1, message, action);
+		if (propertyResolutionErrorConsumer != null) {
+			propertyResolutionErrorConsumer.accept(message);
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -776,37 +826,54 @@ public class SiteGenerator {
 			String key, 
 			String path,
 			Action action,
-			URI baseSemanticURI,
+			Collection<URI> baseSemanticURIs,
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Label> registry,
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			Consumer<String> propertyResolutionErrorConsumer,
 			ProgressMonitor progressMonitor) {
 
-		URI targetURI = URI.createURI(path);
-		if (baseSemanticURI != null && targetURI.isRelative()) {
-			targetURI = targetURI.resolve(baseSemanticURI.appendSegment(""));
-		}	
-		URI bURI = uriResolver.apply(action, (URI) null);						
-		for (Entry<EObject, Label> registryEntry: registry.entrySet()) {
-			for (URI semanticURI: NcoreUtil.getUris(registryEntry.getKey())) {
-				if (Objects.equals(targetURI, semanticURI)) {
-					Label targetLabel = registryEntry.getValue();
-					URI targetActionURI = uriResolver.apply(targetLabel, bURI);
-					if (targetActionURI != null) {
-						return targetActionURI;
+		if (baseSemanticURIs == null || baseSemanticURIs.isEmpty()) {
+			baseSemanticURIs = Collections.singleton(null);
+		}
+		for (URI baseSemanticURI: baseSemanticURIs) {
+			URI targetURI = URI.createURI(path);
+			if (baseSemanticURI != null && targetURI.isRelative()) {
+				targetURI = targetURI.resolve(baseSemanticURI.appendSegment(""));
+			}	
+			URI bURI = uriResolver.apply(action, (URI) null);		
+			if (semanticInfoSource != null) {
+				for (Entry<SemanticInfo, ?> entry: semanticInfoSource) {
+					Object value = entry.getValue();
+					if (value instanceof Label) {
+						Label targetLabel = (Label) value;
+						SemanticInfo semanticElementAnnotation = entry.getKey();
+						if (semanticElementAnnotation != null) {
+							for (URI semanticURI: semanticElementAnnotation.getURIs()) {
+								if (Objects.equals(targetURI, semanticURI)) {
+									URI targetActionURI = uriResolver.apply(targetLabel, bURI);
+									if (targetActionURI != null) {
+										return targetActionURI;
+									}
+								}
+							}
+						}
 					}
 				}
 			}
-		}
-		URI ref = computeSemanticReference(targetURI, context);		
-		if (ref == null) {
-			String message = "Unresolved semantic URI: " + targetURI;
-			progressMonitor.worked(Status.ERROR, 1, message, action);
-			if (propertyResolutionErrorConsumer != null) {
-				propertyResolutionErrorConsumer.accept(message);
+			
+			URI ref = computeSemanticReference(targetURI, context);		
+			if (ref != null) {
+				return bURI == null ? ref : ref.deresolve(bURI, true, true, true);
 			}
 		}
-		return ref == null || bURI == null ? ref : ref.deresolve(bURI, true, true, true);
+		
+		String message = "Unresolved semantic URI: " + path;
+		progressMonitor.worked(Status.ERROR, 1, message, action);
+		if (propertyResolutionErrorConsumer != null) {
+			propertyResolutionErrorConsumer.accept(message);
+		}
+		return null;
+		
 	}
 
 	/**
@@ -829,7 +896,7 @@ public class SiteGenerator {
 	protected EList<EObject> getActionContent(
 			Action action, 
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Label> registry,
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			File resourceWorkDir,
 			Context context,
 			java.util.function.Consumer<Diagnostic> diagnosticConsumer,
@@ -841,7 +908,7 @@ public class SiteGenerator {
 		Context actionContentContext = createActionContentContext(
 				action, 
 				uriResolver, 
-				registry, 
+				semanticInfoSource, 
 				(ContentConsumer) contentContributions::add, 
 				representationLinkResolutionErrorConsumer, 
 				context, 
@@ -878,8 +945,6 @@ public class SiteGenerator {
 	
 	
 	/**
-	 * Computes semantic link. This implementation uses the registry and uriResolver. 
-	 * Override to add support of resolving external semantic links, e.g. loaded from semantic maps of dependency sites.
 	 * @param context
 	 * @param key
 	 * @param path
@@ -895,9 +960,9 @@ public class SiteGenerator {
 			String key, 
 			String path, 
 			Action action,
-			URI baseSemanticURI,
+			List<URI> baseSemanticURIs,
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Label> registry) {
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource) {
 
 		String[] pathSegments = path.split("/");
 		if (pathSegments.length == 1) {
@@ -962,7 +1027,7 @@ public class SiteGenerator {
 	protected Context createActionContentContext(
 			Action action, 
 			BiFunction<Label, URI, URI> uriResolver,
-			Map<EObject, Label> registry,
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			ContentConsumer contentConsumer,
 			BiConsumer<String, String> propertyLinkResolutionErrorConsumer,						
 			Context context,
@@ -971,20 +1036,14 @@ public class SiteGenerator {
 		String actionMarker = NcoreActionBuilder.actionMarker(action);
 				
 		MutableContext mctx = context.fork();
-		mctx.put("nsd-site-map-tree-script", (Function<Context, String>) ctx -> computeSiteMapTreeScript(ctx, action, uriResolver, registry, progressMonitor));
+		mctx.put("nsd-site-map-tree-script", (Function<Context, String>) ctx -> computeSiteMapTreeScript(ctx, action, uriResolver, semanticInfoSource, progressMonitor));
 		
 		if (contentConsumer != null) {
 			mctx.register(ContentConsumer.class, contentConsumer);
 		}
 		
-		Optional<URI> baseSemanticURI = registry
-				.entrySet()
-				.stream()
-				.filter(e -> e.getValue() != null && Objects.equals(e.getValue().getUuid(), action.getUuid()))
-				.flatMap(e -> NcoreUtil.getUris(e.getKey()).stream())
-				.filter(Objects::nonNull)
-				.filter(u -> !u.isRelative() && u.isHierarchical())
-				.findFirst();									
+		SemanticInfo semanticElementAnnotation = SemanticInfo.getAnnotation(action);
+		List<URI> baseSemanticURIs = semanticElementAnnotation == null ? null : semanticElementAnnotation.getURIs().stream().filter(u -> !u.isRelative() && u.isHierarchical()).collect(Collectors.toList());					
 		
 		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(
 				action, 
@@ -998,7 +1057,7 @@ public class SiteGenerator {
 			@Override
 			public <T> T compute(Context ctx, String key, String path, Class<T> type) {
 				if (type == null || type.isAssignableFrom(String.class)) {
-					return (T) computeRepresentation(representations, ctx, key, path, action, baseSemanticURI.orElse(null), uriResolver, registry);			
+					return (T) computeRepresentation(representations, ctx, key, path, action, baseSemanticURIs, uriResolver, semanticInfoSource);			
 				}
 				return null;
 			}
@@ -1017,9 +1076,9 @@ public class SiteGenerator {
 							key, 
 							path, 
 							action, 
-							baseSemanticURI.orElse(null), 
+							baseSemanticURIs, 
 							uriResolver, 
-							registry, 
+							semanticInfoSource, 
 							error -> propertyLinkResolutionErrorConsumer.accept(actionMarker, error), 
 							progressMonitor);			
 				}
@@ -1040,9 +1099,9 @@ public class SiteGenerator {
 							key, 
 							path, 
 							action, 
-							baseSemanticURI.orElse(null), 
+							baseSemanticURIs, 
 							uriResolver, 
-							registry, 
+							semanticInfoSource, 
 							error -> propertyLinkResolutionErrorConsumer.accept(actionMarker, error), 
 							progressMonitor);
 					return sRef == null ? null : (T) sRef.toString();
@@ -1105,6 +1164,59 @@ public class SiteGenerator {
 	
 	protected boolean isSearch(File file, String path) {
 		return path.endsWith(".html") && !"search.html".equals(path);
+	}
+	
+	// --- Utility methods
+	
+	/**
+	 * Wraps iterator
+	 * @param <T>
+	 * @param iterator
+	 * @return
+	 */
+	public static <T,U> Iterator<U> wrap(Iterator<T> iterator, Function<? super T,U> mapper) {
+		return new Iterator<U>() {
+
+			@Override
+			public boolean hasNext() {
+				return iterator.hasNext();
+			}
+
+			@Override
+			public U next() {
+				return mapper.apply(iterator.next());
+			}
+			
+			@Override
+			public void remove() {
+				iterator.remove();
+			}
+			
+		};
+	}
+
+	public static <T> Iterable<T> asIterable(Resource resource, Function<? super EObject, T> mapper) {
+		return () -> wrap(resource.getAllContents(), mapper);
+	}
+
+	public static <T> Iterable<T> asIterable(ResourceSet resourceSet, Function<? super Notifier, T> mapper) {
+		return () -> wrap(resourceSet.getAllContents(), mapper);
+	}
+	
+	/**
+	 * @param object
+	 * @return Semantic info or self info
+	 */
+	protected Map.Entry<SemanticInfo, Label> semanticInfo(Notifier object) {
+		if (object instanceof Label) {
+			Label label = (Label) object;
+			SemanticInfo semanticInfo = SemanticInfo.getAnnotation(label);
+			if (semanticInfo == null) {
+				semanticInfo = new SemanticInfo(label);
+			}
+			return Map.entry(semanticInfo, (Label) object);
+		}
+		return null;
 	}
 	
 }

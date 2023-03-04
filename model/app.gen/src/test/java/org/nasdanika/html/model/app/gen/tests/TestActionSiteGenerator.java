@@ -34,7 +34,7 @@ public class TestActionSiteGenerator {
 		
 		ActionSiteGenerator actionSiteGenerator = new ActionSiteGenerator() {
 			
-			Map<ModelElement, Label> semanticMap = new LinkedHashMap<>();			
+//			Map<ModelElement, Label> semanticMap = new LinkedHashMap<>();			
 			
 			@Override
 			protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
@@ -57,16 +57,16 @@ public class TestActionSiteGenerator {
 				return resourceSet;
 			}			
 			
-			@Override
-			protected void buildRegistry(Action action, Map<EObject, Label> registry) {
-				registry.putAll(semanticMap);
-				super.buildRegistry(action, registry);
-			}
-			
-			@Override
-			protected boolean isSemanticMapLink(Link link) {
-				return semanticMap.values().contains(link);
-			}
+//			@Override
+//			protected void buildRegistry(Action action, Map<EObject, Label> registry) {
+//				registry.putAll(semanticMap);
+//				super.buildRegistry(action, registry);
+//			}
+//			
+//			@Override
+//			protected boolean isSemanticInfoLink(Link link) {
+//				return semanticMap.values().contains(link);
+//			}
 			
 		};
 		

@@ -4,14 +4,14 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>org.nasdanika.html</groupId>
-		<version>2023.2.2</version>
+		<version>2023.3.0</version>
 		<relativePath>../..</relativePath>
 	</parent>
 	
 	<artifactId>site-generator-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>Site Generator Maven Plugin</name>
-	<url>http://maven.apache.org</url>
+	<url>https://docs.nasdanika.org/html/app/gen.maven/index.html</url>
 	<build>
 		<plugins>
 			<plugin>

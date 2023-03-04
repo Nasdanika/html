@@ -6,13 +6,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -21,10 +19,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.json.JSONObject;
-import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
-import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.DiagramGeneratorImpl;
 import org.nasdanika.common.NasdanikaException;
@@ -112,7 +107,43 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 	@Override
 	protected void execute(Context context, ProgressMonitor progressMonitor) {
 		
-		ActionSiteGenerator actionSiteGenerator = new ActionSiteGenerator() {
+		ActionSiteGenerator actionSiteGenerator = createActionSiteGenerator(context, progressMonitor);
+		
+		File baseDir = project.getBasedir();
+		URI baseDirURI = URI.createFileURI(baseDir.getAbsolutePath()).appendSegment("");
+		
+		URI actionURI = URI.createURI(action).resolve(baseDirURI);
+		URI pageTemplateURI = URI.createURI(pageTemplate).resolve(baseDirURI);
+
+		try {
+			Map<String, Collection<String>> errors = actionSiteGenerator.generate(
+					actionURI, 
+					pageTemplateURI, 
+					siteMapDomain, 
+					outputDirectory, 
+					workDirectory, 
+					cleanWorkDir);
+			
+			int errorCount = 0;			
+			for (Entry<String, Collection<String>> ee: errors.entrySet()) {
+				getLog().error(ee.getKey());
+				for (String error: ee.getValue()) {
+					++errorCount;
+					getLog().error("\t" + error);
+				}
+			}
+			if (errorCount != this.errors) {
+				String message = "There are " + errorCount + " site errors";
+				getLog().error(message);
+				throw new NasdanikaException(message);
+			}
+		} catch (IOException | DiagnosticException ex) {
+			throw new NasdanikaException(ex);
+		}
+	}
+
+	protected ActionSiteGenerator createActionSiteGenerator(Context context, ProgressMonitor progressMonitor) {
+		return new ActionSiteGenerator() {
 			
 			Map<ModelElement, Label> semanticMap = new LinkedHashMap<>();			
 			
@@ -154,7 +185,7 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 			}
 			
 			@Override
-			protected boolean isSemanticMapLink(Link link) {
+			protected boolean isSemanticInfoLink(Link link) {
 				return semanticMap.values().contains(link);
 			}			
 			
@@ -186,38 +217,6 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 			}
 						
 		};
-		
-		File baseDir = project.getBasedir();
-		URI baseDirURI = URI.createFileURI(baseDir.getAbsolutePath()).appendSegment("");
-		
-		URI actionURI = URI.createURI(action).resolve(baseDirURI);
-		URI pageTemplateURI = URI.createURI(pageTemplate).resolve(baseDirURI);
-
-		try {
-			Map<String, Collection<String>> errors = actionSiteGenerator.generate(
-					actionURI, 
-					pageTemplateURI, 
-					siteMapDomain, 
-					outputDirectory, 
-					workDirectory, 
-					cleanWorkDir);
-			
-			int errorCount = 0;			
-			for (Entry<String, Collection<String>> ee: errors.entrySet()) {
-				getLog().error(ee.getKey());
-				for (String error: ee.getValue()) {
-					++errorCount;
-					getLog().error("\t" + error);
-				}
-			}
-			if (errorCount != this.errors) {
-				String message = "There are " + errorCount + " site errors";
-				getLog().error(message);
-				throw new NasdanikaException(message);
-			}
-		} catch (IOException | DiagnosticException ex) {
-			throw new NasdanikaException(ex);
-		}
 	}
 
 }

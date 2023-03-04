@@ -35,7 +35,6 @@ public class SemanticMapResourceFactory extends ResourceFactoryImpl {
 		/**
 		 * URL decodes the opaque part and loads data from the decoded URL as YAML or JSON
 		 */
-		@SuppressWarnings("unchecked")
 		@Override
 		public void load(java.util.Map<?,?> options) throws IOException {
 			String opaquePart = getURI().opaquePart();

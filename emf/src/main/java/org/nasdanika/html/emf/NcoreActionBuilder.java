@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -26,9 +25,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -50,6 +47,7 @@ import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.util.NcoreUtil;
+import org.nasdanika.ncore.util.SemanticInfo;
 import org.xml.sax.SAXException;
 
 /**
@@ -60,14 +58,6 @@ import org.xml.sax.SAXException;
  */
 public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<T> {
 		
-	static final String TYPE_KEY = "type";
-	static final String NAME_KEY = "name";
-	static final String NS_URI_KEY = "ns-uri";
-	static final String REFERENCE_KEY = "reference";
-	static final String CONTAINER_KEY = "container";
-	static final String UUID_KEY = "uuid";
-	static final String URIS_KEY = "uris";
-	
 	public static final String TARGET_URI_KEY = "target-uri";
 	public static final String ACTION_URI_KEY = "action-uri";
 	public static final String ACTION_UUID_KEY = "action-uuid";
@@ -118,54 +108,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			ret.setText(((NamedElement) semanticElement).getName()); // Escape?
 		}
 		
-		// Semantic element annotation
-		Map<String,Object> semanticAnnotation = new LinkedHashMap<>();		
-		List<String> semanticURIs = new ArrayList<>();
-		for (URI uri: NcoreUtil.getUris(semanticElement)) {
-			if (!uri.isRelative()) {
-				semanticURIs.add(uri.toString());
-			}
-		}	
-		semanticAnnotation.put(URIS_KEY, semanticURIs);
-		if (semanticElement instanceof ModelElement) {
-			String uuid = ((ModelElement) semanticElement).getUuid();
-			if (!Util.isBlank(uuid)) {
-				semanticAnnotation.put(UUID_KEY, uuid);
-			}
-		}
-		
-		EObject container = semanticElement.eContainer();
-		if (container != null) {
-			Map<String, Object> containerSpec = new LinkedHashMap<>();
-			List<String> containerURIs = new ArrayList<>();
-			for (URI uri: NcoreUtil.getUris(container)) {
-				if (!uri.isRelative()) {
-					containerURIs.add(uri.toString());
-				}
-			}	
-			containerSpec.put(URIS_KEY, containerURIs);
-			if (container instanceof ModelElement) {
-				String uuid = ((ModelElement) container).getUuid();
-				if (!Util.isBlank(uuid)) {
-					containerSpec.put(UUID_KEY, uuid);
-				}
-			}
-			
-			EReference containmentReference = semanticElement.eContainmentFeature();
-			if (containmentReference != null) {
-				containerSpec.put(REFERENCE_KEY, containmentReference.getName());
-			}
-			
-			semanticAnnotation.put(CONTAINER_KEY, containerSpec);
-		}
-		
-		Map<String,String> typeSpec = new LinkedHashMap<>();
-		EClass targetEClass = getTarget().eClass();
-		typeSpec.put(NS_URI_KEY, targetEClass.getEPackage().getNsURI());
-		typeSpec.put(NAME_KEY, targetEClass.getName());		
-		semanticAnnotation.put(TYPE_KEY, typeSpec);
-		ret.setAnnotation(SemanticElementAnnotation.KEY, semanticAnnotation);
-		
+		new SemanticInfo(semanticElement).annotate(ret);
 		return ret;
 	}
 	
