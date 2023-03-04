@@ -1,4 +1,4 @@
-     	<div id="semantic-map-app" class="container-fluid">
+     	<div id="semantic-info-app" class="container-fluid">
      		<div class="row">
      			<div class="col">
 					<b-form-group
@@ -40,7 +40,7 @@
 					      		<img v-if="data.value.icon.includes('/')" :src="data.value.icon"/>
 					      		<i v-else :class="data.value.icon"></i>
 					      	</span>
-				        	{{data.value.text}}
+				        	{{data.value.name}}
 				        </span>
 				      </template>	
 				      <template #cell(uris)="data">
@@ -61,10 +61,10 @@
      
 		<script>		      
 			new Vue({
-				  el: '#semantic-map-app',
+				  el: '#semantic-info-app',
 				  data: {
 			        	filter: null,
-			        	semanticMap: ${semantic-map},
+			        	semanticInfo: ${semantic-info},
 			        	uriField: false
 				  },				  
 				  computed: {			
@@ -92,31 +92,38 @@
 						return fields;
 					},  
 					items: function() {
-						const grouped = {};
-						for (let uri in this.semanticMap) {
-							let semanticEntry = this.semanticMap[uri];
-							let group = grouped[semanticEntry.location];
-							if (!group) {
-								group = {
-									uris: [],
-									description: semanticEntry.tooltip,
-									element: {
-										location: semanticEntry.location,
-										text: semanticEntry.text,
-										icon: semanticEntry.icon
-									}
-								};
-								grouped[semanticEntry.location] = group;
-							}
-							group.uris.push({
-								value: uri,
-								onClick: "navigator.clipboard.writeText('" + uri +"')"							
-							});
-						}						
-						
 						const ret = []; 
-						for (let location in grouped) {
-							ret.push(grouped[location]);
+						for (let idx in this.semanticInfo) {
+							let semanticEntry = this.semanticInfo[idx];
+							let entry = {
+								uris: [],
+								element: {}
+							};
+							
+							if (semanticEntry.location) {
+								entry.element.location = semanticEntry.location;
+							}
+							if (semanticEntry.name) {
+								entry.element.name = semanticEntry.name;
+							}
+							if (semanticEntry.icon) {
+								entry.element.icon = semanticEntry.icon;
+							}
+							if (semanticEntry.description) {
+								entry.description = semanticEntry.description;
+							}
+							
+							if (semanticEntry.uris) {
+								for (let uIdx in semanticEntry.uris) {
+									let uri = semanticEntry.uris[uIdx];
+									entry.uris.push({
+										value: uri,
+										onClick: "navigator.clipboard.writeText('" + uri +"')"							
+									});
+								}
+							}
+
+							ret.push(entry);
 						}
 						
 						return ret.filter(item => {
@@ -130,16 +137,16 @@
 								if (item.description && item.description.toLowerCase().includes(this.filter.toLowerCase())) {
 									return true;
 								}
-								if (item.element.text && item.element.text.toLowerCase().includes(this.filter.toLowerCase())) {
+								if (item.element.name && item.element.name.toLowerCase().includes(this.filter.toLowerCase())) {
 									return true;
 								}
 								return false;
 							}
 							return true;
 						}).sort((a, b) => {
-							if (a.element.text) {
-								if (b.element.text) {
-									return a.element.text.localeCompare(b.element.text);
+							if (a.element.name) {
+								if (b.element.name) {
+									return a.element.name.localeCompare(b.element.name);
 								}					
 								return -1;
 							}
