@@ -550,7 +550,7 @@ public final class Util {
 		
 		contentPanel.getContent().addAll(contentProvider == null ? EcoreUtil.copyAll(action.getContent()) : contentProvider.getActionContent(action, uriResolver, progressMonitor));
 		
-		List<URI> actionURIs = NcoreUtil.getUris(action);
+		List<URI> actionURIs = NcoreUtil.getIdentifiers(action);
 		if (!actionURIs.isEmpty()) {
 			String urisStr = String.join(" ", actionURIs.stream().map(Object::toString).collect(Collectors.toList()));
 			contentPanel.getAttributes().put("data-nsd-action-uris", NcoreUtil.wrapString(urisStr));

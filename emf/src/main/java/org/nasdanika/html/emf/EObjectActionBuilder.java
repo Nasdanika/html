@@ -427,7 +427,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	
 	protected boolean isSet(EStructuralFeature feature) {
 		if (feature == NcorePackage.Literals.MODEL_ELEMENT__URIS) {
-			return !NcoreUtil.getUris(getTarget()).isEmpty();
+			return !NcoreUtil.getIdentifiers(getTarget()).isEmpty();
 		}
 		return getTarget().eIsSet((EStructuralFeature) feature);
 	}
@@ -647,7 +647,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		}
 		
 		if (typedElement == NcorePackage.Literals.MODEL_ELEMENT__URIS) {
-			return NcoreUtil.getUris(eObject);
+			return NcoreUtil.getIdentifiers(eObject);
 		}
 		
 		if (typedElement instanceof EStructuralFeature) {

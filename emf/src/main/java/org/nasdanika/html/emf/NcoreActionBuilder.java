@@ -77,7 +77,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		
 		T semanticElement = getTarget();
 		
-		List<URI> uris = NcoreUtil.getUris(semanticElement);
+		List<URI> uris = NcoreUtil.getIdentifiers(semanticElement);
 		String id = uris.isEmpty() ? null : uris.get(0).toString();
 		
 		if (semanticElement instanceof ModelElement) {
@@ -184,7 +184,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				String targetUriPropertyValue = modelElement.getProperty(TARGET_URI_KEY);
 				if (!Util.isBlank(targetUriPropertyValue)) {
 					boolean found = false;
-					for (URI tURI: resolveURIs(TARGET_URI_KEY, modelElement, NcoreUtil.getUris(action), false)) {
+					for (URI tURI: resolveURIs(TARGET_URI_KEY, modelElement, NcoreUtil.getIdentifiers(action), false)) {
 						EObject uriTarget = findByURI(tURI, getTarget());
 						if (uriTarget != null) {
 							if (uriTarget != null) {
@@ -290,7 +290,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	 * @return
 	 */
 	private static EObject findByURI(URI uri, EObject semanticElement) {	
-		List<URI> semanticURIs = NcoreUtil.getUris(semanticElement);
+		List<URI> semanticURIs = NcoreUtil.getIdentifiers(semanticElement);
 		
 		Collection<URI> uris = new HashSet<>();
 		uris.add(uri);		
@@ -313,7 +313,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			Notifier next = rscit.next();
 			if (next instanceof EObject) {
 				EObject nextEObject = (EObject) next;
-				for (URI nextUri: NcoreUtil.getUris(nextEObject)) {
+				for (URI nextUri: NcoreUtil.getIdentifiers(nextEObject)) {
 					if (nextUri != null) {
 						for (URI u: uris) {
 							if (nextUri.equals(u)) {
@@ -364,7 +364,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			}
 			actionMarker.append("markers=").append(markers);			
 		}
-		List<URI> uris = NcoreUtil.getUris(action);
+		List<URI> uris = NcoreUtil.getIdentifiers(action);
 		if (!uris.isEmpty()) {
 			if (!org.nasdanika.common.Util.isBlank(text)) {
 				actionMarker.append(", ");
@@ -570,7 +570,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			String actionUriPropertyValue = modelElement.getProperty(ACTION_URI_KEY);
 			if (!Util.isBlank(actionUriPropertyValue)) {
 				boolean found = false;
-				for (URI aURI: resolveURIs(ACTION_URI_KEY, modelElement, NcoreUtil.getUris(action), false)) {
+				for (URI aURI: resolveURIs(ACTION_URI_KEY, modelElement, NcoreUtil.getIdentifiers(action), false)) {
 					if (Util.isBlank(modelElement.getLink()) && aURI != null) {
 						EObject targetAction = findByURI(aURI, action);
 						if (targetAction instanceof Label) {

@@ -565,7 +565,7 @@ public class SiteGenerator {
 		if (!org.nasdanika.common.Util.isBlank(action.getText())) {
 			actionMap.put("text", action.getText());
 		}
-		List<URI> actionURIs = NcoreUtil.getUris(action);
+		List<URI> actionURIs = NcoreUtil.getIdentifiers(action);
 		if (actionURIs.size() == 1) {
 			actionMap.put("uri", actionURIs.get(0).toString());
 		} else if (!actionURIs.isEmpty()) {
@@ -761,7 +761,7 @@ public class SiteGenerator {
 							Label targetLabel = (Label) value;
 							SemanticInfo semanticElementAnnotation = entry.getKey();
 							if (semanticElementAnnotation != null) {
-								for (URI semanticURI: semanticElementAnnotation.getURIs()) {
+								for (URI semanticURI: semanticElementAnnotation.getIdentifiers()) {
 									if (Objects.equals(targetURI, semanticURI)) {
 										Label tLabel = Util.createLabel(targetLabel, action, uriResolver, null, null, false, false, false);
 										SupplierFactory<Tag> tagSupplierFactory = EObjectAdaptable.adaptToSupplierFactory(tLabel, Tag.class, new AppAdapterFactory());
@@ -855,7 +855,7 @@ public class SiteGenerator {
 							Label targetLabel = (Label) value;
 							SemanticInfo semanticElementAnnotation = entry.getKey();
 							if (semanticElementAnnotation != null) {
-								for (URI semanticURI: semanticElementAnnotation.getURIs()) {
+								for (URI semanticURI: semanticElementAnnotation.getIdentifiers()) {
 									if (Objects.equals(targetURI, semanticURI)) {
 										URI targetActionURI = uriResolver.apply(targetLabel, bURI);
 										if (targetActionURI != null) {
@@ -1051,7 +1051,7 @@ public class SiteGenerator {
 		}
 		
 		SemanticInfo semanticElementAnnotation = SemanticInfo.getAnnotation(action);
-		List<URI> baseSemanticURIs = semanticElementAnnotation == null ? null : semanticElementAnnotation.getURIs().stream().filter(u -> !u.isRelative() && u.isHierarchical()).collect(Collectors.toList());					
+		List<URI> baseSemanticURIs = semanticElementAnnotation == null ? null : semanticElementAnnotation.getIdentifiers().stream().filter(u -> !u.isRelative() && u.isHierarchical()).collect(Collectors.toList());					
 		
 		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(
 				action, 
