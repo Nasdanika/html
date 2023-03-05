@@ -34,9 +34,10 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.ActionSiteGenerator;
-import org.nasdanika.html.model.app.gen.SemanticMapResourceFactory;
 import org.nasdanika.maven.AbstractCommandMojo;
 import org.nasdanika.ncore.ModelElement;
+import org.nasdanika.ncore.util.SemanticInfo;
+import org.nasdanika.ncore.util.SemanticRegistry;
 
 /**
  * Generates semantic site.
@@ -99,15 +100,17 @@ public class SemanticSiteGeneratorMojo extends AbstractSemanticGeneratorMojo {
 	 */
     @Parameter
     private List<DiagramGenerator> diagramGenerators;
-    
+        
     /**
-     * URL's of YAML or JSON resources which are loaded as semantic maps of URI's to a map containing 'text', 'icon', 'tooltip', 'location' keys.
-     * Semantic maps are used to link model elements to externally defined element by URI. It is similar to how Java modules require other modules and then 
+     * URL's of JSON resources with information about external semantic elements. Such JSON resources are created as part of site generation. 
+     * They are named semantic-info.json
+     * Semantic infos are used to link model elements to externally defined element by URI. It is similar to how Java modules require other modules and then 
      * classes in that module may reference elements from the required modules by their fully qualified names.
-     * if the URL ends with .yaml or .yml then it is treated as YAML, as a JSON object otherwise. 
+     * 
+     * Semantic info may be created programmatically using {@link SemanticInfo} and {@link SemanticRegistry} classes.
      */
     @Parameter
-    private List<String> semanticMaps;
+    private List<String> semanticInfos;
 	
 	@Override
 	protected void execute(Context context, ProgressMonitor progressMonitor) {

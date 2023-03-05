@@ -2,22 +2,19 @@ package org.nasdanika.html.model.app.gen.maven;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.net.URL;
 import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.emf.common.util.DiagnosticException;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
@@ -25,13 +22,14 @@ import org.nasdanika.common.DiagramGeneratorImpl;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
-import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.ActionSiteGenerator;
-import org.nasdanika.html.model.app.gen.SemanticMapResourceFactory;
 import org.nasdanika.maven.AbstractCommandMojo;
-import org.nasdanika.ncore.ModelElement;
+import org.nasdanika.ncore.util.SemanticIdentity;
+import org.nasdanika.ncore.util.SemanticInfo;
+import org.nasdanika.ncore.util.SemanticRegistry;
 
 /**
  * Generates action site.
@@ -96,17 +94,18 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
     private List<DiagramGenerator> diagramGenerators;
     
     /**
-     * URL's of YAML or JSON resources which are loaded as semantic maps of URI's to a map containing 'text', 'icon', 'tooltip', 'location' keys.
-     * Semantic maps are used to link model elements to externally defined element by URI. It is similar to how Java modules require other modules and then 
+     * URL's of JSON resources with information about external semantic elements. Such JSON resources are created as part of site generation. 
+     * They are named semantic-info.json
+     * Semantic infos are used to link model elements to externally defined element by URI. It is similar to how Java modules require other modules and then 
      * classes in that module may reference elements from the required modules by their fully qualified names.
-     * if the URL ends with .yaml or .yml then it is treated as YAML, as a JSON object otherwise. 
+     * 
+     * Semantic info may be created programmatically using {@link SemanticInfo} and {@link SemanticRegistry} classes.
      */
     @Parameter
-    private List<String> semanticMaps;
+    private List<String> semanticInfos;
 	
 	@Override
-	protected void execute(Context context, ProgressMonitor progressMonitor) {
-		
+	protected void execute(Context context, ProgressMonitor progressMonitor) {		
 		ActionSiteGenerator actionSiteGenerator = createActionSiteGenerator(context, progressMonitor);
 		
 		File baseDir = project.getBasedir();
@@ -142,51 +141,91 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 		}
 	}
 
-	protected ActionSiteGenerator createActionSiteGenerator(Context context, ProgressMonitor progressMonitor) {
+	protected ActionSiteGenerator createActionSiteGenerator(Context context, ProgressMonitor progressMonitor) {				
+		File baseDir = project.getBasedir();
+		URI baseDirURI = URI.createFileURI(baseDir.getAbsolutePath()).appendSegment("");		
+		SemanticRegistry semanticRegistry = new SemanticRegistry();		
+		if (semanticInfos != null) {
+			for (String smLocation: semanticInfos) {			
+				URI semanticInfoURI = URI.createURI(smLocation).resolve(baseDirURI);
+				try {
+					semanticRegistry.load(new URL(semanticInfoURI.toString()));
+				} catch (IOException e) {
+					String message = "Could not load semantic info from " + semanticInfoURI;
+					getLog().error(message, e);
+					throw new NasdanikaException(message, e);
+				}
+			}
+		}
+		
 		return new ActionSiteGenerator() {
 			
-			Map<ModelElement, Label> semanticMap = new LinkedHashMap<>();			
-			
 			@Override
-			protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
-				ResourceSet resourceSet = super.createResourceSet(context, progressMonitor);
-				if (semanticMaps != null && !semanticMaps.isEmpty()) {
-					SemanticMapResourceFactory smrf = new SemanticMapResourceFactory() {
-						@Override
-						protected void onLoad(Map<ModelElement, Label> resourceSemanticMap, Resource resource) {
-							super.onLoad(resourceSemanticMap, resource);
-							semanticMap.putAll(resourceSemanticMap);
-						}
-					};
-					resourceSet.getResourceFactoryRegistry().getProtocolToFactoryMap().put("semantic-map", smrf);				
-					
-					File baseDir = project.getBasedir();
-					URI baseDirURI = URI.createFileURI(baseDir.getAbsolutePath()).appendSegment("");
-					
-					for (String smLocation: semanticMaps) {
-						URI semanticMapURI = URI.createURI(smLocation).resolve(baseDirURI);
-						try {
-							URI sMapURI = URI.createURI("semantic-map:" + URLEncoder.encode(semanticMapURI.toString(), StandardCharsets.UTF_8.name()));
-							resourceSet.getResource(sMapURI, true);
-						} catch (UnsupportedEncodingException e) {
-							getLog().error("Error loading semantic map " + smLocation, e);
-							throw new NasdanikaException(e);
-						}
-					}
+			protected Iterable<Entry<SemanticInfo, ?>> semanticInfoSource(ResourceSet resourceSet) {
+				Iterable<Entry<SemanticInfo, ?>> resourceSetSource = super.semanticInfoSource(resourceSet);
+				if (semanticRegistry.isEmpty()) {
+					return resourceSetSource;
 				}
-				
-				return resourceSet;
-			}			
-			
-			@Override
-			protected void buildRegistry(Action action, Map<EObject, Label> registry) {
-				registry.putAll(semanticMap);
-				super.buildRegistry(action, registry);
+				return new Iterable<Entry<SemanticInfo, ?>>() {
+					
+					@Override
+					public Iterator<Entry<SemanticInfo, ?>> iterator() {
+						return new Iterator<Map.Entry<SemanticInfo,?>>() {
+							
+							private Iterator<Map.Entry<SemanticInfo,?>> resourceSetIterator = resourceSetSource.iterator();
+							private Iterator<Map.Entry<SemanticInfo,?>> semanticRegistryIterator = wrap(semanticRegistry.iterator(), this::mapToLabel);
+							
+							private Map.Entry<SemanticInfo,Label> mapToLabel(SemanticIdentity semanticIdentity) {
+								if (semanticIdentity instanceof SemanticInfo) {
+									SemanticInfo semanticInfo = (SemanticInfo) semanticIdentity;									
+									URI location = semanticInfo.getLocation();
+									Label label = location == null ? AppFactory.eINSTANCE.createLabel() : AppFactory.eINSTANCE.createLink();
+									label.setText(semanticInfo.getName());
+									label.setTooltip(semanticInfo.getDescription());
+									label.setIcon(semanticInfo.getIcon());
+
+									if (location != null) {
+										((Link) label).setLocation(location.toString());
+									}
+									return Map.entry(semanticInfo, label); 
+								}	
+								return null;
+							}
+							
+							@Override
+							public Entry<SemanticInfo, ?> next() {								
+								if (resourceSetIterator != null && resourceSetIterator.hasNext()) {
+									
+								}
+								return (resourceSetIterator.hasNext() ? resourceSetIterator : semanticRegistryIterator).next();
+							}
+							
+							@Override
+							public boolean hasNext() {
+								return resourceSetIterator.hasNext() || semanticRegistryIterator.hasNext();
+							}
+						};
+					}
+					
+				};
 			}
 			
 			@Override
 			protected boolean isSemanticInfoLink(Link link) {
-				return semanticMap.values().contains(link);
+				if (link == null || Util.isBlank(link.getLocation())) {
+					return false;
+				}
+				String linkLocation = link.getLocation();
+				return semanticRegistry
+					.stream()
+					.filter(SemanticInfo.class::isInstance)
+					.map(SemanticInfo.class::cast)
+					.map(SemanticInfo::getLocation)
+					.filter(Objects::nonNull)
+					.map(Object::toString)
+					.filter(linkLocation::equals)
+					.findFirst()
+					.isPresent();
 			}			
 			
 			@Override

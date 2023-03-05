@@ -9,7 +9,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -334,10 +333,95 @@ public class SiteGenerator {
 		if (se instanceof SemanticInfo) {
 			ContainerInfo cInfo = ((SemanticInfo) se).getContainerInfo();
 			if (cInfo != null) {
-				return cInfo.getName();
+				return cInfo.getReference();
 			}
 		}
 		return null;
+	}
+	
+	private static List<Entry<JsTreeNode, List<Entry<SemanticInfo, JsTreeNode>>>> createReferenceJsTreeNodes(
+			Map<String, List<Entry<SemanticInfo, JsTreeNode>>> groupedByReference,
+			JsTreeFactory jsTreeFactory) {
+		
+		return groupedByReference
+			.entrySet()
+			.stream()
+			.sorted(SiteGenerator::compareReferenceEntries)
+			.map(e -> createReferenceJsTreeNode(e, jsTreeFactory))
+			.collect(Collectors.toList());			
+	}
+	
+	private static int compareReferenceEntries(Entry<String, List<Entry<SemanticInfo, JsTreeNode>>> a, Entry<String, List<Entry<SemanticInfo, JsTreeNode>>> b) {
+		if (a == b) {
+			return 0;
+		}
+		if (a == null) {
+			return 1;
+		}
+		
+		if (b == null) {
+			return -1;
+		}
+		
+		String aRef = a.getKey();
+		String bRef = b.getKey();
+		
+		if (org.nasdanika.common.Util.isBlank(aRef) && org.nasdanika.common.Util.isBlank(bRef)) {
+			return 0;
+		}
+
+		if (org.nasdanika.common.Util.isBlank(aRef)) {
+			return 1;
+		}
+		
+		if (org.nasdanika.common.Util.isBlank(bRef)) {
+			return -1;
+		}
+		
+		return aRef.compareTo(bRef);		
+	}
+	
+	/**
+	 * Creates a {@link JsTreeNode} for a reference if refEntry is not null and reference name is not null. Links value nodes under the reference node
+	 * @param refEntry
+	 * @param jsTreeFactory
+	 * @return
+	 */
+	private static Entry<JsTreeNode, List<Entry<SemanticInfo, JsTreeNode>>> createReferenceJsTreeNode(
+			Entry<String, List<Entry<SemanticInfo, JsTreeNode>>> refEntry,
+			JsTreeFactory jsTreeFactory) {
+		
+		if (refEntry == null) {
+			return null;
+		}
+		
+		if (org.nasdanika.common.Util.isBlank(refEntry.getKey())) {
+			return new Entry<JsTreeNode, List<Entry<SemanticInfo,JsTreeNode>>>() {
+				
+				@Override
+				public List<Entry<SemanticInfo, JsTreeNode>> setValue(List<Entry<SemanticInfo, JsTreeNode>> value) {
+					throw new UnsupportedOperationException();
+				}
+				
+				@Override
+				public List<Entry<SemanticInfo, JsTreeNode>> getValue() {
+					return refEntry.getValue();
+				}
+				
+				@Override
+				public JsTreeNode getKey() {
+					return null;
+				}
+			};
+		}
+		
+		JsTreeNode refNode = jsTreeFactory.jsTreeNode();
+		refNode.text(org.nasdanika.common.Util.nameToLabel(refEntry.getKey()));
+		for (Entry<SemanticInfo, JsTreeNode> ve: refEntry.getValue()) {
+			refNode.children().add(ve.getValue());			
+		}		
+		
+		return Map.entry(refNode, refEntry.getValue());
 	}
 		
 	/**
@@ -353,9 +437,8 @@ public class SiteGenerator {
 			ProgressMonitor progressMonitor) {
 		// TODO - actions from action prototype, e.g. Ecore doc actions, to the tree.
 		
-		JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);
 		int maxLength = 50;
-		SemanticMap<JsTreeNode> nodeMap = new SemanticMap<>();
+		SemanticMap<SemanticInfo,JsTreeNode> nodeMap = new SemanticMap<>();
 		
 		if (semanticInfoSource != null) {
 			for (Entry<SemanticInfo, ?> entry: semanticInfoSource) {
@@ -397,67 +480,65 @@ public class SiteGenerator {
 				}
 			}
 		}
-		
-		Map<ContainerInfo, List<Entry<SemanticIdentity, JsTreeNode>>> groupedByContainer = org.nasdanika.common.Util.groupBy(nodeMap.entrySet(), sea -> sea instanceof SemanticInfo ? ((SemanticInfo) sea.getKey()).getContainerInfo() : null);
-		Map<ContainerInfo, Map<String, List<Entry<SemanticIdentity, JsTreeNode>>>> groupedByContainerAndReferenceName = new LinkedHashMap<>();
+				
+		JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);
+		SemanticMap<ContainerInfo, List<Entry<SemanticInfo, JsTreeNode>>> groupedByContainer = new SemanticMap<>();
+		org.nasdanika.common.Util.groupBy(nodeMap.entrySet(), sea -> ((SemanticInfo) sea.getKey()).getContainerInfo(), groupedByContainer);
+		SemanticMap<ContainerInfo, List<Entry<JsTreeNode, List<Entry<SemanticInfo, JsTreeNode>>>>> groupedByContainerAndReferenceName = new SemanticMap<>();
 		groupedByContainer
 			.entrySet()
 			.stream()
 			.map(e -> mapEntry(e.getKey(), org.nasdanika.common.Util.groupBy(e.getValue(), ve -> SiteGenerator.containmentRef(ve.getKey()))))
-			.forEach(e -> groupedByContainerAndReferenceName.put(e.getKey(), e.getValue()));
+			.forEach(e -> groupedByContainerAndReferenceName.put(e.getKey(), createReferenceJsTreeNodes(e.getValue(), jsTreeFactory)));
 		
-		// Organizing JsTreeNodes into a tree.
-		Map<SemanticIdentity, JsTreeNode> roots = new HashMap<>();
+		// Organizing JsTreeNodes into a tree - going over all SemanticInfo entries and moving containerInfo's from groupedByContainerAndReferenceName under
+		List<Entry<SemanticInfo, JsTreeNode>> allEntries = groupedByContainerAndReferenceName
+				.values()
+				.stream()
+				.flatMap(Collection::stream)
+				.flatMap(e -> e.getValue().stream())
+				.collect(Collectors.toList());
 		
-		// TODO - iterate over grouped, create JSNodes for references, ...
-//		
-//		Map<SemanticElementIdentity,Map<String,List<JsTreeNode>>> refMap = new HashMap<>();
-//		Map<String,Map<String,List<JsTreeNode>>> orphans = new HashMap<>();
-//		
-//		for (SemanticElementAnnotation semanticElementAnnotation: new ArrayList<>(nodeMap.keySet())) {
-//			// Finding parent container and containment reference
-//			ContainerInfo containerInfo = semanticElementAnnotation.getContainerInfo();
-//			if (containerInfo != null) {
-//				
-//				
-//				String refName = containerInfo.getReference();
-//			}
-//			
-//			
-//			Map<String,List<JsTreeNode>> rMap = new TreeMap<>();					
-//			for (EReference eRef: eObj.eClass().getEAllReferences()) {
-//				if (isParentReference(eRef)) {
-//					Object eRefValue = eObj.eGet(eRef);
-//					List<JsTreeNode> refNodes = new ArrayList<>();
-//					for (Object ve: eRefValue instanceof Collection ? (Collection<Object>) eRefValue : Collections.singletonList(eRefValue)) {
-//						JsTreeNode refNode = roots.remove(ve);
-//						if (refNode != null) {
-//							refNodes.add(refNode);
-//						}
-//					}
-//					if (!refNodes.isEmpty()) {
-//						rMap.put(org.nasdanika.common.Util.nameToLabel(eRef.getName()) , refNodes);
-//					}
-//				}
-//			}
-//			if (!rMap.isEmpty()) {
-//				refMap.put(eObj, rMap);
-//			}
-//		}
-//		
-//		for (Entry<EObject, JsTreeNode> ne: nodeMap.entrySet()) {
-//			Map<String, List<JsTreeNode>> refs = refMap.get(ne.getKey());
-//			if (refs != null) {
-//				for (Entry<String, List<JsTreeNode>> ref: refs.entrySet()) {
-//					JsTreeNode refNode = jsTreeFactory.jsTreeNode();
-//					refNode.text(ref.getKey());
-//					refNode.children().addAll(ref.getValue());
-//					ne.getValue().children().add(refNode);
-//				}
-//			}
-//		}
+		for (Entry<SemanticInfo, JsTreeNode> entry: allEntries) {
+			@SuppressWarnings("unlikely-arg-type")
+			List<Entry<JsTreeNode, List<Entry<SemanticInfo, JsTreeNode>>>> children = groupedByContainerAndReferenceName.remove(entry.getKey());
+			if (children != null) {
+				for (Entry<JsTreeNode, List<Entry<SemanticInfo, JsTreeNode>>> childEntry: children) {
+					if (childEntry != null) {
+						JsTreeNode refNode = childEntry.getKey();
+						List<JsTreeNode> entryValueChildren = entry.getValue().children();
+						if (refNode == null) {
+							List<Entry<SemanticInfo, JsTreeNode>> grandChildren = childEntry.getValue();
+							if (grandChildren != null) {
+								for (Entry<SemanticInfo, JsTreeNode> grandChild: grandChildren) {
+									entryValueChildren.add(grandChild.getValue());
+								}
+							}
+						} else {
+							entryValueChildren.add(refNode);
+						}
+					}
+				}
+			}
+		}
 		
-		JSONObject jsTree = jsTreeFactory.buildJsTree(roots.values());
+		List<JsTreeNode> roots = new ArrayList<>();
+		for (Entry<JsTreeNode, List<Entry<SemanticInfo, JsTreeNode>>> re: groupedByContainerAndReferenceName.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
+			if (re != null) {
+				JsTreeNode reKey = re.getKey();
+				if (reKey == null) {
+					for (Entry<SemanticInfo, JsTreeNode> childEntry: re.getValue()) {
+						if (childEntry != null) {
+							roots.add(childEntry.getValue());
+						}
+					}
+				} else {
+					roots.add(reKey);
+				}
+			}
+		}		
+		
+		JSONObject jsTree = jsTreeFactory.buildJsTree(roots);
 
 		List<String> plugins = new ArrayList<>();
 		plugins.add("state");

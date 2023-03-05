@@ -34,7 +34,6 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.ActionSiteGenerator;
-import org.nasdanika.html.model.app.gen.SemanticMapResourceFactory;
 import org.nasdanika.html.model.app.gen.SemanticSiteGenerator;
 import org.nasdanika.maven.AbstractCommandMojo;
 import org.nasdanika.ncore.ModelElement;
