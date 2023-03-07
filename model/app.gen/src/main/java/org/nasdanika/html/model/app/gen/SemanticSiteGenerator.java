@@ -49,7 +49,11 @@ public class SemanticSiteGenerator extends SiteGenerator {
 	 * @return
 	 */
 	protected ResourceSet createSemanticModelResourceSet(Context context, ProgressMonitor progressMonitor) {
-		return createResourceSet(context, progressMonitor);
+		ResourceSet resourceSet = createResourceSet(context, progressMonitor);
+		for (SiteGeneratorContributor contributor: getContributors()) {
+			contributor.configureResourceSet(resourceSet, context, progressMonitor);
+		}
+		return resourceSet;
 	}
 		
 	/**
@@ -69,9 +73,11 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		ResourceSet resourceSet = createSemanticModelResourceSet(context, progressMonitor);		
 		Resource resource = resourceSet.getResource(uri, true);
 
-		processSemanticModel(resource, context, progressMonitor);
+		for (SiteGeneratorContributor contributor: getContributors()) {
+			contributor.processSemanticModel(resource, context, progressMonitor);
+		}
 		
-		if (copyURI == null) {
+		if (copyURI == null) {			
 			return resource;
 		}
 		
@@ -80,17 +86,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		copyResource.save(null);
 		return copyResource;
 	}
-	
-	/**
-	 * Override to processes semantic model. E.g. loads documentation resources and embeds/inlines them as text, embeds/inlines markdown images and diagrams.
-	 * @param resource
-	 * @param context
-	 * @param progressMonitor
-	 */
-	protected void processSemanticModel(Resource resource, Context context, ProgressMonitor progressMonitor) {
-		
-	}
-		
+			
 	/**
 	 * Adapts the semantic model to an action model.
 	 * @throws org.eclipse.emf.common.util.DiagnosticException 
@@ -114,7 +110,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			semanticModelResourceSet.getAdapterFactories().add(adapterFactory);
 		}
 		
-		ResourceSet actionModelsResourceSet = createResourceSet(context, progressMonitor);
+		ResourceSet actionModelsResourceSet = createActionModelResourceSet(context, progressMonitor);
 		
 		org.eclipse.emf.ecore.resource.Resource actionModelResource = actionModelsResourceSet.createResource(actionModelURI);
 		
@@ -148,6 +144,11 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			}
 			actionModelResource.getContents().add(action);
 		}
+		
+		for (SiteGeneratorContributor contributor: getContributors()) {
+			contributor.processActionModel(actionModelResource, context, progressMonitor);
+		}
+		
 		actionModelResource.save(null);
 		
 		return actionModelResource;
@@ -178,7 +179,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			root = (Action) actionResource.getContents().get(0);
 		} else {
 			Context rootActionContext = context.compose(Context.singleton("action-resource", actionResource.getURI().toString()));
-			ResourceSet rootActionResourceSet = createResourceSet(rootActionContext, progressMonitor);
+			ResourceSet rootActionResourceSet = createActionModelResourceSet(rootActionContext, progressMonitor);
 			root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);
 		}
 		

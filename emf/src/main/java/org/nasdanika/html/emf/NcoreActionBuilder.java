@@ -124,12 +124,21 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		
 		if (semanticElement instanceof ModelElement) {
 			for (Entry<String, String> semanticRepresentationEntry: ((ModelElement) semanticElement).getRepresentations()) {
-				String actionRepresentation = processRepresentation(semanticRepresentationEntry.getValue(), action, context, progressMonitor);
+				String actionRepresentation = processRepresentation(semanticRepresentationEntry.getValue(), action, this::resolveSemanticElementLink, context, progressMonitor);
 				if (!Util.isBlank(actionRepresentation)) {
 					action.getRepresentations().put(semanticRepresentationEntry.getKey(), actionRepresentation);
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Resolves links to external semantic elements.
+	 * @param uri
+	 * @return
+	 */
+	protected EObject resolveSemanticElementLink(URI uri) {
+		return null;
 	}
 	
 	/**
@@ -139,6 +148,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	protected String processRepresentation(
 			String representation, 
 			Action action, 
+			java.util.function.Function<URI, EObject> semanticLinkResolver,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
 			ProgressMonitor progressMonitor) {
 		
@@ -147,7 +157,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		if (Document.isDataURI(representationURI)) {
 			try {
 				Document document = Document.load(representationURI);				
-				Document processedDocument = processDrawioRepresentation(document, action, context, progressMonitor);
+				Document processedDocument = processDrawioRepresentation(document, action, semanticLinkResolver, context, progressMonitor);
 				if (processedDocument == null) {
 					return null;
 				}
@@ -163,10 +173,11 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	protected Document processDrawioRepresentation(
 			Document document, 
 			Action action, 
+			java.util.function.Function<URI, EObject> semanticLinkResolver,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
 			ProgressMonitor progressMonitor) {
 		
-		document.accept(element -> processDrawioElement(element, action, context, progressMonitor));
+		document.accept(element -> processDrawioElement(element, action, semanticLinkResolver, context, progressMonitor));
 		
 		return document;
 	}
@@ -174,6 +185,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	protected void processDrawioElement(
 			org.nasdanika.graph.Element element, 
 			Action action, 
+			java.util.function.Function<URI, EObject> semanticLinkResolver,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
 			ProgressMonitor progressMonitor) {
 
@@ -185,7 +197,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				if (!Util.isBlank(targetUriPropertyValue)) {
 					boolean found = false;
 					for (URI tURI: resolveURIs(TARGET_URI_KEY, modelElement, NcoreUtil.getIdentifiers(action), false)) {
-						EObject uriTarget = findByURI(tURI, getTarget());
+						EObject uriTarget = findByURI(tURI, getTarget(), semanticLinkResolver);
 						if (uriTarget != null) {
 							if (uriTarget != null) {
 								Action uriTargetAction = context.getAction(uriTarget);
@@ -287,18 +299,26 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	/**
 	 * @param uriResolver returns a list of target URI's potentially resolving them relative to the semantic element URI.
 	 * @param semanticElement
+	 * @param semanticInfoSource 
 	 * @return
 	 */
-	private static EObject findByURI(URI uri, EObject semanticElement) {	
+	private static EObject findByURI(
+			URI uri, 
+			EObject semanticElement, 
+			java.util.function.Function<URI,EObject> fallback) {
+		
 		List<URI> semanticURIs = NcoreUtil.getIdentifiers(semanticElement);
 		
 		Collection<URI> uris = new HashSet<>();
-		uris.add(uri);		
-		for (URI semanticURI: semanticURIs) {
-			if (uri.isRelative() && !semanticURI.isRelative() && semanticURI.isHierarchical()) {
-				 uris.add(uri.resolve(semanticURI));
+		if (uri.isRelative()) {
+			for (URI semanticURI: semanticURIs) {
+				if (semanticURI.isRelative() && semanticURI.isHierarchical()) {
+					 uris.add(uri.resolve(semanticURI));
+				}
 			}
-		}		
+		} else {
+			uris.add(uri);
+		}
 		
 		for (URI semanticURI: semanticURIs) {
 			for (URI u: uris) {
@@ -336,6 +356,15 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			}
 		}
 		
+		if (fallback != null) {
+			for (URI u: uris) {
+				EObject ret = fallback.apply(u);
+				if (ret != null) {
+					return ret;
+				}
+			}
+		}
+						
 		return null;
 	}
 	
@@ -384,6 +413,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	 */
 	public static Map<String, Object> resolveRepresentationLinks(
 			Action action, 
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			BiFunction<Label, URI, URI> uriResolver,
 			BiConsumer<String, String> resolutionErrorConsumer,			
 			ProgressMonitor progressMonitor) {
@@ -399,6 +429,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 					document.accept(element -> resolveLink(
 							element, 
 							action, 
+							semanticInfoSource,
 							uriResolver, 
 							(modelElement, error) -> resolutionErrorConsumer.accept(modelElement.toString() + " " + modelElement.getMarkers().toString(), error), 
 							progressMonitor));
@@ -436,6 +467,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 							URI ret = resolveActionUUIDLink(
 									path,
 									action,
+									semanticInfoSource,
 									uriResolver,
 									error -> resolutionErrorConsumer.accept(actionMarker, error), 
 									progressMonitor);
@@ -456,6 +488,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 							URI ret = resolveActionURILink(
 									path, 
 									action, 
+									semanticInfoSource,
 									uriResolver, 
 									error -> resolutionErrorConsumer.accept(actionMarker, error), 
 									progressMonitor);
@@ -476,6 +509,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	private static URI resolveActionUUIDLink(
 			String actionUUID,
 			Action action, 
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			BiFunction<Label, URI, URI> uriResolver,
 			Consumer<String> propertyResolutionErrorConsumer,
 			ProgressMonitor progressMonitor) {
@@ -489,33 +523,51 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 					return targetURI;
 				}
 			} else {
-				String message = "Unresolved action UUID: " + actionUUID;
-				progressMonitor.worked(Status.ERROR, 1, message, action);
-				if (propertyResolutionErrorConsumer != null) {
-					propertyResolutionErrorConsumer.accept(message);
-				}				
+				return resolveActionURILink(
+						"uuid:" + actionUUID,
+						action,
+						semanticInfoSource,
+						uriResolver,
+						propertyResolutionErrorConsumer,
+						progressMonitor);
 			}
 		}
 		
+		return null;
+	}
+	
+	public static EObject find(URI identifier, Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource) {
+		if (semanticInfoSource != null) {
+			for (Entry<SemanticInfo, ?> sie: semanticInfoSource) {
+				if (sie != null) {
+					SemanticInfo si = sie.getKey();
+					Object value = sie.getValue();
+					if (si != null && value instanceof EObject && si.getIdentifiers().contains(identifier)) {
+						return (EObject) value;
+					}
+				}
+			}
+		}
 		return null;
 	}
 		
 	private static URI resolveActionURILink(
 			String aURI,
 			Action action, 
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			BiFunction<Label, URI, URI> uriResolver,
 			Consumer<String> propertyResolutionErrorConsumer,
 			ProgressMonitor progressMonitor) {
 
 		if (!Util.isBlank(aURI)) {
-			EObject targetAction = findByURI(URI.createURI(aURI), action);
+			EObject targetAction = findByURI(URI.createURI(aURI), action, identifier -> find(identifier,semanticInfoSource));
 			if (targetAction instanceof Label) {
 				URI actionURI = uriResolver.apply(action, (URI) null);
 				URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
 				if (targetURI != null) {
 					return targetURI;
 				}
-			} else {
+			} else {				
 				String message = "Unresolved action URI: " + aURI;
 				progressMonitor.worked(Status.ERROR, 1, message, action);
 				if (propertyResolutionErrorConsumer != null) {
@@ -530,10 +582,10 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	private static void resolveLink(
 			org.nasdanika.graph.Element element, 
 			Action action, 
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			BiFunction<Label, URI, URI> uriResolver,
 			BiConsumer<org.nasdanika.drawio.ModelElement, String> resolutionErrorConsumer,
 			ProgressMonitor progressMonitor) {
-
 		if (element instanceof org.nasdanika.drawio.ModelElement) {
 			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
 			if (Util.isBlank(modelElement.getLink())) {
@@ -572,7 +624,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				boolean found = false;
 				for (URI aURI: resolveURIs(ACTION_URI_KEY, modelElement, NcoreUtil.getIdentifiers(action), false)) {
 					if (Util.isBlank(modelElement.getLink()) && aURI != null) {
-						EObject targetAction = findByURI(aURI, action);
+						EObject targetAction = findByURI(aURI, action, identifier -> find(identifier,semanticInfoSource));
 						if (targetAction instanceof Label) {
 							URI actionURI = uriResolver.apply(action, (URI) null);
 							URI targetURI = uriResolver.apply((Label) targetAction, actionURI);

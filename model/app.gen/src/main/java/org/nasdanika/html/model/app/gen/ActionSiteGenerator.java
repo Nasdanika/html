@@ -44,7 +44,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 		Action root;
 		if (rootActionURI == null) {
 			Context rootActionContext = context.compose(Context.singleton("action-resource", actionResource.getURI().toString()));
-			ResourceSet rootActionResourceSet = createResourceSet(rootActionContext, progressMonitor);
+			ResourceSet rootActionResourceSet = createActionModelResourceSet(rootActionContext, progressMonitor);
 			root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);
 		} else {
 			root = (Action) actionResource.getContents().get(0);
@@ -61,7 +61,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 
 	protected ProgressMonitor createProgressMonitor() {
 		return new PrintStreamProgressMonitor();
-	}
+	}	
 			
 	public Map<String, Collection<String>> generate(
 		URI rootActionURI,
@@ -98,7 +98,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 			try (ProgressMonitor progressMonitor = createProgressMonitor()) {				
 				Context context = Context.singleton("model-name", modelName).compose(createContext(progressMonitor));		
 				
-				ResourceSet rootActionResourceSet = createResourceSet(context, progressMonitor);
+				ResourceSet rootActionResourceSet = createActionModelResourceSet(context, progressMonitor);
 				Action root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);	
 				
 				org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) rootActionResourceSet.getEObject(pageTemplateURI, true);
@@ -159,6 +159,19 @@ public class ActionSiteGenerator extends SiteGenerator {
 	 */
 	protected Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource(ResourceSet resourceSet) {
 		return asIterable(resourceSet, this::semanticInfo);
+	}
+	
+	/**
+	 * Action is its own semantic element.
+	 */
+	@Override
+	protected SemanticInfo getSemanticInfoAnnotation(Action action) {
+		SemanticInfo semanticInfo = super.getSemanticInfoAnnotation(action);
+		SemanticInfo.getAnnotation(action);
+		if (semanticInfo == null) {
+			semanticInfo = new SemanticInfo(action);
+		}
+		return semanticInfo;
 	}
 	
 }

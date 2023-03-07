@@ -96,23 +96,47 @@ import com.redfin.sitemapgenerator.ChangeFreq;
 public class SiteGenerator {
 	
 	/**
-	 * Override to return contributors
-	 * @return
-	 */
-	protected List<SiteGeneratorContributor> getContribuors() {
-		return Collections.emptyList();
-	}
-	
-	/**
-	 * Creates a resource set for loading models.
+	 * Creates and configures a resource set for loading models.
 	 * Override to customize, e.g. register {@link EPackage}'s and adapter factories.
 	 * @param progressMonitor
 	 * @return
 	 */
 	protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
-		return Util.createResourceSet(context, progressMonitor);
+		ResourceSet resourceSet = Util.createResourceSet(context, progressMonitor);
+		for (SiteGeneratorContributor contributor: getContributors()) {
+			contributor.configureResourceSet(resourceSet, context, progressMonitor);
+		}
+		return resourceSet;
+	}
+	
+	/**
+	 * Creates a resource set for loading resource model.
+	 * Override to customize, e.g. register {@link EPackage}'s and adapter factories.
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected ResourceSet createResourceModelResourceSet(Context context, ProgressMonitor progressMonitor) {
+		ResourceSet resourceSet = createResourceSet(context, progressMonitor);
+		for (SiteGeneratorContributor contributor: getContributors()) {
+			contributor.configureResourceModelResourceSet(resourceSet, context, progressMonitor);
+		}
+		return resourceSet;
 	}	
 	
+	/**
+	 * Creates a resource set for loading action model.
+	 * Override to customize, e.g. register {@link EPackage}'s and adapter factories.
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected ResourceSet createActionModelResourceSet(Context context, ProgressMonitor progressMonitor) {
+		ResourceSet resourceSet = createResourceSet(context, progressMonitor);
+		for (SiteGeneratorContributor contributor: getContributors()) {
+			contributor.configureActionModelResourceSet(resourceSet, context, progressMonitor);
+		}
+		return resourceSet;
+	}	
+		
 	/**
 	 * Generates a resource model from an action model.
 	 * @throws IOException 
@@ -128,6 +152,10 @@ public class SiteGenerator {
 			BiConsumer<String, String> representationLinkResolutionErrorConsumer,						
 			Context context, 
 			ProgressMonitor progressMonitor) throws IOException {
+		
+		for (SiteGeneratorContributor contributor: getContributors()) {
+			contributor.processRootAction(root, context, progressMonitor);
+		}
 		
 		java.util.function.Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
 			if (diagnostic.getStatus() == Status.FAIL || diagnostic.getStatus() == Status.ERROR) {
@@ -145,7 +173,7 @@ public class SiteGenerator {
 		container.setName(containerName);
 		container.setReconcileAction(ReconcileAction.OVERWRITE);
 		
-		ResourceSet resourceSet = createResourceSet(context, progressMonitor);
+		ResourceSet resourceSet = createResourceModelResourceSet(context, progressMonitor);
 		Resource modelResource = resourceSet.createResource(resourceURI);
 		modelResource.getContents().add(container);
 		
@@ -185,6 +213,10 @@ public class SiteGenerator {
 				Files.copy(contentStream, new File(pageFile.getCanonicalPath().replace(".xml", ".html")).toPath(), StandardCopyOption.REPLACE_EXISTING);
 				progressMonitor.worked(1, "[Page xml -> html] " + pageFile.getName());
 			}
+		}
+		
+		for (SiteGeneratorContributor contributor: getContributors()) {
+			contributor.processResourcecModel(modelResource, context, progressMonitor);
 		}
 		
 		return modelResource;
@@ -821,6 +853,7 @@ public class SiteGenerator {
 			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			Consumer<String> propertyResolutionErrorConsumer,
 			ProgressMonitor progressMonitor) {
+		
 		int spaceIdx = path.indexOf(' ');
 		String targetUriStr = spaceIdx == -1 ? path : path.substring(0, spaceIdx);
 
@@ -1106,6 +1139,10 @@ public class SiteGenerator {
 		return null;		
 	}	
 	
+	protected SemanticInfo getSemanticInfoAnnotation(Action action) {
+		return SemanticInfo.getAnnotation(action);
+	}
+	
 	/**
 	 * Registers semantic-link and semantic-ref property computers
 	 * @param action
@@ -1131,11 +1168,12 @@ public class SiteGenerator {
 			mctx.register(ContentConsumer.class, contentConsumer);
 		}
 		
-		SemanticInfo semanticElementAnnotation = SemanticInfo.getAnnotation(action);
-		List<URI> baseSemanticURIs = semanticElementAnnotation == null ? null : semanticElementAnnotation.getIdentifiers().stream().filter(u -> !u.isRelative() && u.isHierarchical()).collect(Collectors.toList());					
+		SemanticInfo semanticInfo = getSemanticInfoAnnotation(action);
+		List<URI> baseSemanticURIs = semanticInfo.getIdentifiers().stream().filter(u -> !u.isRelative() && u.isHierarchical()).collect(Collectors.toList());					
 		
 		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(
 				action, 
+				semanticInfoSource,
 				uriResolver, 
 				propertyLinkResolutionErrorConsumer, 
 				progressMonitor);
@@ -1306,6 +1344,14 @@ public class SiteGenerator {
 			return Map.entry(semanticInfo, (Label) object);
 		}
 		return null;
+	}
+	
+	/**
+	 * Override to return contributors.
+	 * @return A collection of {@link SiteGeneratorContributor}s.
+	 */
+	protected Collection<SiteGeneratorContributor> getContributors() {
+		return Collections.emptyList();
 	}
 	
 }
