@@ -140,6 +140,9 @@
 						}
 						
 						return ret.filter(item => {
+							if (item.identifiers.length == 0) {
+								return false;
+							}
 							if (this.filter) {
 								for (let identifierItem in item.identifiers) {
 									let identifier = item.identifiers[identifierItem].value;
