@@ -1,5 +1,10 @@
 package org.nasdanika.html.model.app.gen;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -29,7 +34,7 @@ public interface SiteGeneratorContributor {
 	 * @param resourceSet
 	 */
 	default void configureActionModelResourceSet(ResourceSet resourceSet, Context context, ProgressMonitor progressMonitor) {
-		
+		resourceSet.getAdapterFactories().add(new AppAdapterFactory()); // To adapt actions to resources
 	}
 	
 	/**
@@ -38,7 +43,7 @@ public interface SiteGeneratorContributor {
 	 * @param resourceSet
 	 */
 	default void configureResourceModelResourceSet(ResourceSet resourceSet, Context context, ProgressMonitor progressMonitor) {
-		
+		resourceSet.getAdapterFactories().add(new AppAdapterFactory()); // To generate container		
 	}
 	
 	/**
@@ -90,5 +95,17 @@ public interface SiteGeneratorContributor {
 	default void processResourcecModel(Resource semanticResource, Context context, ProgressMonitor progressMonitor) {
 		
 	}
+	
+	/**
+	 * Creates action provider adapter factories which take instance diagnostic. 
+	 * Instance diagnostic may be used to display diagnostic results in the generated Web UI.
+	 * @param context
+	 * @param instanceDiagnostic
+	 * @return
+	 */
+	default List<AdapterFactory> createActionProviderAdapterFactories(Context context, Diagnostic instanceDiagnostic, ProgressMonitor progressMonitor) {
+		return Collections.emptyList();
+	}		
+	
 	
 }

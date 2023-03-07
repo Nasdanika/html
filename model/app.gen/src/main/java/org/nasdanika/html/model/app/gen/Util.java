@@ -1448,7 +1448,7 @@ public final class Util {
 		resourceSet.getPackageRegistry().put(BootstrapPackage.eNS_URI, BootstrapPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put(AppPackage.eNS_URI, AppPackage.eINSTANCE);
 		 
-		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
+//		resourceSet.getAdapterFactories().add(new AppAdapterFactory());
 		
 		return resourceSet;
 	}

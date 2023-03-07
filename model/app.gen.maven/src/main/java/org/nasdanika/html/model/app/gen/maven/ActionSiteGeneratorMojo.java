@@ -4,30 +4,26 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.emf.common.util.DiagnosticException;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.DiagramGeneratorImpl;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
-import org.nasdanika.html.model.app.AppFactory;
-import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.ActionSiteGenerator;
 import org.nasdanika.maven.AbstractCommandMojo;
-import org.nasdanika.ncore.util.SemanticIdentity;
 import org.nasdanika.ncore.util.SemanticInfo;
 import org.nasdanika.ncore.util.SemanticRegistry;
 
@@ -161,53 +157,12 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 		return new ActionSiteGenerator() {
 			
 			@Override
-			protected Iterable<Entry<SemanticInfo, ?>> semanticInfoSource(ResourceSet resourceSet) {
-				Iterable<Entry<SemanticInfo, ?>> resourceSetSource = super.semanticInfoSource(resourceSet);
-				if (semanticRegistry.isEmpty()) {
-					return resourceSetSource;
-				}
-				return new Iterable<Entry<SemanticInfo, ?>>() {
-					
-					@Override
-					public Iterator<Entry<SemanticInfo, ?>> iterator() {
-						return new Iterator<Map.Entry<SemanticInfo,?>>() {
-							
-							private Iterator<Map.Entry<SemanticInfo,?>> resourceSetIterator = resourceSetSource.iterator();
-							private Iterator<Map.Entry<SemanticInfo,?>> semanticRegistryIterator = wrap(semanticRegistry.iterator(), this::mapToLabel);
-							
-							private Map.Entry<SemanticInfo,Label> mapToLabel(SemanticIdentity semanticIdentity) {
-								if (semanticIdentity instanceof SemanticInfo) {
-									SemanticInfo semanticInfo = (SemanticInfo) semanticIdentity;									
-									URI location = semanticInfo.getLocation();
-									Label label = location == null ? AppFactory.eINSTANCE.createLabel() : AppFactory.eINSTANCE.createLink();
-									label.setText(semanticInfo.getName());
-									label.setTooltip(semanticInfo.getDescription());
-									label.setIcon(semanticInfo.getIcon());
-
-									if (location != null) {
-										((Link) label).setLocation(location.toString());
-									}
-									return Map.entry(semanticInfo, label); 
-								}	
-								return null;
-							}
-							
-							@Override
-							public Entry<SemanticInfo, ?> next() {								
-								if (resourceSetIterator != null && resourceSetIterator.hasNext()) {
-									
-								}
-								return (resourceSetIterator.hasNext() ? resourceSetIterator : semanticRegistryIterator).next();
-							}
-							
-							@Override
-							public boolean hasNext() {
-								return resourceSetIterator.hasNext() || semanticRegistryIterator.hasNext();
-							}
-						};
-					}
-					
-				};
+			protected Iterable<SemanticInfo> getSemanticInfos() {
+				return semanticRegistry
+					.stream()
+					.filter(SemanticInfo.class::isInstance)
+					.map(SemanticInfo.class::cast)
+					.collect(Collectors.toList());
 			}
 			
 			@Override

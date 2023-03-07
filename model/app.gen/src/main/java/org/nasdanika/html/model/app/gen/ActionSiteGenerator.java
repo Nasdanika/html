@@ -52,7 +52,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 		
 		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) actionResource.getResourceSet().getEObject(pageTemplateURI, true);
 		
-		return generateResourceModel(root, asIterable(actionResource.getResourceSet(), this::semanticInfo), pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);
+		return generateResourceModel(root, semanticInfoSource(actionResource.getResourceSet()), pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);
 	}	
 	
 	protected Context createContext(ProgressMonitor progressMonitor) {
@@ -149,17 +149,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 	 */
 	protected boolean isDeleteOutputPath(String path) {
 		return true;
-	}
-	
-	/**
-	 * Override to load semantic info from external sources. This implementation iterates over the resource set and returns
-	 * entries created by selfInfo 
-	 * @param resourceSet
-	 * @return
-	 */
-	protected Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource(ResourceSet resourceSet) {
-		return asIterable(resourceSet, this::semanticInfo);
-	}
+	}	
 	
 	/**
 	 * Action is its own semantic element.

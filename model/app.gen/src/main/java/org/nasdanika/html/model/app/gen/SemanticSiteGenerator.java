@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,6 +17,7 @@ import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -26,6 +27,8 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.emf.ComposeableAdapterFactory;
+import org.nasdanika.emf.ComposedAdapterFactory;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.emf.persistence.NcoreObjectLoaderSupplier;
@@ -51,7 +54,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 	protected ResourceSet createSemanticModelResourceSet(Context context, ProgressMonitor progressMonitor) {
 		ResourceSet resourceSet = createResourceSet(context, progressMonitor);
 		for (SiteGeneratorContributor contributor: getContributors()) {
-			contributor.configureResourceSet(resourceSet, context, progressMonitor);
+			contributor.configureSemanticModelResourceSet(resourceSet, context, progressMonitor);
 		}
 		return resourceSet;
 	}
@@ -106,7 +109,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			throw new org.eclipse.emf.common.util.DiagnosticException(instanceDiagnostic);
 		}
 		
-		for (org.eclipse.emf.common.notify.AdapterFactory adapterFactory: createActionProviderAdapterFactories(context, instanceDiagnostic)) {
+		for (org.eclipse.emf.common.notify.AdapterFactory adapterFactory: createActionProviderAdapterFactories(context, instanceDiagnostic, progressMonitor)) {
 			semanticModelResourceSet.getAdapterFactories().add(adapterFactory);
 		}
 		
@@ -154,8 +157,35 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		return actionModelResource;
 	}
 
-	protected List<org.eclipse.emf.common.notify.AdapterFactory> createActionProviderAdapterFactories(Context context, org.eclipse.emf.common.util.Diagnostic instanceDiagnostic) {
-		return Collections.singletonList(new ActionProviderAdapterFactory(context, instanceDiagnostic));
+	protected List<org.eclipse.emf.common.notify.AdapterFactory> createActionProviderAdapterFactories(
+			Context context, org.eclipse.emf.common.util.Diagnostic instanceDiagnostic, 
+			ProgressMonitor progressMonitor) {
+		
+		List<org.eclipse.emf.common.notify.AdapterFactory> adapterFactories = new ArrayList<>();
+		adapterFactories.add(new ActionProviderAdapterFactory(context, instanceDiagnostic));
+		
+		for (SiteGeneratorContributor contributor: getContributors()) {
+			adapterFactories.addAll(contributor.createActionProviderAdapterFactories(context, instanceDiagnostic, progressMonitor));
+		}
+		
+		boolean isComposed = false;
+		ComposedAdapterFactory composedActionAdapterFactory = new ComposedAdapterFactory();
+		
+		Iterator<AdapterFactory> afit = adapterFactories.iterator();
+		while (afit.hasNext()) {
+			AdapterFactory af = afit.next();
+			if (af instanceof ComposeableAdapterFactory) {
+				composedActionAdapterFactory.registerAdapterFactory((ComposeableAdapterFactory) af);
+				isComposed = true;
+				afit.remove();
+			}
+		}
+		
+		if (isComposed) {
+			adapterFactories.add(0, composedActionAdapterFactory);
+		}
+
+		return adapterFactories;
 	}	
 		
 	/**
@@ -185,7 +215,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		
 		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) actionResource.getResourceSet().getEObject(pageTemplateURI, true);
 		
-		return generateResourceModel(root, asIterable(actionResource, this::semanticInfo), pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);
+		return generateResourceModel(root, semanticInfoSource(actionResource), pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);
 	}		
 	
 	protected MutableContext createContext(ProgressMonitor progressMonitor) {

@@ -1082,7 +1082,7 @@ public class SiteGenerator {
 			String key, 
 			String path, 
 			Action action,
-			List<URI> baseSemanticURIs,
+			Collection<URI> baseSemanticURIs,
 			BiFunction<Label, URI, URI> uriResolver,
 			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource) {
 
@@ -1169,7 +1169,7 @@ public class SiteGenerator {
 		}
 		
 		SemanticInfo semanticInfo = getSemanticInfoAnnotation(action);
-		List<URI> baseSemanticURIs = semanticInfo.getIdentifiers().stream().filter(u -> !u.isRelative() && u.isHierarchical()).collect(Collectors.toList());					
+		Collection<URI> baseSemanticURIs = semanticInfo == null ? Collections.emptyList() : semanticInfo.getIdentifiers().stream().filter(u -> !u.isRelative() && u.isHierarchical()).collect(Collectors.toList());					
 		
 		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(
 				action, 
@@ -1352,6 +1352,78 @@ public class SiteGenerator {
 	 */
 	protected Collection<SiteGeneratorContributor> getContributors() {
 		return Collections.emptyList();
+	}
+	
+	/**
+	 * Override to load semantic info from external sources. This implementation iterates over the resource set and returns
+	 * entries created by selfInfo 
+	 * @param resourceSet
+	 * @return
+	 */
+	protected Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource(ResourceSet resourceSet) {
+		return composeWithSemanticInfo(asIterable(resourceSet, this::semanticInfo));
+	}
+	
+	/**
+	 * Override to load semantic info from external sources. This implementation iterates over the resource set and returns
+	 * entries created by selfInfo 
+	 * @param resourceSet
+	 * @return
+	 */
+	protected Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource(Resource actionResource) {
+		return composeWithSemanticInfo(asIterable(actionResource, this::semanticInfo));
+	}
+	
+	/**
+	 * @return External {@link SemanticInfo}'s for referencing. 
+	 */
+	protected Iterable<SemanticInfo> getSemanticInfos() {
+		return null;
+	}
+	
+	protected Iterable<Entry<SemanticInfo, ?>> composeWithSemanticInfo(Iterable<Entry<SemanticInfo, ?>> semanticInfoSource) {
+		Iterable<SemanticInfo> semanticInfos = getSemanticInfos();
+		if (semanticInfos == null) {
+			return semanticInfoSource;
+		}
+		return new Iterable<Entry<SemanticInfo, ?>>() {
+			
+			@Override
+			public Iterator<Entry<SemanticInfo, ?>> iterator() {
+				return new Iterator<Map.Entry<SemanticInfo,?>>() {
+					
+					private Iterator<Map.Entry<SemanticInfo,?>> firstIterator = semanticInfoSource.iterator();
+					private Iterator<Map.Entry<SemanticInfo,?>> secondIterator = wrap(semanticInfos.iterator(), this::mapToLabel);
+					
+					private Map.Entry<SemanticInfo,Label> mapToLabel(SemanticInfo semanticInfo) {
+						URI location = semanticInfo.getLocation();
+						Label label = location == null ? AppFactory.eINSTANCE.createLabel() : AppFactory.eINSTANCE.createLink();
+						label.setText(semanticInfo.getName());
+						label.setTooltip(semanticInfo.getDescription());
+						label.setIcon(semanticInfo.getIcon());
+
+						if (location != null) {
+							((Link) label).setLocation(location.toString());
+						}
+						return Map.entry(semanticInfo, label); 
+					}
+					
+					@Override
+					public Entry<SemanticInfo, ?> next() {								
+						if (firstIterator != null && firstIterator.hasNext()) {
+							
+						}
+						return (firstIterator.hasNext() ? firstIterator : secondIterator).next();
+					}
+					
+					@Override
+					public boolean hasNext() {
+						return firstIterator.hasNext() || secondIterator.hasNext();
+					}
+				};
+			}
+			
+		};
 	}
 	
 }
