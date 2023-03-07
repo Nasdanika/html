@@ -34,7 +34,7 @@ public interface SiteGeneratorContributor {
 	 * @param resourceSet
 	 */
 	default void configureActionModelResourceSet(ResourceSet resourceSet, Context context, ProgressMonitor progressMonitor) {
-		resourceSet.getAdapterFactories().add(new AppAdapterFactory()); // To adapt actions to resources
+
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public interface SiteGeneratorContributor {
 	 * @param resourceSet
 	 */
 	default void configureResourceModelResourceSet(ResourceSet resourceSet, Context context, ProgressMonitor progressMonitor) {
-		resourceSet.getAdapterFactories().add(new AppAdapterFactory()); // To generate container		
+
 	}
 	
 	/**
