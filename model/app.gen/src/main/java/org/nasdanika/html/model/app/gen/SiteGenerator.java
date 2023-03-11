@@ -20,7 +20,6 @@ import java.util.TreeMap;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -70,6 +69,7 @@ import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.emf.NcoreActionBuilder;
+import org.nasdanika.html.emf.ResolutionListener;
 import org.nasdanika.html.jstree.JsTreeFactory;
 import org.nasdanika.html.jstree.JsTreeNode;
 import org.nasdanika.html.model.app.Action;
@@ -77,6 +77,7 @@ import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.html.gen.ContentConsumer;
+import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.ContainerInfo;
 import org.nasdanika.ncore.util.NcoreUtil;
@@ -149,7 +150,7 @@ public class SiteGenerator {
 			URI resourceURI, 
 			String containerName,
 			File resourceWorkDir,
-			BiConsumer<String, String> representationLinkResolutionErrorConsumer,						
+			ResolutionListener resolutionListener,						
 			Context context, 
 			ProgressMonitor progressMonitor) throws IOException {
 		
@@ -194,7 +195,7 @@ public class SiteGenerator {
 				root, 
 				pageTemplate,
 				container,
-				contentProviderContext -> (cAction, uriResolver, pMonitor) -> getActionContent(cAction, semanticInfoURIResolver(uriResolver), semanticInfoSource, resourceWorkDir, contentProviderContext, diagnosticConsumer, representationLinkResolutionErrorConsumer, pMonitor),
+				contentProviderContext -> (cAction, uriResolver, pMonitor) -> getActionContent(cAction, semanticInfoURIResolver(uriResolver), semanticInfoSource, resourceWorkDir, contentProviderContext, diagnosticConsumer, resolutionListener, pMonitor),
 				contentProviderContext -> (page, baseURI, uriResolver, pMonitor) -> getPageContent(page, baseURI, semanticInfoURIResolver(uriResolver), pagesDir, contentProviderContext, progressMonitor),
 				Context.singleton("semantic-info", semanticInfo.toString()).compose(context),
 				progressMonitor);
@@ -851,7 +852,7 @@ public class SiteGenerator {
 			Collection<URI> baseSemanticURIs,
 			BiFunction<Label, URI, URI> uriResolver,
 			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
-			Consumer<String> propertyResolutionErrorConsumer,
+			ResolutionListener resolutionListener,
 			ProgressMonitor progressMonitor) {
 		
 		int spaceIdx = path.indexOf(' ');
@@ -894,6 +895,11 @@ public class SiteGenerator {
 										} else {
 											tag = tagSupplierFactory.create(context).execute(progressMonitor);
 										}
+										if (resolutionListener != null) {
+											URI rawTargetURI = uriResolver.apply(targetLabel, null);
+											URI backLinkURI = uriResolver.apply(action, rawTargetURI);
+											resolutionListener.onSemanticReferenceResolution(action, path, targetLabel, targetURI, backLinkURI);
+										}										
 										return tag.toString(); 
 									}
 								}
@@ -903,16 +909,16 @@ public class SiteGenerator {
 				}
 			}
 					
-			String semanticLink = computeSemanticLink(targetURI, bURI, context);
-			if (semanticLink != null) {
+			String semanticLink = computeSemanticLink(targetURI, bURI, context, resolutionListener);
+			if (semanticLink != null) {				
 				return semanticLink;
 			}
 		}
 		
 		String message = "Unresolved semantic URI: " + targetUriStr;
 		progressMonitor.worked(Status.ERROR, 1, message, action);
-		if (propertyResolutionErrorConsumer != null) {
-			propertyResolutionErrorConsumer.accept(message);
+		if (resolutionListener != null) {
+			resolutionListener.onSemanticReferenceResolution(action, targetUriStr, null, null, null);
 		}
 		
 		return null;
@@ -925,7 +931,12 @@ public class SiteGenerator {
 	 * @param context
 	 * @return
 	 */
-	protected String computeSemanticLink(URI targetURI, URI baseURI, Context context) { 
+	protected String computeSemanticLink(
+			URI targetURI, 
+			URI baseURI, 
+			Context context,
+			ResolutionListener resolutionListener) {
+		
 		return null;
 	}	
 
@@ -949,7 +960,7 @@ public class SiteGenerator {
 			Collection<URI> baseSemanticURIs,
 			BiFunction<Label, URI, URI> uriResolver,
 			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
-			Consumer<String> propertyResolutionErrorConsumer,
+			ResolutionListener resolutionListener,
 			ProgressMonitor progressMonitor) {
 
 		if (baseSemanticURIs == null || baseSemanticURIs.isEmpty()) {
@@ -973,6 +984,12 @@ public class SiteGenerator {
 									if (Objects.equals(targetURI, semanticURI)) {
 										URI targetActionURI = uriResolver.apply(targetLabel, bURI);
 										if (targetActionURI != null) {
+											if (resolutionListener != null) {
+												URI rawTargetURI = uriResolver.apply(targetLabel, null);
+												URI backLinkURI = uriResolver.apply(action, rawTargetURI);
+												resolutionListener.onSemanticReferenceResolution(action, path, targetLabel, targetURI, backLinkURI);
+											}
+											
 											return targetActionURI;
 										}
 									}
@@ -985,14 +1002,20 @@ public class SiteGenerator {
 			
 			URI ref = computeSemanticReference(targetURI, context);		
 			if (ref != null) {
-				return bURI == null ? ref : ref.deresolve(bURI, true, true, true);
+				if (bURI != null) {
+					ref = ref.deresolve(bURI, true, true, true);
+				}
+				if (resolutionListener != null) {
+					resolutionListener.onSemanticReferenceResolution(action, path, null, ref, null);
+				}				
+				return ref;
 			}
 		}
 		
 		String message = "Unresolved semantic URI: " + path;
 		progressMonitor.worked(Status.ERROR, 1, message, action);
-		if (propertyResolutionErrorConsumer != null) {
-			propertyResolutionErrorConsumer.accept(message);
+		if (resolutionListener != null) {
+			resolutionListener.onSemanticReferenceResolution(action, path, null, null, null);
 		}
 		return null;
 		
@@ -1022,7 +1045,7 @@ public class SiteGenerator {
 			File resourceWorkDir,
 			Context context,
 			java.util.function.Consumer<Diagnostic> diagnosticConsumer,
-			BiConsumer<String, String> representationLinkResolutionErrorConsumer,						
+			ResolutionListener resolutionListener,						
 			ProgressMonitor progressMonitor) {
 
 		List<Object> contentContributions = new ArrayList<>();
@@ -1032,7 +1055,7 @@ public class SiteGenerator {
 				uriResolver, 
 				semanticInfoSource, 
 				(ContentConsumer) contentContributions::add, 
-				representationLinkResolutionErrorConsumer, 
+				resolutionListener, 
 				context, 
 				progressMonitor);
 		
@@ -1155,12 +1178,10 @@ public class SiteGenerator {
 			BiFunction<Label, URI, URI> uriResolver,
 			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			ContentConsumer contentConsumer,
-			BiConsumer<String, String> propertyLinkResolutionErrorConsumer,						
+			ResolutionListener resolutionListener,						
 			Context context,
 			ProgressMonitor progressMonitor) {
 		
-		String actionMarker = NcoreActionBuilder.actionMarker(action);
-				
 		MutableContext mctx = context.fork();
 		mctx.put("nsd-site-map-tree-script", (Function<Context, String>) ctx -> computeSiteMapTreeScript(ctx, action, uriResolver, semanticInfoSource, progressMonitor));
 		
@@ -1175,7 +1196,7 @@ public class SiteGenerator {
 				action, 
 				semanticInfoSource,
 				uriResolver, 
-				propertyLinkResolutionErrorConsumer, 
+				resolutionListener, 
 				progressMonitor);
 		
 		PropertyComputer representationsPropertyComputer = new PropertyComputer() {
@@ -1206,7 +1227,7 @@ public class SiteGenerator {
 							baseSemanticURIs, 
 							uriResolver, 
 							semanticInfoSource, 
-							error -> propertyLinkResolutionErrorConsumer.accept(actionMarker, error), 
+							resolutionListener,  
 							progressMonitor);			
 				}
 				return null;
@@ -1229,7 +1250,7 @@ public class SiteGenerator {
 							baseSemanticURIs, 
 							uriResolver, 
 							semanticInfoSource, 
-							error -> propertyLinkResolutionErrorConsumer.accept(actionMarker, error), 
+							resolutionListener,  
 							progressMonitor);
 					return sRef == null ? null : (T) sRef.toString();
 				}
@@ -1425,5 +1446,126 @@ public class SiteGenerator {
 			
 		};
 	}
+	
+	/**
+	 * Creates a resolution listener. Used by subclasses.
+	 * @param errorConsumer location, error message
+	 * @param context
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected ResolutionListener createResolutionListener(BiConsumer<String,String> errorConsumer, Context context, ProgressMonitor progressMonitor) {
+				
+		return new ResolutionListener() {
+			/**
+			 * Called on resolution of "target-uri" property of a diagram element.
+			 * If target is null then resolution was unsuccessful.
+			 * @param element
+			 * @param action
+			 * @param targetUriPropertyValue
+			 * @param target
+			 */
+			public void onTargetURIResolution(
+					Action action, 
+					org.nasdanika.drawio.ModelElement modelElement, 
+					String targetURI, 
+					EObject target) {
+								
+				if (target == null) {
+					String location = modelElement == null ? NcoreActionBuilder.actionMarker(action) : modelElement.toString() + " " + modelElement.getMarkers().toString();				
+					errorConsumer.accept(location, "Element with URI not found: " + targetURI);
+				}
+			}
+
+			/**
+			 * Called on resoulution of semantic-uuid property.
+			 * @param element
+			 * @param action
+			 * @param semanticUUID
+			 * @param semanticModelElement If null then there is no element with a given UUID.
+			 * @param semanticModelElementAction If null and the previous argument is not null, then there is a semantic element, but there is not action for it.
+			 */
+			public void onTargetUUIDResolution(
+					Action action, 
+					org.nasdanika.drawio.ModelElement modelElement, 
+					String semanticUUID, 
+					ModelElement semanticModelElement,
+					Action semanticModelElementAction) {
+				
+				if (semanticModelElementAction == null) {
+					String location = modelElement == null ? NcoreActionBuilder.actionMarker(action) : modelElement.toString() + " " + modelElement.getMarkers().toString();				
+					errorConsumer.accept(location, "Action for semantic UUID not found: " + semanticUUID);
+				}
+			}
+
+			/**
+			 * Called on resolution of action URI
+			 * @param action Source action
+			 * @param modelElement Source model element if resolution is done for diagram element properties
+			 * @param targetURIStr Target URI string resolved relative to action URI's.
+			 * @param target Target, null if not found.
+			 * @param targetURI Target URI relative to the source action. Null of target is not found or doesn't have a URI.
+			 * @param backLinkURI Backlink from the target action to the source action.
+			 */
+			public void onActionURIResolution(
+					Action action, 
+					org.nasdanika.drawio.ModelElement modelElement, 
+					String targetURIStr, 
+					Label target, 
+					URI targetURI, 
+					URI backLinkURI) {
+				
+				if (target == null) {
+					String location = modelElement == null ? NcoreActionBuilder.actionMarker(action) : modelElement.toString() + " " + modelElement.getMarkers().toString();				
+					errorConsumer.accept(location, "Action with URI not found: " + targetURIStr);
+				}
+			}
+
+			/**
+			 * Called on resolution of action UUID
+			 * @param action
+			 * @param modelElement
+			 * @param actionUUID
+			 * @param target
+			 * @param targetURI
+			 * @param backLinkURI
+			 */
+			public void onActionUUIDResolution(
+					Action action, 
+					org.nasdanika.drawio.ModelElement modelElement, 
+					String actionUUID,
+					Label target,
+					URI targetURI,
+					URI backLinkURI) {
+				
+				if (target == null) {
+					String location = modelElement == null ? NcoreActionBuilder.actionMarker(action) : modelElement.toString() + " " + modelElement.getMarkers().toString();				
+					errorConsumer.accept(location, "Action with UUID not found: " + actionUUID);
+				}
+			}
+
+			/**
+			 * Called on resolution of semantic reference or link
+			 * @param action
+			 * @param targetURIStr
+			 * @param target
+			 * @param targetURI
+			 * @param backLinkURI
+			 */
+			public void onSemanticReferenceResolution(
+					Action action, 
+					String targetURIStr, 
+					Label target, 
+					URI targetURI, 
+					URI backLinkURI) {
+				
+				if (target == null) {
+					errorConsumer.accept(NcoreActionBuilder.actionMarker(action), "Unresolved semantic reference: " + targetURIStr);
+				}
+			}
+			
+		};		
+	}
+	
 	
 }

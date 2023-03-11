@@ -15,7 +15,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -188,6 +187,8 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			java.util.function.Function<URI, EObject> semanticLinkResolver,
 			org.nasdanika.html.emf.EObjectActionResolver.Context context, 
 			ProgressMonitor progressMonitor) {
+		
+		ResolutionListener semanticLinkResolutionListener = this.context == null ? null : this.context.get(ResolutionListener.class);
 
 		if (element instanceof org.nasdanika.drawio.ModelElement) {
 			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
@@ -213,6 +214,9 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 										}									
 									}
 									found = true;
+									if (semanticLinkResolutionListener != null) {
+										semanticLinkResolutionListener.onTargetURIResolution(action, modelElement, targetUriPropertyValue, uriTarget);
+									}
 									break;
 								}
 							}						
@@ -221,6 +225,9 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 					if (!found) {
 						String message = "Action with URI " + targetUriPropertyValue + " not found";
 						progressMonitor.worked(Status.ERROR, 1, message, modelElement);
+						if (semanticLinkResolutionListener != null) {
+							semanticLinkResolutionListener.onTargetURIResolution(action, modelElement, targetUriPropertyValue, null);
+						}
 						// TODO - some other form of reporting?
 					}
 				}
@@ -229,13 +236,17 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				if (semanticModelElement == null) {
 					String message = "Semantic element with UUID " + semanticUUID + " not found";
 					progressMonitor.worked(Status.ERROR, 1, message, modelElement);
-					// TODO - some other form of reporting?					
+					if (semanticLinkResolutionListener != null) {
+						semanticLinkResolutionListener.onTargetUUIDResolution(action, modelElement, semanticUUID, null, null);
+					}
 				} else {
 					Action semanticModelElementAction = context.getAction(semanticModelElement);
 					if (semanticModelElementAction == null) {
 						String message = "Action for a semantic element with UUID " + semanticUUID + " not found: " + semanticModelElement;
 						progressMonitor.worked(Status.ERROR, 1, message, modelElement);
-						// TODO - some other form of reporting?					
+						if (semanticLinkResolutionListener != null) {
+							semanticLinkResolutionListener.onTargetUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, null);
+						}
 					} else {
 						String semanticModelElementActionUUID = semanticModelElementAction.getUuid();
 						if (!Util.isBlank(semanticModelElementActionUUID)) {
@@ -246,6 +257,9 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 							if (!Util.isBlank(semanticModelElementDescription)) {
 								modelElement.setTooltip(semanticModelElementDescription);
 							}									
+						}
+						if (semanticLinkResolutionListener != null) {
+							semanticLinkResolutionListener.onTargetUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, semanticModelElementAction);
 						}
 					}
 				}
@@ -415,10 +429,9 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			Action action, 
 			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			BiFunction<Label, URI, URI> uriResolver,
-			BiConsumer<String, String> resolutionErrorConsumer,			
+			ResolutionListener resolutionListener,			
 			ProgressMonitor progressMonitor) {
 
-		String actionMarker = NcoreActionBuilder.actionMarker(action);		
 		Map<String, Object> ret = new LinkedHashMap<>();
 		
 		for (Entry<String, String> actionRepresentationEntry: action.getRepresentations()) {
@@ -431,7 +444,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 							action, 
 							semanticInfoSource,
 							uriResolver, 
-							(modelElement, error) -> resolutionErrorConsumer.accept(modelElement.toString() + " " + modelElement.getMarkers().toString(), error), 
+							resolutionListener,  
 							progressMonitor));
 					ret.put(actionRepresentationEntry.getKey(), document);
 				} catch (ParserConfigurationException | SAXException | IOException e) {
@@ -469,7 +482,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 									action,
 									semanticInfoSource,
 									uriResolver,
-									error -> resolutionErrorConsumer.accept(actionMarker, error), 
+									resolutionListener,  
 									progressMonitor);
 							return ret == null ? null : (T) ret.toString();
 						}
@@ -490,7 +503,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 									action, 
 									semanticInfoSource,
 									uriResolver, 
-									error -> resolutionErrorConsumer.accept(actionMarker, error), 
+									resolutionListener,  
 									progressMonitor);
 							return ret == null ? null : (T) ret.toString();
 						}
@@ -511,7 +524,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			Action action, 
 			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			BiFunction<Label, URI, URI> uriResolver,
-			Consumer<String> propertyResolutionErrorConsumer,
+			ResolutionListener resolutionListener,
 			ProgressMonitor progressMonitor) {
 
 		if (!Util.isBlank(actionUUID)) {
@@ -528,7 +541,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 						action,
 						semanticInfoSource,
 						uriResolver,
-						propertyResolutionErrorConsumer,
+						resolutionListener,
 						progressMonitor);
 			}
 		}
@@ -556,23 +569,28 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			Action action, 
 			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			BiFunction<Label, URI, URI> uriResolver,
-			Consumer<String> propertyResolutionErrorConsumer,
+			ResolutionListener resolutionListener,
 			ProgressMonitor progressMonitor) {
 
 		if (!Util.isBlank(aURI)) {
-			EObject targetAction = findByURI(URI.createURI(aURI), action, identifier -> find(identifier,semanticInfoSource));
-			if (targetAction instanceof Label) {
+			EObject target = findByURI(URI.createURI(aURI), action, identifier -> find(identifier,semanticInfoSource));
+			if (target instanceof Label) {
 				URI actionURI = uriResolver.apply(action, (URI) null);
-				URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
+				URI targetURI = uriResolver.apply((Label) target, actionURI);
+				if (resolutionListener != null) {
+					URI rawTargetURI = uriResolver.apply((Label) target, null);
+					URI backLinkURI = uriResolver.apply(action, rawTargetURI);
+					resolutionListener.onActionURIResolution(action, null, aURI, (Label) target, targetURI, backLinkURI);
+				}
 				if (targetURI != null) {
 					return targetURI;
 				}
 			} else {				
 				String message = "Unresolved action URI: " + aURI;
 				progressMonitor.worked(Status.ERROR, 1, message, action);
-				if (propertyResolutionErrorConsumer != null) {
-					propertyResolutionErrorConsumer.accept(message);
-				}				
+				if (resolutionListener != null) {
+					resolutionListener.onActionURIResolution(action, null, aURI, null, null, null);
+				}
 			}
 		}
 		
@@ -584,7 +602,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			Action action, 
 			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			BiFunction<Label, URI, URI> uriResolver,
-			BiConsumer<org.nasdanika.drawio.ModelElement, String> resolutionErrorConsumer,
+			ResolutionListener resolutionListener,
 			ProgressMonitor progressMonitor) {
 		if (element instanceof org.nasdanika.drawio.ModelElement) {
 			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
@@ -596,14 +614,20 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				}
 
 				if (!Util.isBlank(actionUUID)) {
-					ModelElement targetAction = findByUUID(actionUUID, action);
-					if (targetAction instanceof Label) {
+					ModelElement targetModelElement = findByUUID(actionUUID, action);
+					if (targetModelElement instanceof Label) {
 						URI actionURI = uriResolver.apply(action, (URI) null);
-						URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
+						URI targetURI = uriResolver.apply((Label) targetModelElement, actionURI);
+						if (resolutionListener != null) {
+							URI rawTargetURI = uriResolver.apply((Label) targetModelElement, null);
+							URI backLinkURI = uriResolver.apply(action, rawTargetURI);
+							resolutionListener.onActionUUIDResolution(action, modelElement, actionUUID, (Label) targetModelElement, targetURI, backLinkURI);
+						}
+						
 						if (targetURI != null) {
 							modelElement.setLink(targetURI.toString());
 							if (Util.isBlank(modelElement.getTooltip())) {
-								String actionTooltip = ((Label) targetAction).getTooltip();
+								String actionTooltip = ((Label) targetModelElement).getTooltip();
 								if (!Util.isBlank(actionTooltip)) {
 									modelElement.setTooltip(actionTooltip);
 								}
@@ -612,8 +636,8 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 					} else {
 						String message = "Action with UUID " + actionUUID + " not found";
 						progressMonitor.worked(Status.ERROR, 1, message, modelElement);
-						if (resolutionErrorConsumer != null) {
-							resolutionErrorConsumer.accept(modelElement, message);
+						if (resolutionListener != null) {
+							resolutionListener.onActionUUIDResolution(action, modelElement, actionUUID, null, null, null);
 						}
 					}
 				}
@@ -624,14 +648,19 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				boolean found = false;
 				for (URI aURI: resolveURIs(ACTION_URI_KEY, modelElement, NcoreUtil.getIdentifiers(action), false)) {
 					if (Util.isBlank(modelElement.getLink()) && aURI != null) {
-						EObject targetAction = findByURI(aURI, action, identifier -> find(identifier,semanticInfoSource));
-						if (targetAction instanceof Label) {
+						EObject target = findByURI(aURI, action, identifier -> find(identifier,semanticInfoSource));
+						if (target instanceof Label) {
 							URI actionURI = uriResolver.apply(action, (URI) null);
-							URI targetURI = uriResolver.apply((Label) targetAction, actionURI);
+							URI targetURI = uriResolver.apply((Label) target, actionURI);
+							if (resolutionListener != null) {
+								URI rawTargetURI = uriResolver.apply((Label) target, null);
+								URI backLinkURI = uriResolver.apply(action, rawTargetURI);
+								resolutionListener.onActionURIResolution(action, modelElement, actionUriPropertyValue, (Label) target, targetURI, backLinkURI);
+							}
 							if (targetURI != null) {
 								modelElement.setLink(targetURI.toString());
 								if (Util.isBlank(modelElement.getTooltip())) {
-									String actionTooltip = ((Label) targetAction).getTooltip();
+									String actionTooltip = ((Label) target).getTooltip();
 									if (!Util.isBlank(actionTooltip)) {
 										modelElement.setTooltip(actionTooltip);
 									}
@@ -645,9 +674,9 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				if (!found) {
 					String message = "Action with URI " + actionUriPropertyValue + " not found";
 					progressMonitor.worked(Status.ERROR, 1, message, modelElement);
-					if (resolutionErrorConsumer != null) {
-						resolutionErrorConsumer.accept(modelElement, message);
-					}					
+					if (resolutionListener != null) {
+						resolutionListener.onActionURIResolution(action, modelElement, actionUriPropertyValue, null, null, null);
+					}
 				}
 			}
 		}		

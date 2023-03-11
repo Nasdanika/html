@@ -3,6 +3,7 @@ package org.nasdanika.html.model.app.gen.maven;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.ActionSiteGenerator;
+import org.nasdanika.html.model.app.gen.SiteGeneratorContributor;
 import org.nasdanika.maven.AbstractCommandMojo;
 import org.nasdanika.ncore.util.SemanticInfo;
 import org.nasdanika.ncore.util.SemanticRegistry;
@@ -84,11 +86,17 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 	private int errors;
 	
 	/**
-	 * Pluggable diagram generators.
+	 * Pluggable diagram generators. 
 	 */
     @Parameter
     private List<DiagramGenerator> diagramGenerators;
     
+	/**
+	 * Contributors to site generation.
+	 */
+    @Parameter
+    private List<SiteGeneratorContributor> contributors;
+        
     /**
      * URL's of JSON resources with information about external semantic elements. Such JSON resources are created as part of site generation. 
      * They are named semantic-info.json
@@ -208,6 +216,15 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 			@Override
 			protected ProgressMonitor createProgressMonitor() {
 				return progressMonitor;
+			}
+			
+			@Override
+			protected Collection<SiteGeneratorContributor> getContributors() {
+				Collection<SiteGeneratorContributor> allContributors = new ArrayList<>(super.getContributors());
+				if (ActionSiteGeneratorMojo.this.contributors != null) {
+					allContributors.addAll(ActionSiteGeneratorMojo.this.contributors);
+				}
+				return allContributors;
 			}
 						
 		};

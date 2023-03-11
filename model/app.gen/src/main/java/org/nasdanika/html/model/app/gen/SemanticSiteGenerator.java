@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
@@ -24,7 +23,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
-import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.ComposeableAdapterFactory;
@@ -34,6 +32,7 @@ import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.emf.persistence.NcoreObjectLoaderSupplier;
 import org.nasdanika.html.emf.ActionProviderAdapterFactory;
 import org.nasdanika.html.emf.EObjectActionResolver;
+import org.nasdanika.html.emf.ResolutionListener;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.util.ActionProvider;
@@ -200,7 +199,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			URI resourceURI, 
 			String containerName,
 			File resourceWorkDir,
-			BiConsumer<String, String> representationLinkResolutionErrorConsumer,						
+			ResolutionListener resolutionListener,						
 			Context context, 
 			ProgressMonitor progressMonitor) throws IOException {
 		
@@ -215,14 +214,23 @@ public class SemanticSiteGenerator extends SiteGenerator {
 		
 		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) actionResource.getResourceSet().getEObject(pageTemplateURI, true);
 		
-		return generateResourceModel(root, semanticInfoSource(actionResource), pageTemplate, resourceURI, containerName, resourceWorkDir, representationLinkResolutionErrorConsumer, context, progressMonitor);
+		return generateResourceModel(
+				root, 
+				semanticInfoSource(actionResource), 
+				pageTemplate, 
+				resourceURI, 
+				containerName, 
+				resourceWorkDir, 
+				resolutionListener, 
+				context, 
+				progressMonitor);
 	}		
 	
-	protected MutableContext createContext(ProgressMonitor progressMonitor) {
-		return Context.EMPTY_CONTEXT.fork();
+	protected Context createContext(ProgressMonitor progressMonitor) {
+		return Context.EMPTY_CONTEXT;
 	}
 
-	protected PrintStreamProgressMonitor createProgressMonitor() {
+	protected ProgressMonitor createProgressMonitor() {
 		return new PrintStreamProgressMonitor();
 	}
 		
@@ -266,8 +274,14 @@ public class SemanticSiteGenerator extends SiteGenerator {
 			resourceModelsDir.mkdirs();
 	
 			try (ProgressMonitor progressMonitor = createProgressMonitor()) {				
-				MutableContext context = createContext(progressMonitor);		
-				context.put("model-name", modelName);
+				Context context = Context.singleton("model-name", modelName).compose(createContext(progressMonitor));	
+				
+				Map<String, Collection<String>> errors = new TreeMap<>();
+				ResolutionListener resolutionListener = createResolutionListener(
+						(location, error) -> errors.computeIfAbsent(location, p -> new ArrayList<>()).add(error), 
+						context, 
+						progressMonitor);
+				context = Context.singleton(ResolutionListener.class, resolutionListener).compose(context);
 				
 				URI modelsURI = URI.createFileURI(modelsDir.getAbsolutePath() + "/");							
 				URI copyURI = URI.createURI(modelName + ".xml").resolve(modelsURI);		
@@ -280,8 +294,6 @@ public class SemanticSiteGenerator extends SiteGenerator {
 				URI resourceModelsURI = URI.createFileURI(resourceModelsDir.getAbsolutePath() + "/");	
 				URI resourceURI = URI.createURI(modelName + ".xml").resolve(resourceModelsURI);
 				
-				Map<String, Collection<String>> errors = new TreeMap<>();
-
 				Resource resourceModel = generateResourceModel(
 						actionResource, 
 						rootActionURI,
@@ -289,9 +301,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 						resourceURI, 
 						modelName, 
 						resourceModelsDir,
-						(location, error) ->  {
-							errors.computeIfAbsent(location, p -> new ArrayList<>()).add(error);
-						},
+						resolutionListener,
 						context, 
 						progressMonitor.split("Generating resource model", 1));
 				
