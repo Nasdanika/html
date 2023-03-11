@@ -307,6 +307,7 @@ public class SemanticSiteGenerator extends SiteGenerator {
 				
 				Map<String, Collection<String>> containerErrors = generateContainer(
 						resourceModel,
+						// TODO - Backlinks info provided by the resolution listener
 						siteWorkDir,
 						outputDir,
 						this::isDeleteOutputPath,

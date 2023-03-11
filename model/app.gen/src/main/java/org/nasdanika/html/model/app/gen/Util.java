@@ -1193,7 +1193,12 @@ public final class Util {
 						Predicate<String> predicate = createRelativeLinkPredicate(file, dir);						
 						Consumer<? super Element> inspector = createInspector(predicate, error -> errorConsumer.accept(path, error));
 						
-						JSONObject searchDocument = createSearchDocument(path, file, inspector, searchConfigurator, e -> errorConsumer.accept(path, "Error creating search document: " + e));
+						JSONObject searchDocument = createSearchDocument(
+								path, 
+								file, 
+								inspector, 
+								searchConfigurator, 
+								e -> errorConsumer.accept(path, "Error creating search document: " + e));
 						if (searchDocument == null) {
 							errorConsumer.accept(path, "Blank page");
 						} else {
@@ -1620,5 +1625,54 @@ public final class Util {
 		
 		throw new IllegalArgumentException("EClass '" + name + "' not found for namespace URI: " + nsURI);
 	}
+	
+	// --- Processing of HTML files, e.g. injection of backlinks
+
+	/**
+	 * Processes HTML documents 
+	 * @author Pavel
+	 *
+	 */
+	public interface HTMLProcessor {
+		
+		default boolean isHTML(File file, String path) {
+			return file != null && file.isFile() && path != null && (path.toLowerCase().endsWith(".html") || path.toLowerCase().endsWith(".htm")); 
+		}
+
+		/**
+		 * Processed HTML document and returns true if the document was modified and shall be saved.
+		 * @param file
+		 * @param path
+		 * @param document
+		 * @return
+		 */
+		boolean process(File file, String path, Document document);
+		
+	}	
+
+	public static void processHTML(HTMLProcessor processor, File... files) {
+		BiConsumer<File, String> listener = new BiConsumer<File, String>() {
 			
+			@Override
+			public void accept(File file, String path) {
+				if (processor.isHTML(file, path)) {
+					try {
+						Document document = Jsoup.parse(file, "UTF-8");		
+						if (processor.process(file, path, document)) {
+							Document.OutputSettings outputSettings = new Document.OutputSettings();
+							outputSettings.prettyPrint(false);
+							document.outputSettings(outputSettings);
+							try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8")) {
+								writer.write(document.html());
+							}
+						}
+					} catch (IOException e) {
+						throw new NasdanikaException("Error processing HTML file " + path + " " + file.getAbsolutePath() + " " + e, e);
+					}
+				}
+			}
+		};
+		org.nasdanika.common.Util.walk(null, listener, files);		
+	}
+				
 }

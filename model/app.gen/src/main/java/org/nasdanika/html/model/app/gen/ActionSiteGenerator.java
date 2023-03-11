@@ -136,6 +136,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 				
 				Map<String, Collection<String>> containerErrors = generateContainer(
 						resourceModel,
+						// TODO - backlinks info provided by the resolution listener
 						siteWorkDir,
 						outputDir,
 						this::isDeleteOutputPath,

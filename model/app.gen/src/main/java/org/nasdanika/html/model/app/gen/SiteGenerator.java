@@ -42,6 +42,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.Diagnostic;
@@ -76,6 +77,7 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
+import org.nasdanika.html.model.app.gen.Util.HTMLProcessor;
 import org.nasdanika.html.model.html.gen.ContentConsumer;
 import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.NcorePackage;
@@ -1271,6 +1273,7 @@ public class SiteGenerator {
 	 */
 	protected Map<String, Collection<String>> generateContainer(
 			Resource resourceModel,
+			// TODO backlinks info provided by the resolution listener
 			File workDir,
 			File outputDir,
 			Predicate<String> cleanPredicate,
@@ -1297,7 +1300,19 @@ public class SiteGenerator {
 				(path, error) ->  {
 					progressMonitor.worked(Status.ERROR, 1, "[" + path +"] " + error);
 					errors.computeIfAbsent(path, p -> new ArrayList<>()).add(error);
-				});		
+				});
+		
+		HTMLProcessor htmlProcessor = new HTMLProcessor() {
+			
+			@Override
+			public boolean process(File file, String path, Document document) {
+//				System.out.println(path + " -> " + file.getAbsolutePath());
+				// TODO - Backlinks injection
+				return false;
+			}
+		};
+		
+		Util.processHTML(htmlProcessor, outputDir.listFiles());
 		
 		return errors;
 	}
