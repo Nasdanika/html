@@ -25,13 +25,6 @@ app-action:
                 In this demo only this page (the principal action) has a representation.
                 In general there might be multiple representations per action.
                 Connections can also be linked to pages or page sections.
-                
-                ## Table of Contents
-                
-                This table of contents was generated from the diagram.
-                It reflects the containment hierarchy of diagram elements.                
-                
-                ${representations/my-system/toc}
         representations: 
           my-system: my-system.drawio  
         children:
