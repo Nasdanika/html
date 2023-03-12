@@ -639,7 +639,7 @@ public class SiteGenerator {
 		
 		if (element instanceof Layer) { // Including nodes
 			List<LayerElement> layerElements = new ArrayList<>(((Layer) element).getElements());
-			Collections.sort(layerElements, new LabelModelElementComparator(false));
+			Collections.sort(layerElements, new LabelModelElementComparator(false)); // TODO - use "sort" property
 			if (element instanceof org.nasdanika.drawio.Node) {
 				List<LayerElement> outgoingConnections = new ArrayList<>(((org.nasdanika.drawio.Node) element).getOutgoingConnections());
 				Collections.sort(outgoingConnections, new LabelModelElementComparator(false));

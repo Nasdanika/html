@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -16,12 +17,16 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.emf.common.util.DiagnosticException;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.DiagramGeneratorImpl;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
+import org.nasdanika.drawio.Document;
+import org.nasdanika.html.emf.RepresentationProcessor;
+import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.ActionSiteGenerator;
 import org.nasdanika.html.model.app.gen.SiteGeneratorContributor;
@@ -210,7 +215,30 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 						diagramGenerator = dg.compose(diagramGenerator);
 					}
 				}
-				return context.compose(Context.singleton(DiagramGenerator.class, diagramGenerator)).compose(super.createContext(progressMonitor));
+				
+				RepresentationProcessor representationProcessor = new RepresentationProcessor() {
+					
+					@Override
+					public Document processDrawioRepresentation(
+							Document document, 
+							Action action,
+							Function<URI, EObject> semanticLinkResolver,
+							org.nasdanika.html.emf.EObjectActionResolver.Context context,
+							ProgressMonitor progressMonitor) {
+						
+						for (SiteGeneratorContributor contributor: getContributors()) {
+							document = contributor.processDrawioRepresentation(document, action, semanticLinkResolver, context, progressMonitor);
+						}
+						
+						return document;
+					}
+					
+				};
+				
+				return context
+						.compose(Context.singleton(DiagramGenerator.class, diagramGenerator))
+						.compose(Context.singleton(RepresentationProcessor.class, representationProcessor))
+						.compose(super.createContext(progressMonitor));
 			}
 			
 			@Override

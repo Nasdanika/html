@@ -157,6 +157,10 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 			try {
 				Document document = Document.load(representationURI);				
 				Document processedDocument = processDrawioRepresentation(document, action, semanticLinkResolver, context, progressMonitor);
+				RepresentationProcessor representationProcessor = this.context.get(RepresentationProcessor.class);
+				if (representationProcessor != null) {
+					processedDocument = representationProcessor.processDrawioRepresentation(processedDocument, action, semanticLinkResolver, context, progressMonitor);
+				}
 				if (processedDocument == null) {
 					return null;
 				}
