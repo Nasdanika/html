@@ -8,7 +8,17 @@
 
 	<fileSets>
 		<fileSet filtered="false">
-			<directory>model</directory>
+			<directory></directory>
+			<excludes>
+				<exclude>.project</exclude>
+				<exclude>pom.xml</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet filtered="true">
+			<directory></directory>
+			<includes>
+				<include>.project</include>
+			</includes>
 		</fileSet>
 	</fileSets>
 </archetype-descriptor>
