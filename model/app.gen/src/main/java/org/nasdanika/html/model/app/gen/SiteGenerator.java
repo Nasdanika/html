@@ -56,8 +56,11 @@ import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.Layer;
 import org.nasdanika.drawio.LayerElement;
+import org.nasdanika.drawio.Model;
 import org.nasdanika.drawio.Node;
 import org.nasdanika.drawio.Page;
+import org.nasdanika.drawio.Rectangle;
+import org.nasdanika.drawio.Root;
 import org.nasdanika.drawio.comparators.LabelModelElementComparator;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.exec.content.ContentFactory;
@@ -1109,7 +1112,8 @@ public class SiteGenerator {
 			Action action,
 			Collection<URI> baseSemanticURIs,
 			BiFunction<Label, URI, URI> uriResolver,
-			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource) {
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
+			ResolutionListener resolutionListener) {
 
 		String[] pathSegments = path.split("/");
 		if (pathSegments.length == 1) {
@@ -1117,42 +1121,64 @@ public class SiteGenerator {
 			return representations.get(path);
 		}
 		try {
-			org.nasdanika.drawio.Document valueDocument = (org.nasdanika.drawio.Document) representations.get(pathSegments[0]);			
-			if (valueDocument != null) {
-				if (pathSegments.length == 2) {
-					// Document
-					if ("diagram".equals(pathSegments[1])) {
-						return valueDocument.save(true);
-					}
-					
-					if ("toc".equals(pathSegments[1])) {
-						return String.valueOf(computeTableOfContents(valueDocument, context));
-					}
-										
-					if ("info".equals(pathSegments[1])) {
-						return computeInfo(action, valueDocument, context);
-					}
-					
-					return null;
-				} 
+			org.nasdanika.drawio.Document valueDocument = (org.nasdanika.drawio.Document) representations.get(pathSegments[0]);
+			if (resolutionListener != null) {
+				resolutionListener.onComputingDrawioRepresentation(action, pathSegments[0], valueDocument);
+			}
+			if (valueDocument == null) {
+				valueDocument = org.nasdanika.drawio.Document.create(false, null);
+				Page page = valueDocument.createPage();
+				page.setName("Error");
 				
-				if (pathSegments.length == 3) {
-					// Page
-					for (Page page: valueDocument.getPages()) {
-						if (pathSegments[1].equals(page.getName())) {
-							org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true, valueDocument.getURI());
-							pageDocument.getPages().add(page);
-							if ("diagram".equals(pathSegments[2])) {
-								return pageDocument.save(true);
-							}
-							
-							if ("toc".equals(pathSegments[2])) {
-								return String.valueOf(computeTableOfContents(pageDocument, context));
-							}
-							
-							if ("info".equals(pathSegments[2])) {
-								return computeInfo(action, pageDocument, context);
-							}
+				Model model = page.getModel();
+				Root root = model.getRoot();
+				List<Layer> layers = root.getLayers();
+						
+				Node errorNode = layers.get(0).createNode();
+				errorNode.setLabel("Representation not found: " + pathSegments[0]);
+				errorNode.getStyle().put("fillColor", "#f8cecc");
+				errorNode.getStyle().put("strokeColor", "#b85450");
+				
+				Rectangle errorGeometry = errorNode.getGeometry();
+				errorGeometry.setX(10);
+				errorGeometry.setY(10);
+				errorGeometry.setWidth(300);
+				errorGeometry.setHeight(30);
+			}		
+			
+			if (pathSegments.length == 2) {
+				// Document
+				if ("diagram".equals(pathSegments[1])) {
+					return valueDocument.save(true);
+				}
+				
+				if ("toc".equals(pathSegments[1])) {
+					return String.valueOf(computeTableOfContents(valueDocument, context));
+				}
+									
+				if ("info".equals(pathSegments[1])) {
+					return computeInfo(action, valueDocument, context);
+				}
+				
+				return null;
+			} 
+			
+			if (pathSegments.length == 3) {
+				// Page
+				for (Page page: valueDocument.getPages()) {
+					if (pathSegments[1].equals(page.getName())) {
+						org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true, valueDocument.getURI());
+						pageDocument.getPages().add(page);
+						if ("diagram".equals(pathSegments[2])) {
+							return pageDocument.save(true);
+						}
+						
+						if ("toc".equals(pathSegments[2])) {
+							return String.valueOf(computeTableOfContents(pageDocument, context));
+						}
+						
+						if ("info".equals(pathSegments[2])) {
+							return computeInfo(action, pageDocument, context);
 						}
 					}
 				}
@@ -1207,7 +1233,16 @@ public class SiteGenerator {
 			@Override
 			public <T> T compute(Context ctx, String key, String path, Class<T> type) {
 				if (type == null || type.isAssignableFrom(String.class)) {
-					return (T) computeRepresentation(representations, ctx, key, path, action, baseSemanticURIs, uriResolver, semanticInfoSource);			
+					return (T) computeRepresentation(
+							representations, 
+							ctx, 
+							key, 
+							path, 
+							action, 
+							baseSemanticURIs, 
+							uriResolver, 
+							semanticInfoSource,
+							resolutionListener);			
 				}
 				return null;
 			}
@@ -1576,6 +1611,17 @@ public class SiteGenerator {
 				
 				if (target == null) {
 					errorConsumer.accept(NcoreActionBuilder.actionMarker(action), "Unresolved semantic reference: " + targetURIStr);
+				}
+			}
+			
+			@Override
+			public void onComputingDrawioRepresentation(
+					Action action, 
+					String key,
+					org.nasdanika.drawio.Document document) {
+				
+				if (document == null) {
+					errorConsumer.accept(NcoreActionBuilder.actionMarker(action), "Unresolved representation: " + key);
 				}
 			}
 			

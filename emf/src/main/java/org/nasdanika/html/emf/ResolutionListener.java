@@ -4,6 +4,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.Composeable;
 import org.nasdanika.common.Context;
+import org.nasdanika.drawio.Document;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.ncore.ModelElement;
@@ -102,6 +103,19 @@ public interface ResolutionListener extends Composeable<ResolutionListener> {
 			Label target, 
 			URI targetURI, 
 			URI backLinkURI) {
+		
+	}
+	
+	/**
+	 * Called on resolution of representation context property.
+	 * @param action
+	 * @param key Representation key
+	 * @param document Representation document, can be null if representation with a given key does not exist.
+	 */
+	default void onComputingDrawioRepresentation(
+			Action action,
+			String key,
+			org.nasdanika.drawio.Document document) {
 		
 	}
 
@@ -204,6 +218,12 @@ public interface ResolutionListener extends Composeable<ResolutionListener> {
 					URI backLinkURI) {
 				ResolutionListener.this.onSemanticReferenceResolution(action, targetURIStr, target, targetURI, backLinkURI);
 				other.onSemanticReferenceResolution(action, targetURIStr, target, targetURI, backLinkURI);
+			}
+			
+			@Override
+			public void onComputingDrawioRepresentation(Action action, String key, Document document) {
+				ResolutionListener.this.onComputingDrawioRepresentation(action, key, document);
+				other.onComputingDrawioRepresentation(action, key, document);
 			}
 			
 		};
