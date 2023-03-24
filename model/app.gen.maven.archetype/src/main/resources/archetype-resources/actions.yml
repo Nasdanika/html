@@ -6,7 +6,7 @@ app-action:
   children:
     - app-action:
         icon: fas fa-cogs
-        text: My System
+        text: My System ${maven/project/version}
         location: ${base-uri}index.html 
         tooltip: A short description of the site
         uris: my-org://my-system
