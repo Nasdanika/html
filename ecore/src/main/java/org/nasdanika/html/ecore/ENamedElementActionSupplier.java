@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.ncore.util.NcoreUtil;
 
 public class ENamedElementActionSupplier<T extends ENamedElement> extends EModelElementActionSupplier<T> {
 
@@ -30,7 +31,7 @@ public class ENamedElementActionSupplier<T extends ENamedElement> extends EModel
 	}
 	
 	protected String getDefaultLabel(ProgressMonitor progressMonitor) {
-		return eObject.getName();
+		return NcoreUtil.getNasdanikaAnnotationDetail(eObject, "label", eObject.getName());
 	}
 	
 	@Override

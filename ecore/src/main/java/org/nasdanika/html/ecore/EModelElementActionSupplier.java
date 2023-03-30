@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -145,7 +146,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		
 		
 		Action ret = AppFactory.eINSTANCE.createAction();
-		ret.setIcon(ICONS_BASE+eObject.eClass().getName()+".gif");
+		ret.setIcon(NcoreUtil.getNasdanikaAnnotationDetail(eObject, "icon", ICONS_BASE+eObject.eClass().getName()+".gif"));
 		
 		header(ret, progressMonitor);
 		
@@ -169,8 +170,9 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		};
 		
 		if (documentation != null) {
-			ret.getContent().add(interpolatedMarkdown(context.interpolateToString(documentation.getDocumentation()), documentation.getLocation(), progressMonitor));
-			ret.setTooltip(markdownHelper.firstPlainTextSentence(documentation.getDocumentation()));
+			ret.getContent().add(interpolatedMarkdown(context.interpolateToString(documentation.getDocumentation()), documentation.getLocation(), progressMonitor));			
+			String tooltip = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "description", markdownHelper.firstPlainTextSentence(documentation.getDocumentation()));
+			ret.setTooltip(tooltip);
 		}
 		
 		return ret;
@@ -560,18 +562,21 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	 * @return
 	 */
 	public String encodeEPackage(EPackage ePackage) {
-		String ret = null;
-				
-		for (EPackage p = ePackage; p != null; p = p.getESuperPackage()) {
-			String segment = ePackagePathComputer == null ? Hex.encodeHexString(p.getNsURI().getBytes(StandardCharsets.UTF_8)) : ePackagePathComputer.apply(p);
-			if (ret == null) {
-				ret = segment;
-			} else {
-				ret = segment + "/" + ret;
-			}
-		}
-		
-		return ret;
+		return ePackagePathComputer == null ? Hex.encodeHexString(ePackage.getNsURI().getBytes(StandardCharsets.UTF_8)) : ePackagePathComputer.apply(ePackage);
+//
+//		
+//		String ret = null;
+//				
+//		for (EPackage p = ePackage; p != null; p = p.getESuperPackage()) {
+//			String segment = ePackagePathComputer == null ? Hex.encodeHexString(p.getNsURI().getBytes(StandardCharsets.UTF_8)) : ePackagePathComputer.apply(p);
+//			if (ret == null) {
+//				ret = segment;
+//			} else {
+//				ret = segment + "/" + ret;
+//			}
+//		}
+//		
+//		return ret;
 	}
 	
 	/**
@@ -592,6 +597,37 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	 */
 	protected <M extends EModelElement> List<M> retainDocumentable(Collection<M> elements) {
 		return elements.stream().filter(elementPredicate).collect(Collectors.toList());
-	}		
+	}
+
+	protected static Class<?> getInstanceClass(EClassifier eClassifier, java.util.function.Function<String, Object> ePackageResolver) {
+		Class<?> instanceClass = eClassifier.getInstanceClass();
+		if (instanceClass == null) {
+			EPackage registeredPackage = getRegisteredPackage(eClassifier, ePackageResolver);
+			if (registeredPackage != null) {
+				EClassifier registeredClassifier = registeredPackage.getEClassifier(eClassifier.getName());
+				if (registeredClassifier != null) {
+					instanceClass = registeredClassifier.getInstanceClass();
+				}
+			}
+		}
+		return instanceClass;
+	}
+	
+	private static EPackage getRegisteredPackage(EClassifier eObject, java.util.function.Function<String, Object> ePackageResolver) {
+		String nsURI = eObject.getEPackage().getNsURI();
+		Object value = ePackageResolver.apply(nsURI);
+		if (value instanceof EPackage) {
+			return (EPackage) value;
+		}
+		if (value instanceof EPackage.Descriptor) {
+			return Objects.requireNonNull(((EPackage.Descriptor) value).getEPackage(), "EPackage is null for " + nsURI);  
+		}
+		
+		if (value instanceof EPackage) {
+			return (EPackage) value;
+		}
+		return null;
+	}	
+	
 	
 }

@@ -577,6 +577,12 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 					return appendOperations;
 				}
 				
+				@Override
+				protected String qualifiedName(EClassifier eClassifier) {
+					Class<?> ic = getInstanceClass(eClassifier, ePackageResolver);
+					return ic == null ? super.qualifiedName(eClassifier) : ic.getName();
+				}
+				
 			};
 		case DiagramGenerator.MERMAID_DIALECT:
 			return new MermaidTextGenerator(sb, elementPredicate, ec -> path(ec, eObject), this::getEModelElementFirstDocSentence) {

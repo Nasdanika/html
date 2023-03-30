@@ -30,8 +30,10 @@ import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypedElement;
@@ -49,8 +51,8 @@ import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.Event;
 import org.nasdanika.html.HTMLFactory;
-import org.nasdanika.html.TagName;
 import org.nasdanika.html.RowContainer.Row;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.emf.EObjectActionResolver.Context;
 import org.nasdanika.html.model.app.Action;
@@ -201,6 +203,10 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		
 		if (severity > 0) {
 			ret.setColor(getSeverityColor(severity));
+		}
+		
+		if (Util.isBlank(ret.getIcon())) {
+			ret.setIcon(NcoreUtil.getNasdanikaAnnotationDetail(getTarget().eClass(), "icon"));
 		}
 		
 		for (Diagnostic de: diagnostic) {
@@ -1493,6 +1499,73 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 //			}
 //		}
 //		return ret;
-//	}	
+//	}
+	
+	protected String getEClassifierDocumentationURL(EClassifier eClassifier) {
+		if (eClassifier == null) {
+			return null;
+		}
+		String epURL = getEPackageDocumentationURL(eClassifier.getEPackage());
+		if (Util.isBlank(epURL)) {
+			return null;
+		}
+		return epURL + eClassifier.getName() + ".html";
+	}
+	
+	private static final String NSD_DOC_BASE = "https://docs.nasdanika.org/";
+	
+	/**
+	 * Documentation URL's for context help
+	 * @param ePackage
+	 * @return
+	 */
+	protected String getEPackageDocumentationURL(EPackage ePackage) {
+		if (ePackage != null) {
+			switch (ePackage.getNsURI()) {
+			// Core
+			case "urn:org.nasdanika.ncore":
+				return NSD_DOC_BASE + "core/ncore/core/ncore/model";
+//			case "urn:org.nasdanika.exec":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//
+//			// HTML
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//
+//			// Architecture
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//				
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+//			case "urn:org.nasdanika.ncore":
+//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
+								
+			}
+		}		
+		
+		return null;
+	}
 	
 }

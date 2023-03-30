@@ -43,6 +43,7 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 						e, 
 						context, 
 						ePackagePathComputer, 
+						this::getEPackage, 
 						this::shallDocument,
 						this::getLabel,
 						this::getDiagramDialect,
@@ -220,7 +221,7 @@ public class EcoreActionSupplierAdapterFactory extends ComposedAdapterFactory {
 	}
 
 	protected String getLabel(ENamedElement eNamedElement, String defaultLabel) {
-		return NcoreUtil.getNasdanikaAnnotationDetail(eNamedElement, "doc-label", defaultLabel);
+		return NcoreUtil.getNasdanikaAnnotationDetail(eNamedElement, "label", defaultLabel);
 	}
 	
 }

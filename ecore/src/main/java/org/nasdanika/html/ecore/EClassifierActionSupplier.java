@@ -21,7 +21,7 @@ public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElem
 
 	private Function<String, String> javadocResolver;
 	protected Class<?> instanceClass;
-	private Function<String, Object> ePackageResolver;
+	protected Function<String, Object> ePackageResolver;
 
 	public EClassifierActionSupplier(
 			T value, 
@@ -34,16 +34,7 @@ public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElem
 		super(value, context, ePackagePathComputer, elementPredicate, labelProvider);
 		this.javadocResolver = javadocResolver;
 		this.ePackageResolver = ePackageResolver;
-		instanceClass = value.getInstanceClass();
-		if (instanceClass == null) {
-			EPackage registeredPackage = getRegisteredPackage(value);
-			if (registeredPackage != null) {
-				EClassifier registeredClassifier = registeredPackage.getEClassifier(value.getName());
-				if (registeredClassifier != null) {
-					instanceClass = registeredClassifier.getInstanceClass();
-				}
-			}
-		}
+		instanceClass = getInstanceClass(value, ePackageResolver);
 	}
 	
 	@Override
@@ -81,21 +72,5 @@ public class EClassifierActionSupplier<T extends EClassifier> extends ENamedElem
 	protected Collection<EClass> getUses() {
 		return getUses(eObject);
 	}
-
-	private EPackage getRegisteredPackage(EClassifier eObject) {
-		String nsURI = eObject.getEPackage().getNsURI();
-		Object value = ePackageResolver.apply(nsURI);
-		if (value instanceof EPackage) {
-			return (EPackage) value;
-		}
-		if (value instanceof EPackage.Descriptor) {
-			return Objects.requireNonNull(((EPackage.Descriptor) value).getEPackage(), "EPackage is null for " + nsURI);  
-		}
-		
-		if (value instanceof EPackage) {
-			return (EPackage) value;
-		}
-		return null;
-	}	
 	
 }

@@ -38,11 +38,13 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 
 	private Supplier<String> diagramDialectSupplier;
 	private Function<EClassifier, EReference> eClassifierRoleProvider;
+	private Function<String, Object> ePackageResolver;
 
 	public EPackageActionSupplier(
 			EPackage value, 
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer, 
+			java.util.function.Function<String, Object> ePackageResolver,
 			Predicate<EModelElement> elementPredicate,
 			BiFunction<ENamedElement, String, String> labelProvider,
 			Supplier<String> diagramDialectSupplier,
@@ -50,6 +52,7 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 		super(value, context, ePackagePathComputer, elementPredicate, labelProvider);
 		this.diagramDialectSupplier = diagramDialectSupplier;
 		this.eClassifierRoleProvider = eClassifierRoleProvider;
+		this.ePackageResolver = ePackageResolver;
 	}
 	
 	@Override
@@ -63,7 +66,7 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 	@Override
 	public Action execute(EClass contextEClass, ProgressMonitor progressMonitor) {
 		Action action = super.execute(contextEClass, progressMonitor);
-		String ePackageFolder = ePackagePathComputer == null ? Hex.encodeHexString(eObject.getNsURI().getBytes(StandardCharsets.UTF_8)) : ePackagePathComputer.apply(eObject);
+		String ePackageFolder = ePackagePathComputer == null ? Hex.encodeHexString(eObject.getNsURI().getBytes(StandardCharsets.UTF_8)) : "${base-uri}" + ePackagePathComputer.apply(eObject);
 		action.setLocation(ePackageFolder + "/package-summary.html");
 		action.setId(eObject.eClass().getName() + "-" + encodeEPackage(eObject));
 		action.getUris().add(eObject.getNsURI());
@@ -150,7 +153,13 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 				protected Collection<EClass> getUses(EClassifier eClassifier) {
 					return Collections.emptySet(); // No usage information on package diagrams - too much.
 				}
-									
+								
+				@Override
+				protected String qualifiedName(EClassifier eClassifier) {
+					Class<?> ic = getInstanceClass(eClassifier, ePackageResolver);
+					return ic == null ? super.qualifiedName(eClassifier) : ic.getName();
+				}
+													
 			};
 		case DiagramGenerator.MERMAID_DIALECT:
 			return new MermaidTextGenerator(sb, elementPredicate, eClassifierLinkResolver, this::getEModelElementFirstDocSentence) {
