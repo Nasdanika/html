@@ -6,7 +6,7 @@ app-label:
          text: App
          uris: app
          children:
-           - "../../nasdanika.github.io/target/model-doc/actions/app.genmodel.xml#/"
+           - "../../nasdanika.github.io/target/model-doc/actions/org.nasdanika.html.model.app.app.genmodel.xml#/"
            - app.drawio/actions.yml
            - app.gen/actions.yml
            - app.gen.maven/actions.yml
@@ -15,11 +15,11 @@ app-label:
          text: Bootstrap
          uris: bootstrap
          children:
-           - "../../nasdanika.github.io/target/model-doc/actions/bootstrap.genmodel.xml#/"
+           - "../../nasdanika.github.io/target/model-doc/actions/org.nasdanika.html.model.bootstrap.bootstrap.genmodel.xml#/"
            - bootstrap.gen/actions.yml
      - app-label:
          text: HTML
          uris: html
          children:
-           - "../../nasdanika.github.io/target/model-doc/actions/html.genmodel.xml#/"
+           - "../../nasdanika.github.io/target/model-doc/actions/org.nasdanika.html.model.html.html.genmodel.xml#/"
            - html.gen/actions.yml
