@@ -30,6 +30,7 @@ import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
@@ -66,7 +67,9 @@ import org.nasdanika.html.model.app.util.ActionProvider;
 import org.nasdanika.html.model.app.util.ActionSupplier;
 import org.nasdanika.html.model.bootstrap.Alert;
 import org.nasdanika.html.model.bootstrap.Appearance;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
+import org.nasdanika.html.model.bootstrap.Modal;
 import org.nasdanika.html.model.bootstrap.Table;
 import org.nasdanika.html.model.bootstrap.TableCell;
 import org.nasdanika.html.model.bootstrap.TableHeader;
@@ -215,7 +218,9 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			diagnosticAlert.getContent().add(createText(StringEscapeUtils.escapeHtml4(de.getMessage())));
 			ret.getContent().add(diagnosticAlert);
 		}	
-				
+		
+		decorate(ret, registry, resolveConsumer, progressMonitor);
+		
 		// Anonymous
 		
 		// Children
@@ -223,6 +228,76 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		// Sections
 		
 		return ret;
+	}
+	
+	/**
+	 * Decorates with context help if the decorator is not already set
+	 * @param action
+	 * @param registry
+	 * @param resolveConsumer
+	 * @param progressMonitor
+	 */
+	protected void decorate(
+			Action action,
+			BiConsumer<EObject,Action> registry, 
+			java.util.function.Consumer<org.nasdanika.common.Consumer<Context>> resolveConsumer, 
+			ProgressMonitor progressMonitor) {
+		
+		if (action.getDecorator() == null) {
+			EClass type = getTarget().eClass();
+			String typeDescription = NcoreUtil.getNasdanikaAnnotationDetail(type, "description");
+			String typeDocURL = getEClassifierDocumentationURL(type);
+			if (Util.isBlank(typeDescription)) {
+				if (!Util.isBlank(typeDocURL)) {
+					// Link to doc
+					// Tooltip help example
+					Link helpDecorator = AppFactory.eINSTANCE.createLink();
+					helpDecorator.setIcon("far fa-question-circle");
+					helpDecorator.getAttributes().put("style", createText("vertical-align:super;font-size:small"));
+					action.setDecorator(helpDecorator);
+					helpDecorator.setLocation(typeDocURL);
+					helpDecorator.setTarget("_blank");
+				}				
+			} else {
+				String typeIcon = NcoreUtil.getNasdanikaAnnotationDetail(type, "icon");
+				String typeLabel = NcoreUtil.getNasdanikaAnnotationDetail(type, "label", type.getName());
+
+				Link helpDecorator = AppFactory.eINSTANCE.createLink();
+				helpDecorator.setIcon("far fa-question-circle");
+				helpDecorator.getAttributes().put("style", createText("vertical-align:super;font-size:x-small;margin-left:0.2em"));
+				Modal helpModal = BootstrapFactory.eINSTANCE.createModal();
+//				helpModal.setSize("large");
+//				helpModal.setCentered(true);
+				
+				BootstrapElement header = BootstrapFactory.eINSTANCE.createBootstrapElement();
+				Tag h2 = HtmlFactory.eINSTANCE.createTag();
+				h2.setName("H2");
+				header.getContent().add(h2);
+				if (Util.isBlank(typeDocURL)) {					
+					// Label
+					Label tLabel = AppFactory.eINSTANCE.createLabel();
+					tLabel.setText(typeLabel);
+					tLabel.setIcon(typeIcon);
+					h2.getContent().add(tLabel);					
+				} else {
+					// Link
+					Link typeLink = AppFactory.eINSTANCE.createLink();
+					typeLink.setText(typeLabel);
+					typeLink.setIcon(typeIcon);
+					typeLink.setLocation(typeDocURL);
+					typeLink.setTarget("_blank");
+					h2.getContent().add(typeLink);
+				}				
+				
+				helpModal.setHeader(header);
+				BootstrapElement body = BootstrapFactory.eINSTANCE.createBootstrapElement();
+				body.getContent().add(createText(typeDescription));		
+				helpModal.setBody(body);
+				helpDecorator.setModal(helpModal);
+				
+				action.setDecorator(helpDecorator);
+			}						
+		}		
 	}
 	
 	/**
@@ -1524,44 +1599,44 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 			switch (ePackage.getNsURI()) {
 			// Core
 			case "urn:org.nasdanika.ncore":
-				return NSD_DOC_BASE + "core/ncore/core/ncore/model";
-//			case "urn:org.nasdanika.exec":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//
-//			// HTML
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//
-//			// Architecture
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//				
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-//			case "urn:org.nasdanika.ncore":
-//				return NSD_DOC_BASE + "core/ncore/core/ncore/";
-								
+				return NSD_DOC_BASE + "core/ncore/core/ncore/model/";
+			case "urn:org.nasdanika.exec":
+				return NSD_DOC_BASE + "core/exec/model/";
+			case "urn:org.nasdanika.exec.content":
+				return NSD_DOC_BASE + "core/exec/model/content/";
+			case "urn:org.nasdanika.exec.resources":
+				return NSD_DOC_BASE + "core/exec/model/resources/";
+
+			// HTML
+			case "urn:org.nasdanika.html.model.app":
+				return NSD_DOC_BASE + "html/models/app/model/";
+			case "urn:org.nasdanika.html.model.bootstrap":
+				return NSD_DOC_BASE + "html/models/bootstrap/model/";
+			case "urn:org.nasdanika.html.model.html":
+				return NSD_DOC_BASE + "html/models/html/model/";
+
+			// Architecture
+			case "urn:org.nasdanika.architecture.core":
+				return NSD_DOC_BASE + "/architecture/core/model/";
+			case "urn:org.nasdanika.architecture.c4":
+				return NSD_DOC_BASE + "/architecture/c4/model/";
+				
+			case "urn:org.nasdanika.architecture.cloud.azure.core":
+				return NSD_DOC_BASE + "/architecture/cloud/azure/core/model/";
+			case "urn:org.nasdanika.architecture.cloud.azure.compute":
+				return NSD_DOC_BASE + "/architecture/cloud/azure/compute/model/";
+			case "urn:org.nasdanika.architecture.cloud.azure.storage":
+				return NSD_DOC_BASE + "/architecture/cloud/azure/storage/model/";
+			case "urn:org.nasdanika.architecture.cloud.azure.networking":
+				return NSD_DOC_BASE + "/architecture/cloud/azure/networking/model/";
+				
+			case "urn:org.nasdanika.architecture.containers.docker":
+				return NSD_DOC_BASE + "/architecture/containers/docker/model/";
+			case "urn:org.nasdanika.architecture.containers.kubernetes":
+				return NSD_DOC_BASE + "/architecture/containers/kubernetes/model/";
+			case "urn:org.nasdanika.architecture.containers.helm":
+				return NSD_DOC_BASE + "/architecture/containers/helm/model/";
+				
 			}
 		}		
 		

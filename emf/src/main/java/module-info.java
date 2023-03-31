@@ -6,6 +6,7 @@ module org.nasdanika.html.emf {
 	requires org.apache.commons.lang3;
 	requires org.apache.commons.text;
 	requires org.apache.commons.codec;
+	requires org.nasdanika.html.model.bootstrap;
 	
 	exports org.nasdanika.html.emf;	
 	
