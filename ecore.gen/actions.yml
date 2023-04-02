@@ -1,0 +1,16 @@
+app-action:
+  text: Ecore
+  location: ecore/index.html
+  uris: ecore
+  content:
+    content-markdown:
+      source:
+        content-resource:
+          location: readme.md
+          interpolate: true
+  navigation:
+    - app-link:
+        text: Javadoc
+        uris: javadoc
+        icon: fab fa-java
+        location: ../maven-site/apidocs/org.nasdanika.html.ecore/module-summary.html
