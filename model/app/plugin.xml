@@ -9,7 +9,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated app -->
       <package
-            uri="urn:org.nasdanika.html.model.app"
+            uri="ecore://nasdanika.org/html/app"
             class="org.nasdanika.html.model.app.AppPackage"
             genModel="model/app.genmodel"/>
    </extension>

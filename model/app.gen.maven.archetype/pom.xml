@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>org.nasdanika.html</groupId>
-		<version>2023.4.0</version>
+		<version>2023.4.1</version>
 		<relativePath>../..</relativePath>
 	</parent>
 	<artifactId>site-generator-archetype-maven-plugin</artifactId>
@@ -14,8 +14,8 @@
 	<url>https://docs.nasdanika.org/html/app/gen.maven.archetype/index.html</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
 	<build>
 		<extensions>

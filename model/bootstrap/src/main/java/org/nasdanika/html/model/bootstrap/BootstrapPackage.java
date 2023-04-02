@@ -45,7 +45,7 @@ public interface BootstrapPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "urn:org.nasdanika.html.model.bootstrap";
+	String eNS_URI = "ecore://nasdanika.org/html/bootstrap";
 
 	/**
 	 * The package namespace name.

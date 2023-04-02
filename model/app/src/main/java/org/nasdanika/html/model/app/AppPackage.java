@@ -45,7 +45,7 @@ public interface AppPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "urn:org.nasdanika.html.model.app";
+	String eNS_URI = "ecore://nasdanika.org/html/app";
 
 	/**
 	 * The package namespace name.
