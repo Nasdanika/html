@@ -10,7 +10,7 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.json.JSONObject;
-import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.ListCompoundSupplierFactory;
@@ -47,8 +47,8 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 		super(navigationPanel, adapterFactory);
 	}
 	
-	private Function<BiSupplier<HTMLElement<?>, List<JsTreeNode>>, HTMLElement<?>> createTreeFunction(NavigationPanelStyle effectiveStyle, Context context) {
-		return new Function<BiSupplier<HTMLElement<?>, List<JsTreeNode>>, HTMLElement<?>>() {
+	private Function<Supplier.FunctionResult<HTMLElement<?>, List<JsTreeNode>>, HTMLElement<?>> createTreeFunction(NavigationPanelStyle effectiveStyle, Context context) {
+		return new Function<Supplier.FunctionResult<HTMLElement<?>, List<JsTreeNode>>, HTMLElement<?>>() {
 			
 			@Override
 			public double size() {
@@ -61,8 +61,8 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 			}
 			
 			@Override
-			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, List<JsTreeNode>> input, ProgressMonitor progressMonitor) {
-				Tag ret = (Tag) input.getFirst();
+			public HTMLElement<?> execute(Supplier.FunctionResult<HTMLElement<?>, List<JsTreeNode>> input, ProgressMonitor progressMonitor) {
+				Tag ret = (Tag) input.argument();
 				
 				Tag panel;
 				if (getTarget().isCollapsible()) {
@@ -112,7 +112,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 				Tag container = htmlFactory.div().id(treeId);
 				panel.accept(container);
 				
-				JSONObject jsTree = jsTreeFactory.buildJsTree(input.getSecond());
+				JSONObject jsTree = jsTreeFactory.buildJsTree(input.result());
 
 				// Configures jsTree. TODO - from the model.
 				List<String> plugins = new ArrayList<>();
@@ -148,8 +148,8 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 		};
 	}
 	
-	private Function<BiSupplier<HTMLElement<?>, Map<Class<?>, Object>>, HTMLElement<?>> createCardsFunction(Context context) {
-		return new Function<BiSupplier<HTMLElement<?>, Map<Class<?>, Object>>, HTMLElement<?>>() {
+	private Function<Supplier.FunctionResult<HTMLElement<?>, Map<Class<?>, Object>>, HTMLElement<?>> createCardsFunction(Context context) {
+		return new Function<Supplier.FunctionResult<HTMLElement<?>, Map<Class<?>, Object>>, HTMLElement<?>>() {
 			
 			@Override
 			public double size() {
@@ -163,8 +163,8 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, Map<Class<?>, Object>> input, ProgressMonitor progressMonitor) {
-				Tag ret = (Tag) input.getFirst();
+			public HTMLElement<?> execute(Supplier.FunctionResult<HTMLElement<?>, Map<Class<?>, Object>> input, ProgressMonitor progressMonitor) {
+				Tag ret = (Tag) input.argument();
 				Tag panel;
 				if (getTarget().isCollapsible()) {
 					HTMLFactory htmlFactory = ret.getFactory();
@@ -193,7 +193,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 					panel = ret;
 				}
 				
-				List<Object> items = (List<Object>) input.getSecond().get(Object.class);
+				List<Object> items = (List<Object>) input.result().get(Object.class);
 				
 				JsTreeFactory jsTreeFactory = context.get(JsTreeFactory.class, JsTreeFactory.INSTANCE);
 				String treeId = getTarget().getId();
@@ -263,7 +263,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 								} else {									
 									cardBody.padding().all(Breakpoint.DEFAULT, Size.S1);
 									collapsible = cardBody.toHTMLElement();
-									List<JsTreeNode> nodes = (List<JsTreeNode>) input.getSecond().get(JsTreeNode.class);
+									List<JsTreeNode> nodes = (List<JsTreeNode>) input.result().get(JsTreeNode.class);
 									for (JsTreeNode node: nodes) {
 										if (node.getData() == semanticElement) {
 											String nodeTreeId;
@@ -406,7 +406,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 		
 		ListCompoundSupplierFactory<JsTreeNode> nodesFactory = new ListCompoundSupplierFactory<>("Nodes", EObjectAdaptable.adaptToSupplierFactoryNonNull(items, JsTreeNode.class));
 		if (style == NavigationPanelStyle.TREE || style == NavigationPanelStyle.SEARCHABLE_TREE) {
-			Function<HTMLElement<?>, BiSupplier<HTMLElement<?>, List<JsTreeNode>>> nodesFunction = nodesFactory.<HTMLElement<?>>asFunctionFactory().create(context);
+			Function<HTMLElement<?>, Supplier.FunctionResult<HTMLElement<?>, List<JsTreeNode>>> nodesFunction = nodesFactory.<HTMLElement<?>>asFunctionFactory().create(context);
 			return super.createConfigureFunction(context).then(nodesFunction).then(createTreeFunction(style, context));
 		}
 		
@@ -415,7 +415,7 @@ public class NavigationPanelConsumerFactoryAdapter extends PagePartConsumerFacto
 		MapCompoundSupplierFactory<Class<?>, Object> tagsAndNodesSupplierFactory = new MapCompoundSupplierFactory<>("Tags and nodes");
 		tagsAndNodesSupplierFactory.put(JsTreeNode.class, nodesFactory);
 		tagsAndNodesSupplierFactory.put(Object.class, tagsFactory);
-		Function<HTMLElement<?>, BiSupplier<HTMLElement<?>, Map<Class<?>, Object>>> tagsAndNodesFunction = tagsAndNodesSupplierFactory.<HTMLElement<?>>asFunctionFactory().create(context);
+		Function<HTMLElement<?>, Supplier.FunctionResult<HTMLElement<?>, Map<Class<?>, Object>>> tagsAndNodesFunction = tagsAndNodesSupplierFactory.<HTMLElement<?>>asFunctionFactory().create(context);
 		
 		return super.createConfigureFunction(context).then(tagsAndNodesFunction).then(createCardsFunction(context));
 	}

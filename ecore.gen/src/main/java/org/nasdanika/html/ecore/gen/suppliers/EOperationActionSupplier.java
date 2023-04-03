@@ -1,4 +1,4 @@
-package org.nasdanika.html.ecore.gen;
+package org.nasdanika.html.ecore.gen.suppliers;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

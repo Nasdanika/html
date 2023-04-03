@@ -5,14 +5,13 @@ import java.util.Map;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.FunctionFactory;
 import org.nasdanika.common.MapCompoundConsumerFactory;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.Supplier;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.persistence.ConfigurationException;
@@ -33,8 +32,8 @@ public class ModalSupplierFactoryAdapter extends BootstrapElementSupplierFactory
 		super(modal, adapterFactory);
 	}
 	
-	protected Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>> createModalSupplier(Context context) {
-		return new Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>>() {
+	protected Supplier<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>> createModalSupplier(Context context) {
+		return new Supplier<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>>() {
 	
 			@Override
 			public double size() {
@@ -47,7 +46,7 @@ public class ModalSupplierFactoryAdapter extends BootstrapElementSupplierFactory
 			}
 	
 			@Override
-			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal> execute(ProgressMonitor progressMonitor) {
+			public Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal> execute(ProgressMonitor progressMonitor) {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				org.nasdanika.html.bootstrap.Modal modal = bootstrapFactory.modal();
 				org.nasdanika.html.model.bootstrap.Modal semanticElement = getTarget();
@@ -86,19 +85,7 @@ public class ModalSupplierFactoryAdapter extends BootstrapElementSupplierFactory
 					parts.put(BootstrapPackage.Literals.MODAL__FOOTER, modal.getFooter().toHTMLElement());
 				}
 				
-				return new BiSupplier<Map<EStructuralFeature,HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>() {
-	
-					@Override
-					public Map<EStructuralFeature, HTMLElement<?>> getFirst() {
-						return parts;
-					}
-	
-					@Override
-					public org.nasdanika.html.bootstrap.Modal getSecond() {
-						return modal;
-					}
-				};
-			}
+				return new Supplier.FunctionResult<Map<EStructuralFeature,HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>(parts, modal);			}
 			
 		};
 	}
@@ -124,8 +111,8 @@ public class ModalSupplierFactoryAdapter extends BootstrapElementSupplierFactory
 			partsFactory.put(BootstrapPackage.Literals.MODAL__FOOTER, (ConsumerFactory<HTMLElement<?>>) (ConsumerFactory) EObjectAdaptable.adaptToConsumerFactoryNonNull(footer, org.nasdanika.html.HTMLElement.class));
 		}
 		
-		SupplierFactory<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>> modalSupplierFactory = this::createModalSupplier;
-		FunctionFactory<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>, org.nasdanika.html.bootstrap.Modal> partsFunctionFactory = partsFactory.asBiSupplierFunctionFactory();
+		SupplierFactory<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>> modalSupplierFactory = this::createModalSupplier;
+		FunctionFactory<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Modal>, org.nasdanika.html.bootstrap.Modal> partsFunctionFactory = partsFactory.asResultFunctionFactory();
 		
 		@SuppressWarnings("resource")
 		Consumer<org.nasdanika.html.bootstrap.Modal> dismisserBinder = new Consumer<org.nasdanika.html.bootstrap.Modal>() {

@@ -5,13 +5,12 @@ import java.util.Map;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Supplier;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.FunctionFactory;
 import org.nasdanika.common.MapCompoundConsumerFactory;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.Supplier;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.HTMLElement;
@@ -25,8 +24,8 @@ public class CardSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 		super(card, adapterFactory);
 	}
 	
-	protected Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card>> createCardSupplier(Context context) {
-		return new Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card>>() {
+	protected Supplier<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card>> createCardSupplier(Context context) {
+		return new Supplier<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card>>() {
 	
 			@Override
 			public double size() {
@@ -39,7 +38,7 @@ public class CardSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 			}
 	
 			@Override
-			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card> execute(ProgressMonitor progressMonitor) {
+			public Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card> execute(ProgressMonitor progressMonitor) {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				org.nasdanika.html.bootstrap.Card card = bootstrapFactory.card();
 				org.nasdanika.html.model.bootstrap.Card semanticElement = getTarget();
@@ -58,18 +57,7 @@ public class CardSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 					parts.put(BootstrapPackage.Literals.CARD__FOOTER, card.getFooter().toHTMLElement());
 				}
 				
-				return new BiSupplier<Map<EStructuralFeature,HTMLElement<?>>, org.nasdanika.html.bootstrap.Card>() {
-	
-					@Override
-					public Map<EStructuralFeature, HTMLElement<?>> getFirst() {
-						return parts;
-					}
-	
-					@Override
-					public org.nasdanika.html.bootstrap.Card getSecond() {
-						return card;
-					}
-				};
+				return new Supplier.FunctionResult<Map<EStructuralFeature,HTMLElement<?>>, org.nasdanika.html.bootstrap.Card>(parts, card);
 			}
 			
 		};
@@ -96,8 +84,8 @@ public class CardSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 			partsFactory.put(BootstrapPackage.Literals.CARD__FOOTER, (ConsumerFactory<HTMLElement<?>>) (ConsumerFactory) EObjectAdaptable.adaptToConsumerFactoryNonNull(footer, org.nasdanika.html.HTMLElement.class));
 		}
 		
-		SupplierFactory<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card>> cardSupplierFactory = this::createCardSupplier;
-		FunctionFactory<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card>, org.nasdanika.html.bootstrap.Card> partsFunctionFactory = partsFactory.asBiSupplierFunctionFactory();		
+		SupplierFactory<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card>> cardSupplierFactory = this::createCardSupplier;
+		FunctionFactory<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, org.nasdanika.html.bootstrap.Card>, org.nasdanika.html.bootstrap.Card> partsFunctionFactory = partsFactory.asResultFunctionFactory();		
 		
 		return cardSupplierFactory.then(partsFunctionFactory).create(context);
 	}

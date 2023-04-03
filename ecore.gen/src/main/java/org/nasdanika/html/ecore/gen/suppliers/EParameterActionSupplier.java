@@ -1,4 +1,4 @@
-package org.nasdanika.html.ecore.gen;
+package org.nasdanika.html.ecore.gen.suppliers;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.function.BiFunction;

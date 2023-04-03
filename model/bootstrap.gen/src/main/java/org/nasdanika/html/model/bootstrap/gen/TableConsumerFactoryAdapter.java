@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Supplier;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
@@ -46,7 +46,7 @@ public class TableConsumerFactoryAdapter extends TableRowContainerConsumerFactor
 			partsFactory.put(BootstrapPackage.Literals.TABLE__FOOTER, (ConsumerFactory<HTMLElement<?>>) (ConsumerFactory) EObjectAdaptable.adaptToConsumerFactoryNonNull(footer, org.nasdanika.html.HTMLElement.class));
 		}
 		
-		FunctionFactory<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>, HTMLElement<?>> partsFunctionFactory = partsFactory.asBiSupplierFunctionFactory();
+		FunctionFactory<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>, HTMLElement<?>> partsFunctionFactory = partsFactory.asResultFunctionFactory();
 		
 		return super.createConfigureFunction(context).then(getWrapper(context)).then(createTableFunction(context)).then(partsFunctionFactory.create(context));
 	}
@@ -56,8 +56,8 @@ public class TableConsumerFactoryAdapter extends TableRowContainerConsumerFactor
 	 * @param context
 	 * @return {@link BiSupplier} with a map of sections as first and the argument table as second.
 	 */
-	protected Function<org.nasdanika.html.bootstrap.Table, BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>> createTableFunction(Context context) {
-		return new Function<org.nasdanika.html.bootstrap.Table, BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>>() {
+	protected Function<org.nasdanika.html.bootstrap.Table, Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>> createTableFunction(Context context) {
+		return new Function<org.nasdanika.html.bootstrap.Table, Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>>() {
 	
 			@Override
 			public double size() {
@@ -70,7 +70,7 @@ public class TableConsumerFactoryAdapter extends TableRowContainerConsumerFactor
 			}
 
 			@Override
-			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>> execute(org.nasdanika.html.bootstrap.Table table, ProgressMonitor progressMonitor) {
+			public Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>> execute(org.nasdanika.html.bootstrap.Table table, ProgressMonitor progressMonitor) {
 				Map<EStructuralFeature, HTMLElement<?>> sectionsMap = new HashMap<>();
 				Table semanticElement = getTarget();
 				if (semanticElement.getHeader() != null) {
@@ -92,19 +92,7 @@ public class TableConsumerFactoryAdapter extends TableRowContainerConsumerFactor
 				table.hover(semanticElement.isHover());
 				table.small(semanticElement.isSmall());
 				
-				return new BiSupplier<Map<EStructuralFeature,HTMLElement<?>>, HTMLElement<?>>() {
-					
-					@Override
-					public Map<EStructuralFeature, HTMLElement<?>> getFirst() {
-						return sectionsMap;
-					}
-					
-					@Override
-					public HTMLElement<?> getSecond() {
-						return table.toHTMLElement();
-					}
-					
-				};
+				return new Supplier.FunctionResult<Map<EStructuralFeature,HTMLElement<?>>, HTMLElement<?>>(sectionsMap, table.toHTMLElement());
 			}
 			
 		};

@@ -164,7 +164,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	}
 	
 	/**
-	 * Calls createAction() to creates an action and contained actions, configures it to the extent possible
+	 * Calls createAction() to create an action and contained actions, configures it to the extent possible
 	 * with the action hierarchy being built and not all action being available. Configuration
 	 * which requires action cross-referencing shall be performed in resolve() and be invoked
 	 * by a EObjectActionResolver adapter execute() method. The adapter is created and attached in this method.

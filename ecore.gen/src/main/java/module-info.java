@@ -9,6 +9,6 @@ module org.nasdanika.html.ecore.gen {
 	requires org.nasdanika.ncore;
 	requires transitive sitemapgen4j;
 	
-	exports org.nasdanika.html.ecore.gen;
+	exports org.nasdanika.html.ecore.gen.suppliers;
 	
 }

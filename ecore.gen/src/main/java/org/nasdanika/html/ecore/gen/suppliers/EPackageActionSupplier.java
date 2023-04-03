@@ -1,4 +1,4 @@
-package org.nasdanika.html.ecore.gen;
+package org.nasdanika.html.ecore.gen.suppliers;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

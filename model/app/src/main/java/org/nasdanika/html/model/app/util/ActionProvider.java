@@ -10,6 +10,7 @@ import org.nasdanika.html.model.app.Action;
  * Implementations shall call the argument {@link BiConsumer} passing the target and resulting action as argument to use
  * later in resolve() phase.
  * @author Pavel
+ * @deprecated Migrate to LabelProvider
  *
  */
 public interface ActionProvider extends org.nasdanika.common.Function<BiConsumer<EObject,Action>,Action> {

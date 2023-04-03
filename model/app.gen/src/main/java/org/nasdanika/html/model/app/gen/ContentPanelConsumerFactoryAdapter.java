@@ -11,7 +11,6 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.FunctionFactory;
@@ -20,6 +19,7 @@ import org.nasdanika.common.ListCompoundSupplierFactory;
 import org.nasdanika.common.MapCompoundConsumerFactory;
 import org.nasdanika.common.MapCompoundSupplierFactory;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Supplier;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
@@ -56,8 +56,8 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 	 * @param context
 	 * @return
 	 */
-	private Function<BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>>, BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>>> createContentPanelFunction(Context context) {
-		return new Function<BiSupplier<HTMLElement<?>,Map<EStructuralFeature, Object>>, BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>>>() {
+	private Function<Supplier.FunctionResult<HTMLElement<?>, Map<EStructuralFeature, Object>>, Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, Supplier.FunctionResult<List<HTMLElement<?>>, HTMLElement<?>>>> createContentPanelFunction(Context context) {
+		return new Function<Supplier.FunctionResult<HTMLElement<?>,Map<EStructuralFeature, Object>>, Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, Supplier.FunctionResult<List<HTMLElement<?>>, HTMLElement<?>>>>() {
 			
 			@Override
 			public double size() {
@@ -71,8 +71,8 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 			
 			@Override
 			@SuppressWarnings("unchecked")
-			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>> execute(BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>> input, ProgressMonitor progressMonitor) {
-				HTMLElement<?> ret = (HTMLElement<?>) input.getFirst();
+			public Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, Supplier.FunctionResult<List<HTMLElement<?>>, HTMLElement<?>>> execute(Supplier.FunctionResult<HTMLElement<?>, Map<EStructuralFeature, Object>> input, ProgressMonitor progressMonitor) {
+				HTMLElement<?> ret = (HTMLElement<?>) input.argument();
 				
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				Map<EStructuralFeature, HTMLElement<?>> navigationPanels = new LinkedHashMap<>();
@@ -95,7 +95,7 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 				Container container = bootstrapFactory.fluidContainer();
 				((java.util.function.Consumer<Object>) ret).accept(container.toHTMLElement());
 				
-				List<Object> breadcrumb = (List<Object>) input.getSecond().get(AppPackage.Literals.CONTENT_PANEL__BREADCRUMB);
+				List<Object> breadcrumb = (List<Object>) input.result().get(AppPackage.Literals.CONTENT_PANEL__BREADCRUMB);
 				if (breadcrumb != null) {
 					Breadcrumb bc = bootstrapFactory.breadcrumb();
 					for (Object bce: breadcrumb) {
@@ -120,8 +120,8 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 					effectiveSemanticContainerSectionStyle = effectiveSectionStyle((ContentPanel) semanticContainer);
 				}
 				
-				Tag title = (Tag) input.getSecond().get(AppPackage.Literals.CONTENT_PANEL__TITLE);
-				List<Object> items = (List<Object>) input.getSecond().get(AppPackage.Literals.PAGE_PART__ITEMS);
+				Tag title = (Tag) input.result().get(AppPackage.Literals.CONTENT_PANEL__TITLE);
+				List<Object> items = (List<Object>) input.result().get(AppPackage.Literals.PAGE_PART__ITEMS);
 				if (title != null || items != null) {
 					Row titleAndItemsRow = container.row();
 					titleAndItemsRow.toHTMLElement().addClass("nsd-app-content-panel-title-and-items-row");
@@ -165,7 +165,7 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 				contentCol.accept(contentFloatsAndSectionsContainer);
 				Tag ownContentCol = contentFloatsAndSectionsContainer.row().col().toHTMLElement();				
 				
-				List<Object> content = (List<Object>) input.getSecond().get(HtmlPackage.Literals.HTML_ELEMENT__CONTENT);
+				List<Object> content = (List<Object>) input.result().get(HtmlPackage.Literals.HTML_ELEMENT__CONTENT);
 				if (content != null) {
 					content.forEach(ownContentCol::accept);
 				}
@@ -214,34 +214,7 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 					navigationPanels.put(AppPackage.Literals.CONTENT_PANEL__RIGHT_NAVIGATION, rightNavigationColumn);
 				}
 				
-				return new BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>>() {
-
-					// Navigation panels map
-					@Override
-					public Map<EStructuralFeature, HTMLElement<?>> getFirst() {
-						return navigationPanels;
-					}
-
-					// Sections and content panel
-					@Override
-					public BiSupplier<List<HTMLElement<?>>, HTMLElement<?>> getSecond() {
-						return new BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>() {
-
-							@Override
-							public List<HTMLElement<?>> getFirst() {
-								return sections;
-							}
-
-							@Override
-							public HTMLElement<?> getSecond() {
-								return ret;
-							}
-							
-						};
-					}
-					
-				};
-			}
+				return new Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, Supplier.FunctionResult<List<HTMLElement<?>>, HTMLElement<?>>>(navigationPanels, new Supplier.FunctionResult<List<HTMLElement<?>>, HTMLElement<?>>(sections, ret));			}
 		};
 	}
 
@@ -435,8 +408,8 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 			featuresSupplierFactory.put(AppPackage.Literals.CONTENT_PANEL__BREADCRUMB, new ListCompoundSupplierFactory<>("Breadcrumb", EObjectAdaptable.adaptToSupplierFactoryNonNull(breadcrumb, Object.class)));
 		}
 				
-		Function<HTMLElement<?>, BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>>> featureSuppliersFunction = featuresSupplierFactory.<HTMLElement<?>>asFunctionFactory().create(context);				
-		Function<HTMLElement<?>, BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>>> contentPanelFunction = super.createConfigureFunction(context).then(featureSuppliersFunction).then(createContentPanelFunction(context));
+		Function<HTMLElement<?>, Supplier.FunctionResult<HTMLElement<?>, Map<EStructuralFeature, Object>>> featureSuppliersFunction = featuresSupplierFactory.<HTMLElement<?>>asFunctionFactory().create(context);				
+		Function<HTMLElement<?>, Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, Supplier.FunctionResult<List<HTMLElement<?>>, HTMLElement<?>>>> contentPanelFunction = super.createConfigureFunction(context).then(featureSuppliersFunction).then(createContentPanelFunction(context));
 		
 		// Navigation panels and sections
 		MapCompoundConsumerFactory<EStructuralFeature, HTMLElement<?>> navigationPanelsFactory = new MapCompoundConsumerFactory<>("Navigation panels");
@@ -458,12 +431,12 @@ public class ContentPanelConsumerFactoryAdapter extends PagePartConsumerFactoryA
 			navigationPanelsFactory.put(AppPackage.Literals.CONTENT_PANEL__RIGHT_NAVIGATION, EObjectAdaptable.adaptToConsumerFactoryNonNull(rightNavigation, HTMLElement.class));			
 		}
 		
-		FunctionFactory<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>>, BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>> navigationPanelsFunctionFactory = navigationPanelsFactory.asBiSupplierFunctionFactory();
-		Function<HTMLElement<?>, BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>> contentPanelWithNavigationsFunction = contentPanelFunction.then(navigationPanelsFunctionFactory.create(context));
+		FunctionFactory<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, Supplier.FunctionResult<List<HTMLElement<?>>, HTMLElement<?>>>, Supplier.FunctionResult<List<HTMLElement<?>>, HTMLElement<?>>> navigationPanelsFunctionFactory = navigationPanelsFactory.asResultFunctionFactory();
+		Function<HTMLElement<?>, Supplier.FunctionResult<List<HTMLElement<?>>, HTMLElement<?>>> contentPanelWithNavigationsFunction = contentPanelFunction.then(navigationPanelsFunctionFactory.create(context));
 
 		// Sections
 		ListCompoundConsumerFactory<HTMLElement<?>> sectionsFactory = new ListCompoundConsumerFactory<>("Sections", EObjectAdaptable.adaptToConsumerFactoryNonNull(semanticElement.getSections(), HTMLElement.class));
-		Function<BiSupplier<List<HTMLElement<?>>, HTMLElement<?>>, HTMLElement<?>> sectionsFunction = sectionsFactory.<HTMLElement<?>>asBiSupplierFunctionFactory().create(context);
+		Function<Supplier.FunctionResult<List<HTMLElement<?>>, HTMLElement<?>>, HTMLElement<?>> sectionsFunction = sectionsFactory.<HTMLElement<?>>asResultFunctionFactory().create(context);
 		Function<HTMLElement<?>, HTMLElement<?>> ret = contentPanelWithNavigationsFunction.then(sectionsFunction);
 		
 		return ret;

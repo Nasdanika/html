@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.CollectionCompoundConsumerFactory;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
-import org.nasdanika.common.CollectionCompoundConsumerFactory;
 import org.nasdanika.common.ListCompoundSupplierFactory;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
@@ -32,8 +31,8 @@ public class PageSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 		return type == SupplierFactory.class;
 	}
 	
-	protected Function<BiSupplier<List<Object>,List<Object>>, HTMLPage> createPageFunction(Context context) {
-		return new Function<BiSupplier<List<Object>,List<Object>>, HTMLPage>() {
+	protected Function<Supplier.FunctionResult<List<Object>,List<Object>>, HTMLPage> createPageFunction(Context context) {
+		return new Function<Supplier.FunctionResult<List<Object>,List<Object>>, HTMLPage>() {
 			
 			@Override
 			public double size() {
@@ -46,7 +45,7 @@ public class PageSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 			}
 			
 			@Override
-			public HTMLPage execute(BiSupplier<List<Object>,List<Object>> headAndBody, ProgressMonitor progressMonitor) {
+			public HTMLPage execute(Supplier.FunctionResult<List<Object>,List<Object>> headAndBody, ProgressMonitor progressMonitor) {
 				HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
 				Page semanticElement = (Page) getTarget();
 				String pageName = context.interpolateToString(semanticElement.getName());
@@ -59,7 +58,7 @@ public class PageSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 				for (String script: semanticElement.getScripts()) {
 					ret.script(script);
 				}				
-				for (Object he: headAndBody.getFirst()) {
+				for (Object he: headAndBody.argument()) {
 					ret.head(he);
 				}
 				for (Object he: context.get(PAGE_HEAD_PROPERTY, List.class)) {
@@ -68,7 +67,7 @@ public class PageSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 				for (Object be: context.get(PAGE_BODY_PROPERTY, List.class)) {
 					ret.body(be);
 				}
-				for (Object be: headAndBody.getSecond()) {
+				for (Object be: headAndBody.result()) {
 					ret.body(be);
 				}
 				return ret;

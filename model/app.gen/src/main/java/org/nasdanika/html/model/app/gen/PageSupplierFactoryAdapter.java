@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.FunctionFactory;
 import org.nasdanika.common.MapCompoundConsumerFactory;
@@ -36,8 +35,8 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 		super(page, adapterFactory);
 	}
 		
-	protected Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>> createContainerSupplier(Context context) {
-		return new Supplier<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>>() {
+	protected Supplier<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>> createContainerSupplier(Context context) {
+		return new Supplier<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>>() {
 
 			@Override
 			public double size() {
@@ -50,7 +49,7 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 			}
 
 			@Override
-			public BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>> execute(ProgressMonitor progressMonitor) {
+			public Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>> execute(ProgressMonitor progressMonitor) {
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				Page semanticElement = getTarget();
 				Container container = semanticElement.isFluid() ? bootstrapFactory.fluidContainer() : bootstrapFactory.container();
@@ -96,19 +95,7 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 				Tag containerTag = container.toHTMLElement();
 				containerTag.addClass("nsd-app-container");
 				
-				return new BiSupplier<Map<EStructuralFeature,HTMLElement<?>>, HTMLElement<?>>() {
-
-					@Override
-					public Map<EStructuralFeature, HTMLElement<?>> getFirst() {
-						return parts;
-					}
-
-					@Override
-					public HTMLElement<?> getSecond() {
-						return containerTag;
-					}
-				};
-			}
+				return new Supplier.FunctionResult<Map<EStructuralFeature,HTMLElement<?>>, HTMLElement<?>>(parts, containerTag);			}
 			
 		};
 	}
@@ -143,8 +130,8 @@ public class PageSupplierFactoryAdapter extends BootstrapElementSupplierFactoryA
 			partsFactory.put(AppPackage.Literals.PAGE__FOOTER, EObjectAdaptable.adaptToConsumerFactoryNonNull(footer, HTMLElement.class));			
 		}	
 		
-		SupplierFactory<BiSupplier<Map<EStructuralFeature,HTMLElement<?>>, HTMLElement<?>>> containerSupplierFactory = this::createContainerSupplier;		
-		FunctionFactory<BiSupplier<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>, HTMLElement<?>> partsFunctionFactory = partsFactory.asBiSupplierFunctionFactory();
+		SupplierFactory<Supplier.FunctionResult<Map<EStructuralFeature,HTMLElement<?>>, HTMLElement<?>>> containerSupplierFactory = this::createContainerSupplier;		
+		FunctionFactory<Supplier.FunctionResult<Map<EStructuralFeature, HTMLElement<?>>, HTMLElement<?>>, HTMLElement<?>> partsFunctionFactory = partsFactory.asResultFunctionFactory();
 		return containerSupplierFactory.then(partsFunctionFactory).create(context);
 	}	
 	

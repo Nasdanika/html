@@ -3,7 +3,7 @@ package org.nasdanika.html.model.bootstrap.gen;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.ListCompoundSupplierFactory;
@@ -27,7 +27,7 @@ public class CarouselSupplierFactoryAdapter extends DivSupplierFactoryAdapter<Ca
 	protected Function<org.nasdanika.html.Tag, org.nasdanika.html.Tag> createConfigureFunction(Context context) {
 		
 		@SuppressWarnings("resource")
-		Function<BiSupplier<Tag, List<Object>>, Tag> carouselFunction = new Function<BiSupplier<Tag, List<Object>>, Tag>() {
+		Function<Supplier.FunctionResult<Tag, List<Object>>, Tag> carouselFunction = new Function<Supplier.FunctionResult<Tag, List<Object>>, Tag>() {
 			
 			@Override
 			public double size() {
@@ -40,8 +40,8 @@ public class CarouselSupplierFactoryAdapter extends DivSupplierFactoryAdapter<Ca
 			}
 			
 			@Override
-			public Tag execute(BiSupplier<Tag, List<Object>> input, ProgressMonitor progressMonitor) {
-				Tag tag = input.getFirst();
+			public Tag execute(Supplier.FunctionResult<Tag, List<Object>> input, ProgressMonitor progressMonitor) {
+				Tag tag = input.argument();
 				tag.addClass("carousel", "slide");
 				Carousel semanticElement = getTarget();
 				if (semanticElement.isRide()) {
@@ -51,7 +51,7 @@ public class CarouselSupplierFactoryAdapter extends DivSupplierFactoryAdapter<Ca
 					tag.attribute("data-interval", semanticElement.getInterval());
 				}
 
-				List<Object> slides = input.getSecond();
+				List<Object> slides = input.result();
 				HTMLFactory htmlFactory = tag.getFactory();
 				
 				Object id = tag.getId();

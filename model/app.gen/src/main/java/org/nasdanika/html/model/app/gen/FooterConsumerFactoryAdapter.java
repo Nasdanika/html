@@ -6,7 +6,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.ListCompoundSupplierFactory;
@@ -24,8 +24,8 @@ public class FooterConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter
 		super(footer, adapterFactory);
 	}
 	
-	private Function<BiSupplier<HTMLElement<?>, List<Object>>, HTMLElement<?>> createNavsFunction(Context context) {
-		return new Function<BiSupplier<HTMLElement<?>,List<Object>>, HTMLElement<?>>() {
+	private Function<Supplier.FunctionResult<HTMLElement<?>, List<Object>>, HTMLElement<?>> createNavsFunction(Context context) {
+		return new Function<Supplier.FunctionResult<HTMLElement<?>,List<Object>>, HTMLElement<?>>() {
 			
 			@Override
 			public double size() {
@@ -38,12 +38,12 @@ public class FooterConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter
 			}
 			
 			@Override
-			public HTMLElement<?> execute(BiSupplier<HTMLElement<?>, List<Object>> input, ProgressMonitor progressMonitor) {
-				Tag ret = (Tag) input.getFirst();				
+			public HTMLElement<?> execute(Supplier.FunctionResult<HTMLElement<?>, List<Object>> input, ProgressMonitor progressMonitor) {
+				Tag ret = (Tag) input.argument();				
 				List<Object> items = new ArrayList<>();
 				BootstrapFactory bootstrapFactory = context.get(BootstrapFactory.class, BootstrapFactory.INSTANCE);
 				boolean isFirst = true;
-				for (Object item: input.getSecond()) {
+				for (Object item: input.result()) {
 					if (isFirst) {
 						isFirst = false;
 					} else {
@@ -68,7 +68,7 @@ public class FooterConsumerFactoryAdapter extends PagePartConsumerFactoryAdapter
 		if (items.isEmpty()) {
 			return super.createConfigureFunction(context);
 		}
-		Function<HTMLElement<?>, BiSupplier<HTMLElement<?>, List<Object>>> itemsFunction = new ListCompoundSupplierFactory<>("Items", EObjectAdaptable.adaptToSupplierFactoryNonNull(items, Object.class)).<HTMLElement<?>>asFunctionFactory().create(context);
+		Function<HTMLElement<?>, Supplier.FunctionResult<HTMLElement<?>, List<Object>>> itemsFunction = new ListCompoundSupplierFactory<>("Items", EObjectAdaptable.adaptToSupplierFactoryNonNull(items, Object.class)).<HTMLElement<?>>asFunctionFactory().create(context);
 		return super.createConfigureFunction(context).then(itemsFunction).then(createNavsFunction(context));
 	}
 

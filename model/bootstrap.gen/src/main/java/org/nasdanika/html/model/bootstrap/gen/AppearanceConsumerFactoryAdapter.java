@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.ConsumerFactory;
 import org.nasdanika.common.Context;
@@ -218,8 +218,8 @@ public class AppearanceConsumerFactoryAdapter extends AdapterImpl implements Con
 		configurationFactory.put(HtmlPackage.Literals.HTML_ELEMENT__ATTRIBUTES, attributesFactory);
 		configurationFactory.put(HtmlPackage.Literals.HTML_ELEMENT__CONTENT, contentFactory);
 		
-		FunctionFactory<HTMLElement<?>, BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>>> configurationFunctionFactory = configurationFactory.asFunctionFactory();
-		FunctionFactory<BiSupplier<HTMLElement<?>, Map<EStructuralFeature, Object>>, HTMLElement<?>> applyAttributesAndContentFunctionFactory = HtmlElementAdapter::createApplyAttributesAndContentFunction;		
+		FunctionFactory<HTMLElement<?>, Supplier.FunctionResult<HTMLElement<?>, Map<EStructuralFeature, Object>>> configurationFunctionFactory = configurationFactory.asFunctionFactory();
+		FunctionFactory<Supplier.FunctionResult<HTMLElement<?>, Map<EStructuralFeature, Object>>, HTMLElement<?>> applyAttributesAndContentFunctionFactory = HtmlElementAdapter::createApplyAttributesAndContentFunction;		
 		
 		return configurationFunctionFactory
 			.then(applyAttributesAndContentFunctionFactory)

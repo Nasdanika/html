@@ -10,7 +10,7 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.nasdanika.common.BiSupplier;
+import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.FunctionFactory;
@@ -72,8 +72,8 @@ public abstract class HtmlElementAdapter<M extends org.nasdanika.html.model.html
 		configurationFactory.put(HtmlPackage.Literals.HTML_ELEMENT__ATTRIBUTES, attributesFactory);
 		configurationFactory.put(HtmlPackage.Literals.HTML_ELEMENT__CONTENT, contentFactory);
 		
-		FunctionFactory<BiSupplier<T, Map<EStructuralFeature, Object>>, T> applyAttributesAndContentFunctionFactory = HtmlElementAdapter::createApplyAttributesAndContentFunction;
-		FunctionFactory<T, BiSupplier<T, Map<EStructuralFeature, Object>>> configurationFunctionFactory = configurationFactory.asFunctionFactory();
+		FunctionFactory<Supplier.FunctionResult<T, Map<EStructuralFeature, Object>>, T> applyAttributesAndContentFunctionFactory = HtmlElementAdapter::createApplyAttributesAndContentFunction;
+		FunctionFactory<T, Supplier.FunctionResult<T, Map<EStructuralFeature, Object>>> configurationFunctionFactory = configurationFactory.asFunctionFactory();
 		return configurationFunctionFactory.then(applyAttributesAndContentFunctionFactory).create(context);
 	}
 
@@ -85,8 +85,8 @@ public abstract class HtmlElementAdapter<M extends org.nasdanika.html.model.html
 		return getTarget().getContent();
 	}
 	
-	public static <T extends org.nasdanika.html.HTMLElement<?>> Function<BiSupplier<T, Map<EStructuralFeature, Object>>, T> createApplyAttributesAndContentFunction(Context context) {
-		return new Function<BiSupplier<T,Map<EStructuralFeature,Object>>, T>() {
+	public static <T extends org.nasdanika.html.HTMLElement<?>> Function<Supplier.FunctionResult<T, Map<EStructuralFeature, Object>>, T> createApplyAttributesAndContentFunction(Context context) {
+		return new Function<Supplier.FunctionResult<T,Map<EStructuralFeature,Object>>, T>() {
 			
 			@Override
 			public double size() {
@@ -100,9 +100,9 @@ public abstract class HtmlElementAdapter<M extends org.nasdanika.html.model.html
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public T execute(BiSupplier<T, Map<EStructuralFeature, Object>> input, ProgressMonitor progressMonitor) {
-				T ret = input.getFirst();
-				Map<EStructuralFeature, Object> config = input.getSecond();
+			public T execute(Supplier.FunctionResult<T, Map<EStructuralFeature, Object>> input, ProgressMonitor progressMonitor) {
+				T ret = input.argument();
+				Map<EStructuralFeature, Object> config = input.result();
 				for (Entry<String, Object> ae: ((Map<String,Object>) config.get(HtmlPackage.Literals.HTML_ELEMENT__ATTRIBUTES)).entrySet()) {
 					ret.attribute(ae.getKey(), ae.getValue());
 				}

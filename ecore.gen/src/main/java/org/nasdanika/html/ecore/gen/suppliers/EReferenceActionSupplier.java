@@ -1,4 +1,4 @@
-package org.nasdanika.html.ecore.gen;
+package org.nasdanika.html.ecore.gen.suppliers;
 
 import java.util.function.BiFunction;
 import java.util.function.Predicate;

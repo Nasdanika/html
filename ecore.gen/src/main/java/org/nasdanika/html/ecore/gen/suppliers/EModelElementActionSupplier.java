@@ -1,4 +1,4 @@
-package org.nasdanika.html.ecore.gen;
+package org.nasdanika.html.ecore.gen.suppliers;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
@@ -39,6 +39,7 @@ import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.PropertyComputer;
 import org.nasdanika.common.Util;
+import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.emf.EmfUtil.EModelElementDocumentation;
 import org.nasdanika.emf.persistence.MarkerFactory;
@@ -48,9 +49,10 @@ import org.nasdanika.exec.content.Markdown;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.html.model.app.util.ActionSupplier;
 import org.nasdanika.ncore.util.NcoreUtil; 
 
-public class EModelElementActionSupplier<T extends EModelElement> extends EObjectActionSupplier<T> {
+public class EModelElementActionSupplier<T extends EModelElement> implements EcoreActionSupplier {
 		
 	protected BiFunction<ENamedElement, String, String> labelProvider;	
 	
@@ -68,6 +70,17 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 
 	protected java.util.function.Function<EPackage,String> ePackagePathComputer;
 	protected Predicate<EModelElement> elementPredicate;
+	
+	protected T eObject;
+
+	/**
+	 * Adapts child eObject to {@link ActionSupplier} and adds to the list of children to be configured.
+	 * @param child
+	 * @return
+	 */
+	protected EcoreActionSupplier adaptChild(EObject child) {
+		return EObjectAdaptable.adaptTo(child, EcoreActionSupplier.class);
+	}	
 		
 	public EModelElementActionSupplier(
 			T value, 
@@ -75,7 +88,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
 			Predicate<EModelElement> elementPredicate,
 			BiFunction<ENamedElement, String, String> labelProvider) {
-		super(value);
+		this.eObject = value;
 		this.context = context.fork();
 		PropertyComputer eClassifierPropertyComputer = new PropertyComputer() {
 			
