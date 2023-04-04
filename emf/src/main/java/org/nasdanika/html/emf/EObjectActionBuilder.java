@@ -322,7 +322,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 		
 		T semanticElement = getTarget();
 		if (semanticElement instanceof ModelElement) {
-			EObject actionPrototype = ((ModelElement) semanticElement).getActionPrototype();
+			EObject actionPrototype = ((ModelElement) semanticElement).getLabelPrototype();
 			if (actionPrototype instanceof ActionReference) {
 				actionPrototype = ((ActionReference) actionPrototype).getTarget();
 			} 

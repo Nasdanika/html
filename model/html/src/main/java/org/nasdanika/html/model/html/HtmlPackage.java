@@ -108,13 +108,13 @@ public interface HtmlPackage extends EPackage {
 	int HTML_ELEMENT__UUID = NcorePackage.MODEL_ELEMENT__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HTML_ELEMENT__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+	int HTML_ELEMENT__LABEL_PROTOTYPE = NcorePackage.MODEL_ELEMENT__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -217,13 +217,13 @@ public interface HtmlPackage extends EPackage {
 	int TAG__UUID = HTML_ELEMENT__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TAG__ACTION_PROTOTYPE = HTML_ELEMENT__ACTION_PROTOTYPE;
+	int TAG__LABEL_PROTOTYPE = HTML_ELEMENT__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -335,13 +335,13 @@ public interface HtmlPackage extends EPackage {
 	int PAGE__UUID = NcorePackage.MODEL_ELEMENT__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+	int PAGE__LABEL_PROTOTYPE = NcorePackage.MODEL_ELEMENT__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -489,13 +489,13 @@ public interface HtmlPackage extends EPackage {
 	int STYLESHEET__UUID = ContentPackage.FILTER__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STYLESHEET__ACTION_PROTOTYPE = ContentPackage.FILTER__ACTION_PROTOTYPE;
+	int STYLESHEET__LABEL_PROTOTYPE = ContentPackage.FILTER__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -589,13 +589,13 @@ public interface HtmlPackage extends EPackage {
 	int STYLESHEET_REFERENCE__UUID = NcorePackage.MODEL_ELEMENT__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STYLESHEET_REFERENCE__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+	int STYLESHEET_REFERENCE__LABEL_PROTOTYPE = NcorePackage.MODEL_ELEMENT__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -689,13 +689,13 @@ public interface HtmlPackage extends EPackage {
 	int SCRIPT__UUID = ContentPackage.FILTER__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SCRIPT__ACTION_PROTOTYPE = ContentPackage.FILTER__ACTION_PROTOTYPE;
+	int SCRIPT__LABEL_PROTOTYPE = ContentPackage.FILTER__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -789,13 +789,13 @@ public interface HtmlPackage extends EPackage {
 	int SCRIPT_REFERENCE__UUID = NcorePackage.MODEL_ELEMENT__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SCRIPT_REFERENCE__ACTION_PROTOTYPE = NcorePackage.MODEL_ELEMENT__ACTION_PROTOTYPE;
+	int SCRIPT_REFERENCE__LABEL_PROTOTYPE = NcorePackage.MODEL_ELEMENT__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.

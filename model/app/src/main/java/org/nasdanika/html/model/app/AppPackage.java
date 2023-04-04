@@ -110,13 +110,13 @@ public interface AppPackage extends EPackage {
 	int LABEL__UUID = BootstrapPackage.BOOTSTRAP_ELEMENT__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LABEL__ACTION_PROTOTYPE = BootstrapPackage.BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+	int LABEL__LABEL_PROTOTYPE = BootstrapPackage.BOOTSTRAP_ELEMENT__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -327,13 +327,13 @@ public interface AppPackage extends EPackage {
 	int LINK__UUID = LABEL__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK__ACTION_PROTOTYPE = LABEL__ACTION_PROTOTYPE;
+	int LINK__LABEL_PROTOTYPE = LABEL__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -607,13 +607,13 @@ public interface AppPackage extends EPackage {
 	int PAGE__UUID = BootstrapPackage.BOOTSTRAP_ELEMENT__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE__ACTION_PROTOTYPE = BootstrapPackage.BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+	int PAGE__LABEL_PROTOTYPE = BootstrapPackage.BOOTSTRAP_ELEMENT__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -788,13 +788,13 @@ public interface AppPackage extends EPackage {
 	int PAGE_PART__UUID = BootstrapPackage.BOOTSTRAP_ELEMENT__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PAGE_PART__ACTION_PROTOTYPE = BootstrapPackage.BOOTSTRAP_ELEMENT__ACTION_PROTOTYPE;
+	int PAGE_PART__LABEL_PROTOTYPE = BootstrapPackage.BOOTSTRAP_ELEMENT__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -915,13 +915,13 @@ public interface AppPackage extends EPackage {
 	int HEADER__UUID = PAGE_PART__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int HEADER__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
+	int HEADER__LABEL_PROTOTYPE = PAGE_PART__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -1051,13 +1051,13 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_BAR__UUID = PAGE_PART__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_BAR__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
+	int NAVIGATION_BAR__LABEL_PROTOTYPE = PAGE_PART__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -1214,13 +1214,13 @@ public interface AppPackage extends EPackage {
 	int NAVIGATION_PANEL__UUID = PAGE_PART__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NAVIGATION_PANEL__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
+	int NAVIGATION_PANEL__LABEL_PROTOTYPE = PAGE_PART__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -1386,13 +1386,13 @@ public interface AppPackage extends EPackage {
 	int CONTENT_PANEL__UUID = PAGE_PART__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTENT_PANEL__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
+	int CONTENT_PANEL__LABEL_PROTOTYPE = PAGE_PART__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -1594,13 +1594,13 @@ public interface AppPackage extends EPackage {
 	int FOOTER__UUID = PAGE_PART__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FOOTER__ACTION_PROTOTYPE = PAGE_PART__ACTION_PROTOTYPE;
+	int FOOTER__LABEL_PROTOTYPE = PAGE_PART__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.
@@ -1721,13 +1721,13 @@ public interface AppPackage extends EPackage {
 	int ACTION__UUID = LINK__UUID;
 
 	/**
-	 * The feature id for the '<em><b>Action Prototype</b></em>' containment reference.
+	 * The feature id for the '<em><b>Label Prototype</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTION__ACTION_PROTOTYPE = LINK__ACTION_PROTOTYPE;
+	int ACTION__LABEL_PROTOTYPE = LINK__LABEL_PROTOTYPE;
 
 	/**
 	 * The feature id for the '<em><b>Representations</b></em>' map.

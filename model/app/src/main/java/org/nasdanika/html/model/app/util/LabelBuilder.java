@@ -20,11 +20,11 @@ import org.nasdanika.html.model.app.util.LabelProvider.Resolver;
  */
 public interface LabelBuilder extends ExecutionParticipant, Composeable<LabelBuilder> {
 		
-	Label build(Label label, BiConsumer<Object,Label> registry, Consumer<Resolver> resolverCollector, ProgressMonitor progressMonitor);
+	Label build(Label label, Consumer<Resolver> resolverCollector, ProgressMonitor progressMonitor);
 		
-	default Label splitAndBuild(Label label, BiConsumer<Object,Label> registry, Consumer<Resolver> resolverCollector, ProgressMonitor progressMonitor) {
+	default Label splitAndBuild(Label label, Consumer<Resolver> resolverCollector, ProgressMonitor progressMonitor) {
 		try (ProgressMonitor subMonitor = split(progressMonitor, "Building" + name())) {
-			return build(label, registry, resolverCollector, subMonitor);
+			return build(label, resolverCollector, subMonitor);
 		}
 	}	
 
@@ -43,10 +43,10 @@ public interface LabelBuilder extends ExecutionParticipant, Composeable<LabelBui
 			}
 
 			@Override
-			public Label build(Label label, BiConsumer<Object, Label> registry, Consumer<Resolver> resolverCollector, ProgressMonitor progressMonitor) {
+			public Label build(Label label, Consumer<Resolver> resolverCollector, ProgressMonitor progressMonitor) {
 				for (LabelBuilder element: getElements()) {
 					if (element != null) {
-						label = element.splitAndBuild(label, registry, resolverCollector, progressMonitor);
+						label = element.splitAndBuild(label, resolverCollector, progressMonitor);
 					}
 				}
 				return label;
@@ -67,7 +67,7 @@ public interface LabelBuilder extends ExecutionParticipant, Composeable<LabelBui
 	 * @param identity Initial label, can be null
 	 * @return {@link LabelProvider} delegating to this builder
 	 */
-	default LabelProvider asProvider(Label identity) {
+	default LabelProvider asProvider(Label identity, Iterable<?> registryKeys) {
 		class DelegatingLabelProvider extends FilterExecutionParticipant<LabelBuilder> implements LabelProvider {
 
 			public DelegatingLabelProvider() {
@@ -76,7 +76,13 @@ public interface LabelBuilder extends ExecutionParticipant, Composeable<LabelBui
 
 			@Override
 			public Label create(BiConsumer<Object, Label> registry, Consumer<Resolver> resolverCollector, ProgressMonitor progressMonitor) {
-				return target.build(identity, registry, resolverCollector, progressMonitor);
+				Label label = target.build(identity, resolverCollector, progressMonitor);
+				if (registry != null && label != null && registryKeys != null) {
+					for (Object registryKey: registryKeys) {
+						registry.accept(registryKey, label);
+					}
+				}
+				return label;
 			}
 			
 		}

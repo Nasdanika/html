@@ -1,24 +1,16 @@
 package org.nasdanika.html.ecore.gen;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EModelElement;
-import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EParameter;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.emf.ComposedAdapterFactory;
 import org.nasdanika.emf.FunctionAdapterFactory;
-import org.nasdanika.html.model.app.AppPackage;
+import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.util.LabelProvider;
 import org.nasdanika.ncore.util.NcoreUtil;
 
 /**
@@ -28,18 +20,29 @@ import org.nasdanika.ncore.util.NcoreUtil;
  */
 public class EcoreLabelProviderAdapterFactory extends ComposedAdapterFactory {
 	
+	/**
+	 * 
+	 * @param eModelElement
+	 * @return Identity (seed) label for a model element. This implementation returns null.
+	 * Override to customize, e.g. add sections.
+	 */
+	protected Label getIdentityLabel(EModelElement eModelElement) {
+		// TODO - action (label) prototype or prototype reference
+		return null;
+	}
+	
 	public EcoreLabelProviderAdapterFactory(
 			Context context, 
 			java.util.function.Function<EPackage,String> ePackagePathComputer,
 			java.util.function.Function<String, String> javadocResolver) {
 		
 //		// Registering adapter factories.
-//		registerAdapterFactory(
-//			new FunctionAdapterFactory<EcoreActionSupplier, EPackage>(
-//				EcorePackage.Literals.EPACKAGE, 
-//				EcoreActionSupplier.class, 
-//				this.getClass().getClassLoader(), 
-//				e -> new EPackageActionSupplier(
+		registerAdapterFactory(
+			new FunctionAdapterFactory<LabelProvider, EPackage>(
+				EcorePackage.Literals.EPACKAGE, 
+				LabelProvider.class, 
+				this.getClass().getClassLoader(), 
+				e -> new EPackageLabelBuilder(e, context).asProvider(getIdentityLabel(e), NcoreUtil.getIdentifiers(e))));
 //						e, 
 //						context, 
 //						ePackagePathComputer, 
