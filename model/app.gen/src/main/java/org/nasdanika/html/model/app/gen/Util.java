@@ -1127,7 +1127,7 @@ public final class Util {
 		URI thisURI = URI.createURI(path).resolve(base);
 		URI relativeSearchScriptURI = searchScriptURI.deresolve(thisURI, true, true, true);
 		head.append(System.lineSeparator() + "<script src=\"" + relativeSearchScriptURI + "\"></script>" + System.lineSeparator());
-		head.append(System.lineSeparator() + "<script src=\"https://unpkg.com/lunr/lunr.js\"></script>" + System.lineSeparator());
+		head.append(System.lineSeparator() + "<script src=\"https://cdn.jsdelivr.net/gh/olivernn/lunr.js@v2.3.9/lunr.js\"></script>" + System.lineSeparator());
 				
 		try (InputStream in = searchScriptSupplier.get()) {
 			head.append(System.lineSeparator() + "<script>" + System.lineSeparator() + DefaultConverter.INSTANCE.toString(in) + System.lineSeparator() + "</script>" + System.lineSeparator());
