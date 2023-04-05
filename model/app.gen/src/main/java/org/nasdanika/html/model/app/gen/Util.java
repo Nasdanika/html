@@ -45,6 +45,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
@@ -1376,6 +1377,20 @@ public final class Util {
 			SemanticElementConfigurator semanticElementConfigurator) {
 		
 		ResourceSet resourceSet = new NcoreResourceSet();
+		
+		resourceSet.getURIConverter().getURIHandlers().add(0, new URIHandlerImpl() {
+
+			@Override
+			public boolean canHandle(URI uri) {
+				return uri != null && org.nasdanika.common.Util.CLASSPATH_SCHEME.equals(uri.scheme());
+			}
+
+			@Override
+			public InputStream createInputStream(URI uri, Map<?, ?> options) throws IOException {
+				return DefaultConverter.INSTANCE.toInputStream(uri);
+			}
+			
+		});
 		
 		EObjectLoader eObjectLoader = new EObjectLoader(null, null, resourceSet);
 		GitMarkerFactory markerFactory = new GitMarkerFactory();
