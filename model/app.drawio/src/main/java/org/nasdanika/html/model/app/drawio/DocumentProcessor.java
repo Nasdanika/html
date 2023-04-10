@@ -25,7 +25,7 @@ public class DocumentProcessor extends ElementProcessor implements SemanticProce
 	
 	private Action documentAction;
 
-	public DocumentProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	public DocumentProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor, Registry> config, URI baseURI) {
 		super(resourceFactory, uri, config, baseURI);		
 	}
 	
@@ -55,21 +55,21 @@ public class DocumentProcessor extends ElementProcessor implements SemanticProce
 		}
 		
 		// Setting semantic hierarchy
-		Map<ProcessorInfo<ElementProcessor>, EReference> semanticChildrenInfo = new LinkedHashMap<>();
+		Map<ProcessorInfo<ElementProcessor, Registry>, EReference> semanticChildrenInfo = new LinkedHashMap<>();
 		for (Page page: pages) {
-			PageProcessor pageProcessor = (PageProcessor) registry.get(page).getProcessor();
+			PageProcessor pageProcessor = (PageProcessor) registry.infoMap().get(page).getProcessor();
 			if (pageProcessor.isRootPage()) {
 				ModelElement pageElement = pageProcessor.getPageElement();
 				
-				ProcessorInfo<ElementProcessor> semanticParentInfo = documentAction == null ? null : ProcessorInfo.of(config, this, null);
-				ModelElementProcessor pageElementProcessor = (ModelElementProcessor) registry.get(pageElement).getProcessor();
-				Map<ProcessorInfo<ElementProcessor>, EReference> pageElementSemanticInfo = pageElementProcessor.setSemanticParentInfo(semanticParentInfo);
+				ProcessorInfo<ElementProcessor, Registry> semanticParentInfo = documentAction == null ? null : ProcessorInfo.of(config, this, null);
+				ModelElementProcessor pageElementProcessor = (ModelElementProcessor) registry.infoMap().get(pageElement).getProcessor();
+				Map<ProcessorInfo<ElementProcessor, Registry>, EReference> pageElementSemanticInfo = pageElementProcessor.setSemanticParentInfo(semanticParentInfo);
 				semanticChildrenInfo.putAll(pageElementSemanticInfo);
 			}
 		}
 
 		// Build semantic children recursively.
-		for (Entry<ProcessorInfo<ElementProcessor>, EReference> entry: semanticChildrenInfo.entrySet()) {
+		for (Entry<ProcessorInfo<ElementProcessor, Registry>, EReference> entry: semanticChildrenInfo.entrySet()) {
 			ModelElementProcessor processor = (ModelElementProcessor) entry.getKey().getProcessor();
 			if (documentAction != null) {
 				EReference role = entry.getValue();

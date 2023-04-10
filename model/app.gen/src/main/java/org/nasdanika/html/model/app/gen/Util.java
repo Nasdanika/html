@@ -31,6 +31,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -77,6 +78,8 @@ import org.nasdanika.exec.content.Text;
 import org.nasdanika.exec.resources.Container;
 import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.graph.processor.ProcessorConfig;
+import org.nasdanika.graph.processor.ProcessorInfo;
+import org.nasdanika.graph.processor.RegistryRecord;
 import org.nasdanika.graph.processor.emf.SemanticProcessor;
 import org.nasdanika.html.Button;
 import org.nasdanika.html.HTMLFactory;
@@ -1286,9 +1289,9 @@ public final class Util {
 	public interface SemanticElementFactory {
 
 		Collection<EObject> createSemanticElements(
-				ProcessorConfig<SemanticProcessor<EObject>> config,
+				ProcessorConfig<SemanticProcessor<EObject>, RegistryRecord<SemanticProcessor<EObject>>> config,
 				ProgressMonitor progressMonitor,
-				BiFunction<ProcessorConfig<SemanticProcessor<EObject>>, ProgressMonitor, Collection<EObject>> defaultFactory);
+				BiFunction<ProcessorConfig<SemanticProcessor<EObject>, RegistryRecord<SemanticProcessor<EObject>>>, ProgressMonitor, Collection<EObject>> defaultFactory);
 	}
 	
 	/**
@@ -1297,12 +1300,11 @@ public final class Util {
 	 *
 	 */
 	public interface SemanticElementConfigurator {
-		
+
 		Collection<EObject> configureSemanticElements(
-				URI uri,
-				ProcessorConfig<SemanticProcessor<EObject>> config, 
-				Collection<EObject> semanticElements, 
-				ProgressMonitor progressMonitor);
+			URI uri,
+			ProcessorConfig<SemanticProcessor<EObject>, RegistryRecord<SemanticProcessor<EObject>>> config,
+			Collection<EObject> semanticElements, ProgressMonitor progressMonitor);
 		
 	}
 	
@@ -1316,9 +1318,8 @@ public final class Util {
 	 */
 	public static Collection<EObject> configureC4Actions(
 			URI uri,
-			ProcessorConfig<SemanticProcessor<EObject>> config, 
-			Collection<EObject> semanticElements, 
-			ProgressMonitor progressMonitor) {
+			ProcessorConfig<SemanticProcessor<EObject>, RegistryRecord<SemanticProcessor<EObject>>> config,
+			Collection<EObject> semanticElements, ProgressMonitor progressMonitor) {
 	
 		if (semanticElements == null) {
 			return semanticElements;
@@ -1413,7 +1414,7 @@ public final class Util {
 		extensionToFactoryMap.put("json", objectLoaderResourceFactory);
 		resourceSet.getResourceFactoryRegistry().getProtocolToFactoryMap().put("data", objectLoaderResourceFactory);
 		
-		NcoreDrawioResourceFactory<EObject> ncoreDrawioResourceFactory = new NcoreDrawioResourceFactory<EObject>() {
+		NcoreDrawioResourceFactory<EObject, RegistryRecord<SemanticProcessor<EObject>>> ncoreDrawioResourceFactory = new NcoreDrawioResourceFactory<EObject, RegistryRecord<SemanticProcessor<EObject>>>() {
 			
 			@Override
 			protected ResourceSet getResourceSet() {
@@ -1432,22 +1433,40 @@ public final class Util {
 			
 			@Override
 			protected Collection<EObject> createSemanticElements(
-					ProcessorConfig<SemanticProcessor<EObject>> config,
+					ProcessorConfig<SemanticProcessor<EObject>, RegistryRecord<SemanticProcessor<EObject>>> config,
 					ProgressMonitor progressMonitor,
-					BiFunction<ProcessorConfig<SemanticProcessor<EObject>>, ProgressMonitor, Collection<EObject>> defaultFactory) {
-				
+					BiFunction<ProcessorConfig<SemanticProcessor<EObject>, RegistryRecord<SemanticProcessor<EObject>>>, ProgressMonitor, Collection<EObject>> defaultFactory) {
 				return semanticElementFactory == null ? super.createSemanticElements(config, progressMonitor, defaultFactory) : semanticElementFactory.createSemanticElements(config, progressMonitor, defaultFactory);
 			}
 			
 			@Override
 			protected Collection<EObject> configureSemanticElements(
 					URI uri,
-					ProcessorConfig<SemanticProcessor<EObject>> config, Collection<EObject> semanticElements,
-					ProgressMonitor progressMonitor) {
+					ProcessorConfig<SemanticProcessor<EObject>, RegistryRecord<SemanticProcessor<EObject>>> config,
+					Collection<EObject> semanticElements, ProgressMonitor progressMonitor) {
 				Collection<EObject> configuredSemanticElements = super.configureSemanticElements(uri, config, semanticElements, progressMonitor);				
 				return semanticElementConfigurator == null ? configuredSemanticElements : semanticElementConfigurator.configureSemanticElements(uri, config, configuredSemanticElements, progressMonitor);
+			}			
+
+			@Override
+			protected ProcessorInfo<SemanticProcessor<EObject>, RegistryRecord<SemanticProcessor<EObject>>> getProcessorInfo(RegistryRecord<SemanticProcessor<EObject>> registry, org.nasdanika.graph.Element element) {
+				return registry.processorInfoMap().get(element);
 			}
-			
+
+			@Override
+			protected Stream<EObject> getRegistrySemanticElements(RegistryRecord<SemanticProcessor<EObject>> registry) {
+				return registryEntries(registry).stream().map(Map.Entry::getValue).map(ProcessorInfo::getProcessor).filter(Objects::nonNull).flatMap(sp -> sp.getSemanticElements().stream());
+			}
+
+			@Override
+			protected RegistryRecord<SemanticProcessor<EObject>> createRegistry(Map<org.nasdanika.graph.Element, ProcessorInfo<SemanticProcessor<EObject>, RegistryRecord<SemanticProcessor<EObject>>>> registry) {
+				return new RegistryRecord<>(registry);
+			}
+
+			@Override
+			protected Collection<Entry<org.nasdanika.graph.Element, ProcessorInfo<SemanticProcessor<EObject>, RegistryRecord<SemanticProcessor<EObject>>>>> registryEntries(RegistryRecord<SemanticProcessor<EObject>> registry) {
+				return registry.processorInfoMap().entrySet();
+			}
 		};
 		
 		extensionToFactoryMap.put("drawio", ncoreDrawioResourceFactory);		

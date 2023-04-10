@@ -42,11 +42,11 @@ import org.nasdanika.graph.processor.emf.SemanticProcessor;
 
 public class ModelElementProcessor extends ElementProcessor implements SemanticProcessor<EObject> {
 	
-	protected Map<ProcessorInfo<ElementProcessor>, EReference> semanticChildrenInfo;
-	protected ProcessorInfo<ElementProcessor> semanticParentInfo;
+	protected Map<ProcessorInfo<ElementProcessor, Registry>, EReference> semanticChildrenInfo;
+	protected ProcessorInfo<ElementProcessor, Registry> semanticParentInfo;
 	protected EObject semanticElement;
 
-	protected ModelElementProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	protected ModelElementProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor, Registry> config, URI baseURI) {
 		super(resourceFactory, uri, config, baseURI);
 	}
 	
@@ -74,7 +74,7 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 	 * @param semanticParentInfo
 	 * @return Linked map of info to child role.
 	 */
-	public Map<ProcessorInfo<ElementProcessor>, EReference> setSemanticParentInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+	public Map<ProcessorInfo<ElementProcessor, Registry>, EReference> setSemanticParentInfo(ProcessorInfo<ElementProcessor, Registry> semanticParentInfo) {
 		if (isSemantic()) {
 			if (semanticParentInfo != null) {
 				ElementProcessor spp = semanticParentInfo.getProcessor();
@@ -84,7 +84,7 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 			}
 			
 			this.semanticParentInfo = semanticParentInfo;
-			ProcessorInfo<ElementProcessor> info = ProcessorInfo.of(config, this, null);
+			ProcessorInfo<ElementProcessor, Registry> info = ProcessorInfo.of(config, this, null);
 			semanticChildrenInfo = collectSemanticChildrenInfo(info);
 			return Collections.singletonMap(info, getRole());
 		}
@@ -92,14 +92,14 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 		return collectSemanticChildrenInfo(semanticParentInfo);
 	}
 	
-	public Map<ProcessorInfo<ElementProcessor>, EReference> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+	public Map<ProcessorInfo<ElementProcessor, Registry>, EReference> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor, Registry> semanticParentInfo) {
 		Page linkedPage = getElement().getLinkedPage();
 		if (linkedPage == null) {
 			return Collections.emptyMap();
 		}
-		PageProcessor pageProcessor = (PageProcessor) registry.get(linkedPage).getProcessor();
+		PageProcessor pageProcessor = (PageProcessor) registry.infoMap().get(linkedPage).getProcessor();
 		ModelElement pageElement = pageProcessor.getPageElement();
-		ModelElementProcessor pageElementProcessor = (ModelElementProcessor) registry.get(pageElement).getProcessor();
+		ModelElementProcessor pageElementProcessor = (ModelElementProcessor) registry.infoMap().get(pageElement).getProcessor();
 		return pageElementProcessor.collectSemanticChildrenInfo(semanticParentInfo);
 	}
 		
@@ -128,7 +128,7 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 			
 			// Adding children to roles and building
 			if (semanticChildrenInfo != null) {
-				for (Entry<ProcessorInfo<ElementProcessor>, EReference> childEntry: semanticChildrenInfo.entrySet()) {
+				for (Entry<ProcessorInfo<ElementProcessor, Registry>, EReference> childEntry: semanticChildrenInfo.entrySet()) {
 					ModelElementProcessor processor = (ModelElementProcessor) childEntry.getKey().getProcessor();
 					EReference childRole = childEntry.getValue();
 					if (childRole != null) {
@@ -159,12 +159,12 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 		if (linkedPage == null) {
 			return null;
 		}
-		PageProcessor linkedPageProcessor = (PageProcessor) registry.get(linkedPage).getProcessor();
+		PageProcessor linkedPageProcessor = (PageProcessor) registry.infoMap().get(linkedPage).getProcessor();
 		ModelElement linkedPageElement = linkedPageProcessor.getPageElement();
-		return ((ModelElementProcessor) registry.get(linkedPageElement).getProcessor()).getEmbeddedDiagramDocument();
+		return ((ModelElementProcessor) registry.infoMap().get(linkedPageElement).getProcessor()).getEmbeddedDiagramDocument();
 	}
 	
-	protected Comparator<ProcessorInfo<ElementProcessor>> getSemanticChildrenComparator() {
+	protected Comparator<ProcessorInfo<ElementProcessor, Registry>> getSemanticChildrenComparator() {
 		String sortProperty = resourceFactory.getSortProperty();
 		String sort = null;
 		if (!org.nasdanika.common.Util.isBlank(sortProperty)) {
@@ -237,10 +237,10 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 			} else {
 				// TODO - handle content and diagram roles - by the page processor?
 				
-				ProcessorInfo<ElementProcessor> pageInfo = registry.get(linkedPage);
+				ProcessorInfo<ElementProcessor, Registry> pageInfo = registry.infoMap().get(linkedPage);
 				PageProcessor pageProcessor = (PageProcessor) pageInfo.getProcessor();
 				ModelElement pageElement = pageProcessor.getPageElement();
-				ModelElementProcessor pageElementProcessor = (ModelElementProcessor) registry.get(pageElement).getProcessor();
+				ModelElementProcessor pageElementProcessor = (ModelElementProcessor) registry.infoMap().get(pageElement).getProcessor();
 				EObject pageSemanticElement = pageElementProcessor.getSemanticElement();
 				if (pageSemanticElement instanceof Action) {
 					action = (Action) pageSemanticElement;
@@ -402,7 +402,7 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 	
 		StringBuilder tocBuilder = new StringBuilder(System.lineSeparator()).append(listOpenTag);
 		
-		for (ProcessorInfo<ElementProcessor> sci: semanticChildrenInfo.keySet()) {
+		for (ProcessorInfo<ElementProcessor, Registry> sci: semanticChildrenInfo.keySet()) {
 			ElementProcessor childProcessor = sci.getProcessor();
 			if (childProcessor instanceof ModelElementProcessor) {
 				tocBuilder.append(((ModelElementProcessor) childProcessor).getTableOfContentsElement(base));
@@ -549,7 +549,7 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 		}
 		Page linkedPage = getElement().getLinkedPage();
 		if (linkedPage != null) {
-			PageProcessor linkedPageProcessor = (PageProcessor) registry.get(linkedPage).getProcessor();
+			PageProcessor linkedPageProcessor = (PageProcessor) registry.infoMap().get(linkedPage).getProcessor();
 			ModelElement linkedPageElement = linkedPageProcessor.getPageElement();
 			if (modelElement.getId().equals(linkedPageElement.getId())) {
 				return null;
@@ -568,6 +568,7 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 				String selectorPropertyValue = modelElement.getProperty(selectorProperty);
 				if (!Util.isBlank(selectorPropertyValue)) {
 					Optional<ModelElementProcessor> processorOptional = registry
+						.infoMap()
 						.entrySet()
 						.stream()
 						.filter(e -> resourceFactory.match(e.getKey(), selectorPropertyValue))
@@ -585,6 +586,7 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 			
 			// Link by ID equality
 			Optional<ModelElementProcessor> processorOptional = registry
+					.infoMap()
 					.entrySet()
 					.stream()
 					.filter(e -> e.getKey() instanceof ModelElement && Objects.equals(modelElement.getId(), ((ModelElement) e.getKey()).getId()))
@@ -624,7 +626,7 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 		return text;
 	}
 	
-	public ProcessorInfo<ElementProcessor> getSemanticParentInfo() {
+	public ProcessorInfo<ElementProcessor, Registry> getSemanticParentInfo() {
 		return semanticParentInfo;
 	}
 		

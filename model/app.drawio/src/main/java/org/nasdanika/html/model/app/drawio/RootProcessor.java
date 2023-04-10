@@ -14,7 +14,7 @@ import org.nasdanika.graph.processor.ProcessorInfo;
 
 public class RootProcessor extends ModelElementProcessor {
 	
-	public RootProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	public RootProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor, Registry> config, URI baseURI) {
 		super(resourceFactory, uri, config, baseURI);
 	}
 	
@@ -29,8 +29,8 @@ public class RootProcessor extends ModelElementProcessor {
 	}
 
 	@Override
-	protected Comparator<ProcessorInfo<ElementProcessor>> getSemanticChildrenComparator() {
-		Comparator<ProcessorInfo<ElementProcessor>> semanticChildrenComparator = super.getSemanticChildrenComparator();
+	protected Comparator<ProcessorInfo<ElementProcessor, Registry>> getSemanticChildrenComparator() {
+		Comparator<ProcessorInfo<ElementProcessor, Registry>> semanticChildrenComparator = super.getSemanticChildrenComparator();
 		if (semanticChildrenComparator != null) { 
 			return semanticChildrenComparator;
 		}
@@ -51,8 +51,8 @@ public class RootProcessor extends ModelElementProcessor {
 	}
 
 	@Override
-	public Map<ProcessorInfo<ElementProcessor>, EReference> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
-		Map<ProcessorInfo<ElementProcessor>, EReference> ret = new LinkedHashMap<>();
+	public Map<ProcessorInfo<ElementProcessor, Registry>, EReference> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor, Registry> semanticParentInfo) {
+		Map<ProcessorInfo<ElementProcessor, Registry>, EReference> ret = new LinkedHashMap<>();
 		config.getChildProcessorsInfo()
 			.values()
 			.stream()

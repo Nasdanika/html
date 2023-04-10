@@ -28,7 +28,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.nasdanika.common.BiSupplier;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.MutableContext;
 import org.nasdanika.common.NasdanikaException;
@@ -46,6 +45,7 @@ import org.nasdanika.ncore.Marker;
 import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.util.NcoreUtil;
+import org.nasdanika.ncore.util.NcoreUtil.ContainmentPath;
 import org.nasdanika.ncore.util.SemanticInfo;
 import org.xml.sax.SAXException;
 
@@ -96,11 +96,11 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	 		}
 		}
 		
-		BiSupplier<EObject, String> cPath = NcoreUtil.containmentPath(semanticElement);
-		if (cPath == null || Util.isBlank(cPath.getSecond())) {
+		ContainmentPath cPath = NcoreUtil.containmentPath(semanticElement);
+		if (cPath == null || Util.isBlank(cPath.path())) {
 			ret.setLocation("${base-uri}index." + getHtmlExtension());
 		} else {
-			ret.setLocation(cPath.getSecond() + "/index." + getHtmlExtension());
+			ret.setLocation(cPath.path() + "/index." + getHtmlExtension());
 		}		
 		
 		if (semanticElement instanceof NamedElement) {

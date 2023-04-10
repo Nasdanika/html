@@ -58,25 +58,30 @@ public abstract class ResourceFactory implements Factory {
 	@Override
 	public Resource createResource(URI uri) {
 		ProcessorFactory processorFactory = new ProcessorFactory(uri, this);
-		return new DrawioResource<ElementProcessor, EObject>(uri) {
-
-			@Override
-			protected Stream<EObject> getSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {
-				return ResourceFactory.this.getSemanticElements(registry);
-			}
+		return new DrawioResource<ElementProcessor, EObject, org.nasdanika.html.model.app.drawio.Registry>(uri) {
 			
 			protected Document loadDocument(InputStream inputStream) throws IOException, ParserConfigurationException, SAXException {
 				return ResourceFactory.this.loadDocument(inputStream, getURI());
 			}
 
 			@Override
-			protected org.nasdanika.graph.processor.ProcessorFactory<ElementProcessor, ?, ?> getProcessorFactory() {
-				return processorFactory;
-			}
-
-			@Override
 			protected ProgressMonitor getProgressMonitor() {
 				return ResourceFactory.this.getProgressMonitor(uri);
+			}
+			
+			@Override
+			protected org.nasdanika.graph.processor.ProcessorFactory<ElementProcessor, ?, ?, org.nasdanika.html.model.app.drawio.Registry> getProcessorFactory() {
+				return processorFactory;
+			}
+			
+			@Override
+			protected ProcessorInfo<ElementProcessor, org.nasdanika.html.model.app.drawio.Registry> getProcessorInfo(org.nasdanika.html.model.app.drawio.Registry registry, Element element) {
+				return registry.infoMap().get(element);
+			}
+			
+			@Override
+			protected Stream<EObject> getRegistrySemanticElements(org.nasdanika.html.model.app.drawio.Registry registry) {
+				return ResourceFactory.this.getSemanticElements(registry);
 			}
 			
 		};
@@ -88,8 +93,9 @@ public abstract class ResourceFactory implements Factory {
 		return Document.load(inputStream, uri);
 	}	
 	
-	protected Stream<EObject> getSemanticElements(Map<Element,ProcessorInfo<ElementProcessor>> registry) {		
+	protected Stream<EObject> getSemanticElements(org.nasdanika.html.model.app.drawio.Registry registry) {		
 		return registry
+			.infoMap()
 			.values()
 			.stream()
 			.map(ProcessorInfo::getProcessor)
@@ -106,7 +112,7 @@ public abstract class ResourceFactory implements Factory {
 		return URI.createURI("temp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
 	}
 
-	protected ElementProcessor createProcessor(URI uri, ProcessorConfig<ElementProcessor> config, ProgressMonitor progressMonitor) {
+	protected ElementProcessor createProcessor(URI uri, ProcessorConfig<ElementProcessor, org.nasdanika.html.model.app.drawio.Registry> config, ProgressMonitor progressMonitor) {
 		
 		URI baseURI = getBaseURI(uri);
 		ElementProcessor processor;
@@ -138,31 +144,31 @@ public abstract class ResourceFactory implements Factory {
 		return processor;
 	}
 
-	protected ElementProcessor createLayerProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	protected ElementProcessor createLayerProcessor(URI uri, ProcessorConfig<ElementProcessor, org.nasdanika.html.model.app.drawio.Registry> config, URI baseURI) {
 		return new LayerProcessor(this, uri, config, baseURI);
 	}
 
-	protected ElementProcessor createConnectionProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	protected ElementProcessor createConnectionProcessor(URI uri, ProcessorConfig<ElementProcessor,org.nasdanika.html.model.app.drawio.Registry> config, URI baseURI) {
 		return new ConnectionProcessor(this, uri, config, baseURI);
 	}
 
-	protected ElementProcessor createDocumentProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	protected ElementProcessor createDocumentProcessor(URI uri, ProcessorConfig<ElementProcessor,org.nasdanika.html.model.app.drawio.Registry> config, URI baseURI) {
 		return new DocumentProcessor(this, uri, config, baseURI);
 	}
 
-	protected ElementProcessor createNodeProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	protected ElementProcessor createNodeProcessor(URI uri, ProcessorConfig<ElementProcessor,org.nasdanika.html.model.app.drawio.Registry> config, URI baseURI) {
 		return new NodeProcessor(this, uri, config, baseURI);
 	}
 
-	protected ElementProcessor createRootProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	protected ElementProcessor createRootProcessor(URI uri, ProcessorConfig<ElementProcessor,org.nasdanika.html.model.app.drawio.Registry> config, URI baseURI) {
 		return new RootProcessor(this, uri, config, baseURI);
 	}
 
-	protected ElementProcessor createModelProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	protected ElementProcessor createModelProcessor(URI uri, ProcessorConfig<ElementProcessor,org.nasdanika.html.model.app.drawio.Registry> config, URI baseURI) {
 		return new ModelProcessor(this, uri, config, baseURI);
 	}
 
-	protected ElementProcessor createPageProcessor(URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	protected ElementProcessor createPageProcessor(URI uri, ProcessorConfig<ElementProcessor,org.nasdanika.html.model.app.drawio.Registry> config, URI baseURI) {
 		return new PageProcessor(this, uri, config, baseURI);
 	}
 	
@@ -461,9 +467,8 @@ public abstract class ResourceFactory implements Factory {
 	 * @param target
 	 * @return Link to the target from the source. This implementation returns null. Override to resolve external references.
 	 */
-	protected String getExternalReference(ProcessorInfo<ElementProcessor> sourceInfo, ModelElement target) {
+	protected String getExternalReference(ProcessorInfo<ElementProcessor,org.nasdanika.html.model.app.drawio.Registry> sourceInfo, ModelElement target) {
 		return null;
-	}
-	
+	}	
 	
 }

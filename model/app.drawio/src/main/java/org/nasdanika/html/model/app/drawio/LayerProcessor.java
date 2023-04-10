@@ -15,7 +15,7 @@ import org.nasdanika.graph.processor.ProcessorInfo;
 
 public class LayerProcessor extends ModelElementProcessor {
 
-	public LayerProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	public LayerProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor, Registry> config, URI baseURI) {
 		super(resourceFactory, uri, config, baseURI);
 	}
 	
@@ -25,9 +25,9 @@ public class LayerProcessor extends ModelElementProcessor {
 	}
 
 	@Override
-	public Map<ProcessorInfo<ElementProcessor>, EReference> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
-		Stream<Map.Entry<ProcessorInfo<ElementProcessor>, EReference>> superStream = super.collectSemanticChildrenInfo(semanticParentInfo).entrySet().stream();
-		Stream<Map.Entry<ProcessorInfo<ElementProcessor>, EReference>> childStream = config.getChildProcessorsInfo()
+	public Map<ProcessorInfo<ElementProcessor, Registry>, EReference> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor, Registry> semanticParentInfo) {
+		Stream<Map.Entry<ProcessorInfo<ElementProcessor, Registry>, EReference>> superStream = super.collectSemanticChildrenInfo(semanticParentInfo).entrySet().stream();
+		Stream<Map.Entry<ProcessorInfo<ElementProcessor, Registry>, EReference>> childStream = config.getChildProcessorsInfo()
 				.values()
 				.stream()
 				.filter(ep -> {
@@ -39,14 +39,14 @@ public class LayerProcessor extends ModelElementProcessor {
 				.map(ModelElementProcessor.class::cast)
 				.flatMap(p -> p.setSemanticParentInfo(semanticParentInfo).entrySet().stream());
 		
-		Stream<Map.Entry<ProcessorInfo<ElementProcessor>, EReference>> stream = Stream.concat(superStream,	childStream);
+		Stream<Map.Entry<ProcessorInfo<ElementProcessor, Registry>, EReference>> stream = Stream.concat(superStream,	childStream);
 		
-		Comparator<ProcessorInfo<ElementProcessor>> semanticChildrenComparator = getSemanticChildrenComparator();
+		Comparator<ProcessorInfo<ElementProcessor, Registry>> semanticChildrenComparator = getSemanticChildrenComparator();
 		if (semanticChildrenComparator != null) {
 			stream = stream.sorted((a, b) -> semanticChildrenComparator.compare(a.getKey(), b.getKey()));
 		}
 		
-		Map<ProcessorInfo<ElementProcessor>, EReference> ret = new LinkedHashMap<>();		
+		Map<ProcessorInfo<ElementProcessor, Registry>, EReference> ret = new LinkedHashMap<>();		
 		stream.forEach(e -> ret.put(e.getKey(),  e.getValue()));
 		return ret;
 	}

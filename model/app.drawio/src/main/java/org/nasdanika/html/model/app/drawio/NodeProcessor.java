@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.Node;
-import org.nasdanika.graph.Element;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
@@ -29,7 +28,7 @@ import org.nasdanika.html.model.bootstrap.TableRow;
 
 public class NodeProcessor extends LayerProcessor {
 
-	public NodeProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	public NodeProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor,Registry> config, URI baseURI) {
 		super(resourceFactory, uri, config, baseURI);		
 	}
 	
@@ -39,24 +38,24 @@ public class NodeProcessor extends LayerProcessor {
 	}
 	
 	@Override
-	public Map<ProcessorInfo<ElementProcessor>, EReference> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
-		Stream<Map.Entry<ProcessorInfo<ElementProcessor>, EReference>> superStream = super.collectSemanticChildrenInfo(semanticParentInfo).entrySet().stream();
-		Stream<Map.Entry<ProcessorInfo<ElementProcessor>, EReference>> outgoingConnectionsStream = getElement()
+	public Map<ProcessorInfo<ElementProcessor,Registry>, EReference> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor,Registry> semanticParentInfo) {
+		Stream<Map.Entry<ProcessorInfo<ElementProcessor,Registry>, EReference>> superStream = super.collectSemanticChildrenInfo(semanticParentInfo).entrySet().stream();
+		Stream<Map.Entry<ProcessorInfo<ElementProcessor,Registry>, EReference>> outgoingConnectionsStream = getElement()
 				.getOutgoingConnections()
 				.stream()
-				.map(registry::get)
+				.map(registry.infoMap()::get)
 				.map(ProcessorInfo::getProcessor)
 				.map(ModelElementProcessor.class::cast)
 				.flatMap(p -> p.setSemanticParentInfo(semanticParentInfo).entrySet().stream());
 		
-		Stream<Map.Entry<ProcessorInfo<ElementProcessor>, EReference>> stream = Stream.concat(superStream,	outgoingConnectionsStream);
+		Stream<Map.Entry<ProcessorInfo<ElementProcessor,Registry>, EReference>> stream = Stream.concat(superStream,	outgoingConnectionsStream);
 		
-		Comparator<ProcessorInfo<ElementProcessor>> semanticChildrenComparator = getSemanticChildrenComparator();
+		Comparator<ProcessorInfo<ElementProcessor,Registry>> semanticChildrenComparator = getSemanticChildrenComparator();
 		if (semanticChildrenComparator != null) {
 			stream = stream.sorted((a,b) -> semanticChildrenComparator.compare(a.getKey(), b.getKey()));
 		}
 		
-		Map<ProcessorInfo<ElementProcessor>, EReference> ret = new LinkedHashMap<>();
+		Map<ProcessorInfo<ElementProcessor,Registry>, EReference> ret = new LinkedHashMap<>();
 		stream.forEach(e -> ret.put(e.getKey(), e.getValue()));
 		return ret;
 	}
@@ -69,7 +68,7 @@ public class NodeProcessor extends LayerProcessor {
 		if (connectionsActionContainmentReference != null) {
 			List<Connection> incomingConnections = getElement().getIncomingConnections()
 					.stream()
-					.filter(c -> ((ConnectionProcessor) registry.get(c).getProcessor()).getTargetRole() == null)
+					.filter(c -> ((ConnectionProcessor) registry.infoMap().get(c).getProcessor()).getTargetRole() == null)
 					.collect(Collectors.toList()); 
 			if (!incomingConnections.isEmpty()) {
 				Table table = BootstrapFactory.eINSTANCE.createTable();
@@ -95,7 +94,7 @@ public class NodeProcessor extends LayerProcessor {
 				tooltipHeader.getContent().add(createText("Tooltip"));
 				
 				for (Connection incomingConnection: incomingConnections) { // TODO - sorting
-					ProcessorInfo<ElementProcessor> incomingConnectionInfo = registry.get(incomingConnection);
+					ProcessorInfo<ElementProcessor,Registry> incomingConnectionInfo = registry.infoMap().get(incomingConnection);
 					ModelElementProcessor incomingConnectionProcessor = (ModelElementProcessor) incomingConnectionInfo.getProcessor();
 					
 					TableRow connectionRow = BootstrapFactory.eINSTANCE.createTableRow();
@@ -121,7 +120,7 @@ public class NodeProcessor extends LayerProcessor {
 	
 					Node source = incomingConnection.getSource();
 					if (source != null) {
-						ModelElementProcessor sourceProcessor = (ModelElementProcessor) registry.get(source).getProcessor(); 
+						ModelElementProcessor sourceProcessor = (ModelElementProcessor) registry.infoMap().get(source).getProcessor(); 
 						String sourceLabel =  sourceProcessor.getText();
 						if (Util.isBlank(sourceLabel)) {
 							sourceLabel = "(unlabeled)";
@@ -155,7 +154,7 @@ public class NodeProcessor extends LayerProcessor {
 			
 			List<Connection> outgoingConnections = getElement().getOutgoingConnections()
 					.stream()
-					.filter(c -> ((ConnectionProcessor) registry.get(c).getProcessor()).getTargetRole() == null)
+					.filter(c -> ((ConnectionProcessor) registry.infoMap().get(c).getProcessor()).getTargetRole() == null)
 					.collect(Collectors.toList()); 
 			if (!outgoingConnections.isEmpty()) {
 				Table table = BootstrapFactory.eINSTANCE.createTable();
@@ -181,7 +180,7 @@ public class NodeProcessor extends LayerProcessor {
 				tooltipHeader.getContent().add(createText("Tooltip"));
 				
 				for (Connection outgoingConnection: outgoingConnections) { // TODO - sorting
-					ProcessorInfo<ElementProcessor> outgoingConnectionInfo = registry.get(outgoingConnection);
+					ProcessorInfo<ElementProcessor,Registry> outgoingConnectionInfo = registry.infoMap().get(outgoingConnection);
 					ModelElementProcessor outgoingConnectionProcessor = (ModelElementProcessor) outgoingConnectionInfo.getProcessor();
 					
 					TableRow connectionRow = BootstrapFactory.eINSTANCE.createTableRow();
@@ -207,7 +206,7 @@ public class NodeProcessor extends LayerProcessor {
 	
 					Node target = outgoingConnection.getTarget();
 					if (target != null) {
-						ModelElementProcessor targetProcessor = (ModelElementProcessor) registry.get(target).getProcessor(); 
+						ModelElementProcessor targetProcessor = (ModelElementProcessor) registry.infoMap().get(target).getProcessor(); 
 						String targetLabel =  targetProcessor.getText();
 						if (Util.isBlank(targetLabel)) {
 							targetLabel = "(unlabeled)";
@@ -251,23 +250,23 @@ public class NodeProcessor extends LayerProcessor {
 	}
 	
 	@Override
-	public void setRegistry(Map<Element, ProcessorInfo<ElementProcessor>> registry) {
+	public void setRegistry(Registry registry) {
 		super.setRegistry(registry);
 		
 		String defaultConnectionTargetRoleName = getDefaultTargetConnectionRoleName();
 		if (!Util.isBlank(defaultConnectionTargetRoleName)) {
 			Set<Connection> traversed = new HashSet<>();
 			for (Connection ogc: getElement().getOutgoingConnections()) {
-				((ConnectionProcessor) registry.get(ogc).getProcessor()).setDefaultTargetRole(registry, defaultConnectionTargetRoleName, traversed::add);
+				((ConnectionProcessor) registry.infoMap().get(ogc).getProcessor()).setDefaultTargetRole(registry, defaultConnectionTargetRoleName, traversed::add);
 			}
 		}
 	}
 	
-	public void setDefaultTargetConnectionRole(Map<Element, ProcessorInfo<ElementProcessor>> registry, String roleName, Predicate<Connection> traversed) {
+	public void setDefaultTargetConnectionRole(Registry registry, String roleName, Predicate<Connection> traversed) {
 		String defaultConnectionTargetRoleName = getDefaultTargetConnectionRoleName();
 		if (Util.isBlank(defaultConnectionTargetRoleName)) {
 			for (Connection ogc: getElement().getOutgoingConnections()) {
-				((ConnectionProcessor) registry.get(ogc).getProcessor()).setDefaultTargetRole(registry, roleName, traversed);				
+				((ConnectionProcessor) registry.infoMap().get(ogc).getProcessor()).setDefaultTargetRole(registry, roleName, traversed);				
 			}
 		}
 	}

@@ -1,7 +1,11 @@
 package org.nasdanika.html.model.app.gen.tests;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -15,6 +19,10 @@ import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.NcoreDrawioResourceFactory;
+import org.nasdanika.graph.Element;
+import org.nasdanika.graph.processor.ProcessorInfo;
+import org.nasdanika.graph.processor.RegistryRecord;
+import org.nasdanika.graph.processor.emf.SemanticProcessor;
 import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.NcorePackage;
 import org.nasdanika.ncore.util.NcoreResourceSet;
@@ -58,7 +66,7 @@ public class TestDrawioSemanticMapping extends TestBase {
 		extensionToFactoryMap.put("json", objectLoaderResourceFactory);		
 		resourceSet.getResourceFactoryRegistry().getProtocolToFactoryMap().put("data", objectLoaderResourceFactory);
 
-		NcoreDrawioResourceFactory<ModelElement> ncoreDrawioResourceFactory = new NcoreDrawioResourceFactory<>() {
+		NcoreDrawioResourceFactory<ModelElement, RegistryRecord<SemanticProcessor<ModelElement>>> ncoreDrawioResourceFactory = new NcoreDrawioResourceFactory<>() {
 
 			@Override
 			protected ResourceSet getResourceSet() {
@@ -68,6 +76,26 @@ public class TestDrawioSemanticMapping extends TestBase {
 			@Override
 			protected ProgressMonitor getProgressMonitor(URI uri) {
 				return progressMonitor.split("Loading " + uri, 1);
+			}
+
+			@Override
+			protected ProcessorInfo<SemanticProcessor<ModelElement>, RegistryRecord<SemanticProcessor<ModelElement>>> getProcessorInfo(RegistryRecord<SemanticProcessor<ModelElement>> registry, Element element) {
+				return registry.processorInfoMap().get(element);
+			}
+
+			@Override
+			protected Stream<ModelElement> getRegistrySemanticElements(RegistryRecord<SemanticProcessor<ModelElement>> registry) {				
+				return registryEntries(registry).stream().map(Map.Entry::getValue).map(ProcessorInfo::getProcessor).filter(Objects::nonNull).flatMap(sp -> sp.getSemanticElements().stream());
+			}
+
+			@Override
+			protected RegistryRecord<SemanticProcessor<ModelElement>> createRegistry(Map<Element, ProcessorInfo<SemanticProcessor<ModelElement>, RegistryRecord<SemanticProcessor<ModelElement>>>> registry) {
+				return new RegistryRecord<>(registry);
+			}
+
+			@Override
+			protected Collection<Entry<Element, ProcessorInfo<SemanticProcessor<ModelElement>, RegistryRecord<SemanticProcessor<ModelElement>>>>> registryEntries(RegistryRecord<SemanticProcessor<ModelElement>> registry) {
+				return registry.processorInfoMap().entrySet();
 			}
 			
 		};

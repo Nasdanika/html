@@ -10,7 +10,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.Node;
-import org.nasdanika.graph.Element;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
@@ -26,7 +25,7 @@ public class ConnectionProcessor extends ModelElementProcessor {
 		return (Connection) super.getElement();
 	}
 
-	public ConnectionProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor> config, URI baseURI) {
+	public ConnectionProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor, Registry> config, URI baseURI) {
 		super(resourceFactory, uri, config, baseURI);
 	}
 	
@@ -35,10 +34,10 @@ public class ConnectionProcessor extends ModelElementProcessor {
 		String text = (getElement()).getLabel();
 		if (Util.isBlank(text) && hasDocumentation()) {
 			Node source = getElement().getSource();
-			String sourceText = source == null ? null : ((NodeProcessor) registry.get(source).getProcessor()).getText();
+			String sourceText = source == null ? null : ((NodeProcessor) registry.infoMap().get(source).getProcessor()).getText();
 			
 			Node target = getElement().getTarget();
-			String targetText = target == null ? null : ((NodeProcessor) registry.get(target).getProcessor()).getText();
+			String targetText = target == null ? null : ((NodeProcessor) registry.infoMap().get(target).getProcessor()).getText();
 			
 			if (Util.isBlank(sourceText) && Util.isBlank(targetText)) {
 				return null;
@@ -81,7 +80,7 @@ public class ConnectionProcessor extends ModelElementProcessor {
 					TableCell sourceCell = BootstrapFactory.eINSTANCE.createTableCell();
 					sourceRow.getCells().add(sourceCell);
 	
-					NodeProcessor sourceProcessor = (NodeProcessor) registry.get(source).getProcessor();
+					NodeProcessor sourceProcessor = (NodeProcessor) registry.infoMap().get(source).getProcessor();
 					String sourceLabel = sourceProcessor.getText();
 					if (Util.isBlank(sourceLabel)) {
 						sourceLabel = "(unlabeled)";
@@ -106,7 +105,7 @@ public class ConnectionProcessor extends ModelElementProcessor {
 					TableCell targetCell = BootstrapFactory.eINSTANCE.createTableCell();
 					targetRow.getCells().add(targetCell);
 					
-					NodeProcessor targetProcessor = (NodeProcessor) registry.get(target).getProcessor();
+					NodeProcessor targetProcessor = (NodeProcessor) registry.infoMap().get(target).getProcessor();
 					String targetLabel = targetProcessor.getText();
 					if (Util.isBlank(targetLabel)) {
 						targetLabel = "(unlabeled)";
@@ -127,12 +126,12 @@ public class ConnectionProcessor extends ModelElementProcessor {
 	
 	private String defaultConnectionTargetRoleName;
 
-	public void setDefaultTargetRole(Map<Element, ProcessorInfo<ElementProcessor>> registry, String defaultConnectionTargetRoleName, Predicate<Connection> traversed) {
+	public void setDefaultTargetRole(Registry registry, String defaultConnectionTargetRoleName, Predicate<Connection> traversed) {
 		if (traversed.test(getElement())) {
 			this.defaultConnectionTargetRoleName = defaultConnectionTargetRoleName;
 			Node target = getElement().getTarget();
 			if (target != null) {
-				NodeProcessor targetProcessor = (NodeProcessor) registry.get(target).getProcessor();
+				NodeProcessor targetProcessor = (NodeProcessor) registry.infoMap().get(target).getProcessor();
 				targetProcessor.setDefaultTargetConnectionRole(registry, defaultConnectionTargetRoleName, traversed);
 			}
 		}
@@ -150,7 +149,7 @@ public class ConnectionProcessor extends ModelElementProcessor {
 	}
 	
 	@Override
-	public Map<ProcessorInfo<ElementProcessor>, EReference> setSemanticParentInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
+	public Map<ProcessorInfo<ElementProcessor,Registry>, EReference> setSemanticParentInfo(ProcessorInfo<ElementProcessor,Registry> semanticParentInfo) {
 		Node target = getElement().getTarget();
 		if (target == null) {
 			return super.setSemanticParentInfo(semanticParentInfo);			
@@ -159,8 +158,8 @@ public class ConnectionProcessor extends ModelElementProcessor {
 		if (targetRole == null) {
 			return super.setSemanticParentInfo(semanticParentInfo);
 		}
-		Map<ProcessorInfo<ElementProcessor>, EReference> ret = new LinkedHashMap<>();
-		((ModelElementProcessor) registry.get(target).getProcessor()).setSemanticParentInfo(semanticParentInfo).entrySet().forEach(e -> ret.put(e.getKey(), targetRole));
+		Map<ProcessorInfo<ElementProcessor,Registry>, EReference> ret = new LinkedHashMap<>();
+		((ModelElementProcessor) registry.infoMap().get(target).getProcessor()).setSemanticParentInfo(semanticParentInfo).entrySet().forEach(e -> ret.put(e.getKey(), targetRole));
 		return ret;
 	}
 
