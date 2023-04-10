@@ -1,0 +1,51 @@
+[
+    {
+        "identifiers": [
+            "nasdanika:test/action/s1/s2",
+            "uuid:a8ceddef-a4ec-4f0a-b51b-7652ec28a93a"
+        ],
+        "name": "Nasdanika",
+        "icon": "https://docs.nasdanika.org/images/nasdanika-logo.png",
+        "description": "Root action",
+        "location": "../index.html",
+        "type": {
+            "name": "Action",
+            "ns-uri": "ecore://nasdanika.org/html/app"
+        }
+    },
+    {
+        "container": {
+            "reference": "children",
+            "identifiers": [
+                "nasdanika:test/action/s1/s2",
+                "uuid:a8ceddef-a4ec-4f0a-b51b-7652ec28a93a"
+            ]
+        },
+        "identifiers": ["uuid:5e7cf466-da8f-4b30-b73e-3b70fc70b55a"],
+        "name": "Documentation",
+        "icon": "fa fa-book",
+        "description": "Documentation",
+        "location": "index.html",
+        "type": {
+            "name": "Action",
+            "ns-uri": "ecore://nasdanika.org/html/app"
+        }
+    },
+    {
+        "container": {
+            "reference": "children",
+            "identifiers": [
+                "nasdanika:test/action/s1/s2",
+                "uuid:a8ceddef-a4ec-4f0a-b51b-7652ec28a93a"
+            ]
+        },
+        "identifiers": ["uuid:6fc5bc59-499a-46fd-b009-eb40aca2f04b"],
+        "name": "Search",
+        "icon": "fas fa-search",
+        "location": "search.html",
+        "type": {
+            "name": "Action",
+            "ns-uri": "ecore://nasdanika.org/html/app"
+        }
+    }
+]

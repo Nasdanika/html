@@ -1,0 +1,16 @@
+package org.nasdanika.html.model.app.graph;
+
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.graph.processor.ConnectionProcessorConfig;
+
+public interface ConnectionProcessor<I> extends Processor {
+	
+	interface Factory<I> {
+		
+		ConnectionProcessor<I> create(ConnectionProcessorConfig<Processor, LabelInfo, LabelInfo, Registry<I>> config, Context context, ProgressMonitor progressMonitor);
+		
+	}
+	
+}
+	

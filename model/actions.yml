@@ -9,6 +9,7 @@ app-label:
            - "../../nasdanika.github.io/target/model-doc/actions/org.nasdanika.html.model.app.app.genmodel.xml#/"
            - app.drawio/actions.yml
            - app.gen/actions.yml
+           - app.graph/actions.yml
            - app.gen.maven/actions.yml
            - app.gen.maven.archetype/actions.yml
      - app-label:

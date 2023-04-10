@@ -162,6 +162,7 @@
 		<module>model/bootstrap.gen</module>
 		<module>model/app</module>
 		<module>model/app.gen</module>
+		<module>model/app.graph</module>
 		<module>model/app.drawio</module>
 		<module>model/app.gen.maven</module>
 		<module>model/app.gen.maven.archetype</module>
