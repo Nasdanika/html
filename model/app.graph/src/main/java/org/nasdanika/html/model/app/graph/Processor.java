@@ -1,6 +1,7 @@
 package org.nasdanika.html.model.app.graph;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 
 import org.eclipse.emf.common.util.URI;
 import org.nasdanika.common.Supplier;
@@ -19,6 +20,6 @@ public interface Processor extends Supplier<Collection<Label>> {
 	 * Call for the root action, implementations shall propagate down the hierarchy and through action references.
 	 * @param base
 	 */
-	void resolveURI(URI base);
+	void resolveURI(URI base, Consumer<Throwable> failureConsumer);
 
 }

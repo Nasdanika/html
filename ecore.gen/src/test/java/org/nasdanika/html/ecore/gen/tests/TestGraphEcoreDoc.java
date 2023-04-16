@@ -9,10 +9,15 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.junit.jupiter.api.Test;
 import org.nasdanika.common.Diagnostic;
+import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.NullProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.exec.ExecPackage;
@@ -21,6 +26,7 @@ import org.nasdanika.graph.Node;
 import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.emf.Util;
 import org.nasdanika.graph.processor.ProcessorInfo;
+import org.nasdanika.html.ecore.gen.processors.EClassNodeProcessor;
 import org.nasdanika.html.ecore.gen.processors.EPackageNodeProcessor;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
@@ -38,6 +44,19 @@ import org.nasdanika.html.model.html.HtmlPackage;
  */
 public class TestGraphEcoreDoc {
 	
+	protected Object eKeyToPathSegment(EAttribute keyAttribute, Object keyValue) {
+		return keyValue;
+	}	
+	
+	protected String path(EObjectNode source, EObjectNode target, EReference reference, int index) {
+		if (reference.getEKeys().isEmpty() && target.getTarget() instanceof ENamedElement && reference.isUnique()) {
+			// TODO - eOperation - hash of signature, copy from the old code.
+			
+			return ((ENamedElement) target.getTarget()).getName();
+		}
+		return Util.path(source, target, reference, index, this::eKeyToPathSegment);
+	}
+	
 	@Test
 	public void testGraphEcoreDoc() {
 		List<EPackage> ePackages = Arrays.asList(
@@ -50,7 +69,7 @@ public class TestGraphEcoreDoc {
 				AppPackage.eINSTANCE);
 				
 		List<EPackage> topLevelPackages = ePackages.stream().filter(ep -> ep.getESuperPackage() == null).collect(Collectors.toList());
-		List<EObjectNode> nodes = Util.load(topLevelPackages);
+		List<EObjectNode> nodes = Util.load(topLevelPackages, this::path);
 		
 		EObjectProcessorFactory processorFactory = new EObjectProcessorFactory() {
 			
@@ -64,8 +83,12 @@ public class TestGraphEcoreDoc {
 					EObjectNode eObjectNode = (EObjectNode) node;
 					EObject target = eObjectNode.getTarget();
 					if (target instanceof EPackage) {
-						return new EPackageNodeProcessor(config, getContext(), progressMonitor);
+						return new EPackageNodeProcessor(config, getContext());
 					}
+					if (target instanceof EClass) {
+						return new EClassNodeProcessor(config, getContext());
+					}
+					
 				}								
 				
 				return super.createNodeProcessor(config, progressMonitor);
@@ -75,7 +98,23 @@ public class TestGraphEcoreDoc {
 		ProgressMonitor progressMonitor = new NullProgressMonitor(); // new PrintStreamProgressMonitor();
 		org.nasdanika.html.model.app.graph.Registry<URI> registry = processorFactory.createProcessors(nodes, progressMonitor);
 		
+		List<Throwable> failures = registry
+				.getProcessorInfoMap()
+				.values()
+				.stream()
+				.flatMap(pi -> pi.getFailures().stream())
+				.collect(Collectors.toList());
+		
+		if (!failures.isEmpty()) {
+			NasdanikaException ne = new NasdanikaException("Theres's been " + failures.size() +  " failures during processor creation: " + failures);
+			for (Throwable failure: failures) {
+				ne.addSuppressed(failure);
+			}
+			throw ne;
+		}						
+		
 		List<URINodeProcessor> topLevelProcessors = new ArrayList<>();
+		Collection<Throwable> resolveFailures = new ArrayList<>();
 		
 		for (EPackage topLevelPackage: topLevelPackages) {
 			for (Entry<Element, ProcessorInfo<Processor, Registry<URI>>> re: registry.getProcessorInfoMap().entrySet()) {
@@ -88,13 +127,22 @@ public class TestGraphEcoreDoc {
 						Processor processor = info.getProcessor();
 						if (processor instanceof URINodeProcessor) {
 							URINodeProcessor uriNodeProcessor = (URINodeProcessor) processor;
-							uriNodeProcessor.resolveURI(URI.createURI("https://docs.nasdanika.org/" + topLevelPackage.getName() + "/"));
+							uriNodeProcessor.resolveURI(URI.createURI("https://docs.nasdanika.org/" + topLevelPackage.getName() + "/"), resolveFailures::add);
 							topLevelProcessors.add(uriNodeProcessor);
 						}
 					}
 				}
 			}			
 		}
+		
+		if (!resolveFailures.isEmpty()) {
+			NasdanikaException ne = new NasdanikaException("Theres's been " + resolveFailures.size() +  " failures during URI resolution: " + resolveFailures);
+			for (Throwable failure: resolveFailures) {
+				ne.addSuppressed(failure);
+			}
+			throw ne;
+		}								
+		
 		Consumer<Diagnostic> diagnosticConsumer = d -> d.dump(System.out, 0);
 		for (URINodeProcessor processor: topLevelProcessors) {
 			Collection<Label> labels = processor.call(progressMonitor, diagnosticConsumer);

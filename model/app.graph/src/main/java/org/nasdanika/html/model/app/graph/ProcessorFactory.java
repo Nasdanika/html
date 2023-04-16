@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
+import org.nasdanika.graph.Connection;
 import org.nasdanika.graph.Element;
 import org.nasdanika.graph.processor.ConnectionProcessorConfig;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
@@ -22,6 +23,11 @@ import org.nasdanika.html.model.app.Label;
  * @param <I>
  */
 public abstract class ProcessorFactory<I> implements NopEndpointProcessorFactory<Processor, LabelFactory, Registry<I>> {
+	
+	@Override
+	public boolean isPassThrough(Connection connection) {
+		return false;
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override

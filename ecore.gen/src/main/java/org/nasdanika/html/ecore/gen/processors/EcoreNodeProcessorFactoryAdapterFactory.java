@@ -36,12 +36,12 @@ public class EcoreNodeProcessorFactoryAdapterFactory extends ComposedAdapterFact
 			java.util.function.Function<String, String> javadocResolver) {
 		
 //		// Registering adapter factories.
-		registerAdapterFactory(
-			new FunctionAdapterFactory<URINodeProcessor.Factory, EPackage>(
-				EcorePackage.Literals.EPACKAGE, 
-				URINodeProcessor.Factory.class, 
-				this.getClass().getClassLoader(), 
-				e -> EPackageNodeProcessor.createFactory(e, this)));
+//		registerAdapterFactory(
+//			new FunctionAdapterFactory<URINodeProcessor.Factory, EPackage>(
+//				EcorePackage.Literals.EPACKAGE, 
+//				URINodeProcessor.Factory.class, 
+//				this.getClass().getClassLoader(), 
+//				e -> EPackageNodeProcessor.createFactory(e, this)));
 //						e, 
 //						context, 
 //						ePackagePathComputer, 

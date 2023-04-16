@@ -46,7 +46,7 @@ public class EObjectProcessorFactory extends ProcessorFactory<URI> {
 		
 		Connection connection = config.getElement();
 		if (connection instanceof EReferenceConnection) {
-			return new EReferenceConnectionProcessor(null, progressMonitor);
+			return new EReferenceConnectionProcessor(config);
 		}
 
 		return null;
