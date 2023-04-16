@@ -1,4 +1,4 @@
-package org.nasdanika.html.model.app.graph;
+package org.nasdanika.html.model.app.graph.emf;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -7,25 +7,28 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.graph.Connection;
 import org.nasdanika.graph.Element;
 import org.nasdanika.graph.Node;
 import org.nasdanika.graph.emf.EObjectNode;
+import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.ConnectionProcessorConfig;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
+import org.nasdanika.html.model.app.graph.ConnectionProcessor;
+import org.nasdanika.html.model.app.graph.LabelFactory;
+import org.nasdanika.html.model.app.graph.NodeProcessor;
+import org.nasdanika.html.model.app.graph.Processor;
+import org.nasdanika.html.model.app.graph.ProcessorFactory;
+import org.nasdanika.html.model.app.graph.Registry;
+import org.nasdanika.html.model.app.graph.URINodeProcessor;
 import org.nasdanika.ncore.util.NcoreUtil;
 
 /**
- * Processor factory which uses EObjet URI's as identifiers
+ * Processor factory which uses EObjet URI's as identifiers and adapters to create node processors.
  * @author Pavel
  *
  */
 public class EObjectProcessorFactory extends ProcessorFactory<URI> {
-
-	@Override
-	protected LabelInfo resolve(Processor p, Processor base) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	protected Collection<URI> getIdentifiers(Element element) {
@@ -38,24 +41,27 @@ public class EObjectProcessorFactory extends ProcessorFactory<URI> {
 
 	@Override
 	protected ConnectionProcessor<URI> createConnectionProcessor(
-			ConnectionProcessorConfig<Processor, LabelInfo, LabelInfo, Registry<URI>> config,
+			ConnectionProcessorConfig<Processor, LabelFactory, LabelFactory, Registry<URI>> config,
 			ProgressMonitor progressMonitor) {
 		
-		// TODO Auto-generated method stub
+		Connection connection = config.getElement();
+		if (connection instanceof EReferenceConnection) {
+			return new EReferenceConnectionProcessor(null, progressMonitor);
+		}
+
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected NodeProcessor<URI> createNodeProcessor(
-			NodeProcessorConfig<Processor, LabelInfo, LabelInfo, Registry<URI>> config,
+	protected URINodeProcessor createNodeProcessor(
+			NodeProcessorConfig<Processor, LabelFactory, LabelFactory, Registry<URI>> config,
 			ProgressMonitor progressMonitor) {
 		
 		Node node = config.getElement();
 		if (node instanceof EObjectNode) {
 			Object adapter = EcoreUtil.getRegisteredAdapter(((EObjectNode) node).getTarget(), NodeProcessor.Factory.class);
 			if (adapter instanceof NodeProcessor.Factory) {
-				return ((NodeProcessor.Factory<URI>) adapter).create(config, getContext(), progressMonitor);
+				return ((URINodeProcessor.Factory) adapter).create(config, getContext(), progressMonitor);
 			}
 		}
 		return null;
@@ -64,5 +70,11 @@ public class EObjectProcessorFactory extends ProcessorFactory<URI> {
 	protected Context getContext() {
 		return Context.EMPTY_CONTEXT;
 	}
-
+	
+	@Override
+	protected LabelFactory resolve(NodeProcessor<URI> p, NodeProcessor<URI> base) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

@@ -8,7 +8,7 @@ public interface NodeProcessor<I> extends Processor {
 	
 	interface Factory<I> {
 		
-		NodeProcessor<I> create(NodeProcessorConfig<Processor, LabelInfo, LabelInfo, Registry<I>> config, Context context, ProgressMonitor progressMonitor);
+		NodeProcessor<I> create(NodeProcessorConfig<Processor, LabelFactory, LabelFactory, Registry<I>> config, Context context, ProgressMonitor progressMonitor);
 		
 	}
 

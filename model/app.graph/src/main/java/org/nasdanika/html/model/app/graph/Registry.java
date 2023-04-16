@@ -18,17 +18,17 @@ public interface Registry<I> {
 	Map<Element, ProcessorInfo<Processor,Registry<I>>> getProcessorInfoMap();
 	
 	/**
-	 * Finds labels by predicate
+	 * Finds {@link LabelFactory}ies by predicate
 	 * @param predicate
 	 * @return 
 	 */
-	Collection<LabelInfo> select(Predicate<Element> predicate, Processor base);
+	Collection<LabelFactory> select(Predicate<Element> predicate, NodeProcessor<I> base);
 	
 	/**
-	 * Finds a label by identifier
+	 * Finds a {@link LabelFactory} by identifier
 	 * @param identifier
 	 * @return label record or null
 	 */
-	LabelInfo find(I identifier, Processor base);
+	LabelFactory find(I identifier, NodeProcessor<I> base);
 	
 }

@@ -8,7 +8,7 @@ public interface ConnectionProcessor<I> extends Processor {
 	
 	interface Factory<I> {
 		
-		ConnectionProcessor<I> create(ConnectionProcessorConfig<Processor, LabelInfo, LabelInfo, Registry<I>> config, Context context, ProgressMonitor progressMonitor);
+		ConnectionProcessor<I> create(ConnectionProcessorConfig<Processor, LabelFactory, LabelFactory, Registry<I>> config, Context context, ProgressMonitor progressMonitor);
 		
 	}
 	

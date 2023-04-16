@@ -1,4 +1,4 @@
-package org.nasdanika.html.ecore.tests;
+package org.nasdanika.html.ecore.gen.tests;
 
 import java.io.File;
 import java.util.Collection;

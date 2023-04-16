@@ -43,6 +43,11 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.nasdanika.html</groupId>
+			<artifactId>app-model-graph</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.nasdanika.core</groupId>
 			<artifactId>emf</artifactId>
 			<version>${core.version}</version>
