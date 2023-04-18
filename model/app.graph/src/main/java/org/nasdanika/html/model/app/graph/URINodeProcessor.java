@@ -15,7 +15,7 @@ public interface URINodeProcessor extends NodeProcessor<URI> {
 	interface Factory extends NodeProcessor.Factory<URI> {
 	
 		@Override
-		URINodeProcessor create(NodeProcessorConfig<Processor, LabelFactory, LabelFactory, Registry<URI>> config, Context context, ProgressMonitor progressMonitor);
+		URINodeProcessor create(NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, Context context, ProgressMonitor progressMonitor);
 		
 	}	
 

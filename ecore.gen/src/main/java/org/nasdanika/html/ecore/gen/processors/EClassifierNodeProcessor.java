@@ -1,19 +1,12 @@
 package org.nasdanika.html.ecore.gen.processors;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.nasdanika.common.Context;
-import org.nasdanika.graph.processor.NodeProcessorConfig;
-import org.nasdanika.html.model.app.graph.LabelFactory;
-import org.nasdanika.html.model.app.graph.Processor;
-import org.nasdanika.html.model.app.graph.Registry;
 
 public class EClassifierNodeProcessor<T extends EClassifier> extends ENamedElementNodeProcessor<T> {
 
-	public EClassifierNodeProcessor(
-			NodeProcessorConfig<Processor, LabelFactory, LabelFactory, Registry<URI>> config,
-			Context context) {
-		super(config, context);
+	public EClassifierNodeProcessor(Context context) {
+		super(context);
 	}	
 
 }

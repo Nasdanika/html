@@ -14,10 +14,8 @@ import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.ConnectionProcessorConfig;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
-import org.nasdanika.html.model.app.graph.ConnectionProcessor;
 import org.nasdanika.html.model.app.graph.LabelFactory;
 import org.nasdanika.html.model.app.graph.NodeProcessor;
-import org.nasdanika.html.model.app.graph.Processor;
 import org.nasdanika.html.model.app.graph.ProcessorFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.URINodeProcessor;
@@ -40,8 +38,8 @@ public class EObjectProcessorFactory extends ProcessorFactory<URI> {
 	}
 
 	@Override
-	protected ConnectionProcessor<URI> createConnectionProcessor(
-			ConnectionProcessorConfig<Processor, LabelFactory, LabelFactory, Registry<URI>> config,
+	protected EReferenceConnectionProcessor createConnectionProcessor(
+			ConnectionProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config,
 			ProgressMonitor progressMonitor) {
 		
 		Connection connection = config.getElement();
@@ -54,7 +52,7 @@ public class EObjectProcessorFactory extends ProcessorFactory<URI> {
 
 	@Override
 	protected URINodeProcessor createNodeProcessor(
-			NodeProcessorConfig<Processor, LabelFactory, LabelFactory, Registry<URI>> config,
+			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config,
 			ProgressMonitor progressMonitor) {
 		
 		Node node = config.getElement();

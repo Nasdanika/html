@@ -15,7 +15,7 @@ import org.nasdanika.graph.processor.ProcessorInfo;
  */
 public interface Registry<I> {
 	
-	Map<Element, ProcessorInfo<Processor,Registry<I>>> getProcessorInfoMap();
+	Map<Element, ProcessorInfo<Object,Registry<I>>> getProcessorInfoMap();
 	
 	/**
 	 * Finds {@link LabelFactory}ies by predicate

@@ -4,12 +4,12 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 
-public interface NodeProcessor<I> extends Processor {
+public interface NodeProcessor<I> extends LabelFactory {
 	
 	interface Factory<I> {
 		
-		NodeProcessor<I> create(NodeProcessorConfig<Processor, LabelFactory, LabelFactory, Registry<I>> config, Context context, ProgressMonitor progressMonitor);
+		NodeProcessor<I> create(NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<I>> config, Context context, ProgressMonitor progressMonitor);
 		
-	}
+	}	
 
 }

@@ -8,9 +8,7 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.html.model.app.graph.LabelFactory;
 import org.nasdanika.html.model.app.graph.NodeProcessor;
-import org.nasdanika.html.model.app.graph.Processor;
 import org.nasdanika.html.model.app.graph.Registry;
-import org.nasdanika.html.model.app.graph.NodeProcessor.Factory;
 
 /**
  * Base class for {@link NodeProcessor}.Factory adapters
@@ -33,7 +31,7 @@ public class NodeProcessorFactoryAdapter<T extends Notifier> extends AdapterImpl
 	}
 
 	@Override
-	public NodeProcessor<URI> create(NodeProcessorConfig<Processor, LabelFactory, LabelFactory, Registry<URI>> config,
+	public NodeProcessor<URI> create(NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config,
 			Context context, ProgressMonitor progressMonitor) {
 		// TODO Auto-generated method stub
 		return null;
