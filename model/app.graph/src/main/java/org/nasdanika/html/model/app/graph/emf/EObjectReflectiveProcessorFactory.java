@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import org.eclipse.emf.common.util.URI;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.graph.Connection;
 import org.nasdanika.graph.Element;
 import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.processor.ConnectionProcessorConfig;
@@ -25,12 +26,12 @@ public class EObjectReflectiveProcessorFactory extends ReflectiveProcessorFactor
 	
 	@Override
 	public ProcessorInfo<Object, Registry<URI>> createProcessor(ProcessorConfig<Object, Registry<URI>> config, ProgressMonitor progressMonitor) {
-		ProcessorInfo<Object, Registry<URI>> processor = super.createProcessor(config, progressMonitor);
-		if (processor == null && config instanceof ConnectionProcessorConfig) {
+		ProcessorInfo<Object, Registry<URI>> processorInfo = super.createProcessor(config, progressMonitor);
+		if (processorInfo.getProcessor() == null && config instanceof ConnectionProcessorConfig) {
 			return ProcessorInfo.of(config, new EReferenceConnectionProcessor((ConnectionProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>>) config), null);
 		}
 			
-		return processor;
+		return processorInfo;
 	}
 
 	@Override
@@ -46,6 +47,10 @@ public class EObjectReflectiveProcessorFactory extends ReflectiveProcessorFactor
 		}
 		
 		return Collections.emptyList();
+	}
+	
+	public boolean isPassThrough(Connection connection) {
+		return false;
 	}
 
 }

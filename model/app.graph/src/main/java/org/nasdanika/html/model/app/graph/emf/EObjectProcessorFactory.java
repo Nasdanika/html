@@ -27,6 +27,11 @@ import org.nasdanika.ncore.util.NcoreUtil;
  *
  */
 public class EObjectProcessorFactory extends ProcessorFactory<URI> {
+	
+	@Override
+	public boolean isPassThrough(Connection connection) {
+		return false;
+	}
 
 	@Override
 	protected Collection<URI> getIdentifiers(Element element) {

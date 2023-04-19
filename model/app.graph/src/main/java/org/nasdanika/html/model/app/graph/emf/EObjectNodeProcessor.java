@@ -2,23 +2,23 @@ package org.nasdanika.html.model.app.graph.emf;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.ENamedElement;
-import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
-import org.nasdanika.graph.Connection;
-import org.nasdanika.graph.Element;
 import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.emf.EReferenceConnection;
+import org.nasdanika.graph.processor.ChildProcessors;
+import org.nasdanika.graph.processor.IncomingEndpoint;
+import org.nasdanika.graph.processor.IncomingHandler;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
+import org.nasdanika.graph.processor.OutgoingEndpoint;
+import org.nasdanika.graph.processor.OutgoingHandler;
+import org.nasdanika.graph.processor.ParentProcessor;
+import org.nasdanika.graph.processor.ProcessorElement;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
@@ -26,7 +26,6 @@ import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.LabelFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.URINodeProcessor;
-import org.nasdanika.ncore.NamedElement;
 
 /**
  * Base class for node processors
@@ -35,15 +34,113 @@ import org.nasdanika.ncore.NamedElement;
  */
 public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	
-//	protected NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config;
+	public EObjectNodeProcessor(NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, Context context) {
+		this.config = config;
+		this.context = context;
+		System.out.println(this + " " + config.getElement());
+	}
+	
+	protected Map<EObjectNode, ProcessorInfo<Object, Registry<URI>>> childProcessors;
+	
+	@ChildProcessors
+	public void setChildProcessors(Map<EObjectNode, ProcessorInfo<Object, Registry<URI>>> childProcessors) {
+		this.childProcessors = childProcessors;
+	}
+	
+	protected EReferenceConnectionProcessor parentProcessor;
+	
+	@ParentProcessor
+	public void setParentProcessor(EReferenceConnectionProcessor parentProcessor) {
+		this.parentProcessor = parentProcessor;
+	}
+
+	protected EObjectNode node;
+	
+	@ProcessorElement
+	public void setNode(EObjectNode node) {
+		this.node = node;
+	}
+	
+	protected Map<EReferenceConnection, LabelFactory> incomingEndpoints = new LinkedHashMap<>();
+	protected Map<EReferenceConnection, LabelFactory> outgoingEndpoints = new LinkedHashMap<>();
+	
+	@IncomingEndpoint
+	public void setIncomingEndpoint(EReferenceConnection connection, LabelFactory endpoint) {
+		System.out.println("Incoming endpoint: " + connection);
+		incomingEndpoints.put(connection, endpoint);
+	}
+		
+	@OutgoingEndpoint
+	public void setOutgoingEndpoint(EReferenceConnection connection, LabelFactory endpoint) {
+		System.out.println("Outgoing endpoint: " + connection);
+		outgoingEndpoints.put(connection, endpoint);
+	}
+	
+	@IncomingHandler
+	public LabelFactory getIncomingHandler(EReferenceConnection connection) {
+		return new LabelFactory() {
+			
+			@Override
+			public void resolve(URI base) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public Label createLink(String path) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public Supplier<Collection<Label>> createLabelsSupplier() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public Label createLabel() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+	}
+		
+	@OutgoingHandler
+	public LabelFactory getOutgoingHandler(EReferenceConnection connection) {
+		return new LabelFactory() {
+			
+			@Override
+			public void resolve(URI base) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public Label createLink(String path) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public Supplier<Collection<Label>> createLabelsSupplier() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public Label createLabel() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+	}
+	
+	protected NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config;
 	protected Context context;
 //	protected T target;
 //	protected URI uri;
 //	protected Map<EReference, List<Entry<Element, ProcessorInfo<Object, Registry<URI>>>>> groupedChildren;	
-	
-	public EObjectNodeProcessor(Context context) {
-		this.context = context;
-	}
 
 //	@SuppressWarnings("unchecked")
 //	public EObjectNodeProcessor(
