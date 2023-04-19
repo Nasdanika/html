@@ -37,7 +37,6 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	public EObjectNodeProcessor(NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, Context context) {
 		this.config = config;
 		this.context = context;
-		System.out.println(this + " " + config.getElement());
 	}
 	
 	protected Map<EObjectNode, ProcessorInfo<Object, Registry<URI>>> childProcessors;
@@ -66,74 +65,22 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	
 	@IncomingEndpoint
 	public void setIncomingEndpoint(EReferenceConnection connection, LabelFactory endpoint) {
-		System.out.println("Incoming endpoint: " + connection);
 		incomingEndpoints.put(connection, endpoint);
 	}
 		
 	@OutgoingEndpoint
 	public void setOutgoingEndpoint(EReferenceConnection connection, LabelFactory endpoint) {
-		System.out.println("Outgoing endpoint: " + connection);
 		outgoingEndpoints.put(connection, endpoint);
 	}
 	
 	@IncomingHandler
 	public LabelFactory getIncomingHandler(EReferenceConnection connection) {
-		return new LabelFactory() {
-			
-			@Override
-			public void resolve(URI base) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public Label createLink(String path) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public Supplier<Collection<Label>> createLabelsSupplier() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public Label createLabel() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		};
+		return this;
 	}
 		
 	@OutgoingHandler
 	public LabelFactory getOutgoingHandler(EReferenceConnection connection) {
-		return new LabelFactory() {
-			
-			@Override
-			public void resolve(URI base) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public Label createLink(String path) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public Supplier<Collection<Label>> createLabelsSupplier() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public Label createLabel() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		};
+		return this;
 	}
 	
 	protected NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config;
