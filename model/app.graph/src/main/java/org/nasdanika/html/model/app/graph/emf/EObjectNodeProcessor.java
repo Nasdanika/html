@@ -1,11 +1,18 @@
 package org.nasdanika.html.model.app.graph.emf;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EReference;
+import org.nasdanika.common.CollectionCompoundConsumer;
+import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
@@ -28,7 +35,8 @@ import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.URINodeProcessor;
 
 /**
- * Base class for node processors
+ * Base class for node processors.
+ * Groups connections by reference, creates a consumer per reference (builder), chains the labels supplier with the consumers.
  * @author Pavel
  *
  */
@@ -175,8 +183,11 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 		return null;
 	}
 
-	@Override
-	public Supplier<Collection<Label>> createLabelsSupplier() {
+	/**
+	 * @return Supplier of labels with object's own information, without references.
+	 * Reference-related information is added by reference consumers/builders.  
+	 */
+	protected Supplier<Collection<Label>> doCreateLabelsSupplier() {
 		return new Supplier<Collection<Label>>() {
 
 			@Override
@@ -194,7 +205,80 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 				return createLabels(progressMonitor);
 			}
 			
-		};
+		};		
+	}	
+	
+//	/**
+//	 * Override to filter out references which should not contribute to label building.
+//	 * @param eReference
+//	 * @return
+//	 */
+//	protected boolean isBuilderReference(EReference eReference) {
+//		return true; // TODO - from configuration and possibly annotations
+//	}
+	
+	/**
+	 * Comparator for reference sorting
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	protected int compareIncomingReferences(EReference a, EReference b) {
+		return a.getName().compareTo(b.getName());
+	}
+	
+	/**
+	 * Comparator for reference sorting
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	protected int compareOutgoingReferences(EReference a, EReference b) {
+		return a.getName().compareTo(b.getName());
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	protected Consumer<Collection<Label>> createIncomingReferenceLabelConsumer(EReference eReference, List<Entry<EReferenceConnection, LabelFactory>> referenceIncomingEndpoints) {
+		return null;
+	}
+	
+	protected List<Consumer<Collection<Label>>> getReferenceLabelBuilders() {		
+		List<Consumer<Collection<Label>>> ret = new ArrayList<>();
+		
+		Map<EReference, List<Entry<EReferenceConnection, LabelFactory>>> groupedOutgoingEndpoints = org.nasdanika.common.Util.groupBy(outgoingEndpoints.entrySet(), e -> e.getKey().getReference());
+		groupedOutgoingEndpoints
+			.entrySet()
+			.stream()
+			.sorted((a, b) -> compareOutgoingReferences(a.getKey(), b.getKey()))
+			.map(e -> createIncomingReferenceLabelConsumer(e.getKey(), e.getValue()))
+			.filter(Objects::nonNull)
+			.forEach(ret::add);
+		
+		Map<EReference, List<Entry<EReferenceConnection, LabelFactory>>> groupedIncomingEndpoints = org.nasdanika.common.Util.groupBy(incomingEndpoints.entrySet(), e -> e.getKey().getReference());
+		groupedIncomingEndpoints
+			.entrySet()
+			.stream()
+			.sorted((a, b) -> compareIncomingReferences(a.getKey(), b.getKey()))
+			.map(e -> createIncomingReferenceLabelConsumer(e.getKey(), e.getValue()))
+			.filter(Objects::nonNull)
+			.forEach(ret::add);
+		
+		return ret;
+	}
+	
+	@Override
+	public Supplier<Collection<Label>> createLabelsSupplier() {
+		List<Consumer<Collection<Label>>> referenceLabelBuilders = getReferenceLabelBuilders();
+		if (referenceLabelBuilders == null || referenceLabelBuilders.isEmpty()) {
+			return doCreateLabelsSupplier();
+		}
+		@SuppressWarnings("resource")
+		CollectionCompoundConsumer<Collection<Label>> collectionCompoundConsumer = new CollectionCompoundConsumer<Collection<Label>>("Reference Label Builder");
+		referenceLabelBuilders.forEach(collectionCompoundConsumer::add);
+		return doCreateLabelsSupplier().then(collectionCompoundConsumer.asFunction());
 	}
 	
 //	protected String supplierName() {
@@ -206,5 +290,8 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 //		}
 //		return "Node processor of " + target;
 //	}
+	
+	
+	
 
 }
