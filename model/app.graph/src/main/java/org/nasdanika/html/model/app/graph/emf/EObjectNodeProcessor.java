@@ -8,14 +8,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 
+import org.apache.commons.text.StringEscapeUtils;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.CollectionCompoundConsumer;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.Function;
+import org.nasdanika.common.MapCompoundSupplier;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
+import org.nasdanika.common.Supplier.FunctionResult;
+import org.nasdanika.common.Util;
 import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.ChildProcessors;
@@ -30,9 +39,11 @@ import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.graph.LabelFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.URINodeProcessor;
+import org.nasdanika.ncore.NamedElement;
 
 /**
  * Base class for node processors.
@@ -45,6 +56,7 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	public EObjectNodeProcessor(NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, Context context) {
 		this.config = config;
 		this.context = context;
+		this.uri = URI.createURI("index.html");
 	}
 	
 	protected Map<EObjectNode, ProcessorInfo<Object, Registry<URI>>> childProcessors;
@@ -94,7 +106,7 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	protected NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config;
 	protected Context context;
 //	protected T target;
-//	protected URI uri;
+	protected URI uri;
 //	protected Map<EReference, List<Entry<Element, ProcessorInfo<Object, Registry<URI>>>>> groupedChildren;	
 
 //	@SuppressWarnings("unchecked")
@@ -105,82 +117,42 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 //		this.config = config;
 //		this.context = context;
 //		this.target = (T) ((EObjectNode) config.getElement()).getTarget();
-//		this.uri = URI.createURI("index.html");
 //		groupedChildren = org.nasdanika.common.Util.groupBy(config.getChildProcessorsInfo().entrySet(), infoEntry -> ((EReferenceConnection) infoEntry.getKey()).getReference());
 //		groupedChildren.values().forEach(l -> l.sort((a,b) -> ((EReferenceConnection) a.getKey()).getIndex() - ((EReferenceConnection) b.getKey()).getIndex()));		
 //	}
 	
 	@Override
-	public void resolve(URI base) {
-//		uri = uri.resolve(base);
-//		
-//		Function<Throwable, Void> failureHandler  = failure -> {
-//			if (failure != null) {
-//				failureConsumer.accept(failure);
-//			}
-//			return null;
-//		};
-//		
-//		config.getRegistry().thenAccept(registry -> {
-//			Map<Element, ProcessorInfo<Object, Registry<URI>>> processorInfoMap = registry.getProcessorInfoMap();
-//			
-//			// TODO - use endpoints.
-//			for (EReferenceConnection outgoingConnection: ((EObjectNode) config.getElement()).getOutgoingConnections()) {
-//				ProcessorInfo<Object, Registry<URI>> info = processorInfoMap.get(outgoingConnection);
-//				Object cPrc = info.getProcessor(); 
-//				if (cPrc instanceof org.nasdanika.html.model.app.graph.NodeProcessor) {
-//					((org.nasdanika.html.model.app.graph.NodeProcessor) cPrc).resolve(uri, failureConsumer);
-//				}
-//			}
-//		}).exceptionally(failureHandler);
-//		
-//		for (Entry<Connection, Consumer<LabelFactory>> incomingHandlerConsumerEntry: config.getIncomingHandlerConsumers().entrySet()) {
-//			incomingHandlerConsumerEntry.getValue().accept(new LabelFactory() {
-//
-//				@Override
-//				public Label createLabel() {
-//					// TODO Auto-generated method stub
-//					return null;
-//				}
-//
-//				@Override
-//				public Label createLink(String path) {
-//					// TODO Auto-generated method stub
-//					return null;
-//				}
-//				
-//			});
-//		}
-//				
-//		for (Entry<Connection, Consumer<LabelFactory>> outgoingHandlerConsumerEntry: config.getOutgoingHandlerConsumers().entrySet()) {
-//			
-//		}
-//		
-//		
-//		System.out.println(uri);
+	public void resolve(URI base) {		
+		uri = uri.resolve(base);
+		for (LabelFactory oe: outgoingEndpoints.values()) {
+			oe.resolve(uri);
+		}
+		for (LabelFactory ie: incomingEndpoints.values()) {
+			ie.resolve(uri);
+		}
 	}
 
 	protected Collection<Label> createLabels(ProgressMonitor progressMonitor) {		
-		return Collections.singleton(createLabel(progressMonitor));
+		return Collections.singleton(createAction(progressMonitor));
 	}
 	
-	protected Label createLabel(ProgressMonitor progressMonitor) {
-		Action testAction = AppFactory.eINSTANCE.createAction();
-//		testAction.setText(target.toString());		
-//		testAction.setLocation(uri.toString());
-		return testAction;
+	/**
+	 * Creates action for the node.
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected Label createAction(ProgressMonitor progressMonitor) {
+		return createAction(node.getTarget());
 	}
 
 	@Override
 	public Label createLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return createLabel(node.getTarget());
 	}
 
 	@Override
 	public Label createLink(String path) {
-		// TODO Auto-generated method stub
-		return null;
+		return createLink(node.getTarget(), path);
 	}
 
 	/**
@@ -197,7 +169,7 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 
 			@Override
 			public String name() {
-				return "purum"; //supplierName();
+				return "Labels supplier for " + node.getTarget();
 			}
 
 			@Override
@@ -237,14 +209,6 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 		return a.getName().compareTo(b.getName());
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	protected Consumer<Collection<Label>> createIncomingReferenceLabelConsumer(EReference eReference, List<Entry<EReferenceConnection, LabelFactory>> referenceIncomingEndpoints) {
-		return null;
-	}
-	
 	protected List<Consumer<Collection<Label>>> getReferenceLabelBuilders() {		
 		List<Consumer<Collection<Label>>> ret = new ArrayList<>();
 		
@@ -253,7 +217,7 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 			.entrySet()
 			.stream()
 			.sorted((a, b) -> compareOutgoingReferences(a.getKey(), b.getKey()))
-			.map(e -> createIncomingReferenceLabelConsumer(e.getKey(), e.getValue()))
+			.map(e -> createOutgoingReferenceLabelConsumer(e.getKey(), e.getValue()))
 			.filter(Objects::nonNull)
 			.forEach(ret::add);
 		
@@ -291,7 +255,271 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 //		return "Node processor of " + target;
 //	}
 	
+	// --- Label building methods ---
 	
+	/**
+	 * 
+	 * @param eReference
+	 * @return true if lables suppliers shall be called to create labels/actions. 
+	 * This implementation returns false. 
+	 */
+	protected boolean isCallIncomingReferenceLabelsSuppliers(EReference eReference) {
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param eReference
+	 * @return true if lables suppliers shall be called to create labels/actions. 
+	 * This implementation returns true for containment references, i.e. actions for child objects shall be created. 
+	 */
+	protected boolean isCallOutgoingReferenceLabelsSuppliers(EReference eReference) {
+		return eReference != null && eReference.isContainment();
+	}
+		
+	/**
+	 * 
+	 * @return
+	 */
+	protected Consumer<Collection<Label>> createIncomingReferenceLabelConsumer(
+			EReference eReference, 
+			List<Entry<EReferenceConnection, LabelFactory>> referenceIncomingEndpoints) {
+		
+		@SuppressWarnings("resource")
+		MapCompoundSupplier<EReferenceConnection, Collection<Label>> endpointLabelsSupplier = new MapCompoundSupplier<>("Incoming endpoints supplier");
+		if (isCallIncomingReferenceLabelsSuppliers(eReference)) {
+			for (Entry<EReferenceConnection, LabelFactory> e: referenceIncomingEndpoints) {
+				endpointLabelsSupplier.put(e.getKey(), e.getValue().createLabelsSupplier());
+			}
+		}
+		
+		Consumer<Supplier.FunctionResult<Collection<Label>, Map<EReferenceConnection, Collection<Label>>>> referenceLabelBuilder = createIncomingReferenceLabelBuilder(eReference, referenceIncomingEndpoints);						
+		Function<Collection<Label>, FunctionResult<Collection<Label>, Map<EReferenceConnection, Collection<Label>>>> endpointLabelsFunction = endpointLabelsSupplier.asFunction();
+		return endpointLabelsFunction.then(referenceLabelBuilder);
+	}
+	
+	/**
+	 * Builds target labels
+	 * @param eReference
+	 * @return
+	 */
+	protected Consumer<Supplier.FunctionResult<Collection<Label>, Map<EReferenceConnection, Collection<Label>>>> createIncomingReferenceLabelBuilder(
+			EReference eReference,
+			List<Entry<EReferenceConnection, LabelFactory>> referenceIncomingEndpoints) {
+		
+		return new Consumer<Supplier.FunctionResult<Collection<Label>,Map<EReferenceConnection,Collection<Label>>>>() {
+			
+			@Override
+			public double size() {
+				return 1;
+			}
+			
+			@Override
+			public String name() {
+				return "Incoming reference label builder";
+			}
+			
+			@Override
+			public void execute(FunctionResult<Collection<Label>, Map<EReferenceConnection, Collection<Label>>> arg, ProgressMonitor progressMonitor) {
+				buildIncomingReference(eReference, referenceIncomingEndpoints, arg.argument(), arg.result(), progressMonitor);
+			}
+		};
+		
+	}
+	
+	/**
+	 * Called by builder/consumer's execute();
+	 * @param eReference
+	 * @param referenceIncomingEndpoints
+	 * @param labels
+	 * @param incomingLabels
+	 * @param progressMonitor
+	 */
+	protected void buildIncomingReference(
+			EReference eReference,
+			List<Entry<EReferenceConnection, LabelFactory>> referenceIncomingEndpoints,
+			Collection<Label> labels,
+			Map<EReferenceConnection, Collection<Label>> incomingLabels,
+			ProgressMonitor progressMonitor) {
+
+		System.out.println("Here!");
+	}
+		
+	/**
+	 * 
+	 * @return
+	 */
+	protected Consumer<Collection<Label>> createOutgoingReferenceLabelConsumer(
+			EReference eReference, 
+			List<Entry<EReferenceConnection, LabelFactory>> referenceOutgoingEndpoints) {
+		
+		@SuppressWarnings("resource")
+		MapCompoundSupplier<EReferenceConnection, Collection<Label>> endpointLabelsSupplier = new MapCompoundSupplier<>("Outgoing endpoints supplier");
+		if (isCallOutgoingReferenceLabelsSuppliers(eReference)) {
+			for (Entry<EReferenceConnection, LabelFactory> e: referenceOutgoingEndpoints) {
+				endpointLabelsSupplier.put(e.getKey(), e.getValue().createLabelsSupplier());
+			}
+		}
+		
+		Consumer<Supplier.FunctionResult<Collection<Label>, Map<EReferenceConnection, Collection<Label>>>> referenceLabelBuilder = createOutgoingReferenceLabelBuilder(eReference, referenceOutgoingEndpoints);						
+		Function<Collection<Label>, FunctionResult<Collection<Label>, Map<EReferenceConnection, Collection<Label>>>> endpointLabelsFunction = endpointLabelsSupplier.asFunction();
+		return endpointLabelsFunction.then(referenceLabelBuilder);
+	}
+	
+	/**
+	 * Builds target labels
+	 * @param eReference
+	 * @return
+	 */
+	protected Consumer<Supplier.FunctionResult<Collection<Label>, Map<EReferenceConnection, Collection<Label>>>> createOutgoingReferenceLabelBuilder(
+			EReference eReference,
+			List<Entry<EReferenceConnection, LabelFactory>> referenceOutgoingEndpoints) {
+		
+		
+		return new Consumer<Supplier.FunctionResult<Collection<Label>,Map<EReferenceConnection,Collection<Label>>>>() {
+			
+			@Override
+			public double size() {
+				return 1;
+			}
+			
+			@Override
+			public String name() {
+				return "Outgoing reference label builder";
+			}
+			
+			@Override
+			public void execute(
+					FunctionResult<Collection<Label>, Map<EReferenceConnection, Collection<Label>>> arg, 
+					ProgressMonitor progressMonitor) {
+				
+				buildOutgoingReference(
+						eReference, 
+						referenceOutgoingEndpoints, 
+						arg.argument(), 
+						arg.result(), 
+						progressMonitor);
+			}
+		};
+		
+	}
+	
+	/**
+	 * Called by builder/consumer's execute();
+	 * @param eReference
+	 * @param referenceIncomingEndpoints
+	 * @param labels
+	 * @param incomingLabels
+	 * @param progressMonitor
+	 */
+	protected void buildOutgoingReference(
+			EReference eReference,
+			List<Entry<EReferenceConnection, LabelFactory>> referenceOutgoingEndpoints,
+			Collection<Label> labels,
+			Map<EReferenceConnection, Collection<Label>> outgoingLabels,
+			ProgressMonitor progressMonitor) {
+
+		BiConsumer<Collection<Label>, Collection<Label>> injector = getOutgoingReferenceInjector(eReference);
+		if (injector != null) {
+			for (Entry<EReferenceConnection, Collection<Label>> ole: outgoingLabels.entrySet()) {
+				if (ole.getKey().getReference() == eReference) {
+					injector.accept(ole.getValue(), labels);
+				}
+			}
+		}
+		System.out.println("Here!");
+	}
+	
+	/**
+	 * Creates and configures an action for eObject. 
+	 * Override to create from prototypes.
+	 * @param eObject
+	 * @return
+	 */
+	protected Action createAction(EObject eObject) {
+		Action action = AppFactory.eINSTANCE.createAction();
+		configureLabel(eObject, action);
+		return action;
+	}
+	
+	/**
+	 * Creates and configures a link for eObject. 
+	 * Override to create from prototypes.
+	 * @param eObject
+	 * @return
+	 */
+	protected Link createLink(EObject eObject, String path) {
+		Link link = AppFactory.eINSTANCE.createLink();
+		configureLabel(eObject, link);
+		if (Util.isBlank(path)) {
+			link.setLocation(uri.toString());
+		} else {
+			link.setLocation(URI.createURI(path).resolve(uri).toString());
+		}
+		return link;
+	}
+	
+	/**
+	 * Creates and configures a label for eObject. 
+	 * Override to create from prototypes.
+	 * @param eObject
+	 * @return
+	 */
+	protected Label createLabel(EObject eObject) {
+		Label label = AppFactory.eINSTANCE.createLabel();
+		configureLabel(eObject, label);
+		return label;		
+	}
+	
+	/**
+	 * Configures label.
+	 * @param eObject
+	 * @param label
+	 */
+	protected void configureLabel(EObject eObject, Label label) {
+		if (eObject instanceof ENamedElement && Util.isBlank(label.getText())) {
+			label.setText(((ENamedElement) eObject).getName());
+			// TODO - escape, annotation
+		}
+		if (eObject instanceof NamedElement && Util.isBlank(label.getText())) {
+			label.setText(StringEscapeUtils.escapeHtml4(((NamedElement) eObject).getName()));
+		}
+		
+		// TODO - icon, toolitp, ...
+	}
+	
+	/**
+	 * 
+	 * @param eReference
+	 * @return a {@link BiConsumer} injecting incoming {@link EReference} labels (first argument) into the target node labels (second argument). 
+	 */
+	protected BiConsumer<Collection<Label>, Collection<Label>> getIncomingReferenceInjector(EReference eReference) {
+		// TODO - referral grouping
+		return (r, t) -> {
+			for (Label tLabel: t) {
+				if (tLabel instanceof Action) {
+					Action tAction = (Action) tLabel;
+					EList<Action> tSections = tAction.getSections();
+//					Action refSection = 
+				}
+			}
+		};
+	}
+	
+	/**
+	 * 
+	 * @param eReference
+	 * @return a {@link BiConsumer} injecting incoming {@link EReference} labels (first argument) into the target node labels (second argument). 
+	 */
+	protected BiConsumer<Collection<Label>, Collection<Label>> getOutgoingReferenceInjector(EReference eReference) {
+		return (r, t) -> {
+			for (Label tLabel: t) {
+				tLabel.getChildren().addAll(r);
+			}
+		};
+	}
+	
+	// TODO - reference role and "mount point" - container, can be, for example, a section for back-links.
 	
 
 }

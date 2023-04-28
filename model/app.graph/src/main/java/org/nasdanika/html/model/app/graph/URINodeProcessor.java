@@ -6,7 +6,7 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 
 /**
- * A convenince class binding the identity type parameter to URI. 
+ * A convenience class binding the identity type parameter to URI. 
  * @author Pavel
  *
  */
