@@ -349,7 +349,6 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 	}
 
 	protected org.nasdanika.html.model.html.Tag buildDynamicAttributesTable(List<EAttribute> attributes,	ProgressMonitor progressMonitor) {
-		@SuppressWarnings("unchecked")
 		DynamicTableBuilder<EAttribute> attributesTableBuilder = new DynamicTableBuilder<>();
 		attributesTableBuilder
 			.addStringColumnBuilder("name", true, true, "Name", attr -> link(attr, eObject))
@@ -374,7 +373,6 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 	}
 	
 	protected org.nasdanika.html.model.html.Tag buildDynamicReferencesTable(List<EReference> references, ProgressMonitor progressMonitor) {
-		@SuppressWarnings("unchecked")
 		DynamicTableBuilder<EReference> referencesTableBuilder = new DynamicTableBuilder<>();
 		referencesTableBuilder
 			.addStringColumnBuilder("name", true, true, "Name", ref -> link(ref, eObject))
@@ -416,7 +414,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			
 			EModelElementDocumentation loadDoc = EmfUtil.getLoadDocumentation(eObject);
 			if (loadDoc != null) {
-				loadSpecificationAction.getContent().add(interpolatedMarkdown(loadDoc.getDocumentation(), loadDoc.getLocation(), progressMonitor));
+				loadSpecificationAction.getContent().add(interpolatedMarkdown(loadDoc.documentation(), loadDoc.location(), progressMonitor));
 			}
 			
 			Predicate<EStructuralFeature> predicate = sf -> sf.isChangeable() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, "true"));
@@ -427,7 +425,6 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			Predicate<EStructuralFeature> strictContainmentPredicate = homogenousPredicate.and(sf -> "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_STRICT_CONTAINMENT)));
 			Function<EStructuralFeature, Object[]> exclusiveWithExtractor = sf -> EObjectLoader.getExclusiveWith(eObject, sf, EObjectLoader.LOAD_KEY_PROVIDER);
 			
-			@SuppressWarnings("unchecked")
 			DynamicTableBuilder<EStructuralFeature> loadSpecificationTableBuilder = new DynamicTableBuilder<>();
 			loadSpecificationTableBuilder
 				.addStringColumnBuilder("key", true, true, "Key", sf -> {
@@ -505,7 +502,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 				
 				EModelElementDocumentation featureLoadDoc = getFeatureLoadDoc(sf);
 				if (featureLoadDoc != null) {
-					featureAction.getContent().add(interpolatedMarkdown(context.interpolateToString(featureLoadDoc.getDocumentation()), featureLoadDoc.getLocation(), progressMonitor));
+					featureAction.getContent().add(interpolatedMarkdown(context.interpolateToString(featureLoadDoc.documentation()), featureLoadDoc.location(), progressMonitor));
 				}
 			}	
 			
@@ -528,7 +525,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			
 			@Override
 			protected URI getResourceBase() {
-				return documentation.getLocation();
+				return documentation.location();
 			}
 			
 			@Override
@@ -538,7 +535,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			
 		};
 		
-		String ret = markdownHelper.firstPlainTextSentence(documentation.getDocumentation());
+		String ret = markdownHelper.firstPlainTextSentence(documentation.documentation());
 		return String.join(" ", ret.split("\\R")); // Replacing new lines, shall they be in the first sentence, with spaces.		
 	}
 	

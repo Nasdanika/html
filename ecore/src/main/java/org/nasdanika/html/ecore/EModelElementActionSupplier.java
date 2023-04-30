@@ -159,7 +159,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 			
 			@Override
 			protected URI getResourceBase() {
-				return documentation.getLocation();
+				return documentation.location();
 			}
 			
 			@Override
@@ -170,8 +170,8 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 		};
 		
 		if (documentation != null) {
-			ret.getContent().add(interpolatedMarkdown(context.interpolateToString(documentation.getDocumentation()), documentation.getLocation(), progressMonitor));			
-			String tooltip = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "description", markdownHelper.firstPlainTextSentence(documentation.getDocumentation()));
+			ret.getContent().add(interpolatedMarkdown(context.interpolateToString(documentation.documentation()), documentation.location(), progressMonitor));			
+			String tooltip = NcoreUtil.getNasdanikaAnnotationDetail(eObject, "description", markdownHelper.firstPlainTextSentence(documentation.documentation()));
 			ret.setTooltip(tooltip);
 		}
 		
@@ -234,7 +234,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 			
 			@Override
 			protected URI getResourceBase() {
-				return documentation.getLocation();
+				return documentation.location();
 			}
 			
 			@Override
@@ -244,7 +244,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 			
 		};
 		
-		String ret = /* context.computingContext().get(MarkdownHelper.class, markdownHelper) */ markdownHelper.firstPlainTextSentence(documentation.getDocumentation());
+		String ret = /* context.computingContext().get(MarkdownHelper.class, markdownHelper) */ markdownHelper.firstPlainTextSentence(documentation.documentation());
 		return String.join(" ", ret.split("\\R")); // Replacing new lines, shall they be in the first sentence, with spaces.		
 	}
 
