@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.EList;
@@ -44,6 +45,9 @@ import org.nasdanika.html.model.app.graph.LabelFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.URINodeProcessor;
 import org.nasdanika.ncore.NamedElement;
+import org.nasdanika.ncore.Property;
+import org.nasdanika.ncore.util.NcoreUtil;
+import org.nasdanika.ncore.util.SemanticInfo;
 
 /**
  * Base class for node processors.
@@ -342,7 +346,6 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 			Map<EReferenceConnection, Collection<Label>> incomingLabels,
 			ProgressMonitor progressMonitor) {
 
-		System.out.println("Here!");
 	}
 		
 	/**
@@ -427,7 +430,6 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 				}
 			}
 		}
-		System.out.println("Here!");
 	}
 	
 	/**
@@ -484,6 +486,11 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 		if (eObject instanceof NamedElement && Util.isBlank(label.getText())) {
 			label.setText(StringEscapeUtils.escapeHtml4(((NamedElement) eObject).getName()));
 		}
+		if (label instanceof Link && uri != null) {
+			((Link) label).setLocation(uri.toString());
+		}
+
+		new SemanticInfo(eObject).annotate(label);
 		
 		// TODO - icon, toolitp, ...
 	}
