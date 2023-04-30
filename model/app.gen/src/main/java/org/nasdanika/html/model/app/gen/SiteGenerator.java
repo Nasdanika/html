@@ -853,7 +853,6 @@ public class SiteGenerator {
 	 */
 	protected String computeSemanticLink(
 			Context context, 
-			String key, 
 			String path, 
 			Action action,
 			Collection<URI> baseSemanticURIs,
@@ -892,9 +891,9 @@ public class SiteGenerator {
 											HTMLFactory htmlFactory = context.get(HTMLFactory.class, HTMLFactory.INSTANCE);
 											URI targetActionURI = uriResolver.apply(targetLabel, bURI);
 											tag = htmlFactory.tag(targetActionURI == null ? TagName.span : TagName.a, spaceIdx == -1 ? targetLabel.getText() : path.substring(spaceIdx + 1));
-											String targetActionTooltip = targetLabel.getTooltip();
-											if (!org.nasdanika.common.Util.isBlank(targetActionTooltip)) {
-												tag.attribute("title", targetActionTooltip);
+											String targetLabelTooltip = targetLabel.getTooltip();
+											if (!org.nasdanika.common.Util.isBlank(targetLabelTooltip)) {
+												tag.attribute("title", targetLabelTooltip);
 											}
 											if (targetActionURI != null) {
 												tag.attribute("href", targetActionURI.toString());
@@ -931,6 +930,93 @@ public class SiteGenerator {
 		return null;
 	}
 	
+	public static record SemanticInfoRecord(URI location, String description) {}
+	
+	/**
+	 * Computes semantic info - link and tooltip for drawio elements. This implementation uses the registry and uriResolver. 
+	 * Override to add support of resolving external semantic infos, e.g. loaded from semantic maps of dependency sites.
+	 * @param context
+	 * @param key
+	 * @param path
+	 * @param action
+	 * @param baseSemanticURI
+	 * @param uriResolver
+	 * @param registry
+	 * @return
+	 */
+	protected SemanticInfoRecord computeSemanticInfoRecord(
+			Context context, 
+			String targetUriStr, 
+			Action action,
+			Collection<URI> baseSemanticURIs,
+			BiFunction<Label, URI, URI> uriResolver,
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
+			ResolutionListener resolutionListener,
+			ProgressMonitor progressMonitor) {
+
+		if (baseSemanticURIs == null || baseSemanticURIs.isEmpty()) {
+			baseSemanticURIs = Collections.singleton(null);
+		}
+		for (URI baseSemanticURI: baseSemanticURIs) {
+			URI targetURI = URI.createURI(targetUriStr);
+			if (baseSemanticURI != null && targetURI.isRelative()) {
+				targetURI = targetURI.resolve(baseSemanticURI.appendSegment(""));
+			}	
+			URI bURI = uriResolver.apply(action, (URI) null);		
+			if (semanticInfoSource != null) {
+				for (Entry<SemanticInfo, ?> entry: semanticInfoSource) {
+					if (entry != null) {
+						Object value = entry.getValue();
+						if (value instanceof Label) {
+							Label targetLabel = (Label) value;
+							SemanticInfo semanticElementAnnotation = entry.getKey();
+							if (semanticElementAnnotation != null) {
+								for (URI semanticURI: semanticElementAnnotation.getIdentifiers()) {
+									if (Objects.equals(targetURI, semanticURI)) {
+										URI targetActionURI = uriResolver.apply(targetLabel, bURI);
+										if (targetActionURI != null) {
+											if (resolutionListener != null) {
+												URI rawTargetURI = uriResolver.apply(targetLabel, null);
+												URI backLinkURI = uriResolver.apply(action, rawTargetURI);
+												resolutionListener.onSemanticReferenceResolution(action, targetUriStr, targetLabel, targetURI, backLinkURI);
+											}
+											
+											String description = semanticElementAnnotation.getDescription();
+											if (org.nasdanika.common.Util.isBlank(description)) {
+												description = targetLabel.getTooltip();
+											}
+											return new SemanticInfoRecord(targetActionURI, description);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			SemanticInfoRecord rec = computeSemanticInfoRecord(targetURI, context);		
+			if (rec != null) {
+				URI ref = rec.location();
+				if (bURI != null) {
+					ref = ref.deresolve(bURI, true, true, true);
+				}
+				if (resolutionListener != null) {
+					resolutionListener.onSemanticReferenceResolution(action, targetUriStr, null, ref, null);
+				}				
+				return new SemanticInfoRecord(ref, rec.description());
+			}
+		}
+		
+		String message = "Unresolved target URI: " + targetUriStr;
+		progressMonitor.worked(Status.ERROR, 1, message, action);
+		if (resolutionListener != null) {
+			resolutionListener.onSemanticReferenceResolution(action, targetUriStr, null, null, null);
+		}
+		return null;
+	}
+	
+	
 	/**
 	 * Computes semantic links for external URI's. This implementation returns null;
 	 * @param targetURI 
@@ -961,7 +1047,6 @@ public class SiteGenerator {
 	 */
 	protected URI computeSemanticReferfence(
 			Context context, 
-			String key, 
 			String path,
 			Action action,
 			Collection<URI> baseSemanticURIs,
@@ -969,63 +1054,9 @@ public class SiteGenerator {
 			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
 			ResolutionListener resolutionListener,
 			ProgressMonitor progressMonitor) {
-
-		if (baseSemanticURIs == null || baseSemanticURIs.isEmpty()) {
-			baseSemanticURIs = Collections.singleton(null);
-		}
-		for (URI baseSemanticURI: baseSemanticURIs) {
-			URI targetURI = URI.createURI(path);
-			if (baseSemanticURI != null && targetURI.isRelative()) {
-				targetURI = targetURI.resolve(baseSemanticURI.appendSegment(""));
-			}	
-			URI bURI = uriResolver.apply(action, (URI) null);		
-			if (semanticInfoSource != null) {
-				for (Entry<SemanticInfo, ?> entry: semanticInfoSource) {
-					if (entry != null) {
-						Object value = entry.getValue();
-						if (value instanceof Label) {
-							Label targetLabel = (Label) value;
-							SemanticInfo semanticElementAnnotation = entry.getKey();
-							if (semanticElementAnnotation != null) {
-								for (URI semanticURI: semanticElementAnnotation.getIdentifiers()) {
-									if (Objects.equals(targetURI, semanticURI)) {
-										URI targetActionURI = uriResolver.apply(targetLabel, bURI);
-										if (targetActionURI != null) {
-											if (resolutionListener != null) {
-												URI rawTargetURI = uriResolver.apply(targetLabel, null);
-												URI backLinkURI = uriResolver.apply(action, rawTargetURI);
-												resolutionListener.onSemanticReferenceResolution(action, path, targetLabel, targetURI, backLinkURI);
-											}
-											
-											return targetActionURI;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			
-			URI ref = computeSemanticReference(targetURI, context);		
-			if (ref != null) {
-				if (bURI != null) {
-					ref = ref.deresolve(bURI, true, true, true);
-				}
-				if (resolutionListener != null) {
-					resolutionListener.onSemanticReferenceResolution(action, path, null, ref, null);
-				}				
-				return ref;
-			}
-		}
 		
-		String message = "Unresolved semantic URI: " + path;
-		progressMonitor.worked(Status.ERROR, 1, message, action);
-		if (resolutionListener != null) {
-			resolutionListener.onSemanticReferenceResolution(action, path, null, null, null);
-		}
-		return null;
-		
+		SemanticInfoRecord rec = computeSemanticInfoRecord(context, path, action, baseSemanticURIs, uriResolver, semanticInfoSource, resolutionListener, progressMonitor);
+		return rec == null ? null : rec.location();
 	}
 
 	/**
@@ -1034,7 +1065,7 @@ public class SiteGenerator {
 	 * @param context
 	 * @return
 	 */
-	protected URI computeSemanticReference(URI targetURI, Context context) { 
+	protected SemanticInfoRecord computeSemanticInfoRecord(URI targetURI, Context context) { 
 		return null;
 	}	
 	
@@ -1071,7 +1102,7 @@ public class SiteGenerator {
 		
 		String fileName = action.getUuid() + ".html";
 		SupplierFactory<InputStream> contentFactory = org.nasdanika.common.Util.asInputStreamSupplierFactory(action.getContent());			
-		try (InputStream contentStream = org.nasdanika.common.Util.call(contentFactory.create(actionContentContext), progressMonitor, diagnosticConsumer, Status.FAIL, Status.ERROR)) {
+		try (InputStream contentStream = contentFactory.create(actionContentContext).call(progressMonitor, diagnosticConsumer, Status.FAIL, Status.ERROR)) {
 			if (contentContributions.isEmpty()) {
 				Files.copy(contentStream, new File(contentDir, fileName).toPath(), StandardCopyOption.REPLACE_EXISTING);
 			} else {
@@ -1214,9 +1245,8 @@ public class SiteGenerator {
 			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
 			String targetUriPropertyValue = modelElement.getProperty(NcoreActionBuilder.TARGET_URI_KEY);
 			if (!org.nasdanika.common.Util.isBlank(targetUriPropertyValue)) {
-				URI sRef = computeSemanticReferfence(
+				SemanticInfoRecord sRec = computeSemanticInfoRecord(
 						context, 
-						key, 
 						targetUriPropertyValue, 
 						action, 
 						baseSemanticURIs, 
@@ -1225,8 +1255,13 @@ public class SiteGenerator {
 						resolutionListener,  
 						progressMonitor);
 				
-				if (sRef != null) {
-					modelElement.setLink(sRef.toString());
+				if (sRec != null) {
+					if (org.nasdanika.common.Util.isBlank(modelElement.getLink())) {
+						modelElement.setLink(sRec.location().toString());
+					}
+					if (org.nasdanika.common.Util.isBlank(modelElement.getTooltip())) {
+						modelElement.setTooltip(sRec.description());
+					}
 				}
 			}
 		}			
@@ -1301,7 +1336,6 @@ public class SiteGenerator {
 				if (type == null || type.isAssignableFrom(String.class)) {
 					return (T) computeSemanticLink(
 							ctx, 
-							key, 
 							path, 
 							action, 
 							baseSemanticURIs, 
@@ -1324,7 +1358,6 @@ public class SiteGenerator {
 				if (type == null || type.isAssignableFrom(String.class)) {
 					URI sRef = computeSemanticReferfence(
 							propertyComputerContext, 
-							key, 
 							path, 
 							action, 
 							baseSemanticURIs, 
