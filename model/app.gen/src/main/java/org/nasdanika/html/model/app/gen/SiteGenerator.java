@@ -101,6 +101,8 @@ import com.redfin.sitemapgenerator.ChangeFreq;
 
 public class SiteGenerator {
 	
+	private static final String SEMANTIC_REF_KEY = "semantic-ref";
+
 	/**
 	 * Creates and configures a resource set for loading models.
 	 * Override to customize, e.g. register {@link EPackage}'s and adapter factories.
@@ -215,7 +217,7 @@ public class SiteGenerator {
 			URI pageURI = URI.createFileURI(pageFile.getCanonicalPath());
 			Resource pageEResource = pageResourceSet.getResource(pageURI, true);
 			SupplierFactory<InputStream> contentFactory = org.nasdanika.common.Util.asInputStreamSupplierFactory(pageEResource.getContents());			
-			try (InputStream contentStream = org.nasdanika.common.Util.call(contentFactory.create(context), progressMonitor, diagnosticConsumer, Status.FAIL, Status.ERROR)) {
+			try (InputStream contentStream = contentFactory.create(context).call(progressMonitor, diagnosticConsumer, Status.FAIL, Status.ERROR)) {
 				Files.copy(contentStream, new File(pageFile.getCanonicalPath().replace(".xml", ".html")).toPath(), StandardCopyOption.REPLACE_EXISTING);
 				progressMonitor.worked(1, "[Page xml -> html] " + pageFile.getName());
 			}
@@ -1113,7 +1115,8 @@ public class SiteGenerator {
 			Collection<URI> baseSemanticURIs,
 			BiFunction<Label, URI, URI> uriResolver,
 			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
-			ResolutionListener resolutionListener) {
+			ResolutionListener resolutionListener,
+			ProgressMonitor progressMonitor) {
 
 		String[] pathSegments = path.split("/");
 		if (pathSegments.length == 1) {
@@ -1144,7 +1147,10 @@ public class SiteGenerator {
 				errorGeometry.setY(10);
 				errorGeometry.setWidth(300);
 				errorGeometry.setHeight(30);
-			}		
+			} else {
+				// Injecting links for elements with semantic-ref property				
+				valueDocument.accept(element -> processDrawioElement(element, context, key, path, action, baseSemanticURIs, uriResolver, semanticInfoSource, resolutionListener, progressMonitor));
+			}
 			
 			if (pathSegments.length == 2) {
 				// Document
@@ -1188,8 +1194,44 @@ public class SiteGenerator {
 		}
 		
 		return null;		
-	}	
+	}
 	
+	protected void processDrawioElement(
+			org.nasdanika.graph.Element element, 
+			Context context, 
+			String key, 
+			String path,
+			Action action,
+			Collection<URI> baseSemanticURIs,
+			BiFunction<Label, URI, URI> uriResolver,
+			Iterable<Map.Entry<SemanticInfo,?>> semanticInfoSource,
+			ResolutionListener resolutionListener,
+			ProgressMonitor progressMonitor) {
+		
+//		ResolutionListener semanticLinkResolutionListener = this.context == null ? null : this.context.get(ResolutionListener.class);
+	
+		if (element instanceof org.nasdanika.drawio.ModelElement) {
+			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
+			String targetUriPropertyValue = modelElement.getProperty(NcoreActionBuilder.TARGET_URI_KEY);
+			if (!org.nasdanika.common.Util.isBlank(targetUriPropertyValue)) {
+				URI sRef = computeSemanticReferfence(
+						context, 
+						key, 
+						targetUriPropertyValue, 
+						action, 
+						baseSemanticURIs, 
+						uriResolver, 
+						semanticInfoSource, 
+						resolutionListener,  
+						progressMonitor);
+				
+				if (sRef != null) {
+					modelElement.setLink(sRef.toString());
+				}
+			}
+		}			
+	}
+		
 	protected SemanticInfo getSemanticInfoAnnotation(Action action) {
 		return SemanticInfo.getAnnotation(action);
 	}
@@ -1242,7 +1284,8 @@ public class SiteGenerator {
 							baseSemanticURIs, 
 							uriResolver, 
 							semanticInfoSource,
-							resolutionListener);			
+							resolutionListener,
+							progressMonitor);			
 				}
 				return null;
 			}
@@ -1295,7 +1338,7 @@ public class SiteGenerator {
 			}
 		};
 		
-		mctx.put("semantic-ref", semanticReferencePropertyComputer);
+		mctx.put(SEMANTIC_REF_KEY, semanticReferencePropertyComputer);
 		
 		return mctx;
 	}	
