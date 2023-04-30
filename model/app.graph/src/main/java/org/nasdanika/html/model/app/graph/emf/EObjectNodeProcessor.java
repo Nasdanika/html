@@ -57,9 +57,15 @@ import org.nasdanika.ncore.util.SemanticInfo;
  */
 public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	
-	public EObjectNodeProcessor(NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, Context context) {
+	protected java.util.function.Function<URI, Action> prototypeProvider;
+
+	public EObjectNodeProcessor(
+			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, 
+			Context context, 
+			java.util.function.Function<URI, Action> prototypeProvider) {		
 		this.config = config;
 		this.context = context;
+		this.prototypeProvider = prototypeProvider;
 		this.uri = URI.createURI("index.html");
 	}
 	
@@ -439,9 +445,26 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	 * @return
 	 */
 	protected Action createAction(EObject eObject) {
-		Action action = AppFactory.eINSTANCE.createAction();
+		Action action = newAction(eObject);
 		configureLabel(eObject, action);
 		return action;
+	}
+
+	/**
+	 * Creates a new action using a factory. 
+	 * Override to create from prototypes.
+	 * @return
+	 */
+	protected Action newAction(EObject eObject) {
+		if (prototypeProvider != null) {
+			for (URI identifier: NcoreUtil.getIdentifiers(eObject)) {
+				Action prototype = prototypeProvider.apply(identifier);
+				if (prototype != null) {
+					return prototype;
+				}				
+			}			
+		}
+		return AppFactory.eINSTANCE.createAction();
 	}
 	
 	/**

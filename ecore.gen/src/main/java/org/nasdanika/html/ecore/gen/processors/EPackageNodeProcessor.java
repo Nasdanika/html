@@ -8,14 +8,18 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
+import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.LabelFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 
 public class EPackageNodeProcessor extends ENamedElementNodeProcessor<EPackage> {
 
-	public EPackageNodeProcessor(NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, Context context) {
-		super(config, context);
+	public EPackageNodeProcessor(
+			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, 
+			Context context,
+			java.util.function.Function<URI, Action> prototypeProvider) {
+		super(config, context, prototypeProvider);
 	}	
 	
 	@Override

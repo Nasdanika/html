@@ -51,13 +51,23 @@ public class AppObjectLoaderSupplier extends AppObjectLoaderExecutionParticipant
 			String resource, 
 			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
 			Context context,
-			ProgressMonitor progressMonitor) throws Exception {
+			ProgressMonitor progressMonitor) {
 		
 		URI resourceURI = URI.createFileURI(new File(resource).getAbsolutePath());
+		return loadObject(resourceURI, diagnosticConsumer, context, progressMonitor);
+	}
+		
+	public static EObject loadObject(
+			URI resourceURI, 
+			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
+			Context context,
+			ProgressMonitor progressMonitor) {
 				
 		// Diagnosing loaded resources. 
 		try {
-			return Objects.requireNonNull(org.nasdanika.common.Util.call(new AppObjectLoaderSupplier(resourceURI, context), progressMonitor, diagnosticConsumer), "Loaded null from " + resource);
+			try (AppObjectLoaderSupplier appObjectLoaderSupplier = new AppObjectLoaderSupplier(resourceURI, context)) {
+				return Objects.requireNonNull(appObjectLoaderSupplier.call(progressMonitor, diagnosticConsumer), "Loaded null from " + resourceURI);
+			}
 		} catch (DiagnosticException e) {
 			System.err.println("******************************");
 			System.err.println("*      Diagnostic failed     *");
