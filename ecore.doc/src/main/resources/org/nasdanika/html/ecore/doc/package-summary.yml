@@ -1,0 +1,10 @@
+app-action:
+  text: Ecore
+  description: Ecore model
+  content:
+    content-markdown:
+      source:
+        content-resource:
+          location: package-summary.md
+          interpolate: true
+  

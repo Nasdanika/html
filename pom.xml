@@ -169,6 +169,7 @@
 
 		<module>ecore</module>
 		<module>ecore.gen</module>
+		<module>ecore.doc</module>
 	</modules>	
 
 	<distributionManagement>
