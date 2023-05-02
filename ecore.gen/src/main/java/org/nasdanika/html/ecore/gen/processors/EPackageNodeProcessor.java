@@ -1,12 +1,19 @@
 package org.nasdanika.html.ecore.gen.processors;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Supplier;
+import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
@@ -24,17 +31,28 @@ public class EPackageNodeProcessor extends ENamedElementNodeProcessor<EPackage> 
 	
 	@Override
 	public Supplier<Collection<Label>> createLabelsSupplier() {
-		// TODO - eclassifiers suppliers sorted, list supplier, map, ...
-		
-		outgoingEndpoints
-			.entrySet()
+		return super.createLabelsSupplier().then(this::sortLabels);
+	}
+	
+	@Override
+	protected BiConsumer<Collection<Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> getOutgoingReferenceInjector(EReference eReference) {
+		BiConsumer<Collection<Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> outgoingReferenceInjector = super.getOutgoingReferenceInjector(eReference);
+		if (eReference == EcorePackage.Literals.EPACKAGE__ECLASSIFIERS) {
+			return (r, t) -> {
+				List<Entry<EReferenceConnection, Collection<Label>>> sorted = r.stream()
+					.sorted((a,b) -> ((ENamedElement) a.getKey().getTarget().getTarget()).getName().compareTo(((ENamedElement) b.getKey().getTarget().getTarget()).getName()))
+					.collect(Collectors.toList());		
+				outgoingReferenceInjector.accept(sorted, t);
+			};
+		}		
+		return outgoingReferenceInjector;
+	}
+	
+	protected Collection<Label> sortLabels(Collection<Label> labels) {
+		return labels
 			.stream()
-			.filter(e -> e.getKey().getReference() == EcorePackage.Literals.EPACKAGE__ECLASSIFIERS)
-//			.sorted(null) - TOOD by name
-			.forEach(e -> System.out.println(e.getKey().getTarget().getTarget()));
-// TODO - suppliers		
-		
-		return super.createLabelsSupplier();
+			.sorted((a,b) -> a.getText().compareTo(b.getText()))
+			.collect(Collectors.toList());		
 	}
 	
 }

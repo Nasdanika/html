@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.EList;
@@ -45,7 +44,6 @@ import org.nasdanika.html.model.app.graph.LabelFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.URINodeProcessor;
 import org.nasdanika.ncore.NamedElement;
-import org.nasdanika.ncore.Property;
 import org.nasdanika.ncore.util.NcoreUtil;
 import org.nasdanika.ncore.util.SemanticInfo;
 
@@ -115,21 +113,7 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	
 	protected NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config;
 	protected Context context;
-//	protected T target;
 	protected URI uri;
-//	protected Map<EReference, List<Entry<Element, ProcessorInfo<Object, Registry<URI>>>>> groupedChildren;	
-
-//	@SuppressWarnings("unchecked")
-//	public EObjectNodeProcessor(
-//			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config,
-//			Context context) {
-//		
-//		this.config = config;
-//		this.context = context;
-//		this.target = (T) ((EObjectNode) config.getElement()).getTarget();
-//		groupedChildren = org.nasdanika.common.Util.groupBy(config.getChildProcessorsInfo().entrySet(), infoEntry -> ((EReferenceConnection) infoEntry.getKey()).getReference());
-//		groupedChildren.values().forEach(l -> l.sort((a,b) -> ((EReferenceConnection) a.getKey()).getIndex() - ((EReferenceConnection) b.getKey()).getIndex()));		
-//	}
 	
 	@Override
 	public void resolve(URI base) {		
@@ -254,16 +238,6 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 		referenceLabelBuilders.forEach(collectionCompoundConsumer::add);
 		return doCreateLabelsSupplier().then(collectionCompoundConsumer.asFunction());
 	}
-	
-//	protected String supplierName() {
-//		if (target instanceof NamedElement) {
-//			return "Node processor of " + ((NamedElement) target).getName();
-//		}
-//		if (target instanceof ENamedElement) {
-//			return "Node processor of " + ((ENamedElement) target).getName();
-//		}
-//		return "Node processor of " + target;
-//	}
 	
 	// --- Label building methods ---
 	
@@ -428,13 +402,9 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 			Map<EReferenceConnection, Collection<Label>> outgoingLabels,
 			ProgressMonitor progressMonitor) {
 
-		BiConsumer<Collection<Label>, Collection<Label>> injector = getOutgoingReferenceInjector(eReference);
+		BiConsumer<Collection<Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> injector = getOutgoingReferenceInjector(eReference);
 		if (injector != null) {
-			for (Entry<EReferenceConnection, Collection<Label>> ole: outgoingLabels.entrySet()) {
-				if (ole.getKey().getReference() == eReference) {
-					injector.accept(ole.getValue(), labels);
-				}
-			}
+			injector.accept(outgoingLabels.entrySet(), labels);
 		}
 	}
 	
@@ -523,7 +493,7 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	 * @param eReference
 	 * @return a {@link BiConsumer} injecting incoming {@link EReference} labels (first argument) into the target node labels (second argument). 
 	 */
-	protected BiConsumer<Collection<Label>, Collection<Label>> getIncomingReferenceInjector(EReference eReference) {
+	protected BiConsumer<Collection<Map.Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> getIncomingReferenceInjector(EReference eReference) {
 		// TODO - referral grouping
 		return (r, t) -> {
 			for (Label tLabel: t) {
@@ -539,12 +509,14 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	/**
 	 * 
 	 * @param eReference
-	 * @return a {@link BiConsumer} injecting incoming {@link EReference} labels (first argument) into the target node labels (second argument). 
+	 * @return a {@link BiConsumer} injecting outgoing {@link EReference} labels (first argument) into the target node labels (second argument). 
 	 */
-	protected BiConsumer<Collection<Label>, Collection<Label>> getOutgoingReferenceInjector(EReference eReference) {
+	protected BiConsumer<Collection<Map.Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> getOutgoingReferenceInjector(EReference eReference) {
 		return (r, t) -> {
 			for (Label tLabel: t) {
-				tLabel.getChildren().addAll(r);
+				for (Entry<EReferenceConnection, Collection<Label>> re: r) {
+					tLabel.getChildren().addAll(re.getValue());
+				}
 			}
 		};
 	}
