@@ -514,8 +514,10 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	protected BiConsumer<Collection<Map.Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> getOutgoingReferenceInjector(EReference eReference) {
 		return (r, t) -> {
 			for (Label tLabel: t) {
+				Label refLabel = createLabel(eReference);
+				tLabel.getChildren().add(refLabel);
 				for (Entry<EReferenceConnection, Collection<Label>> re: r) {
-					tLabel.getChildren().addAll(re.getValue());
+					refLabel.getChildren().addAll(re.getValue());
 				}
 			}
 		};
