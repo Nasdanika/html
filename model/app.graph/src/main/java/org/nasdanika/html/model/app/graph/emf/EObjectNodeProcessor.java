@@ -515,15 +515,14 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 		return (r, t) -> {
 			for (Label tLabel: t) {
 				Label refLabel = createLabel(eReference);
-				tLabel.getChildren().add(refLabel);
 				for (Entry<EReferenceConnection, Collection<Label>> re: r) {
 					refLabel.getChildren().addAll(re.getValue());
+				}
+				if (!refLabel.getChildren().isEmpty()) {
+					tLabel.getChildren().add(refLabel);
 				}
 			}
 		};
 	}
-	
-	// TODO - reference role and "mount point" - container, can be, for example, a section for back-links.
-	
 
 }

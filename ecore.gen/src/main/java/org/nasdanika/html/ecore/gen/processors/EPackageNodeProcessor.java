@@ -36,16 +36,20 @@ public class EPackageNodeProcessor extends ENamedElementNodeProcessor<EPackage> 
 	
 	@Override
 	protected BiConsumer<Collection<Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> getOutgoingReferenceInjector(EReference eReference) {
-		BiConsumer<Collection<Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> outgoingReferenceInjector = super.getOutgoingReferenceInjector(eReference);
 		if (eReference == EcorePackage.Literals.EPACKAGE__ECLASSIFIERS) {
 			return (r, t) -> {
 				List<Entry<EReferenceConnection, Collection<Label>>> sorted = r.stream()
 					.sorted((a,b) -> ((ENamedElement) a.getKey().getTarget().getTarget()).getName().compareTo(((ENamedElement) b.getKey().getTarget().getTarget()).getName()))
 					.collect(Collectors.toList());		
-				outgoingReferenceInjector.accept(sorted, t);
+
+				for (Label tLabel: t) {
+					for (Entry<EReferenceConnection, Collection<Label>> re: sorted) {
+						tLabel.getChildren().addAll(re.getValue());
+					}
+				}
 			};
 		}		
-		return outgoingReferenceInjector;
+		return super.getOutgoingReferenceInjector(eReference);
 	}
 	
 	protected Collection<Label> sortLabels(Collection<Label> labels) {
