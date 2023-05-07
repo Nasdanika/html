@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EReference;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Util;
 import org.nasdanika.graph.emf.EReferenceConnection;
@@ -31,19 +32,19 @@ public class EReferenceConnectionProcessor {
 		return new LabelFactory() {
 
 			@Override
-			public Label createLabel() {
-				return sourceEndpoint.createLabel();
+			public Label createLabel(ProgressMonitor progressMonitor) {
+				return sourceEndpoint.createLabel(progressMonitor);
 			}
 
 			@Override
-			public Label createLink(String path) {
-				Label link = sourceEndpoint.createLink();
+			public Label createLink(String path, ProgressMonitor progressMonitor) {
+				Label link = sourceEndpoint.createLink(progressMonitor);
 				// TODO if link - deresolve URI
 				return link;
 			}
 
 			@Override
-			public void resolve(URI base) {
+			public void resolve(URI base, ProgressMonitor progressMonitor) {
 				targetURI = base;
 			}
 
@@ -73,26 +74,34 @@ public class EReferenceConnectionProcessor {
 		return new LabelFactory() {
 
 			@Override
-			public Label createLabel() {
-				return targetEndpoint.createLabel();
+			public Label createLabel(ProgressMonitor progressMonitor) {
+				return targetEndpoint.createLabel(progressMonitor);
 			}
 
 			@Override
-			public Label createLink(String path) {
-				Label link = targetEndpoint.createLink();
+			public Label createLink(String path, ProgressMonitor progressMonitor) {
+				Label link = targetEndpoint.createLink(progressMonitor);
+				if (link instanceof Link && sourceURI != null && !sourceURI.isRelative()) {
+					String location = ((Link) link).getLocation();
+					if (!Util.isBlank(location)) {						
+						URI locationURI = URI.createURI(location);
+						locationURI = locationURI.deresolve(sourceURI, true, true, true);
+						((Link) link).setLocation(locationURI.toString());
+					}
+				}
 				// TODO if link - deresolve URI
 				return link;
 			}
 
 			@Override
-			public void resolve(URI base) {				
+			public void resolve(URI base, ProgressMonitor progressMonitor) {				
 				sourceURI = base;				
 				EReferenceConnection eRefConn = (EReferenceConnection) config.getElement();
 				String path = eRefConn.getPath();
 				EReference eRef = eRefConn.getReference();
 				if (eRef.isContainment()) {
 					URI refURI = URI.createURI(path == null ? eRef.getName() + "/" : eRef.getName() + "/" + path + "/");
-					targetEndpoint.resolve(refURI.resolve(base));
+					targetEndpoint.resolve(refURI.resolve(base), progressMonitor);
 				}
 			}
 

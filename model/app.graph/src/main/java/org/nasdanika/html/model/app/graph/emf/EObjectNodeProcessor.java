@@ -52,14 +52,14 @@ import org.nasdanika.ncore.util.SemanticInfo;
  * @author Pavel
  *
  */
-public class EObjectNodeProcessor<T> implements URINodeProcessor {
+public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor {
 	
-	protected java.util.function.Function<URI, Action> prototypeProvider;
+	protected java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider;
 
 	public EObjectNodeProcessor(
 			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, 
 			Context context, 
-			java.util.function.Function<URI, Action> prototypeProvider) {		
+			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {		
 		this.config = config;
 		this.context = context;
 		this.prototypeProvider = prototypeProvider;
@@ -85,6 +85,11 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	@ProcessorElement
 	public void setNode(EObjectNode node) {
 		this.node = node;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected T getTarget() {
+		return (T) node.getTarget();
 	}
 	
 	protected Map<EReferenceConnection, LabelFactory> incomingEndpoints = new LinkedHashMap<>();
@@ -115,13 +120,13 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	protected URI uri;
 	
 	@Override
-	public void resolve(URI base) {		
+	public void resolve(URI base, ProgressMonitor progressMonitor) {		
 		uri = uri.resolve(base);
 		for (LabelFactory oe: outgoingEndpoints.values()) {
-			oe.resolve(uri);
+			oe.resolve(uri, progressMonitor);
 		}
 		for (LabelFactory ie: incomingEndpoints.values()) {
-			ie.resolve(uri);
+			ie.resolve(uri, progressMonitor);
 		}
 	}
 
@@ -135,17 +140,17 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	 * @return
 	 */
 	protected Label createAction(ProgressMonitor progressMonitor) {
-		return createAction(node.getTarget());
+		return createAction(getTarget(), progressMonitor);
+	}
+	
+	@Override
+	public Label createLabel(ProgressMonitor progressMonitor) {
+		return createLabel(getTarget(), progressMonitor);
 	}
 
 	@Override
-	public Label createLabel() {
-		return createLabel(node.getTarget());
-	}
-
-	@Override
-	public Label createLink(String path) {
-		return createLink(node.getTarget(), path);
+	public Label createLink(String path, ProgressMonitor progressMonitor) {
+		return createLink(getTarget(), path, progressMonitor);
 	}
 
 	/**
@@ -162,7 +167,7 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 
 			@Override
 			public String name() {
-				return "Labels supplier for " + node.getTarget();
+				return "Labels supplier for " + getTarget();
 			}
 
 			@Override
@@ -402,7 +407,7 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 			ProgressMonitor progressMonitor) {
 		
 		for (Label tLabel: labels) {
-			Label refLabel = createLabel(eReference);
+			Label refLabel = createLabel(eReference, progressMonitor);
 			for (Entry<EReferenceConnection, Collection<Label>> re: outgoingLabels.entrySet()) {
 				refLabel.getChildren().addAll(re.getValue());
 			}
@@ -418,9 +423,9 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	 * @param eObject
 	 * @return
 	 */
-	protected Action createAction(EObject eObject) {
-		Action action = newAction(eObject);
-		configureLabel(eObject, action);
+	protected Action createAction(EObject eObject, ProgressMonitor progressMonitor) {
+		Action action = newAction(eObject, progressMonitor);
+		configureLabel(eObject, action, progressMonitor);
 		return action;
 	}
 
@@ -429,10 +434,10 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	 * Override to create from prototypes.
 	 * @return
 	 */
-	protected Action newAction(EObject eObject) {
+	protected Action newAction(EObject eObject, ProgressMonitor progressMonitor) {
 		if (prototypeProvider != null) {
 			for (URI identifier: NcoreUtil.getIdentifiers(eObject)) {
-				Action prototype = prototypeProvider.apply(identifier);
+				Action prototype = prototypeProvider.apply(identifier, progressMonitor);
 				if (prototype != null) {
 					return prototype;
 				}				
@@ -447,9 +452,9 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	 * @param eObject
 	 * @return
 	 */
-	protected Link createLink(EObject eObject, String path) {
+	protected Link createLink(EObject eObject, String path, ProgressMonitor progressMonitor) {
 		Link link = AppFactory.eINSTANCE.createLink();
-		configureLabel(eObject, link);
+		configureLabel(eObject, link, progressMonitor);
 		if (Util.isBlank(path)) {
 			link.setLocation(uri.toString());
 		} else {
@@ -464,9 +469,9 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	 * @param eObject
 	 * @return
 	 */
-	protected Label createLabel(EObject eObject) {
+	protected Label createLabel(EObject eObject, ProgressMonitor progressMonitor) {
 		Label label = AppFactory.eINSTANCE.createLabel();
-		configureLabel(eObject, label);
+		configureLabel(eObject, label, progressMonitor);
 		return label;		
 	}
 	
@@ -475,7 +480,7 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 	 * @param eObject
 	 * @param label
 	 */
-	protected void configureLabel(EObject eObject, Label label) {
+	protected void configureLabel(EObject eObject, Label label, ProgressMonitor progressMonitor) {
 		if (eObject instanceof ENamedElement && Util.isBlank(label.getText())) {
 			label.setText(((ENamedElement) eObject).getName());
 			// TODO - escape, annotation

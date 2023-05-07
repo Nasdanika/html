@@ -26,7 +26,7 @@ public class EPackageNodeProcessor extends ENamedElementNodeProcessor<EPackage> 
 	public EPackageNodeProcessor(
 			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, 
 			Context context,
-			java.util.function.Function<URI, Action> prototypeProvider) {
+			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {
 		super(config, context, prototypeProvider);
 	}	
 	

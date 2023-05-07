@@ -3,6 +3,7 @@ package org.nasdanika.html.model.app.graph;
 import java.util.Collection;
 
 import org.eclipse.emf.common.util.URI;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
@@ -18,14 +19,14 @@ public interface LabelFactory {
 	 * Creates a {@link Label}.
 	 * @return
 	 */
-	Label createLabel();
+	Label createLabel(ProgressMonitor progressMonitor);
 	
 	/**
 	 * Creates a {@link Link} if possible or a {@link Label}.
 	 * @return
 	 */
-	default Label createLink() {
-		return createLink(null);
+	default Label createLink(ProgressMonitor progressMonitor) {
+		return createLink(null, progressMonitor);
 	}
 	
 	/**
@@ -33,13 +34,13 @@ public interface LabelFactory {
 	 * @param path
 	 * @return
 	 */
-	Label createLink(String path);
+	Label createLink(String path, ProgressMonitor progressMonitor);
 	
 	/**
 	 * Propagates caller URI.
 	 * @param base
 	 */
-	void resolve(URI base);
+	void resolve(URI base, ProgressMonitor progressMonitor);
 	
 	Supplier<Collection<Label>> createLabelsSupplier();
 

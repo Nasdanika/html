@@ -4,22 +4,27 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Status;
+import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.app.gen.DynamicTableBuilder;
 import org.nasdanika.html.model.app.graph.LabelFactory;
 import org.nasdanika.html.model.app.graph.Registry;
@@ -29,9 +34,46 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 	public EClassNodeProcessor(
 			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config,
 			Context context,
-			java.util.function.Function<URI, Action> prototypeProvider) {
+			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {
 		super(config, context, prototypeProvider);
-	}	
+	}
+	
+	protected String nameLink(EReferenceConnection connection, LabelFactory labelFactory, ProgressMonitor progressMonitor) {
+		Label link = labelFactory.createLink(progressMonitor);
+		if (link != null) {
+			link.setIcon(null);
+			Adapter adapter = AppAdapterFactory.INSTANCE.adapt(link, SupplierFactory.Provider.class);
+			if (adapter instanceof SupplierFactory.Provider) {
+				SupplierFactory<Tag> supplierFactory = ((SupplierFactory.Provider) adapter).getFactory(Tag.class);
+				Supplier<Tag> supplier = supplierFactory.create(context);
+				Tag tag = supplier.call(progressMonitor, null, Status.FAIL, Status.ERROR);
+				return tag.toString();
+			}
+		}
+		return ((ENamedElement) connection.getTarget().getTarget()).getName();
+	}
+	
+	/**
+	 * Returns references action, creates if necessary. Matches by location.
+	 * @param parent
+	 * @return
+	 */
+	private Action getReferencesAction(Action parent) {
+		Action pAction = (Action) parent;
+		return pAction.getNavigation()
+			.stream()
+			.filter(e -> e instanceof Action && "references.html".equals(((Action) e).getLocation()))
+			.findFirst()
+			.map(Action.class::cast)
+			.orElseGet(() -> {
+				Action referencesAction = AppFactory.eINSTANCE.createAction();
+				referencesAction.setText("References");
+				referencesAction.setIcon("https://cdn.jsdelivr.net/gh/Nasdanika/html@master/ecore.gen/web-resources/icons/EReference.gif");
+				referencesAction.setLocation("references.html");
+				pAction.getNavigation().add(referencesAction);
+				return referencesAction;
+			});
+	}
 	
 	@Override
 	protected void buildOutgoingReference(
@@ -58,14 +100,10 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			// A page with a dynamic references table and links to reference pages for references with documentation. 
 			for (Label label: labels) {
 				if (label instanceof Action) {					
-					Action referencesAction = AppFactory.eINSTANCE.createAction();
-					referencesAction.setText("References");
-					referencesAction.setIcon("https://cdn.jsdelivr.net/gh/Nasdanika/html@master/ecore.gen/web-resources/icons/EReference.gif");
-					referencesAction.setLocation("references.html");
 					
-					DynamicTableBuilder<Entry<EReferenceConnection, LabelFactory>> referencesTableBuilder = new DynamicTableBuilder<>();
+					DynamicTableBuilder<Entry<EReferenceConnection, LabelFactory>> referencesTableBuilder = new DynamicTableBuilder<>("nsd-ecore-doc-table");
 					referencesTableBuilder
-						.addStringColumnBuilder("name", true, true, "Name", endpoint -> endpoint.getValue().createLink().toString()); // TODO - link
+						.addStringColumnBuilder("name", true, false, "Name", endpoint -> nameLink(endpoint.getKey(), endpoint.getValue(), progressMonitor)); 
 //						.addStringColumnBuilder("type", true, true, "Type", attr -> {
 //							EGenericType genericType = attr.getEGenericType(); 
 //							if (genericType == null) {
@@ -83,11 +121,15 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 						// Other things not visible?
 					
 					org.nasdanika.html.model.html.Tag referencesTable = referencesTableBuilder.build(
-							referenceOutgoingEndpoints, // TODO - sort by name 
-							getTarget().getEPackage().getNsURI().hashCode() + "-" + getTarget().getName() + "-references", "references-table", 
+							referenceOutgoingEndpoints.stream().sorted((a,b) -> {
+								ENamedElement ane = (ENamedElement) a.getKey().getTarget().getTarget();
+								ENamedElement bne = (ENamedElement) b.getKey().getTarget().getTarget();
+								return ane.getName().compareTo(bne.getName());
+							}).collect(Collectors.toList()),  
+							"eclass-references", 
+							"references-table", 
 							progressMonitor);
-					referencesAction.getContent().add(referencesTable);
-					((Action) label).getNavigation().add(referencesAction);
+					getReferencesAction((Action) label).getContent().add(referencesTable);
 				}
 			}
 		}
@@ -106,11 +148,12 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			}			
 		}
 		
-		if (eReference == EcorePackage.Literals.ECLASS__EATTRIBUTES || eReference == EcorePackage.Literals.ECLASS__EREFERENCES || eReference == EcorePackage.Literals.ECLASS__EOPERATIONS) {
+		if (eReference == EcorePackage.Literals.ECLASS__EREFERENCES) {			
 			// Own attributes, references, and operations as anonymous if have contents. 
 			for (Label tLabel: labels) {
 				if (tLabel instanceof Action) {
-					EList<Action> tAnonymous = ((Action) tLabel).getAnonymous();
+					Action referencesAction = getReferencesAction((Action) tLabel);
+					EList<Action> tAnonymous = referencesAction.getAnonymous();
 					for (Entry<EReferenceConnection, Collection<Label>> re: outgoingLabels.entrySet()) {
 						for (Label childLabel: re.getValue()) {
 							if (childLabel instanceof Action && !((Action) childLabel).getContent().isEmpty()) {
@@ -121,6 +164,8 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 				}
 			}
 		}		
+		
+		// TODO - attributes and references
 		
 		super.buildOutgoingReference(eReference, referenceOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
 	}

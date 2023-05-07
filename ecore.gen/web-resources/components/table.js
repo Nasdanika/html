@@ -18,6 +18,7 @@ Vue.component('nsd-ecore-doc-table', {
         	sortDesc: false,
         	sortDirection: 'asc',
         	filter: null,
+        	inherited: true,
         	visibleFields: null,
         	config: {
 				items: null,
@@ -114,9 +115,26 @@ Vue.component('nsd-ecore-doc-table', {
 			        </b-form-group>				
 				</b-col>
 				<b-col cols="2">
-					<b-button title="Configuration" size="sm" @click="configModal">
-						<i class="fas fa-cog"></i>
-        			</b-button>
+					<table>
+						<tr>
+							<td>
+							    <b-form-checkbox
+							      id="inherited-checkbox"
+							      v-model="inherited"
+							      name="inherited-checkbox"
+							      value="true"
+							    >
+							      Inherited
+							    </b-form-checkbox>							
+							</td>
+							<td style="padding-left:1em">
+								<b-button title="Configuration" size="sm" @click="configModal">
+									<i class="fas fa-cog"></i>
+			        			</b-button>							
+							</td>
+						</tr>
+					</table>		
+				    			        				
  					<b-modal id="config-modal" size="lg" scrollable title="Table configuration" @ok="saveConfig">
 						<b-table striped hover :items="config.items" :fields="config.columns">
 							<template #cell(field)="data">

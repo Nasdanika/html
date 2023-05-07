@@ -5,6 +5,7 @@ import java.util.function.Function;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EDataType;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.processor.Factory;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.graph.processor.Processor;
@@ -22,9 +23,9 @@ import org.nasdanika.html.model.app.graph.emf.EObjectReflectiveProcessorFactory;
 public class EcoreNodeProcessorFactory {
 	
 	private Context context;
-	private Function<URI, Action> prototypeProvider;
+	private java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider;
 
-	public EcoreNodeProcessorFactory(Context context, Function<URI,Action> prototypeProvider) {
+	public EcoreNodeProcessorFactory(Context context, java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {
 		this.context = context;
 		this.prototypeProvider = prototypeProvider;
 	}

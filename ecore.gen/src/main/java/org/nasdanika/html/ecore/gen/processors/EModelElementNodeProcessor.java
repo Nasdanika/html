@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.BiConsumer;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EModelElement;
@@ -31,21 +30,16 @@ import org.nasdanika.html.model.app.graph.emf.EObjectNodeProcessor;
 import org.nasdanika.ncore.util.NcoreUtil;
 
 public class EModelElementNodeProcessor<T extends EModelElement> extends EObjectNodeProcessor<T> {
-
+	
 	public EModelElementNodeProcessor(
 			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, 
 			Context context,
-			java.util.function.Function<URI, Action> prototypeProvider) {
+			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {
 		super(config, context, prototypeProvider);
 	}	
 	
-	@SuppressWarnings("unchecked")
-	protected T getTarget() {
-		return (T) node.getTarget();
-	}
-	
 	@Override
-	protected void configureLabel(EObject eObject, Label label) {
+	protected void configureLabel(EObject eObject, Label label, ProgressMonitor progressMonitor) {
 		if (eObject instanceof EModelElement) {
 			if (Util.isBlank(label.getIcon())) {
 				String defaultIcon = "https://cdn.jsdelivr.net/gh/Nasdanika/html@master/ecore.gen/web-resources/icons/" + eObject.eClass().getName() + ".gif";
@@ -55,12 +49,12 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 				label.setTooltip(NcoreUtil.getNasdanikaAnnotationDetail((EModelElement) eObject, "description", null));
 			}			
 		}
-		super.configureLabel(eObject, label);
+		super.configureLabel(eObject, label, progressMonitor);
 	}
 	
 	@Override
-	protected Action newAction(EObject eObject) {
-		Action newAction = super.newAction(eObject);
+	protected Action newAction(EObject eObject, ProgressMonitor progressMonitor) {
+		Action newAction = super.newAction(eObject, progressMonitor);
 		if (eObject instanceof EModelElement && Util.isBlank(newAction.getText())) {
 			newAction.setText(NcoreUtil.getNasdanikaAnnotationDetail((EModelElement) eObject, "label", null));
 		}		
