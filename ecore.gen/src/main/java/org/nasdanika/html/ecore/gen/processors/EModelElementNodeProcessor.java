@@ -5,13 +5,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypedElement;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Status;
+import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.emf.EmfUtil;
 import org.nasdanika.emf.EmfUtil.EModelElementDocumentation;
@@ -22,8 +27,10 @@ import org.nasdanika.exec.content.Markdown;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.app.graph.LabelFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.emf.EObjectNodeProcessor;
@@ -125,6 +132,35 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 			cardinality = "<B>"+cardinality+"</B>";
 		}
 		return cardinality;
+	}
+	
+	// --- Reusable methods ---
+
+	/**
+	 * Creates a link to a typed element type. Defaults to typed element name.
+	 * @param connection
+	 * @param labelFactory
+	 * @param withIcon
+	 * @param progressMonitor
+	 * @return
+	 */
+	protected String typeLink(EReferenceConnection connection, LabelFactory labelFactory, boolean withIcon, ProgressMonitor progressMonitor) {
+		String typeName = ((ETypedElement) connection.getTarget().getTarget()).getEType().getName();
+		String typeNameComment = "<!-- " + typeName + "--> ";
+		Label link = labelFactory.createLink(EcorePackage.Literals.ETYPED_ELEMENT__ETYPE, null, progressMonitor);
+		if (link != null) {
+			if (!withIcon) {
+				link.setIcon(null);
+			}
+			Adapter adapter = AppAdapterFactory.INSTANCE.adapt(link, SupplierFactory.Provider.class);
+			if (adapter instanceof SupplierFactory.Provider) {
+				SupplierFactory<Tag> supplierFactory = ((SupplierFactory.Provider) adapter).getFactory(Tag.class);
+				Supplier<Tag> supplier = supplierFactory.create(context);
+				Tag tag = supplier.call(progressMonitor, null, Status.FAIL, Status.ERROR);
+				return typeNameComment + tag.toString(); // type name in comments for sorting - kinda a hack, but easy.
+			}
+		}
+		return typeNameComment + typeName;
 	}
 
 }

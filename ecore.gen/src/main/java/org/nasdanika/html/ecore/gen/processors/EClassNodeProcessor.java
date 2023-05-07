@@ -12,6 +12,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
@@ -103,7 +104,8 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 					
 					DynamicTableBuilder<Entry<EReferenceConnection, LabelFactory>> referencesTableBuilder = new DynamicTableBuilder<>("nsd-ecore-doc-table");
 					referencesTableBuilder
-						.addStringColumnBuilder("name", true, false, "Name", endpoint -> nameLink(endpoint.getKey(), endpoint.getValue(), progressMonitor)); 
+						.addStringColumnBuilder("name", true, false, "Name", endpoint -> nameLink(endpoint.getKey(), endpoint.getValue(), progressMonitor)) 
+						.addStringColumnBuilder("type", true, true, "Type", endpoint -> typeLink(endpoint.getKey(), endpoint.getValue(), false, progressMonitor)); 
 //						.addStringColumnBuilder("type", true, true, "Type", attr -> {
 //							EGenericType genericType = attr.getEGenericType(); 
 //							if (genericType == null) {

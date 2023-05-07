@@ -37,6 +37,16 @@ public interface LabelFactory {
 	Label createLink(String path, ProgressMonitor progressMonitor);
 	
 	/**
+	 * Creates a link to an aspect (feature) of the object identified by the selector, which can be a predicate.   
+	 * @param selector Aspect/feature key. 
+	 * @param path A link is deresolved relative to the sub-path. It can be used by sub-actions. Path can be null for the main action or actions at the same URI level.
+	 * @return A link or a lablel or null
+	 */
+	default Label createLink(Object selector, String path, ProgressMonitor progressMonitor) {
+		return null;
+	}
+	
+	/**
 	 * Propagates caller URI.
 	 * @param base
 	 */

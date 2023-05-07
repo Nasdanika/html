@@ -47,6 +47,13 @@ public class EReferenceConnectionProcessor {
 			public void resolve(URI base, ProgressMonitor progressMonitor) {
 				targetURI = base;
 			}
+			
+			@Override
+			public Label createLink(Object selector, String path, ProgressMonitor progressMonitor) {
+				Label link = sourceEndpoint.createLink(selector, path, progressMonitor);
+				// TODO if link - deresolve
+				return link;
+			}
 
 			@Override
 			public Supplier<Collection<Label>> createLabelsSupplier() {								
@@ -90,6 +97,20 @@ public class EReferenceConnectionProcessor {
 					}
 				}
 				// TODO if link - deresolve URI
+				return link;
+			}
+			
+			@Override
+			public Label createLink(Object selector, String path, ProgressMonitor progressMonitor) {
+				Label link = targetEndpoint.createLink(selector, path, progressMonitor);
+				if (link instanceof Link && sourceURI != null && !sourceURI.isRelative()) {
+					String location = ((Link) link).getLocation();
+					if (!Util.isBlank(location)) {						
+						URI locationURI = URI.createURI(location);
+						locationURI = locationURI.deresolve(sourceURI, true, true, true);
+						((Link) link).setLocation(locationURI.toString());
+					}
+				}
 				return link;
 			}
 
