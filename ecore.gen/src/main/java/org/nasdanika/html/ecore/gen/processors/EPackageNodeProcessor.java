@@ -2,8 +2,8 @@ package org.nasdanika.html.ecore.gen.processors;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
@@ -35,21 +36,25 @@ public class EPackageNodeProcessor extends ENamedElementNodeProcessor<EPackage> 
 	}
 	
 	@Override
-	protected BiConsumer<Collection<Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> getOutgoingReferenceInjector(EReference eReference) {
+	protected void buildOutgoingReference(EReference eReference,
+			List<Entry<EReferenceConnection, LabelFactory>> referenceOutgoingEndpoints, 
+			Collection<Label> labels,
+			Map<EReferenceConnection, Collection<Label>> outgoingLabels, 
+			ProgressMonitor progressMonitor) {
+		
 		if (eReference == EcorePackage.Literals.EPACKAGE__ECLASSIFIERS) {
-			return (r, t) -> {
-				List<Entry<EReferenceConnection, Collection<Label>>> sorted = r.stream()
+			List<Entry<EReferenceConnection, Collection<Label>>> sorted = outgoingLabels.entrySet().stream()
 					.sorted((a,b) -> ((ENamedElement) a.getKey().getTarget().getTarget()).getName().compareTo(((ENamedElement) b.getKey().getTarget().getTarget()).getName()))
 					.collect(Collectors.toList());		
 
-				for (Label tLabel: t) {
+				for (Label tLabel: labels) {
 					for (Entry<EReferenceConnection, Collection<Label>> re: sorted) {
 						tLabel.getChildren().addAll(re.getValue());
 					}
 				}
-			};
-		}		
-		return super.getOutgoingReferenceInjector(eReference);
+		}
+		
+		super.buildOutgoingReference(eReference, referenceOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
 	}
 	
 	protected Collection<Label> sortLabels(Collection<Label> labels) {
@@ -59,4 +64,14 @@ public class EPackageNodeProcessor extends ENamedElementNodeProcessor<EPackage> 
 			.collect(Collectors.toList());		
 	}
 	
+	@Override
+	protected boolean isCallOutgoingReferenceLabelsSuppliers(EReference eReference) {
+		if (eReference == EcorePackage.Literals.EPACKAGE__ECLASSIFIERS) {
+			return true;
+		}
+		return super.isCallOutgoingReferenceLabelsSuppliers(eReference);
+	}
+	
 }
+
+

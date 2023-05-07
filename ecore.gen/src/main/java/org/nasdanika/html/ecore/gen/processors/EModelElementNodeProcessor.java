@@ -1,6 +1,7 @@
 package org.nasdanika.html.ecore.gen.processors;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.BiConsumer;
@@ -9,6 +10,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.ETypedElement;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
@@ -37,11 +39,16 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 		super(config, context, prototypeProvider);
 	}	
 	
+	@SuppressWarnings("unchecked")
+	protected T getTarget() {
+		return (T) node.getTarget();
+	}
+	
 	@Override
 	protected void configureLabel(EObject eObject, Label label) {
 		if (eObject instanceof EModelElement) {
 			if (Util.isBlank(label.getIcon())) {
-				String defaultIcon = "https://cdn.jsdelivr.net/gh/Nasdanika/html@master/ecore.gen/icons/" + eObject.eClass().getName() + ".gif";
+				String defaultIcon = "https://cdn.jsdelivr.net/gh/Nasdanika/html@master/ecore.gen/web-resources/icons/" + eObject.eClass().getName() + ".gif";
 				label.setIcon(NcoreUtil.getNasdanikaAnnotationDetail((EModelElement) eObject, "icon", defaultIcon));
 			}
 			if (Util.isBlank(label.getTooltip())) {
@@ -96,12 +103,34 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 	}
 	
 	/**
-	 * Suppressing all for now, explicitly adding in subclasses.
+	 * Suppressing default behavior, explicit specification of how to build.
 	 */
-	protected BiConsumer<Collection<Map.Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> getOutgoingReferenceInjector(EReference eReference) {
-		// EAnnotations here - navigation with source sections and details tables?
-		return null;
+	@Override
+	protected void buildOutgoingReference(EReference eReference,
+			List<Entry<EReferenceConnection, LabelFactory>> referenceOutgoingEndpoints, Collection<Label> labels,
+			Map<EReferenceConnection, Collection<Label>> outgoingLabels, ProgressMonitor progressMonitor) {
+		// TODO EAnnotations
 	}
-
+	
+	@Override
+	protected boolean isCallOutgoingReferenceLabelsSuppliers(EReference eReference) {
+		// TODO - EAnnotations...
+		return false;
+	}
+	
+	protected static String cardinality(ETypedElement typedElement) {
+		int lowerBound = typedElement.getLowerBound();
+		int upperBound = typedElement.getUpperBound();
+		String cardinality;
+		if (lowerBound == upperBound) {
+			cardinality = String.valueOf(lowerBound);
+		} else {
+			cardinality = lowerBound + ".." + (upperBound == -1 ? "*" : String.valueOf(upperBound));
+		}
+		if (typedElement instanceof EReference && ((EReference) typedElement).isContainment()) {
+			cardinality = "<B>"+cardinality+"</B>";
+		}
+		return cardinality;
+	}
 
 }

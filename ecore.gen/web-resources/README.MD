@@ -1,0 +1,1 @@
+Use JsDelivr to access: https://cdn.jsdelivr.net/gh/Nasdanika/html@master/ecore.gen/web-resources/

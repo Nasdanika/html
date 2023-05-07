@@ -9,6 +9,7 @@ module org.nasdanika.html.ecore.gen {
 	requires org.nasdanika.html.model.html;
 	requires org.nasdanika.ncore;
 	requires transitive sitemapgen4j;
+	requires org.nasdanika.html.model.app.gen;
 	
 	exports org.nasdanika.html.ecore.gen.processors;
 	

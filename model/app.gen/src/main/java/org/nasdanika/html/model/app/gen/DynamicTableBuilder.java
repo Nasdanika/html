@@ -75,6 +75,16 @@ public class DynamicTableBuilder<T> {
 		return this;
 	}
 	
+	protected String tagName;
+	
+	public DynamicTableBuilder() {
+		this("nsd-table");
+	}
+	
+	public DynamicTableBuilder(String tagName) {
+		this.tagName = tagName;
+	}	
+	
 	public DynamicTableBuilder<T> addColumnBuilder(
 			String key, 
 			boolean visible, 
@@ -192,7 +202,7 @@ public class DynamicTableBuilder<T> {
 			items.getValue().add(item);
 		}
 		Tag table = HtmlFactory.eINSTANCE.createTag();
-		table.setName("nsd-table");
+		table.setName(tagName);
 		table.getAttributes().put(":columns", columns);
 		table.getAttributes().put(":items", items);
 		if (!Util.isBlank(configKey)) {

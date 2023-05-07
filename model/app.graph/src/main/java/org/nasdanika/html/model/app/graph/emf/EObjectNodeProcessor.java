@@ -1,3 +1,4 @@
+
 package org.nasdanika.html.model.app.graph.emf;
 
 import java.util.ArrayList;
@@ -8,10 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.function.BiConsumer;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
@@ -401,11 +400,16 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 			Collection<Label> labels,
 			Map<EReferenceConnection, Collection<Label>> outgoingLabels,
 			ProgressMonitor progressMonitor) {
-
-		BiConsumer<Collection<Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> injector = getOutgoingReferenceInjector(eReference);
-		if (injector != null) {
-			injector.accept(outgoingLabels.entrySet(), labels);
-		}
+		
+		for (Label tLabel: labels) {
+			Label refLabel = createLabel(eReference);
+			for (Entry<EReferenceConnection, Collection<Label>> re: outgoingLabels.entrySet()) {
+				refLabel.getChildren().addAll(re.getValue());
+			}
+			if (!refLabel.getChildren().isEmpty()) {
+				tLabel.getChildren().add(refLabel);
+			}
+		}		
 	}
 	
 	/**
@@ -486,43 +490,6 @@ public class EObjectNodeProcessor<T> implements URINodeProcessor {
 		new SemanticInfo(eObject).annotate(label);
 		
 		// TODO - icon, toolitp, ...
-	}
-	
-	/**
-	 * 
-	 * @param eReference
-	 * @return a {@link BiConsumer} injecting incoming {@link EReference} labels (first argument) into the target node labels (second argument). 
-	 */
-	protected BiConsumer<Collection<Map.Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> getIncomingReferenceInjector(EReference eReference) {
-		// TODO - referral grouping
-		return (r, t) -> {
-			for (Label tLabel: t) {
-				if (tLabel instanceof Action) {
-					Action tAction = (Action) tLabel;
-					EList<Action> tSections = tAction.getSections();
-//					Action refSection = 
-				}
-			}
-		};
-	}
-	
-	/**
-	 * 
-	 * @param eReference
-	 * @return a {@link BiConsumer} injecting outgoing {@link EReference} labels (first argument) into the target node labels (second argument). 
-	 */
-	protected BiConsumer<Collection<Map.Entry<EReferenceConnection, Collection<Label>>>, Collection<Label>> getOutgoingReferenceInjector(EReference eReference) {
-		return (r, t) -> {
-			for (Label tLabel: t) {
-				Label refLabel = createLabel(eReference);
-				for (Entry<EReferenceConnection, Collection<Label>> re: r) {
-					refLabel.getChildren().addAll(re.getValue());
-				}
-				if (!refLabel.getChildren().isEmpty()) {
-					tLabel.getChildren().add(refLabel);
-				}
-			}
-		};
 	}
 
 }

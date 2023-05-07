@@ -3,6 +3,7 @@ package org.nasdanika.html.ecore.doc;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.model.app.Action;
@@ -21,13 +22,11 @@ public class EcoreDocLoader extends DocLoader {
 			Context context,
 			ProgressMonitor progressMonitor) {		
 
-		prototypes.put(URI.createURI(
-				"http://www.eclipse.org/emf/2002/Ecore"), 
-				(Action) AppObjectLoaderSupplier.loadObject(URI.createURI("classpath://org/nasdanika/html/ecore/doc/package-summary.yml"), diagnosticConsumer, context, progressMonitor));
-		
-		prototypes.put(URI.createURI(
-				"http://www.eclipse.org/emf/2002/Ecore/eClassifiers/EClass"), 
-				(Action) AppObjectLoaderSupplier.loadObject(URI.createURI("classpath://org/nasdanika/html/ecore/doc/EClass.yml"), diagnosticConsumer, context, progressMonitor));
+		URI nsURI = URI.createURI(EcorePackage.eNS_URI);
+		URI resourceBase = URI.createURI("classpath://" + EcoreDocLoader.class.getName().replace('.', '/'));
+
+		prototypes.put(nsURI, (Action) AppObjectLoaderSupplier.loadObject(URI.createURI("package-summary.yml").resolve(resourceBase), diagnosticConsumer, context, progressMonitor));		
+		prototypes.put(URI.createURI("eClassifiers/EClass").resolve(nsURI),	(Action) AppObjectLoaderSupplier.loadObject(URI.createURI("EClass.yml").resolve(resourceBase), diagnosticConsumer, context, progressMonitor));
 		
 	}
 

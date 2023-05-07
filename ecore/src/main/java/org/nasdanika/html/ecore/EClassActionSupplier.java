@@ -348,7 +348,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		}
 	}
 
-	protected org.nasdanika.html.model.html.Tag buildDynamicAttributesTable(List<EAttribute> attributes,	ProgressMonitor progressMonitor) {
+	protected org.nasdanika.html.model.html.Tag buildDynamicAttributesTable(List<EAttribute> attributes, ProgressMonitor progressMonitor) {
 		DynamicTableBuilder<EAttribute> attributesTableBuilder = new DynamicTableBuilder<>();
 		attributesTableBuilder
 			.addStringColumnBuilder("name", true, true, "Name", attr -> link(attr, eObject))
