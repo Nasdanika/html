@@ -23,7 +23,7 @@ public class ETypedElementNodeProcessor<T extends ETypedElement> extends EModelE
 	
 	private LabelFactory typeLabelFactory;
 	
-	@OutgoingEndpoint(value = "reference.name == 'eType'", priority = 1)
+	@OutgoingEndpoint("reference.name == 'eType'")
 	public void setTypeEndpoint(LabelFactory typeLabelFactory) {
 		this.typeLabelFactory = typeLabelFactory;
 	}
