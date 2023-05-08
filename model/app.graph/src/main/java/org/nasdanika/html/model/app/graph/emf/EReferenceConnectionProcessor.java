@@ -60,6 +60,7 @@ public class EReferenceConnectionProcessor {
 				return sourceEndpoint.createLabelsSupplier().then(labels -> {
 					for (Label label: labels) {
 						if (label instanceof Link) {
+							// TODO - resolve against source and deresolve against target
 							Link link = (Link) label;
 							String location = link.getLocation();
 							if (!Util.isBlank(location)) {
@@ -76,6 +77,28 @@ public class EReferenceConnectionProcessor {
 			
 		};
 	}
+
+	/**
+	 * Rebases from target to source
+	 * @param label
+	 * @return
+	 */
+	protected Label rebaseLinkFromTargetToSource(Label label) {
+		if (label instanceof Link) {
+			String location = ((Link) label).getLocation();
+			if (!Util.isBlank(location)) {						
+				URI locationURI = URI.createURI(location);
+				if (targetURI != null && !targetURI.isRelative()) {
+					locationURI = locationURI.resolve(targetURI);
+				}						
+				if (sourceURI != null && !sourceURI.isRelative()) {
+					locationURI = locationURI.deresolve(sourceURI, true, true, true);
+				}
+				((Link) label).setLocation(locationURI.toString());
+			}
+		}
+		return label;
+	}
 		
 	protected LabelFactory createSourceHandler(LabelFactory targetEndpoint) {
 		return new LabelFactory() {
@@ -87,31 +110,12 @@ public class EReferenceConnectionProcessor {
 
 			@Override
 			public Label createLink(String path, ProgressMonitor progressMonitor) {
-				Label link = targetEndpoint.createLink(progressMonitor);
-				if (link instanceof Link && sourceURI != null && !sourceURI.isRelative()) {
-					String location = ((Link) link).getLocation();
-					if (!Util.isBlank(location)) {						
-						URI locationURI = URI.createURI(location);
-						locationURI = locationURI.deresolve(sourceURI, true, true, true);
-						((Link) link).setLocation(locationURI.toString());
-					}
-				}
-				// TODO if link - deresolve URI
-				return link;
+				return rebaseLinkFromTargetToSource(targetEndpoint.createLink(progressMonitor));
 			}
 			
 			@Override
 			public Label createLink(Object selector, String path, ProgressMonitor progressMonitor) {
-				Label link = targetEndpoint.createLink(selector, path, progressMonitor);
-				if (link instanceof Link && sourceURI != null && !sourceURI.isRelative()) {
-					String location = ((Link) link).getLocation();
-					if (!Util.isBlank(location)) {						
-						URI locationURI = URI.createURI(location);
-						locationURI = locationURI.deresolve(sourceURI, true, true, true);
-						((Link) link).setLocation(locationURI.toString());
-					}
-				}
-				return link;
+				return rebaseLinkFromTargetToSource(targetEndpoint.createLink(selector, path, progressMonitor));
 			}
 
 			@Override
@@ -130,16 +134,7 @@ public class EReferenceConnectionProcessor {
 			public Supplier<Collection<Label>> createLabelsSupplier() {
 				return targetEndpoint.createLabelsSupplier().then(labels -> {
 					for (Label label: labels) {
-						if (label instanceof Link) {
-							Link link = (Link) label;
-							String location = link.getLocation();
-							if (!Util.isBlank(location)) {
-								URI uri = URI.createURI(location);
-								if (!uri.isRelative() && sourceURI != null && !sourceURI.isRelative()) {
-									link.setLocation(uri.deresolve(sourceURI, true, true, true).toString());
-								}
-							}
-						}
+						rebaseLinkFromTargetToSource(label);
 					}
 					return labels;
 				});
