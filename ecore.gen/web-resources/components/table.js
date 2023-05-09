@@ -48,6 +48,8 @@ Vue.component('nsd-ecore-doc-table', {
 			});								
 		}
 		
+//		console.dir(this.items[1].type);
+		
 		return data;
 	},
 	computed: {
@@ -56,6 +58,14 @@ Vue.component('nsd-ecore-doc-table', {
 		},  	
   		filterOn() {
 			return this.visibleFields;
+		},
+		filteredItems() {
+			if (this.inherited) {
+				return this.items;
+			}
+			return this.items.filter(item => {
+				return !item.inherited;
+			});
 		}
 	},
 	methods: {
@@ -152,7 +162,7 @@ Vue.component('nsd-ecore-doc-table', {
 					<b-table 
 						striped 
 						hover
-						:items="items"
+						:items="filteredItems"
 						:fields="fields"
 						@filtered="onFiltered"
 						:filter="filter"

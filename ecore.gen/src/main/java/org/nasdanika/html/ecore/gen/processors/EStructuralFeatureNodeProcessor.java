@@ -2,9 +2,11 @@ package org.nasdanika.html.ecore.gen.processors;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
+import org.nasdanika.graph.processor.OutgoingEndpoint;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.LabelFactory;
@@ -30,5 +32,20 @@ public class EStructuralFeatureNodeProcessor<T extends EStructuralFeature> exten
 		}
 		return createLabel(progressMonitor);
 	}
-
+	
+	private LabelFactory declaringClassLabelFactory;
+	
+	@OutgoingEndpoint("reference.name == 'eContainingClass'")
+	public void setDeclaringClassEndpoint(LabelFactory declaringClassLabelFactory) {
+		this.declaringClassLabelFactory = declaringClassLabelFactory;
+	}
+	
+	@Override
+	public Label createLink(Object selector, String path, ProgressMonitor progressMonitor) {
+		if (selector == EcorePackage.Literals.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS && declaringClassLabelFactory != null) {
+			return declaringClassLabelFactory.createLink(progressMonitor);
+		}
+		return super.createLink(selector, path, progressMonitor);
+	}	
+	
 }

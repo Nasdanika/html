@@ -12,6 +12,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
@@ -52,6 +53,23 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			}
 		}
 		return ((ENamedElement) connection.getTarget().getTarget()).getName();
+	}
+	
+	protected String declaringClassLink(EReferenceConnection connection, LabelFactory labelFactory, ProgressMonitor progressMonitor) {
+		String declaringClassName = ((EStructuralFeature) connection.getTarget().getTarget()).getEContainingClass().getName();
+		String declaringClassNameComment = "<!-- " + declaringClassName + "--> ";
+		Label link = labelFactory.createLink(EcorePackage.Literals.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS, null, progressMonitor);
+		if (link != null) {
+			link.setIcon(null);
+			Adapter adapter = AppAdapterFactory.INSTANCE.adapt(link, SupplierFactory.Provider.class);
+			if (adapter instanceof SupplierFactory.Provider) {
+				SupplierFactory<Tag> supplierFactory = ((SupplierFactory.Provider) adapter).getFactory(Tag.class);
+				Supplier<Tag> supplier = supplierFactory.create(context);
+				Tag tag = supplier.call(progressMonitor, null, Status.FAIL, Status.ERROR);
+				return declaringClassNameComment + tag.toString(); // type name in comments for sorting - kinda a hack, but easy.
+			}
+		}
+		return declaringClassNameComment + declaringClassName;
 	}
 	
 	/**
@@ -105,22 +123,16 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 					DynamicTableBuilder<Entry<EReferenceConnection, LabelFactory>> referencesTableBuilder = new DynamicTableBuilder<>("nsd-ecore-doc-table");
 					referencesTableBuilder
 						.addStringColumnBuilder("name", true, false, "Name", endpoint -> nameLink(endpoint.getKey(), endpoint.getValue(), progressMonitor)) 
-						.addStringColumnBuilder("type", true, true, "Type", endpoint -> typeLink(endpoint.getKey(), endpoint.getValue(), false, progressMonitor)); 
-//						.addStringColumnBuilder("type", true, true, "Type", attr -> {
-//							EGenericType genericType = attr.getEGenericType(); 
-//							if (genericType == null) {
-//								return null;
-//							}
-//							StringBuilder sb = new StringBuilder();
-//							genericType(genericType, eObject, sb::append, progressMonitor);
-//							return sb.toString();
-//						})
-//						.addStringColumnBuilder("cardinality", true, true, "Cardinality", EModelElementNodeProcessor::cardinality)
+						.addStringColumnBuilder("type", true, true, "Type", endpoint -> typeLink(endpoint.getKey(), endpoint.getValue(), false, progressMonitor)) 
+						.addStringColumnBuilder("cardinality", true, true, "Cardinality", endpoint -> EModelElementNodeProcessor.cardinality((ETypedElement) endpoint.getKey().getTarget().getTarget()))
 //						.addBooleanColumnBuilder("changeable", true, true, "Changeable", EStructuralFeature::isChangeable)
 //						.addBooleanColumnBuilder("derived", true, true, "Derived", EStructuralFeature::isDerived);
-//						.addStringColumnBuilder("declaring-class", true, true, "Declaring Class", attr -> link(attr.getEContainingClass(), eObject))
+						.addStringColumnBuilder("declaring-class", true, true, "Declaring Class", endpoint -> declaringClassLink(endpoint.getKey(), endpoint.getValue(), progressMonitor))
 //						.addStringColumnBuilder("description", true, false, "Description", this::getEModelElementFirstDocSentence);
-						// Other things not visible?
+						.addBooleanColumnBuilder("inherited", false, true, "Inherited", endpoint -> ((EStructuralFeature) endpoint.getKey().getTarget().getTarget()).getEContainingClass() != getTarget());
+
+					
+					// Other things not visible?
 					
 					org.nasdanika.html.model.html.Tag referencesTable = referencesTableBuilder.build(
 							referenceOutgoingEndpoints.stream().sorted((a,b) -> {

@@ -108,7 +108,7 @@ public class DynamicTableBuilder<T> {
 			}
 
 			@Override
-			public void buildCell(T element, org.nasdanika.ncore.Map item,	ProgressMonitor progressMonitor) {
+			public void buildCell(T element, org.nasdanika.ncore.Map item, ProgressMonitor progressMonitor) {
 				EObject cellValue = cellValueProvider.apply(element);				
 				if (cellValue != null) {
 					item.put(key, cellValue); 
