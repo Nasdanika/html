@@ -157,37 +157,6 @@ public class EReferenceConnectionProcessor {
 			}
 			
 		};
-		
-		
-//		return new WidgetFactory() {
-//
-//			@Override
-//			public Label createLabel(ProgressMonitor progressMonitor) {
-//				return targetEndpoint.createLabel(progressMonitor);
-//			}
-//
-//			@Override
-//			public Label createLink(String path, ProgressMonitor progressMonitor) {
-//				return rebaseLinkFromTargetToSource(targetEndpoint.createLink(progressMonitor));
-//			}
-//			
-//			@Override
-//			public Label createLink(Object selector, String path, ProgressMonitor progressMonitor) {
-//				return rebaseLinkFromTargetToSource(targetEndpoint.createLink(selector, path, progressMonitor));
-//			}
-//
-//			@Override
-//			public Supplier<Collection<Label>> createLabelsSupplier() {
-//				return targetEndpoint.createLabelsSupplier().then(labels -> {
-//					for (Label label: labels) {
-//						rebaseLinkFromTargetToSource(label);
-//					}
-//					return labels;
-//				});
-//				
-//			}
-//			
-//		};
 	}
 
 }

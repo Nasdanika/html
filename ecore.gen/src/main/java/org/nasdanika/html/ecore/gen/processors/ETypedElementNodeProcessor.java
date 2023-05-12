@@ -8,9 +8,8 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.graph.processor.OutgoingEndpoint;
 import org.nasdanika.html.model.app.Action;
-import org.nasdanika.html.model.app.Label;
-import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.Registry;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 public class ETypedElementNodeProcessor<T extends ETypedElement> extends EModelElementNodeProcessor<T> {
 
@@ -21,19 +20,19 @@ public class ETypedElementNodeProcessor<T extends ETypedElement> extends EModelE
 		super(config, context, prototypeProvider);
 	}	
 	
-	private WidgetFactory typeLabelFactory;
+	private WidgetFactory typeWidgetFactory;
 	
 	@OutgoingEndpoint("reference.name == 'eType'")
-	public void setTypeEndpoint(WidgetFactory typeLabelFactory) {
-		this.typeLabelFactory = typeLabelFactory;
+	public final void setTypeEndpoint(WidgetFactory typeWidgetFactory) {
+		this.typeWidgetFactory = typeWidgetFactory;
 	}
 	
 	@Override
-	public Label createLink(Object selector, String path, ProgressMonitor progressMonitor) {
-		if (selector == EcorePackage.Literals.ETYPED_ELEMENT__ETYPE && typeLabelFactory != null) {
-			return typeLabelFactory.createLink(progressMonitor);
+	public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
+		if (selector == EcorePackage.Literals.ETYPED_ELEMENT__ETYPE && typeWidgetFactory != null) {
+			return typeWidgetFactory.createLink(base, progressMonitor);
 		}
-		return super.createLink(selector, path, progressMonitor);
+		return super.createWidget(selector, base, progressMonitor);
 	}
 
 }

@@ -43,7 +43,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.nasdanika.html</groupId>
-			<artifactId>app-model</artifactId>
+			<artifactId>app-model-gen</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
 		<dependency>

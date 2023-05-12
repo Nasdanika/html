@@ -9,8 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.text.StringEscapeUtils;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
@@ -21,7 +24,9 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.MapCompoundSupplier;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
+import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Supplier.FunctionResult;
 import org.nasdanika.common.Util;
 import org.nasdanika.graph.emf.EObjectNode;
@@ -35,10 +40,12 @@ import org.nasdanika.graph.processor.OutgoingHandler;
 import org.nasdanika.graph.processor.ParentProcessor;
 import org.nasdanika.graph.processor.ProcessorElement;
 import org.nasdanika.graph.processor.ProcessorInfo;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
+import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.URINodeProcessor;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
@@ -464,8 +471,26 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 		// TODO - icon, toolitp, ...
 	}
 	
-	protected String render(Object object, ProgressMonitor monitor) {
-		throw new UnsupportedOperationException("TODO - copy from EClassNodeProcessor");
+	protected String render(Object object, ProgressMonitor progressMonitor) {
+		if (object instanceof EObject) {
+			Adapter adapter = AppAdapterFactory.INSTANCE.adapt((EObject) object, SupplierFactory.Provider.class);
+			if (adapter instanceof SupplierFactory.Provider) {
+				SupplierFactory<Tag> supplierFactory = ((SupplierFactory.Provider) adapter).getFactory(Tag.class);
+				Supplier<Tag> supplier = supplierFactory.create(context);
+				Tag tag = supplier.call(progressMonitor, null, Status.FAIL, Status.ERROR);
+				return tag.toString();
+			}
+			// Adapt to just supplier factory here and see what comes out - string, stream, ...?			
+		} else if (object instanceof Iterable) {
+			StringBuilder ret = new StringBuilder();
+			((Iterable<?>) object).forEach(e -> ret.append(render(e, progressMonitor)));
+			return ret.toString();
+		}
+		if (object instanceof Stream) {
+			return ((Stream<?>) object).map(e -> render(e, progressMonitor)).collect(Collectors.joining());
+		}
+
+		return object == null ? "" : object.toString();
 	}
 	
 	// --- WidgetFactory methods ---
@@ -487,18 +512,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	}
 	
 	@Override
-	public String createWidgetString(Object selector, String path, ProgressMonitor progressMonitor) {
-		return render(createWidget(selector, path, progressMonitor), progressMonitor);
-	}
-	
-	@Override
 	public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
-		return null;
-	}
-	
-	@Override
-	public Object createWidget(Object selector, String path, ProgressMonitor progressMonitor) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -508,20 +522,10 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	}
 	
 	@Override
-	public String createLinkString(String path, ProgressMonitor progressMonitor) {
-		return render(createLink(path, progressMonitor), progressMonitor);
-	}
-	
-	@Override
 	public Object createLink(URI base, ProgressMonitor progressMonitor) {
 		Link link = createLink(getTarget(), null, progressMonitor);
 		link.rebase(null, base);
 		return link;
-	}
-	
-	@Override
-	public Object createLink(String path, ProgressMonitor progressMonitor) {
-		return createLink(getTarget(), path, progressMonitor);
 	}
 		
 	@Override

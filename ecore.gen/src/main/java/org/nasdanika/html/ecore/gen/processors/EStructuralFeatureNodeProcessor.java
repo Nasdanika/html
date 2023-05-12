@@ -25,27 +25,27 @@ public class EStructuralFeatureNodeProcessor<T extends EStructuralFeature> exten
 	 * Creating a link only if the action has content 
 	 */
 	@Override
-	public Label createLink(String path, ProgressMonitor progressMonitor) {
+	public Object createLink(URI base, ProgressMonitor progressMonitor) {
 		Label action = createAction(progressMonitor);
 		if (action instanceof Action && !((Action) action).getContent().isEmpty()) {
-			return super.createLink(path, progressMonitor);
+			return super.createLink(base, progressMonitor);
 		}
 		return createLabel(progressMonitor);
 	}
 	
-	private WidgetFactory declaringClassLabelFactory;
+	private WidgetFactory declaringClassWidgetFactory;
 	
 	@OutgoingEndpoint("reference.name == 'eContainingClass'")
-	public void setDeclaringClassEndpoint(WidgetFactory declaringClassLabelFactory) {
-		this.declaringClassLabelFactory = declaringClassLabelFactory;
+	public final void setDeclaringClassEndpoint(WidgetFactory declaringClassWidgetFactory) {
+		this.declaringClassWidgetFactory = declaringClassWidgetFactory;
 	}
 	
 	@Override
-	public Label createLink(Object selector, String path, ProgressMonitor progressMonitor) {
-		if (selector == EcorePackage.Literals.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS && declaringClassLabelFactory != null) {
-			return declaringClassLabelFactory.createLink(progressMonitor);
+	public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
+		if (selector == EcorePackage.Literals.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS && declaringClassWidgetFactory != null) {
+			return declaringClassWidgetFactory.createLink(base, progressMonitor);
 		}
-		return super.createLink(selector, path, progressMonitor);
+		return super.createWidget(selector, base, progressMonitor);
 	}	
 	
 }

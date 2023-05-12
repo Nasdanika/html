@@ -111,7 +111,7 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			for (Label label: labels) {
 				if (label instanceof Action) {										
 					DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> attributesTableBuilder = new DynamicTableBuilder<>("nsd-ecore-doc-table");
-					buildStructuralFeatureColumns(attributesTableBuilder, false, progressMonitor);
+					buildStructuralFeatureColumns(attributesTableBuilder, progressMonitor);
 					
 					org.nasdanika.html.model.html.Tag attributesTable = attributesTableBuilder.build(
 							referenceOutgoingEndpoints.stream().sorted((a,b) -> {
@@ -132,7 +132,7 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			for (Label label: labels) {
 				if (label instanceof Action) {										
 					DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> referencesTableBuilder = new DynamicTableBuilder<>("nsd-ecore-doc-table");
-					buildStructuralFeatureColumns(referencesTableBuilder, false, progressMonitor);
+					buildStructuralFeatureColumns(referencesTableBuilder, progressMonitor);
 // TODO										
 //					getEKeys()
 //					getEOpposite()
@@ -160,7 +160,7 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			for (Label label: labels) {
 				if (label instanceof Action) {					
 					DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> operationsTableBuilder = new DynamicTableBuilder<>("nsd-ecore-doc-table");
-					buildTypedElementColumns(operationsTableBuilder, false, progressMonitor);					
+					buildTypedElementColumns(operationsTableBuilder, progressMonitor);					
 					operationsTableBuilder.addStringColumnBuilder("declaring-class", true, true, "Declaring Class", endpoint -> declaringClassLink(endpoint.getKey(), endpoint.getValue(), progressMonitor));
 //					TODO
 //					getEExceptions()
