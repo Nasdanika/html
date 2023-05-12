@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
@@ -145,14 +145,16 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 	 * @return
 	 */
 	protected String typeLink(EReferenceConnection connection, WidgetFactory widgetFactory, ProgressMonitor progressMonitor) {		
-		// TODO - Generic type
-		EClassifier eType = ((ETypedElement) connection.getTarget().getTarget()).getEType();
-		if (eType == null) {
-			return null;
+		EGenericType eGenericType = ((ETypedElement) connection.getTarget().getTarget()).getEGenericType();
+		if (eGenericType == null) {
+			return "void";
 		}
-		String typeName = eType.getName();
+		String typeName = eGenericType.getERawType().getName(); // TODO - as string
 		String typeNameComment = "<!-- " + typeName + "--> ";
-		String linkStr = widgetFactory.createWidgetString(EcorePackage.Literals.ETYPED_ELEMENT__ETYPE, progressMonitor); // TODO - Generic type		
+		String linkStr = widgetFactory.createWidgetString(EcorePackage.Literals.ETYPED_ELEMENT__EGENERIC_TYPE, progressMonitor);
+		if (linkStr == null) {
+			linkStr = widgetFactory.createWidgetString(EcorePackage.Literals.ETYPED_ELEMENT__ETYPE, progressMonitor);			
+		}
 		return typeNameComment + (Util.isBlank(linkStr) ? typeName : linkStr);
 	}
 	

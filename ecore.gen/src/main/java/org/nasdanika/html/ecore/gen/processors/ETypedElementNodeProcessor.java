@@ -27,10 +27,20 @@ public class ETypedElementNodeProcessor<T extends ETypedElement> extends EModelE
 		this.typeWidgetFactory = typeWidgetFactory;
 	}
 	
+	private WidgetFactory genericTypeWidgetFactory;
+	
+	@OutgoingEndpoint("reference.name == 'eGenericType'")
+	public final void setGenericTypeEndpoint(WidgetFactory genericTypeWidgetFactory) {
+		this.genericTypeWidgetFactory = genericTypeWidgetFactory;
+	}
+	
 	@Override
 	public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
 		if (selector == EcorePackage.Literals.ETYPED_ELEMENT__ETYPE && typeWidgetFactory != null) {
 			return typeWidgetFactory.createLink(base, progressMonitor);
+		}
+		if (selector == EcorePackage.Literals.ETYPED_ELEMENT__EGENERIC_TYPE && genericTypeWidgetFactory != null) {
+			return genericTypeWidgetFactory.createLink(base, progressMonitor);
 		}
 		return super.createWidget(selector, base, progressMonitor);
 	}

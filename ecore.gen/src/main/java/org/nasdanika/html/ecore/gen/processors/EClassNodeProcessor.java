@@ -9,11 +9,16 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.common.Util;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.html.model.app.Action;
@@ -24,6 +29,27 @@ import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 
 public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
+	
+//	getEAllAttributes()
+//	getEAllContainments()
+//	getEAllGenericSuperTypes()
+//	getEAllOperations()
+//	getEAllReferences()
+//	getEAllStructuralFeatures()
+//	getEAllSuperTypes()
+//	getEAttributes()
+//	getEGenericSuperTypes()
+//	getEIDAttribute()
+//	getEOperation(int)
+//	getEOperations()
+//	getEReferences()
+//	getEStructuralFeature(int)
+//	getEStructuralFeature(String)
+//	getEStructuralFeatures()
+//	getESuperTypes()
+//	getFeatureCount()
+//	getFeatureID(EStructuralFeature)
+//	getFeatureType(EStructuralFeature)	
 
 	public EClassNodeProcessor(
 			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,
@@ -249,5 +275,28 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 		}
 		return super.isCallOutgoingReferenceLabelsSuppliers(eReference);
 	}
+
+	/**
+	 * Effective generic type for structural features
+	 */
+	protected String typeLink(EReferenceConnection connection, WidgetFactory widgetFactory, ProgressMonitor progressMonitor) {
+		EObject tt = connection.getTarget().getTarget();
+		if (tt instanceof EStructuralFeature) {
+			EStructuralFeature feature = (EStructuralFeature) tt;
+			EGenericType featureType = getTarget().getFeatureType(feature);
+			if (featureType != null) {
+				// TODO - create and wire processor explicitly - might not exist? Or do it when creating EClass nodes?
+//				String typeNameComment = "<!-- " + typeName + "--> ";
+//				String linkStr = widgetFactory.createWidgetString(EcorePackage.Literals.ETYPED_ELEMENT__EGENERIC_TYPE, progressMonitor);
+//				if (linkStr == null) {
+//					linkStr = widgetFactory.createWidgetString(EcorePackage.Literals.ETYPED_ELEMENT__ETYPE, progressMonitor);			
+//				}
+//				return typeNameComment + (Util.isBlank(linkStr) ? typeName : linkStr);
+//				
+			}
+		}
+		return super.typeLink(connection, widgetFactory, progressMonitor);
+	}
+	
 	
 }
