@@ -10,7 +10,7 @@ import org.nasdanika.graph.Element;
 import org.nasdanika.graph.processor.IntrospectionLevel;
 import org.nasdanika.graph.processor.ProcessorInfo;
 
-public abstract class ReflectiveProcessorFactory<I> extends org.nasdanika.graph.processor.NopEndpointReflectiveProcessorFactory<Object, LabelFactory, Registry<I>> {
+public abstract class ReflectiveProcessorFactory<I> extends org.nasdanika.graph.processor.NopEndpointReflectiveProcessorFactory<Object, WidgetFactory, Registry<I>> {
 
 	protected ReflectiveProcessorFactory(IntrospectionLevel introspectionLevel, Object[] targets) {
 		super(introspectionLevel, targets);
@@ -27,7 +27,7 @@ public abstract class ReflectiveProcessorFactory<I> extends org.nasdanika.graph.
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public Collection<LabelFactory> select(Predicate<Element> predicate, NodeProcessor<I> base) {
+			public Collection<WidgetFactory> select(Predicate<Element> predicate, NodeProcessor<I> base) {
 				return registry
 						.entrySet()
 						.stream()
@@ -39,7 +39,7 @@ public abstract class ReflectiveProcessorFactory<I> extends org.nasdanika.graph.
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public LabelFactory find(I identifier, NodeProcessor<I> base) {
+			public WidgetFactory find(I identifier, NodeProcessor<I> base) {
 				return registry
 						.entrySet()
 						.stream()
@@ -53,7 +53,7 @@ public abstract class ReflectiveProcessorFactory<I> extends org.nasdanika.graph.
 		};
 	}
 	
-	protected abstract LabelFactory resolve(NodeProcessor<I> p, NodeProcessor<I> base);
+	protected abstract WidgetFactory resolve(NodeProcessor<I> p, NodeProcessor<I> base);
 	
 	protected abstract Collection<I> getIdentifiers(Element element); 
 

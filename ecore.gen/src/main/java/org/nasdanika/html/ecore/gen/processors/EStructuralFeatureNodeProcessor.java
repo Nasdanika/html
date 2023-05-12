@@ -9,13 +9,13 @@ import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.graph.processor.OutgoingEndpoint;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
-import org.nasdanika.html.model.app.graph.LabelFactory;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 
 public class EStructuralFeatureNodeProcessor<T extends EStructuralFeature> extends ETypedElementNodeProcessor<T> {
 
 	public EStructuralFeatureNodeProcessor(
-			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config,
+			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,
 			Context context,
 			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {
 		super(config, context, prototypeProvider);
@@ -33,10 +33,10 @@ public class EStructuralFeatureNodeProcessor<T extends EStructuralFeature> exten
 		return createLabel(progressMonitor);
 	}
 	
-	private LabelFactory declaringClassLabelFactory;
+	private WidgetFactory declaringClassLabelFactory;
 	
 	@OutgoingEndpoint("reference.name == 'eContainingClass'")
-	public void setDeclaringClassEndpoint(LabelFactory declaringClassLabelFactory) {
+	public void setDeclaringClassEndpoint(WidgetFactory declaringClassLabelFactory) {
 		this.declaringClassLabelFactory = declaringClassLabelFactory;
 	}
 	

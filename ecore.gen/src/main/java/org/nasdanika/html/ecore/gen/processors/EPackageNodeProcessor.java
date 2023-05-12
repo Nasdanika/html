@@ -18,13 +18,13 @@ import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
-import org.nasdanika.html.model.app.graph.LabelFactory;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 
 public class EPackageNodeProcessor extends ENamedElementNodeProcessor<EPackage> {
 
 	public EPackageNodeProcessor(
-			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, 
+			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, 
 			Context context,
 			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {
 		super(config, context, prototypeProvider);
@@ -37,7 +37,7 @@ public class EPackageNodeProcessor extends ENamedElementNodeProcessor<EPackage> 
 	
 	@Override
 	protected void buildOutgoingReference(EReference eReference,
-			List<Entry<EReferenceConnection, LabelFactory>> referenceOutgoingEndpoints, 
+			List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints, 
 			Collection<Label> labels,
 			Map<EReferenceConnection, Collection<Label>> outgoingLabels, 
 			ProgressMonitor progressMonitor) {

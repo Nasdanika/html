@@ -12,7 +12,7 @@ import org.nasdanika.graph.processor.ConnectionProcessorConfig;
 import org.nasdanika.graph.processor.IntrospectionLevel;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
-import org.nasdanika.html.model.app.graph.LabelFactory;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.NodeProcessor;
 import org.nasdanika.html.model.app.graph.ReflectiveProcessorFactory;
 import org.nasdanika.html.model.app.graph.Registry;
@@ -28,14 +28,14 @@ public class EObjectReflectiveProcessorFactory extends ReflectiveProcessorFactor
 	public ProcessorInfo<Object, Registry<URI>> createProcessor(ProcessorConfig<Object, Registry<URI>> config, ProgressMonitor progressMonitor) {
 		ProcessorInfo<Object, Registry<URI>> processorInfo = super.createProcessor(config, progressMonitor);
 		if (processorInfo.getProcessor() == null && config instanceof ConnectionProcessorConfig) {
-			return ProcessorInfo.of(config, new EReferenceConnectionProcessor((ConnectionProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>>) config), null);
+			return ProcessorInfo.of(config, new EReferenceConnectionProcessor((ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>>) config), null);
 		}
 			
 		return processorInfo;
 	}
 
 	@Override
-	protected LabelFactory resolve(NodeProcessor<URI> p, NodeProcessor<URI> base) {
+	protected WidgetFactory resolve(NodeProcessor<URI> p, NodeProcessor<URI> base) {
 		// TODO Auto-generated method stub
 		return null;
 	}

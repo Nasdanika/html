@@ -2,6 +2,8 @@
  */
 package org.nasdanika.html.model.app;
 
+import org.eclipse.emf.common.util.URI;
+import org.nasdanika.common.Util;
 import org.nasdanika.html.model.bootstrap.Modal;
 
 
@@ -207,5 +209,25 @@ public interface Link extends Label {
 	 * @generated
 	 */
 	void setAction(Action value);
+	
+	/**
+	 * If link has a relative location the location is rebased by resolving against <code>from</code> and then deresolving against <code>to</code>
+	 * @param from
+	 * @param to
+	 */
+	default void rebase(URI from, URI to) {
+		String location = getLocation();
+		if (!Util.isBlank(location)) {						
+			URI locationURI = URI.createURI(location);
+			if (from != null && !from.isRelative() && locationURI.isRelative()) {
+				locationURI = locationURI.resolve(from);
+			}						
+			if (to != null && !to.isRelative()) {
+				locationURI = locationURI.deresolve(to, true, true, true);
+			}
+			setLocation(locationURI.toString());
+		}
+		
+	}
 
 } // Link

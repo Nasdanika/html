@@ -6,7 +6,7 @@ import org.eclipse.emf.common.util.URI;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
-import org.nasdanika.html.model.app.graph.LabelFactory;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.NodeProcessor;
 import org.nasdanika.html.model.app.graph.Registry;
 
@@ -31,7 +31,7 @@ public class NodeProcessorFactoryAdapter<T extends Notifier> extends AdapterImpl
 	}
 
 	@Override
-	public NodeProcessor<URI> create(NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config,
+	public NodeProcessor<URI> create(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,
 			Context context, ProgressMonitor progressMonitor) {
 		// TODO Auto-generated method stub
 		return null;

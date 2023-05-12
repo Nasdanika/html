@@ -14,7 +14,7 @@ import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.ConnectionProcessorConfig;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
-import org.nasdanika.html.model.app.graph.LabelFactory;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.NodeProcessor;
 import org.nasdanika.html.model.app.graph.ProcessorFactory;
 import org.nasdanika.html.model.app.graph.Registry;
@@ -44,7 +44,7 @@ public class EObjectProcessorFactory extends ProcessorFactory<URI> {
 
 	@Override
 	protected EReferenceConnectionProcessor createConnectionProcessor(
-			ConnectionProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config,
+			ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,
 			ProgressMonitor progressMonitor) {
 		
 		Connection connection = config.getElement();
@@ -57,7 +57,7 @@ public class EObjectProcessorFactory extends ProcessorFactory<URI> {
 
 	@Override
 	protected URINodeProcessor createNodeProcessor(
-			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config,
+			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,
 			ProgressMonitor progressMonitor) {
 		
 		Node node = config.getElement();
@@ -75,7 +75,7 @@ public class EObjectProcessorFactory extends ProcessorFactory<URI> {
 	}
 	
 	@Override
-	protected LabelFactory resolve(NodeProcessor<URI> p, NodeProcessor<URI> base) {
+	protected WidgetFactory resolve(NodeProcessor<URI> p, NodeProcessor<URI> base) {
 		// TODO Auto-generated method stub
 		return null;
 	}

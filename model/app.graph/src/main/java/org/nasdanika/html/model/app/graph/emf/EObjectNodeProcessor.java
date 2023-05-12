@@ -39,9 +39,9 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
-import org.nasdanika.html.model.app.graph.LabelFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.URINodeProcessor;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.util.NcoreUtil;
 import org.nasdanika.ncore.util.SemanticInfo;
@@ -57,7 +57,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	protected java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider;
 
 	public EObjectNodeProcessor(
-			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, 
+			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, 
 			Context context, 
 			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {		
 		this.config = config;
@@ -92,43 +92,32 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 		return (T) node.getTarget();
 	}
 	
-	protected Map<EReferenceConnection, LabelFactory> incomingEndpoints = new LinkedHashMap<>();
-	protected Map<EReferenceConnection, LabelFactory> outgoingEndpoints = new LinkedHashMap<>();
+	protected Map<EReferenceConnection, WidgetFactory> incomingEndpoints = new LinkedHashMap<>();
+	protected Map<EReferenceConnection, WidgetFactory> outgoingEndpoints = new LinkedHashMap<>();
 	
 	@IncomingEndpoint
-	public void setIncomingEndpoint(EReferenceConnection connection, LabelFactory endpoint) {
+	public void setIncomingEndpoint(EReferenceConnection connection, WidgetFactory endpoint) {
 		incomingEndpoints.put(connection, endpoint);
 	}
 		
 	@OutgoingEndpoint
-	public void setOutgoingEndpoint(EReferenceConnection connection, LabelFactory endpoint) {
+	public void setOutgoingEndpoint(EReferenceConnection connection, WidgetFactory endpoint) {
 		outgoingEndpoints.put(connection, endpoint);
 	}
 	
 	@IncomingHandler
-	public LabelFactory getIncomingHandler(EReferenceConnection connection) {
+	public WidgetFactory getIncomingHandler(EReferenceConnection connection) {
 		return this;
 	}
 		
 	@OutgoingHandler
-	public LabelFactory getOutgoingHandler(EReferenceConnection connection) {
+	public WidgetFactory getOutgoingHandler(EReferenceConnection connection) {
 		return this;
 	}
 	
-	protected NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config;
+	protected NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config;
 	protected Context context;
 	protected URI uri;
-	
-	@Override
-	public void resolve(URI base, ProgressMonitor progressMonitor) {		
-		uri = uri.resolve(base);
-		for (LabelFactory oe: outgoingEndpoints.values()) {
-			oe.resolve(uri, progressMonitor);
-		}
-		for (LabelFactory ie: incomingEndpoints.values()) {
-			ie.resolve(uri, progressMonitor);
-		}
-	}
 
 	protected Collection<Label> createLabels(ProgressMonitor progressMonitor) {		
 		return Collections.singleton(createAction(progressMonitor));
@@ -141,16 +130,6 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	 */
 	protected Label createAction(ProgressMonitor progressMonitor) {
 		return createAction(getTarget(), progressMonitor);
-	}
-	
-	@Override
-	public Label createLabel(ProgressMonitor progressMonitor) {
-		return createLabel(getTarget(), progressMonitor);
-	}
-
-	@Override
-	public Label createLink(String path, ProgressMonitor progressMonitor) {
-		return createLink(getTarget(), path, progressMonitor);
 	}
 
 	/**
@@ -210,7 +189,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	protected List<Consumer<Collection<Label>>> getReferenceLabelBuilders() {		
 		List<Consumer<Collection<Label>>> ret = new ArrayList<>();
 		
-		Map<EReference, List<Entry<EReferenceConnection, LabelFactory>>> groupedOutgoingEndpoints = org.nasdanika.common.Util.groupBy(outgoingEndpoints.entrySet(), e -> e.getKey().getReference());
+		Map<EReference, List<Entry<EReferenceConnection, WidgetFactory>>> groupedOutgoingEndpoints = org.nasdanika.common.Util.groupBy(outgoingEndpoints.entrySet(), e -> e.getKey().getReference());
 		groupedOutgoingEndpoints
 			.entrySet()
 			.stream()
@@ -219,7 +198,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			.filter(Objects::nonNull)
 			.forEach(ret::add);
 		
-		Map<EReference, List<Entry<EReferenceConnection, LabelFactory>>> groupedIncomingEndpoints = org.nasdanika.common.Util.groupBy(incomingEndpoints.entrySet(), e -> e.getKey().getReference());
+		Map<EReference, List<Entry<EReferenceConnection, WidgetFactory>>> groupedIncomingEndpoints = org.nasdanika.common.Util.groupBy(incomingEndpoints.entrySet(), e -> e.getKey().getReference());
 		groupedIncomingEndpoints
 			.entrySet()
 			.stream()
@@ -229,18 +208,6 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			.forEach(ret::add);
 		
 		return ret;
-	}
-	
-	@Override
-	public Supplier<Collection<Label>> createLabelsSupplier() {
-		List<Consumer<Collection<Label>>> referenceLabelBuilders = getReferenceLabelBuilders();
-		if (referenceLabelBuilders == null || referenceLabelBuilders.isEmpty()) {
-			return doCreateLabelsSupplier();
-		}
-		@SuppressWarnings("resource")
-		CollectionCompoundConsumer<Collection<Label>> collectionCompoundConsumer = new CollectionCompoundConsumer<Collection<Label>>("Reference Label Builder");
-		referenceLabelBuilders.forEach(collectionCompoundConsumer::add);
-		return doCreateLabelsSupplier().then(collectionCompoundConsumer.asFunction());
 	}
 	
 	// --- Label building methods ---
@@ -271,12 +238,12 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	 */
 	protected Consumer<Collection<Label>> createIncomingReferenceLabelConsumer(
 			EReference eReference, 
-			List<Entry<EReferenceConnection, LabelFactory>> referenceIncomingEndpoints) {
+			List<Entry<EReferenceConnection, WidgetFactory>> referenceIncomingEndpoints) {
 		
 		@SuppressWarnings("resource")
 		MapCompoundSupplier<EReferenceConnection, Collection<Label>> endpointLabelsSupplier = new MapCompoundSupplier<>("Incoming endpoints supplier");
 		if (isCallIncomingReferenceLabelsSuppliers(eReference)) {
-			for (Entry<EReferenceConnection, LabelFactory> e: referenceIncomingEndpoints) {
+			for (Entry<EReferenceConnection, WidgetFactory> e: referenceIncomingEndpoints) {
 				endpointLabelsSupplier.put(e.getKey(), e.getValue().createLabelsSupplier());
 			}
 		}
@@ -293,7 +260,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	 */
 	protected Consumer<Supplier.FunctionResult<Collection<Label>, Map<EReferenceConnection, Collection<Label>>>> createIncomingReferenceLabelBuilder(
 			EReference eReference,
-			List<Entry<EReferenceConnection, LabelFactory>> referenceIncomingEndpoints) {
+			List<Entry<EReferenceConnection, WidgetFactory>> referenceIncomingEndpoints) {
 		
 		return new Consumer<Supplier.FunctionResult<Collection<Label>,Map<EReferenceConnection,Collection<Label>>>>() {
 			
@@ -325,7 +292,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	 */
 	protected void buildIncomingReference(
 			EReference eReference,
-			List<Entry<EReferenceConnection, LabelFactory>> referenceIncomingEndpoints,
+			List<Entry<EReferenceConnection, WidgetFactory>> referenceIncomingEndpoints,
 			Collection<Label> labels,
 			Map<EReferenceConnection, Collection<Label>> incomingLabels,
 			ProgressMonitor progressMonitor) {
@@ -338,12 +305,12 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	 */
 	protected Consumer<Collection<Label>> createOutgoingReferenceLabelConsumer(
 			EReference eReference, 
-			List<Entry<EReferenceConnection, LabelFactory>> referenceOutgoingEndpoints) {
+			List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints) {
 		
 		@SuppressWarnings("resource")
 		MapCompoundSupplier<EReferenceConnection, Collection<Label>> endpointLabelsSupplier = new MapCompoundSupplier<>("Outgoing endpoints supplier");
 		if (isCallOutgoingReferenceLabelsSuppliers(eReference)) {
-			for (Entry<EReferenceConnection, LabelFactory> e: referenceOutgoingEndpoints) {
+			for (Entry<EReferenceConnection, WidgetFactory> e: referenceOutgoingEndpoints) {
 				endpointLabelsSupplier.put(e.getKey(), e.getValue().createLabelsSupplier());
 			}
 		}
@@ -360,7 +327,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	 */
 	protected Consumer<Supplier.FunctionResult<Collection<Label>, Map<EReferenceConnection, Collection<Label>>>> createOutgoingReferenceLabelBuilder(
 			EReference eReference,
-			List<Entry<EReferenceConnection, LabelFactory>> referenceOutgoingEndpoints) {
+			List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints) {
 		
 		
 		return new Consumer<Supplier.FunctionResult<Collection<Label>,Map<EReferenceConnection,Collection<Label>>>>() {
@@ -401,7 +368,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	 */
 	protected void buildOutgoingReference(
 			EReference eReference,
-			List<Entry<EReferenceConnection, LabelFactory>> referenceOutgoingEndpoints,
+			List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints,
 			Collection<Label> labels,
 			Map<EReferenceConnection, Collection<Label>> outgoingLabels,
 			ProgressMonitor progressMonitor) {
@@ -496,5 +463,87 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 		
 		// TODO - icon, toolitp, ...
 	}
-
+	
+	protected String render(Object object, ProgressMonitor monitor) {
+		throw new UnsupportedOperationException("TODO - copy from EClassNodeProcessor");
+	}
+	
+	// --- WidgetFactory methods ---
+	
+	@Override
+	public void resolve(URI base, ProgressMonitor progressMonitor) {		
+		uri = uri.resolve(base);
+		for (WidgetFactory oe: outgoingEndpoints.values()) {
+			oe.resolve(uri, progressMonitor);
+		}
+		for (WidgetFactory ie: incomingEndpoints.values()) {
+			ie.resolve(uri, progressMonitor);
+		}
+	}
+	
+	@Override
+	public String createWidgetString(Object selector, URI base, ProgressMonitor progressMonitor) {
+		return render(createWidget(selector, base, progressMonitor), progressMonitor);
+	}
+	
+	@Override
+	public String createWidgetString(Object selector, String path, ProgressMonitor progressMonitor) {
+		return render(createWidget(selector, path, progressMonitor), progressMonitor);
+	}
+	
+	@Override
+	public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
+		return null;
+	}
+	
+	@Override
+	public Object createWidget(Object selector, String path, ProgressMonitor progressMonitor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String createLinkString(URI base, ProgressMonitor progressMonitor) {
+		return render(createLink(base, progressMonitor), progressMonitor);
+	}
+	
+	@Override
+	public String createLinkString(String path, ProgressMonitor progressMonitor) {
+		return render(createLink(path, progressMonitor), progressMonitor);
+	}
+	
+	@Override
+	public Object createLink(URI base, ProgressMonitor progressMonitor) {
+		Link link = createLink(getTarget(), null, progressMonitor);
+		link.rebase(null, base);
+		return link;
+	}
+	
+	@Override
+	public Object createLink(String path, ProgressMonitor progressMonitor) {
+		return createLink(getTarget(), path, progressMonitor);
+	}
+		
+	@Override
+	public Supplier<Collection<Label>> createLabelsSupplier() {
+		List<Consumer<Collection<Label>>> referenceLabelBuilders = getReferenceLabelBuilders();
+		if (referenceLabelBuilders == null || referenceLabelBuilders.isEmpty()) {
+			return doCreateLabelsSupplier();
+		}
+		@SuppressWarnings("resource")
+		CollectionCompoundConsumer<Collection<Label>> collectionCompoundConsumer = new CollectionCompoundConsumer<Collection<Label>>("Reference Label Builder");
+		referenceLabelBuilders.forEach(collectionCompoundConsumer::add);
+		return doCreateLabelsSupplier().then(collectionCompoundConsumer.asFunction());
+	}
+	
+	@Override
+	public String createLabelString(ProgressMonitor progressMonitor) {
+		return render(createLabel(progressMonitor), progressMonitor);
+	}
+	
+	@Override
+	public Object createLabel(ProgressMonitor progressMonitor) {
+		return createLabel(getTarget(), progressMonitor);
+	}
+	
 }

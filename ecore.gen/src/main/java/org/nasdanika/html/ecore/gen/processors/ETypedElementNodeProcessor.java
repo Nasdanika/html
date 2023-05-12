@@ -9,22 +9,22 @@ import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.graph.processor.OutgoingEndpoint;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
-import org.nasdanika.html.model.app.graph.LabelFactory;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 
 public class ETypedElementNodeProcessor<T extends ETypedElement> extends EModelElementNodeProcessor<T> {
 
 	public ETypedElementNodeProcessor(
-			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config,
+			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,
 			Context context,
 			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {
 		super(config, context, prototypeProvider);
 	}	
 	
-	private LabelFactory typeLabelFactory;
+	private WidgetFactory typeLabelFactory;
 	
 	@OutgoingEndpoint("reference.name == 'eType'")
-	public void setTypeEndpoint(LabelFactory typeLabelFactory) {
+	public void setTypeEndpoint(WidgetFactory typeLabelFactory) {
 		this.typeLabelFactory = typeLabelFactory;
 	}
 	

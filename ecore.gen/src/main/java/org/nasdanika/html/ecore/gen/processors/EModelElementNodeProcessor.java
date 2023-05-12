@@ -7,9 +7,13 @@ import java.util.Map.Entry;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
@@ -28,10 +32,12 @@ import org.nasdanika.exec.content.Text;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
-import org.nasdanika.html.model.app.graph.LabelFactory;
+import org.nasdanika.html.model.app.gen.DynamicTableBuilder;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.emf.EObjectNodeProcessor;
 import org.nasdanika.ncore.util.NcoreUtil;
@@ -39,7 +45,7 @@ import org.nasdanika.ncore.util.NcoreUtil;
 public class EModelElementNodeProcessor<T extends EModelElement> extends EObjectNodeProcessor<T> {
 	
 	public EModelElementNodeProcessor(
-			NodeProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config, 
+			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, 
 			Context context,
 			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {
 		super(config, context, prototypeProvider);
@@ -108,7 +114,7 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 	 */
 	@Override
 	protected void buildOutgoingReference(EReference eReference,
-			List<Entry<EReferenceConnection, LabelFactory>> referenceOutgoingEndpoints, Collection<Label> labels,
+			List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints, Collection<Label> labels,
 			Map<EReferenceConnection, Collection<Label>> outgoingLabels, ProgressMonitor progressMonitor) {
 		// TODO EAnnotations
 	}
@@ -144,10 +150,15 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 	 * @param progressMonitor
 	 * @return
 	 */
-	protected String typeLink(EReferenceConnection connection, LabelFactory labelFactory, boolean withIcon, ProgressMonitor progressMonitor) {
-		String typeName = ((ETypedElement) connection.getTarget().getTarget()).getEType().getName();
+	protected String typeLink(EReferenceConnection connection, WidgetFactory labelFactory, boolean withIcon, ProgressMonitor progressMonitor) {		
+		// TODO - Generic type
+		EClassifier eType = ((ETypedElement) connection.getTarget().getTarget()).getEType();
+		if (eType == null) {
+			return null;
+		}
+		String typeName = eType.getName();
 		String typeNameComment = "<!-- " + typeName + "--> ";
-		Label link = labelFactory.createLink(EcorePackage.Literals.ETYPED_ELEMENT__ETYPE, null, progressMonitor);
+		Label link = labelFactory.createLink(EcorePackage.Literals.ETYPED_ELEMENT__ETYPE, null, progressMonitor); // TODO - Generic type
 		if (link != null) {
 			if (!withIcon) {
 				link.setIcon(null);
@@ -162,5 +173,103 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 		}
 		return typeNameComment + typeName;
 	}
+	
+	protected String nameLink(EReferenceConnection connection, WidgetFactory labelFactory, ProgressMonitor progressMonitor) {
+		boolean isInherited = false;
+		EObject tt = connection.getTarget().getTarget();
+		if (tt instanceof EStructuralFeature) {
+			isInherited = ((EStructuralFeature) tt).getEContainingClass() != getTarget();
+		} else if (tt instanceof EOperation) {
+			isInherited = ((EOperation) tt).getEContainingClass() != getTarget();
+		}
+		Label link = labelFactory.createLink(progressMonitor);
+		if (link != null) {
+			link.setIcon(null);
+			Adapter adapter = AppAdapterFactory.INSTANCE.adapt(link, SupplierFactory.Provider.class);
+			if (adapter instanceof SupplierFactory.Provider) {
+				SupplierFactory<Tag> supplierFactory = ((SupplierFactory.Provider) adapter).getFactory(Tag.class);
+				Supplier<Tag> supplier = supplierFactory.create(context);
+				Tag tag = supplier.call(progressMonitor, null, Status.FAIL, Status.ERROR);
+				if (isInherited) {
+					return TagName.i.create(tag).toString();
+				}
+				return tag.toString();
+			}
+		}
+		String name = ((ENamedElement) connection.getTarget().getTarget()).getName();
+		return TagName.i.create(name).toString();
+	}
+		
+	protected String description(EReferenceConnection connection, WidgetFactory labelFactory, ProgressMonitor progressMonitor) {
+		Label link = labelFactory.createLink(progressMonitor);
+		return link == null ? null : link.getTooltip();
+	}	
+	
+	protected String declaringClassLink(EReferenceConnection connection, WidgetFactory labelFactory, ProgressMonitor progressMonitor) {
+		String declaringClassName;
+		Label link;
+		
+		EObject tt = connection.getTarget().getTarget();
+		if (tt instanceof EStructuralFeature) {
+			declaringClassName = ((EStructuralFeature) connection.getTarget().getTarget()).getEContainingClass().getName();
+			link = labelFactory.createLink(EcorePackage.Literals.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS, null, progressMonitor);
+		} else if (tt instanceof EOperation) {
+			declaringClassName = ((EOperation) connection.getTarget().getTarget()).getEContainingClass().getName();
+			link = labelFactory.createLink(EcorePackage.Literals.EOPERATION__ECONTAINING_CLASS, null, progressMonitor);
+		} else {
+			throw new IllegalArgumentException("Should be EStructuralOperation or EOperation: " + tt);
+		}
+		
+		String declaringClassNameComment = "<!-- " + declaringClassName + "--> ";
+		if (link != null) {
+			link.setIcon(null);
+			Adapter adapter = AppAdapterFactory.INSTANCE.adapt(link, SupplierFactory.Provider.class);
+			if (adapter instanceof SupplierFactory.Provider) {
+				SupplierFactory<Tag> supplierFactory = ((SupplierFactory.Provider) adapter).getFactory(Tag.class);
+				Supplier<Tag> supplier = supplierFactory.create(context);
+				Tag tag = supplier.call(progressMonitor, null, Status.FAIL, Status.ERROR);
+				return declaringClassNameComment + tag.toString(); // type name in comments for sorting - kinda a hack, but easy.
+			}
+		}
+		return declaringClassNameComment + declaringClassName;
+	}
 
+	/**
+	 * Builds columns for {@link ENamedElement}
+	 * @param tableBuilder
+	 * @param progressMonitor
+	 */
+	protected void buildNamedElementColumns(DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> tableBuilder, ProgressMonitor progressMonitor) {
+		tableBuilder
+			.addStringColumnBuilder("name", true, false, "Name", endpoint -> nameLink(endpoint.getKey(), endpoint.getValue(), progressMonitor)) 
+			.addStringColumnBuilder("description", true, false, "Description", endpoint -> description(endpoint.getKey(), endpoint.getValue(), progressMonitor));
+	}
+	
+	/**
+	 * Builds columns for {@link ETypedElement} including {@link ENamedElement} columns
+	 * @param tableBuilder
+	 * @param progressMonitor
+	 */
+	protected void buildTypedElementColumns(DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> tableBuilder, boolean typeIcon, ProgressMonitor progressMonitor) {
+		buildNamedElementColumns(tableBuilder, progressMonitor);
+		tableBuilder
+			.addStringColumnBuilder("type", true, true, "Type", endpoint -> typeLink(endpoint.getKey(), endpoint.getValue(), typeIcon, progressMonitor))  
+			.addStringColumnBuilder("cardinality", true, true, "Cardinality", endpoint -> cardinality((ETypedElement) endpoint.getKey().getTarget().getTarget()));
+	}
+	
+	/**
+	 * Builds columns for {@link ETypedElement} including {@link ENamedElement} columns
+	 * @param tableBuilder
+	 * @param progressMonitor
+	 */
+	protected void buildStructuralFeatureColumns(DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> tableBuilder, boolean typeIcon, ProgressMonitor progressMonitor) {
+		buildTypedElementColumns(tableBuilder, typeIcon, progressMonitor);
+		tableBuilder
+			.addStringColumnBuilder("declaring-class", true, true, "Declaring Class", endpoint -> declaringClassLink(endpoint.getKey(), endpoint.getValue(), progressMonitor))
+			.addBooleanColumnBuilder("changeable", true, true, "Changeable", endpoint -> ((EStructuralFeature) endpoint.getKey().getTarget().getTarget()).isChangeable())
+			.addBooleanColumnBuilder("derived", true, true, "Derived", endpoint -> ((EStructuralFeature) endpoint.getKey().getTarget().getTarget()).isDerived());
+		
+		// TODO - unique, ...
+	}
+	
 }

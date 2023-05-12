@@ -64,7 +64,7 @@ Vue.component('nsd-ecore-doc-table', {
 				return this.items;
 			}
 			return this.items.filter(item => {
-				return !item.inherited;
+				return !item.name.trim().startsWith("<i>");
 			});
 		}
 	},

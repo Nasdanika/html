@@ -6,120 +6,94 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
-import org.nasdanika.common.Util;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.ConnectionProcessorConfig;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
-import org.nasdanika.html.model.app.graph.LabelFactory;
 import org.nasdanika.html.model.app.graph.Registry;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 public class EReferenceConnectionProcessor {
 	
 	protected URI sourceURI;
-	
 	protected URI targetURI;
-	
-	protected ConnectionProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config;
+	protected ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config;
 
-	public EReferenceConnectionProcessor(ConnectionProcessorConfig<Object, LabelFactory, LabelFactory, Registry<URI>> config) {		
+	public EReferenceConnectionProcessor(ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config) {		
 		this.config = config;		
 		config.getSourceEndpoint().thenAccept(se -> config.setTargetHandler(createTargetHandler(se)));
 		config.getTargetEndpoint().thenAccept(te -> config.setSourceHandler(createSourceHandler(te)));
 	}
 	
-	protected LabelFactory createTargetHandler(LabelFactory sourceEndpoint) {
-		return new LabelFactory() {
-
-			@Override
-			public Label createLabel(ProgressMonitor progressMonitor) {
-				return sourceEndpoint.createLabel(progressMonitor);
-			}
-
-			@Override
-			public Label createLink(String path, ProgressMonitor progressMonitor) {
-				Label link = sourceEndpoint.createLink(progressMonitor);
-				// TODO if link - deresolve URI
-				return link;
-			}
-
+	protected WidgetFactory createTargetHandler(WidgetFactory sourceEndpoint) {
+		return new WidgetFactory() {
+			
 			@Override
 			public void resolve(URI base, ProgressMonitor progressMonitor) {
 				targetURI = base;
 			}
 			
-			@Override
-			public Label createLink(Object selector, String path, ProgressMonitor progressMonitor) {
-				Label link = sourceEndpoint.createLink(selector, path, progressMonitor);
-				// TODO if link - deresolve
-				return link;
+			private URI resolveBase(URI base) {
+				if (base == null) {
+					return targetURI;
+				}
+				if (base.isRelative() && targetURI != null && !targetURI.isRelative()) {
+					base.resolve(targetURI); 					
+				}
+				return base;				
 			}
-
+			
 			@Override
-			public Supplier<Collection<Label>> createLabelsSupplier() {								
+			public String createWidgetString(Object selector, URI base, ProgressMonitor progressMonitor) {
+				return sourceEndpoint.createWidgetString(selector, resolveBase(base), progressMonitor); 				
+			}
+			
+			@Override
+			public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
+				return sourceEndpoint.createWidget(selector, resolveBase(base), progressMonitor);
+			}
+			
+			@Override
+			public String createLinkString(URI base, ProgressMonitor progressMonitor) {
+				return sourceEndpoint.createLinkString(resolveBase(base), progressMonitor);
+			}
+			
+			@Override
+			public Object createLink(URI base, ProgressMonitor progressMonitor) {
+				return sourceEndpoint.createLink(resolveBase(base), progressMonitor);
+			}
+			
+			@Override
+			public Supplier<Collection<Label>> createLabelsSupplier() {
 				return sourceEndpoint.createLabelsSupplier().then(labels -> {
-					for (Label label: labels) {
+					for (Label label : labels) {
 						if (label instanceof Link) {
-							// TODO - resolve against source and deresolve against target
-							Link link = (Link) label;
-							String location = link.getLocation();
-							if (!Util.isBlank(location)) {
-								URI uri = URI.createURI(location);
-								if (!uri.isRelative() && targetURI != null && !targetURI.isRelative()) {
-									link.setLocation(uri.deresolve(targetURI, true, true, true).toString());
-								}
-							}
+							((Link) label).rebase(targetURI, sourceURI);
 						}
 					}
 					return labels;
 				});
 			}
 			
-		};
-	}
-
-	/**
-	 * Rebases from target to source
-	 * @param label
-	 * @return
-	 */
-	protected Label rebaseLinkFromTargetToSource(Label label) {
-		if (label instanceof Link) {
-			String location = ((Link) label).getLocation();
-			if (!Util.isBlank(location)) {						
-				URI locationURI = URI.createURI(location);
-				if (targetURI != null && !targetURI.isRelative()) {
-					locationURI = locationURI.resolve(targetURI);
-				}						
-				if (sourceURI != null && !sourceURI.isRelative()) {
-					locationURI = locationURI.deresolve(sourceURI, true, true, true);
-				}
-				((Link) label).setLocation(locationURI.toString());
-			}
-		}
-		return label;
-	}
-		
-	protected LabelFactory createSourceHandler(LabelFactory targetEndpoint) {
-		return new LabelFactory() {
-
 			@Override
-			public Label createLabel(ProgressMonitor progressMonitor) {
-				return targetEndpoint.createLabel(progressMonitor);
-			}
-
-			@Override
-			public Label createLink(String path, ProgressMonitor progressMonitor) {
-				return rebaseLinkFromTargetToSource(targetEndpoint.createLink(progressMonitor));
+			public String createLabelString(ProgressMonitor progressMonitor) {
+				return sourceEndpoint.createLabelString(progressMonitor);
 			}
 			
 			@Override
-			public Label createLink(Object selector, String path, ProgressMonitor progressMonitor) {
-				return rebaseLinkFromTargetToSource(targetEndpoint.createLink(selector, path, progressMonitor));
+			public Object createLabel(ProgressMonitor progressMonitor) {
+				return sourceEndpoint.createLabel(progressMonitor);
 			}
+			
+		};
+		
+	}
 
+	protected WidgetFactory createSourceHandler(WidgetFactory targetEndpoint) {
+		return new WidgetFactory() {
+			
 			@Override
-			public void resolve(URI base, ProgressMonitor progressMonitor) {				
+			public void resolve(URI base, ProgressMonitor progressMonitor) {
 				sourceURI = base;				
 				EReferenceConnection eRefConn = (EReferenceConnection) config.getElement();
 				String path = eRefConn.getPath();
@@ -129,19 +103,91 @@ public class EReferenceConnectionProcessor {
 					targetEndpoint.resolve(refURI.resolve(base), progressMonitor);
 				}
 			}
-
+			
+			private URI resolveBase(URI base) {
+				if (base == null) {
+					return sourceURI;
+				}
+				if (base.isRelative() && sourceURI != null && !sourceURI.isRelative()) {
+					base.resolve(sourceURI); 					
+				}
+				return base;				
+			}
+			
+			@Override
+			public String createWidgetString(Object selector, URI base, ProgressMonitor progressMonitor) {
+				return targetEndpoint.createWidgetString(selector, resolveBase(base), progressMonitor);
+			}
+			
+			@Override
+			public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
+				return targetEndpoint.createWidget(selector, resolveBase(base), progressMonitor); 
+			}
+			
+			@Override
+			public String createLinkString(URI base, ProgressMonitor progressMonitor) {
+				return targetEndpoint.createLinkString(resolveBase(base), progressMonitor);
+			}
+			
+			@Override
+			public Object createLink(URI base, ProgressMonitor progressMonitor) {
+				return targetEndpoint.createLink(resolveBase(base), progressMonitor);
+			}
+			
 			@Override
 			public Supplier<Collection<Label>> createLabelsSupplier() {
 				return targetEndpoint.createLabelsSupplier().then(labels -> {
-					for (Label label: labels) {
-						rebaseLinkFromTargetToSource(label);
+					for (Label label : labels) {
+						if (label instanceof Link) {
+							((Link) label).rebase(targetURI, sourceURI);
+						}
 					}
 					return labels;
 				});
-				
+			}
+			
+			@Override
+			public String createLabelString(ProgressMonitor progressMonitor) {
+				return targetEndpoint.createLabelString(progressMonitor);
+			}
+			
+			@Override
+			public Object createLabel(ProgressMonitor progressMonitor) {
+				return targetEndpoint.createLabel(progressMonitor);
 			}
 			
 		};
+		
+		
+//		return new WidgetFactory() {
+//
+//			@Override
+//			public Label createLabel(ProgressMonitor progressMonitor) {
+//				return targetEndpoint.createLabel(progressMonitor);
+//			}
+//
+//			@Override
+//			public Label createLink(String path, ProgressMonitor progressMonitor) {
+//				return rebaseLinkFromTargetToSource(targetEndpoint.createLink(progressMonitor));
+//			}
+//			
+//			@Override
+//			public Label createLink(Object selector, String path, ProgressMonitor progressMonitor) {
+//				return rebaseLinkFromTargetToSource(targetEndpoint.createLink(selector, path, progressMonitor));
+//			}
+//
+//			@Override
+//			public Supplier<Collection<Label>> createLabelsSupplier() {
+//				return targetEndpoint.createLabelsSupplier().then(labels -> {
+//					for (Label label: labels) {
+//						rebaseLinkFromTargetToSource(label);
+//					}
+//					return labels;
+//				});
+//				
+//			}
+//			
+//		};
 	}
 
 }
