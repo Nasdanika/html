@@ -286,14 +286,16 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			EStructuralFeature feature = (EStructuralFeature) tt;
 			EGenericType featureType = getTarget().getFeatureType(feature);
 			if (featureType != null) {
-				// TODO - create and wire processor explicitly - might not exist? Or do it when creating EClass nodes?
-//				String typeNameComment = "<!-- " + typeName + "--> ";
-//				String linkStr = widgetFactory.createWidgetString(EcorePackage.Literals.ETYPED_ELEMENT__EGENERIC_TYPE, progressMonitor);
-//				if (linkStr == null) {
-//					linkStr = widgetFactory.createWidgetString(EcorePackage.Literals.ETYPED_ELEMENT__ETYPE, progressMonitor);			
-//				}
-//				return typeNameComment + (Util.isBlank(linkStr) ? typeName : linkStr);
-//				
+				String typeName = featureType.getERawType().getName(); 
+				String typeNameComment = "<!-- " + typeName + "--> ";
+				WidgetFactory genericTypeWidgetFactory = featureGenericTypesWidgetFactories.get(tt);
+				if (genericTypeWidgetFactory != null) {
+					String linkStr = genericTypeWidgetFactory.createLinkString(progressMonitor);
+					if (linkStr != null) {
+						return typeNameComment + linkStr;			
+					}
+				}
+				return typeNameComment + typeName;
 			}
 		}
 		return super.typeLink(connection, widgetFactory, progressMonitor);
