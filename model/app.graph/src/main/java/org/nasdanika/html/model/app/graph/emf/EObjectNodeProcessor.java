@@ -17,6 +17,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.CollectionCompoundConsumer;
 import org.nasdanika.common.Consumer;
@@ -26,10 +27,11 @@ import org.nasdanika.common.MapCompoundSupplier;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
-import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Supplier.FunctionResult;
+import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.graph.emf.EObjectNode;
+import org.nasdanika.graph.emf.EOperationConnection;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.ChildProcessors;
 import org.nasdanika.graph.processor.IncomingEndpoint;
@@ -80,10 +82,10 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 		this.childProcessors = childProcessors;
 	}
 	
-	protected EReferenceConnectionProcessor parentProcessor;
+	protected ConnectionProcessor parentProcessor;
 	
 	@ParentProcessor
-	public void setParentProcessor(EReferenceConnectionProcessor parentProcessor) {
+	public void setParentProcessor(ConnectionProcessor parentProcessor) {
 		this.parentProcessor = parentProcessor;
 	}
 
@@ -99,26 +101,49 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 		return (T) node.getTarget();
 	}
 	
-	protected Map<EReferenceConnection, WidgetFactory> incomingEndpoints = new LinkedHashMap<>();
-	protected Map<EReferenceConnection, WidgetFactory> outgoingEndpoints = new LinkedHashMap<>();
+	protected Map<EReferenceConnection, WidgetFactory> incomingReferenceEndpoints = new LinkedHashMap<>();
+	protected Map<EReferenceConnection, WidgetFactory> outgoingReferenceEndpoints = new LinkedHashMap<>();
 	
 	@IncomingEndpoint
-	public void setIncomingEndpoint(EReferenceConnection connection, WidgetFactory endpoint) {
-		incomingEndpoints.put(connection, endpoint);
+	public void setIncomingRefernceEndpoint(EReferenceConnection connection, WidgetFactory endpoint) {
+		incomingReferenceEndpoints.put(connection, endpoint);
 	}
 		
 	@OutgoingEndpoint
-	public void setOutgoingEndpoint(EReferenceConnection connection, WidgetFactory endpoint) {
-		outgoingEndpoints.put(connection, endpoint);
+	public void setOutgoingRefernceEndpoint(EReferenceConnection connection, WidgetFactory endpoint) {
+		outgoingReferenceEndpoints.put(connection, endpoint);
 	}
 	
+	protected Map<EOperationConnection, WidgetFactory> incomingOperationEndpoints = new LinkedHashMap<>();
+	protected Map<EOperationConnection, WidgetFactory> outgoingOperationEndpoints = new LinkedHashMap<>();
+	
+	@IncomingEndpoint
+	public void setIncominOperationgEndpoint(EOperationConnection connection, WidgetFactory endpoint) {
+		incomingOperationEndpoints.put(connection, endpoint);
+	}
+		
+	@OutgoingEndpoint
+	public void setOutgoingOperationEndpoint(EOperationConnection connection, WidgetFactory endpoint) {
+		outgoingOperationEndpoints.put(connection, endpoint);
+	}
+		
 	@IncomingHandler
 	public WidgetFactory getIncomingHandler(EReferenceConnection connection) {
 		return this;
 	}
 		
+	@IncomingHandler
+	public WidgetFactory getIncomingHandler(EOperationConnection connection) {
+		return this;
+	}	
+		
 	@OutgoingHandler
 	public WidgetFactory getOutgoingHandler(EReferenceConnection connection) {
+		return this;
+	}
+	
+	@OutgoingHandler
+	public WidgetFactory getOutgoingHandler(EOperationConnection connection) {
 		return this;
 	}
 	
@@ -193,11 +218,27 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 		return a.getName().compareTo(b.getName());
 	}
 	
+	/**
+	 * Comparator for operation binding sorting
+	 * @return
+	 */
+	protected int compareIncomingOperations(EOperation aOp, List<Object> aArgs, EOperation bOp, List<Object> bArgs) {
+		return aOp.getName().compareTo(bOp.getName());
+	}
+	
+	/**
+	 * Comparator for operator binding sorting
+	 * @return
+	 */
+	protected int compareOutgoingOperations(EOperation aOp, List<Object> aArgs, EOperation bOp, List<Object> bArgs) {
+		return aOp.getName().compareTo(bOp.getName());
+	}	
+	
 	protected List<Consumer<Collection<Label>>> getReferenceLabelBuilders() {		
 		List<Consumer<Collection<Label>>> ret = new ArrayList<>();
 		
-		Map<EReference, List<Entry<EReferenceConnection, WidgetFactory>>> groupedOutgoingEndpoints = org.nasdanika.common.Util.groupBy(outgoingEndpoints.entrySet(), e -> e.getKey().getReference());
-		groupedOutgoingEndpoints
+		Map<EReference, List<Entry<EReferenceConnection, WidgetFactory>>> groupedOutgoingReferenceEndpoints = org.nasdanika.common.Util.groupBy(outgoingReferenceEndpoints.entrySet(), e -> e.getKey().getReference());
+		groupedOutgoingReferenceEndpoints
 			.entrySet()
 			.stream()
 			.sorted((a, b) -> compareOutgoingReferences(a.getKey(), b.getKey()))
@@ -205,8 +246,8 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			.filter(Objects::nonNull)
 			.forEach(ret::add);
 		
-		Map<EReference, List<Entry<EReferenceConnection, WidgetFactory>>> groupedIncomingEndpoints = org.nasdanika.common.Util.groupBy(incomingEndpoints.entrySet(), e -> e.getKey().getReference());
-		groupedIncomingEndpoints
+		Map<EReference, List<Entry<EReferenceConnection, WidgetFactory>>> groupedIncomingReferenceEndpoints = org.nasdanika.common.Util.groupBy(incomingReferenceEndpoints.entrySet(), e -> e.getKey().getReference());
+		groupedIncomingReferenceEndpoints
 			.entrySet()
 			.stream()
 			.sorted((a, b) -> compareIncomingReferences(a.getKey(), b.getKey()))
@@ -214,6 +255,31 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			.filter(Objects::nonNull)
 			.forEach(ret::add);
 		
+		return ret;
+	}
+	
+	protected List<Consumer<Collection<Label>>> getOperationLabelBuilders() {		
+		List<Consumer<Collection<Label>>> ret = new ArrayList<>();		
+		record Binding(EOperation operation, List<Object> arguments) {};
+
+		Map<Binding, List<Entry<EOperationConnection, WidgetFactory>>> groupedOutgoingOperationEndpoints = org.nasdanika.common.Util.groupBy(outgoingOperationEndpoints.entrySet(), e -> new Binding(e.getKey().getOperation(), e.getKey().getArguments()));
+		groupedOutgoingOperationEndpoints
+			.entrySet()
+			.stream()
+			.sorted((a, b) -> compareOutgoingOperations(a.getKey().operation(), a.getKey().arguments(), b.getKey().operation(), b.getKey().arguments()))
+			.map(e -> createOutgoingOperationLabelConsumer(e.getKey().operation(), e.getKey().arguments(), e.getValue()))
+			.filter(Objects::nonNull)
+			.forEach(ret::add);
+		
+		Map<Binding, List<Entry<EOperationConnection, WidgetFactory>>> groupedIncomingOperationEndpoints = org.nasdanika.common.Util.groupBy(incomingOperationEndpoints.entrySet(), e -> new Binding(e.getKey().getOperation(), e.getKey().getArguments()));
+		groupedIncomingOperationEndpoints
+			.entrySet()
+			.stream()
+			.sorted((a, b) -> compareIncomingOperations(a.getKey().operation(), a.getKey().arguments(), b.getKey().operation(), b.getKey().arguments()))
+			.map(e -> createIncomingOperationLabelConsumer(e.getKey().operation(), e.getKey().arguments(), e.getValue()))
+			.filter(Objects::nonNull)
+			.forEach(ret::add);
+				
 		return ret;
 	}
 	
@@ -241,6 +307,26 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 		
 	/**
 	 * 
+	 * @param eOperation
+	 * @return true if lables suppliers shall be called to create labels/actions. 
+	 * This implementation returns false. 
+	 */
+	protected boolean isCallIncomingOperationLabelsSuppliers(EOperation eOperation, List<Object> arguments) {
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param eOperation
+	 * @return true if lables suppliers shall be called to create labels/actions. 
+	 * This implementation returns false. 
+	 */
+	protected boolean isCallOutgoingOperationLabelsSuppliers(EOperation eOperation, List<Object> arguments) {
+		return false;
+	}	
+		
+	/**
+	 * 
 	 * @return
 	 */
 	protected Consumer<Collection<Label>> createIncomingReferenceLabelConsumer(
@@ -248,7 +334,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			List<Entry<EReferenceConnection, WidgetFactory>> referenceIncomingEndpoints) {
 		
 		@SuppressWarnings("resource")
-		MapCompoundSupplier<EReferenceConnection, Collection<Label>> endpointLabelsSupplier = new MapCompoundSupplier<>("Incoming endpoints supplier");
+		MapCompoundSupplier<EReferenceConnection, Collection<Label>> endpointLabelsSupplier = new MapCompoundSupplier<>("Incoming reference endpoints supplier");
 		if (isCallIncomingReferenceLabelsSuppliers(eReference)) {
 			for (Entry<EReferenceConnection, WidgetFactory> e: referenceIncomingEndpoints) {
 				endpointLabelsSupplier.put(e.getKey(), e.getValue().createLabelsSupplier());
@@ -302,6 +388,136 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			List<Entry<EReferenceConnection, WidgetFactory>> referenceIncomingEndpoints,
 			Collection<Label> labels,
 			Map<EReferenceConnection, Collection<Label>> incomingLabels,
+			ProgressMonitor progressMonitor) {
+
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	protected Consumer<Collection<Label>> createIncomingOperationLabelConsumer(
+			EOperation eOperation,
+			List<Object> arguments,
+			List<Entry<EOperationConnection, WidgetFactory>> operationIncomingEndpoints) {
+		
+		@SuppressWarnings("resource")
+		MapCompoundSupplier<EOperationConnection, Collection<Label>> endpointLabelsSupplier = new MapCompoundSupplier<>("Incoming operation endpoints supplier");
+		if (isCallIncomingOperationLabelsSuppliers(eOperation, arguments)) {
+			for (Entry<EOperationConnection, WidgetFactory> e: operationIncomingEndpoints) {
+				endpointLabelsSupplier.put(e.getKey(), e.getValue().createLabelsSupplier());
+			}
+		}
+		
+		Consumer<Supplier.FunctionResult<Collection<Label>, Map<EOperationConnection, Collection<Label>>>> operationLabelBuilder = createIncomingOperationLabelBuilder(eOperation, arguments, operationIncomingEndpoints);						
+		Function<Collection<Label>, FunctionResult<Collection<Label>, Map<EOperationConnection, Collection<Label>>>> endpointLabelsFunction = endpointLabelsSupplier.asFunction();
+		return endpointLabelsFunction.then(operationLabelBuilder);
+	}
+	
+	/**
+	 * Builds target labels
+	 * @param eReference
+	 * @return
+	 */
+	protected Consumer<Supplier.FunctionResult<Collection<Label>, Map<EOperationConnection, Collection<Label>>>> createIncomingOperationLabelBuilder(
+			EOperation eOperation,
+			List<Object> arguments,
+			List<Entry<EOperationConnection, WidgetFactory>> operationIncomingEndpoints) {
+		
+		return new Consumer<Supplier.FunctionResult<Collection<Label>,Map<EOperationConnection,Collection<Label>>>>() {
+			
+			@Override
+			public double size() {
+				return 1;
+			}
+			
+			@Override
+			public String name() {
+				return "Incoming operation label builder";
+			}
+			
+			@Override
+			public void execute(FunctionResult<Collection<Label>, Map<EOperationConnection, Collection<Label>>> arg, ProgressMonitor progressMonitor) {
+				buildIncomingOperation(eOperation, arguments, operationIncomingEndpoints, arg.argument(), arg.result(), progressMonitor);
+			}
+		};
+		
+	}
+	
+	/**
+	 * Called by builder/consumer's execute();
+	 */
+	protected void buildIncomingOperation(
+			EOperation eOperation,
+			List<Object> arguments,
+			List<Entry<EOperationConnection, WidgetFactory>> operationIncomingEndpoints,
+			Collection<Label> labels,
+			Map<EOperationConnection, Collection<Label>> incomingLabels,
+			ProgressMonitor progressMonitor) {
+
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	protected Consumer<Collection<Label>> createOutgoingOperationLabelConsumer(
+			EOperation eOperation,
+			List<Object> arguments,
+			List<Entry<EOperationConnection, WidgetFactory>> operationOutgoingEndpoints) {
+		
+		@SuppressWarnings("resource")
+		MapCompoundSupplier<EOperationConnection, Collection<Label>> endpointLabelsSupplier = new MapCompoundSupplier<>("Outgoing operation endpoints supplier");
+		if (isCallOutgoingOperationLabelsSuppliers(eOperation, arguments)) {
+			for (Entry<EOperationConnection, WidgetFactory> e: operationOutgoingEndpoints) {
+				endpointLabelsSupplier.put(e.getKey(), e.getValue().createLabelsSupplier());
+			}
+		}
+		
+		Consumer<Supplier.FunctionResult<Collection<Label>, Map<EOperationConnection, Collection<Label>>>> operationLabelBuilder = createOutgoingOperationLabelBuilder(eOperation, arguments, operationOutgoingEndpoints);						
+		Function<Collection<Label>, FunctionResult<Collection<Label>, Map<EOperationConnection, Collection<Label>>>> endpointLabelsFunction = endpointLabelsSupplier.asFunction();
+		return endpointLabelsFunction.then(operationLabelBuilder);
+	}
+	
+	/**
+	 * Builds target labels
+	 * @param eReference
+	 * @return
+	 */
+	protected Consumer<Supplier.FunctionResult<Collection<Label>, Map<EOperationConnection, Collection<Label>>>> createOutgoingOperationLabelBuilder(
+			EOperation eOperation,
+			List<Object> arguments,
+			List<Entry<EOperationConnection, WidgetFactory>> operationOutgoingEndpoints) {
+		
+		return new Consumer<Supplier.FunctionResult<Collection<Label>,Map<EOperationConnection,Collection<Label>>>>() {
+			
+			@Override
+			public double size() {
+				return 1;
+			}
+			
+			@Override
+			public String name() {
+				return "Outgoing operation label builder";
+			}
+			
+			@Override
+			public void execute(FunctionResult<Collection<Label>, Map<EOperationConnection, Collection<Label>>> arg, ProgressMonitor progressMonitor) {
+				buildIncomingOperation(eOperation, arguments, operationOutgoingEndpoints, arg.argument(), arg.result(), progressMonitor);
+			}
+		};
+		
+	}
+	
+	/**
+	 * Called by builder/consumer's execute();
+	 */
+	protected void buildOutgoingOperation(
+			EOperation eOperation,
+			List<Object> arguments,
+			List<Entry<EOperationConnection, WidgetFactory>> operationOutgoingEndpoints,
+			Collection<Label> labels,
+			Map<EOperationConnection, Collection<Label>> outoingLabels,
 			ProgressMonitor progressMonitor) {
 
 	}
@@ -498,10 +714,10 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	@Override
 	public void resolve(URI base, ProgressMonitor progressMonitor) {		
 		uri = uri.resolve(base);
-		for (WidgetFactory oe: outgoingEndpoints.values()) {
+		for (WidgetFactory oe: outgoingReferenceEndpoints.values()) {
 			oe.resolve(uri, progressMonitor);
 		}
-		for (WidgetFactory ie: incomingEndpoints.values()) {
+		for (WidgetFactory ie: incomingReferenceEndpoints.values()) {
 			ie.resolve(uri, progressMonitor);
 		}
 	}
@@ -531,12 +747,14 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	@Override
 	public Supplier<Collection<Label>> createLabelsSupplier() {
 		List<Consumer<Collection<Label>>> referenceLabelBuilders = getReferenceLabelBuilders();
-		if (referenceLabelBuilders == null || referenceLabelBuilders.isEmpty()) {
+		List<Consumer<Collection<Label>>> operationLabelBuilders = getOperationLabelBuilders();
+		if (referenceLabelBuilders == null && operationLabelBuilders == null || referenceLabelBuilders.isEmpty() && operationLabelBuilders.isEmpty()) {
 			return doCreateLabelsSupplier();
 		}
 		@SuppressWarnings("resource")
 		CollectionCompoundConsumer<Collection<Label>> collectionCompoundConsumer = new CollectionCompoundConsumer<Collection<Label>>("Reference Label Builder");
 		referenceLabelBuilders.forEach(collectionCompoundConsumer::add);
+		operationLabelBuilders.forEach(collectionCompoundConsumer::add);
 		return doCreateLabelsSupplier().then(collectionCompoundConsumer.asFunction());
 	}
 	

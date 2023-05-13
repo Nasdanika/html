@@ -43,13 +43,13 @@ public class EObjectProcessorFactory extends ProcessorFactory<URI> {
 	}
 
 	@Override
-	protected EReferenceConnectionProcessor createConnectionProcessor(
+	protected ConnectionProcessor createConnectionProcessor(
 			ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,
 			ProgressMonitor progressMonitor) {
 		
 		Connection connection = config.getElement();
 		if (connection instanceof EReferenceConnection) {
-			return new EReferenceConnectionProcessor(config);
+			return new ConnectionProcessor(config);
 		}
 
 		return null;

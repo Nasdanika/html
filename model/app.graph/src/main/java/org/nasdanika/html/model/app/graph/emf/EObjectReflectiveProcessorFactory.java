@@ -28,7 +28,7 @@ public class EObjectReflectiveProcessorFactory extends ReflectiveProcessorFactor
 	public ProcessorInfo<Object, Registry<URI>> createProcessor(ProcessorConfig<Object, Registry<URI>> config, ProgressMonitor progressMonitor) {
 		ProcessorInfo<Object, Registry<URI>> processorInfo = super.createProcessor(config, progressMonitor);
 		if (processorInfo.getProcessor() == null && config instanceof ConnectionProcessorConfig) {
-			return ProcessorInfo.of(config, new EReferenceConnectionProcessor((ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>>) config), null);
+			return ProcessorInfo.of(config, new ConnectionProcessor((ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>>) config), null);
 		}
 			
 		return processorInfo;

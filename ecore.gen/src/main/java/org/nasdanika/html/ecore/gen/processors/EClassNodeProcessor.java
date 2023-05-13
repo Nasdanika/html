@@ -1,6 +1,7 @@
 package org.nasdanika.html.ecore.gen.processors;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,19 +15,19 @@ import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.Util;
+import org.nasdanika.graph.emf.EOperationConnection;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
+import org.nasdanika.graph.processor.OutgoingEndpoint;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.gen.DynamicTableBuilder;
-import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.Registry;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 	
@@ -298,5 +299,11 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 		return super.typeLink(connection, widgetFactory, progressMonitor);
 	}
 	
+	private Map<EStructuralFeature, WidgetFactory> featureGenericTypesWidgetFactories = new HashMap<>();
 	
+	@OutgoingEndpoint("operation.name == 'getFeatureType'")
+	public final void setFeatureTypeEndpoint(EOperationConnection connection, WidgetFactory genericTypeWidgetFactory) {
+		featureGenericTypesWidgetFactories.put((EStructuralFeature) connection.getArguments().get(0), genericTypeWidgetFactory);
+	}
+			
 }

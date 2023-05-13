@@ -3,9 +3,12 @@ package org.nasdanika.html.model.app.graph.emf;
 import java.util.Collection;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
+import org.nasdanika.graph.emf.Connection;
+import org.nasdanika.graph.emf.EOperationConnection;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.ConnectionProcessorConfig;
 import org.nasdanika.html.model.app.Label;
@@ -13,13 +16,13 @@ import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 
-public class EReferenceConnectionProcessor {
+public class ConnectionProcessor {
 	
 	protected URI sourceURI;
 	protected URI targetURI;
 	protected ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config;
 
-	public EReferenceConnectionProcessor(ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config) {		
+	public ConnectionProcessor(ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config) {		
 		this.config = config;		
 		config.getSourceEndpoint().thenAccept(se -> config.setTargetHandler(createTargetHandler(se)));
 		config.getTargetEndpoint().thenAccept(te -> config.setSourceHandler(createSourceHandler(te)));
@@ -95,12 +98,26 @@ public class EReferenceConnectionProcessor {
 			@Override
 			public void resolve(URI base, ProgressMonitor progressMonitor) {
 				sourceURI = base;				
-				EReferenceConnection eRefConn = (EReferenceConnection) config.getElement();
-				String path = eRefConn.getPath();
-				EReference eRef = eRefConn.getReference();
-				if (eRef.isContainment()) {
-					URI refURI = URI.createURI(path == null ? eRef.getName() + "/" : eRef.getName() + "/" + path + "/");
-					targetEndpoint.resolve(refURI.resolve(base), progressMonitor);
+				Connection conn = (Connection) config.getElement();
+				String path = conn.getPath();
+				if (conn instanceof EReferenceConnection) {
+					EReference eRef = ((EReferenceConnection) conn).getReference();
+					if (eRef.isContainment()) {
+						String uriStr = "references/" + eRef.getName() + "/";
+						if (path != null) {
+							uriStr += path + "/";
+						}
+						URI refURI = URI.createURI(uriStr);
+						targetEndpoint.resolve(refURI.resolve(base), progressMonitor);
+					}
+				} else if (conn instanceof EOperationConnection) {
+					EOperation eOp = ((EOperationConnection) conn).getOperation();
+					String uriStr = "operations/" + eOp.getName() + "/";
+					if (path != null) {
+						uriStr += path + "/";
+					}
+					URI refURI = URI.createURI(uriStr);
+					targetEndpoint.resolve(refURI.resolve(base), progressMonitor);					
 				}
 			}
 			
