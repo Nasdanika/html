@@ -159,16 +159,17 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 	}
 	
 	protected String nameLink(EReferenceConnection connection, WidgetFactory widgetFactory, ProgressMonitor progressMonitor) {
-		boolean isInherited = false;
+		boolean isDirect = false;
 		EObject tt = connection.getTarget().getTarget();
 		if (tt instanceof EStructuralFeature) {
-			isInherited = ((EStructuralFeature) tt).getEContainingClass() != getTarget();
+			isDirect = ((EStructuralFeature) tt).getEContainingClass() == getTarget();
 		} else if (tt instanceof EOperation) {
-			isInherited = ((EOperation) tt).getEContainingClass() != getTarget();
+			isDirect = ((EOperation) tt).getEContainingClass() == getTarget();
 		}
+		// TODO - super and sub classes
 		String linkStr = widgetFactory.createLinkString(progressMonitor);
 		String name = Util.isBlank(linkStr) ? ((ENamedElement) connection.getTarget().getTarget()).getName() : linkStr;
-		return isInherited ? TagName.i.create(name).toString() : name;
+		return isDirect ? TagName.b.create(name).toString() : name;
 	}
 		
 	protected String description(EReferenceConnection connection, WidgetFactory widgetFactory, ProgressMonitor progressMonitor) {
@@ -216,6 +217,14 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 		tableBuilder
 			.addStringColumnBuilder("type", true, true, "Type", endpoint -> typeLink(endpoint.getKey(), endpoint.getValue(), progressMonitor))  
 			.addStringColumnBuilder("cardinality", true, true, "Cardinality", endpoint -> cardinality((ETypedElement) endpoint.getKey().getTarget().getTarget()));
+
+//		getLowerBound()
+//		getUpperBound()
+//		isMany()
+//		isOrdered()
+//		isRequired()
+//		isUnique()		
+		
 	}
 	
 	/**
@@ -227,10 +236,16 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 		buildTypedElementColumns(tableBuilder, progressMonitor);
 		tableBuilder
 			.addStringColumnBuilder("declaring-class", true, true, "Declaring Class", endpoint -> declaringClassLink(endpoint.getKey(), endpoint.getValue(), progressMonitor))
-			.addBooleanColumnBuilder("changeable", true, true, "Changeable", endpoint -> ((EStructuralFeature) endpoint.getKey().getTarget().getTarget()).isChangeable())
-			.addBooleanColumnBuilder("derived", true, true, "Derived", endpoint -> ((EStructuralFeature) endpoint.getKey().getTarget().getTarget()).isDerived());
-		
-		// TODO - unique, ...
+			.addBooleanColumnBuilder("changeable", true, false, "Changeable", endpoint -> ((EStructuralFeature) endpoint.getKey().getTarget().getTarget()).isChangeable())
+			.addBooleanColumnBuilder("derived", true, false, "Derived", endpoint -> ((EStructuralFeature) endpoint.getKey().getTarget().getTarget()).isDerived());
+
+// TODO
+//		getDefaultValue()
+//		getDefaultValueLiteral()
+//		getFeatureID()
+//		isTransient()
+//		isUnsettable()
+//		isVolatile()		
 	}
 	
 }

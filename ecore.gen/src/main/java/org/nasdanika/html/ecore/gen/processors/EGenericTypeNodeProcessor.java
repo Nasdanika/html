@@ -1,15 +1,16 @@
 package org.nasdanika.html.ecore.gen.processors;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.ETypeParameter;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.graph.processor.OutgoingEndpoint;
 import org.nasdanika.html.model.app.Action;
@@ -51,13 +52,12 @@ public class EGenericTypeNodeProcessor extends EObjectNodeProcessor<EGenericType
 	}
 	
 	// getETypeArguments()
-	// TODO - two arguments, insert at position or tree map
-//	private List<WidgetFactory> eUpperBoundWidgetFactory;
-//	
-//	@OutgoingEndpoint("reference.name == 'eUpperBound'")
-//	public final void setEUpperBoundEndpoint(WidgetFactory eUpperBoundWidgetFactory) {
-//		this.eUpperBoundWidgetFactory = eUpperBoundWidgetFactory;
-//	}
+	private Map<Integer,WidgetFactory> eTypeArgumentWidgetFactories = new TreeMap<>();
+	
+	@OutgoingEndpoint("reference.name == 'eTypeArguments'")
+	public final void setETypeArgumentEndpoint(EReferenceConnection connection, WidgetFactory eTypeArgumentWidgetFactory) {
+		eTypeArgumentWidgetFactories.put(connection.getIndex(), eTypeArgumentWidgetFactory);
+	}
 	
 	// getEUpperBound()
 	private WidgetFactory eUpperBoundWidgetFactory;
@@ -75,19 +75,37 @@ public class EGenericTypeNodeProcessor extends EObjectNodeProcessor<EGenericType
 			ret.add(eTypeParameterWidgetFactory.createLink(base, progressMonitor));
 		} else if (eClassifierWidgetFactory != null) {
 			ret.add(eClassifierWidgetFactory.createLink(base, progressMonitor));
-			// TODO - genericTypeArguments(eGenericType, contextClassifier, accumulator, monitor);
+			ret.addAll(genericTypeArguments(base, progressMonitor));
 		} else {
 			ret.add("?");
 			if (eLowerBoundWidgetFactory != null) {
 				ret.add(" super ");
-				// TODO - genericType(eGenericType.getELowerBound(), contextClassifier, accumulator, monitor);
+				ret.add(eLowerBoundWidgetFactory.createLink(base, progressMonitor));
 			} else if (eUpperBoundWidgetFactory != null) {
 				ret.add(" extends ");
-				// TODO - genericType(eGenericType.getEUpperBound(), contextClassifier, accumulator, monitor);
+				ret.add(eUpperBoundWidgetFactory.createLink(base, progressMonitor));
 			}
 		}
 		return ret;
 	}
+	
+	protected List<Object> genericTypeArguments(URI base, ProgressMonitor progressMonitor) {
+		List<Object> ret = new ArrayList<>();
+		Iterator<WidgetFactory> it = eTypeArgumentWidgetFactories.values().iterator();
+		if (it.hasNext()) {
+			ret.add("<");
+			while (it.hasNext()) {
+				WidgetFactory typeArgumentWidgetFactory = it.next();
+				ret.add(typeArgumentWidgetFactory.createLink(base, progressMonitor));
+				if (it.hasNext()) {
+					ret.add(",");
+				}
+			}
+			ret.add(">");
+		}
+		return ret;
+	}
+	
 	
 //	/**
 //	 * @param eClassifier
@@ -137,21 +155,6 @@ public class EGenericTypeNodeProcessor extends EObjectNodeProcessor<EGenericType
 //		return ret.toString();
 //	}
 //
-//	protected String genericTypeArguments(EGenericType eGenericType) {
-//		StringBuilder ret = new StringBuilder();
-//		Iterator<EGenericType> it = eGenericType.getETypeArguments().iterator();
-//		if (it.hasNext()) {
-//			ret.append("<");
-//			while (it.hasNext()) {
-//				ret.append(genericName(it.next()));
-//				if (it.hasNext()) {
-//					ret.append(",");
-//				}
-//			}
-//			ret.append(">");
-//		}
-//		return ret.toString();
-//	}
 //
 
 }

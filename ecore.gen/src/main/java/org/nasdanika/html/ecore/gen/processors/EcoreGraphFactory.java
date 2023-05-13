@@ -2,11 +2,13 @@ package org.nasdanika.html.ecore.gen.processors;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Function;
 
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EReference;
@@ -14,6 +16,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.graph.emf.EObjectGraphFactory;
 import org.nasdanika.graph.emf.EObjectNode;
+import org.nasdanika.graph.emf.EObjectNode.ResultRecord;
 
 /**
  * Graph factory for ecore models
@@ -21,6 +24,13 @@ import org.nasdanika.graph.emf.EObjectNode;
  *
  */
 public class EcoreGraphFactory extends EObjectGraphFactory {
+	
+	@Override
+		protected EObjectNode createNode(EObject eObject, Function<EObject, ResultRecord> nodeFactory) {
+		
+			// TODO Auto-generated method stub
+			return super.createNode(eObject, nodeFactory);
+		}
 
 	@Override
 	protected String referencePath(EObjectNode source, EObjectNode target, EReference reference, int index) {

@@ -6,7 +6,8 @@ Vue.component('nsd-ecore-doc-table', {
 	props: {
     	columns: Array,
     	items: Array,
-    	configKey: String
+    	configKey: String,
+    	transitiveLabel: String
   	},
   	data() {
 		let data = {
@@ -18,7 +19,7 @@ Vue.component('nsd-ecore-doc-table', {
         	sortDesc: false,
         	sortDirection: 'asc',
         	filter: null,
-        	inherited: true,
+        	transitive: true,
         	visibleFields: null,
         	config: {
 				items: null,
@@ -60,13 +61,13 @@ Vue.component('nsd-ecore-doc-table', {
 			return this.visibleFields;
 		},
 		filteredItems() {
-			if (this.inherited) {
+			if (this.transitive) {
 				return this.items;
 			}
 			return this.items.filter(item => {
-				return !item.name.trim().startsWith("<i>");
+				return item.name.trim().startsWith("<b>");
 			});
-		}
+		},
 	},
 	methods: {
 		filterColumns(column) {
@@ -129,12 +130,12 @@ Vue.component('nsd-ecore-doc-table', {
 						<tr>
 							<td>
 							    <b-form-checkbox
-							      id="inherited-checkbox"
-							      v-model="inherited"
-							      name="inherited-checkbox"
+							      id="transitive-checkbox"
+							      v-model="transitive"
+							      name="transitive-checkbox"
 							      value="true"
 							    >
-							      Inherited
+							      {{transitiveLabel}}
 							    </b-form-checkbox>							
 							</td>
 							<td style="padding-left:1em">

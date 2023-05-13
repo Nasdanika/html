@@ -2,6 +2,9 @@ package org.nasdanika.html.model.app.gen;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -169,6 +172,12 @@ public class DynamicTableBuilder<T> {
 		});
 	}
 	
+	protected Map<String,String> properties = new HashMap<>();
+	
+	public void setProperty(String name, String value) {
+		properties.put(name, value);
+	}
+	
 	/**
 	 * Builds a dynamic configurable table.
 	 * @param <T>
@@ -207,6 +216,10 @@ public class DynamicTableBuilder<T> {
 		table.getAttributes().put(":items", items);
 		if (!Util.isBlank(configKey)) {
 			table.getAttributes().put("config-key", createText(configKey));			
+		}
+		
+		for (Entry<String, String> pe: properties.entrySet()) {
+			table.getAttributes().put(pe.getKey(), createText(pe.getValue()));
 		}
 		
 		Tag appDiv = HtmlFactory.eINSTANCE.createTag();

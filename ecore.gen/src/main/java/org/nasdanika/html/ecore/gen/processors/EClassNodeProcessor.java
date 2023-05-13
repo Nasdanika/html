@@ -138,6 +138,7 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			for (Label label: labels) {
 				if (label instanceof Action) {										
 					DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> attributesTableBuilder = new DynamicTableBuilder<>("nsd-ecore-doc-table");
+					attributesTableBuilder.setProperty("transitive-label", "Inherited");
 					buildStructuralFeatureColumns(attributesTableBuilder, progressMonitor);
 					
 					org.nasdanika.html.model.html.Tag attributesTable = attributesTableBuilder.build(
@@ -159,6 +160,7 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			for (Label label: labels) {
 				if (label instanceof Action) {										
 					DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> referencesTableBuilder = new DynamicTableBuilder<>("nsd-ecore-doc-table");
+					referencesTableBuilder.setProperty("transitive-label", "Inherited");
 					buildStructuralFeatureColumns(referencesTableBuilder, progressMonitor);
 // TODO										
 //					getEKeys()
@@ -187,13 +189,13 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			for (Label label: labels) {
 				if (label instanceof Action) {					
 					DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> operationsTableBuilder = new DynamicTableBuilder<>("nsd-ecore-doc-table");
+					operationsTableBuilder.setProperty("transitive-label", "Inherited");
 					buildTypedElementColumns(operationsTableBuilder, progressMonitor);					
-					operationsTableBuilder.addStringColumnBuilder("declaring-class", true, true, "Declaring Class", endpoint -> declaringClassLink(endpoint.getKey(), endpoint.getValue(), progressMonitor));
-//					TODO
-//					getEExceptions()
-//					getEGenericExceptions()
-//					getEParameters()
-//					getETypeParameters()					
+					operationsTableBuilder
+						.addStringColumnBuilder("declaring-class", true, true, "Declaring Class", endpoint -> declaringClassLink(endpoint.getKey(), endpoint.getValue(), progressMonitor))
+						.addStringColumnBuilder("parameters", true, false, "Parameters", endpoint -> endpoint.getValue().createWidgetString(EcorePackage.Literals.EOPERATION__EPARAMETERS, progressMonitor))
+						.addStringColumnBuilder("exceptions", true, false, "Exceptions", endpoint -> endpoint.getValue().createWidgetString(EcorePackage.Literals.EOPERATION__EGENERIC_EXCEPTIONS, progressMonitor))
+						.addStringColumnBuilder("type-parameters", true, false, "Type Parameters", endpoint -> endpoint.getValue().createWidgetString(EcorePackage.Literals.EOPERATION__ETYPE_PARAMETERS, progressMonitor));		
 					
 					org.nasdanika.html.model.html.Tag operationsTable = operationsTableBuilder.build(
 							referenceOutgoingEndpoints.stream().sorted((a,b) -> {
