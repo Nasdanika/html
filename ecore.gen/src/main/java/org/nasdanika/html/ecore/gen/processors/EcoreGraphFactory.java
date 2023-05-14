@@ -2,11 +2,13 @@ package org.nasdanika.html.ecore.gen.processors;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
@@ -14,6 +16,7 @@ import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.graph.emf.EObjectGraphFactory;
 import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.emf.EObjectNode.ResultRecord;
@@ -27,8 +30,15 @@ public class EcoreGraphFactory extends EObjectGraphFactory {
 	
 	@Override
 		protected EObjectNode createNode(EObject eObject, Function<EObject, ResultRecord> nodeFactory) {
-		
-			// TODO Auto-generated method stub
+			if (eObject instanceof EClass) {
+				return new EClassNode(
+						(EClass) eObject, 
+						nodeFactory,
+						this::createReferenceConnection, 
+						this::createOperationConnections,
+						this::createReifiedTypeConnection);
+				
+			}
 			return super.createNode(eObject, nodeFactory);
 		}
 
@@ -65,5 +75,13 @@ public class EcoreGraphFactory extends EObjectGraphFactory {
 		
 		return super.argumentToPathSegment(parameter, argument);
 	};
+		
+	protected void createReifiedTypeConnection(EClassNode source, EGenericType genericType, Function<EObject, EObjectNode.ResultRecord> nodeFactory) {
+		EGenericType reifiedType = EcoreUtil.getReifiedType(source.getTarget(), genericType);
+		if (reifiedType != null && !Objects.equals(reifiedType, genericType)) {
+			EObjectNode.ResultRecord reifiedTypeRecord = nodeFactory.apply(reifiedType);
+			new ReifiedTypeConnection(source, reifiedTypeRecord.node(), -1, null, genericType, reifiedTypeRecord.isNew());
+		}
+	}	
 
 }

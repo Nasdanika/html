@@ -1,6 +1,7 @@
 package org.nasdanika.html.ecore.gen.processors;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
@@ -42,6 +43,20 @@ public class ETypedElementNodeProcessor<T extends ETypedElement> extends EModelE
 		if (selector == EcorePackage.Literals.ETYPED_ELEMENT__EGENERIC_TYPE && genericTypeWidgetFactory != null) {
 			return genericTypeWidgetFactory.createLink(base, progressMonitor);
 		}
+		if (selector instanceof EClassNodeProcessor.ReifiedTypeSelector) {
+			EClassNodeProcessor.ReifiedTypeSelector reifiedTypeSelector = (EClassNodeProcessor.ReifiedTypeSelector) selector;
+			if (reifiedTypeSelector.getSelector() == EcorePackage.Literals.ETYPED_ELEMENT__EGENERIC_TYPE) {
+				EGenericType genericType = getTarget().getEGenericType();
+				WidgetFactory rwf = reifiedTypeSelector.getReifiedTypeWidgetFactory(genericType);
+				if (rwf == null) {
+					if (genericTypeWidgetFactory != null) {
+						return genericTypeWidgetFactory.createLink(base, progressMonitor);
+					}
+				}
+				return rwf.createLink(base, progressMonitor);
+			}
+		}		
+		
 		return super.createWidget(selector, base, progressMonitor);
 	}
 

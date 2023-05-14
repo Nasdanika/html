@@ -31,6 +31,28 @@ import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 	
+	public class ReifiedTypeSelector {
+		
+		private Object selector;
+		
+		ReifiedTypeSelector(Object selector) {
+			this.selector = selector;
+		}
+		
+		public Object getSelector() {
+			return selector;
+		}
+		
+		public WidgetFactory getReifiedTypeWidgetFactory(EGenericType eGenericType) {
+			return reifiedTypesWidgetFactories.get(eGenericType);
+		}
+		
+		public ReifiedTypeSelector createSelector(Object selector) {
+			return new ReifiedTypeSelector(selector);
+		}
+		
+	}
+	
 //	getEAllAttributes()
 //	getEAllContainments()
 //	getEAllGenericSuperTypes()
@@ -193,9 +215,11 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 					buildTypedElementColumns(operationsTableBuilder, progressMonitor);					
 					operationsTableBuilder
 						.addStringColumnBuilder("declaring-class", true, true, "Declaring Class", endpoint -> declaringClassLink(endpoint.getKey(), endpoint.getValue(), progressMonitor))
-						.addStringColumnBuilder("parameters", true, false, "Parameters", endpoint -> endpoint.getValue().createWidgetString(EcorePackage.Literals.EOPERATION__EPARAMETERS, progressMonitor))
-						.addStringColumnBuilder("exceptions", true, false, "Exceptions", endpoint -> endpoint.getValue().createWidgetString(EcorePackage.Literals.EOPERATION__EGENERIC_EXCEPTIONS, progressMonitor))
-						.addStringColumnBuilder("type-parameters", true, false, "Type Parameters", endpoint -> endpoint.getValue().createWidgetString(EcorePackage.Literals.EOPERATION__ETYPE_PARAMETERS, progressMonitor));		
+						.addStringColumnBuilder("parameters", true, false, "Parameters", endpoint -> endpoint.getValue().createWidgetString(new ReifiedTypeSelector(EcorePackage.Literals.EOPERATION__EPARAMETERS), progressMonitor))
+						.addStringColumnBuilder("exceptions", true, false, "Exceptions", endpoint -> endpoint.getValue().createWidgetString(new ReifiedTypeSelector(EcorePackage.Literals.EOPERATION__EGENERIC_EXCEPTIONS), progressMonitor))
+						.addStringColumnBuilder("type-parameters", true, false, "Type Parameters", endpoint -> endpoint.getValue().createWidgetString(new ReifiedTypeSelector(EcorePackage.Literals.EOPERATION__ETYPE_PARAMETERS), progressMonitor));		
+					
+					// TODO - overrides, not visible by default and not sortable
 					
 					org.nasdanika.html.model.html.Tag operationsTable = operationsTableBuilder.build(
 							referenceOutgoingEndpoints.stream().sorted((a,b) -> {
@@ -309,5 +333,12 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 	public final void setFeatureTypeEndpoint(EOperationConnection connection, WidgetFactory genericTypeWidgetFactory) {
 		featureGenericTypesWidgetFactories.put((EStructuralFeature) connection.getArguments().get(0), genericTypeWidgetFactory);
 	}
-			
+
+	private Map<EGenericType,WidgetFactory> reifiedTypesWidgetFactories = new HashMap<>();
+	
+	@OutgoingEndpoint
+	public final void setRefiedTypeEndpoint(ReifiedTypeConnection connection, WidgetFactory reifiedTypeWidgetFactory) {
+		reifiedTypesWidgetFactories.put(connection.getGenericType(), reifiedTypeWidgetFactory);
+	}	
+	
 }
