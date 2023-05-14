@@ -30,6 +30,7 @@ import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Supplier.FunctionResult;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
+import org.nasdanika.graph.emf.Connection;
 import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.emf.EOperationConnection;
 import org.nasdanika.graph.emf.EReferenceConnection;
@@ -128,22 +129,12 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	}
 		
 	@IncomingHandler
-	public WidgetFactory getIncomingHandler(EReferenceConnection connection) {
-		return this;
-	}
-		
-	@IncomingHandler
-	public WidgetFactory getIncomingHandler(EOperationConnection connection) {
-		return this;
-	}	
-		
-	@OutgoingHandler
-	public WidgetFactory getOutgoingHandler(EReferenceConnection connection) {
+	public WidgetFactory getIncomingHandler(Connection connection) {
 		return this;
 	}
 	
 	@OutgoingHandler
-	public WidgetFactory getOutgoingHandler(EOperationConnection connection) {
+	public WidgetFactory getOutgoingHandler(Connection connection) {
 		return this;
 	}
 	
