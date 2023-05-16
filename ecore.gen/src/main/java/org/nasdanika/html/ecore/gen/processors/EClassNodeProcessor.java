@@ -28,6 +28,7 @@ import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.gen.DynamicTableBuilder;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
+import org.nasdanika.html.model.app.graph.emf.OutgoingReferenceBuilder;
 
 public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 	
@@ -86,7 +87,7 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 	 * @param parent
 	 * @return
 	 */
-	private Action getReferencesAction(Action parent) {
+	protected Action getReferencesAction(Action parent) {
 		Action pAction = (Action) parent;
 		return pAction.getNavigation()
 			.stream()
@@ -108,7 +109,7 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 	 * @param parent
 	 * @return
 	 */
-	private Action getAttributesAction(Action parent) {
+	protected Action getAttributesAction(Action parent) {
 		Action pAction = (Action) parent;
 		return pAction.getNavigation()
 			.stream()
@@ -116,12 +117,34 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			.findFirst()
 			.map(Action.class::cast)
 			.orElseGet(() -> {
-				Action referencesAction = AppFactory.eINSTANCE.createAction();
-				referencesAction.setText("Attributes");
-				referencesAction.setIcon("https://cdn.jsdelivr.net/gh/Nasdanika/html@master/ecore.gen/web-resources/icons/EAttribute.gif");
-				referencesAction.setLocation("attributes.html");
-				pAction.getNavigation().add(referencesAction);
-				return referencesAction;
+				Action attributesAction = AppFactory.eINSTANCE.createAction();
+				attributesAction.setText("Attributes");
+				attributesAction.setIcon("https://cdn.jsdelivr.net/gh/Nasdanika/html@master/ecore.gen/web-resources/icons/EAttribute.gif");
+				attributesAction.setLocation("attributes.html");
+				pAction.getNavigation().add(attributesAction);
+				return attributesAction;
+			});
+	}
+	
+	/**
+	 * Returns inheritance action (subtypes and supertypes), creates if necessary. Matches by location.
+	 * @param parent
+	 * @return
+	 */
+	protected Action getInheritanceAction(Action parent) {
+		Action pAction = (Action) parent;
+		return pAction.getNavigation()
+			.stream()
+			.filter(e -> e instanceof Action && "inheritance.html".equals(((Action) e).getLocation()))
+			.findFirst()
+			.map(Action.class::cast)
+			.orElseGet(() -> {
+				Action inheritanceAction = AppFactory.eINSTANCE.createAction();
+				inheritanceAction.setText("Inheritance");
+				inheritanceAction.setIcon("https://cdn.jsdelivr.net/gh/Nasdanika/html@master/ecore.gen/web-resources/icons/EGenericSuperType.gif");
+				inheritanceAction.setLocation("inheritance.html");
+				pAction.getNavigation().add(inheritanceAction);
+				return inheritanceAction;
 			});
 	}
 	
@@ -130,7 +153,7 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 	 * @param parent
 	 * @return
 	 */
-	private Action getOperationsAction(Action parent) {
+	protected Action getOperationsAction(Action parent) {
 		Action pAction = (Action) parent;
 		return pAction.getNavigation()
 			.stream()
@@ -138,14 +161,42 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			.findFirst()
 			.map(Action.class::cast)
 			.orElseGet(() -> {
-				Action referencesAction = AppFactory.eINSTANCE.createAction();
-				referencesAction.setText("Operations");
-				referencesAction.setIcon("https://cdn.jsdelivr.net/gh/Nasdanika/html@master/ecore.gen/web-resources/icons/EOperation.gif");
-				referencesAction.setLocation("operations.html");
-				pAction.getNavigation().add(referencesAction);
-				return referencesAction;
+				Action operationsAction = AppFactory.eINSTANCE.createAction();
+				operationsAction.setText("Operations");
+				operationsAction.setIcon("https://cdn.jsdelivr.net/gh/Nasdanika/html@master/ecore.gen/web-resources/icons/EOperation.gif");
+				operationsAction.setLocation("operations.html");
+				pAction.getNavigation().add(operationsAction);
+				return operationsAction;
 			});
 	}
+
+	@OutgoingReferenceBuilder(EcorePackage.ECLASS__EALL_ATTRIBUTES)
+	public void buildEAllAttributesOutgoingReference(
+			List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints, 
+			Collection<Label> labels,
+			Map<EReferenceConnection, Collection<Label>> outgoingLabels, 
+			ProgressMonitor progressMonitor) {
+
+		// A page with a dynamic attributes table and links to attribute pages for attributes with documentation.
+		for (Label label: labels) {
+			if (label instanceof Action) {										
+				DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> attributesTableBuilder = new DynamicTableBuilder<>("nsd-ecore-doc-table");
+				attributesTableBuilder.setProperty("transitive-label", "Inherited");
+				buildStructuralFeatureColumns(attributesTableBuilder, progressMonitor);
+				
+				org.nasdanika.html.model.html.Tag attributesTable = attributesTableBuilder.build(
+						referenceOutgoingEndpoints.stream().sorted((a,b) -> {
+							ENamedElement ane = (ENamedElement) a.getKey().getTarget().getTarget();
+							ENamedElement bne = (ENamedElement) b.getKey().getTarget().getTarget();
+							return ane.getName().compareTo(bne.getName());
+						}).collect(Collectors.toList()),  
+						"eclass-attributes", 
+						"attributes-table", 
+						progressMonitor);
+				getAttributesAction((Action) label).getContent().add(attributesTable);
+			}
+		}
+	}	
 	
 	@Override
 	protected void buildOutgoingReference(
@@ -154,28 +205,6 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			Collection<Label> labels,
 			Map<EReferenceConnection, Collection<Label>> outgoingLabels, 
 			ProgressMonitor progressMonitor) {
-
-		if (eReference == EcorePackage.Literals.ECLASS__EALL_ATTRIBUTES) {
-			// A page with a dynamic attributes table and links to attribute pages for attributes with documentation.
-			for (Label label: labels) {
-				if (label instanceof Action) {										
-					DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> attributesTableBuilder = new DynamicTableBuilder<>("nsd-ecore-doc-table");
-					attributesTableBuilder.setProperty("transitive-label", "Inherited");
-					buildStructuralFeatureColumns(attributesTableBuilder, progressMonitor);
-					
-					org.nasdanika.html.model.html.Tag attributesTable = attributesTableBuilder.build(
-							referenceOutgoingEndpoints.stream().sorted((a,b) -> {
-								ENamedElement ane = (ENamedElement) a.getKey().getTarget().getTarget();
-								ENamedElement bne = (ENamedElement) b.getKey().getTarget().getTarget();
-								return ane.getName().compareTo(bne.getName());
-							}).collect(Collectors.toList()),  
-							"eclass-attributes", 
-							"attributes-table", 
-							progressMonitor);
-					getAttributesAction((Action) label).getContent().add(attributesTable);
-				}
-			}
-		}
 		
 		if (eReference == EcorePackage.Literals.ECLASS__EALL_REFERENCES) {
 			// A page with a dynamic references table and links to reference pages for references with documentation. 
@@ -235,6 +264,33 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 			}			
 		}
 		
+		if (eReference == EcorePackage.Literals.ECLASS__EALL_GENERIC_SUPER_TYPES) {
+			// A section with a dynamic super table and links to operations pages for operations with documentation. 
+			for (Label label: labels) {
+				if (label instanceof Action) {					
+					DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> superTypesTableBuilder = new DynamicTableBuilder<>("nsd-ecore-doc-table");
+					superTypesTableBuilder.setProperty("transitive-label", "All");
+					superTypesTableBuilder
+						.addStringColumnBuilder("name", true, false, "Name", endpoint -> targetNameLink(endpoint.getKey(), endpoint.getValue(), progressMonitor)) // TODO - bold for immediate supertypes  
+						.addStringColumnBuilder("description", true, false, "Description", endpoint -> description(endpoint.getKey(), endpoint.getValue(), progressMonitor));
+					
+					// TODO - other things.
+					
+					org.nasdanika.html.model.html.Tag superTypesTable = superTypesTableBuilder.build(
+							referenceOutgoingEndpoints,  
+							"eclass-operations", 
+							"operations-table", 
+							progressMonitor);
+					
+					Action superTypesSection = AppFactory.eINSTANCE.createAction();
+					superTypesSection.setText("Supertypes");
+					superTypesSection.getContent().add(superTypesTable);
+										
+					getInheritanceAction((Action) label).getSections().add(superTypesSection);
+				}
+			}			
+		}
+		
 		if (eReference == EcorePackage.Literals.ECLASS__EREFERENCES) {			
 			// Own references 
 			for (Label tLabel: labels) {
@@ -289,6 +345,18 @@ public class EClassNodeProcessor extends EClassifierNodeProcessor<EClass> {
 		super.buildOutgoingReference(eReference, referenceOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
 	}
 	
+	@Override
+	protected void buildIncomingReference(
+			EReference eReference,
+			List<Entry<EReferenceConnection, WidgetFactory>> referenceIncomingEndpoints, 
+			Collection<Label> labels,
+			Map<EReferenceConnection, Collection<Label>> incomingLabels, 
+			ProgressMonitor progressMonitor) {
+		
+		
+		super.buildIncomingReference(eReference, referenceIncomingEndpoints, labels, incomingLabels, progressMonitor);
+	}
+		
 	@Override
 	protected boolean isCallOutgoingReferenceLabelsSuppliers(EReference eReference) {
 		if (eReference == EcorePackage.Literals.ECLASS__EATTRIBUTES) {

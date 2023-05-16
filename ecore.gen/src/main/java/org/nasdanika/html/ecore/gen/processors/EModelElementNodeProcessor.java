@@ -1,7 +1,6 @@
 package org.nasdanika.html.ecore.gen.processors;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -102,15 +101,16 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 		
 		return ret;
 	}
-	
+
 	/**
 	 * Suppressing default behavior, explicit specification of how to build.
-	 */
+	 */	
 	@Override
-	protected void buildOutgoingReference(EReference eReference,
-			List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints, Collection<Label> labels,
-			Map<EReferenceConnection, Collection<Label>> outgoingLabels, ProgressMonitor progressMonitor) {
-		// TODO EAnnotations
+	protected void addReferenceChildren(
+			EReference eReference, 
+			Collection<Label> labels, 
+			Map<EReferenceConnection, Collection<Label>> outgoingLabels, 
+			ProgressMonitor progressMonitor) {
 	}
 	
 	@Override
@@ -158,7 +158,7 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 		return typeNameComment + (Util.isBlank(linkStr) ? typeName : linkStr);
 	}
 	
-	protected String nameLink(EReferenceConnection connection, WidgetFactory widgetFactory, ProgressMonitor progressMonitor) {
+	protected String targetNameLink(EReferenceConnection connection, WidgetFactory widgetFactory, ProgressMonitor progressMonitor) {
 		boolean isDirect = false;
 		EObject tt = connection.getTarget().getTarget();
 		if (tt instanceof EStructuralFeature) {
@@ -166,7 +166,6 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 		} else if (tt instanceof EOperation) {
 			isDirect = ((EOperation) tt).getEContainingClass() == getTarget();
 		}
-		// TODO - super and sub classes
 		String linkStr = widgetFactory.createLinkString(progressMonitor);
 		String name = Util.isBlank(linkStr) ? ((ENamedElement) connection.getTarget().getTarget()).getName() : linkStr;
 		return isDirect ? TagName.b.create(name).toString() : name;
@@ -203,7 +202,7 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 	 */
 	protected void buildNamedElementColumns(DynamicTableBuilder<Entry<EReferenceConnection, WidgetFactory>> tableBuilder, ProgressMonitor progressMonitor) {
 		tableBuilder
-			.addStringColumnBuilder("name", true, false, "Name", endpoint -> nameLink(endpoint.getKey(), endpoint.getValue(), progressMonitor)) 
+			.addStringColumnBuilder("name", true, false, "Name", endpoint -> targetNameLink(endpoint.getKey(), endpoint.getValue(), progressMonitor)) 
 			.addStringColumnBuilder("description", true, false, "Description", endpoint -> description(endpoint.getKey(), endpoint.getValue(), progressMonitor));
 	}
 	

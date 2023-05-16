@@ -1,6 +1,8 @@
 
 package org.nasdanika.html.model.app.graph.emf;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,8 +24,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.CollectionCompoundConsumer;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.ExecutionException;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.MapCompoundSupplier;
+import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
@@ -381,6 +385,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			Map<EReferenceConnection, Collection<Label>> incomingLabels,
 			ProgressMonitor progressMonitor) {
 
+		// TODO - Annotations
 	}
 	
 	/**
@@ -446,6 +451,8 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			Map<EOperationConnection, Collection<Label>> incomingLabels,
 			ProgressMonitor progressMonitor) {
 
+		// TODO - Annotations
+
 	}
 	
 	/**
@@ -510,6 +517,8 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			Collection<Label> labels,
 			Map<EOperationConnection, Collection<Label>> outoingLabels,
 			ProgressMonitor progressMonitor) {
+
+		// TODO - Annotations
 
 	}
 		
@@ -587,6 +596,33 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			Map<EReferenceConnection, Collection<Label>> outgoingLabels,
 			ProgressMonitor progressMonitor) {
 		
+		for (Method method: getClass().getMethods()) { // Util.lineage and declared methods?
+			OutgoingReferenceBuilder orb = method.getAnnotation(OutgoingReferenceBuilder.class);
+			if (orb != null && eReference.getFeatureID() == orb.value()) {
+				int pc = method.getParameterCount();
+				if (pc == 4) {
+					try {
+						method.invoke(this, referenceOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						throw new ExecutionException(e);
+					}
+				} else if (pc == 5) {
+					try {
+						method.invoke(this, eReference, referenceOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						throw new ExecutionException(e);
+					}					
+				} else {
+					throw new NasdanikaException("A method anotated with " + OutgoingReferenceBuilder.class + " shall have 4 or 5 parameters: " + method);
+				}
+			}
+		}
+		
+		addReferenceChildren(eReference, labels, outgoingLabels, progressMonitor);		
+	}
+
+	protected void addReferenceChildren(EReference eReference, Collection<Label> labels,
+			Map<EReferenceConnection, Collection<Label>> outgoingLabels, ProgressMonitor progressMonitor) {
 		for (Label tLabel: labels) {
 			Label refLabel = createLabel(eReference, progressMonitor);
 			for (Entry<EReferenceConnection, Collection<Label>> re: outgoingLabels.entrySet()) {
@@ -595,7 +631,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			if (!refLabel.getChildren().isEmpty()) {
 				tLabel.getChildren().add(refLabel);
 			}
-		}		
+		}
 	}
 	
 	/**

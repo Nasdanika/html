@@ -9,6 +9,7 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.Registry;
 
+// <name> extends <bound 1> [& <bound 2> ...]
 public class ETypeParameterNodeProcessor extends EModelElementNodeProcessor<ETypeParameter> {
 
 	public ETypeParameterNodeProcessor(
