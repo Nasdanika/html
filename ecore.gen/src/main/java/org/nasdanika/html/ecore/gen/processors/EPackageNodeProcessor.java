@@ -19,6 +19,7 @@ import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
+import org.nasdanika.html.model.app.graph.emf.OutgoingReferenceBuilder;
 import org.nasdanika.html.model.app.graph.Registry;
 
 public class EPackageNodeProcessor extends ENamedElementNodeProcessor<EPackage> {
@@ -35,26 +36,22 @@ public class EPackageNodeProcessor extends ENamedElementNodeProcessor<EPackage> 
 		return super.createLabelsSupplier().then(this::sortLabels);
 	}
 	
-	@Override
-	protected void buildOutgoingReference(EReference eReference,
+	@OutgoingReferenceBuilder(EcorePackage.EPACKAGE__ECLASSIFIERS)
+	public void buildOutgoingReference(
 			List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints, 
 			Collection<Label> labels,
 			Map<EReferenceConnection, Collection<Label>> outgoingLabels, 
 			ProgressMonitor progressMonitor) {
 		
-		if (eReference == EcorePackage.Literals.EPACKAGE__ECLASSIFIERS) {
-			List<Entry<EReferenceConnection, Collection<Label>>> sorted = outgoingLabels.entrySet().stream()
-					.sorted((a,b) -> ((ENamedElement) a.getKey().getTarget().getTarget()).getName().compareTo(((ENamedElement) b.getKey().getTarget().getTarget()).getName()))
-					.collect(Collectors.toList());		
+		List<Entry<EReferenceConnection, Collection<Label>>> sorted = outgoingLabels.entrySet().stream()
+				.sorted((a,b) -> ((ENamedElement) a.getKey().getTarget().getTarget()).getName().compareTo(((ENamedElement) b.getKey().getTarget().getTarget()).getName()))
+				.collect(Collectors.toList());		
 
-				for (Label tLabel: labels) {
-					for (Entry<EReferenceConnection, Collection<Label>> re: sorted) {
-						tLabel.getChildren().addAll(re.getValue());
-					}
+			for (Label tLabel: labels) {
+				for (Entry<EReferenceConnection, Collection<Label>> re: sorted) {
+					tLabel.getChildren().addAll(re.getValue());
 				}
-		}
-		
-		super.buildOutgoingReference(eReference, referenceOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
+			}
 	}
 	
 	protected Collection<Label> sortLabels(Collection<Label> labels) {

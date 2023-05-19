@@ -1,9 +1,9 @@
-package org.nasdanika.html.ecore.gen.processors;
+package org.nasdanika.html.ecore.gen;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
@@ -17,9 +17,11 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.emf.EObjectGraphFactory;
 import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.emf.EObjectNode.ResultRecord;
+import org.nasdanika.graph.emf.NodeFactory;
 
 /**
  * Graph factory for ecore models
@@ -28,19 +30,16 @@ import org.nasdanika.graph.emf.EObjectNode.ResultRecord;
  */
 public class EcoreGraphFactory extends EObjectGraphFactory {
 	
-	@Override
-		protected EObjectNode createNode(EObject eObject, Function<EObject, ResultRecord> nodeFactory) {
-			if (eObject instanceof EClass) {
-				return new EClassNode(
-						(EClass) eObject, 
-						nodeFactory,
-						this::createReferenceConnection, 
-						this::createOperationConnections,
-						this::createReifiedTypeConnection);
-				
-			}
-			return super.createNode(eObject, nodeFactory);
-		}
+	@NodeFactory(type = EClass.class)
+	public EClassNode createEClassNode(EObject eObject, BiFunction<EObject, ProgressMonitor, ResultRecord> nodeFactory, ProgressMonitor progressMonitor) {
+		return new EClassNode(
+				(EClass) eObject, 
+				nodeFactory,
+				this::createReferenceConnection, 
+				this::createOperationConnections,
+				(source, genericType, nFactory) -> createReifiedTypeConnection(source, genericType, nFactory, progressMonitor),
+				progressMonitor);
+	}
 
 	@Override
 	protected String referencePath(EObjectNode source, EObjectNode target, EReference reference, int index) {
@@ -76,10 +75,10 @@ public class EcoreGraphFactory extends EObjectGraphFactory {
 		return super.argumentToPathSegment(parameter, argument);
 	};
 		
-	protected void createReifiedTypeConnection(EClassNode source, EGenericType genericType, Function<EObject, EObjectNode.ResultRecord> nodeFactory) {
+	protected void createReifiedTypeConnection(EClassNode source, EGenericType genericType, BiFunction<EObject, ProgressMonitor, EObjectNode.ResultRecord> nodeFactory, ProgressMonitor progressMonitor) {
 		EGenericType reifiedType = EcoreUtil.getReifiedType(source.getTarget(), genericType);
 		if (reifiedType != null && !Objects.equals(reifiedType, genericType)) {
-			EObjectNode.ResultRecord reifiedTypeRecord = nodeFactory.apply(reifiedType);
+			EObjectNode.ResultRecord reifiedTypeRecord = nodeFactory.apply(reifiedType, progressMonitor);
 			new ReifiedTypeConnection(source, reifiedTypeRecord.node(), -1, null, genericType, reifiedTypeRecord.isNew());
 		}
 	}	

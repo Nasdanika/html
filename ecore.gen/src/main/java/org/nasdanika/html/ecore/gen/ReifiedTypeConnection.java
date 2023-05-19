@@ -1,13 +1,13 @@
-package org.nasdanika.html.ecore.gen.processors;
+package org.nasdanika.html.ecore.gen;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.Element;
 import org.nasdanika.graph.emf.Connection;
 import org.nasdanika.graph.emf.EObjectNode;
@@ -22,7 +22,7 @@ public class ReifiedTypeConnection extends Connection {
 
 	public interface Factory {
 	
-		void create(EClassNode source, EGenericType genericType, Function<EObject, EObjectNode.ResultRecord> nodeFactory);
+		void create(EClassNode source, EGenericType genericType, BiFunction<EObject, ProgressMonitor, EObjectNode.ResultRecord> nodeFactory);
 		
 	}
 	

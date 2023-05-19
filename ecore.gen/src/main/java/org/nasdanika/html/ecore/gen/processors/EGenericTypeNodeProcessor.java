@@ -105,56 +105,5 @@ public class EGenericTypeNodeProcessor extends EObjectNodeProcessor<EGenericType
 		}
 		return ret;
 	}
-	
-	
-//	/**
-//	 * @param eClassifier
-//	 * @return Type parameters string.
-//	 */
-//	protected String typeParameters(EClassifier eClassifier) {
-//		if (eClassifier.getETypeParameters().isEmpty()) {
-//			return "";
-//		}
-//		StringBuilder typeParameters = new StringBuilder();
-//		for (ETypeParameter typeParameter: eClassifier.getETypeParameters()) {
-//			if (typeParameters.length() > 0) {
-//				typeParameters.append(",");
-//			}
-//			typeParameters.append(genericName(typeParameter));
-//		}		
-//		
-//		return "&lt;" + typeParameters +"&gt;";
-//	}	
-//	
-//	protected String genericName(ETypeParameter typeParameter) {
-//		StringBuilder ret = new StringBuilder(labelProvider.apply(typeParameter, typeParameter.getName()));
-//		for (EGenericType bound : typeParameter.getEBounds()) {
-//			if (bound.getEUpperBound() != null) {
-//				ret.append(" extends ").append(genericName(bound.getEUpperBound()));
-//			}
-//			if (bound.getELowerBound() != null) {
-//				ret.append(" super ").append(genericName(bound.getELowerBound()));
-//			}
-//		}
-//		
-//		return ret.toString();
-//	}
-//	
-//	protected String genericName(EGenericType eGenericType) {
-//		StringBuilder ret = new StringBuilder();
-//		ETypeParameter eTypeParameter = eGenericType.getETypeParameter();
-//		if (eTypeParameter != null) {			
-//			ret.append(labelProvider.apply(eTypeParameter, eTypeParameter.getName()));
-//		} else {
-//			EClassifier eClassifier = eGenericType.getEClassifier();
-//			if (eClassifier != null) {
-//				ret.append(labelProvider.apply(eClassifier, eClassifier.getName()));			
-//			}
-//		}
-//		ret.append(genericTypeArguments(eGenericType));
-//		return ret.toString();
-//	}
-//
-//
 
 }

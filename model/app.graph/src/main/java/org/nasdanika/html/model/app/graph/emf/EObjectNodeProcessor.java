@@ -385,7 +385,27 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			Map<EReferenceConnection, Collection<Label>> incomingLabels,
 			ProgressMonitor progressMonitor) {
 
-		// TODO - Annotations
+		for (Method method: getClass().getMethods()) {
+			IncomingReferenceBuilder orb = method.getAnnotation(IncomingReferenceBuilder.class);
+			if (orb != null && eReference.getFeatureID() == orb.value()) {
+				int pc = method.getParameterCount();
+				if (pc == 4) {
+					try {
+						method.invoke(this, referenceIncomingEndpoints, labels, incomingLabels, progressMonitor);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						throw new ExecutionException(e);
+					}
+				} else if (pc == 5) {
+					try {
+						method.invoke(this, eReference, referenceIncomingEndpoints, labels, incomingLabels, progressMonitor);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						throw new ExecutionException(e);
+					}					
+				} else {
+					throw new NasdanikaException("A method anotated with " + IncomingReferenceBuilder.class + " shall have 4 or 5 parameters: " + method);
+				}
+			}
+		}
 	}
 	
 	/**
@@ -450,9 +470,28 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			Collection<Label> labels,
 			Map<EOperationConnection, Collection<Label>> incomingLabels,
 			ProgressMonitor progressMonitor) {
-
-		// TODO - Annotations
-
+		
+		for (Method method: getClass().getMethods()) {
+			IncomingOperationBuilder orb = method.getAnnotation(IncomingOperationBuilder.class);
+			if (orb != null && eOperation.getOperationID() == orb.value()) {
+				int pc = method.getParameterCount();
+				if (pc == 4) {
+					try {
+						method.invoke(this, operationIncomingEndpoints, labels, incomingLabels, progressMonitor);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						throw new ExecutionException(e);
+					}
+				} else if (pc == 5) {
+					try {
+						method.invoke(this, eOperation, operationIncomingEndpoints, labels, incomingLabels, progressMonitor);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						throw new ExecutionException(e);
+					}					
+				} else {
+					throw new NasdanikaException("A method anotated with " + OutgoingReferenceBuilder.class + " shall have 4 or 5 parameters: " + method);
+				}
+			}
+		}
 	}
 	
 	/**
@@ -515,11 +554,30 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			List<Object> arguments,
 			List<Entry<EOperationConnection, WidgetFactory>> operationOutgoingEndpoints,
 			Collection<Label> labels,
-			Map<EOperationConnection, Collection<Label>> outoingLabels,
+			Map<EOperationConnection, Collection<Label>> outgoingLabels,
 			ProgressMonitor progressMonitor) {
-
-		// TODO - Annotations
-
+		
+		for (Method method: getClass().getMethods()) {
+			OutgoingOperationBuilder orb = method.getAnnotation(OutgoingOperationBuilder.class);
+			if (orb != null && eOperation.getOperationID() == orb.value()) {
+				int pc = method.getParameterCount();
+				if (pc == 4) {
+					try {
+						method.invoke(this, operationOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						throw new ExecutionException(e);
+					}
+				} else if (pc == 5) {
+					try {
+						method.invoke(this, eOperation, operationOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						throw new ExecutionException(e);
+					}					
+				} else {
+					throw new NasdanikaException("A method anotated with " + OutgoingOperationBuilder.class + " shall have 4 or 5 parameters: " + method);
+				}
+			}
+		}
 	}
 		
 	/**
@@ -596,7 +654,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			Map<EReferenceConnection, Collection<Label>> outgoingLabels,
 			ProgressMonitor progressMonitor) {
 		
-		for (Method method: getClass().getMethods()) { // Util.lineage and declared methods?
+		for (Method method: getClass().getMethods()) {
 			OutgoingReferenceBuilder orb = method.getAnnotation(OutgoingReferenceBuilder.class);
 			if (orb != null && eReference.getFeatureID() == orb.value()) {
 				int pc = method.getParameterCount();

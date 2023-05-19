@@ -11,6 +11,7 @@ module org.nasdanika.html.ecore.gen {
 	requires transitive sitemapgen4j;
 	requires org.nasdanika.html.model.app.gen;
 	
+	exports org.nasdanika.html.ecore.gen;
 	exports org.nasdanika.html.ecore.gen.processors;
 	
 }
