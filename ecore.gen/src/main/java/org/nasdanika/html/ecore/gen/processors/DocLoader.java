@@ -1,4 +1,4 @@
-package org.nasdanika.html.model.app.util;
+package org.nasdanika.html.ecore.gen.processors;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,8 +15,9 @@ import org.nasdanika.ncore.ModelElement;
 /**
  * Loads documentation actions from classpath resources
  * @author Pavel
- *
+ * @deprecated Use node processor factories
  */
+@Deprecated
 public class DocLoader implements Composeable<DocLoader> {
 	
 	protected Map<URI, Action> prototypes = new HashMap<>();

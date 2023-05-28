@@ -2,33 +2,40 @@ package org.nasdanika.html.ecore.gen.processors;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.graph.processor.Factory;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.graph.processor.Processor;
+import org.nasdanika.graph.processor.emf.EObjectNodeProcessor;
+import org.nasdanika.graph.processor.emf.EObjectNodeProcessorReflectiveFactory;
 import org.nasdanika.html.model.app.Action;
-import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.Registry;
-import org.nasdanika.html.model.app.graph.emf.EObjectReflectiveProcessorFactory;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 /**
  * Node processor factory to use with {@link EObjectReflectiveProcessorFactory}.
  * @author Pavel
  *
  */
-@Factory("target.eClass().getEPackage().getNsURI() == 'http://www.eclipse.org/emf/2002/Ecore'")
-public class EcoreNodeProcessorFactory {
+@EObjectNodeProcessor(type = EModelElement.class)
+public class EcoreNodeProcessorFactory extends EObjectNodeProcessorReflectiveFactory<Object, WidgetFactory, WidgetFactory, Registry<URI>> {
 	
 	private Context context;
 	private java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider;
 
+	/**
+	 * 
+	 * @param context
+	 * @param reflectiveFactories Objects with annotated methods for creating processors. 
+	 */
 	public EcoreNodeProcessorFactory(Context context, java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {
 		this.context = context;
 		this.prototypeProvider = prototypeProvider;
 	}
 	
-	@Processor("target.eClass().name == 'EPackage'")
+	@EObjectNodeProcessor(type = EPackage.class)
 	public EPackageNodeProcessor createEPackageNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config) {
 		return new EPackageNodeProcessor(config, context, prototypeProvider);
 	}	
