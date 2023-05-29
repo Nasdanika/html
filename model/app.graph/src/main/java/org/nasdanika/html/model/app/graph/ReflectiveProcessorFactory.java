@@ -7,13 +7,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.nasdanika.graph.Element;
-import org.nasdanika.graph.processor.IntrospectionLevel;
 import org.nasdanika.graph.processor.ProcessorInfo;
 
 public abstract class ReflectiveProcessorFactory<I> extends org.nasdanika.graph.processor.NopEndpointReflectiveProcessorFactory<Object, WidgetFactory, Registry<I>> {
 
-	protected ReflectiveProcessorFactory(IntrospectionLevel introspectionLevel, Object[] targets) {
-		super(introspectionLevel, targets);
+	protected ReflectiveProcessorFactory(Object[] targets) {
+		super(targets);
 	}
 
 	@Override

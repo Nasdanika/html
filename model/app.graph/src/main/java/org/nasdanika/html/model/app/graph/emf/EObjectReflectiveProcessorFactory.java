@@ -9,19 +9,18 @@ import org.nasdanika.graph.Connection;
 import org.nasdanika.graph.Element;
 import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.processor.ConnectionProcessorConfig;
-import org.nasdanika.graph.processor.IntrospectionLevel;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
-import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.NodeProcessor;
 import org.nasdanika.html.model.app.graph.ReflectiveProcessorFactory;
 import org.nasdanika.html.model.app.graph.Registry;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.ncore.util.NcoreUtil;
 
 public class EObjectReflectiveProcessorFactory extends ReflectiveProcessorFactory<URI> {
 
-	public EObjectReflectiveProcessorFactory(IntrospectionLevel introspectionLevel, Object... targets) {
-		super(introspectionLevel, targets);
+	public EObjectReflectiveProcessorFactory(Object... targets) {
+		super(targets);
 	}
 	
 	@Override
