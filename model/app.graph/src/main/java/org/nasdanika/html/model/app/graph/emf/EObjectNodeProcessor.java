@@ -57,7 +57,6 @@ import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.URINodeProcessor;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.ncore.NamedElement;
-import org.nasdanika.ncore.util.NcoreUtil;
 import org.nasdanika.ncore.util.SemanticInfo;
 
 /**
@@ -68,12 +67,12 @@ import org.nasdanika.ncore.util.SemanticInfo;
  */
 public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor {
 	
-	protected java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider;
+	protected java.util.function.Function<ProgressMonitor, Action> prototypeProvider;
 
 	public EObjectNodeProcessor(
 			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, 
 			Context context, 
-			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {		
+			java.util.function.Function<ProgressMonitor, Action> prototypeProvider) {		
 		this.config = config;
 		this.context = context;
 		this.prototypeProvider = prototypeProvider;
@@ -711,12 +710,10 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	 */
 	protected Action newAction(EObject eObject, ProgressMonitor progressMonitor) {
 		if (prototypeProvider != null) {
-			for (URI identifier: NcoreUtil.getIdentifiers(eObject)) {
-				Action prototype = prototypeProvider.apply(identifier, progressMonitor);
-				if (prototype != null) {
-					return prototype;
-				}				
-			}			
+			Action prototype = prototypeProvider.apply(progressMonitor);
+			if (prototype != null) {
+				return prototype;
+			}				
 		}
 		return AppFactory.eINSTANCE.createAction();
 	}

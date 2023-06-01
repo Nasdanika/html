@@ -7,9 +7,9 @@
 	    <version>2023.4.1</version>
 	    <relativePath>..</relativePath>
 	  </parent>
-	<artifactId>ecore-doc</artifactId>
+	<artifactId>ecore-processors</artifactId>
 	<packaging>jar</packaging>
-	<name>Ecore Model Documentation</name>
+	<name>Ecore Model Documentation Generating Processors</name>
 	<build>
 	    <plugins>
 			<plugin>

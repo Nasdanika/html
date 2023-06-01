@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.nasdanika.html.ecore.doc</name>
-	<comment>Ecore model documentation</comment>
+	<name>org.nasdanika.html.ecore.processors</name>
+	<comment>Ecore model documentation generating processors</comment>
 	<projects>
 	</projects>
 	<buildSpec>

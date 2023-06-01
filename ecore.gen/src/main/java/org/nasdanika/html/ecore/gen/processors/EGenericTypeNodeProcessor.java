@@ -23,7 +23,7 @@ public class EGenericTypeNodeProcessor extends EObjectNodeProcessor<EGenericType
 	public EGenericTypeNodeProcessor(
 			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,
 			Context context,
-			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {
+			java.util.function.Function<ProgressMonitor, Action> prototypeProvider) {
 		super(config, context, prototypeProvider);
 	}
 	

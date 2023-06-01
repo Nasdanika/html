@@ -169,7 +169,7 @@
 
 		<module>ecore</module>
 		<module>ecore.gen</module>
-		<module>ecore.doc</module>
+		<module>ecore.processors</module>
 	</modules>	
 
 	<distributionManagement>
