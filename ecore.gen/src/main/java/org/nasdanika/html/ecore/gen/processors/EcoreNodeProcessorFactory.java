@@ -1,19 +1,21 @@
 package org.nasdanika.html.ecore.gen.processors;
 
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
@@ -23,6 +25,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
@@ -30,11 +33,17 @@ import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Reflector;
 import org.nasdanika.common.Util;
+import org.nasdanika.emf.persistence.MarkerFactory;
+import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.Interpolator;
+import org.nasdanika.exec.content.Markdown;
+import org.nasdanika.exec.content.Text;
 import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.graph.processor.emf.EObjectNodeProcessor;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
+import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.emf.EObjectReflectiveProcessorFactory;
@@ -114,13 +123,62 @@ public class EcoreNodeProcessorFactory extends Reflector {
 		return (Action) AppObjectLoaderSupplier.loadObject(specURI, diagnosticConsumer, context, progressMonitor);
 	}
 	
-	protected java.util.function.Function<ProgressMonitor, Action> getPrototypeProvider(
+	@Override
+	protected Predicate<Object> getTargetPredicate(Object target) {
+		EPackageNodeProcessorFactory pnfa = target.getClass().getAnnotation(EPackageNodeProcessorFactory.class);
+		EClassifierNodeProcessorFactory cnfa = target.getClass().getAnnotation(EClassifierNodeProcessorFactory.class);		
+		return obj -> {
+			EObject eObj = ((EObjectNode) obj).getTarget();
+			if (pnfa != null) {
+				EPackage ePackage = null;
+				if (eObj instanceof EPackage) {
+					ePackage = (EPackage) eObj;
+				} else if (eObj instanceof EClassifier) {
+					ePackage = ((EClassifier) eObj).getEPackage();
+				} else if (eObj instanceof EStructuralFeature) {
+					ePackage = ((EStructuralFeature) eObj).getEContainingClass().getEPackage();
+				} else if (eObj instanceof EOperation) {
+					ePackage = ((EOperation) eObj).getEContainingClass().getEPackage();
+				} else if (eObj instanceof EParameter) {
+					ePackage = ((EParameter) eObj).getEOperation().getEContainingClass().getEPackage();
+				}
+								
+				if (ePackage != null && !pnfa.nsURI().equals(ePackage.getNsURI())) {
+					return false;
+				}
+			}
+			
+			if (cnfa != null) {
+				EClass eClass = null;
+				if (eObj instanceof EClass) {
+					eClass = (EClass) eObj;
+				} else if (eObj instanceof EStructuralFeature) {
+					eClass = ((EStructuralFeature) eObj).getEContainingClass();
+				} else if (eObj instanceof EOperation) {
+					eClass = ((EOperation) eObj).getEContainingClass();
+				} else if (eObj instanceof EParameter) {
+					eClass = ((EParameter) eObj).getEOperation().getEContainingClass();
+				}
+				
+				if (eClass != null) {
+					if (!Util.isBlank(cnfa.nsURI()) && !cnfa.nsURI().equals(eClass.getEPackage().getNsURI())) {
+						return false;
+					}
+					if (!Util.isBlank(cnfa.name()) && !cnfa.name().equals(eClass.getName())) {
+						return false;
+					}
+				}				
+			}
+			
+			return true;			
+		};
+	}
+	
+	protected Function<ProgressMonitor, Action> getPrototypeProvider(
 			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,
 			URI baseURI,
 			String actionPrototypeSpec,
 			String actionPrototypeRef,
-			String description,
-			String icon,
 			String documentation,
 			ProgressMonitor progressMonitor) {
 		
@@ -128,12 +186,12 @@ public class EcoreNodeProcessorFactory extends Reflector {
 				actionPrototypeSpec,
 				actionPrototypeRef,
 				baseURI, 
-				progressMonitor); 
+				progressMonitor);
 		
 		return pm -> {
 			Action ret;
 			if (actionPrototype == null) {
-				ret = getPrototypeProvider(config).apply(pm);
+				ret = EcoreNodeProcessorFactory.this.getPrototypeProvider(config).apply(pm);
 			} else {
 				ret = EcoreUtil.copy(actionPrototype);
 				ret.setUuid(UUID.randomUUID().toString());
@@ -146,38 +204,75 @@ public class EcoreNodeProcessorFactory extends Reflector {
 				}
 			}
 			
-			// TODO - description, icon, documentation, text (label), decorator?
+			if (!Util.isBlank(documentation)) {
+				Markdown markdown = ContentFactory.eINSTANCE.createMarkdown();
+				Interpolator interpolator = ContentFactory.eINSTANCE.createInterpolator();
+				Text text = ContentFactory.eINSTANCE.createText();
+				text.setContent(documentation);
+				interpolator.setSource(text);
+				markdown.setSource(interpolator);
+				markdown.setStyle(true);
+				
+				// Creating a marker with EObject resource location for resource resolution in Markdown
+				if (baseURI != null) {
+					org.nasdanika.ncore.Marker marker = context.get(MarkerFactory.class, MarkerFactory.INSTANCE).createMarker(baseURI.toString(), progressMonitor);
+					markdown.getMarkers().add(marker); 
+				}
+				ret.getContent().add(markdown);
+			}
 			
-			return ret;						
+			return ret;
 		};
 	}
+	
+	protected BiConsumer<Label, ProgressMonitor> getLabelConfigurator(
+			String label,
+			String icon,
+			String description,
+			ProgressMonitor progressMonitor) {
+		
+		return (lbl, pm) -> {
+			if (!Util.isBlank(label)) {
+				lbl.setText(label);
+			}
+			if (!Util.isBlank(icon)) {
+				lbl.setIcon(icon);
+			}
+			if (!Util.isBlank(description)) {
+				lbl.setTooltip(description);
+			}					
+		};
+	}
+	
 		
 	@EObjectNodeProcessor(type = EPackage.class)
 	public Object createEPackageNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
 		Optional<AnnotatedElementRecord> fo = annotatedElementRecords
 			.stream()
+			.filter(aer -> aer.test(config.getElement()))
 			.filter(aer -> {
 				EPackageNodeProcessorFactory ann = aer.getAnnotation(EPackageNodeProcessorFactory.class);
-				return ann != null && ann.value().equals(((EPackage) ((EObjectNode) config.getElement()).getTarget()).getNsURI());
+				return ann != null && (Util.isBlank(ann.nsURI()) || ann.nsURI().equals(((EPackage) ((EObjectNode) config.getElement()).getTarget()).getNsURI()));
 			}).findFirst();
 		
 		if (fo.isPresent()) {
 			AnnotatedElementRecord annotatedElementRecord = fo.get();
 			EPackageNodeProcessorFactory ann = annotatedElementRecord.getAnnotation(EPackageNodeProcessorFactory.class);
-			AnnotatedElement annotatedElement = annotatedElementRecord.getAnnotatedElement();
-			Class<?> declaringClass = annotatedElement instanceof Method ? ((Method) annotatedElement).getDeclaringClass() : ((Field) annotatedElement).getDeclaringClass();
-			URI baseURI = URI.createURI(Util.CLASSPATH_URL_PREFIX + declaringClass.getName().replace('.', '/'));
+			
 			return annotatedElementRecord.invoke(
 					config, 
 					getPrototypeProvider(
 							config, 
-							baseURI,
+							annotatedElementRecord.getBaseURI(),
 							ann.actionPrototype(), 
 							ann.actionPrototypeRef(),
-							ann.description(), 
-							ann.icon(), 
 							ann.documentation(),
-							progressMonitor), 
+							progressMonitor),
+					getLabelConfigurator(
+							ann.label(),
+							ann.icon(), 
+							ann.description(),
+							progressMonitor),
 					progressMonitor);
 		}
 		
@@ -185,30 +280,127 @@ public class EcoreNodeProcessorFactory extends Reflector {
 	}	
 	
 	@EObjectNodeProcessor(type = EClass.class)
-	public EClassNodeProcessor createEClassNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
-		return new EClassNodeProcessor(config, context, getPrototypeProvider(config));
+	public Object createEClassNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
+		return createEClassifierNodeProcessor(config, () -> new EClassNodeProcessor(config, context, getPrototypeProvider(config)), progressMonitor);
+	}
+
+	protected Object createEClassifierNodeProcessor(
+			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,
+			Supplier<Object> fallback,
+			ProgressMonitor progressMonitor) {
+		Optional<AnnotatedElementRecord> fo = annotatedElementRecords
+				.stream()
+				.filter(aer -> aer.test(config.getElement()))
+				.filter(aer -> {
+					EClassifierNodeProcessorFactory ann = aer.getAnnotation(EClassifierNodeProcessorFactory.class);
+					if (ann == null) {
+						return false;
+					}
+					EClassifier target = (EClassifier) ((EObjectNode) config.getElement()).getTarget();
+					String name = ann.name();
+					if (!Util.isBlank(name) && !name.equals(target.getName())) {
+						return false;
+					}
+					String nsURI = ann.nsURI();
+					return Util.isBlank(nsURI) || nsURI.equals(target.getEPackage().getNsURI()) && ann.name().equals(target.getName());
+				}).findFirst();
+		
+		if (fo.isEmpty()) {
+			return fallback.get();
+		}
+		
+		AnnotatedElementRecord annotatedElementRecord = fo.get();
+		EClassifierNodeProcessorFactory ann = annotatedElementRecord.getAnnotation(EClassifierNodeProcessorFactory.class);
+		return annotatedElementRecord.invoke(
+				config, 
+				getPrototypeProvider(
+						config, 
+						annotatedElementRecord.getBaseURI(),
+						ann.actionPrototype(), 
+						ann.actionPrototypeRef(),
+						ann.documentation(),
+						progressMonitor),
+				getLabelConfigurator(
+						ann.label(),
+						ann.icon(), 
+						ann.description(),
+						progressMonitor),
+				progressMonitor);
 	}	
 	
 	@EObjectNodeProcessor(type = EDataType.class)
-	public EDataTypeNodeProcessor<EDataType> createEDataTypeNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
-		return new EDataTypeNodeProcessor<EDataType>(config, context, getPrototypeProvider(config));
-	}	
+	public Object createEDataTypeNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
+		return createEClassifierNodeProcessor(config, () -> new EDataTypeNodeProcessor<EDataType>(config, context, getPrototypeProvider(config)), progressMonitor);
+	}
 	
 	@EObjectNodeProcessor(type = EEnum.class)
-	public EEnumNodeProcessor createEEnumNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
-		return new EEnumNodeProcessor(config, context, getPrototypeProvider(config));
+	public Object createEEnumNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
+		return createEClassifierNodeProcessor(config, () -> new EEnumNodeProcessor(config, context, getPrototypeProvider(config)), progressMonitor);		
+	}	
+
+	// --- EClass members ---
+	
+	protected Object createEStructuralFeatureNodeProcessor(
+			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,
+			Supplier<Object> fallback,
+			ProgressMonitor progressMonitor) {
+		Optional<AnnotatedElementRecord> fo = annotatedElementRecords
+				.stream()
+				.filter(aer -> aer.test(config.getElement()))
+				.filter(aer -> {
+					EStructuralFeatureNodeProcessorFactory ann = aer.getAnnotation(EStructuralFeatureNodeProcessorFactory.class);
+					if (ann == null) {
+						return false;
+					}
+					EStructuralFeature target = (EStructuralFeature) ((EObjectNode) config.getElement()).getTarget();
+					String name = ann.name();
+					if (!Util.isBlank(name) && !name.equals(target.getName())) {
+						return false;
+					}
+					String eClassName = ann.eClass();
+					if (!Util.isBlank(eClassName) && !name.equals(target.getEContainingClass().getName())) {
+						return false;
+					}
+					
+					String nsURI = ann.nsURI();
+					return Util.isBlank(nsURI) || nsURI.equals(target.getEContainingClass().getEPackage().getNsURI()) && ann.name().equals(target.getName());
+				}).findFirst();
+		
+		if (fo.isEmpty()) {
+			return fallback.get();
+		}
+		
+		AnnotatedElementRecord annotatedElementRecord = fo.get();
+		EStructuralFeatureNodeProcessorFactory ann = annotatedElementRecord.getAnnotation(EStructuralFeatureNodeProcessorFactory.class);
+		return annotatedElementRecord.invoke(
+				config, 
+				getPrototypeProvider(
+						config, 
+						annotatedElementRecord.getBaseURI(),
+						ann.actionPrototype(), 
+						ann.actionPrototypeRef(),
+						ann.documentation(),
+						progressMonitor),
+				getLabelConfigurator(
+						ann.label(),
+						ann.icon(), 
+						ann.description(),
+						progressMonitor),
+				progressMonitor);
+	}	
+		
+	@EObjectNodeProcessor(type = EAttribute.class)
+	public Object createEAttributeNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
+		return createEStructuralFeatureNodeProcessor(config, () -> new EAttributeNodeProcessor(config, context, getPrototypeProvider(config)), progressMonitor);		
 	}	
 	
-	@EObjectNodeProcessor(type = EAnnotation.class)
-	public EAnnotationNodeProcessor createEAnnotationNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
-		return new EAnnotationNodeProcessor(config, context, getPrototypeProvider(config));
-	}	
+	@EObjectNodeProcessor(type = EReference.class)
+	public Object createEReferenceNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
+		return createEStructuralFeatureNodeProcessor(config, () -> new EReferenceNodeProcessor(config, context, getPrototypeProvider(config)), progressMonitor);		
+	}
 	
-	@EObjectNodeProcessor(type = EEnumLiteral.class)
-	public EEnumLiteralNodeProcessor createEEnumLiteralNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
-		return new EEnumLiteralNodeProcessor(config, context, getPrototypeProvider(config));
-	}	
-	
+	// --- TODO ~~~
+		
 	@EObjectNodeProcessor(type = EOperation.class)
 	public EOperationNodeProcessor createEOperationNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
 		return new EOperationNodeProcessor(config, context, getPrototypeProvider(config));
@@ -218,15 +410,17 @@ public class EcoreNodeProcessorFactory extends Reflector {
 	public EParameterNodeProcessor createEParameterNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
 		return new EParameterNodeProcessor(config, context, getPrototypeProvider(config));
 	}	
+
+	// ---
 	
-	@EObjectNodeProcessor(type = EAttribute.class)
-	public EAttributeNodeProcessor createEAttributeNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
-		return new EAttributeNodeProcessor(config, context, getPrototypeProvider(config));
+	@EObjectNodeProcessor(type = EAnnotation.class)
+	public EAnnotationNodeProcessor createEAnnotationNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
+		return new EAnnotationNodeProcessor(config, context, getPrototypeProvider(config));
 	}	
 	
-	@EObjectNodeProcessor(type = EReference.class)
-	public EReferenceNodeProcessor createEReferenceNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
-		return new EReferenceNodeProcessor(config, context, getPrototypeProvider(config));
+	@EObjectNodeProcessor(type = EEnumLiteral.class)
+	public EEnumLiteralNodeProcessor createEEnumLiteralNodeProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, ProgressMonitor progressMonitor) {
+		return new EEnumLiteralNodeProcessor(config, context, getPrototypeProvider(config));
 	}	
 	
 	@EObjectNodeProcessor(type = ETypeParameter.class)

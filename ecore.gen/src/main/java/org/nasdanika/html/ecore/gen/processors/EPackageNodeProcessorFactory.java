@@ -1,14 +1,18 @@
 package org.nasdanika.html.ecore.gen.processors;
 
 import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.eclipse.emf.ecore.EPackage;
 
 /**
+ * Annotation for a class or a method.
+ * 
  * Annotated method shall have the following signature: 
  * <PRE>
  * NodeProcessorConfig&lt;Object, WidgetFactory, WidgetFactory, Registry&lt;URI&gt;&gt; config, 
@@ -19,14 +23,19 @@ import org.eclipse.emf.ecore.EPackage;
  *
  */
 @Retention(RUNTIME)
-@Target(METHOD)
+@Target({ METHOD, TYPE })
+@Inherited
 public @interface EPackageNodeProcessorFactory {
 	
+	// Selector
+	
 	/**
-	 * {@link EPackage} namespace URI.
+	 * {@link EPackage} namespace URI. Required on a class. On a method is inherited from the class.
 	 * @return
 	 */
-	String value();
+	String nsURI() default "";
+	
+	// Action prototype
 
 	/**
 	 * YAML specification of the action prototype. 
@@ -41,16 +50,22 @@ public @interface EPackageNodeProcessorFactory {
 	String actionPrototypeRef() default "";
 	
 	/**
-	 * Description is used for action tooltips, overrides action prototype setting. 
+	 * Element label is used for action text, overrides action prototype setting. 
 	 * @return
 	 */
-	String description() default "";
-		
+	String label() default "";
+	
 	/**
 	 * Action icon, overrides action prototype setting. 
 	 * @return
 	 */
 	String icon() default "";
+	
+	/**
+	 * Description is used for action tooltips, overrides action prototype setting. 
+	 * @return
+	 */
+	String description() default "";
 	
 	/**
 	 * Documentation in markdown, added to action content. 

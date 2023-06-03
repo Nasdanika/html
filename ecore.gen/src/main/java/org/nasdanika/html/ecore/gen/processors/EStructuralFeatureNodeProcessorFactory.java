@@ -1,18 +1,16 @@
 package org.nasdanika.html.ecore.gen.processors;
 
 import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
- * 
  * Annotated method shall have the following signature: 
  * <PRE>
  * NodeProcessorConfig&lt;Object, WidgetFactory, WidgetFactory, Registry&lt;URI&gt;&gt; config, 
@@ -23,23 +21,28 @@ import org.eclipse.emf.ecore.EPackage;
  *
  */
 @Retention(RUNTIME)
-@Target({ METHOD, TYPE })
-@Inherited
-public @interface EClassifierNodeProcessorFactory {
+@Target(METHOD)
+public @interface EStructuralFeatureNodeProcessorFactory {
 	
 	// Selector
 	
 	/**
-	 * Containing {@link EPackage} namespace URI. On a method is inherited from the declaring class.
+	 * Containing {@link EPackage} namespace URI.
 	 * @return
 	 */
 	String nsURI() default "";
 	
 	/**
-	 * {@link EClassifier} name. On a method is inherited from the declaring class.
+	 * Name of the containing {@link EClass}. 
 	 * @return
 	 */
-	String name() default "";
+	String eClass() default "";
+	
+	/**
+	 * {@link EClassifier} name.
+	 * @return
+	 */
+	String name();
 	
 	// Action prototype
 

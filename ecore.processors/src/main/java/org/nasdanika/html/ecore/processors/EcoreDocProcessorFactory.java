@@ -20,7 +20,7 @@ public class EcoreDocProcessorFactory {
 	
 	protected Context context = Context.EMPTY_CONTEXT; // TODO - from constructor
 	
-	@EPackageNodeProcessorFactory(EcorePackage.eNS_URI)
+	@EPackageNodeProcessorFactory(nsURI = EcorePackage.eNS_URI)
 	public EPackageNodeProcessor createEPackageProcessor(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, java.util.function.Function<ProgressMonitor, Action> prototypeProvider) {		
 		return new EPackageNodeProcessor(config, context, prototypeProvider);
 	}		
