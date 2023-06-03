@@ -9,7 +9,12 @@ import java.lang.annotation.Target;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
- * Annotated method shall have the following signature: TODO
+ * Annotated method shall have the following signature: 
+ * <PRE>
+ * NodeProcessorConfig&lt;Object, WidgetFactory, WidgetFactory, Registry&lt;URI&gt;&gt; config, 
+ * java.util.function.Function&lt;ProgressMonitor, Action&gt; prototypeProvider,
+ * ProgressMonitor progressMonitor
+ * </PRE>
  * @author Pavel
  *
  */
@@ -24,10 +29,16 @@ public @interface EPackageNodeProcessorFactory {
 	String value();
 
 	/**
-	 * URI of an action prototype resource resolved relative to the annotated method's class.
+	 * YAML specification of the action prototype. 
 	 * @return
 	 */
 	String actionPrototype() default "";
+	
+	/**
+	 * URI of an action prototype resource resolved relative to the annotated method's class.
+	 * @return
+	 */
+	String actionPrototypeRef() default "";
 	
 	/**
 	 * Description is used for action tooltips, overrides action prototype setting. 
