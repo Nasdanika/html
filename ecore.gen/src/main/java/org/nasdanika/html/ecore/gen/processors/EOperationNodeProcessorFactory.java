@@ -10,8 +10,8 @@ import java.util.function.Function;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.html.model.app.Action;
@@ -32,7 +32,7 @@ import org.nasdanika.html.model.app.graph.WidgetFactory;
  */
 @Retention(RUNTIME)
 @Target(METHOD)
-public @interface EStructuralFeatureNodeProcessorFactory {
+public @interface EOperationNodeProcessorFactory {
 	
 	// Selector
 	
@@ -47,12 +47,12 @@ public @interface EStructuralFeatureNodeProcessorFactory {
 	 * @return
 	 */
 	String eClass() default "";
-		
+	
 	/**
-	 * {@link EStructuralFeature} ID as specified in the generated {@link EPackage} constants.
+	 * {@link EOperation} ID as specified in the generated {@link EPackage} constants.
 	 * @return
 	 */
-	int featureID();	
+	int operationID();
 	
 	// Action prototype
 

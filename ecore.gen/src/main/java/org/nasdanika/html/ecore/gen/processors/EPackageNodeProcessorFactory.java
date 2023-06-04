@@ -7,17 +7,27 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
+import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.graph.processor.NodeProcessorConfig;
+import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.graph.Registry;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 /**
  * Annotation for a class or a method.
  * 
  * Annotated method shall have the following signature: 
  * <PRE>
- * NodeProcessorConfig&lt;Object, WidgetFactory, WidgetFactory, Registry&lt;URI&gt;&gt; config, 
- * java.util.function.Function&lt;ProgressMonitor, Action&gt; prototypeProvider,
- * ProgressMonitor progressMonitor
+ * {@link NodeProcessorConfig}&lt;Object, {@link WidgetFactory}, {@link WidgetFactory}, {@link Registry}&lt;{@link URI}&gt;&gt; config, 
+ * {@link Function}&lt;{@link ProgressMonitor}, {@link Action}&gt; prototypeProvider,
+ * {@link BiConsumer}&lt;{@link Label}, {@link ProgressMonitor}&gt; labelConfigurator,
+ * {@link ProgressMonitor} progressMonitor
  * </PRE>
  * @author Pavel
  *
