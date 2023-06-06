@@ -149,22 +149,24 @@ public class EcoreNodeProcessorFactory extends Reflector {
 			}
 			
 			if (cnfa != null) {
-				EClass eClass = null;
-				if (eObj instanceof EClass) {
-					eClass = (EClass) eObj;
+				EClassifier eClassifier = null;
+				if (eObj instanceof EClassifier) {
+					eClassifier = (EClassifier) eObj;
 				} else if (eObj instanceof EStructuralFeature) {
-					eClass = ((EStructuralFeature) eObj).getEContainingClass();
+					eClassifier = ((EStructuralFeature) eObj).getEContainingClass();
 				} else if (eObj instanceof EOperation) {
-					eClass = ((EOperation) eObj).getEContainingClass();
+					eClassifier = ((EOperation) eObj).getEContainingClass();
 				} else if (eObj instanceof EParameter) {
-					eClass = ((EParameter) eObj).getEOperation().getEContainingClass();
+					eClassifier = ((EParameter) eObj).getEOperation().getEContainingClass();
+				} else if (eObj instanceof EEnumLiteral) {
+					eClassifier = ((EEnumLiteral) eObj).getEEnum();
 				}
 				
-				if (eClass != null) {
-					if (!Util.isBlank(cnfa.nsURI()) && !cnfa.nsURI().equals(eClass.getEPackage().getNsURI())) {
+				if (eClassifier != null) {
+					if (!Util.isBlank(cnfa.nsURI()) && !cnfa.nsURI().equals(eClassifier.getEPackage().getNsURI())) {
 						return false;
 					}
-					if (!Util.isBlank(cnfa.name()) && !cnfa.name().equals(eClass.getName())) {
+					if (!Util.isBlank(cnfa.name()) && !cnfa.name().equals(eClassifier.getName())) {
 						return false;
 					}
 				}				
