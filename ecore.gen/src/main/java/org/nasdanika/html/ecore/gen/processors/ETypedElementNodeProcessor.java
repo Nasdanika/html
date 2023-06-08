@@ -12,7 +12,7 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 
-public class ETypedElementNodeProcessor<T extends ETypedElement> extends EModelElementNodeProcessor<T> {
+public class ETypedElementNodeProcessor<T extends ETypedElement> extends ENamedElementNodeProcessor<T> {
 
 	public ETypedElementNodeProcessor(
 			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,

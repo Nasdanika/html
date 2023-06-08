@@ -1,12 +1,16 @@
 package org.nasdanika.html.ecore.gen.processors;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
@@ -14,9 +18,11 @@ import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.graph.processor.OutgoingEndpoint;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
+import org.nasdanika.html.model.app.graph.emf.OutgoingReferenceBuilder;
 
 public class EOperationNodeProcessor extends ETypedElementNodeProcessor<EOperation> {
 
@@ -26,18 +32,14 @@ public class EOperationNodeProcessor extends ETypedElementNodeProcessor<EOperati
 			java.util.function.Function<ProgressMonitor, Action> prototypeProvider) {
 		super(config, context, prototypeProvider);
 	}	
-	
-	/**
-	 * Creating a link only if the action has content 
-	 */
+		
 	@Override
-	public Object createLink(URI base, ProgressMonitor progressMonitor) {
-		Label action = createAction(progressMonitor);
-		if (action instanceof Action && !((Action) action).getContent().isEmpty()) {
-			return super.createLink(base, progressMonitor);
+	protected boolean isCallOutgoingReferenceLabelsSuppliers(EReference eReference) {
+		if (eReference == EcorePackage.Literals.EOPERATION__EPARAMETERS) {
+			return true;
 		}
-		return createLabel(progressMonitor);
-	}
+		return super.isCallOutgoingReferenceLabelsSuppliers(eReference);
+	}	
 	
 	private WidgetFactory declaringClassWidgetFactory;
 	
@@ -66,6 +68,51 @@ public class EOperationNodeProcessor extends ETypedElementNodeProcessor<EOperati
 	public final void setEGenericExceptionsEndpoint(EReferenceConnection connection, WidgetFactory eGenericExceptionWidgetFactory) {
 		eParametersWidgetFactories.put(connection.getIndex(), eGenericExceptionWidgetFactory);
 	}	
+	
+	/**
+	 * Returns attributes action, creates if necessary. Matches by location.
+	 * @param parent
+	 * @return
+	 */
+	protected Action getParametersAction(Action parent) {
+		Action pAction = (Action) parent;
+		return pAction.getNavigation()
+			.stream()
+			.filter(e -> e instanceof Action && "parameters.html".equals(((Action) e).getLocation()))
+			.findFirst()
+			.map(Action.class::cast)
+			.orElseGet(() -> {
+				Action parametersAction = AppFactory.eINSTANCE.createAction();
+				parametersAction.setText("Parameters");
+				parametersAction.setIcon("https://cdn.jsdelivr.net/gh/Nasdanika/html@master/ecore.gen/web-resources/icons/EParameter.gif");
+				parametersAction.setLocation("parameters.html");
+				pAction.getNavigation().add(parametersAction);
+				return parametersAction;
+			});
+	}
+	
+	@OutgoingReferenceBuilder(EcorePackage.EOPERATION__EPARAMETERS)
+	public void buildEParametersOutgoingReference(
+			List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints, 
+			Collection<Label> labels,
+			Map<EReferenceConnection, Collection<Label>> outgoingLabels, 
+			ProgressMonitor progressMonitor) {
+		
+		// Own parameters 
+		for (Label tLabel: labels) {
+			if (tLabel instanceof Action) {
+				Action parametersAction = getParametersAction((Action) tLabel);
+				EList<Action> tAnonymous = parametersAction.getAnonymous();
+				for (Entry<EReferenceConnection, Collection<Label>> re: outgoingLabels.entrySet()) {
+					for (Label childLabel: re.getValue()) {
+						if (childLabel instanceof Action && !((Action) childLabel).getContent().isEmpty()) {
+							tAnonymous.add((Action) childLabel);
+						}
+					}
+				}
+			}
+		}
+	}			
 		
 	@Override
 	public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {

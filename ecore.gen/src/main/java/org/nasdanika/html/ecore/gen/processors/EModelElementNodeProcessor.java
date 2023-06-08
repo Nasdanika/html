@@ -44,6 +44,18 @@ public class EModelElementNodeProcessor<T extends EModelElement> extends EObject
 		super(config, context, prototypeProvider);
 	}	
 	
+	/**
+	 * Creating a link only if the action has content 
+	 */
+	@Override
+	public Object createLink(URI base, ProgressMonitor progressMonitor) {
+		Label action = createAction(progressMonitor);
+		if (action instanceof Action && !((Action) action).getContent().isEmpty()) {
+			return super.createLink(base, progressMonitor);
+		}
+		return createLabel(progressMonitor);
+	}
+	
 	@Override
 	protected void configureLabel(EObject eObject, Label label, ProgressMonitor progressMonitor) {
 		if (eObject instanceof EModelElement) {

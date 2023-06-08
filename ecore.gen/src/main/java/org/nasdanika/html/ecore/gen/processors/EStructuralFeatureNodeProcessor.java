@@ -8,9 +8,8 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.graph.processor.OutgoingEndpoint;
 import org.nasdanika.html.model.app.Action;
-import org.nasdanika.html.model.app.Label;
-import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.html.model.app.graph.Registry;
+import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 public class EStructuralFeatureNodeProcessor<T extends EStructuralFeature> extends ETypedElementNodeProcessor<T> {
 
@@ -20,18 +19,6 @@ public class EStructuralFeatureNodeProcessor<T extends EStructuralFeature> exten
 			java.util.function.Function<ProgressMonitor, Action> prototypeProvider) {
 		super(config, context, prototypeProvider);
 	}	
-	
-	/**
-	 * Creating a link only if the action has content 
-	 */
-	@Override
-	public Object createLink(URI base, ProgressMonitor progressMonitor) {
-		Label action = createAction(progressMonitor);
-		if (action instanceof Action && !((Action) action).getContent().isEmpty()) {
-			return super.createLink(base, progressMonitor);
-		}
-		return createLabel(progressMonitor);
-	}
 	
 	private WidgetFactory declaringClassWidgetFactory;
 	
