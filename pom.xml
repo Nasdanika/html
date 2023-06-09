@@ -168,8 +168,6 @@
 		<module>model/app.gen.maven.archetype</module>
 
 		<module>ecore</module>
-		<module>ecore.gen</module>
-		<module>ecore.processors</module>
 	</modules>	
 
 	<distributionManagement>
