@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.ProgressMonitor;
@@ -35,12 +36,24 @@ import org.nasdanika.html.model.app.graph.WidgetFactory;
 @Retention(RUNTIME)
 @Target(METHOD)
 public @interface IncomingReferenceBuilder {
-
+	
 	/**
-	 * Reference ID, obtained from EPackage constants, e.g. <code>{@link EcorePackage}.ECLASS__EALL_ATTRIBUTES</code>.
+	 * {@link EPackage} namespace URI obtained from constants, e.g. <code>{@link EcorePackage}.eNS_URI</code>
 	 * @return
 	 */
-	int value();
+	String nsURI();
+	
+	/**
+	 * Reference ID, obtained from generated {@link EPackage} constants, e.g. <code>{@link EcorePackage}.ECLASS</code>.
+	 * @return
+	 */
+	int classID();
+
+	/**
+	 * Reference ID, obtained from generated {@link EPackage} constants, e.g. <code>{@link EcorePackage}.ECLASS__EALL_ATTRIBUTES</code>.
+	 * @return
+	 */
+	int referenceID();
 	
 }
 

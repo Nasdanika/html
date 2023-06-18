@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.emf.EOperationConnection;
@@ -35,11 +36,23 @@ import org.nasdanika.html.model.app.graph.WidgetFactory;
 @Retention(RUNTIME)
 @Target(METHOD)
 public @interface IncomingOperationBuilder {
+	
+	/**
+	 * {@link EPackage} namespace URI obtained from constants, e.g. <code>{@link EcorePackage}.eNS_URI</code>
+	 * @return
+	 */
+	String nsURI();
+	
+	/**
+	 * Reference ID, obtained from generated {@link EPackage} constants, e.g. <code>{@link EcorePackage}.ECLASS</code>.
+	 * @return
+	 */
+	int classID();
 
 	/**
 	 * Operation ID, obtained from EPackage constants, e.g. <code>{@link EcorePackage}.EOBJECT___ECONTAINER</code>.
 	 * @return
 	 */
-	int value();
+	int operationID();
 	
 }

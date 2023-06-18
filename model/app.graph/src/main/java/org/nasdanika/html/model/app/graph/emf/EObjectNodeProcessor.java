@@ -385,8 +385,11 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			ProgressMonitor progressMonitor) {
 
 		for (Method method: getClass().getMethods()) {
-			IncomingReferenceBuilder orb = method.getAnnotation(IncomingReferenceBuilder.class);
-			if (orb != null && eReference.getFeatureID() == orb.value()) {
+			IncomingReferenceBuilder irb = method.getAnnotation(IncomingReferenceBuilder.class);
+			if (irb != null 
+					&& eReference.getFeatureID() == irb.referenceID()
+					&& eReference.getEContainingClass().getClassifierID() == irb.classID()
+					&& eReference.getEContainingClass().getEPackage().getNsURI().equals(irb.nsURI())) {
 				int pc = method.getParameterCount();
 				if (pc == 4) {
 					try {
@@ -471,8 +474,11 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			ProgressMonitor progressMonitor) {
 		
 		for (Method method: getClass().getMethods()) {
-			IncomingOperationBuilder orb = method.getAnnotation(IncomingOperationBuilder.class);
-			if (orb != null && eOperation.getOperationID() == orb.value()) {
+			IncomingOperationBuilder iob = method.getAnnotation(IncomingOperationBuilder.class);
+			if (iob != null 
+					&& eOperation.getOperationID() == iob.operationID()
+					&& eOperation.getEContainingClass().getClassifierID() == iob.classID()
+					&& eOperation.getEContainingClass().getEPackage().getNsURI().equals(iob.nsURI())) {
 				int pc = method.getParameterCount();
 				if (pc == 4) {
 					try {
@@ -557,8 +563,8 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 			ProgressMonitor progressMonitor) {
 		
 		for (Method method: getClass().getMethods()) {
-			OutgoingOperationBuilder orb = method.getAnnotation(OutgoingOperationBuilder.class);
-			if (orb != null && eOperation.getOperationID() == orb.value()) {
+			OutgoingOperationBuilder oob = method.getAnnotation(OutgoingOperationBuilder.class);
+			if (oob != null	&& eOperation.getOperationID() == oob.value()) {
 				int pc = method.getParameterCount();
 				if (pc == 4) {
 					try {
@@ -655,7 +661,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 		
 		for (Method method: getClass().getMethods()) {
 			OutgoingReferenceBuilder orb = method.getAnnotation(OutgoingReferenceBuilder.class);
-			if (orb != null && eReference.getFeatureID() == orb.value()) {
+			if (orb != null	&& eReference.getFeatureID() == orb.value()) {
 				int pc = method.getParameterCount();
 				if (pc == 4) {
 					try {
@@ -807,11 +813,6 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	@Override
 	public String createWidgetString(Object selector, URI base, ProgressMonitor progressMonitor) {
 		return render(createWidget(selector, base, progressMonitor), progressMonitor);
-	}
-	
-	@Override
-	public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
-		return null;
 	}
 	
 	@Override
