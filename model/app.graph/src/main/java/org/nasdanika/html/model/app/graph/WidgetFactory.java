@@ -17,7 +17,7 @@ public interface WidgetFactory {
 	/**
 	 * Functional interface for selectors to which factories delegate widget creation.
 	 */
-	interface Selector {
+	interface Selector<T> {
 	
 		/**
 		 * Creates a widget.   
@@ -27,7 +27,7 @@ public interface WidgetFactory {
 		 * @param progressMonitor
 		 * @return A widget or null
 		 */		
-		Object createWidget(WidgetFactory widgetFactory, URI base, ProgressMonitor progressMonitor); 
+		T createWidget(WidgetFactory widgetFactory, URI base, ProgressMonitor progressMonitor); 
 		
 	}
 	
@@ -100,10 +100,18 @@ public interface WidgetFactory {
 	 */
 	default Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
 		if (selector instanceof Selector) {
-			return ((Selector) selector).createWidget(this, base, progressMonitor);
+			return createWidget(this, base, progressMonitor);
 		}
 		return null;
 	}
+	
+	default <T> T createWidget(Selector<T> selector, URI base, ProgressMonitor progressMonitor) {
+		return selector.createWidget(this, base, progressMonitor);
+	}	
+	
+	default <T> T createWidget(Selector<T> selector, ProgressMonitor progressMonitor) {
+		return createWidget(selector, null, progressMonitor);
+	}	
 
 	/**
 	 * Calls createWidgetString(selector, null, progressMonitor)

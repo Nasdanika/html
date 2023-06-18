@@ -55,6 +55,11 @@ public class ConnectionProcessor {
 			public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
 				return sourceEndpoint.createWidget(selector, resolveBase(base), progressMonitor);
 			}
+						
+			@Override
+			public <T> T createWidget(Selector<T> selector, URI base, ProgressMonitor progressMonitor) {
+				return sourceEndpoint.createWidget(selector, resolveBase(base), progressMonitor);
+			}	
 			
 			@Override
 			public String createLinkString(URI base, ProgressMonitor progressMonitor) {
@@ -140,6 +145,11 @@ public class ConnectionProcessor {
 			public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
 				return targetEndpoint.createWidget(selector, resolveBase(base), progressMonitor); 
 			}
+			
+			@Override
+			public <T> T createWidget(Selector<T> selector, URI base, ProgressMonitor progressMonitor) {
+				return targetEndpoint.createWidget(selector, resolveBase(base), progressMonitor);
+			}	
 			
 			@Override
 			public String createLinkString(URI base, ProgressMonitor progressMonitor) {
