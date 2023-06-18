@@ -15,6 +15,23 @@ import org.nasdanika.html.model.app.Label;
 public interface WidgetFactory {
 	
 	/**
+	 * Functional interface for selectors to which factories delegate widget creation.
+	 */
+	interface Selector {
+	
+		/**
+		 * Creates a widget.   
+		 * @param widgetFactory
+		 * @param base For connections, if not null, is resolved against the calling end URI - source or target, if it is not null. 
+		 * If null, the respective end URI is used as the base.
+		 * @param progressMonitor
+		 * @return A widget or null
+		 */		
+		Object createWidget(WidgetFactory widgetFactory, URI base, ProgressMonitor progressMonitor); 
+		
+	}
+	
+	/**
 	 * Creates a "label" which is an HTML/text representation of something which does not navigate to that something. E.g. {@link Label}. Can be composite.
 	 * @return
 	 */
@@ -74,14 +91,19 @@ public interface WidgetFactory {
 	}
 
 	/**
-	 * Creates a widget for an aspect (feature) of the object identified by the selector, which can be a function.   
-	 * @param selector Aspect/feature key. 
+	 * Creates a widget for an aspect (feature) of the object identified by the selector, which can be a {@link Selector}.   
+	 * @param selector Aspect/feature key. If an instasnce of Selector, then the factory delegates widget creation to the selector passing itself as an argument.
 	 * @param base For connections, if not null, is resolved against the calling end URI - source or target, if it is not null. 
 	 * If null, the respective end URI is used as the base.
 	 * @param progressMonitor
 	 * @return A widget or null
 	 */
-	Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor);
+	default Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
+		if (selector instanceof Selector) {
+			return ((Selector) selector).createWidget(this, base, progressMonitor);
+		}
+		return null;
+	}
 
 	/**
 	 * Calls createWidgetString(selector, null, progressMonitor)
