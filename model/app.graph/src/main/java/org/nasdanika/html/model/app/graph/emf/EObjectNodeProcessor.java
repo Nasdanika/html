@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
@@ -763,10 +762,6 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	 * @param label
 	 */
 	protected void configureLabel(EObject eObject, Label label, ProgressMonitor progressMonitor) {
-		if (eObject instanceof ENamedElement && Util.isBlank(label.getText())) {
-			label.setText(((ENamedElement) eObject).getName());
-			// TODO - escape, annotation
-		}
 		if (eObject instanceof NamedElement && Util.isBlank(label.getText())) {
 			label.setText(StringEscapeUtils.escapeHtml4(((NamedElement) eObject).getName()));
 		}
@@ -775,8 +770,6 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 		}
 
 		new SemanticInfo(eObject).annotate(label);
-		
-		// TODO - icon, toolitp, ...
 	}
 	
 	protected String render(Object object, ProgressMonitor progressMonitor) {
