@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.eclipse.emf.common.util.URI;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
+import org.nasdanika.graph.Connection;
 import org.nasdanika.html.model.app.Label;
 
 /**
@@ -16,6 +17,7 @@ public interface WidgetFactory {
 	
 	/**
 	 * Functional interface for selectors to which factories delegate widget creation.
+	 * {@link Connection} {@link WidgetFactory} shall not delegate to Selector, but rather to ConnectionSelector 
 	 */
 	interface Selector<T> {
 	
@@ -28,6 +30,14 @@ public interface WidgetFactory {
 		 * @return A widget or null
 		 */		
 		T createWidget(WidgetFactory widgetFactory, URI base, ProgressMonitor progressMonitor); 
+		
+	}
+	
+	/**
+	 * A maker interface indicating that {@link Connection} {@link WidgetFactory} shall delegate to this selector instead of passing it to the other end's node.
+	 * @param <T>
+	 */
+	interface ConnectionSelector<T> extends Selector<T> {
 		
 	}
 	
@@ -100,7 +110,7 @@ public interface WidgetFactory {
 	 */
 	default Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
 		if (selector instanceof Selector) {
-			return createWidget(this, base, progressMonitor);
+			return createWidget((Selector<?>) selector, base, progressMonitor);
 		}
 		return null;
 	}

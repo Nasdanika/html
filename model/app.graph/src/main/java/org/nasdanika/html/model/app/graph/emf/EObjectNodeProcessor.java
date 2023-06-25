@@ -101,8 +101,12 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected T getTarget() {
+	public T getTarget() {
 		return (T) node.getTarget();
+	}
+	
+	public NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> getConfig() {
+		return config;
 	}
 	
 	protected Map<EReferenceConnection, WidgetFactory> incomingReferenceEndpoints = new LinkedHashMap<>();

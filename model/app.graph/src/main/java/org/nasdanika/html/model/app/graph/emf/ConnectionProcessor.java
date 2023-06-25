@@ -46,18 +46,28 @@ public class ConnectionProcessor {
 				return base;				
 			}
 			
+			@SuppressWarnings("unchecked")
 			@Override
 			public String createWidgetString(Object selector, URI base, ProgressMonitor progressMonitor) {
+				if (selector instanceof Selector) {
+					return createWidget((Selector<String>) selector, base, progressMonitor);
+				}
 				return sourceEndpoint.createWidgetString(selector, resolveBase(base), progressMonitor); 				
 			}
 			
 			@Override
 			public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
+				if (selector instanceof Selector) {
+					return createWidget((Selector<?>) selector, base, progressMonitor);
+				}
 				return sourceEndpoint.createWidget(selector, resolveBase(base), progressMonitor);
 			}
 						
 			@Override
 			public <T> T createWidget(Selector<T> selector, URI base, ProgressMonitor progressMonitor) {
+				if (selector instanceof ConnectionSelector) {
+					return selector.createWidget(this, resolveBase(base), progressMonitor);
+				}
 				return sourceEndpoint.createWidget(selector, resolveBase(base), progressMonitor);
 			}	
 			
@@ -136,18 +146,28 @@ public class ConnectionProcessor {
 				return base;				
 			}
 			
+			@SuppressWarnings("unchecked")
 			@Override
 			public String createWidgetString(Object selector, URI base, ProgressMonitor progressMonitor) {
+				if (selector instanceof Selector) {
+					return createWidget((Selector<String>) selector, base, progressMonitor);
+				}
 				return targetEndpoint.createWidgetString(selector, resolveBase(base), progressMonitor);
 			}
 			
 			@Override
 			public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
+				if (selector instanceof Selector) {
+					return createWidget((Selector<?>) selector, base, progressMonitor);
+				}
 				return targetEndpoint.createWidget(selector, resolveBase(base), progressMonitor); 
 			}
 			
 			@Override
 			public <T> T createWidget(Selector<T> selector, URI base, ProgressMonitor progressMonitor) {
+				if (selector instanceof ConnectionSelector) {
+					return selector.createWidget(this, resolveBase(base), progressMonitor);
+				}
 				return targetEndpoint.createWidget(selector, resolveBase(base), progressMonitor);
 			}	
 			
