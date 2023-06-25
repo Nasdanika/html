@@ -538,8 +538,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		String ret = markdownHelper.firstPlainTextSentence(documentation.documentation());
 		return String.join(" ", ret.split("\\R")); // Replacing new lines, shall they be in the first sentence, with spaces.		
 	}
-	
-	
+		
 	protected DiagramTextGenerator getDiagramTextGenerator(StringBuilder sb, boolean appendAttributes, boolean appendOperations) {
 		String dialect = diagramDialectSupplier.get();
 		if (Util.isBlank(dialect)) {
