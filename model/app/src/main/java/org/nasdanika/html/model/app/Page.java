@@ -65,7 +65,7 @@ public interface Page extends BootstrapElement {
 	 * @see #setHeader(Header)
 	 * @see org.nasdanika.html.model.app.AppPackage#getPage_Header()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	Header getHeader();
@@ -91,7 +91,7 @@ public interface Page extends BootstrapElement {
 	 * @see #setNavigationBar(NavigationBar)
 	 * @see org.nasdanika.html.model.app.AppPackage#getPage_NavigationBar()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	NavigationBar getNavigationBar();
@@ -117,7 +117,7 @@ public interface Page extends BootstrapElement {
 	 * @see #setNavigationPanel(NavigationPanel)
 	 * @see org.nasdanika.html.model.app.AppPackage#getPage_NavigationPanel()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	NavigationPanel getNavigationPanel();
@@ -143,7 +143,7 @@ public interface Page extends BootstrapElement {
 	 * @see #setContentPanel(ContentPanel)
 	 * @see org.nasdanika.html.model.app.AppPackage#getPage_ContentPanel()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	ContentPanel getContentPanel();
@@ -166,7 +166,7 @@ public interface Page extends BootstrapElement {
 	 * @see #setFooter(Footer)
 	 * @see org.nasdanika.html.model.app.AppPackage#getPage_Footer()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	Footer getFooter();
@@ -189,7 +189,7 @@ public interface Page extends BootstrapElement {
 	 * @see #setContentRowAppearance(Appearance)
 	 * @see org.nasdanika.html.model.app.AppPackage#getPage_ContentRowAppearance()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	Appearance getContentRowAppearance();

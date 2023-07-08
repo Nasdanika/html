@@ -104,7 +104,7 @@ public interface Action extends Link {
 	 * @return the value of the '<em>Sections</em>' containment reference list.
 	 * @see org.nasdanika.html.model.app.AppPackage#getAction_Sections()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	EList<Action> getSections();
@@ -135,7 +135,7 @@ public interface Action extends Link {
 	 * @see #setLeftNavigation(NavigationPanel)
 	 * @see org.nasdanika.html.model.app.AppPackage#getAction_LeftNavigation()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	NavigationPanel getLeftNavigation();
@@ -161,7 +161,7 @@ public interface Action extends Link {
 	 * @see #setRightNavigation(NavigationPanel)
 	 * @see org.nasdanika.html.model.app.AppPackage#getAction_RightNavigation()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	NavigationPanel getRightNavigation();
@@ -187,7 +187,7 @@ public interface Action extends Link {
 	 * @see #setFloatLeftNavigation(NavigationPanel)
 	 * @see org.nasdanika.html.model.app.AppPackage#getAction_FloatLeftNavigation()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	NavigationPanel getFloatLeftNavigation();
@@ -213,7 +213,7 @@ public interface Action extends Link {
 	 * @see #setFloatRightNavigation(NavigationPanel)
 	 * @see org.nasdanika.html.model.app.AppPackage#getAction_FloatRightNavigation()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	NavigationPanel getFloatRightNavigation();

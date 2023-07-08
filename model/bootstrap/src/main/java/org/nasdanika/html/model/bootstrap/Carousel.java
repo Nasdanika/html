@@ -34,7 +34,7 @@ public interface Carousel extends Div {
 	 * @return the value of the '<em>Slides</em>' containment reference list.
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getCarousel_Slides()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	EList<Slide> getSlides();

@@ -3177,42 +3177,42 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		  (getBootstrapElement_Appearance(),
 		   source,
 		   new String[] {
-			   "homogenous", "true",
+			   "homogeneous", "true",
 			   "strict-containment", "true"
 		   });
 		addAnnotation
 		  (getAppearance_Border(),
 		   source,
 		   new String[] {
-			   "homogenous", "true",
+			   "homogeneous", "true",
 			   "strict-containment", "true"
 		   });
 		addAnnotation
 		  (getAppearance_Margin(),
 		   source,
 		   new String[] {
-			   "homogenous", "true",
+			   "homogeneous", "true",
 			   "strict-containment", "true"
 		   });
 		addAnnotation
 		  (getAppearance_Padding(),
 		   source,
 		   new String[] {
-			   "homogenous", "true",
+			   "homogeneous", "true",
 			   "strict-containment", "true"
 		   });
 		addAnnotation
 		  (getAppearance_Text(),
 		   source,
 		   new String[] {
-			   "homogenous", "true",
+			   "homogeneous", "true",
 			   "strict-containment", "true"
 		   });
 		addAnnotation
 		  (getAppearance_Float(),
 		   source,
 		   new String[] {
-			   "homogenous", "true",
+			   "homogeneous", "true",
 			   "strict-containment", "true",
 			   "feature-key", "float"
 		   });
@@ -3250,55 +3250,55 @@ public class BootstrapPackageImpl extends EPackageImpl implements BootstrapPacka
 		  (getModal_Header(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getModal_Body(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getModal_Footer(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getTableRowContainer_Rows(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getTable_Header(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getTable_Body(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getTable_Footer(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getTableRow_Cells(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getCarousel_Slides(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 	}
 

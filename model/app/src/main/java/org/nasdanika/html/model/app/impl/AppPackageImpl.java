@@ -1534,7 +1534,7 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		  (getLink_Modal(),
 		   source,
 		   new String[] {
-			   "homogenous", "true",
+			   "homogeneous", "true",
 			   "exclusive-with", "location script"
 		   });
 		addAnnotation
@@ -1553,97 +1553,97 @@ public class AppPackageImpl extends EPackageImpl implements AppPackage {
 		  (getPage_Header(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getPage_NavigationBar(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getPage_NavigationPanel(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getPage_ContentPanel(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getPage_Footer(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getPage_ContentRowAppearance(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getContentPanel_LeftNavigation(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getContentPanel_RightNavigation(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getContentPanel_FloatLeftNavigation(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getContentPanel_FloatRightNavigation(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getContentPanel_Sections(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getAction_Sections(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getAction_LeftNavigation(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getAction_RightNavigation(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getAction_FloatLeftNavigation(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getAction_FloatRightNavigation(),
 		   source,
 		   new String[] {
-			   "homogenous", "true"
+			   "homogeneous", "true"
 		   });
 		addAnnotation
 		  (getAction_Inline(),

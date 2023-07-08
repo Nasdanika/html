@@ -135,6 +135,15 @@ public interface HtmlPackage extends EPackage {
 	int HTML_ELEMENT__ANNOTATIONS = NcorePackage.MODEL_ELEMENT__ANNOTATIONS;
 
 	/**
+	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HTML_ELEMENT__ALIASES = NcorePackage.MODEL_ELEMENT__ALIASES;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -242,6 +251,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int TAG__ANNOTATIONS = HTML_ELEMENT__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TAG__ALIASES = HTML_ELEMENT__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -360,6 +378,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int PAGE__ANNOTATIONS = NcorePackage.MODEL_ELEMENT__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PAGE__ALIASES = NcorePackage.MODEL_ELEMENT__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Head</b></em>' containment reference list.
@@ -516,6 +543,15 @@ public interface HtmlPackage extends EPackage {
 	int STYLESHEET__ANNOTATIONS = ContentPackage.FILTER__ANNOTATIONS;
 
 	/**
+	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STYLESHEET__ALIASES = ContentPackage.FILTER__ALIASES;
+
+	/**
 	 * The feature id for the '<em><b>Source</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -614,6 +650,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int STYLESHEET_REFERENCE__ANNOTATIONS = NcorePackage.MODEL_ELEMENT__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STYLESHEET_REFERENCE__ALIASES = NcorePackage.MODEL_ELEMENT__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' attribute.
@@ -716,6 +761,15 @@ public interface HtmlPackage extends EPackage {
 	int SCRIPT__ANNOTATIONS = ContentPackage.FILTER__ANNOTATIONS;
 
 	/**
+	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT__ALIASES = ContentPackage.FILTER__ALIASES;
+
+	/**
 	 * The feature id for the '<em><b>Source</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -814,6 +868,15 @@ public interface HtmlPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCRIPT_REFERENCE__ANNOTATIONS = NcorePackage.MODEL_ELEMENT__ANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCRIPT_REFERENCE__ALIASES = NcorePackage.MODEL_ELEMENT__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Src</b></em>' attribute.

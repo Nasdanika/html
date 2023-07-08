@@ -421,8 +421,8 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			List<EStructuralFeature> sortedFeatures = eObject.getEAllStructuralFeatures().stream().filter(predicate.and(elementPredicate)).sorted(namedElementComparator).collect(Collectors.toList());
 			
 			Function<EStructuralFeature, String> keyExtractor = sf -> NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, NcoreUtil.getFeatureKey(eObject, sf));
-			Predicate<EStructuralFeature> homogenousPredicate = sf -> "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENOUS)) || NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.REFERENCE_TYPE) != null;
-			Predicate<EStructuralFeature> strictContainmentPredicate = homogenousPredicate.and(sf -> "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_STRICT_CONTAINMENT)));
+			Predicate<EStructuralFeature> homogeneousPredicate = sf -> "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENEOUS)) || NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.REFERENCE_TYPE) != null;
+			Predicate<EStructuralFeature> strictContainmentPredicate = homogeneousPredicate.and(sf -> "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_STRICT_CONTAINMENT)));
 			Function<EStructuralFeature, Object[]> exclusiveWithExtractor = sf -> EObjectLoader.getExclusiveWith(eObject, sf, EObjectLoader.LOAD_KEY_PROVIDER);
 			
 			DynamicTableBuilder<EStructuralFeature> loadSpecificationTableBuilder = new DynamicTableBuilder<>();
@@ -441,7 +441,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 					return sb.toString();
 				})
 				.addStringColumnBuilder("cardinality", true, false, "Cardinality", EModelElementActionSupplier::cardinality)
-				.addBooleanColumnBuilder("homogenous", true, false, "Homogenous", homogenousPredicate)
+				.addBooleanColumnBuilder("homogeneous", true, false, "Homogeneous", homogeneousPredicate)
 				.addBooleanColumnBuilder("strict-containment", true, false, "Strict Containment", strictContainmentPredicate)
 				.addStringColumnBuilder("exclusive-with", true, false, "Exclusive With", sf -> {
 					Object[] exclusiveWith = exclusiveWithExtractor.apply(sf);
@@ -479,9 +479,9 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 					ETypedElementActionSupplier.addRow(table, "Default").add("true");				
 				}
 				
-				boolean isHomogenous = homogenousPredicate.test(sf);
-				if (isHomogenous) {
-					ETypedElementActionSupplier.addRow(table, "Homogenous").add("true");									
+				boolean isHomogeneous = homogeneousPredicate.test(sf);
+				if (isHomogeneous) {
+					ETypedElementActionSupplier.addRow(table, "Homogeneous").add("true");									
 				}
 				
 				boolean isStrictContainment = strictContainmentPredicate.test(sf);			

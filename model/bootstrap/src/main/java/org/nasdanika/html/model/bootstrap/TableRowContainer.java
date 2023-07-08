@@ -36,7 +36,7 @@ public interface TableRowContainer extends BootstrapElement {
 	 * @return the value of the '<em>Rows</em>' containment reference list.
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTableRowContainer_Rows()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	EList<TableRow> getRows();

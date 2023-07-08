@@ -95,7 +95,7 @@ public interface Link extends Label {
 	 * @see #setModal(Modal)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Modal()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true' exclusive-with='location script'"
+	 *        annotation="urn:org.nasdanika homogeneous='true' exclusive-with='location script'"
 	 * @generated
 	 */
 	Modal getModal();

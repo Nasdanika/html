@@ -14,7 +14,7 @@
         <details key="documentation" value="Customizes appearance of Bootstrap element."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
         <details key="strict-containment" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
@@ -68,7 +68,7 @@
         <details key="documentation" value="Border configuration."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
         <details key="strict-containment" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
@@ -78,7 +78,7 @@
         <details key="documentation" value="Margin configuration."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
         <details key="strict-containment" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
@@ -88,7 +88,7 @@
         <details key="documentation" value="Padding configuration."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
         <details key="strict-containment" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
@@ -97,7 +97,7 @@
         <details key="documentation" value="Text style"/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
         <details key="strict-containment" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
@@ -107,7 +107,7 @@
         <details key="documentation" value="Float configuration."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
         <details key="strict-containment" value="true"/>
         <details key="feature-key" value="float"/>
       </eAnnotations>
@@ -309,7 +309,7 @@
         <details key="documentation" value="Modal header content and appearance."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//BootstrapElement"
@@ -318,7 +318,7 @@
         <details key="documentation" value="Modal body content and appearance."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="footer" eType="#//BootstrapElement"
@@ -327,7 +327,7 @@
         <details key="documentation" value="Modal footer content and appearance."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="dismisser" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
@@ -484,7 +484,7 @@
         <details key="documentation" value="Table rows."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -554,7 +554,7 @@
         <details key="documentation" value="Table header."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//TableSection"
@@ -563,7 +563,7 @@
         <details key="documentation" value="Table body."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="footer" eType="#//TableSection"
@@ -572,7 +572,7 @@
         <details key="documentation" value="Table footer."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -586,7 +586,7 @@
         <details key="documentation" value="Table row cells."/>
       </eAnnotations>
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="#//Color">
@@ -683,7 +683,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="slides" upperBound="-1"
         eType="#//Slide" containment="true">
       <eAnnotations source="urn:org.nasdanika">
-        <details key="homogenous" value="true"/>
+        <details key="homogeneous" value="true"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="controls" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>

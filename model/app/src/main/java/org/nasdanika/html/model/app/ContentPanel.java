@@ -84,7 +84,7 @@ public interface ContentPanel extends PagePart {
 	 * @see #setLeftNavigation(NavigationPanel)
 	 * @see org.nasdanika.html.model.app.AppPackage#getContentPanel_LeftNavigation()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	NavigationPanel getLeftNavigation();
@@ -110,7 +110,7 @@ public interface ContentPanel extends PagePart {
 	 * @see #setRightNavigation(NavigationPanel)
 	 * @see org.nasdanika.html.model.app.AppPackage#getContentPanel_RightNavigation()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	NavigationPanel getRightNavigation();
@@ -136,7 +136,7 @@ public interface ContentPanel extends PagePart {
 	 * @see #setFloatLeftNavigation(NavigationPanel)
 	 * @see org.nasdanika.html.model.app.AppPackage#getContentPanel_FloatLeftNavigation()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	NavigationPanel getFloatLeftNavigation();
@@ -162,7 +162,7 @@ public interface ContentPanel extends PagePart {
 	 * @see #setFloatRightNavigation(NavigationPanel)
 	 * @see org.nasdanika.html.model.app.AppPackage#getContentPanel_FloatRightNavigation()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	NavigationPanel getFloatRightNavigation();
@@ -188,7 +188,7 @@ public interface ContentPanel extends PagePart {
 	 * @return the value of the '<em>Sections</em>' containment reference list.
 	 * @see org.nasdanika.html.model.app.AppPackage#getContentPanel_Sections()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	EList<ContentPanel> getSections();

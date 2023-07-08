@@ -39,7 +39,7 @@ public interface TableRow extends BootstrapElement {
 	 * @return the value of the '<em>Cells</em>' containment reference list.
 	 * @see org.nasdanika.html.model.bootstrap.BootstrapPackage#getTableRow_Cells()
 	 * @model containment="true"
-	 *        annotation="urn:org.nasdanika homogenous='true'"
+	 *        annotation="urn:org.nasdanika homogeneous='true'"
 	 * @generated
 	 */
 	EList<TableCell> getCells();
