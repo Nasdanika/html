@@ -1367,15 +1367,16 @@ public final class Util {
 	 * @param progressMonitor
 	 * @return
 	 */	
-	public static ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
-		return createResourceSet(context, progressMonitor, null, Util::configureC4Actions);
+	public static ResourceSet createResourceSet(Context context, boolean parallel, ProgressMonitor progressMonitor) {
+		return createResourceSet(context, progressMonitor, null, Util::configureC4Actions, parallel);
 	}
 	
 	public static ResourceSet createResourceSet(
 			Context context, 
 			ProgressMonitor progressMonitor, 
 			SemanticElementFactory semanticElementFactory,
-			SemanticElementConfigurator semanticElementConfigurator) {
+			SemanticElementConfigurator semanticElementConfigurator,
+			boolean parallel) {
 		
 		ResourceSet resourceSet = new NcoreResourceSet();
 		
@@ -1414,7 +1415,7 @@ public final class Util {
 		extensionToFactoryMap.put("json", objectLoaderResourceFactory);
 		resourceSet.getResourceFactoryRegistry().getProtocolToFactoryMap().put("data", objectLoaderResourceFactory);
 		
-		NcoreDrawioResourceFactory<EObject, RegistryRecord<SemanticProcessor<EObject>>> ncoreDrawioResourceFactory = new NcoreDrawioResourceFactory<EObject, RegistryRecord<SemanticProcessor<EObject>>>() {
+		NcoreDrawioResourceFactory<EObject, RegistryRecord<SemanticProcessor<EObject>>> ncoreDrawioResourceFactory = new NcoreDrawioResourceFactory<EObject, RegistryRecord<SemanticProcessor<EObject>>>(parallel) {
 			
 			@Override
 			protected ResourceSet getResourceSet() {
@@ -1501,9 +1502,10 @@ public final class Util {
 			URI resourceModelURI, 
 			BinaryEntityContainer container, 
 			Context context, 
+			boolean parallel,
 			ProgressMonitor progressMonitor) throws org.eclipse.emf.common.util.DiagnosticException {
 		
-		ResourceSet resourceSet = createResourceSet(context, progressMonitor);		
+		ResourceSet resourceSet = createResourceSet(context, parallel, progressMonitor);		
 		resourceSet.getAdapterFactories().add(new AppAdapterFactory());				
 		Resource containerResource = resourceSet.getResource(resourceModelURI, true);
 		generateContainer(containerResource, container, context, progressMonitor);

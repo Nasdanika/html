@@ -53,6 +53,12 @@ public abstract class AbstractSemanticGeneratorMojo extends AbstractCommandMojo 
 	 */
 	@Parameter(required = true)	
 	protected String model;
+
+	/**
+	 * If true, generation is performed in parallel threads.
+	 */
+	@Parameter(required = false)	
+	protected boolean parallel;
 	
 	/**
 	 * Contributors to site generation.
@@ -93,6 +99,10 @@ public abstract class AbstractSemanticGeneratorMojo extends AbstractCommandMojo 
 		}
 		
 		return new SemanticSiteGenerator() {
+			
+			{
+				this.parallel = AbstractSemanticGeneratorMojo.this.parallel;
+			}
 			
 			@Override
 			protected Iterable<SemanticInfo> getSemanticInfos() {

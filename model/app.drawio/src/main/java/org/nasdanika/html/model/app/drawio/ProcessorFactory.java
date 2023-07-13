@@ -1,16 +1,18 @@
 package org.nasdanika.html.model.app.drawio;
 
 import java.util.Map;
+import java.util.concurrent.CompletionStage;
+import java.util.function.Consumer;
 
 import org.eclipse.emf.common.util.URI;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.Connection;
 import org.nasdanika.graph.Element;
-import org.nasdanika.graph.processor.NopEndpointProcessorFactory;
+import org.nasdanika.graph.processor.NopEndpointProcessorConfigFactory;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo; 
 
-class ProcessorFactory implements NopEndpointProcessorFactory<ElementProcessor, Void, Registry> {
+class ProcessorFactory implements NopEndpointProcessorConfigFactory<ElementProcessor, Void, Registry> {
 	
 	private ResourceFactory resourceFactory;
 	private URI uri;
@@ -21,8 +23,8 @@ class ProcessorFactory implements NopEndpointProcessorFactory<ElementProcessor, 
 	}
 	
 	@Override
-	public ProcessorInfo<ElementProcessor, Registry> createProcessor(ProcessorConfig<ElementProcessor, Registry> config, ProgressMonitor progressMonitor) {
-		return ProcessorInfo.of(config, resourceFactory.createProcessor(uri, config, progressMonitor), null);
+	public ElementProcessor createProcessor(ProcessorConfig<ElementProcessor, Registry> config, boolean parallel, Consumer<CompletionStage<?>> stageCollector, ProgressMonitor progressMonitor) {
+		return resourceFactory.createProcessor(uri, config, progressMonitor);
 	}
 	
 	@Override

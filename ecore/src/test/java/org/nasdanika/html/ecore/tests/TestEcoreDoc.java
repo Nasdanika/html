@@ -250,7 +250,7 @@ public class TestEcoreDoc {
 		
 		// Diagnosing loaded resources. 
 		try {
-			return org.nasdanika.common.Util.call(new AppGenObjectLoaderSupplier(resourceURI, context), progressMonitor, diagnosticConsumer);
+			return org.nasdanika.common.Util.call(new AppGenObjectLoaderSupplier(resourceURI, context, false), progressMonitor, diagnosticConsumer);
 		} catch (DiagnosticException e) {
 			System.err.println("******************************");
 			System.err.println("*      Diagnostic failed     *");

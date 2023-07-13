@@ -89,7 +89,7 @@ public class TestBase {
 		class ObjectSupplier extends HtmlGenObjectLoaderExecutionParticipant implements Supplier<EObject> {
 
 			public ObjectSupplier(Context context) {
-				super(context);
+				super(context, false);
 			}
 
 			@Override

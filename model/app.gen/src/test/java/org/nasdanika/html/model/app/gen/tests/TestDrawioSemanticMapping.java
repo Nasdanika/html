@@ -66,7 +66,7 @@ public class TestDrawioSemanticMapping extends TestBase {
 		extensionToFactoryMap.put("json", objectLoaderResourceFactory);		
 		resourceSet.getResourceFactoryRegistry().getProtocolToFactoryMap().put("data", objectLoaderResourceFactory);
 
-		NcoreDrawioResourceFactory<ModelElement, RegistryRecord<SemanticProcessor<ModelElement>>> ncoreDrawioResourceFactory = new NcoreDrawioResourceFactory<>() {
+		NcoreDrawioResourceFactory<ModelElement, RegistryRecord<SemanticProcessor<ModelElement>>> ncoreDrawioResourceFactory = new NcoreDrawioResourceFactory<>(false) {
 
 			@Override
 			protected ResourceSet getResourceSet() {

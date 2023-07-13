@@ -109,7 +109,7 @@ public class TestBase {
 		class TestCommand extends HtmlObjectLoaderExecutionParticipant implements Command {
 
 			public TestCommand(Context context) {
-				super(context);
+				super(context, false);
 			}
 
 			@Override

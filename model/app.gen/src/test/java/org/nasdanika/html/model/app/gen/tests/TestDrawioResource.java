@@ -102,7 +102,7 @@ public class TestDrawioResource extends TestBase {
 		String actionsResource = "app/drawio-root-action.yml";
 		Action documentActionPrototype = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
 		
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("drawio", new ResourceFactory(ConnectionBase.SOURCE, resourceSet) {
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("drawio", new ResourceFactory(ConnectionBase.SOURCE, resourceSet, false) {
 			
 			@Override
 			protected Action createDocumentAction(Document document) {

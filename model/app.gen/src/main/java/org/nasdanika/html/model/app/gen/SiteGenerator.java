@@ -102,6 +102,8 @@ import com.redfin.sitemapgenerator.ChangeFreq;
 public class SiteGenerator {
 	
 	private static final String SEMANTIC_REF_KEY = "semantic-ref";
+	
+	protected boolean parallel;
 
 	/**
 	 * Creates and configures a resource set for loading models.
@@ -110,7 +112,7 @@ public class SiteGenerator {
 	 * @return
 	 */
 	protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
-		ResourceSet resourceSet = Util.createResourceSet(context, progressMonitor);
+		ResourceSet resourceSet = Util.createResourceSet(context, parallel, progressMonitor);
 		for (SiteGeneratorContributor contributor: getContributors()) {
 			contributor.configureResourceSet(resourceSet, context, progressMonitor);
 		}

@@ -2,6 +2,8 @@ package org.nasdanika.html.model.app.graph;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.CompletionStage;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -11,7 +13,7 @@ import org.nasdanika.graph.Connection;
 import org.nasdanika.graph.Element;
 import org.nasdanika.graph.processor.ConnectionProcessorConfig;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
-import org.nasdanika.graph.processor.NopEndpointProcessorFactory;
+import org.nasdanika.graph.processor.NopEndpointProcessorConfigFactory;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Label;
@@ -22,7 +24,7 @@ import org.nasdanika.html.model.app.Label;
  *
  * @param <I>
  */
-public abstract class ProcessorFactory<I> implements NopEndpointProcessorFactory<Object, WidgetFactory, Registry<I>> {
+public abstract class ProcessorFactory<I> implements NopEndpointProcessorConfigFactory<Object, WidgetFactory, Registry<I>> {
 	
 	@Override
 	public boolean isPassThrough(Connection connection) {
@@ -31,18 +33,18 @@ public abstract class ProcessorFactory<I> implements NopEndpointProcessorFactory
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public ProcessorInfo<Object, Registry<I>> createProcessor(ProcessorConfig<Object, Registry<I>> config, ProgressMonitor progressMonitor) {
+	public Object createProcessor(ProcessorConfig<Object, Registry<I>> config, boolean parallel, Consumer<CompletionStage<?>> stageCollector, ProgressMonitor progressMonitor) {
 		if (config instanceof NodeProcessorConfig) {
 			NodeProcessor<I> nodeProcessor = createNodeProcessor((NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<I>>) config, progressMonitor);
-			return ProcessorInfo.of(config, nodeProcessor, null); 
+			return nodeProcessor; 
 		} 
 		
 		if (config instanceof ConnectionProcessorConfig) {
 			Object connectionProcessor = createConnectionProcessor((ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<I>>) config, progressMonitor);
-			return ProcessorInfo.of(config, connectionProcessor, null); 			
+			return connectionProcessor; 			
 		}
 		
-		return NopEndpointProcessorFactory.super.createProcessor(config, progressMonitor);
+		return NopEndpointProcessorConfigFactory.super.createProcessor(config, parallel, stageCollector, progressMonitor);
 	}
 
 	@Override

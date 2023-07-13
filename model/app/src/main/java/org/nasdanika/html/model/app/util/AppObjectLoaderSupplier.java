@@ -23,8 +23,8 @@ public class AppObjectLoaderSupplier extends AppObjectLoaderExecutionParticipant
 
 	private URI uri;
 	
-	public AppObjectLoaderSupplier(URI uri, Context context) {
-		super(context);
+	public AppObjectLoaderSupplier(URI uri, Context context, boolean parallel) {
+		super(context, parallel);
 		this.uri = uri;
 	}
 
@@ -51,21 +51,23 @@ public class AppObjectLoaderSupplier extends AppObjectLoaderExecutionParticipant
 			String resource, 
 			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
 			Context context,
+			boolean parallel,
 			ProgressMonitor progressMonitor) {
 		
 		URI resourceURI = URI.createFileURI(new File(resource).getAbsolutePath());
-		return loadObject(resourceURI, diagnosticConsumer, context, progressMonitor);
+		return loadObject(resourceURI, diagnosticConsumer, context, parallel, progressMonitor);
 	}
 		
 	public static EObject loadObject(
 			URI resourceURI, 
 			Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
 			Context context,
+			boolean parallel,
 			ProgressMonitor progressMonitor) {
 				
 		// Diagnosing loaded resources. 
 		try {
-			try (AppObjectLoaderSupplier appObjectLoaderSupplier = new AppObjectLoaderSupplier(resourceURI, context)) {
+			try (AppObjectLoaderSupplier appObjectLoaderSupplier = new AppObjectLoaderSupplier(resourceURI, context, parallel)) {
 				return Objects.requireNonNull(appObjectLoaderSupplier.call(progressMonitor, diagnosticConsumer), "Loaded null from " + resourceURI);
 			}
 		} catch (DiagnosticException e) {

@@ -3,7 +3,6 @@ package org.nasdanika.html.model.app.drawio;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Comparator;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -48,17 +47,19 @@ public abstract class ResourceFactory implements Factory {
 	
 	private ResourceSet resourceSet;
 	private ConnectionBase connectionBase;
+	private boolean parallel;
 	
-	public ResourceFactory(ConnectionBase connectionBase, ResourceSet resourceSet) {
+	public ResourceFactory(ConnectionBase connectionBase, ResourceSet resourceSet, boolean parallel) {
 		this.connectionBase = connectionBase;
 		this.resourceSet = resourceSet;
+		this.parallel = parallel;
 	}
 	
 
 	@Override
 	public Resource createResource(URI uri) {
 		ProcessorFactory processorFactory = new ProcessorFactory(uri, this);
-		return new DrawioResource<ElementProcessor, EObject, org.nasdanika.html.model.app.drawio.Registry>(uri) {
+		return new DrawioResource<ElementProcessor, EObject, org.nasdanika.html.model.app.drawio.Registry>(uri, parallel) {
 			
 			protected Document loadDocument(InputStream inputStream) throws IOException, ParserConfigurationException, SAXException {
 				return ResourceFactory.this.loadDocument(inputStream, getURI());

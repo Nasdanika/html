@@ -112,6 +112,12 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
      */
     @Parameter
     private List<String> semanticInfos;
+    
+	/**
+	 * If true, generation is performed in parallel threads.
+	 */
+	@Parameter(required = false)	
+	protected boolean parallel;    
 	
 	@Override
 	protected void execute(Context context, ProgressMonitor progressMonitor) {		
@@ -168,6 +174,10 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 		}
 		
 		return new ActionSiteGenerator() {
+			
+			{
+				this.parallel = ActionSiteGeneratorMojo.this.parallel;
+			}
 			
 			@Override
 			protected Iterable<SemanticInfo> getSemanticInfos() {
