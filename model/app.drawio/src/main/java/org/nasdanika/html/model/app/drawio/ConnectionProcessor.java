@@ -11,7 +11,6 @@ import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.Node;
 import org.nasdanika.graph.processor.ProcessorConfig;
-import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.Table;
@@ -25,7 +24,7 @@ public class ConnectionProcessor extends ModelElementProcessor {
 		return (Connection) super.getElement();
 	}
 
-	public ConnectionProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor, Registry> config, URI baseURI) {
+	public ConnectionProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig config, URI baseURI) {
 		super(resourceFactory, uri, config, baseURI);
 	}
 	

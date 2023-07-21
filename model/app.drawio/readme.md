@@ -1,3 +1,5 @@
+** On hold, excluded from the parent, needs refactoring to the new graph processor API **
+
 
 With ${javadoc/org.nasdanika.html.model.app.drawio.ResourceFactory} [action models](../model/index.html) can be loaded from [Drawio](https://www.diagrams.net/) diagrams.
 In other words, a structure of a web site/application can be defined as a diagram. 

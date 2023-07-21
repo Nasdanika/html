@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,17 +35,17 @@ import org.nasdanika.exec.content.Text;
 import org.nasdanika.graph.Element;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
+import org.nasdanika.graph.processor.emf.SemanticProcessor;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
-import org.nasdanika.graph.processor.emf.SemanticProcessor;
 
 public class ModelElementProcessor extends ElementProcessor implements SemanticProcessor<EObject> {
 	
-	protected Map<ProcessorInfo<ElementProcessor, Registry>, EReference> semanticChildrenInfo;
-	protected ProcessorInfo<ElementProcessor, Registry> semanticParentInfo;
+	protected List<RoleRecord> semanticChildren;
+	protected ProcessorInfo<ElementProcessor> semanticParentInfo;
 	protected EObject semanticElement;
 
-	protected ModelElementProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig<ElementProcessor, Registry> config, URI baseURI) {
+	protected ModelElementProcessor(ResourceFactory resourceFactory, URI uri, ProcessorConfig config, URI baseURI) {
 		super(resourceFactory, uri, config, baseURI);
 	}
 	
@@ -74,28 +73,28 @@ public class ModelElementProcessor extends ElementProcessor implements SemanticP
 	 * @param semanticParentInfo
 	 * @return Linked map of info to child role.
 	 */
-	public Map<ProcessorInfo<ElementProcessor, Registry>, EReference> setSemanticParentInfo(ProcessorInfo<ElementProcessor, Registry> semanticParentInfo) {
+	public List<RoleRecord> setSemanticParentInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
 		if (isSemantic()) {
 			if (semanticParentInfo != null) {
 				ElementProcessor spp = semanticParentInfo.getProcessor();
 				if (spp instanceof ModelElementProcessor && ((ModelElementProcessor) spp).isSemanticDescendant(getElement(), new HashSet<>()::add)) {
-					return Collections.emptyMap();
+					return Collections.emptyList();
 				}
 			}
 			
 			this.semanticParentInfo = semanticParentInfo;
-			ProcessorInfo<ElementProcessor, Registry> info = ProcessorInfo.of(config, this);
-			semanticChildrenInfo = collectSemanticChildrenInfo(info);
+			ProcessorInfo<ElementProcessor> info = config.toInfo(this);
+			semanticChildren = collectSemanticChildrenInfo(info);
 			return Collections.singletonMap(info, getRole());
 		}
 
 		return collectSemanticChildrenInfo(semanticParentInfo);
 	}
 	
-	public Map<ProcessorInfo<ElementProcessor, Registry>, EReference> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor, Registry> semanticParentInfo) {
+	public List<RoleRecord> collectSemanticChildrenInfo(ProcessorInfo<ElementProcessor> semanticParentInfo) {
 		Page linkedPage = getElement().getLinkedPage();
 		if (linkedPage == null) {
-			return Collections.emptyMap();
+			return Collections.emptyList();
 		}
 		PageProcessor pageProcessor = (PageProcessor) registry.infoMap().get(linkedPage).getProcessor();
 		ModelElement pageElement = pageProcessor.getPageElement();
