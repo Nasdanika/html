@@ -40,7 +40,7 @@ public class ConnectionProcessor {
 					return targetURI;
 				}
 				if (base.isRelative() && targetURI != null && !targetURI.isRelative()) {
-					base.resolve(targetURI); 					
+					return base.resolve(targetURI); 					
 				}
 				return base;				
 			}
@@ -140,7 +140,7 @@ public class ConnectionProcessor {
 					return sourceURI;
 				}
 				if (base.isRelative() && sourceURI != null && !sourceURI.isRelative()) {
-					base.resolve(sourceURI); 					
+					return base.resolve(sourceURI); 					
 				}
 				return base;				
 			}

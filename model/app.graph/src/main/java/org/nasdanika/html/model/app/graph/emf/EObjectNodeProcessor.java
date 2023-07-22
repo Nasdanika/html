@@ -68,7 +68,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	protected NodeProcessorConfig<WidgetFactory, WidgetFactory> config;
 	protected Context context;
 	protected URI uri;
-
+	
 	public EObjectNodeProcessor(
 			NodeProcessorConfig<WidgetFactory, WidgetFactory> config, 
 			Context context, 

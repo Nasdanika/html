@@ -34,24 +34,5 @@ public class EObjectReflectiveProcessorFactoryProvider extends ReflectiveProcess
 			
 		return processor;
 	}
-//
-//	@Override
-//	protected WidgetFactory resolve(NodeProcessor<URI> p, NodeProcessor<URI> base) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	protected Collection<URI> getIdentifiers(Element element) {
-//		if (element instanceof EObjectNode) {
-//			return NcoreUtil.getIdentifiers(((EObjectNode) element).getTarget());
-//		}
-//		
-//		return Collections.emptyList();
-//	}
-//	
-//	public boolean isPassThrough(Connection connection) {
-//		return false;
-//	}
 
 }
