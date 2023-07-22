@@ -137,15 +137,6 @@ public interface AppPackage extends EPackage {
 	int LABEL__ANNOTATIONS = BootstrapPackage.BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LABEL__ALIASES = BootstrapPackage.BOOTSTRAP_ELEMENT__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -361,15 +352,6 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK__ANNOTATIONS = LABEL__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LINK__ALIASES = LABEL__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -652,15 +634,6 @@ public interface AppPackage extends EPackage {
 	int PAGE__ANNOTATIONS = BootstrapPackage.BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PAGE__ALIASES = BootstrapPackage.BOOTSTRAP_ELEMENT__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -842,15 +815,6 @@ public interface AppPackage extends EPackage {
 	int PAGE_PART__ANNOTATIONS = BootstrapPackage.BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PAGE_PART__ALIASES = BootstrapPackage.BOOTSTRAP_ELEMENT__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -976,15 +940,6 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int HEADER__ANNOTATIONS = PAGE_PART__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int HEADER__ALIASES = PAGE_PART__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1121,15 +1076,6 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int NAVIGATION_BAR__ANNOTATIONS = PAGE_PART__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int NAVIGATION_BAR__ALIASES = PAGE_PART__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1293,15 +1239,6 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int NAVIGATION_PANEL__ANNOTATIONS = PAGE_PART__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int NAVIGATION_PANEL__ALIASES = PAGE_PART__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1474,15 +1411,6 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTENT_PANEL__ANNOTATIONS = PAGE_PART__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONTENT_PANEL__ALIASES = PAGE_PART__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -1693,15 +1621,6 @@ public interface AppPackage extends EPackage {
 	int FOOTER__ANNOTATIONS = PAGE_PART__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FOOTER__ALIASES = PAGE_PART__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1827,15 +1746,6 @@ public interface AppPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION__ANNOTATIONS = LINK__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION__ALIASES = LINK__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.

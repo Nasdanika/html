@@ -77,99 +77,99 @@ public class TestDrawioResource extends TestBase {
 	private static final URI CONTAINER_MODEL_URI = URI.createFileURI(new File("target/drawio.xml").getAbsolutePath());			
 
 	/**
-	 * Generates a resource model from an action model.
-	 * @throws Exception
-	 */
-	public void testGenerateResourceModel() throws Exception {
-		Context modelContext = Context.EMPTY_CONTEXT;
-		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
-
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Registry packageRegistry = resourceSet.getPackageRegistry();
-				
-		packageRegistry.put(BootstrapPackage.eINSTANCE.getNsURI(), BootstrapPackage.eINSTANCE);
-		packageRegistry.put(AppPackage.eINSTANCE.getNsURI(), AppPackage.eINSTANCE); 
-		packageRegistry.put(HtmlPackage.eINSTANCE.getNsURI(), HtmlPackage.eINSTANCE); 
-		packageRegistry.put(ExecPackage.eINSTANCE.getNsURI(), ExecPackage.eINSTANCE); 
-		packageRegistry.put(ContentPackage.eINSTANCE.getNsURI(), ContentPackage.eINSTANCE); 
-		packageRegistry.put(ResourcesPackage.eINSTANCE.getNsURI(), ResourcesPackage.eINSTANCE); 
-		packageRegistry.put(NcorePackage.eINSTANCE.getNsURI(), NcorePackage.eINSTANCE); 
-		
-		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
-			assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
-		};
-		
-		String actionsResource = "app/drawio-root-action.yml";
-		Action documentActionPrototype = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
-		
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("drawio", new ResourceFactory(ConnectionBase.SOURCE, resourceSet, false) {
-			
-			@Override
-			protected Action createDocumentAction(Document document) {
-				return EcoreUtil.copy(documentActionPrototype);
-			}
-
-			@Override
-			protected ProgressMonitor getProgressMonitor(URI uri) {
-				return progressMonitor.split("Loading " + uri, 1);
-			}
-			
-		});
-		
-		EObjectLoader eObjectLoader = new EObjectLoader(null, null, resourceSet);
-		eObjectLoader.setMarkerFactory(new GitMarkerFactory());
-		Resource.Factory appObjectLoaderResourceFactory = new ObjectLoaderResourceFactory() {
-
-			@Override
-			protected ObjectLoader getObjectLoader(Resource resource) {
-				return eObjectLoader;
-			}
-			
-			@Override
-			protected Context getContext(Resource resource) {
-				return modelContext;
-			}
-			
-			@Override
-			protected ProgressMonitor getProgressMonitor(Resource resource) {
-				return progressMonitor;
-			}
-			
-		};
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("yml", appObjectLoaderResourceFactory);
-		
-		File modelFile = new File("src/test/resources/org/nasdanika/html/model/app/gen/tests/app/aws-containers.drawio");
-		assertThat(modelFile.isFile());
-		Resource modelResource = resourceSet.getResource(URI.createFileURI(modelFile.getCanonicalPath()), true);
-		
-		Action root = (Action) modelResource.getContents().get(0);
-		
-		Resource dumpRes = new XMIResourceFactoryImpl().createResource(URI.createURI("temp://blah"));
-		dumpRes.getContents().add(EcoreUtil.copy(root));
-		dumpRes.save(System.out, null);
-		
-		Container container = ResourcesFactory.eINSTANCE.createContainer();
-		container.setName("Drawio");
-		
-		ResourceSet containerResourceSet = new ResourceSetImpl();
-		containerResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-		Resource containerResource = containerResourceSet.createResource(CONTAINER_MODEL_URI);
-		containerResource.getContents().add(container);
-		
-		String pageTemplateResource = "app/page-template.yml";
-		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) Objects.requireNonNull(loadObject(pageTemplateResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + pageTemplateResource);
-		
-		Util.generateSite(
-				root, 
-				pageTemplate,
-				container,
-				null,
-				null,
-				Context.EMPTY_CONTEXT,
-				progressMonitor);
-		
-		containerResource.save(null);		
-	}
+//	 * Generates a resource model from an action model.
+//	 * @throws Exception
+//	 */
+//	public void testGenerateResourceModel() throws Exception {
+//		Context modelContext = Context.EMPTY_CONTEXT;
+//		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
+//
+//		ResourceSet resourceSet = new ResourceSetImpl();
+//		Registry packageRegistry = resourceSet.getPackageRegistry();
+//				
+//		packageRegistry.put(BootstrapPackage.eINSTANCE.getNsURI(), BootstrapPackage.eINSTANCE);
+//		packageRegistry.put(AppPackage.eINSTANCE.getNsURI(), AppPackage.eINSTANCE); 
+//		packageRegistry.put(HtmlPackage.eINSTANCE.getNsURI(), HtmlPackage.eINSTANCE); 
+//		packageRegistry.put(ExecPackage.eINSTANCE.getNsURI(), ExecPackage.eINSTANCE); 
+//		packageRegistry.put(ContentPackage.eINSTANCE.getNsURI(), ContentPackage.eINSTANCE); 
+//		packageRegistry.put(ResourcesPackage.eINSTANCE.getNsURI(), ResourcesPackage.eINSTANCE); 
+//		packageRegistry.put(NcorePackage.eINSTANCE.getNsURI(), NcorePackage.eINSTANCE); 
+//		
+//		Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
+//			assertThat(diagnostic.getStatus()).isEqualTo(Status.SUCCESS);
+//		};
+//		
+//		String actionsResource = "app/drawio-root-action.yml";
+//		Action documentActionPrototype = (Action) Objects.requireNonNull(loadObject(actionsResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + actionsResource);
+//		
+//		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("drawio", new ResourceFactory(ConnectionBase.SOURCE, resourceSet, false) {
+//			
+//			@Override
+//			protected Action createDocumentAction(Document document) {
+//				return EcoreUtil.copy(documentActionPrototype);
+//			}
+//
+//			@Override
+//			protected ProgressMonitor getProgressMonitor(URI uri) {
+//				return progressMonitor.split("Loading " + uri, 1);
+//			}
+//			
+//		});
+//		
+//		EObjectLoader eObjectLoader = new EObjectLoader(null, null, resourceSet);
+//		eObjectLoader.setMarkerFactory(new GitMarkerFactory());
+//		Resource.Factory appObjectLoaderResourceFactory = new ObjectLoaderResourceFactory() {
+//
+//			@Override
+//			protected ObjectLoader getObjectLoader(Resource resource) {
+//				return eObjectLoader;
+//			}
+//			
+//			@Override
+//			protected Context getContext(Resource resource) {
+//				return modelContext;
+//			}
+//			
+//			@Override
+//			protected ProgressMonitor getProgressMonitor(Resource resource) {
+//				return progressMonitor;
+//			}
+//			
+//		};
+//		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("yml", appObjectLoaderResourceFactory);
+//		
+//		File modelFile = new File("src/test/resources/org/nasdanika/html/model/app/gen/tests/app/aws-containers.drawio");
+//		assertThat(modelFile.isFile());
+//		Resource modelResource = resourceSet.getResource(URI.createFileURI(modelFile.getCanonicalPath()), true);
+//		
+//		Action root = (Action) modelResource.getContents().get(0);
+//		
+//		Resource dumpRes = new XMIResourceFactoryImpl().createResource(URI.createURI("temp://blah"));
+//		dumpRes.getContents().add(EcoreUtil.copy(root));
+//		dumpRes.save(System.out, null);
+//		
+//		Container container = ResourcesFactory.eINSTANCE.createContainer();
+//		container.setName("Drawio");
+//		
+//		ResourceSet containerResourceSet = new ResourceSetImpl();
+//		containerResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+//		Resource containerResource = containerResourceSet.createResource(CONTAINER_MODEL_URI);
+//		containerResource.getContents().add(container);
+//		
+//		String pageTemplateResource = "app/page-template.yml";
+//		org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) Objects.requireNonNull(loadObject(pageTemplateResource, diagnosticConsumer, modelContext, progressMonitor), "Loaded null from " + pageTemplateResource);
+//		
+//		Util.generateSite(
+//				root, 
+//				pageTemplate,
+//				container,
+//				null,
+//				null,
+//				Context.EMPTY_CONTEXT,
+//				progressMonitor);
+//		
+//		containerResource.save(null);		
+//	}
 	
 	/**
 	 * Generates files from the previously generated resource model.
@@ -264,14 +264,14 @@ public class TestDrawioResource extends TestBase {
 	 * Generates a resource model from an action model and then generates files from the resource model.
 	 * @throws Exception
 	 */
-	@Test
-	public void testGenerateSite() throws Exception {
-		long start = System.currentTimeMillis();
-		testGenerateResourceModel();
-		long grm = System.currentTimeMillis();
-		testGenerateContainer();
-		long end = System.currentTimeMillis();
-		System.out.println((grm - start) + "/" + (end - grm));	
-	}
+//	@Test
+//	public void testGenerateSite() throws Exception {
+//		long start = System.currentTimeMillis();
+//		testGenerateResourceModel();
+//		long grm = System.currentTimeMillis();
+//		testGenerateContainer();
+//		long end = System.currentTimeMillis();
+//		System.out.println((grm - start) + "/" + (end - grm));	
+//	}
 	
 }

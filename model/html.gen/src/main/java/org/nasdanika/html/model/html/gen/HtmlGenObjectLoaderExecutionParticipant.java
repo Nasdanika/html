@@ -18,8 +18,8 @@ import org.nasdanika.persistence.ObjectLoaderResourceFactory;
  */
 public abstract class HtmlGenObjectLoaderExecutionParticipant extends ExecObjectLoaderExecutionParticipant {
 
-	public HtmlGenObjectLoaderExecutionParticipant(Context context, boolean parallel) {
-		super(context, parallel);
+	public HtmlGenObjectLoaderExecutionParticipant(Context context) {
+		super(context);
 	}
 	
 	@Override

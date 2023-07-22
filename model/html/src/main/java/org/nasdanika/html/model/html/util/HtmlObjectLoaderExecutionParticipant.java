@@ -14,8 +14,8 @@ import org.nasdanika.html.model.html.HtmlPackage;
  */
 public abstract class HtmlObjectLoaderExecutionParticipant extends ExecObjectLoaderExecutionParticipant {
 
-	public HtmlObjectLoaderExecutionParticipant(Context context, boolean parallel) {
-		super(context, parallel);
+	public HtmlObjectLoaderExecutionParticipant(Context context) {
+		super(context);
 	}
 
 	@Override

@@ -22,8 +22,8 @@ public class AppGenObjectLoaderSupplier extends AppGenObjectLoaderExecutionParti
 
 	private URI uri;
 	
-	public AppGenObjectLoaderSupplier(URI uri, Context context, boolean parallel) {
-		super(context, parallel);
+	public AppGenObjectLoaderSupplier(URI uri, Context context) {
+		super(context);
 		this.uri = uri;
 	}
 
@@ -45,18 +45,18 @@ public class AppGenObjectLoaderSupplier extends AppGenObjectLoaderExecutionParti
 	 * @param progressMonitor
 	 * @return
 	 */
+	@SuppressWarnings("resource")
 	public static EObject loadObject(
 			String resource, 
 			java.util.function.Consumer<org.nasdanika.common.Diagnostic> diagnosticConsumer,
 			Context context,
-			boolean parallel,
 			ProgressMonitor progressMonitor) {
 		
 		URI resourceURI = URI.createFileURI(new File(resource).getAbsolutePath());
 
 		// Diagnosing loaded resources. 
 		try {
-			return Objects.requireNonNull(org.nasdanika.common.Util.call(new AppGenObjectLoaderSupplier(resourceURI, context, parallel), progressMonitor, diagnosticConsumer), "Loaded null from: " + resource);
+			return Objects.requireNonNull(new AppGenObjectLoaderSupplier(resourceURI, context).call(progressMonitor, diagnosticConsumer), "Loaded null from: " + resource);
 		} catch (DiagnosticException e) {
 			System.err.println("******************************");
 			System.err.println("*      Diagnostic failed     *");

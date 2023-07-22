@@ -15,8 +15,8 @@ import org.nasdanika.persistence.ObjectLoaderResourceFactory;
  */
 public abstract class AppGenObjectLoaderExecutionParticipant extends AppObjectLoaderExecutionParticipant {
 
-	public AppGenObjectLoaderExecutionParticipant(Context context, boolean parallel) {
-		super(context, parallel);
+	public AppGenObjectLoaderExecutionParticipant(Context context) {
+		super(context);
 	}
 	
 	@Override

@@ -14,8 +14,8 @@ import org.nasdanika.html.model.bootstrap.util.BootstrapObjectLoaderExecutionPar
  */
 public abstract class AppObjectLoaderExecutionParticipant extends BootstrapObjectLoaderExecutionParticipant {
 
-	public AppObjectLoaderExecutionParticipant(Context context, boolean parallel) {
-		super(context, parallel);
+	public AppObjectLoaderExecutionParticipant(Context context) {
+		super(context);
 	}
 
 	@Override

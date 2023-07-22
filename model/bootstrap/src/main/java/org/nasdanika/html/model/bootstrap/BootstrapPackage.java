@@ -137,15 +137,6 @@ public interface BootstrapPackage extends EPackage {
 	int BOOTSTRAP_ELEMENT__ANNOTATIONS = HtmlPackage.HTML_ELEMENT__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOTSTRAP_ELEMENT__ALIASES = HtmlPackage.HTML_ELEMENT__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -262,15 +253,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int PAGE__ANNOTATIONS = HtmlPackage.PAGE__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PAGE__ALIASES = HtmlPackage.PAGE__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Head</b></em>' containment reference list.
@@ -919,15 +901,6 @@ public interface BootstrapPackage extends EPackage {
 	int TAG__ANNOTATIONS = HtmlPackage.TAG__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TAG__ALIASES = HtmlPackage.TAG__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1385,15 +1358,6 @@ public interface BootstrapPackage extends EPackage {
 	int MODAL__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODAL__ALIASES = BOOTSTRAP_ELEMENT__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1565,15 +1529,6 @@ public interface BootstrapPackage extends EPackage {
 	int DIV__ANNOTATIONS = TAG__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DIV__ALIASES = TAG__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1691,15 +1646,6 @@ public interface BootstrapPackage extends EPackage {
 	int ITEM__ANNOTATIONS = NcorePackage.MODEL_ELEMENT__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ITEM__ALIASES = NcorePackage.MODEL_ELEMENT__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1806,15 +1752,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION_GROUP_ITEM__ANNOTATIONS = ITEM__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION_GROUP_ITEM__ALIASES = ITEM__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
@@ -1932,15 +1869,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK_ACTION_GROUP_ITEM__ANNOTATIONS = ACTION_GROUP_ITEM__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LINK_ACTION_GROUP_ITEM__ALIASES = ACTION_GROUP_ITEM__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
@@ -2069,15 +1997,6 @@ public interface BootstrapPackage extends EPackage {
 	int CONTENT_ACTION_GROUP_ITEM__ANNOTATIONS = ACTION_GROUP_ITEM__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONTENT_ACTION_GROUP_ITEM__ALIASES = ACTION_GROUP_ITEM__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Active</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2202,15 +2121,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION_GROUP__ANNOTATIONS = DIV__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACTION_GROUP__ALIASES = DIV__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2348,15 +2258,6 @@ public interface BootstrapPackage extends EPackage {
 	int CONTAINER__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CONTAINER__ALIASES = BOOTSTRAP_ELEMENT__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2481,15 +2382,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int ROW__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ROW__ALIASES = BOOTSTRAP_ELEMENT__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2645,15 +2537,6 @@ public interface BootstrapPackage extends EPackage {
 	int COLUMN__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COLUMN__ALIASES = BOOTSTRAP_ELEMENT__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2769,15 +2652,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_ROW_CONTAINER__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TABLE_ROW_CONTAINER__ALIASES = BOOTSTRAP_ELEMENT__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -2897,15 +2771,6 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_SECTION__ANNOTATIONS = TABLE_ROW_CONTAINER__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TABLE_SECTION__ALIASES = TABLE_ROW_CONTAINER__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3021,15 +2886,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_HEADER__ANNOTATIONS = TABLE_SECTION__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TABLE_HEADER__ALIASES = TABLE_SECTION__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -3239,15 +3095,6 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE__ANNOTATIONS = TABLE_ROW_CONTAINER__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TABLE__ALIASES = TABLE_ROW_CONTAINER__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3446,15 +3293,6 @@ public interface BootstrapPackage extends EPackage {
 	int TABLE_ROW__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TABLE_ROW__ALIASES = BOOTSTRAP_ELEMENT__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3588,15 +3426,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int TABLE_CELL__ANNOTATIONS = BOOTSTRAP_ELEMENT__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TABLE_CELL__ALIASES = BOOTSTRAP_ELEMENT__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -3752,15 +3581,6 @@ public interface BootstrapPackage extends EPackage {
 	int CARD__ANNOTATIONS = DIV__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CARD__ALIASES = DIV__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3905,15 +3725,6 @@ public interface BootstrapPackage extends EPackage {
 	int ALERT__ANNOTATIONS = DIV__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ALERT__ALIASES = DIV__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4038,15 +3849,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int BADGE__ANNOTATIONS = DIV__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BADGE__ALIASES = DIV__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -4191,15 +3993,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int BUTTON__ANNOTATIONS = DIV__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BUTTON__ALIASES = DIV__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
@@ -4574,15 +4367,6 @@ public interface BootstrapPackage extends EPackage {
 	int CAROUSEL__ANNOTATIONS = DIV__ANNOTATIONS;
 
 	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CAROUSEL__ALIASES = DIV__ALIASES;
-
-	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4762,15 +4546,6 @@ public interface BootstrapPackage extends EPackage {
 	 * @ordered
 	 */
 	int SLIDE__ANNOTATIONS = DIV__ANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Aliases</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SLIDE__ALIASES = DIV__ALIASES;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' map.

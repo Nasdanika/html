@@ -89,7 +89,7 @@ public class TestBase {
 		class ObjectSupplier extends HtmlGenObjectLoaderExecutionParticipant implements Supplier<EObject> {
 
 			public ObjectSupplier(Context context) {
-				super(context, false);
+				super(context);
 			}
 
 			@Override
@@ -112,7 +112,7 @@ public class TestBase {
 		
 		// Diagnosing loaded resources. 
 		try {
-			return Util.call(new ObjectSupplier(context), progressMonitor, diagnosticConsumer);
+			return new ObjectSupplier(context).call(progressMonitor, diagnosticConsumer);
 		} catch (DiagnosticException e) {
 			System.err.println("******************************");
 			System.err.println("*      Diagnostic failed     *");

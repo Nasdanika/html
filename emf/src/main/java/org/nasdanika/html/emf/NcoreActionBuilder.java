@@ -36,7 +36,6 @@ import org.nasdanika.common.PropertyComputer;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Document;
-import org.nasdanika.emf.persistence.NcoreDrawioResourceFactory;
 import org.nasdanika.emf.persistence.TextResourceFactory;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
@@ -60,6 +59,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 	public static final String TARGET_URI_KEY = "target-uri";
 	public static final String ACTION_URI_KEY = "action-uri";
 	public static final String ACTION_UUID_KEY = "action-uuid";
+	public static final String SEMANTIC_UUID_KEY = "semantic-uuid";
 	private static final String URI_BASE_SUFFIX = "-base";
 	
 	public NcoreActionBuilder(T target, Context context) {
@@ -196,7 +196,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 
 		if (element instanceof org.nasdanika.drawio.ModelElement) {
 			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
-			String semanticUUID = modelElement.getProperty(NcoreDrawioResourceFactory.SEMANTIC_UUID_KEY);
+			String semanticUUID = modelElement.getProperty(SEMANTIC_UUID_KEY);
 			if (Util.isBlank(semanticUUID)) {
 				String targetUriPropertyValue = modelElement.getProperty(TARGET_URI_KEY);
 				if (!Util.isBlank(targetUriPropertyValue)) {
@@ -614,7 +614,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				String actionUUID = modelElement.getProperty(ACTION_UUID_KEY);			
 				if (Util.isBlank(actionUUID)) {
 					// For semantic mapping to actions 
-					actionUUID =  modelElement.getProperty(NcoreDrawioResourceFactory.SEMANTIC_UUID_KEY); 
+					actionUUID =  modelElement.getProperty(SEMANTIC_UUID_KEY); 
 				}
 
 				if (!Util.isBlank(actionUUID)) {
