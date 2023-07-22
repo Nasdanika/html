@@ -52,8 +52,6 @@ import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
-import org.nasdanika.html.model.app.graph.Registry;
-import org.nasdanika.html.model.app.graph.URINodeProcessor;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.util.SemanticInfo;
@@ -64,12 +62,15 @@ import org.nasdanika.ncore.util.SemanticInfo;
  * @author Pavel
  *
  */
-public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor {
+public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	
 	protected java.util.function.Function<ProgressMonitor, Action> prototypeProvider;
+	protected NodeProcessorConfig<WidgetFactory, WidgetFactory> config;
+	protected Context context;
+	protected URI uri;
 
 	public EObjectNodeProcessor(
-			NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config, 
+			NodeProcessorConfig<WidgetFactory, WidgetFactory> config, 
 			Context context, 
 			java.util.function.Function<ProgressMonitor, Action> prototypeProvider) {		
 		this.config = config;
@@ -78,10 +79,10 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 		this.uri = URI.createURI("index.html");
 	}
 	
-	protected Map<EObjectNode, ProcessorInfo<Object, Registry<URI>>> childProcessors;
+	protected Map<EObjectNode, ProcessorInfo<Object>> childProcessors;
 	
 	@ChildProcessors
-	public void setChildProcessors(Map<EObjectNode, ProcessorInfo<Object, Registry<URI>>> childProcessors) {
+	public void setChildProcessors(Map<EObjectNode, ProcessorInfo<Object>> childProcessors) {
 		this.childProcessors = childProcessors;
 	}
 	
@@ -104,7 +105,7 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 		return (T) node.getTarget();
 	}
 	
-	public NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> getConfig() {
+	public NodeProcessorConfig<WidgetFactory, WidgetFactory> getConfig() {
 		return config;
 	}
 	
@@ -143,10 +144,6 @@ public class EObjectNodeProcessor<T extends EObject> implements URINodeProcessor
 	public WidgetFactory getOutgoingHandler(Connection connection) {
 		return this;
 	}
-	
-	protected NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config;
-	protected Context context;
-	protected URI uri;
 
 	protected Collection<Label> createLabels(ProgressMonitor progressMonitor) {		
 		return Collections.singleton(createAction(progressMonitor));

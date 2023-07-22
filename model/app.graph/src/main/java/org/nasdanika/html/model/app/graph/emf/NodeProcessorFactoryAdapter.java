@@ -2,20 +2,14 @@ package org.nasdanika.html.model.app.graph.emf;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.common.util.URI;
-import org.nasdanika.common.Context;
-import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.graph.processor.NodeProcessorConfig;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
-import org.nasdanika.html.model.app.graph.NodeProcessor;
-import org.nasdanika.html.model.app.graph.Registry;
 
 /**
- * Base class for {@link NodeProcessor}.Factory adapters
+ * Base class for node factory adapters 
  * @author Pavel
  *
  */
-public class NodeProcessorFactoryAdapter<T extends Notifier> extends AdapterImpl implements NodeProcessor.Factory<URI> {
+public abstract class NodeProcessorFactoryAdapter<T extends Notifier> extends AdapterImpl implements org.nasdanika.graph.processor.NodeProcessorInfo.Factory<Object, WidgetFactory, WidgetFactory> {
 	
 	public NodeProcessorFactoryAdapter(T target) {
 		setTarget(target);
@@ -28,13 +22,6 @@ public class NodeProcessorFactoryAdapter<T extends Notifier> extends AdapterImpl
 	@Override
 	public T getTarget() {
 		return (T) target;
-	}
-
-	@Override
-	public NodeProcessor<URI> create(NodeProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config,
-			Context context, ProgressMonitor progressMonitor) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

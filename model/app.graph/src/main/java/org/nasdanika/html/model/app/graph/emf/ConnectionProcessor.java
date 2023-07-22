@@ -13,16 +13,15 @@ import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.processor.ConnectionProcessorConfig;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
-import org.nasdanika.html.model.app.graph.Registry;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 public class ConnectionProcessor {
 	
 	protected URI sourceURI;
 	protected URI targetURI;
-	protected ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config;
+	protected ConnectionProcessorConfig<WidgetFactory, WidgetFactory> config;
 
-	public ConnectionProcessor(ConnectionProcessorConfig<Object, WidgetFactory, WidgetFactory, Registry<URI>> config) {		
+	public ConnectionProcessor(ConnectionProcessorConfig<WidgetFactory, WidgetFactory> config) {		
 		this.config = config;		
 		config.getSourceEndpoint().thenAccept(se -> config.setTargetHandler(createTargetHandler(se)));
 		config.getTargetEndpoint().thenAccept(te -> config.setSourceHandler(createSourceHandler(te)));
