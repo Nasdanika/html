@@ -395,7 +395,7 @@ public class SiteGenerator {
 			.stream()
 			.sorted(SiteGenerator::compareReferenceEntries)
 			.map(e -> createReferenceJsTreeNode(e, jsTreeFactory))
-			.collect(Collectors.toList());			
+			.toList();			
 	}
 	
 	private static int compareReferenceEntries(Entry<String, List<Entry<SemanticInfo, JsTreeNode>>> a, Entry<String, List<Entry<SemanticInfo, JsTreeNode>>> b) {
@@ -544,7 +544,7 @@ public class SiteGenerator {
 				.stream()
 				.flatMap(Collection::stream)
 				.flatMap(e -> e.getValue().stream())
-				.collect(Collectors.toList());
+				.toList();
 		
 		for (Entry<SemanticInfo, JsTreeNode> entry: allEntries) {
 			@SuppressWarnings("unlikely-arg-type")
@@ -570,7 +570,7 @@ public class SiteGenerator {
 		}
 		
 		List<JsTreeNode> roots = new ArrayList<>();
-		for (Entry<JsTreeNode, List<Entry<SemanticInfo, JsTreeNode>>> re: groupedByContainerAndReferenceName.values().stream().flatMap(Collection::stream).collect(Collectors.toList())) {
+		for (Entry<JsTreeNode, List<Entry<SemanticInfo, JsTreeNode>>> re: groupedByContainerAndReferenceName.values().stream().flatMap(Collection::stream).toList()) {
 			if (re != null) {
 				JsTreeNode reKey = re.getKey();
 				if (reKey == null) {
@@ -697,7 +697,7 @@ public class SiteGenerator {
 		if (actionURIs.size() == 1) {
 			actionMap.put("uri", actionURIs.get(0).toString());
 		} else if (!actionURIs.isEmpty()) {
-			actionMap.put("uris", actionURIs.stream().map(Object::toString).collect(Collectors.toList()));			
+			actionMap.put("uris", actionURIs.stream().map(Object::toString).toList());			
 		}
 		EList<org.nasdanika.ncore.Marker> actionMarkers = action.getMarkers();
 		if (actionMarkers != null && !actionMarkers.isEmpty()) {
@@ -1302,7 +1302,7 @@ public class SiteGenerator {
 		}
 		
 		SemanticInfo semanticInfo = getSemanticInfoAnnotation(action);
-		Collection<URI> baseSemanticURIs = semanticInfo == null ? Collections.emptyList() : semanticInfo.getIdentifiers().stream().filter(u -> !u.isRelative() && u.isHierarchical()).collect(Collectors.toList());					
+		Collection<URI> baseSemanticURIs = semanticInfo == null ? Collections.emptyList() : semanticInfo.getIdentifiers().stream().filter(u -> !u.isRelative() && u.isHierarchical()).toList();					
 		
 		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(
 				action, 

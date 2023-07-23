@@ -1054,7 +1054,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	}
 	
 	protected <K> List<K> sortKeys(Set<K> keys) {
-		return keys.stream().sorted((a,b) -> String.valueOf(a).compareTo(String.valueOf(b))).collect(Collectors.toList());
+		return keys.stream().sorted((a,b) -> String.valueOf(a).compareTo(String.valueOf(b))).toList();
 	}
 	
 	protected ColumnBuilder<EObject> createColumnBuilder(ETypedElement typedElement) {
@@ -1535,8 +1535,8 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 //			
 //		Function<Temporal, String> temporalToString = t -> String.valueOf(temporalValue(member, t, viewGenerator, progressMonitor, withModalTrigger));
 //			
-//		String lowerBoundsList = String.join(" or ", lowerBounds.stream().map(temporalToString).collect(Collectors.toList()));
-//		String upperBoundsList = String.join(" or ", upperBounds.stream().map(temporalToString).collect(Collectors.toList()));
+//		String lowerBoundsList = String.join(" or ", lowerBounds.stream().map(temporalToString).toList());
+//		String upperBoundsList = String.join(" or ", upperBounds.stream().map(temporalToString).toList());
 //		if (lowerBounds.isEmpty()) {
 //			return " before " + upperBoundsList;
 //		} 

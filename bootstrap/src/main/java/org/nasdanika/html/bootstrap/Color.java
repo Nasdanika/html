@@ -52,7 +52,7 @@ public enum Color {
 		 * @return Applicable colors;
 		 */
 		public List<Color> colors() {
-			return Arrays.stream(Color.values()).filter(c -> c.isApplicable(this)).collect(Collectors.toList());
+			return Arrays.stream(Color.values()).filter(c -> c.isApplicable(this)).toList();
 		}
 		
 		/**

@@ -110,7 +110,7 @@ public abstract class AbstractSemanticGeneratorMojo extends AbstractCommandMojo 
 					.stream()
 					.filter(SemanticInfo.class::isInstance)
 					.map(SemanticInfo.class::cast)
-					.collect(Collectors.toList());
+					.toList();
 			}
 			
 			@Override

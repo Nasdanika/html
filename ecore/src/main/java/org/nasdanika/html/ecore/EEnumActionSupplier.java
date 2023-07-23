@@ -60,7 +60,7 @@ public class EEnumActionSupplier extends EClassifierActionSupplier<EEnum> {
 	}
 	
 	protected Action createUsesAction(EClass contextEClass, ProgressMonitor progressMonitor) {
-		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).toList();
 		if (uses.isEmpty()) {
 			return null;
 		}

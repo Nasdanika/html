@@ -107,11 +107,11 @@ public class EPackageActionSupplier extends ENamedElementActionSupplier<EPackage
 //		addContent(data, Collections.singletonMap("component-list-of-contents", Collections.singletonMap("tooltip", true))); 
 		
 		EList<EObject> children = action.getChildren();
-		for (EPackage subPackage: eObject.getESubpackages().stream().filter(elementPredicate).sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+		for (EPackage subPackage: eObject.getESubpackages().stream().filter(elementPredicate).sorted((a,b) ->  a.getName().compareTo(b.getName())).toList()) {
 			children.add(adaptChild(subPackage).execute(contextEClass, progressMonitor));
 		}
 	
-		for (EClassifier eClassifier: eObject.getEClassifiers().stream().filter(elementPredicate).sorted((a,b) ->  a.getName().compareTo(b.getName())).collect(Collectors.toList())) {
+		for (EClassifier eClassifier: eObject.getEClassifiers().stream().filter(elementPredicate).sorted((a,b) ->  a.getName().compareTo(b.getName())).toList()) {
 			Action eClassifierAction = adaptChild(eClassifier).execute(contextEClass, progressMonitor);
 			EReference eClassifierRole = eClassifierRoleProvider.apply(eClassifier);
 			((Collection<Object>) action.eGet(eClassifierRole)).add(eClassifierAction);

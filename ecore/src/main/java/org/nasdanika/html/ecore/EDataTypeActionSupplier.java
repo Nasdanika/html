@@ -36,7 +36,7 @@ public class EDataTypeActionSupplier extends EClassifierActionSupplier<EDataType
 		Action action = super.execute(contextEClass, progressMonitor);
 		
 		// Uses
-		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).collect(Collectors.toList());
+		Collection<EClass> uses = getUses().stream().sorted((a,b) -> a.getName().compareTo(b.getName())).toList();
 		if (!uses.isEmpty()) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
 			Fragment gstf = htmlFactory.fragment(TagName.h3.create("Uses"));

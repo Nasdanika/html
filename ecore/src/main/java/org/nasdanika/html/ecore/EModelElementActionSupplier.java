@@ -596,7 +596,7 @@ public class EModelElementActionSupplier<T extends EModelElement> extends EObjec
 	 * @return
 	 */
 	protected <M extends EModelElement> List<M> retainDocumentable(Collection<M> elements) {
-		return elements.stream().filter(elementPredicate).collect(Collectors.toList());
+		return elements.stream().filter(elementPredicate).toList();
 	}
 
 	protected static Class<?> getInstanceClass(EClassifier eClassifier, java.util.function.Function<String, Object> ePackageResolver) {

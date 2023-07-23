@@ -115,7 +115,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		}
 
 		// Generic supertypes
-		List<EGenericType> eGenericSuperTypes =  eObject.getEGenericSuperTypes().stream().filter(gst -> elementPredicate.test(gst.getEClassifier())).collect(Collectors.toList());
+		List<EGenericType> eGenericSuperTypes =  eObject.getEGenericSuperTypes().stream().filter(gst -> elementPredicate.test(gst.getEClassifier())).toList();
 		if (!eGenericSuperTypes.isEmpty()) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
 			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create("Supertypes")).attribute("name", "supertypes"));
@@ -132,7 +132,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		}
 		
 		// Subtypes
-		Collection<EClass> eSubTypes = getSubTypes(eObject).stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());
+		Collection<EClass> eSubTypes = getSubTypes(eObject).stream().filter(elementPredicate).sorted(eNamedElementComparator).toList();
 		if (!eSubTypes.isEmpty()) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
 			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create("Subtypes")).attribute("name", "subtypes"));
@@ -147,7 +147,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		}
 		
 		// Referrers
-		Collection<EClass> referrers = getReferrers().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());
+		Collection<EClass> referrers = getReferrers().stream().filter(elementPredicate).sorted(eNamedElementComparator).toList();
 		if (!referrers.isEmpty()) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
 			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create("Referrers")).attribute("name", "referrers"));
@@ -162,7 +162,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 		}
 		
 		// Uses
-		Collection<EClass> uses = getUses().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());
+		Collection<EClass> uses = getUses().stream().filter(elementPredicate).sorted(eNamedElementComparator).toList();
 		if (!uses.isEmpty()) {
 			HTMLFactory htmlFactory = context.get(HTMLFactory.class);
 			Fragment gstf = htmlFactory.fragment(TagName.a.create(TagName.h3.create("Uses")).attribute("name", "uses"));
@@ -176,10 +176,10 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			addContent(action, gstf.toString());
 		}
 		
-		List<EAttribute> allAttributes = eObject.getEAllAttributes().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());
-		List<EReference> allReferences = eObject.getEAllReferences().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());
-		List<EOperation> allOperations = eObject.getEAllOperations().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());		
-		List<EGenericType> allGenericSupertypes = eObject.getEAllGenericSuperTypes().stream().filter(gst -> elementPredicate.test(gst.getEClassifier())).collect(Collectors.toList());
+		List<EAttribute> allAttributes = eObject.getEAllAttributes().stream().filter(elementPredicate).sorted(eNamedElementComparator).toList();
+		List<EReference> allReferences = eObject.getEAllReferences().stream().filter(elementPredicate).sorted(eNamedElementComparator).toList();
+		List<EOperation> allOperations = eObject.getEAllOperations().stream().filter(elementPredicate).sorted(eNamedElementComparator).toList();		
+		List<EGenericType> allGenericSupertypes = eObject.getEAllGenericSuperTypes().stream().filter(gst -> elementPredicate.test(gst.getEClassifier())).toList();
 		
 		if (allAttributes.size() + allReferences.size() + allOperations.size() + allGenericSupertypes.size()  != 0) { 	
 			Action allGroup = AppFactory.eINSTANCE.createAction();
@@ -198,7 +198,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			generateLoadSpecification(action, eNamedElementComparator, progressMonitor);
 		}
 		
-		List<EAttribute> sortedAttributes = eObject.getEAttributes().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());
+		List<EAttribute> sortedAttributes = eObject.getEAttributes().stream().filter(elementPredicate).sorted(eNamedElementComparator).toList();
 		
 		EList<Action> sections = action.getSections();
 		if (!sortedAttributes.isEmpty()) {
@@ -210,7 +210,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			attributeSummaryCategory.getContent().add(buildDynamicAttributesTable(sortedAttributes, progressMonitor));			
 		}
 		
-		List<EReference> sortedReferences = eObject.getEReferences().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());
+		List<EReference> sortedReferences = eObject.getEReferences().stream().filter(elementPredicate).sorted(eNamedElementComparator).toList();
 		if (!sortedReferences.isEmpty()) {
 			Action referenceSummaryCategory = AppFactory.eINSTANCE.createAction();
 			referenceSummaryCategory.setText("Reference summary");
@@ -245,7 +245,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			}
 		}
 		
-		List<EOperation> sortedOperations = eObject.getEOperations().stream().filter(elementPredicate).sorted(eNamedElementComparator).collect(Collectors.toList());
+		List<EOperation> sortedOperations = eObject.getEOperations().stream().filter(elementPredicate).sorted(eNamedElementComparator).toList();
 		if (!sortedOperations.isEmpty()) {
 			Action operationsCategory = AppFactory.eINSTANCE.createAction();
 			operationsCategory.setText("Operations");
@@ -418,7 +418,7 @@ public class EClassActionSupplier extends EClassifierActionSupplier<EClass> {
 			}
 			
 			Predicate<EStructuralFeature> predicate = sf -> sf.isChangeable() && "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_LOADABLE, "true"));
-			List<EStructuralFeature> sortedFeatures = eObject.getEAllStructuralFeatures().stream().filter(predicate.and(elementPredicate)).sorted(namedElementComparator).collect(Collectors.toList());
+			List<EStructuralFeature> sortedFeatures = eObject.getEAllStructuralFeatures().stream().filter(predicate.and(elementPredicate)).sorted(namedElementComparator).toList();
 			
 			Function<EStructuralFeature, String> keyExtractor = sf -> NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.LOAD_KEY, NcoreUtil.getFeatureKey(eObject, sf));
 			Predicate<EStructuralFeature> homogeneousPredicate = sf -> "true".equals(NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.IS_HOMOGENEOUS)) || NcoreUtil.getNasdanikaAnnotationDetail(sf, EObjectLoader.REFERENCE_TYPE) != null;

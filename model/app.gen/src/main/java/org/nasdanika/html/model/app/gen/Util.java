@@ -550,7 +550,7 @@ public final class Util {
 		
 		List<URI> actionURIs = NcoreUtil.getIdentifiers(action);
 		if (!actionURIs.isEmpty()) {
-			String urisStr = String.join(" ", actionURIs.stream().map(Object::toString).collect(Collectors.toList()));
+			String urisStr = String.join(" ", actionURIs.stream().map(Object::toString).toList());
 			contentPanel.getAttributes().put("data-nsd-action-uris", NcoreUtil.wrapString(urisStr));
 		}
 	}
@@ -923,7 +923,7 @@ public final class Util {
 		}
 		Elements breadcrumbQuery = contentPanelQuery.select("div > div.row.nsd-app-content-panel-breadcrumb-row > div > nav > ol > li");
 		if (breadcrumbQuery.size() > 0) {
-			searchDocument.put("path", String.join("/", breadcrumbQuery.stream().map(e -> StringEscapeUtils.escapeHtml4(e.text())).collect(Collectors.toList())));
+			searchDocument.put("path", String.join("/", breadcrumbQuery.stream().map(e -> StringEscapeUtils.escapeHtml4(e.text())).toList()));
 		}
 		for (Element element: contentPanelQuery) {
 			String actionUUID = element.attr(DATA_NSD_LABEL_UUID_ATTRIBUTE);

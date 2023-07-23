@@ -129,7 +129,7 @@ public final class Util {
 	}
 	
 	public static List<EObject> resolveActionReferences(EList<EObject> objs) {
-		return objs.stream().map((Function<EObject, EObject>) Util::resolveActionReference).collect(Collectors.toList());
+		return objs.stream().map((Function<EObject, EObject>) Util::resolveActionReference).toList();
 	}
 
 }
