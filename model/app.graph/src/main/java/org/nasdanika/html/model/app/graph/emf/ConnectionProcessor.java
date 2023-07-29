@@ -7,9 +7,9 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
-import org.nasdanika.graph.emf.Connection;
 import org.nasdanika.graph.emf.EOperationConnection;
 import org.nasdanika.graph.emf.EReferenceConnection;
+import org.nasdanika.graph.emf.QualifiedConnection;
 import org.nasdanika.graph.processor.ConnectionProcessorConfig;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
@@ -112,7 +112,7 @@ public class ConnectionProcessor {
 			@Override
 			public void resolve(URI base, ProgressMonitor progressMonitor) {
 				sourceURI = base;				
-				Connection conn = (Connection) config.getElement();
+				QualifiedConnection conn = (QualifiedConnection) config.getElement();
 				String path = conn.getPath();
 				if (conn instanceof EReferenceConnection) {
 					EReference eRef = ((EReferenceConnection) conn).getReference();
