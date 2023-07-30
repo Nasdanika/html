@@ -23,6 +23,7 @@ public class ConnectionProcessor {
 
 	public ConnectionProcessor(ConnectionProcessorConfig<WidgetFactory, WidgetFactory> config) {		
 		this.config = config;		
+		
 		config.getSourceEndpoint().thenAccept(se -> config.setTargetHandler(createTargetHandler(se)));
 		config.getTargetEndpoint().thenAccept(te -> config.setSourceHandler(createSourceHandler(te)));
 	}

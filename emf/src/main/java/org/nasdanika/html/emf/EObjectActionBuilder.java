@@ -1159,8 +1159,10 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param progressMonitor
 	 * @param columnBuilders
 	 * @return
+	 * @deprecated Use BootstrapUtil.buildTable
 	 */
 	@SafeVarargs
+	@Deprecated
 	public static <T> Table buildTable(
 			Collection<? extends T> elements, 
 			Action base, 
@@ -1181,7 +1183,9 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	 * @param context
 	 * @param progressMonitor
 	 * @return
+	 * @deprecated Use BootstrapUtil.buildTable
 	 */
+	@Deprecated
 	public static <T> Table buildTable(
 			Collection<? extends T> elements, 
 			Collection<ColumnBuilder<? super T>> columnBuilders,

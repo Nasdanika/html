@@ -9,8 +9,9 @@ import org.nasdanika.html.model.bootstrap.TableCell;
 /**
  * Interface for building table columns.
  * @author Pavel
- *
+ * @deprecated Use org.nasdanika.html.model.bootstrap.util.ColumnBuilder
  */
+@Deprecated
 public interface ColumnBuilder<T> {
 
 	/**

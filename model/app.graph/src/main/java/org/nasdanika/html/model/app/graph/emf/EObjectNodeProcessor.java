@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.CollectionCompoundConsumer;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
@@ -136,7 +137,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	}
 		
 	@IncomingHandler
-	public WidgetFactory getIncomingHandler(Connection connection) {
+	public WidgetFactory getIncomingHandler(Connection connection) {		
 		return this;
 	}
 	
