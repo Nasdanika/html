@@ -20,7 +20,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.CollectionCompoundConsumer;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
@@ -34,7 +33,7 @@ import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Supplier.FunctionResult;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
-import org.nasdanika.graph.emf.Connection;
+import org.nasdanika.graph.Connection;
 import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.emf.EOperationConnection;
 import org.nasdanika.graph.emf.EReferenceConnection;
@@ -648,7 +647,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	/**
 	 * Called by builder/consumer's execute();
 	 * @param eReference
-	 * @param referenceIncomingEndpoints
+	 * @param referenceOutgoingEndpoints
 	 * @param labels
 	 * @param incomingLabels
 	 * @param progressMonitor
@@ -663,22 +662,24 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		for (Method method: getClass().getMethods()) {
 			OutgoingReferenceBuilder orb = method.getAnnotation(OutgoingReferenceBuilder.class);
 			if (orb != null	&& eReference.getFeatureID() == orb.value()) {
-				int pc = method.getParameterCount();
-				if (pc == 4) {
-					try {
-						method.invoke(this, referenceOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						throw new ExecutionException(e);
-					}
-				} else if (pc == 5) {
-					try {
-						method.invoke(this, eReference, referenceOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						throw new ExecutionException(e);
-					}					
-				} else {
-					throw new NasdanikaException("A method anotated with " + OutgoingReferenceBuilder.class + " shall have 4 or 5 parameters: " + method);
+				if (method.getParameterCount() != 5 ||
+						!method.getParameterTypes()[0].isInstance(eReference) ||
+						!method.getParameterTypes()[1].isInstance(referenceOutgoingEndpoints) ||
+						!method.getParameterTypes()[2].isInstance(labels) ||
+						!method.getParameterTypes()[3].isInstance(outgoingLabels) ||
+						!method.getParameterTypes()[4].isAssignableFrom(ProgressMonitor.class)) {
+					throw new IllegalArgumentException("Outgoing reference builder method shall have 5 parameters compatible with: "
+							+ "EReference eReference, "
+							+ "List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints, "
+							+ "List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints, "
+							+ "Map<EReferenceConnection, Collection<Label>> outgoingLabels, "
+							+ "ProgressMonitor progressMonitor: " + method);
 				}
+				try {
+					method.invoke(this, eReference, referenceOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					throw new ExecutionException(e);
+				}					
 			}
 		}
 		
