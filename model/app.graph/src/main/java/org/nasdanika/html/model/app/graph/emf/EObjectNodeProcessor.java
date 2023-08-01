@@ -26,7 +26,6 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.ExecutionException;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.MapCompoundSupplier;
-import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
@@ -390,22 +389,25 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 					&& eReference.getFeatureID() == irb.referenceID()
 					&& eReference.getEContainingClass().getClassifierID() == irb.classID()
 					&& eReference.getEContainingClass().getEPackage().getNsURI().equals(irb.nsURI())) {
-				int pc = method.getParameterCount();
-				if (pc == 4) {
-					try {
-						method.invoke(this, referenceIncomingEndpoints, labels, incomingLabels, progressMonitor);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						throw new ExecutionException(e);
-					}
-				} else if (pc == 5) {
-					try {
-						method.invoke(this, eReference, referenceIncomingEndpoints, labels, incomingLabels, progressMonitor);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						throw new ExecutionException(e);
-					}					
-				} else {
-					throw new NasdanikaException("A method anotated with " + IncomingReferenceBuilder.class + " shall have 4 or 5 parameters: " + method);
+				
+				if (method.getParameterCount() != 5 ||
+						!method.getParameterTypes()[0].isInstance(eReference) ||
+						!method.getParameterTypes()[1].isInstance(referenceIncomingEndpoints) ||
+						!method.getParameterTypes()[2].isInstance(labels) ||
+						!method.getParameterTypes()[3].isInstance(incomingLabels) ||
+						!method.getParameterTypes()[4].isAssignableFrom(ProgressMonitor.class)) {
+					throw new IllegalArgumentException("Incoming reference builder method shall have 5 parameters compatible with: "
+							+ "EReference eReference, "
+							+ "List<Entry<EReferenceConnection, WidgetFactory>> referenceIncomingEndpoints, "
+							+ "Collection<Label> labels, "
+							+ "Map<EReferenceConnection, Collection<Label>> incomingLabels, "
+							+ "ProgressMonitor progressMonitor: " + method);
 				}
+				try {
+					method.invoke(this, eReference, referenceIncomingEndpoints, labels, incomingLabels, progressMonitor);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					throw new ExecutionException(e);
+				}					
 			}
 		}
 	}
@@ -479,22 +481,28 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 					&& eOperation.getOperationID() == iob.operationID()
 					&& eOperation.getEContainingClass().getClassifierID() == iob.classID()
 					&& eOperation.getEContainingClass().getEPackage().getNsURI().equals(iob.nsURI())) {
-				int pc = method.getParameterCount();
-				if (pc == 4) {
-					try {
-						method.invoke(this, operationIncomingEndpoints, labels, incomingLabels, progressMonitor);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						throw new ExecutionException(e);
-					}
-				} else if (pc == 5) {
-					try {
-						method.invoke(this, eOperation, operationIncomingEndpoints, labels, incomingLabels, progressMonitor);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						throw new ExecutionException(e);
-					}					
-				} else {
-					throw new NasdanikaException("A method anotated with " + IncomingReferenceBuilder.class + " shall have 4 or 5 parameters: " + method);
+
+				if (method.getParameterCount() != 6 ||
+						!method.getParameterTypes()[0].isInstance(eOperation) ||
+						!method.getParameterTypes()[1].isInstance(arguments) ||
+						!method.getParameterTypes()[3].isInstance(operationIncomingEndpoints) ||
+						!method.getParameterTypes()[4].isInstance(labels) ||
+						!method.getParameterTypes()[5].isInstance(incomingLabels) ||
+						!method.getParameterTypes()[6].isAssignableFrom(ProgressMonitor.class)) {
+					throw new IllegalArgumentException("Incoming operation builder method shall have 6 parameters compatible with: "
+							+ "EOperation eOperation, "
+							+ "List<Object> arguments, "
+							+ "List<Entry<EOperationConnection, WidgetFactory>> operationIncomingEndpoints, "
+							+ "Collection<Label> labels, "
+							+ "Map<EOperationConnection, Collection<Label>> incomingLabels, "
+							+ "ProgressMonitor progressMonitor: " + method);
 				}
+				
+				try {
+					method.invoke(this, eOperation, arguments, operationIncomingEndpoints, labels, incomingLabels, progressMonitor);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					throw new ExecutionException(e);
+				}					
 			}
 		}
 	}
@@ -565,22 +573,27 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		for (Method method: getClass().getMethods()) {
 			OutgoingOperationBuilder oob = method.getAnnotation(OutgoingOperationBuilder.class);
 			if (oob != null	&& eOperation.getOperationID() == oob.value()) {
-				int pc = method.getParameterCount();
-				if (pc == 4) {
-					try {
-						method.invoke(this, operationOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						throw new ExecutionException(e);
-					}
-				} else if (pc == 5) {
-					try {
-						method.invoke(this, eOperation, operationOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						throw new ExecutionException(e);
-					}					
-				} else {
-					throw new NasdanikaException("A method anotated with " + OutgoingOperationBuilder.class + " shall have 4 or 5 parameters: " + method);
+				
+				if (method.getParameterCount() != 6 ||
+						!method.getParameterTypes()[0].isInstance(eOperation) ||
+						!method.getParameterTypes()[1].isInstance(arguments) ||
+						!method.getParameterTypes()[3].isInstance(operationOutgoingEndpoints) ||
+						!method.getParameterTypes()[4].isInstance(labels) ||
+						!method.getParameterTypes()[5].isInstance(outgoingLabels) ||
+						!method.getParameterTypes()[6].isAssignableFrom(ProgressMonitor.class)) {
+					throw new IllegalArgumentException("Outgoing operation builder method shall have 6 parameters compatible with: "
+							+ "EOperation eOperation, "
+							+ "List<Object> arguments, "
+							+ "List<Entry<EOperationConnection, WidgetFactory>> operationOutgoingEndpoints, "
+							+ "Collection<Label> labels, "
+							+ "Map<EOperationConnection, Collection<Label>> outgoingLabels, "
+							+ "ProgressMonitor progressMonitor: " + method);
 				}
+				try {
+					method.invoke(this, eOperation, arguments, operationOutgoingEndpoints, labels, outgoingLabels, progressMonitor);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					throw new ExecutionException(e);
+				}					
 			}
 		}
 	}
@@ -671,7 +684,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 					throw new IllegalArgumentException("Outgoing reference builder method shall have 5 parameters compatible with: "
 							+ "EReference eReference, "
 							+ "List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints, "
-							+ "List<Entry<EReferenceConnection, WidgetFactory>> referenceOutgoingEndpoints, "
+							+ "Collection<Label> labels, "
 							+ "Map<EReferenceConnection, Collection<Label>> outgoingLabels, "
 							+ "ProgressMonitor progressMonitor: " + method);
 				}
