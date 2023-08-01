@@ -113,7 +113,7 @@ public class ConnectionProcessor {
 			@Override
 			public void resolve(URI base, ProgressMonitor progressMonitor) {
 				sourceURI = base;				
-				QualifiedConnection conn = (QualifiedConnection) config.getElement();
+				QualifiedConnection<?> conn = (QualifiedConnection<?>) config.getElement();
 				String path = conn.getPath();
 				if (conn instanceof EReferenceConnection) {
 					EReference eRef = ((EReferenceConnection) conn).getReference();

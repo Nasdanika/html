@@ -103,7 +103,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	
 	@SuppressWarnings("unchecked")
 	public T getTarget() {
-		return (T) node.getTarget();
+		return (T) node.get();
 	}
 	
 	public NodeProcessorConfig<WidgetFactory, WidgetFactory> getConfig() {
@@ -494,7 +494,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 						throw new ExecutionException(e);
 					}					
 				} else {
-					throw new NasdanikaException("A method anotated with " + OutgoingReferenceBuilder.class + " shall have 4 or 5 parameters: " + method);
+					throw new NasdanikaException("A method anotated with " + IncomingReferenceBuilder.class + " shall have 4 or 5 parameters: " + method);
 				}
 			}
 		}

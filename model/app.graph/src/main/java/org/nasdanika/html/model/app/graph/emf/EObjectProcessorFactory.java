@@ -38,7 +38,7 @@ public class EObjectProcessorFactory extends ProcessorFactory<Object> {
 		}
 		
 		if (config.getElement() instanceof EObjectNode) {
-			Object adapter = EcoreUtil.getRegisteredAdapter(((EObjectNode) config.getElement()).getTarget(), NodeProcessorInfo.Factory.class);
+			Object adapter = EcoreUtil.getRegisteredAdapter(((EObjectNode) config.getElement()).get(), NodeProcessorInfo.Factory.class);
 			if (adapter instanceof NodeProcessorInfo.Factory) {
 				return ((NodeProcessorInfo.Factory<Object,WidgetFactory,WidgetFactory>) adapter).create((NodeProcessorConfig<WidgetFactory, WidgetFactory>) config, parallel, infoProvider, stageConsumer, getContext(), progressMonitor);
 			}
