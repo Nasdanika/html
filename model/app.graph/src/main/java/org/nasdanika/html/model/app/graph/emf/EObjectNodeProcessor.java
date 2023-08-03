@@ -30,6 +30,8 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Supplier.FunctionResult;
+import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.Text;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.graph.Connection;
@@ -859,5 +861,17 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	public Object createLabel(ProgressMonitor progressMonitor) {
 		return createLabel(getTarget(), progressMonitor);
 	}
+	
+	// --- Convenience methods --
+	/**
+	 * Adds textual content.
+	 * @param content
+	 */
+	protected static void addContent(Action action, String content) {
+		Text text = ContentFactory.eINSTANCE.createText();
+		text.setContent(content);
+		action.getContent().add(text);
+	}
+	
 	
 }
