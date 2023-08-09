@@ -29,7 +29,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -63,11 +62,10 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.drawio.ConnectionBase;
 import org.nasdanika.drawio.ModelElement;
+import org.nasdanika.drawio.emf.DrawioResourceFactory;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.GitMarkerFactory;
-import org.nasdanika.emf.persistence.MarkerFactory;
-import org.nasdanika.emf.persistence.NcoreDrawioResourceFactory;
 import org.nasdanika.emf.persistence.TextResourceFactory;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.content.ContentFactory;
@@ -1279,16 +1277,6 @@ public final class Util {
 			writer.write("var searchDocuments = " + searchDocuments);
 		}
 	}
-	
-	public interface SemanticElementLoader {
-		
-		void loadSemanticElements(
-				org.nasdanika.drawio.Document document, 
-				Resource resource, 
-				ResourceSet resourceSet,
-				MarkerFactory markerFactory,
-				ProgressMonitor progressMonitor);	
-	}
 
 	/**
 	 * Creates {@link NcoreResourceSet} with {@link XMIResourceFactoryImpl}, {@link ObjectLoaderResourceFactory} handling yml, json extensions and data scheme.
@@ -1298,13 +1286,8 @@ public final class Util {
 	 * @param progressMonitor
 	 * @return
 	 */	
-	public static ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
-		return createResourceSet(context, null, progressMonitor);
-	}
-	
 	public static ResourceSet createResourceSet(
 			Context context, 
-			SemanticElementLoader semanticElementLoader, 
 			ProgressMonitor progressMonitor) {
 		
 		ResourceSet resourceSet = new NcoreResourceSet();
@@ -1344,16 +1327,8 @@ public final class Util {
 		extensionToFactoryMap.put("json", objectLoaderResourceFactory);
 		resourceSet.getResourceFactoryRegistry().getProtocolToFactoryMap().put("data", objectLoaderResourceFactory);
 		
-		NcoreDrawioResourceFactory ncoreDrawioResourceFactory = new NcoreDrawioResourceFactory() {
-
-			@Override
-			protected void loadDocumentContent(org.nasdanika.drawio.Document document, Resource resource) {
-				Objects.requireNonNull(semanticElementLoader).loadSemanticElements(document, resource, resourceSet, markerFactory, progressMonitor);
-			}
-			
-		};
-		
-		extensionToFactoryMap.put("drawio", ncoreDrawioResourceFactory);		
+		DrawioResourceFactory drawioResourceFactory = new DrawioResourceFactory();
+		extensionToFactoryMap.put("drawio", drawioResourceFactory);		
 
 		// For handling textual representations
 		TextResourceFactory textResourceFactory = new TextResourceFactory();

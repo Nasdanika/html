@@ -22,7 +22,6 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -81,7 +80,6 @@ import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.Util.HTMLProcessor;
-import org.nasdanika.html.model.app.gen.Util.SemanticElementLoader;
 import org.nasdanika.html.model.html.gen.ContentConsumer;
 import org.nasdanika.ncore.ModelElement;
 import org.nasdanika.ncore.NcorePackage;
@@ -114,16 +112,11 @@ public class SiteGenerator {
 	 * @return
 	 */
 	protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
-		ResourceSet resourceSet = Util.createResourceSet(context, getSemanticElementLoader(context, progressMonitor),
-				progressMonitor);
+		ResourceSet resourceSet = Util.createResourceSet(context, progressMonitor);
 		for (SiteGeneratorContributor contributor : getContributors()) {
 			contributor.configureResourceSet(resourceSet, context, progressMonitor);
 		}
 		return resourceSet;
-	}
-
-	protected SemanticElementLoader getSemanticElementLoader(Context context, ProgressMonitor progressMonitor) {
-		return null;
 	}
 
 	/**
