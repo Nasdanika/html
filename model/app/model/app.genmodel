@@ -4,7 +4,7 @@
     creationSubmenus="true" modelPluginID="org.nasdanika.html.model.app" modelName="App"
     editPluginClass="org.nasdanika.html.model.app.provider.ModelEditPlugin" editorPluginClass="org.nasdanika.html.model.app.presentation.ModelEditorPlugin"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
-    featureDelegation="Dynamic" complianceLevel="8.0" suppressGenModelAnnotations="false"
+    featureDelegation="Dynamic" complianceLevel="17.0" suppressGenModelAnnotations="false"
     copyrightFields="false" usedGenPackages="../../org.nasdanika.html.model.bootstrap/model/bootstrap.genmodel#//bootstrap ../../org.nasdanika.html.model.html/model/html.genmodel#//html ../../org.nasdanika.exec/model/exec.genmodel#//exec ../../org.nasdanika.ncore/model/ncore.genmodel#//ncore"
     operationReflection="true" importOrganizing="true">
   <foreignModel>app.ecore</foreignModel>
