@@ -811,7 +811,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	// --- WidgetFactory methods ---
 	
 	@Override
-	public void resolve(URI base, ProgressMonitor progressMonitor) {		
+	public void resolve(URI base, ProgressMonitor progressMonitor) {	
 		uri = uri.resolve(base);
 		for (WidgetFactory oe: outgoingReferenceEndpoints.values()) {
 			oe.resolve(uri, progressMonitor);
@@ -872,6 +872,5 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		text.setContent(content);
 		action.getContent().add(text);
 	}
-	
-	
+		
 }
