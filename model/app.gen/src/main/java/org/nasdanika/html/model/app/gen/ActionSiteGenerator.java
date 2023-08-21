@@ -157,7 +157,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 	
 	/**
 	 * Clean predicate for the output directory. This implementation returns true. 
-	 * Override to return false for paths which shall not be cleaned (deleted).
+	 * Override to return false for paths which shall not be cleaned (deleted), e.g. CNAME
 	 * @param path File/directory path in the output directory.
 	 * @return
 	 */
