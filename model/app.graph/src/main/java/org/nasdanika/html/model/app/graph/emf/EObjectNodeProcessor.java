@@ -30,10 +30,10 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Supplier.FunctionResult;
-import org.nasdanika.exec.content.ContentFactory;
-import org.nasdanika.exec.content.Text;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
+import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.Text;
 import org.nasdanika.graph.Connection;
 import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.emf.EOperationConnection;
@@ -64,6 +64,10 @@ import org.nasdanika.ncore.util.SemanticInfo;
  *
  */
 public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
+
+	public static Selector<EObject> TARGET_SELECTOR = (widgetFactory, base, progressMonitor) -> {
+		return ((EObjectNodeProcessor<?>) widgetFactory).getTarget();
+	};		
 	
 	protected java.util.function.Function<ProgressMonitor, Action> prototypeProvider;
 	protected NodeProcessorConfig<WidgetFactory, WidgetFactory> config;
