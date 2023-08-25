@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -64,6 +65,20 @@ import org.nasdanika.ncore.util.SemanticInfo;
  *
  */
 public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
+	
+	private static AtomicInteger counter = new AtomicInteger();
+	
+	private int id = counter.incrementAndGet();
+
+	/**
+	 * Generated unique ID for grouping and comparing/ordering.
+	 *  E.g. deciding which processor of two is responsible for combining opposite references (Ecore level and Nasdanika level)
+	 *  or grouping all cross-references into one for graph generation.
+	 * @return
+	 */
+	public int getId() {
+		return id;
+	}
 
 	public static Selector<EObject> TARGET_SELECTOR = (widgetFactory, base, progressMonitor) -> {
 		return ((EObjectNodeProcessor<?>) widgetFactory).getTarget();

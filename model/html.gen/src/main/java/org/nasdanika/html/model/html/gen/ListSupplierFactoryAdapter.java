@@ -46,7 +46,7 @@ public class ListSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 			} else if (element instanceof org.nasdanika.ncore.Map) {
 				elementsFactory.add(createJsonObjectSupplierFactory((org.nasdanika.ncore.Map) element));
 			} else if (element instanceof org.nasdanika.ncore.Boolean) {
-				elementsFactory.add(SupplierFactory.from(((org.nasdanika.ncore.Boolean) element).isValue(), "Boolean"));
+				elementsFactory.add(SupplierFactory.from(((org.nasdanika.ncore.Boolean) element).getValue(), "Boolean"));
 			} else if (element instanceof org.nasdanika.ncore.Integer) {
 				elementsFactory.add(SupplierFactory.from(((org.nasdanika.ncore.Integer) element).getValue(), "Integer"));
 			} else if (element instanceof org.nasdanika.ncore.String) {
@@ -107,7 +107,7 @@ public class ListSupplierFactoryAdapter extends AdapterImpl implements SupplierF
 			} else if (element instanceof org.nasdanika.ncore.MapProperty) {
 				entryFactory.put(element.getName(),createJsonObjectSupplierFactory((org.nasdanika.ncore.Map) element));
 			} else if (element instanceof org.nasdanika.ncore.BooleanProperty) {
-				entryFactory.put(element.getName(), SupplierFactory.from(((org.nasdanika.ncore.Boolean) element).isValue(), "Boolean"));
+				entryFactory.put(element.getName(), SupplierFactory.from(((org.nasdanika.ncore.Boolean) element).getValue(), "Boolean"));
 			} else if (element instanceof org.nasdanika.ncore.IntegerProperty) {
 				entryFactory.put(element.getName(), SupplierFactory.from(((org.nasdanika.ncore.Integer) element).getValue(), "Integer"));
 			} else if (element instanceof org.nasdanika.ncore.StringProperty) {
