@@ -745,7 +745,7 @@ public class SiteGenerator {
 			if (uri != null) {
 				info.put("uri", uri.toString());
 			}
-			List<? extends Marker> markers = drawioElement.getMarkers();
+			Collection<? extends Marker> markers = drawioElement.getMarkers();
 			if (markers != null && !markers.isEmpty()) {
 				info.put("markers",
 						markers.stream()

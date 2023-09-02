@@ -1320,6 +1320,11 @@ public final class Util {
 			protected Context getContext(Resource resource) {
 				return context == null ? Context.EMPTY_CONTEXT : context;
 			}
+
+			@Override
+			protected BiConsumer<Object, BiConsumer<Object, ProgressMonitor>> getResolver(Resource resource) {
+				return null;
+			}
 			
 		};
 		Map<String, Object> extensionToFactoryMap = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();

@@ -1,8 +1,8 @@
 package org.nasdanika.html.model.app.graph.emf;
 
 import java.util.concurrent.CompletionStage;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.Context;
@@ -30,8 +30,9 @@ public class EObjectProcessorFactory extends ProcessorFactory<Object> {
 	protected ProcessorInfo<Object> createProcessor(
 			ProcessorConfig config, 
 			boolean parallel,
-			Function<Element, CompletionStage<ProcessorInfo<Object>>> infoProvider,
-			Consumer<CompletionStage<?>> stageConsumer, ProgressMonitor progressMonitor) {
+			BiConsumer<Element, BiConsumer<ProcessorInfo<Object>,ProgressMonitor>> infoProvider,
+			Consumer<CompletionStage<?>> endpointWiringStageConsumer,
+			ProgressMonitor progressMonitor) {
 		
 		if (config.getElement() instanceof EReferenceConnection) {
 			return config.toInfo(new ConnectionProcessor((ConnectionProcessorConfig<WidgetFactory, WidgetFactory>) config));
@@ -40,11 +41,11 @@ public class EObjectProcessorFactory extends ProcessorFactory<Object> {
 		if (config.getElement() instanceof EObjectNode) {
 			Object adapter = EcoreUtil.getRegisteredAdapter(((EObjectNode) config.getElement()).get(), NodeProcessorInfo.Factory.class);
 			if (adapter instanceof NodeProcessorInfo.Factory) {
-				return ((NodeProcessorInfo.Factory<Object,WidgetFactory,WidgetFactory>) adapter).create((NodeProcessorConfig<WidgetFactory, WidgetFactory>) config, parallel, infoProvider, stageConsumer, getContext(), progressMonitor);
+				return ((NodeProcessorInfo.Factory<Object,WidgetFactory,WidgetFactory>) adapter).create((NodeProcessorConfig<WidgetFactory, WidgetFactory>) config, parallel, infoProvider, endpointWiringStageConsumer, getContext(), progressMonitor);
 			}
 		}
 		
-		return super.createProcessor(config, parallel, infoProvider, stageConsumer, progressMonitor);
+		return super.createProcessor(config, parallel, infoProvider, endpointWiringStageConsumer, progressMonitor);
 	}
 	
 	protected Context getContext() {

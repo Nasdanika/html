@@ -1,8 +1,8 @@
 package org.nasdanika.html.model.app.graph.emf;
 
 import java.util.concurrent.CompletionStage;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.graph.Element;
@@ -23,11 +23,11 @@ public class EObjectReflectiveProcessorFactoryProvider extends ReflectiveProcess
 	protected Object createProcessor(
 			ProcessorConfig config,
 			boolean parallel,
-			Function<Element, CompletionStage<ProcessorInfo<Object>>> infoProvider,
-			Consumer<CompletionStage<?>> stageConsumer, 
+			BiConsumer<Element, BiConsumer<ProcessorInfo<Object>,ProgressMonitor>> infoProvider,
+			Consumer<CompletionStage<?>> endpointWiringStageConsumer, 
 			ProgressMonitor progressMonitor) {
 		
-		Object processor = super.createProcessor(config, parallel, infoProvider, stageConsumer, progressMonitor);
+		Object processor = super.createProcessor(config, parallel, infoProvider, endpointWiringStageConsumer, progressMonitor);
 		if (processor == null && config instanceof ConnectionProcessorConfig) {
 			return new ConnectionProcessor((ConnectionProcessorConfig<WidgetFactory, WidgetFactory>) config);
 		}
