@@ -82,6 +82,11 @@ public class ConnectionProcessor {
 			}
 			
 			@Override
+			public Label createHelpDecorator(URI base, ProgressMonitor progressMonitor) {
+				return sourceEndpoint.createHelpDecorator(resolveBase(base), progressMonitor);
+			}
+			
+			@Override
 			public Supplier<Collection<Label>> createLabelsSupplier() {
 				return sourceEndpoint.createLabelsSupplier().then(labels -> {
 					for (Label label : labels) {
@@ -179,6 +184,11 @@ public class ConnectionProcessor {
 			@Override
 			public Object createLink(URI base, ProgressMonitor progressMonitor) {
 				return targetEndpoint.createLink(resolveBase(base), progressMonitor);
+			}
+			
+			@Override
+			public Label createHelpDecorator(URI base, ProgressMonitor progressMonitor) {
+				return targetEndpoint.createHelpDecorator(resolveBase(base), progressMonitor);
 			}
 			
 			@Override

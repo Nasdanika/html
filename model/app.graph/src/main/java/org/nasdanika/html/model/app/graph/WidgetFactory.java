@@ -3,10 +3,13 @@ package org.nasdanika.html.model.app.graph;
 import java.util.Collection;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.graph.Connection;
+import org.nasdanika.graph.emf.EClassConnection;
 import org.nasdanika.html.model.app.Label;
+import org.nasdanika.html.model.app.graph.emf.EObjectNodeProcessor;
 
 /**
  * Creates labels, links for cross-referencing, and other "widgets".
@@ -71,6 +74,27 @@ public interface WidgetFactory {
 	 * @return
 	 */
 	Object createLink(URI base, ProgressMonitor progressMonitor);
+	
+	/**
+	 * Creates a help decorator.
+	 * Calls createHelpDecorator(null, progressMonitor) 
+	 * @return
+	 */
+	default Label createHelpDecorator(ProgressMonitor progressMonitor) {
+		return createHelpDecorator(null, progressMonitor);
+	}
+	
+	/**
+	 * Creates a help decorator with URL's deresolved (relativized) against the provided base URI.
+	 * For example, an {@link EObjectNodeProcessor} for an object of type X would call its {@link EClassConnection} outgoing connection to create a help decorator. 
+	 * The EClassConnection would in turn call EClassNodeProcessor for {@link EClass} X to generate context help decorator.  
+	 * 
+	 * @param base For connections, if not null, is resolved against the calling end URI - source or target, if it is not null. 
+	 * If null, the respective end URI is used as the base.
+	 * @param progressMonitor
+	 * @return
+	 */
+	Label createHelpDecorator(URI base, ProgressMonitor progressMonitor);
 	
 	/**
 	 * Link rendered to String

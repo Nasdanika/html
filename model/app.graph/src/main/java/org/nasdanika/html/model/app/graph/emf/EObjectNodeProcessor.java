@@ -27,6 +27,7 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.ExecutionException;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.MapCompoundSupplier;
+import org.nasdanika.common.MarkdownHelper;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
@@ -36,6 +37,7 @@ import org.nasdanika.common.Util;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.graph.Connection;
+import org.nasdanika.graph.emf.EClassConnection;
 import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.emf.EOperationConnection;
 import org.nasdanika.graph.emf.EReferenceConnection;
@@ -55,6 +57,10 @@ import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.AppAdapterFactory;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
+import org.nasdanika.html.model.bootstrap.BootstrapElement;
+import org.nasdanika.html.model.bootstrap.BootstrapFactory;
+import org.nasdanika.html.model.bootstrap.Modal;
+import org.nasdanika.html.model.html.HtmlFactory;
 import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.util.SemanticInfo;
 
@@ -66,6 +72,10 @@ import org.nasdanika.ncore.util.SemanticInfo;
  */
 public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	
+	private static final String HELP_DECORATOR_ICON = "far fa-question-circle";
+
+	private static final String HELP_DECORATOR_STYLE = "vertical-align:super;font-size:x-small;margin-left:0.2em";
+
 	private static AtomicInteger counter = new AtomicInteger();
 	
 	private int id = counter.incrementAndGet();
@@ -175,7 +185,12 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	 * @return
 	 */
 	protected Label createAction(ProgressMonitor progressMonitor) {
-		return createAction(getTarget(), progressMonitor);
+		Action action = createAction(getTarget(), progressMonitor);		
+		if (action.getDecorator() == null && eClassWidgetFactory != null) {			
+			Label helpDecorator = eClassWidgetFactory.createHelpDecorator(progressMonitor);
+			action.setDecorator(helpDecorator);
+		}
+		return action;
 	}
 
 	/**
@@ -733,6 +748,14 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		}
 	}
 	
+	private WidgetFactory eClassWidgetFactory;
+	
+	@OutgoingEndpoint
+	public final void setEClassEndpoint(EClassConnection connection, WidgetFactory eClassWidgetFactory) {
+		this.eClassWidgetFactory = eClassWidgetFactory;
+	}	
+	
+	
 	/**
 	 * Creates and configures an action for eObject. 
 	 * Override to create from prototypes.
@@ -741,7 +764,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	 */
 	protected Action createAction(EObject eObject, ProgressMonitor progressMonitor) {
 		Action action = newAction(eObject, progressMonitor);
-		configureLabel(eObject, action, progressMonitor);
+		configureLabel(eObject, action, progressMonitor);		
 		return action;
 	}
 
@@ -856,6 +879,144 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		link.rebase(null, base);
 		return link;
 	}
+	
+	/**
+	 * Override to configure the modal. E.g. center, change size, make scrollable, etc.
+	 * @param helpModal
+	 */
+	protected void configureHelpModal(Modal helpModal) {
+//		helpModal.setSize("large");
+//		helpModal.setCentered(true);		
+	}
+	
+	/**
+	 * Convenience method for creating help decorators. 
+	 * Returns null if the tooltip, location and contents are blank/empty.
+	 * If the contents is empty returns a label or a link with a help icon and a tooltip.
+	 * Otherwise returns a link with a tooltip and a modal. The modal header links to the location if it is not empty.
+	 * @param tooltip Tooltip to show
+	 * @param location If not blank
+	 * @param title Modal header text
+	 * @param icon
+	 * @param contents
+	 * @param modalConfigurator
+	 * @return
+	 */
+	public static Label createHelpDecorator(
+			String tooltip,
+			String location,
+			String title,
+			String icon,
+			Collection<EObject> contents,
+			java.util.function.Consumer<Modal> modalConfigurator) {
+		
+		if (contents == null || contents.isEmpty()) {
+			if (Util.isBlank(location)) {
+				if (Util.isBlank(tooltip)) {
+					return null;
+				}
+				Label helpDecorator = AppFactory.eINSTANCE.createLabel();				
+				helpDecorator.setIcon(HELP_DECORATOR_ICON);
+				helpDecorator.getAttributes().put("style", createText(HELP_DECORATOR_STYLE));				
+				helpDecorator.setTooltip(tooltip);
+				return helpDecorator;				
+			}
+		}
+		
+		Link helpDecorator = AppFactory.eINSTANCE.createLink();
+		helpDecorator.setIcon(HELP_DECORATOR_ICON);
+		helpDecorator.getAttributes().put("style", createText(HELP_DECORATOR_STYLE));				
+		helpDecorator.setTooltip(tooltip);
+		if (contents == null || contents.isEmpty()) {
+			helpDecorator.setLocation(location);
+		} else {
+			Modal helpModal = BootstrapFactory.eINSTANCE.createModal();
+		
+			if (!Util.isBlank(title)) {
+				BootstrapElement header = BootstrapFactory.eINSTANCE.createBootstrapElement();
+				org.nasdanika.html.model.html.Tag h2 = HtmlFactory.eINSTANCE.createTag();
+				h2.setName("H2");
+				header.getContent().add(h2);
+				if (Util.isBlank(location)) {					
+					// Label
+					Label tLabel = AppFactory.eINSTANCE.createLabel();
+					tLabel.setText(title);
+					tLabel.setIcon(icon);
+					h2.getContent().add(tLabel);					
+				} else {
+					// Link
+					Link typeLink = AppFactory.eINSTANCE.createLink();
+					typeLink.setText(title);
+					typeLink.setIcon(icon);
+					typeLink.setLocation(location);
+					h2.getContent().add(typeLink);
+				}
+				helpModal.setHeader(header);
+			}
+			
+			BootstrapElement body = BootstrapFactory.eINSTANCE.createBootstrapElement();
+			body.getContent().addAll(contents);		
+			helpModal.setBody(body);
+			if (modalConfigurator != null) {
+				modalConfigurator.accept(helpModal);
+			}
+			helpDecorator.setModal(helpModal);
+		}
+		
+		return helpDecorator;
+	}
+	
+	public static Label createHelpDecorator(
+			String tooltip,
+			String location,
+			String title,
+			String icon,
+			String contents,
+			java.util.function.Consumer<Modal> modalConfigurator) {
+		return createHelpDecorator(
+				tooltip, 
+				location, 
+				title, 
+				icon, 
+				Util.isBlank(contents) ? Collections.emptyList() : Collections.singleton(createText(contents)), 
+				modalConfigurator);
+	}
+		
+	public Label createMarkdownHelpDecorator(
+			String tooltip,
+			String location,
+			String title,
+			String icon,
+			String markdown,
+			java.util.function.Consumer<Modal> modalConfigurator) {
+		return createHelpDecorator(
+				tooltip, 
+				location, 
+				title, 
+				icon, 
+				context.get(MarkdownHelper.class, MarkdownHelper.INSTANCE).markdownToHtml(markdown),  
+				modalConfigurator);
+	}
+	
+	protected Collection<EObject> createHelpContents(URI base, ProgressMonitor progressMonitor) {
+		return Collections.emptyList();
+	}
+	
+	@Override
+	public Label createHelpDecorator(URI base, ProgressMonitor progressMonitor) {
+		Link link = createLink(getTarget(), null, progressMonitor);
+		link.rebase(null, base);
+		
+		Collection<EObject> helpContents =  createHelpContents(base, progressMonitor);
+		
+		return createHelpDecorator(
+				link.getTooltip(),
+				link.getLocation(),
+				link.getText(),
+				link.getIcon(), 
+				helpContents, 
+				this::configureHelpModal);
+	}	
 		
 	@Override
 	public Supplier<Collection<Label>> createLabelsSupplier() {
@@ -891,5 +1052,16 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		text.setContent(content);
 		action.getContent().add(text);
 	}
+	
+	/**
+	 * Convenience method to create Text and set content in one shot.
+	 * @param content
+	 * @return
+	 */
+	public static Text createText(String content) {
+		Text text = ContentFactory.eINSTANCE.createText();
+		text.setContent(content);
+		return text;
+	}	
 		
 }
