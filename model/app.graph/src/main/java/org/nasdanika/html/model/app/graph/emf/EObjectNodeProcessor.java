@@ -32,9 +32,12 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Supplier.FunctionResult;
+import org.nasdanika.emf.persistence.MarkerFactory;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.exec.content.ContentFactory;
+import org.nasdanika.exec.content.Interpolator;
+import org.nasdanika.exec.content.Markdown;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.graph.Connection;
 import org.nasdanika.graph.emf.EClassConnection;
@@ -1063,5 +1066,30 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		text.setContent(content);
 		return text;
 	}	
+	
+	/**
+	 * @param markdown Markdown text
+	 * @return Spec for interpolating markdown and then converting to HTML. 
+	 */
+	protected Markdown interpolatedMarkdown(String markdown, URI location, ProgressMonitor progressMonitor) {
+		if (Util.isBlank(markdown)) {
+			return null;
+		}
+		Markdown ret = ContentFactory.eINSTANCE.createMarkdown();
+		Interpolator interpolator = ContentFactory.eINSTANCE.createInterpolator();
+		Text text = ContentFactory.eINSTANCE.createText();
+		text.setContent(markdown);
+		interpolator.setSource(text);
+		ret.setSource(interpolator);
+		ret.setStyle(true);
+		
+		// Creating a marker with EObject resource location for resource resolution in Markdown
+		if (location != null) {
+			org.nasdanika.ncore.Marker marker = context.get(MarkerFactory.class, MarkerFactory.INSTANCE).createMarker(location.toString(), progressMonitor);
+			ret.getMarkers().add(marker); 
+		}
+		
+		return ret;
+	}
 		
 }
