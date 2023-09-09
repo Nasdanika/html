@@ -128,6 +128,8 @@ public class LabelTagSupplierFactoryAdapter<M extends Label> extends BootstrapEl
 					if (item instanceof Tag) {
 						Tag itemTag = (Tag) item;
 						switch (itemTag.getTagName().toLowerCase()) {
+						case "span":
+							itemTag.addClass("active");  // Kinda hackish - assuming that the only span in a dropdow is the active item. Shall carry down some flag, perhaps using Tag properties
 						case "a": 
 							itemTag.addClass("dropdown-item");
 							break;
