@@ -19,7 +19,7 @@
 			<plugin>
 				<groupId>org.nasdanika.html</groupId>
 				<artifactId>site-generator-maven-plugin</artifactId>
-				<version>2023.9.0</version>
+				<version>2023.9.1</version>
 				<executions>
 					<execution>
 						<goals>
