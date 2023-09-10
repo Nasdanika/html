@@ -304,7 +304,10 @@ public final class Util {
 				org.nasdanika.exec.resources.File file = container.getFile(uri.toString());
 				if (file != null) {
 					org.nasdanika.html.model.bootstrap.Page bootstrapPage = EcoreUtil.copy(pageTemplate);
-					bootstrapPage.setName(activeAction.getText());
+					String activeActionText = activeAction.getText();
+					if (!org.nasdanika.common.Util.isBlank(activeActionText)) {
+						bootstrapPage.setName(Jsoup.parse(activeActionText).text());
+					}
 					if (bootstrapPage.getBody().isEmpty()) {
 						bootstrapPage.getBody().add(AppFactory.eINSTANCE.createPage());
 					}
