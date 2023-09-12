@@ -96,6 +96,10 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	public static Selector<EObject> TARGET_SELECTOR = (widgetFactory, base, progressMonitor) -> {
 		return ((EObjectNodeProcessor<?>) widgetFactory).getTarget();
 	};		
+
+	public static Selector<EObjectNodeProcessor<?>> SELF_SELECTOR = (widgetFactory, base, progressMonitor) -> {
+		return ((EObjectNodeProcessor<?>) widgetFactory);
+	};		
 	
 	protected java.util.function.Function<ProgressMonitor, Action> prototypeProvider;
 	protected NodeProcessorConfig<WidgetFactory, WidgetFactory> config;
