@@ -742,8 +742,12 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		addReferenceChildren(eReference, labels, outgoingLabels, progressMonitor);		
 	}
 
-	protected void addReferenceChildren(EReference eReference, Collection<Label> labels,
-			Map<EReferenceConnection, Collection<Label>> outgoingLabels, ProgressMonitor progressMonitor) {
+	protected void addReferenceChildren(
+			EReference eReference, 
+			Collection<Label> labels,
+			Map<EReferenceConnection, Collection<Label>> outgoingLabels, 
+			ProgressMonitor progressMonitor) {
+		
 		for (Label tLabel: labels) {
 			Label refLabel = createLabel(eReference, progressMonitor);
 			for (Entry<EReferenceConnection, Collection<Label>> re: outgoingLabels.entrySet()) {
