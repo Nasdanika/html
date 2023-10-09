@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.CollectionCompoundConsumer;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
@@ -64,6 +65,7 @@ import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.BootstrapFactory;
 import org.nasdanika.html.model.bootstrap.Modal;
 import org.nasdanika.html.model.html.HtmlFactory;
+import org.nasdanika.ncore.Documented;
 import org.nasdanika.ncore.NamedElement;
 import org.nasdanika.ncore.util.SemanticInfo;
 
@@ -197,6 +199,10 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 			Label helpDecorator = eClassWidgetFactory.createHelpDecorator(progressMonitor);
 			action.setDecorator(helpDecorator);
 		}
+		if (getTarget() instanceof Documented) {
+			action.getContent().addAll(EcoreUtil.copyAll(((Documented) getTarget()).getDocumentation()));
+		}
+		
 		return action;
 	}
 
@@ -830,13 +836,22 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	 */
 	protected void configureLabel(EObject eObject, Label label, ProgressMonitor progressMonitor) {
 		if (eObject instanceof NamedElement && Util.isBlank(label.getText())) {
-			label.setText(StringEscapeUtils.escapeHtml4(((NamedElement) eObject).getName()));
+			label.setText(StringEscapeUtils.escapeHtml4(getName((NamedElement) eObject)));
 		}
 		if (label instanceof Link && uri != null) {
 			((Link) label).setLocation(uri.toString());
 		}
 
 		new SemanticInfo(eObject).annotate(label);
+	}
+	
+	/**
+	 * Override to customize name, e.g. replace blank name with some generated name
+	 * @param namedElement
+	 * @return
+	 */
+	protected String getName(NamedElement namedElement) {
+		return namedElement.getName();
 	}
 	
 	protected String render(Object object, ProgressMonitor progressMonitor) {
