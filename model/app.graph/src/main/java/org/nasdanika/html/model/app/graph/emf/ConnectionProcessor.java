@@ -48,27 +48,27 @@ public class ConnectionProcessor {
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public String createWidgetString(Object selector, URI base, ProgressMonitor progressMonitor) {
+			public String selectString(Object selector, URI base, ProgressMonitor progressMonitor) {
 				if (selector instanceof Selector) {
-					return createWidget((Selector<String>) selector, base, progressMonitor);
+					return select((Selector<String>) selector, base, progressMonitor);
 				}
-				return sourceEndpoint.createWidgetString(selector, resolveBase(base), progressMonitor); 				
+				return sourceEndpoint.selectString(selector, resolveBase(base), progressMonitor); 				
 			}
 			
 			@Override
-			public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
+			public Object select(Object selector, URI base, ProgressMonitor progressMonitor) {
 				if (selector instanceof Selector) {
-					return createWidget((Selector<?>) selector, base, progressMonitor);
+					return select((Selector<?>) selector, base, progressMonitor);
 				}
-				return sourceEndpoint.createWidget(selector, resolveBase(base), progressMonitor);
+				return sourceEndpoint.select(selector, resolveBase(base), progressMonitor);
 			}
 						
 			@Override
-			public <T> T createWidget(Selector<T> selector, URI base, ProgressMonitor progressMonitor) {
+			public <T> T select(Selector<T> selector, URI base, ProgressMonitor progressMonitor) {
 				if (selector instanceof ConnectionSelector) {
-					return selector.createWidget(this, resolveBase(base), progressMonitor);
+					return selector.select(this, resolveBase(base), progressMonitor);
 				}
-				return sourceEndpoint.createWidget(selector, resolveBase(base), progressMonitor);
+				return sourceEndpoint.select(selector, resolveBase(base), progressMonitor);
 			}	
 			
 			@Override
@@ -153,27 +153,27 @@ public class ConnectionProcessor {
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public String createWidgetString(Object selector, URI base, ProgressMonitor progressMonitor) {
+			public String selectString(Object selector, URI base, ProgressMonitor progressMonitor) {
 				if (selector instanceof Selector) {
-					return createWidget((Selector<String>) selector, base, progressMonitor);
+					return select((Selector<String>) selector, base, progressMonitor);
 				}
-				return targetEndpoint.createWidgetString(selector, resolveBase(base), progressMonitor);
+				return targetEndpoint.selectString(selector, resolveBase(base), progressMonitor);
 			}
 			
 			@Override
-			public Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
+			public Object select(Object selector, URI base, ProgressMonitor progressMonitor) {
 				if (selector instanceof Selector) {
-					return createWidget((Selector<?>) selector, base, progressMonitor);
+					return select((Selector<?>) selector, base, progressMonitor);
 				}
-				return targetEndpoint.createWidget(selector, resolveBase(base), progressMonitor); 
+				return targetEndpoint.select(selector, resolveBase(base), progressMonitor); 
 			}
 			
 			@Override
-			public <T> T createWidget(Selector<T> selector, URI base, ProgressMonitor progressMonitor) {
+			public <T> T select(Selector<T> selector, URI base, ProgressMonitor progressMonitor) {
 				if (selector instanceof ConnectionSelector) {
-					return selector.createWidget(this, resolveBase(base), progressMonitor);
+					return selector.select(this, resolveBase(base), progressMonitor);
 				}
-				return targetEndpoint.createWidget(selector, resolveBase(base), progressMonitor);
+				return targetEndpoint.select(selector, resolveBase(base), progressMonitor);
 			}	
 			
 			@Override

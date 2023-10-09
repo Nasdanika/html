@@ -25,14 +25,14 @@ public interface WidgetFactory {
 	interface Selector<T> {
 	
 		/**
-		 * Creates a widget.   
+		 * Retrieves some information from the argument widget factory, e.g. creates a widget.   
 		 * @param widgetFactory
 		 * @param base For connections, if not null, is resolved against the calling end URI - source or target, if it is not null. 
 		 * If null, the respective end URI is used as the base.
 		 * @param progressMonitor
 		 * @return A widget or null
 		 */		
-		T createWidget(WidgetFactory widgetFactory, URI base, ProgressMonitor progressMonitor); 
+		T select(WidgetFactory widgetFactory, URI base, ProgressMonitor progressMonitor); 
 		
 	}
 	
@@ -120,8 +120,8 @@ public interface WidgetFactory {
 	 * @param progressMonitor
 	 * @return
 	 */
-	default Object createWidget(Object selector, ProgressMonitor progressMonitor) {
-		return createWidget(selector, null, progressMonitor);
+	default Object select(Object selector, ProgressMonitor progressMonitor) {
+		return select(selector, null, progressMonitor);
 	}
 
 	/**
@@ -132,19 +132,19 @@ public interface WidgetFactory {
 	 * @param progressMonitor
 	 * @return A widget or null
 	 */
-	default Object createWidget(Object selector, URI base, ProgressMonitor progressMonitor) {
+	default Object select(Object selector, URI base, ProgressMonitor progressMonitor) {
 		if (selector instanceof Selector) {
-			return createWidget((Selector<?>) selector, base, progressMonitor);
+			return select((Selector<?>) selector, base, progressMonitor);
 		}
 		return null;
 	}
 	
-	default <T> T createWidget(Selector<T> selector, URI base, ProgressMonitor progressMonitor) {
-		return selector.createWidget(this, base, progressMonitor);
+	default <T> T select(Selector<T> selector, URI base, ProgressMonitor progressMonitor) {
+		return selector.select(this, base, progressMonitor);
 	}	
 	
-	default <T> T createWidget(Selector<T> selector, ProgressMonitor progressMonitor) {
-		return createWidget(selector, null, progressMonitor);
+	default <T> T select(Selector<T> selector, ProgressMonitor progressMonitor) {
+		return select(selector, null, progressMonitor);
 	}	
 
 	/**
@@ -153,8 +153,8 @@ public interface WidgetFactory {
 	 * @param progressMonitor
 	 * @return
 	 */
-	default String createWidgetString(Object selector, ProgressMonitor progressMonitor) {
-		return createWidgetString(selector, null, progressMonitor);
+	default String selectString(Object selector, ProgressMonitor progressMonitor) {
+		return selectString(selector, null, progressMonitor);
 	}
 
 	/**
@@ -163,7 +163,7 @@ public interface WidgetFactory {
 	 * @param progressMonitor
 	 * @return widget rendered to (HTML) string
 	 */
-	String createWidgetString(Object selector, URI base, ProgressMonitor progressMonitor);
+	String selectString(Object selector, URI base, ProgressMonitor progressMonitor);
 	
 	/**
 	 * Used to establish node URI's. Propagates caller URI.

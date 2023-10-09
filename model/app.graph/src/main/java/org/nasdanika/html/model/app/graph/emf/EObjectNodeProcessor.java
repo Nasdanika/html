@@ -875,8 +875,8 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	}
 	
 	@Override
-	public String createWidgetString(Object selector, URI base, ProgressMonitor progressMonitor) {
-		return render(createWidget(selector, base, progressMonitor), progressMonitor);
+	public String selectString(Object selector, URI base, ProgressMonitor progressMonitor) {
+		return render(select(selector, base, progressMonitor), progressMonitor);
 	}
 	
 	@Override
