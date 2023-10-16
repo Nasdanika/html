@@ -172,5 +172,16 @@ public interface WidgetFactory {
 	void resolve(URI base, ProgressMonitor progressMonitor);
 	
 	Supplier<Collection<Label>> createLabelsSupplier();
+	
+	/**
+	 * Configures a label for a given source object. This method allows multiple widget factories 
+	 * collaborate on label/action configuration. E.g. the primary WidgetFactory may delegate to "facet" factories.  
+	 * @param source
+	 * @param label
+	 * @param progressMonitor
+	 */
+	default void configureLabel(Object source, Label label, ProgressMonitor progressMonitor) {
+		
+	}
 
 }

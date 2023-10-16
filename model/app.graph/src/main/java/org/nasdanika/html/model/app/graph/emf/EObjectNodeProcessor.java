@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
@@ -108,6 +109,12 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	protected Context context;
 	protected URI uri;
 	
+	/**
+	 * Facets are used to provide support for multiple inheritance. For example, {@link EClass} C has EClasses A and B as supertypes.
+	 * EClass C node processor would extend class A node processor and have class B node processor as a facet delegating to it. 
+	 */
+	protected List<WidgetFactory> facets = new ArrayList<>();
+	
 	public EObjectNodeProcessor(
 			NodeProcessorConfig<WidgetFactory, WidgetFactory> config, 
 			Context context, 
@@ -116,6 +123,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		this.context = context;
 		this.prototypeProvider = prototypeProvider;
 		this.uri = URI.createURI("index.html");
+		// Create facets in sub-classes
 	}
 	
 	protected Map<EObjectNode, ProcessorInfo<Object>> childProcessors;
@@ -834,7 +842,17 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	 * @param eObject
 	 * @param label
 	 */
-	protected void configureLabel(EObject eObject, Label label, ProgressMonitor progressMonitor) {
+	@Override
+	public void configureLabel(Object source, Label label, ProgressMonitor progressMonitor) {
+		if (source instanceof EObject) {
+			configureLabel((EObject) source, label, progressMonitor);
+		}
+		for (WidgetFactory facet: facets) {
+			facet.configureLabel(source, label, progressMonitor);
+		}
+	}
+		
+	protected void configureLabel(EObject eObject, Label label, ProgressMonitor progressMonitor) { 		
 		if (eObject instanceof NamedElement && Util.isBlank(label.getText())) {
 			label.setText(StringEscapeUtils.escapeHtml4(getName((NamedElement) eObject)));
 		}
