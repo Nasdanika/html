@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.nasdanika.common.ProgressMonitor;
@@ -41,6 +42,22 @@ public @interface OutgoingReferenceBuilder {
 	 * @return
 	 */
 	int value();
+	
+	/**
+	 * Declaring class ID, obtained from EPackage constants, e.g. <code>{@link EcorePackage}.ECLASS</code>.
+	 * Declaring class ID may need to be specified in situations with multiple inheritance where the reference builder
+	 * method is defined in a common sub-class. 
+	 * @return
+	 */
+	int classID() default -1; 
+	
+	/**
+	 * Namespace URI of declaring class' {@link EPackage}, obtained from EPackage constants, e.g. <code>{@link EcorePackage}.eNS_URI</code>.
+	 * Namespace URI may need to be specified in situations with multiple inheritance where the reference builder
+	 * method is defined in a common sub-class. 
+	 * @return
+	 */	
+	String nsURI() default "";
 	
 }
 

@@ -629,7 +629,11 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		
 		for (Method method: getClass().getMethods()) {
 			OutgoingOperationBuilder oob = method.getAnnotation(OutgoingOperationBuilder.class);
-			if (oob != null	&& eOperation.getOperationID() == oob.value()) {
+			if (oob != null	
+					&& eOperation.getOperationID() == oob.value()					
+					&& (oob.classID() == -1 
+						|| (eOperation.getEContainingClass().getClassifierID() == oob.classID()
+							&& eOperation.getEContainingClass().getEPackage().getNsURI().equals(oob.nsURI())))) {
 				
 				if (method.getParameterCount() != 6 ||
 						!method.getParameterTypes()[0].isInstance(eOperation) ||
@@ -731,7 +735,11 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		
 		for (Method method: getClass().getMethods()) {
 			OutgoingReferenceBuilder orb = method.getAnnotation(OutgoingReferenceBuilder.class);
-			if (orb != null	&& eReference.getFeatureID() == orb.value()) {
+			if (orb != null	
+					&& eReference.getFeatureID() == orb.value()
+					&& (orb.classID() == -1 
+					|| (eReference.getEContainingClass().getClassifierID() == orb.classID()
+						&& eReference.getEContainingClass().getEPackage().getNsURI().equals(orb.nsURI())))) {
 				if (method.getParameterCount() != 5 ||
 						!method.getParameterTypes()[0].isInstance(eReference) ||
 						!method.getParameterTypes()[1].isInstance(referenceOutgoingEndpoints) ||

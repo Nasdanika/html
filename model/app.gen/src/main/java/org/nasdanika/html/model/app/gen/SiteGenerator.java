@@ -204,7 +204,10 @@ public class SiteGenerator {
 			semanticMapFile.getContents().add(semanticMapText);
 		}
 
-		Util.generateSite(root, pageTemplate, container,
+		Util.generateSite(
+				root, 
+				pageTemplate, 
+				container,
 				contentProviderContext -> (cAction, uriResolver, pMonitor) -> getActionContent(cAction,
 						semanticInfoURIResolver(uriResolver), semanticInfoSource, resourceWorkDir,
 						contentProviderContext, diagnosticConsumer, resolutionListener, pMonitor),
@@ -1109,9 +1112,14 @@ public class SiteGenerator {
 	 * @param progressMonitor
 	 * @return
 	 */
-	protected EList<EObject> getActionContent(Action action, BiFunction<Label, URI, URI> uriResolver,
-			Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource, File resourceWorkDir, Context context,
-			java.util.function.Consumer<Diagnostic> diagnosticConsumer, ResolutionListener resolutionListener,
+	protected EList<EObject> getActionContent(
+			Action action, 
+			BiFunction<Label, URI, URI> uriResolver,
+			Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource, 
+			File resourceWorkDir, 
+			Context context,
+			java.util.function.Consumer<Diagnostic> diagnosticConsumer, 
+			ResolutionListener resolutionListener,
 			ProgressMonitor progressMonitor) {
 
 		List<Object> contentContributions = new ArrayList<>();
@@ -1163,9 +1171,16 @@ public class SiteGenerator {
 	 * @param registry
 	 * @return
 	 */
-	protected Object computeRepresentation(Map<String, Object> representations, Context context, String key,
-			String path, Action action, Collection<URI> baseSemanticURIs, BiFunction<Label, URI, URI> uriResolver,
-			Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource, ResolutionListener resolutionListener,
+	protected Object computeRepresentation(
+			Map<String, Object> representations, 
+			Context context, 
+			String key,
+			String path, 
+			Action action, 
+			Collection<URI> baseSemanticURIs, 
+			BiFunction<Label, URI, URI> uriResolver,
+			Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource, 
+			ResolutionListener resolutionListener,
 			ProgressMonitor progressMonitor) {
 
 		String[] pathSegments = path.split("/");
