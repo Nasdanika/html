@@ -126,6 +126,10 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		// Create facets in sub-classes
 	}
 	
+	public URI getUri() {
+		return uri;
+	}
+	
 	protected Map<EObjectNode, ProcessorInfo<Object>> childProcessors;
 	
 	@ChildProcessors
@@ -147,13 +151,21 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		this.node = node;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public T getTarget() {
-		return (T) node.get();
+	public EObjectNode getNode() {
+		return node;
 	}
 	
 	public NodeProcessorConfig<WidgetFactory, WidgetFactory> getConfig() {
 		return config;
+	}
+	
+	public Context getContext() {
+		return context;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public T getTarget() {
+		return (T) node.get();
 	}
 	
 	protected Map<EReferenceConnection, WidgetFactory> incomingReferenceEndpoints = new LinkedHashMap<>();
@@ -853,22 +865,19 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 	@Override
 	public void configureLabel(Object source, Label label, ProgressMonitor progressMonitor) {
 		if (source instanceof EObject) {
-			configureLabel((EObject) source, label, progressMonitor);
+			EObject eObject = (EObject) source;
+			if (eObject instanceof NamedElement && Util.isBlank(label.getText())) {
+				label.setText(StringEscapeUtils.escapeHtml4(getName((NamedElement) eObject)));
+			}
+			if (label instanceof Link && uri != null) {
+				((Link) label).setLocation(uri.toString());
+			}
+
+			new SemanticInfo(eObject).annotate(label);
 		}
 		for (WidgetFactory facet: facets) {
 			facet.configureLabel(source, label, progressMonitor);
 		}
-	}
-		
-	protected void configureLabel(EObject eObject, Label label, ProgressMonitor progressMonitor) { 		
-		if (eObject instanceof NamedElement && Util.isBlank(label.getText())) {
-			label.setText(StringEscapeUtils.escapeHtml4(getName((NamedElement) eObject)));
-		}
-		if (label instanceof Link && uri != null) {
-			((Link) label).setLocation(uri.toString());
-		}
-
-		new SemanticInfo(eObject).annotate(label);
 	}
 	
 	/**
