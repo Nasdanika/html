@@ -1133,8 +1133,7 @@ public class SiteGenerator {
 		String fileName = action.getUuid() + ".html";
 		SupplierFactory<InputStream> contentFactory = org.nasdanika.common.Util
 				.asInputStreamSupplierFactory(action.getContent());
-		try (InputStream contentStream = contentFactory.create(actionContentContext).call(progressMonitor,
-				diagnosticConsumer, Status.FAIL, Status.ERROR)) {
+		try (InputStream contentStream = contentFactory.create(actionContentContext).call(progressMonitor, diagnosticConsumer, Status.FAIL, Status.ERROR)) {
 			if (contentContributions.isEmpty()) {
 				Files.copy(contentStream, new File(contentDir, fileName).toPath(), StandardCopyOption.REPLACE_EXISTING);
 			} else {
@@ -1189,8 +1188,7 @@ public class SiteGenerator {
 			return representations.get(path);
 		}
 		try {
-			org.nasdanika.drawio.Document valueDocument = (org.nasdanika.drawio.Document) representations
-					.get(pathSegments[0]);
+			org.nasdanika.drawio.Document valueDocument = (org.nasdanika.drawio.Document) representations.get(pathSegments[0]);
 			if (resolutionListener != null) {
 				resolutionListener.onComputingDrawioRepresentation(action, pathSegments[0], valueDocument);
 			}
@@ -1302,9 +1300,14 @@ public class SiteGenerator {
 	 * @param registry
 	 * @param mctx
 	 */
-	protected Context createActionContentContext(Action action, BiFunction<Label, URI, URI> uriResolver,
-			Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource, ContentConsumer contentConsumer,
-			ResolutionListener resolutionListener, Context context, ProgressMonitor progressMonitor) {
+	protected Context createActionContentContext(
+			Action action, 
+			BiFunction<Label, URI, URI> uriResolver,
+			Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource, 
+			ContentConsumer contentConsumer,
+			ResolutionListener resolutionListener, 
+			Context context, 
+			ProgressMonitor progressMonitor) {
 
 		MutableContext mctx = context.fork();
 		mctx.put("nsd-site-map-tree-script", (Function<Context, String>) ctx -> computeSiteMapTreeScript(ctx, action,
@@ -1315,11 +1318,14 @@ public class SiteGenerator {
 		}
 
 		SemanticInfo semanticInfo = getSemanticInfoAnnotation(action);
-		Collection<URI> baseSemanticURIs = semanticInfo == null ? Collections.emptyList()
-				: semanticInfo.getIdentifiers().stream().filter(u -> !u.isRelative() && u.isHierarchical()).toList();
+		Collection<URI> baseSemanticURIs = semanticInfo == null ? Collections.emptyList() : semanticInfo.getIdentifiers().stream().filter(u -> !u.isRelative() && u.isHierarchical()).toList();
 
-		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(action, semanticInfoSource,
-				uriResolver, resolutionListener, progressMonitor);
+		Map<String, Object> representations = NcoreActionBuilder.resolveRepresentationLinks(
+				action, 
+				semanticInfoSource,
+				uriResolver, 
+				resolutionListener, 
+				progressMonitor);
 
 		PropertyComputer representationsPropertyComputer = new PropertyComputer() {
 
@@ -1327,8 +1333,17 @@ public class SiteGenerator {
 			@Override
 			public <T> T compute(Context ctx, String key, String path, Class<T> type) {
 				if (type == null || type.isAssignableFrom(String.class)) {
-					return (T) computeRepresentation(representations, ctx, key, path, action, baseSemanticURIs,
-							uriResolver, semanticInfoSource, resolutionListener, progressMonitor);
+					return (T) computeRepresentation(
+							representations, 
+							ctx, 
+							key, 
+							path, 
+							action, 
+							baseSemanticURIs,
+							uriResolver, 
+							semanticInfoSource, 
+							resolutionListener, 
+							progressMonitor);
 				}
 				return null;
 			}
@@ -1342,8 +1357,15 @@ public class SiteGenerator {
 			@Override
 			public <T> T compute(Context ctx, String key, String path, Class<T> type) {
 				if (type == null || type.isAssignableFrom(String.class)) {
-					return (T) computeSemanticLink(ctx, path, action, baseSemanticURIs, uriResolver, semanticInfoSource,
-							resolutionListener, progressMonitor);
+					return (T) computeSemanticLink(
+							ctx, 
+							path, 
+							action, 
+							baseSemanticURIs, 
+							uriResolver, 
+							semanticInfoSource,
+							resolutionListener, 
+							progressMonitor);
 				}
 				return null;
 			}
@@ -1357,8 +1379,15 @@ public class SiteGenerator {
 			@Override
 			public <T> T compute(Context propertyComputerContext, String key, String path, Class<T> type) {
 				if (type == null || type.isAssignableFrom(String.class)) {
-					URI sRef = computeSemanticReferfence(propertyComputerContext, path, action, baseSemanticURIs,
-							uriResolver, semanticInfoSource, resolutionListener, progressMonitor);
+					URI sRef = computeSemanticReferfence(
+							propertyComputerContext, 
+							path, 
+							action, 
+							baseSemanticURIs,
+							uriResolver, 
+							semanticInfoSource, 
+							resolutionListener, 
+							progressMonitor);
 					return sRef == null ? null : (T) sRef.toString();
 				}
 				return null;
