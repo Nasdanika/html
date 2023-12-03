@@ -1238,8 +1238,7 @@ public class SiteGenerator {
 				// Page
 				for (Page page : valueDocument.getPages()) {
 					if (pathSegments[1].equals(page.getName())) {
-						org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true,
-								valueDocument.getURI());
+						org.nasdanika.drawio.Document pageDocument = org.nasdanika.drawio.Document.create(true,	valueDocument.getURI());
 						pageDocument.getPages().add(page);
 						if ("diagram".equals(pathSegments[2])) {
 							return pageDocument.save(true);
@@ -1291,9 +1290,7 @@ public class SiteGenerator {
 						progressMonitor);
 
 				if (sRec != null) {
-					if (org.nasdanika.common.Util.isBlank(modelElement.getLink())) {
-						modelElement.setLink(sRec.location().toString());
-					}
+					modelElement.setLink(sRec.location().toString());
 					if (org.nasdanika.common.Util.isBlank(modelElement.getTooltip())) {
 						modelElement.setTooltip(sRec.description());
 					}
@@ -1612,7 +1609,9 @@ public class SiteGenerator {
 	 * @param progressMonitor
 	 * @return
 	 */
-	protected ResolutionListener createResolutionListener(BiConsumer<String, String> errorConsumer, Context context,
+	protected ResolutionListener createResolutionListener(
+			BiConsumer<String, String> 
+			errorConsumer, Context context,
 			ProgressMonitor progressMonitor) {
 
 		return new ResolutionListener() {
@@ -1625,8 +1624,12 @@ public class SiteGenerator {
 			 * @param targetUriPropertyValue
 			 * @param target
 			 */
-			public void onTargetURIResolution(Action action, org.nasdanika.drawio.ModelElement modelElement,
-					String targetURI, EObject target) {
+			@Override
+			public void onTargetURIResolution(
+					Action action, 
+					org.nasdanika.drawio.ModelElement modelElement,
+					String targetURI, 
+					EObject target) {
 
 				if (target == null) {
 					String location = modelElement == null ? NcoreActionBuilder.actionMarker(action)
@@ -1634,25 +1637,17 @@ public class SiteGenerator {
 					errorConsumer.accept(location, "Element with URI not found: " + targetURI);
 				}
 			}
+			
+			@Override
+			public void onSemanticUUIDResolution(
+					Action action, 
+					org.nasdanika.drawio.ModelElement modelElement,
+					String semanticUUID, 
+					ModelElement semanticModelElement, 
+					Label semanticModelElementLabel) {
 
-			/**
-			 * Called on resoulution of semantic-uuid property.
-			 * 
-			 * @param element
-			 * @param action
-			 * @param semanticUUID
-			 * @param semanticModelElement       If null then there is no element with a
-			 *                                   given UUID.
-			 * @param semanticModelElementAction If null and the previous argument is not
-			 *                                   null, then there is a semantic element, but
-			 *                                   there is not action for it.
-			 */
-			public void onSemanticUUIDResolution(Action action, org.nasdanika.drawio.ModelElement modelElement,
-					String semanticUUID, ModelElement semanticModelElement, Action semanticModelElementAction) {
-
-				if (semanticModelElementAction == null) {
-					String location = modelElement == null ? NcoreActionBuilder.actionMarker(action)
-							: modelElement.toString() + " " + modelElement.getMarkers().toString();
+				if (semanticModelElementLabel== null) {
+					String location = modelElement == null ? NcoreActionBuilder.actionMarker(action) : modelElement.toString() + " " + modelElement.getMarkers().toString();
 					errorConsumer.accept(location, "Action for semantic UUID not found: " + semanticUUID);
 				}
 			}
@@ -1669,8 +1664,14 @@ public class SiteGenerator {
 			 *                     is not found or doesn't have a URI.
 			 * @param backLinkURI  Backlink from the target action to the source action.
 			 */
-			public void onActionURIResolution(Action action, org.nasdanika.drawio.ModelElement modelElement,
-					String targetURIStr, Label target, URI targetURI, URI backLinkURI) {
+			@Override
+			public void onActionURIResolution(
+					Action action, 
+					org.nasdanika.drawio.ModelElement modelElement,
+					String targetURIStr, 
+					Label target, 
+					URI targetURI, 
+					URI backLinkURI) {
 
 				if (target == null) {
 					String location = modelElement == null ? NcoreActionBuilder.actionMarker(action)
@@ -1689,8 +1690,14 @@ public class SiteGenerator {
 			 * @param targetURI
 			 * @param backLinkURI
 			 */
-			public void onActionUUIDResolution(Action action, org.nasdanika.drawio.ModelElement modelElement,
-					String actionUUID, Label target, URI targetURI, URI backLinkURI) {
+			@Override
+			public void onActionUUIDResolution(
+					Action action, 
+					org.nasdanika.drawio.ModelElement modelElement,
+					String actionUUID, 
+					Label target, 
+					URI targetURI, 
+					URI backLinkURI) {
 
 				if (target == null) {
 					String location = modelElement == null ? NcoreActionBuilder.actionMarker(action)
@@ -1708,7 +1715,12 @@ public class SiteGenerator {
 			 * @param targetURI
 			 * @param backLinkURI
 			 */
-			public void onSemanticReferenceResolution(Action action, String targetURIStr, Label target, URI targetURI,
+			@Override
+			public void onSemanticReferenceResolution(
+					Action action, 
+					String targetURIStr, 
+					Label target, 
+					URI targetURI,
 					URI backLinkURI) {
 
 				if (target == null) {

@@ -134,6 +134,7 @@ public interface ResolutionListener extends Composeable<ResolutionListener> {
 			 * @param targetUriPropertyValue
 			 * @param target
 			 */
+			@Override
 			public void onTargetURIResolution(
 					Action action, 
 					org.nasdanika.drawio.ModelElement modelElement, 
@@ -143,23 +144,16 @@ public interface ResolutionListener extends Composeable<ResolutionListener> {
 				ResolutionListener.this.onTargetURIResolution(action, modelElement, targetUriPropertyValue, target);
 				other.onTargetURIResolution(action, modelElement, targetUriPropertyValue, target);
 			}
-
-			/**
-			 * Called on resoulution of semantic-uuid property.
-			 * @param element
-			 * @param action
-			 * @param semanticUUID
-			 * @param semanticModelElement If null then there is no element with a given UUID.
-			 * @param semanticModelElementAction If null and the previous argument is not null, then there is a semantic element, but there is not action for it.
-			 */
+			
+			@Override
 			public void onSemanticUUIDResolution(
 					Action action, 
 					org.nasdanika.drawio.ModelElement modelElement, 
 					String semanticUUID, 
 					ModelElement semanticModelElement,
-					Action semanticModelElementAction) {
-				ResolutionListener.this.onSemanticUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, semanticModelElementAction);
-				other.onSemanticUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, semanticModelElementAction);
+					Label semanticModelElementLabel) {			
+				ResolutionListener.this.onSemanticUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, semanticModelElementLabel);
+				other.onSemanticUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, semanticModelElementLabel);
 			}
 
 			/**
@@ -171,6 +165,7 @@ public interface ResolutionListener extends Composeable<ResolutionListener> {
 			 * @param targetURI Target URI relative to the source action. Null of target is not found or doesn't have a URI.
 			 * @param backLinkURI Backlink from the target action to the source action.
 			 */
+			@Override
 			public void onActionURIResolution(
 					Action action, 
 					org.nasdanika.drawio.ModelElement modelElement, 
@@ -191,6 +186,7 @@ public interface ResolutionListener extends Composeable<ResolutionListener> {
 			 * @param targetURI
 			 * @param backLinkURI
 			 */
+			@Override
 			public void onActionUUIDResolution(
 					Action action, 
 					org.nasdanika.drawio.ModelElement modelElement, 
@@ -210,6 +206,7 @@ public interface ResolutionListener extends Composeable<ResolutionListener> {
 			 * @param targetURI
 			 * @param backLinkURI
 			 */
+			@Override
 			public void onSemanticReferenceResolution(
 					Action action, 
 					String targetURIStr, 
