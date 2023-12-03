@@ -42,12 +42,12 @@ public interface ResolutionListener extends Composeable<ResolutionListener> {
 	 * @param semanticModelElement If null then there is no element with a given UUID.
 	 * @param semanticModelElementAction If null and the previous argument is not null, then there is a semantic element, but there is not action for it.
 	 */
-	default void onTargetUUIDResolution(
+	default void onSemanticUUIDResolution(
 			Action action, 
 			org.nasdanika.drawio.ModelElement modelElement, 
 			String semanticUUID, 
 			ModelElement semanticModelElement,
-			Action semanticModelElementAction) {
+			Label semanticModelElementLabel) {
 		
 	}
 
@@ -152,14 +152,14 @@ public interface ResolutionListener extends Composeable<ResolutionListener> {
 			 * @param semanticModelElement If null then there is no element with a given UUID.
 			 * @param semanticModelElementAction If null and the previous argument is not null, then there is a semantic element, but there is not action for it.
 			 */
-			public void onTargetUUIDResolution(
+			public void onSemanticUUIDResolution(
 					Action action, 
 					org.nasdanika.drawio.ModelElement modelElement, 
 					String semanticUUID, 
 					ModelElement semanticModelElement,
 					Action semanticModelElementAction) {
-				ResolutionListener.this.onTargetUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, semanticModelElementAction);
-				other.onTargetUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, semanticModelElementAction);
+				ResolutionListener.this.onSemanticUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, semanticModelElementAction);
+				other.onSemanticUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, semanticModelElementAction);
 			}
 
 			/**

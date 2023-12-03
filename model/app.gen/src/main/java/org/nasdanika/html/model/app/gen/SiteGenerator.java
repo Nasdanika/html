@@ -1262,9 +1262,16 @@ public class SiteGenerator {
 		return null;
 	}
 
-	protected void processDrawioElement(org.nasdanika.graph.Element element, Context context, String key, String path,
-			Action action, Collection<URI> baseSemanticURIs, BiFunction<Label, URI, URI> uriResolver,
-			Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource, ResolutionListener resolutionListener,
+	protected void processDrawioElement(
+			org.nasdanika.graph.Element element, 
+			Context context, 
+			String key, 
+			String path,
+			Action action, 
+			Collection<URI> baseSemanticURIs, 
+			BiFunction<Label, URI, URI> uriResolver,
+			Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource, 
+			ResolutionListener resolutionListener,
 			ProgressMonitor progressMonitor) {
 
 //		ResolutionListener semanticLinkResolutionListener = this.context == null ? null : this.context.get(ResolutionListener.class);
@@ -1273,8 +1280,15 @@ public class SiteGenerator {
 			org.nasdanika.drawio.ModelElement modelElement = (org.nasdanika.drawio.ModelElement) element;
 			String targetUriPropertyValue = modelElement.getProperty(NcoreActionBuilder.TARGET_URI_KEY);
 			if (!org.nasdanika.common.Util.isBlank(targetUriPropertyValue)) {
-				SemanticInfoRecord sRec = computeSemanticInfoRecord(context, targetUriPropertyValue, action,
-						baseSemanticURIs, uriResolver, semanticInfoSource, resolutionListener, progressMonitor);
+				SemanticInfoRecord sRec = computeSemanticInfoRecord(
+						context, 
+						targetUriPropertyValue, 
+						action,
+						baseSemanticURIs, 
+						uriResolver, 
+						semanticInfoSource, 
+						resolutionListener, 
+						progressMonitor);
 
 				if (sRec != null) {
 					if (org.nasdanika.common.Util.isBlank(modelElement.getLink())) {
@@ -1633,7 +1647,7 @@ public class SiteGenerator {
 			 *                                   null, then there is a semantic element, but
 			 *                                   there is not action for it.
 			 */
-			public void onTargetUUIDResolution(Action action, org.nasdanika.drawio.ModelElement modelElement,
+			public void onSemanticUUIDResolution(Action action, org.nasdanika.drawio.ModelElement modelElement,
 					String semanticUUID, ModelElement semanticModelElement, Action semanticModelElementAction) {
 
 				if (semanticModelElementAction == null) {

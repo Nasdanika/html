@@ -241,7 +241,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 					String message = "Semantic element with UUID " + semanticUUID + " not found";
 					progressMonitor.worked(Status.ERROR, 1, message, modelElement);
 					if (semanticLinkResolutionListener != null) {
-						semanticLinkResolutionListener.onTargetUUIDResolution(action, modelElement, semanticUUID, null, null);
+						semanticLinkResolutionListener.onSemanticUUIDResolution(action, modelElement, semanticUUID, null, null);
 					}
 				} else {
 					Action semanticModelElementAction = context.getAction(semanticModelElement);
@@ -249,7 +249,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 						String message = "Action for a semantic element with UUID " + semanticUUID + " not found: " + semanticModelElement;
 						progressMonitor.worked(Status.ERROR, 1, message, modelElement);
 						if (semanticLinkResolutionListener != null) {
-							semanticLinkResolutionListener.onTargetUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, null);
+							semanticLinkResolutionListener.onSemanticUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, null);
 						}
 					} else {
 						String semanticModelElementActionUUID = semanticModelElementAction.getUuid();
@@ -263,7 +263,7 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 							}									
 						}
 						if (semanticLinkResolutionListener != null) {
-							semanticLinkResolutionListener.onTargetUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, semanticModelElementAction);
+							semanticLinkResolutionListener.onSemanticUUIDResolution(action, modelElement, semanticUUID, semanticModelElement, semanticModelElementAction);
 						}
 					}
 				}
@@ -313,6 +313,57 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 		
 		return null;
 	}
+	
+	/**
+	 * Finds using semantic info annotation
+	 * @param semanticUUID
+	 * @param semanticElement
+	 * @return
+	 */
+	private static ModelElement findBySemanticUUID(String semanticUUID, EObject element) {
+		if (Util.isBlank(semanticUUID)) {
+			return null;			
+		}
+		
+		if (element instanceof ModelElement) {
+			ModelElement semanticModelElement = (ModelElement) element;
+			if (matchSemanticUUID(semanticModelElement, semanticUUID)) {
+				return semanticModelElement;
+			}
+		}
+		
+		TreeIterator<? extends Notifier> rscit = getAllContents(element);
+		while (rscit.hasNext()) {
+			Notifier next = rscit.next();
+			if (next instanceof ModelElement) {				
+				ModelElement nextModelElement = (ModelElement) next;
+				if (matchSemanticUUID(nextModelElement, semanticUUID)) {
+					return nextModelElement;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	private static boolean matchSemanticUUID(ModelElement modelElement, String semanticUUID) {
+		if (Util.isBlank(semanticUUID)) {
+			return false;			
+		}
+		
+		URI semanticIdentifier = URI.createGenericURI("uuid", semanticUUID, null);
+	
+		SemanticInfo semanticInfo = SemanticInfo.getAnnotation(modelElement);
+		if (semanticInfo != null) {
+			for (URI identifier: semanticInfo.getIdentifiers()) {
+				if (semanticIdentifier.equals(identifier)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 		
 	/**
 	 * @param uriResolver returns a list of target URI's potentially resolving them relative to the semantic element URI.
@@ -614,10 +665,44 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				String actionUUID = modelElement.getProperty(ACTION_UUID_KEY);			
 				if (Util.isBlank(actionUUID)) {
 					// For semantic mapping to actions 
-					actionUUID =  modelElement.getProperty(SEMANTIC_UUID_KEY); 
-				}
-
-				if (!Util.isBlank(actionUUID)) {
+					String semanticUUID =  modelElement.getProperty(SEMANTIC_UUID_KEY);
+					if (!Util.isBlank(semanticUUID)) {
+						ModelElement targetModelElement = findBySemanticUUID(semanticUUID, action);
+						if (targetModelElement instanceof Label) {
+							URI actionURI = uriResolver.apply(action, (URI) null);
+							URI targetURI = uriResolver.apply((Label) targetModelElement, actionURI);
+							if (resolutionListener != null) {
+								resolutionListener.onSemanticUUIDResolution(
+										action, 
+										modelElement, 
+										semanticUUID, 
+										null,
+										(Label) targetModelElement);
+							}
+							
+							if (targetURI != null) {
+								modelElement.setLink(targetURI.toString());
+								if (Util.isBlank(modelElement.getTooltip())) {
+									String actionTooltip = ((Label) targetModelElement).getTooltip();
+									if (!Util.isBlank(actionTooltip)) {
+										modelElement.setTooltip(actionTooltip);
+									}
+								}
+							}
+						} else {
+							String message = "Action with semantic UUID " + semanticUUID + " not found";
+							progressMonitor.worked(Status.ERROR, 1, message, modelElement);
+							if (resolutionListener != null) {
+								resolutionListener.onSemanticUUIDResolution(
+										action, 
+										modelElement, 
+										semanticUUID, 
+										null, 
+										null);
+							}
+						}
+					}
+				} else {
 					ModelElement targetModelElement = findByUUID(actionUUID, action);
 					if (targetModelElement instanceof Label) {
 						URI actionURI = uriResolver.apply(action, (URI) null);
