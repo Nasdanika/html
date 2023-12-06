@@ -35,7 +35,7 @@ public class EObjectProcessorFactory extends ProcessorFactory<Object> {
 			ProgressMonitor progressMonitor) {
 		
 		if (config.getElement() instanceof EReferenceConnection) {
-			return config.toInfo(new ConnectionProcessor((ConnectionProcessorConfig<WidgetFactory, WidgetFactory>) config));
+			return config.toInfo(new ConnectionProcessor((ConnectionProcessorConfig<WidgetFactory, WidgetFactory>) config, isCompactPath()));
 		}
 		
 		if (config.getElement() instanceof EObjectNode) {
@@ -50,6 +50,14 @@ public class EObjectProcessorFactory extends ProcessorFactory<Object> {
 	
 	protected Context getContext() {
 		return Context.EMPTY_CONTEXT;
+	}
+	
+	/**
+	 * Override to return true for compact reference and operation paths
+	 * @return
+	 */
+	protected boolean isCompactPath() {
+		return false;
 	}
 		
 }

@@ -3,10 +3,14 @@ package org.nasdanika.html.model.app.graph.emf;
 import java.util.Collection;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
+import org.nasdanika.graph.Node;
+import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.emf.EOperationConnection;
 import org.nasdanika.graph.emf.EReferenceConnection;
 import org.nasdanika.graph.emf.QualifiedConnection;
@@ -20,9 +24,16 @@ public class ConnectionProcessor {
 	protected URI sourceURI;
 	protected URI targetURI;
 	protected ConnectionProcessorConfig<WidgetFactory, WidgetFactory> config;
+	private boolean compactPath;
 
-	public ConnectionProcessor(ConnectionProcessorConfig<WidgetFactory, WidgetFactory> config) {		
+	/**
+	 * 
+	 * @param config
+	 * @param compactPath if true then reference and operation paths are constructed using reference/operation id's and r or o prefix respectively. 
+	 */
+	public ConnectionProcessor(ConnectionProcessorConfig<WidgetFactory, WidgetFactory> config, boolean compactPath) {		
 		this.config = config;		
+		this.compactPath = compactPath;
 		
 		config.getSourceEndpoint().thenAccept(se -> config.setTargetHandler(createTargetHandler(se)));
 		config.getTargetEndpoint().thenAccept(te -> config.setSourceHandler(createSourceHandler(te)));
@@ -120,21 +131,38 @@ public class ConnectionProcessor {
 				sourceURI = base;				
 				QualifiedConnection<?> conn = (QualifiedConnection<?>) config.getElement();
 				String path = conn.getPath();
+				Node source = config.getElement().getSource();
+				EClass eClass = null;
+				if (source instanceof EObjectNode) {
+					EObject eObject = ((EObjectNode) source).get();
+					eClass = eObject == null ? null : eObject.eClass();
+				}
+
 				if (conn instanceof EReferenceConnection) {
 					EReference eRef = ((EReferenceConnection) conn).getReference();
 					if (eRef.isContainment()) {
-						String uriStr = "references/" + eRef.getName() + "/";
+						String uriStr;
+						if (compactPath && eClass != null) {
+							uriStr = "r" + eClass.getFeatureID(eRef);							
+						} else {
+							uriStr = "references/" + eRef.getName();
+						}
 						if (path != null) {
-							uriStr += path + "/";
+							uriStr += "/" + path + "/";
 						}
 						URI refURI = URI.createURI(uriStr);
 						targetEndpoint.resolve(refURI.resolve(base), progressMonitor);
 					}
 				} else if (conn instanceof EOperationConnection) {
 					EOperation eOp = ((EOperationConnection) conn).getOperation();
-					String uriStr = "operations/" + eOp.getName() + "/";
+					String uriStr;
+					if (compactPath && eClass != null) {
+						uriStr = "0" + eClass.getOperationID(eOp);							
+					} else {
+						uriStr = "operations/" + eOp.getName();
+					}
 					if (path != null) {
-						uriStr += path + "/";
+						uriStr += "/" + path + "/";
 					}
 					URI refURI = URI.createURI(uriStr);
 					targetEndpoint.resolve(refURI.resolve(base), progressMonitor);					

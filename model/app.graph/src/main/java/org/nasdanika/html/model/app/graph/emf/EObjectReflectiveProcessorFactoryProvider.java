@@ -29,10 +29,18 @@ public class EObjectReflectiveProcessorFactoryProvider extends ReflectiveProcess
 		
 		Object processor = super.createProcessor(config, parallel, infoProvider, endpointWiringStageConsumer, progressMonitor);
 		if (processor == null && config instanceof ConnectionProcessorConfig) {
-			return new ConnectionProcessor((ConnectionProcessorConfig<WidgetFactory, WidgetFactory>) config);
+			return new ConnectionProcessor((ConnectionProcessorConfig<WidgetFactory, WidgetFactory>) config, isCompactPath());
 		}
 			
 		return processor;
+	}
+	
+	/**
+	 * Override to return true for compact reference and operation paths
+	 * @return
+	 */
+	protected boolean isCompactPath() {
+		return false;
 	}
 
 }
