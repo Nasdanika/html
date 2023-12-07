@@ -143,7 +143,7 @@ public class ConnectionProcessor {
 					if (eRef.isContainment()) {
 						String uriStr;
 						if (compactPath && eClass != null) {
-							uriStr = "r" + eClass.getFeatureID(eRef);							
+							uriStr = "r" + Integer.toString(eClass.getFeatureID(eRef), Character.MAX_RADIX);							
 						} else {
 							uriStr = "references/" + eRef.getName();
 						}
@@ -157,7 +157,7 @@ public class ConnectionProcessor {
 					EOperation eOp = ((EOperationConnection) conn).getOperation();
 					String uriStr;
 					if (compactPath && eClass != null) {
-						uriStr = "0" + eClass.getOperationID(eOp);							
+						uriStr = "o" + Integer.toString(eClass.getOperationID(eOp), Character.MAX_RADIX);							
 					} else {
 						uriStr = "operations/" + eOp.getName();
 					}
