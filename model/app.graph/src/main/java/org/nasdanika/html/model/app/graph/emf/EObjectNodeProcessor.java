@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.nasdanika.common.CollectionCompoundConsumer;
 import org.nasdanika.common.Consumer;
 import org.nasdanika.common.Context;
+import org.nasdanika.common.EStructuralFeatureAndEOperationMatcher;
 import org.nasdanika.common.ExecutionException;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.MapCompoundSupplier;
@@ -76,7 +77,7 @@ import org.nasdanika.ncore.util.SemanticInfo;
  * @author Pavel
  *
  */
-public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
+public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, EStructuralFeatureAndEOperationMatcher {
 	
 	private static final String HELP_DECORATOR_ICON = "far fa-question-circle";
 
@@ -454,11 +455,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 
 		for (Method method: getClass().getMethods()) {
 			IncomingReferenceBuilder irb = method.getAnnotation(IncomingReferenceBuilder.class);
-			if (irb != null 
-					&& eReference.getFeatureID() == irb.referenceID()
-					&& eReference.getEContainingClass().getClassifierID() == irb.classID()
-					&& eReference.getEContainingClass().getEPackage().getNsURI().equals(irb.nsURI())) {
-				
+			if (irb != null  && matchEStructuralFeature(irb.nsURI(), irb.classID(), irb.referenceID(), null, eReference)) {				
 				if (method.getParameterCount() != 5 ||
 						!method.getParameterTypes()[0].isInstance(eReference) ||
 						!method.getParameterTypes()[1].isInstance(referenceIncomingEndpoints) ||
@@ -747,11 +744,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory {
 		
 		for (Method method: getClass().getMethods()) {
 			OutgoingReferenceBuilder orb = method.getAnnotation(OutgoingReferenceBuilder.class);
-			if (orb != null	
-					&& eReference.getFeatureID() == orb.value()
-					&& (orb.classID() == -1 
-					|| (eReference.getEContainingClass().getClassifierID() == orb.classID()
-						&& eReference.getEContainingClass().getEPackage().getNsURI().equals(orb.nsURI())))) {
+			if (orb != null	&& matchEStructuralFeature(orb.nsURI(), orb.classID(), orb.referenceID(), null, eReference)) {
 				if (method.getParameterCount() != 5 ||
 						!method.getParameterTypes()[0].isInstance(eReference) ||
 						!method.getParameterTypes()[1].isInstance(referenceOutgoingEndpoints) ||

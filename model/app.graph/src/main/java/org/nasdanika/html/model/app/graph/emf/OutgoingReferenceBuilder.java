@@ -41,7 +41,7 @@ public @interface OutgoingReferenceBuilder {
 	 * Reference ID, obtained from EPackage constants, e.g. <code>{@link EcorePackage}.ECLASS__EALL_ATTRIBUTES</code>.
 	 * @return
 	 */
-	int value();
+	int referenceID();
 	
 	/**
 	 * Declaring class ID, obtained from EPackage constants, e.g. <code>{@link EcorePackage}.ECLASS</code>.
@@ -49,7 +49,7 @@ public @interface OutgoingReferenceBuilder {
 	 * method is defined in a common sub-class. 
 	 * @return
 	 */
-	int classID() default -1; 
+	int classID(); 
 	
 	/**
 	 * Namespace URI of declaring class' {@link EPackage}, obtained from EPackage constants, e.g. <code>{@link EcorePackage}.eNS_URI</code>.
@@ -57,7 +57,7 @@ public @interface OutgoingReferenceBuilder {
 	 * method is defined in a common sub-class. 
 	 * @return
 	 */	
-	String nsURI() default "";
+	String nsURI();
 	
 }
 
