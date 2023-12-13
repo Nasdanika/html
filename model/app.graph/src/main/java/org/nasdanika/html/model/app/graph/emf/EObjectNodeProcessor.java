@@ -1142,5 +1142,36 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 		
 		return ret;
 	}
+	
+	/**
+	 * Convenience method for sorting reference elements by name if they are named elements
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	protected int compareElements(Entry<EReferenceConnection, Collection<Label>> a, Entry<EReferenceConnection, Collection<Label>> b) {
+		EObject aObj = a.getKey().getTarget().get();
+		EObject bObj = b.getKey().getTarget().get();
+		
+		if (aObj instanceof NamedElement) {
+			String aName = ((NamedElement) aObj).getName();
+			if (!Util.isBlank(aName)) {
+				if (bObj instanceof NamedElement) {
+					String bName = ((NamedElement) bObj).getName();
+					if (!Util.isBlank(bName)) {
+						return aName.compareTo(bName);
+					}
+				}
+				return -1;
+			}
+		} 
+		
+		if (bObj instanceof NamedElement) {
+			return 1;
+		}
+		
+		return aObj.hashCode() - bObj.hashCode();
+	}		
+	
 		
 }
