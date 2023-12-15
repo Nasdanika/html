@@ -185,7 +185,7 @@ public final class Util {
 		saveLabelMap(labelMap, actionModelResourceURI);
 	}
 	
-	private static void saveLabelMap(Map<EObject, Collection<Label>> labelMap, URI actionModelResoureURI) throws IOException {
+	public static void saveLabelMap(Map<EObject, Collection<Label>> labelMap, URI actionModelResoureURI) throws IOException {
 		ResourceSet actionModelsResourceSet = new ResourceSetImpl();
 		actionModelsResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		
@@ -409,6 +409,5 @@ public final class Util {
 				URI.createFileURI(actionModelFile.getCanonicalFile().getAbsolutePath()), 
 				progressMonitor);
 	}
-	
-	
+		
 }
