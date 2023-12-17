@@ -35,9 +35,9 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Supplier.FunctionResult;
-import org.nasdanika.emf.persistence.MarkerFactory;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
+import org.nasdanika.emf.persistence.MarkerFactory;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Interpolator;
 import org.nasdanika.exec.content.Markdown;
@@ -224,7 +224,22 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 			action.getContent().addAll(EcoreUtil.copyAll(((Documented) getTarget()).getDocumentation()));
 		}
 		
+		for (Map.Entry<String, String> representation: getRepresentations().entrySet()) {
+			action.getRepresentations().put(representation.getKey(), representation.getValue());
+		}
+		
 		return action;
+	}
+	
+	protected Map<String,String> getRepresentations() {
+		T target = getTarget();
+		Map<String,String> ret = new LinkedHashMap<>();
+		if (target instanceof org.nasdanika.ncore.ModelElement) {
+			for (Entry<String, String> re: ((org.nasdanika.ncore.ModelElement) target).getRepresentations().entrySet()) {
+				ret.put(re.getKey(), re.getValue());
+			}
+		}
+		return ret;
 	}
 
 	/**
