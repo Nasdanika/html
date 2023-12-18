@@ -236,23 +236,29 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 			action.getRepresentations().put(representation.getKey(), representation.getValue());
 			if (action.getIcon() == null && AbstractDrawioFactory.IMAGE_REPRESENTATION.equals(representation.getKey())) {
 				String imageRepr = representation.getValue();
-				if (imageRepr.startsWith(Util.DATA_IMAGE_PNG_BASE64_PREFIX) || imageRepr.startsWith(Util.DATA_IMAGE_JPEG_BASE64_PREFIX)) {
-					try {
-						String icon = Util.scaleImageToPNG(imageRepr, ICON_SIZE);
-						action.setIcon(icon);
-					} catch (IOException e) {
-						throw new NasdanikaException("Could not scale image: " + e, e);
-					}
-				} else if ((imageRepr.toLowerCase().startsWith("http://") || imageRepr.toLowerCase().startsWith("https://")) && imageRepr.toLowerCase().endsWith(".svg")) {
-					action.setIcon(imageRepr);
-				} else {
-					// TODO - scaling of images from URL's - add to Util
-				}
-				
+				action.setIcon(getImageRepresentationIcon(imageRepr));				
 			}
 		}
 		
 		return action;
+	}
+
+	/**
+	 * Converts image representation to an icon if 
+	 * @param action
+	 * @param imageRepr
+	 */
+	protected String getImageRepresentationIcon(String imageRepr) {
+		if ((imageRepr.toLowerCase().startsWith("http://") || imageRepr.toLowerCase().startsWith("https://")) && imageRepr.toLowerCase().endsWith(".svg")) {
+			// No need to scale SVG
+			return imageRepr;
+		}
+		
+		try {
+			return Util.scaleImageToPNG(imageRepr, ICON_SIZE);
+		} catch (IOException e) {
+			throw new NasdanikaException("Could not scale image: " + e, e);
+		}
 	}
 	
 	protected Map<String,String> getRepresentations() {
