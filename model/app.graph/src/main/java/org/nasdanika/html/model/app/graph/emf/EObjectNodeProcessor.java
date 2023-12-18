@@ -1,6 +1,7 @@
 
 package org.nasdanika.html.model.app.graph.emf;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -31,12 +32,14 @@ import org.nasdanika.common.ExecutionException;
 import org.nasdanika.common.Function;
 import org.nasdanika.common.MapCompoundSupplier;
 import org.nasdanika.common.MarkdownHelper;
+import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Supplier.FunctionResult;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
+import org.nasdanika.drawio.model.util.AbstractDrawioFactory;
 import org.nasdanika.emf.persistence.MarkerFactory;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Interpolator;
@@ -79,6 +82,11 @@ import org.nasdanika.ncore.util.SemanticInfo;
  */
 public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, EStructuralFeatureAndEOperationMatcher {
 	
+	/**
+	 * Icons size for UI generation - jsTree displays icons up to 24x24 pixels
+	 */
+	public static final int ICON_SIZE = 24;
+
 	private static final String HELP_DECORATOR_ICON = "far fa-question-circle";
 
 	private static final String HELP_DECORATOR_STYLE = "vertical-align:super;font-size:x-small;margin-left:0.2em";
@@ -226,6 +234,22 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 		
 		for (Map.Entry<String, String> representation: getRepresentations().entrySet()) {
 			action.getRepresentations().put(representation.getKey(), representation.getValue());
+			if (action.getIcon() == null && AbstractDrawioFactory.IMAGE_REPRESENTATION.equals(representation.getKey())) {
+				String imageRepr = representation.getValue();
+				if (imageRepr.startsWith(Util.DATA_IMAGE_PNG_BASE64_PREFIX) || imageRepr.startsWith(Util.DATA_IMAGE_JPEG_BASE64_PREFIX)) {
+					try {
+						String icon = Util.scaleImageToPNG(imageRepr, ICON_SIZE);
+						action.setIcon(icon);
+					} catch (IOException e) {
+						throw new NasdanikaException("Could not scale image: " + e, e);
+					}
+				} else if ((imageRepr.toLowerCase().startsWith("http://") || imageRepr.toLowerCase().startsWith("https://")) && imageRepr.toLowerCase().endsWith(".svg")) {
+					action.setIcon(imageRepr);
+				} else {
+					// TODO - scaling of images from URL's - add to Util
+				}
+				
+			}
 		}
 		
 		return action;

@@ -569,6 +569,9 @@ public class NcoreActionBuilder<T extends EObject> extends EObjectActionBuilder<
 				context.put(ACTION_URI_KEY, actionURIPropertyComputer);								
 				
 				ret.put(actionRepresentationEntry.getKey(), context.computingContext().interpolateToString(textBuilder.toString()));
+			} else {
+				// Simple carry-over
+				ret.put(actionRepresentationEntry.getKey(), actionRepresentationEntry.getValue());				
 			}
 		}
 		return ret;
