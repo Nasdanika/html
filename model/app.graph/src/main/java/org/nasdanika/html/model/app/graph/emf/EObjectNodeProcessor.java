@@ -234,7 +234,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 		
 		for (Map.Entry<String, String> representation: getRepresentations().entrySet()) {
 			action.getRepresentations().put(representation.getKey(), representation.getValue());
-			if (action.getIcon() == null && AbstractDrawioFactory.IMAGE_REPRESENTATION.equals(representation.getKey())) {
+			if (Util.isBlank(action.getIcon()) && AbstractDrawioFactory.IMAGE_REPRESENTATION.equals(representation.getKey())) {
 				String imageRepr = representation.getValue();
 				action.setIcon(getImageRepresentationIcon(imageRepr));				
 			}
@@ -251,14 +251,44 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 	protected String getImageRepresentationIcon(String imageRepr) {
 		if ((imageRepr.toLowerCase().startsWith("http://") || imageRepr.toLowerCase().startsWith("https://")) && imageRepr.toLowerCase().endsWith(".svg")) {
 			// No need to scale SVG
-			return imageRepr;
+			return rewriteImageRepresentation(imageRepr);
 		}
 		
-		try {
-			return Util.scaleImageToPNG(imageRepr, ICON_SIZE);
-		} catch (IOException e) {
-			throw new NasdanikaException("Could not scale image: " + e, e);
+		if (isScaleImageRepresentationToIcon()) {
+			
+			try {
+				return Util.scaleImageToPNG(rewriteImageRepresentation(imageRepr), getIconSize());
+			} catch (IOException e) {
+				throw new NasdanikaException("Could not scale image: " + e, e);
+			}
 		}
+		return null;
+	}
+	
+	/**
+	 * This implementation returns the argumet. 
+	 * Override to rewrite URL's before conversion to icons. For example, read representations from a file system and convert to data URL's.
+	 * @param imageRepr
+	 * @return
+	 */
+	protected String rewriteImageRepresentation(String imageRepr) {
+		return imageRepr;
+	}
+	
+	/**
+	 * This implementation returns true. Override to suppress scaling of image representations to icons.
+	 * @return 
+	 */
+	protected boolean isScaleImageRepresentationToIcon() {
+		return true;
+	}
+	
+	/**
+	 * Icon size to scale image representations to
+	 * @return
+	 */
+	protected int getIconSize() {
+		return ICON_SIZE;
 	}
 	
 	protected Map<String,String> getRepresentations() {

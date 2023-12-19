@@ -22,8 +22,8 @@ app-action:
                 
                 Here we go: ${semantic-ref/aws://cloud/children/6}
                   
-        representations: 
-          aws: aws.drawio  
+#        representations: 
+#          aws: aws.drawio  
         children:
           - app-action:
               icon: fa fa-cog
