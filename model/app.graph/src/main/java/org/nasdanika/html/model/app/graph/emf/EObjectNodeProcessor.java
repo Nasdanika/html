@@ -83,9 +83,9 @@ import org.nasdanika.ncore.util.SemanticInfo;
 public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, EStructuralFeatureAndEOperationMatcher {
 	
 	/**
-	 * Icons size for UI generation - jsTree displays icons up to 24x24 pixels
+	 * Icons size for UI generation - jsTree displays icons up to 24x24 pixels, leaving 4 pixes for padding
 	 */
-	public static final int ICON_SIZE = 24;
+	public static final int ICON_SIZE = 20;
 
 	private static final String HELP_DECORATOR_ICON = "far fa-question-circle";
 
