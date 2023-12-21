@@ -4,11 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -28,20 +26,35 @@ import org.nasdanika.graph.emf.EObjectNode;
 import org.nasdanika.graph.processor.NopEndpointProcessorConfigFactory;
 import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
+import org.nasdanika.graph.processor.ReflectiveProcessorFactoryProvider;
 import org.nasdanika.graph.processor.emf.EObjectNodeProcessorReflectiveFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 
-public final class Util {
+/**
+ * Base class for action generation using node processor fatory
+ * @param <F> Node processor factory type.
+ */
+public class ActionGenerator<F> {
 	
-	// Singleton
-	private Util() {
+	protected Collection<? extends EObject> sources;
+	protected F nodeProcessorFactory;
+	protected Collection<? extends EObject> references;
+	protected Function<? super EObject, URI> uriResolver;
+	
+	public ActionGenerator(
+			Collection<? extends EObject> sources,
+			F nodeProcessorFactory, 
+			Collection<? extends EObject> references,
+			Function<? super EObject, URI> uriResolver) {
 		
+		this.sources = sources;
+		this.nodeProcessorFactory = nodeProcessorFactory;
+		this.references = references;
+		this.uriResolver = uriResolver;
 	}
 	
-	// --- Multiple sources and URI resolver ---
-
 	/**
 	 * Uses transformer and a reflective node processor factory to generate actions from sources
 	 * @param sources Source objects
@@ -52,30 +65,17 @@ public final class Util {
 	 * @param progressMonitor Progress monitor
 	 * @return A map of source objects to a collection of labels created from those objects
 	 */
-	public static Map<EObject,Collection<Label>> generateActionModel(
-			Collection<? extends EObject> sources,
-			Object nodeProcessorFactory,
-			Collection<? extends EObject> references,
-			Function<? super EObject, URI> uriResolver,
-			Consumer<Diagnostic> diagnosticConsumer,
-			ProgressMonitor progressMonitor) {
-		Transformer<EObject,Element> graphFactory = new Transformer<>(new EObjectGraphFactory());
+	public Map<EObject,Collection<Label>> generateActionModel(Consumer<Diagnostic> diagnosticConsumer, ProgressMonitor progressMonitor) {
+		Transformer<EObject,Element> graphFactory = new Transformer<>(createGraphFactory());
 		Map<EObject, Element> graph = graphFactory.transform(sources, false, progressMonitor);
 		
-		NopEndpointProcessorConfigFactory<WidgetFactory> configFactory = new NopEndpointProcessorConfigFactory<>() {
-			
-			@Override
-			protected boolean isPassThrough(Connection connection) {
-				return false;
-			}
-			
-		};				
+		Object configFactory = createConfigFactory();				
 		
 		Transformer<Element,ProcessorConfig> processorConfigTransformer = new Transformer<>(configFactory);				
 		Map<Element, ProcessorConfig> configs = processorConfigTransformer.transform(graph.values(), false, progressMonitor);
 		
-		EObjectNodeProcessorReflectiveFactory<WidgetFactory, WidgetFactory> eObjectNodeProcessorReflectiveFactory = new EObjectNodeProcessorReflectiveFactory<>(nodeProcessorFactory);
-		EObjectReflectiveProcessorFactoryProvider eObjectReflectiveProcessorFactoryProvider = new EObjectReflectiveProcessorFactoryProvider(eObjectNodeProcessorReflectiveFactory);
+		Object reflectiveFactory = createReflectiveFactory();
+		ReflectiveProcessorFactoryProvider<Object, WidgetFactory, WidgetFactory> eObjectReflectiveProcessorFactoryProvider = createReflectiveFactoryProvider(reflectiveFactory);
 		Map<Element, ProcessorInfo<Object>> registry = eObjectReflectiveProcessorFactoryProvider.getFactory().createProcessors(configs.values(), false, progressMonitor);
 		
 		if (references != null) {
@@ -154,6 +154,29 @@ public final class Util {
 		return ret;
 	}
 
+	protected EObjectReflectiveProcessorFactoryProvider createReflectiveFactoryProvider(Object reflectiveFactory) {
+		return new EObjectReflectiveProcessorFactoryProvider(reflectiveFactory);
+	}
+
+	protected EObjectNodeProcessorReflectiveFactory<Object, Object> createReflectiveFactory() {
+		return new EObjectNodeProcessorReflectiveFactory<>(nodeProcessorFactory);
+	}
+
+	protected Object createConfigFactory() {
+		return new NopEndpointProcessorConfigFactory<>() {
+			
+			@Override
+			protected boolean isPassThrough(Connection connection) {
+				return false;
+			}
+			
+		};
+	}
+
+	protected Object createGraphFactory() {
+		return new EObjectGraphFactory();
+	}
+
 	/**
 	 * Calls generateActionModel() and saves the returned label map to a resource at the provided URI
 	 * @param sources
@@ -165,20 +188,12 @@ public final class Util {
 	 * @param progressMonitor
 	 * @throws IOException
 	 */
-	public static void generateActionModel(
-			Collection<? extends EObject> sources,
-			Object nodeProcessorFactory,
-			Collection<? extends EObject> references,
-			Function<? super EObject, URI> uriResolver,
+	public void generateActionModel(
 			Consumer<Diagnostic> diagnosticConsumer,
 			URI actionModelResourceURI,
 			ProgressMonitor progressMonitor) throws IOException {
 	
 		Map<EObject, Collection<Label>> labelMap = generateActionModel(
-				sources, 
-				nodeProcessorFactory, 
-				references, 
-				uriResolver, 
 				diagnosticConsumer, 
 				progressMonitor);
 		
@@ -210,204 +225,14 @@ public final class Util {
 	 * @param progressMonitor
 	 * @throws IOException
 	 */
-	public static void generateActionModel(
-			Collection<? extends EObject> sources,
-			Object nodeProcessorFactory,
-			Collection<? extends EObject> references,
-			Function<? super EObject, URI> uriResolver,
+	public void generateActionModel(
 			Consumer<Diagnostic> diagnosticConsumer,
 			File actionModelFile,
 			ProgressMonitor progressMonitor) throws IOException {
 		
 		generateActionModel(
-				sources, 
-				nodeProcessorFactory, 
-				references, 
-				uriResolver, 
 				diagnosticConsumer, 
 				URI.createFileURI(actionModelFile.getCanonicalFile().getAbsolutePath()), progressMonitor);
-	}
-	
-	// --- Single source and base URI ---	
-	
-	/**
-	 * Generates actions for a single source with a baseURI
-	 * @param source
-	 * @param baseURI Base URI. Can be null. If null, a random URI is generated. Use base URI if you want to generate relative links to referenced objects. 
-	 * @param nodeProcessorFactory
-	 * @param references
-	 * @param diagnosticConsumer
-	 * @param progressMonitor
-	 * @return
-	 */
-	public static Map<EObject,Collection<Label>> generateActionModel(
-			EObject source,
-			URI baseURI,
-			Object nodeProcessorFactory,
-			Map<? extends EObject, URI> references,
-			Consumer<Diagnostic> diagnosticConsumer,
-			ProgressMonitor progressMonitor) {
-		
-		URI theBaseURI = baseURI == null ? URI.createURI("tmp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/") : baseURI;
-		
-		return generateActionModel(
-				Collections.singleton(source), 
-				nodeProcessorFactory, 
-				references.keySet(), 
-				eObj -> {
-					if (eObj == source) {
-						return theBaseURI;
-					}
-					return references.get(eObj);
-				}, 
-				diagnosticConsumer, 
-				progressMonitor);
-		
-	}
-	
-	/**
-	 * Generates actions for a single source and saves to a resource identified by URI
-	 * @param source
-	 * @param baseURI
-	 * @param nodeProcessorFactory
-	 * @param references
-	 * @param diagnosticConsumer
-	 * @param actionModelResourceURI Resource URI
-	 * @param progressMonitor
-	 * @throws IOException
-	 */
-	public static void generateActionModel(
-			EObject source,
-			URI baseURI,
-			Object nodeProcessorFactory,
-			Map<? extends EObject, URI> references,
-			Consumer<Diagnostic> diagnosticConsumer,
-			URI actionModelResourceURI,
-			ProgressMonitor progressMonitor) throws IOException {
-	
-		Map<EObject, Collection<Label>> labelMap = generateActionModel(
-				source,
-				baseURI,
-				nodeProcessorFactory, 
-				references, 
-				diagnosticConsumer, 
-				progressMonitor);
-		
-		saveLabelMap(labelMap, actionModelResourceURI);
-	}
-	
-	/**
-	 * Generates actions for a single source and saves to a file
-	 * @param source
-	 * @param baseURI
-	 * @param nodeProcessorFactory
-	 * @param references
-	 * @param diagnosticConsumer
-	 * @param actionModelFile
-	 * @param progressMonitor
-	 * @throws IOException
-	 */
-	public static void generateActionModel(
-			EObject source,
-			URI baseURI,
-			Object nodeProcessorFactory,
-			Map<? extends EObject, URI> references,
-			Consumer<Diagnostic> diagnosticConsumer,
-			File actionModelFile,
-			ProgressMonitor progressMonitor) throws IOException {
-		
-		generateActionModel(
-				source,
-				baseURI,
-				nodeProcessorFactory, 
-				references, 
-				diagnosticConsumer, 
-				URI.createFileURI(actionModelFile.getCanonicalFile().getAbsolutePath()), progressMonitor);
-	}
-	
-	
-	// --- Single source ---	
-	
-	/**
-	 * Generates actions for a single source with a random base URI.
-	 * @param source
-	 * @param nodeProcessorFactory
-	 * @param references
-	 * @param diagnosticConsumer
-	 * @param progressMonitor
-	 * @return
-	 */
-	public static Map<EObject,Collection<Label>> generateActionModel(
-			EObject source,
-			Object nodeProcessorFactory,
-			Map<? extends EObject, URI> references,
-			Consumer<Diagnostic> diagnosticConsumer,
-			ProgressMonitor progressMonitor) {
-		
-		return generateActionModel(
-				source, 
-				null,
-				nodeProcessorFactory, 
-				references, 
-				diagnosticConsumer,
-				progressMonitor);
-		
-	}	
-
-	/**
-	 * 	 * Generates actions for a single source with a random base URI and saves to a resource at provided URI.
-	 * @param source
-	 * @param nodeProcessorFactory
-	 * @param references
-	 * @param diagnosticConsumer
-	 * @param actionModelResourceURI Action resource URI
-	 * @param progressMonitor
-	 * @throws IOException
-	 */
-	public static void generateActionModel(
-			EObject source,
-			Object nodeProcessorFactory,
-			Map<? extends EObject, URI> references,
-			Consumer<Diagnostic> diagnosticConsumer,
-			URI actionModelResourceURI,
-			ProgressMonitor progressMonitor) throws IOException {
-	
-		generateActionModel(
-				source,
-				null,
-				nodeProcessorFactory, 
-				references, 
-				diagnosticConsumer,
-				actionModelResourceURI,
-				progressMonitor);
-	}
-
-	/**
-	 * Generates actions for a single source with a random base URI and saves to a file.
-	 * @param source
-	 * @param nodeProcessorFactory
-	 * @param references
-	 * @param diagnosticConsumer
-	 * @param actionModelFile
-	 * @param progressMonitor
-	 * @throws IOException
-	 */
-	public static void generateActionModel(
-			EObject source,
-			Object nodeProcessorFactory,
-			Map<? extends EObject, URI> references,
-			Consumer<Diagnostic> diagnosticConsumer,
-			File actionModelFile,
-			ProgressMonitor progressMonitor) throws IOException {
-		
-		generateActionModel(
-				source,
-				null,
-				nodeProcessorFactory, 
-				references, 
-				diagnosticConsumer, 
-				URI.createFileURI(actionModelFile.getCanonicalFile().getAbsolutePath()), 
-				progressMonitor);
 	}
 		
 }
