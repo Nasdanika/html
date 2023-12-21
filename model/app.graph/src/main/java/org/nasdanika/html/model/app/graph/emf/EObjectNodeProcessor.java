@@ -249,15 +249,9 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 	 * @param imageRepr
 	 */
 	protected String getImageRepresentationIcon(String imageRepr) {
-		if ((imageRepr.toLowerCase().startsWith("http://") || imageRepr.toLowerCase().startsWith("https://")) && imageRepr.toLowerCase().endsWith(".svg")) {
-			// No need to scale SVG
-			return rewriteImageRepresentation(imageRepr);
-		}
-		
 		if (isScaleImageRepresentationToIcon()) {
-			
 			try {
-				return Util.scaleImageToPNG(rewriteImageRepresentation(imageRepr), getIconSize());
+				return Util.scaleImage(rewriteImageRepresentation(imageRepr), getIconSize());
 			} catch (IOException e) {
 				throw new NasdanikaException("Could not scale image: " + e, e);
 			}
