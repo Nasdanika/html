@@ -374,7 +374,12 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 			.entrySet()
 			.stream()
 			.sorted((a, b) -> compareOutgoingReferences(a.getKey(), b.getKey()))
-			.map(e -> createOutgoingReferenceLabelConsumer(e.getKey(), e.getValue()))
+			.map(e -> createOutgoingReferenceLabelConsumer(
+					e.getKey(), 
+					e.getValue()
+						.stream()
+						.sorted((a,b) -> a.getKey().compareTo(b.getKey()))
+						.toList()))
 			.filter(Objects::nonNull)
 			.forEach(ret::add);
 		
@@ -383,7 +388,12 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 			.entrySet()
 			.stream()
 			.sorted((a, b) -> compareIncomingReferences(a.getKey(), b.getKey()))
-			.map(e -> createIncomingReferenceLabelConsumer(e.getKey(), e.getValue()))
+			.map(e -> createIncomingReferenceLabelConsumer(
+					e.getKey(), 
+					e.getValue()
+						.stream()
+						.sorted((a,b) -> a.getKey().compareTo(b.getKey()))
+						.toList()))
 			.filter(Objects::nonNull)
 			.forEach(ret::add);
 		
