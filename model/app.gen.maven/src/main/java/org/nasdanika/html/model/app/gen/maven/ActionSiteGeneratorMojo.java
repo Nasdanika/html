@@ -18,6 +18,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.emf.common.util.DiagnosticException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.DiagramGeneratorImpl;
@@ -30,6 +31,7 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.gen.ActionSiteGenerator;
 import org.nasdanika.html.model.app.gen.SiteGeneratorContributor;
+import org.nasdanika.html.model.app.util.AppDrawioResourceFactory;
 import org.nasdanika.maven.AbstractCommandMojo;
 import org.nasdanika.ncore.util.SemanticInfo;
 import org.nasdanika.ncore.util.SemanticRegistry;
@@ -40,6 +42,13 @@ import org.nasdanika.ncore.util.SemanticRegistry;
 @Mojo(name = "generate-action-site", defaultPhase = LifecyclePhase.SITE)
 public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 
+	/**
+	 * Register AppDrawioResourceFactory instead DrawioResourceFactory 
+	 */
+	@Parameter(defaultValue = "true")	
+	private boolean appDrawioFactory;
+	
+	
 	/**
 	 * Directory to output generated site
 	 */
@@ -177,6 +186,15 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 			
 			{
 				this.parallel = ActionSiteGeneratorMojo.this.parallel;
+			}
+			
+			@Override
+			protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
+				ResourceSet resourceSet = super.createResourceSet(context, progressMonitor);
+				if (appDrawioFactory) {
+					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("drawio", new AppDrawioResourceFactory(uri -> resourceSet.getEObject(uri, true)));
+				}
+				return resourceSet;
 			}
 			
 			@Override
