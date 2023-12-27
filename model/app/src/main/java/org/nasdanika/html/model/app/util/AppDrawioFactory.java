@@ -100,5 +100,10 @@ public abstract class AppDrawioFactory extends DocLoadingDrawioFactory<EObject> 
 			super.setTooltip(semanticElement, tooltip);
 		}
 	}		
+	
+	@Override
+	protected String getSemanticUUIDPropertyName() {
+		return "action-uuid";
+	}
 		
 }
