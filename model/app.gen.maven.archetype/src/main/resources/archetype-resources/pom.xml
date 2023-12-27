@@ -10,7 +10,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>4.0.0-M9</version>
+				<version>4.0.0-M13</version>
 				<configuration>
 					<skip>true</skip>
 					<skipDeploy>true</skipDeploy>
@@ -19,7 +19,7 @@
 			<plugin>
 				<groupId>org.nasdanika.html</groupId>
 				<artifactId>site-generator-maven-plugin</artifactId>
-				<version>2023.12.0</version>
+				<version>2023.12.1</version>
 				<executions>
 					<execution>
 						<goals>

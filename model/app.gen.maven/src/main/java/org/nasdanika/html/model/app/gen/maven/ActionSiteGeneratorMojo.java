@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -35,6 +36,9 @@ import org.nasdanika.html.model.app.util.AppDrawioResourceFactory;
 import org.nasdanika.maven.AbstractCommandMojo;
 import org.nasdanika.ncore.util.SemanticInfo;
 import org.nasdanika.ncore.util.SemanticRegistry;
+
+import io.github.azagniotov.matcher.AntPathMatcher;
+import io.github.azagniotov.matcher.AntPathMatcher.Builder;
 
 /**
  * Generates action site.
@@ -110,6 +114,12 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 	 */
     @Parameter
     private List<SiteGeneratorContributor> contributors;
+    
+	/**
+	 * Files to keep in the output directory.
+	 */
+    @Parameter
+    private List<String> outputCleanExcludes;    
         
     /**
      * URL's of JSON resources with information about external semantic elements. Such JSON resources are created as part of site generation. 
@@ -164,6 +174,20 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 			throw new NasdanikaException(ex);
 		}
 	}
+	
+	protected boolean isDeleteOutputPath(String path) {
+		if (outputCleanExcludes != null) {
+			Builder builder = new AntPathMatcher.Builder();
+			AntPathMatcher matcher = builder.build();
+			for (String exclude: outputCleanExcludes) {
+				if (matcher.isMatch(exclude, path)) {
+					return false;
+				}
+			}			
+		}		
+		
+		return true;
+	}
 
 	protected ActionSiteGenerator createActionSiteGenerator(Context context, ProgressMonitor progressMonitor) {				
 		File baseDir = project.getBasedir();
@@ -183,6 +207,11 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 		}
 		
 		return new ActionSiteGenerator() {
+			
+			@Override
+			protected boolean isDeleteOutputPath(String path) {
+				return ActionSiteGeneratorMojo.this.isDeleteOutputPath(path);
+			}
 			
 			{
 				this.parallel = ActionSiteGeneratorMojo.this.parallel;
