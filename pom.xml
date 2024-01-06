@@ -179,8 +179,6 @@
 		<module>model/app.graph</module>
 		<module>model/app.gen.maven</module>
 		<module>model/app.gen.maven.archetype</module>
-
-		<module>ecore</module>
 	</modules>	
 
 	<distributionManagement>
