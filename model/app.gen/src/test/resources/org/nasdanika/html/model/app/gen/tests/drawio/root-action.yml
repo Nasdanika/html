@@ -1,0 +1,18 @@
+location: ${base-uri}index.html
+icon: https://docs.nasdanika.org/images/nasdanika-logo.png
+children:
+  - Action:
+      location: ${base-uri}search.html
+      icon: fas fa-search
+      text: Search
+      content:
+        Interpolator:
+          source:
+            content.Resource: classpath://org/nasdanika/html/model/app/gen/search.html
+  - Action:
+      location: ${base-uri}glossary.html
+      text: Glossary
+      content:
+        Interpolator:
+          source:
+            content.Resource: classpath://org/nasdanika/html/model/app/gen/semantic-info.html

@@ -68,4 +68,34 @@ public class TestActionSiteGenerator {
 //		}		
 	}
 
+	
+	@Test
+	public void testDrawioActionSiteGenerator() throws IOException, DiagnosticException {
+		ActionSiteGenerator actionSiteGenerator = new ActionSiteGenerator();		
+		URI rootActionURI = URI.createURI(getClass().getResource("drawio/actions.drawio").toString()).appendFragment("/");
+		URI pageTemplateURI = URI.createURI(getClass().getResource("drawio/page-template.yml").toString());
+		Map<String, Collection<String>> errors = actionSiteGenerator.generate(
+				rootActionURI, 
+				pageTemplateURI, 
+				"https://nasdanika.org", 
+				new File("target/drawio-action-site-generator"), 
+				new File("target/drawio-action-site-generator-work-dir"), 
+				false);
+				
+		int errorCount = 0;
+		for (Entry<String, Collection<String>> ee: errors.entrySet()) {
+			System.err.println(ee.getKey());
+			for (String error: ee.getValue()) {
+				System.err.println("\t" + error);
+				++errorCount;
+			}
+		}
+		
+		System.out.println("There are " + errorCount + " site errors");
+		
+//		if (!errors.isEmpty()) {
+//			fail("There are problems with pages: " + errorCount);
+//		}		
+	}
+	
 }

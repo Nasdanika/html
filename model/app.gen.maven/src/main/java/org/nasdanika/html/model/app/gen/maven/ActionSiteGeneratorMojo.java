@@ -45,13 +45,6 @@ import io.github.azagniotov.matcher.AntPathMatcher.Builder;
  */
 @Mojo(name = "generate-action-site", defaultPhase = LifecyclePhase.SITE)
 public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
-
-	/**
-	 * Register AppDrawioResourceFactory instead DrawioResourceFactory 
-	 */
-	@Parameter(defaultValue = "true")	
-	private boolean appDrawioFactory;
-	
 	
 	/**
 	 * Directory to output generated site
@@ -215,15 +208,6 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 			
 			{
 				this.parallel = ActionSiteGeneratorMojo.this.parallel;
-			}
-			
-			@Override
-			protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
-				ResourceSet resourceSet = super.createResourceSet(context, progressMonitor);
-				if (appDrawioFactory) {
-					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("drawio", new AppDrawioResourceFactory(uri -> resourceSet.getEObject(uri, true)));
-				}
-				return resourceSet;
 			}
 			
 			@Override

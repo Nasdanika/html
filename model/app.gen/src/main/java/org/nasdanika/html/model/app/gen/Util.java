@@ -62,7 +62,6 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.drawio.ConnectionBase;
 import org.nasdanika.drawio.ModelElement;
-import org.nasdanika.drawio.emf.DrawioResourceFactory;
 import org.nasdanika.emf.EObjectAdaptable;
 import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.emf.persistence.GitMarkerFactory;
@@ -93,6 +92,7 @@ import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.NavigationBar;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.SectionStyle;
+import org.nasdanika.html.model.app.util.AppDrawioResourceFactory;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.BootstrapPackage;
 import org.nasdanika.html.model.bootstrap.Item;
@@ -1335,7 +1335,7 @@ public final class Util {
 		extensionToFactoryMap.put("json", objectLoaderResourceFactory);
 		resourceSet.getResourceFactoryRegistry().getProtocolToFactoryMap().put("data", objectLoaderResourceFactory);
 		
-		DrawioResourceFactory drawioResourceFactory = new DrawioResourceFactory();
+		AppDrawioResourceFactory drawioResourceFactory = new AppDrawioResourceFactory(uri -> resourceSet.getEObject(uri, true));
 		extensionToFactoryMap.put("drawio", drawioResourceFactory);		
 
 		// For handling textual representations
