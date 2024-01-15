@@ -1,5 +1,6 @@
 package org.nasdanika.html.bootstrap;
 
+import org.eclipse.emf.common.util.URI;
 import org.nasdanika.html.HTMLPage;
 
 /**
@@ -64,6 +65,11 @@ public enum Theme {
 	public final String stylesheetCdnURL;
 	
 	/**
+	 * CDN location of theme page template.
+	 */
+	public final URI pageTemplateCdnURI;
+	
+	/**
 	 * Adds CDN stylesheet declaration to the page.
 	 * @param page
 	 * @return
@@ -74,9 +80,15 @@ public enum Theme {
 	}
 	private Theme() {
 		stylesheetCdnURL = "https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/"+name().toLowerCase()+"/bootstrap.min.css";
+		pageTemplateCdnURI = URI.createURI("https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/page-templates/"+name().toLowerCase()+".yml");
 	}
 	
 	private Theme(String stylesheetCdnURL) {
 		this.stylesheetCdnURL = stylesheetCdnURL;
+		pageTemplateCdnURI = URI.createURI("https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/page-templates/"+name().toLowerCase()+".yml");
 	}
+	
+	
+	
+	
 }
