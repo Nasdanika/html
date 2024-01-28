@@ -71,7 +71,7 @@ public class AppDrawioResource extends ResourceImpl {
 			}
 			
 			@Override
-			protected boolean isRefIProxydURI() {
+			protected boolean isRefIdProxydURI() {
 				return true;
 			}
 			
