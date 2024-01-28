@@ -7,8 +7,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.common.Util;
 import org.nasdanika.exec.ExecPackage;
-import org.nasdanika.exec.content.ContentPackage;
-import org.nasdanika.exec.resources.ResourcesPackage;
 import org.nasdanika.exec.util.DocLoadingDrawioFactory;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
@@ -31,8 +29,6 @@ public abstract class AppDrawioFactory extends DocLoadingDrawioFactory<EObject> 
 		ret.put("app",  AppPackage.eINSTANCE);
 		ret.put("bootstraph",  BootstrapPackage.eINSTANCE);
 		ret.put("html",  HtmlPackage.eINSTANCE);
-		ret.put("content", ContentPackage.eINSTANCE);
-		ret.put("resources", ResourcesPackage.eINSTANCE);
 		ret.put("exec",  ExecPackage.eINSTANCE);		
 		ret.put("ncore", NcorePackage.eINSTANCE);
 		return ret;
