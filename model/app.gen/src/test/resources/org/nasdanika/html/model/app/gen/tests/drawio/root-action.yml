@@ -8,11 +8,11 @@ children:
       content:
         Interpolator:
           source:
-            content.Resource: classpath://org/nasdanika/html/model/app/gen/search.html
+            exec.content.Resource: classpath://org/nasdanika/html/model/app/gen/search.html
   - Action:
       location: ${base-uri}glossary.html
       text: Glossary
       content:
         Interpolator:
           source:
-            content.Resource: classpath://org/nasdanika/html/model/app/gen/semantic-info.html
+            exec.content.Resource: classpath://org/nasdanika/html/model/app/gen/semantic-info.html
