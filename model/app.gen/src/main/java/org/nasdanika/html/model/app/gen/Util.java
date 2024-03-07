@@ -552,7 +552,7 @@ public final class Util {
 		List<URI> actionURIs = NcoreUtil.getIdentifiers(action);
 		if (!actionURIs.isEmpty()) {
 			String urisStr = String.join(" ", actionURIs.stream().map(Object::toString).toList());
-			contentPanel.getAttributes().put("data-nsd-action-uris", NcoreUtil.wrapString(urisStr));
+			contentPanel.getAttributes().put("data-nsd-action-uris", org.nasdanika.ncore.String.wrap(urisStr));
 		}
 	}
 	
