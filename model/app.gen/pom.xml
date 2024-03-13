@@ -4,7 +4,7 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2024.1.0</version>
+	    <version>2024.3.0</version>
 	    <relativePath>../..</relativePath>
 	  </parent>
 	<artifactId>app-model-gen</artifactId>
@@ -43,22 +43,22 @@
 			<version>${core.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.nasdanika.html</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>app-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
 		<dependency>
-			<groupId>org.nasdanika.html</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>bootstrap-model-gen</artifactId>
 			<version>${core.version}</version>
 		</dependency>	
 		<dependency>
-			<groupId>org.nasdanika.html</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>jstree</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
 		<dependency>
-			<groupId>org.nasdanika.html</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>emf</artifactId>
 			<version>${project.version}</version>
 		</dependency>	

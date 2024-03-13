@@ -4,7 +4,7 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2024.1.0</version>
+	    <version>2024.3.0</version>
 	    <relativePath>../..</relativePath>
 	  </parent>
 	<artifactId>html-model-gen</artifactId>
@@ -38,12 +38,12 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>org.nasdanika.html</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>html-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
 		<dependency>
-			<groupId>org.nasdanika.html</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>html</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
