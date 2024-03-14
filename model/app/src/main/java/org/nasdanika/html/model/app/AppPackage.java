@@ -27,7 +27,6 @@ import org.nasdanika.ncore.NcorePackage;
  * <!-- end-user-doc -->
  * @see org.nasdanika.html.model.app.AppFactory
  * @model kind="package"
- *        annotation="urn:org.nasdanika documentation-reference='doc/package-summary.md'"
  * @generated
  */
 public interface AppPackage extends EPackage {

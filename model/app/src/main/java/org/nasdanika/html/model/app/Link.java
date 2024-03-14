@@ -34,13 +34,6 @@ public interface Link extends Label {
 	 * Returns the value of the '<em><b>Location</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Link URL relative to the ancestor URL or ``base-uri``.
-	 * 
-	 * ``${{{{base-uri}}}}`` token can be used in the activator to define the uri relative to the base generation URI (output folder) instead of the parent URI. 
-	 * It might be useful it the parent URI is an absolute external URI.
-	 * ``${{{{base-uri}}}}`` ends with a slash, so there is no need to add a slash. E.g. ``${{{{base-uri}}}}index.html``.
-	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Location</em>' attribute.
 	 * @see #setLocation(String)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Location()
@@ -63,9 +56,6 @@ public interface Link extends Label {
 	 * Returns the value of the '<em><b>Script</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Script to execute on link click (activation).
-	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Script</em>' attribute.
 	 * @see #setScript(String)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Script()
@@ -88,9 +78,6 @@ public interface Link extends Label {
 	 * Returns the value of the '<em><b>Modal</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Modal which opens on link activation.
-	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Modal</em>' containment reference.
 	 * @see #setModal(Modal)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Modal()
@@ -114,9 +101,6 @@ public interface Link extends Label {
 	 * Returns the value of the '<em><b>Confirmation</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Confirmation to display in a confirmation dialog before action activation to give the user an opportunity to cancel the action. E.g. confirmation of deletion.
-	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Confirmation</em>' attribute.
 	 * @see #setConfirmation(String)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Confirmation()
@@ -139,9 +123,6 @@ public interface Link extends Label {
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Link name attribute if not blank for referencing sections.
-	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Name()
@@ -164,9 +145,6 @@ public interface Link extends Label {
 	 * Returns the value of the '<em><b>Target</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Link target
-	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Target</em>' attribute.
 	 * @see #setTarget(String)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Target()
@@ -189,9 +167,6 @@ public interface Link extends Label {
 	 * Returns the value of the '<em><b>Action</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * Link to an action.
-	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Action</em>' reference.
 	 * @see #setAction(Action)
 	 * @see org.nasdanika.html.model.app.AppPackage#getLink_Action()
