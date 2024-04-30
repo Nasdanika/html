@@ -27,6 +27,8 @@ import picocli.CommandLine.Parameters;
 
 @Command(
 		description = "Generates HTML site",
+		versionProvider = ModuleVersionProvider.class,		
+		mixinStandardHelpOptions = true,
 		name = "site")
 public class SiteCommand extends DelegatingCommand {
 		

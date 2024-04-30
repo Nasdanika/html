@@ -46,10 +46,5 @@
 			<artifactId>app-model-gen</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.nasdanika.core</groupId>
-			<artifactId>capability</artifactId>
-			<version>2024.4.0</version>
-		</dependency>
 	</dependencies>
 </project>
