@@ -41,7 +41,7 @@ public class SiteCommand extends DelegatingCommand {
 	private String model;
 	
 	@Parameters(index =  "1", description = "Output directory")
-		private String output;
+	private String output;
 		
 	@Option(
 			names = {"-e", "--exclude"},
