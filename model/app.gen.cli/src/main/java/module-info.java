@@ -1,14 +1,20 @@
 import org.nasdanika.capability.CapabilityFactory;
+import org.nasdanika.html.model.app.gen.cli.ActionHelpMixInFactory;
 import org.nasdanika.html.model.app.gen.cli.AppCommandFactory;
+import org.nasdanika.html.model.app.gen.cli.HelpSiteCommandFactory;
 
 module org.nasdanika.html.model.app.gen.cli {
 
-	requires org.nasdanika.html.model.app.gen;		
-	requires org.nasdanika.cli;
+	requires transitive org.nasdanika.html.model.app.gen;		
+	requires transitive org.nasdanika.cli;
 	requires spring.core;
+	requires org.eclipse.emf.ecore.xmi;
 	
 	opens org.nasdanika.html.model.app.gen.cli to info.picocli;
 	
-	provides CapabilityFactory with AppCommandFactory;
+	provides CapabilityFactory with 
+		AppCommandFactory, 
+		HelpSiteCommandFactory,
+		ActionHelpMixInFactory;
 
 }
