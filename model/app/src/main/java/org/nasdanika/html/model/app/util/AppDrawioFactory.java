@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Util;
 import org.nasdanika.exec.ExecPackage;
 import org.nasdanika.exec.util.DocLoadingDrawioFactory;
@@ -23,6 +24,10 @@ import org.nasdanika.ncore.NcorePackage;
  */
 public abstract class AppDrawioFactory extends DocLoadingDrawioFactory<EObject> {
 	
+	public AppDrawioFactory(ResourceSet resourceSet) {
+		super(resourceSet);
+	}
+
 	@Override
 	protected Map<String, EPackage> getEPackages() {
 		Map<String, EPackage> ret = new LinkedHashMap<>();

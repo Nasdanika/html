@@ -26,7 +26,7 @@ import org.nasdanika.persistence.Marker;
 /**
  * Loads Drawio model using {@link DrawioResource} and then transforms it to the graph model.
  */
-public class AppDrawioResource extends ResourceImpl {
+public abstract class AppDrawioResource extends ResourceImpl {
 		
 	protected Function<URI,EObject> uriResolver;
 	
@@ -63,7 +63,7 @@ public class AppDrawioResource extends ResourceImpl {
 		
 		diagramResource.load(inputStream, options);
 		
-		AppDrawioFactory appDrawioFactory = new AppDrawioFactory() {
+		AppDrawioFactory appDrawioFactory = new AppDrawioFactory(getResourceSet()) {
 
 			@Override
 			protected EObject getByRefId(EObject eObj, String refId, int pass, Map<EObject, EObject> registry) {				
@@ -182,5 +182,5 @@ public class AppDrawioResource extends ResourceImpl {
 	protected Iterable<Entry<String, Object>> getVariables(EObject context) {
 		return Collections.emptySet();
 	}
-	
+		
 }
