@@ -8,7 +8,7 @@ import org.nasdanika.common.ProgressMonitor;
 
 import picocli.CommandLine;
 
-public class ActionHelpMixInFactory extends MixInCapabilityFactory {
+public class ActionHelpMixInFactory extends MixInCapabilityFactory<ActionHelpMixIn> {
 
 	@Override
 	protected String getName() {
@@ -16,7 +16,7 @@ public class ActionHelpMixInFactory extends MixInCapabilityFactory {
 	}
 
 	@Override
-	protected Object createMixIn(List<CommandLine> commandPath, ProgressMonitor progressMonitor) {
+	protected ActionHelpMixIn doCreateMixIn(List<CommandLine> commandPath, ProgressMonitor progressMonitor) {
 		if (commandPath != null && commandPath.size() > 1) {
 			Object userObj = commandPath.get(commandPath.size() - 1).getCommandSpec().userObject();
 			if (userObj instanceof HelpCommand) {
@@ -24,6 +24,11 @@ public class ActionHelpMixInFactory extends MixInCapabilityFactory {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	protected Class<ActionHelpMixIn> getMixInType() {
+		return ActionHelpMixIn.class;
 	}
 
 }

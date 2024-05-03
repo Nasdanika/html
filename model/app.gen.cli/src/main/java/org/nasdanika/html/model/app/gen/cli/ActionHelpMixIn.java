@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.nasdanika.cli.Description;
 import org.nasdanika.cli.HelpCommand;
+import org.nasdanika.cli.ParentCommands;
 import org.nasdanika.common.DefaultConverter;
 import org.nasdanika.common.MarkdownHelper;
 import org.nasdanika.common.Util;
@@ -27,6 +28,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
 
+@ParentCommands(HelpCommand.class)
 public class ActionHelpMixIn implements HelpCommand.OutputFormatMixIn {
 	
 	private CommandLine rootCommand;

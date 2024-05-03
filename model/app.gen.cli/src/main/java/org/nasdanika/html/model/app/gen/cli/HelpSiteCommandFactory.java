@@ -11,11 +11,10 @@ import picocli.CommandLine;
 /**
  * Sub-command for the help command to generate help site.
  */
-public class HelpSiteCommandFactory extends SubCommandCapabilityFactory {
-
+public class HelpSiteCommandFactory extends SubCommandCapabilityFactory<HelpSiteCommand> {
 
 	@Override
-	protected Object createCommand(List<CommandLine> parentPath, ProgressMonitor progressMonitor) {
+	protected HelpSiteCommand createCommand(List<CommandLine> parentPath, ProgressMonitor progressMonitor) {
 		if (parentPath != null && parentPath.size() > 1) {
 			Object userObj = parentPath.get(parentPath.size() - 1).getCommandSpec().userObject();
 			if (userObj instanceof HelpCommand) {
@@ -23,6 +22,11 @@ public class HelpSiteCommandFactory extends SubCommandCapabilityFactory {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	protected Class<HelpSiteCommand> getCommandType() {
+		return HelpSiteCommand.class;
 	}
 
 }
