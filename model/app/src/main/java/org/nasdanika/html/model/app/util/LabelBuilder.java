@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import org.nasdanika.common.Composeable;
+import org.nasdanika.common.Composable;
 import org.nasdanika.common.CompoundExecutionParticipant;
 import org.nasdanika.common.ExecutionParticipant;
 import org.nasdanika.common.FilterExecutionParticipant;
@@ -18,7 +18,7 @@ import org.nasdanika.html.model.app.util.LabelProvider.Resolver;
  * @author Pavel
  *
  */
-public interface LabelBuilder extends ExecutionParticipant, Composeable<LabelBuilder> {
+public interface LabelBuilder extends ExecutionParticipant, Composable<LabelBuilder> {
 		
 	Label build(Label label, Consumer<Resolver> resolverCollector, ProgressMonitor progressMonitor);
 		

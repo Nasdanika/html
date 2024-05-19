@@ -2,7 +2,7 @@ package org.nasdanika.html.emf;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.nasdanika.common.Composeable;
+import org.nasdanika.common.Composable;
 import org.nasdanika.common.Context;
 import org.nasdanika.drawio.Document;
 import org.nasdanika.html.model.app.Action;
@@ -16,7 +16,7 @@ import org.nasdanika.ncore.ModelElement;
  * @author Pavel
  *
  */
-public interface ResolutionListener extends Composeable<ResolutionListener> {
+public interface ResolutionListener extends Composable<ResolutionListener> {
 
 	/**
 	 * Called on resolution of "target-uri" property of a diagram element.

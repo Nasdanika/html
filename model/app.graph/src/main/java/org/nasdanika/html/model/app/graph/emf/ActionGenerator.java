@@ -33,7 +33,7 @@ import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 /**
- * Base class for action generation using node processor fatory
+ * Base class for action generation using node processor factory
  * @param <F> Node processor factory type.
  */
 public class ActionGenerator<F> {
