@@ -39,14 +39,14 @@ public class HtmlAdapterFactory extends ExecutionParticpantAdapterFactory {
 				new FunctionAdapterFactory<SupplierFactory<org.nasdanika.html.Tag>, Script>(
 					HtmlPackage.Literals.SCRIPT, 
 					Util.getSupplierFactoryClass(org.nasdanika.html.Tag.class), 
-					this.getClass().getClassLoader(), 
+					classLoader, 
 					ScriptSupplierFactoryAdapter::new));
 		
 		registerAdapterFactory(
 				new FunctionAdapterFactory<SupplierFactory<InputStream>, org.nasdanika.ncore.List>(
 					NcorePackage.Literals.LIST, 
 					Util.getSupplierFactoryClass(InputStream.class), 
-					this.getClass().getClassLoader(), 
+					classLoader, 
 					ListSupplierFactoryAdapter::new));		
 				
 	}

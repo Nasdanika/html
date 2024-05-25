@@ -30,7 +30,7 @@ public class ActionProviderAdapterFactory extends ComposedAdapterFactory {
 			new FunctionAdapterFactory<ActionProvider, Temporal>(
 				NcorePackage.Literals.TEMPORAL, 
 				ActionProvider.class, 
-				this.getClass().getClassLoader(), 
+				Thread.currentThread().getContextClassLoader(), 
 				e -> new TemporalActionBuilder(e, context) {
 					
 					@Override
@@ -44,7 +44,7 @@ public class ActionProviderAdapterFactory extends ComposedAdapterFactory {
 				new FunctionAdapterFactory<ActionProvider, Composite>(
 					NcorePackage.Literals.COMPOSITE, 
 					ActionProvider.class, 
-					this.getClass().getClassLoader(), 
+					Thread.currentThread().getContextClassLoader(), 
 					e -> new CompositeActionBuilder<Composite>(e, context) {
 						
 						@Override
