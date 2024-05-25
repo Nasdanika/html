@@ -4,18 +4,31 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.nasdanika.capability.CapabilityLoader;
+import org.nasdanika.capability.CapabilityProvider;
+import org.nasdanika.capability.ServiceCapabilityFactory;
+import org.nasdanika.capability.ServiceCapabilityFactory.Requirement;
+import org.nasdanika.capability.emf.EPackageResourceSetContributor;
+import org.nasdanika.capability.emf.ResourceSetContributor;
+import org.nasdanika.common.Context;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Transformer;
@@ -28,6 +41,7 @@ import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.graph.processor.ReflectiveProcessorFactoryProvider;
 import org.nasdanika.graph.processor.emf.EObjectNodeProcessorReflectiveFactory;
+import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
@@ -36,23 +50,110 @@ import org.nasdanika.html.model.app.graph.WidgetFactory;
  * Base class for action generation using node processor factory
  * @param <F> Node processor factory type.
  */
-public class ActionGenerator<F> {
+public class ActionGenerator {
 	
 	protected Collection<? extends EObject> sources;
-	protected F nodeProcessorFactory;
+	protected Object[] nodeProcessorFactories;
 	protected Collection<? extends EObject> references;
 	protected Function<? super EObject, URI> uriResolver;
 	
 	public ActionGenerator(
 			Collection<? extends EObject> sources,
-			F nodeProcessorFactory, 
 			Collection<? extends EObject> references,
-			Function<? super EObject, URI> uriResolver) {
+			Function<? super EObject, URI> uriResolver,
+			Object... nodeProcessorFactories) {
 		
 		this.sources = sources;
-		this.nodeProcessorFactory = nodeProcessorFactory;
+		this.nodeProcessorFactories = nodeProcessorFactories;
 		this.references = references;
 		this.uriResolver = uriResolver;
+	}
+	
+	/**
+	 * Loads mapping of {@link EPackage}s to doc URI's and node processor factories from {@link CapabilityLoader}. 
+	 * @param sources
+	 * @param references
+	 * @param capabilityLoader
+	 * @param progressMonitor
+	 * @return
+	 */
+	public static ActionGenerator load(
+			EObject source,
+			Context context, 
+			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider,			
+			Predicate<Object> factoryPredicate,
+			Predicate<EPackage> ePackagePredicate,
+			ProgressMonitor progressMonitor) {
+
+		return load(
+				source,
+				context, 
+				prototypeProvider,
+				factoryPredicate,
+				ePackagePredicate,
+				new CapabilityLoader(),
+				progressMonitor);
+	}	
+	
+	public static record NodeProcessorFactoryRequirement(
+			Predicate<Object> factoryPredicate,
+			Context context, 
+			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {
+		
+	}
+	
+	/**
+	 * Loads mapping of {@link EPackage}s to doc URI's and node processor factories from {@link CapabilityLoader}. 
+	 * @param sources
+	 * @param references
+	 * @param capabilityLoader
+	 * @param progressMonitor
+	 * @return
+	 */
+	public static ActionGenerator load(
+			EObject source,
+			Context context, 
+			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider,			
+			Predicate<Object> factoryPredicate,
+			Predicate<EPackage> ePackagePredicate,
+			CapabilityLoader capabilityLoader, 
+			ProgressMonitor progressMonitor) {
+		
+		Predicate<ResourceSetContributor> contributorPredicate = contributor -> contributor instanceof EPackageResourceSetContributor && (ePackagePredicate == null || ePackagePredicate.test(((EPackageResourceSetContributor) contributor).getEPackage()));		
+		Requirement<Predicate<ResourceSetContributor>, ResourceSetContributor> contributorRequirement = ServiceCapabilityFactory.createRequirement(
+				ResourceSetContributor.class, 
+				null,
+				contributorPredicate);
+
+		Map<EPackage, URI> references = new IdentityHashMap<EPackage, URI>();
+		for (CapabilityProvider<Object> ePackageProvider: capabilityLoader.load(contributorRequirement, progressMonitor)) {
+			ePackageProvider.getPublisher().subscribe(contributor -> {
+				EPackageResourceSetContributor ePackageResourceSetContributor = (EPackageResourceSetContributor) contributor;
+				URI docURI = ePackageResourceSetContributor.getDocumentationURI();
+				if (docURI != null) {
+					references.put(ePackageResourceSetContributor.getEPackage(), docURI);
+				}
+			});
+		}
+		URI baseURI = URI.createURI("tmp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
+		Function<? super EObject, URI> uriResolver = eObj -> {
+			if (eObj == source) {
+				return baseURI;
+			}
+			return references.get(eObj);
+		};
+				
+		List<Object> nodeProcessorFactories = Collections.synchronizedList(new ArrayList<>());
+		NodeProcessorFactoryRequirement requirement = new NodeProcessorFactoryRequirement(factoryPredicate, context, prototypeProvider);
+		for (CapabilityProvider<Object> nodeProcessorProvider: capabilityLoader.load(requirement, progressMonitor)) {
+			nodeProcessorProvider.getPublisher().subscribe(nodeProcessorFactories::add);
+		}
+		
+		return new ActionGenerator(
+				Collections.singleton(source),
+				references.keySet(),
+				uriResolver,
+				nodeProcessorFactories.toArray());
 	}
 	
 	/**
@@ -159,7 +260,7 @@ public class ActionGenerator<F> {
 	}
 
 	protected EObjectNodeProcessorReflectiveFactory<Object, Object> createReflectiveFactory() {
-		return new EObjectNodeProcessorReflectiveFactory<>(nodeProcessorFactory);
+		return new EObjectNodeProcessorReflectiveFactory<>(nodeProcessorFactories);
 	}
 
 	protected Object createConfigFactory() {
