@@ -4,6 +4,8 @@ import org.nasdanika.html.model.app.gen.cli.AppCommandFactory;
 import org.nasdanika.html.model.app.gen.cli.HelpSiteCommandFactory;
 
 module org.nasdanika.html.model.app.gen.cli {
+	
+	exports org.nasdanika.html.model.app.gen.cli;
 
 	requires transitive org.nasdanika.html.model.app.gen;		
 	requires transitive org.nasdanika.cli;
