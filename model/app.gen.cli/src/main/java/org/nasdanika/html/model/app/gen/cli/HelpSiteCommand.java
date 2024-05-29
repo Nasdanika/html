@@ -1,12 +1,16 @@
 package org.nasdanika.html.model.app.gen.cli;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.eclipse.emf.common.util.DiagnosticException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.nasdanika.common.Context;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 
@@ -54,7 +58,7 @@ public class HelpSiteCommand extends AbstractSiteCommand {
 	private String rootActionLocation;
 	
 	@Override
-	public Integer call() throws Exception {
+	protected int generate(Context context, ProgressMonitor progressMonitor) throws IOException, DiagnosticException {
 		Action rootAction = AppFactory.eINSTANCE.createAction();
 		rootAction.setIcon(rootActionIcon);
 		rootAction.setText(rootActionText);
@@ -71,7 +75,7 @@ public class HelpSiteCommand extends AbstractSiteCommand {
 		actionModelResource.getContents().add(rootAction);
 		actionModelResource.save(null);
 		modelURI = actionModelResourceURI.appendFragment("/");
-		return super.call();
+		return super.generate(context, progressMonitor);
 	}
 
 }

@@ -301,18 +301,23 @@ public class ActionGenerator {
 		saveLabelMap(labelMap, actionModelResourceURI);
 	}
 	
-	public static void saveLabelMap(Map<EObject, Collection<Label>> labelMap, URI actionModelResoureURI) throws IOException {
+	public static void saveLabels(Iterable<Label> labels, URI actionModelResoureURI) throws IOException {
 		ResourceSet actionModelsResourceSet = new ResourceSetImpl();
 		actionModelsResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		
 		Resource actionModelResource = actionModelsResourceSet.createResource(actionModelResoureURI);
-		labelMap
+		labels.forEach(actionModelResource.getContents()::add);
+		
+		actionModelResource.save(null);
+	}	
+	
+	public static void saveLabelMap(Map<EObject, Collection<Label>> labelMap, URI actionModelResoureURI) throws IOException {
+		List<Label> labels = labelMap
 			.values()
 			.stream()
 			.flatMap(Collection::stream)
-			.forEach(actionModelResource.getContents()::add);
-		
-		actionModelResource.save(null);
+			.toList();
+		saveLabels(labels, actionModelResoureURI);
 	}	
 
 	/**
