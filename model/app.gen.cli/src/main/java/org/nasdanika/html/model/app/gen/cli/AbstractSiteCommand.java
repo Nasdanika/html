@@ -146,6 +146,11 @@ public abstract class AbstractSiteCommand extends DelegatingCommand {
 				return true;
 			}	
 			
+			@Override
+			protected ProgressMonitor createProgressMonitor() {
+				return progressMonitor.split("Generating site", 1);
+			}
+			
 		};
 		
 		if (baseDir == null) {
