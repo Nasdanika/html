@@ -20,7 +20,7 @@ public class EObjectReflectiveProcessorFactoryProvider extends ReflectiveProcess
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Object createProcessor(
+	public Object createProcessor(
 			ProcessorConfig config,
 			boolean parallel,
 			BiConsumer<Element, BiConsumer<ProcessorInfo<Object>,ProgressMonitor>> infoProvider,
