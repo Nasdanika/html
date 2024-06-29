@@ -116,7 +116,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 	protected java.util.function.Function<ProgressMonitor, Action> prototypeProvider;
 	protected NodeProcessorConfig<WidgetFactory, WidgetFactory> config;
 	protected Context context;
-	protected URI uri;
+	private URI uri;
 	
 	/**
 	 * Facets are used to provide support for multiple inheritance. For example, {@link EClass} C has EClasses A and B as supertypes.
@@ -986,7 +986,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 	// --- WidgetFactory methods ---
 	
 	@Override
-	public void resolve(URI base, ProgressMonitor progressMonitor) {	
+	public void resolve(URI base, ProgressMonitor progressMonitor) {
 		uri = uri.resolve(base);
 		for (WidgetFactory oe: outgoingReferenceEndpoints.values()) {
 			oe.resolve(uri, progressMonitor);

@@ -52,6 +52,16 @@ import org.nasdanika.html.model.app.graph.WidgetFactory;
  */
 public class ActionGenerator {
 	
+	public interface Factory<T extends ActionGenerator> {
+		
+		T create(
+				Collection<? extends EObject> sources,
+				Collection<? extends EObject> references,
+				Function<? super EObject, URI> uriResolver,
+				Object... nodeProcessorFactories);		
+		
+	}
+	
 	protected Collection<? extends EObject> sources;
 	protected Object[] nodeProcessorFactories;
 	protected Collection<? extends EObject> references;
@@ -122,6 +132,39 @@ public class ActionGenerator {
 			CapabilityLoader capabilityLoader, 
 			Consumer<Diagnostic> diagnosticConsumer,
 			ProgressMonitor progressMonitor) {
+
+		return load(
+				source,
+				context, 
+				prototypeProvider,			
+				factoryPredicate,
+				ePackagePredicate,
+				capabilityLoader, 
+				diagnosticConsumer,
+				ActionGenerator::new,
+				progressMonitor);
+				
+		
+	}
+	
+	/**
+	 * Loads mapping of {@link EPackage}s to doc URI's and node processor factories from {@link CapabilityLoader}. 
+	 * @param sources
+	 * @param references
+	 * @param capabilityLoader
+	 * @param progressMonitor
+	 * @return
+	 */
+	public static <T extends ActionGenerator> T load(
+			EObject source,
+			Context context, 
+			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider,			
+			Predicate<Object> factoryPredicate,
+			Predicate<EPackage> ePackagePredicate,
+			CapabilityLoader capabilityLoader, 
+			Consumer<Diagnostic> diagnosticConsumer,
+			Factory<T> factory,
+			ProgressMonitor progressMonitor) {
 		
 		Predicate<ResourceSetContributor> contributorPredicate = contributor -> contributor instanceof EPackageResourceSetContributor && (ePackagePredicate == null || ePackagePredicate.test(((EPackageResourceSetContributor) contributor).getEPackage()));		
 		Requirement<Predicate<ResourceSetContributor>, ResourceSetContributor> contributorRequirement = ServiceCapabilityFactory.createRequirement(
@@ -157,7 +200,7 @@ public class ActionGenerator {
 			nodeProcessorProvider.getPublisher().subscribe(nodeProcessorFactories::add);
 		}
 		
-		return new ActionGenerator(
+		return factory.create(
 				Collections.singleton(source),
 				references.keySet(),
 				uriResolver,
