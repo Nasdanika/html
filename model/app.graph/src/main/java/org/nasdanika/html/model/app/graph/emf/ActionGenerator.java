@@ -83,6 +83,7 @@ public class ActionGenerator {
 			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider,			
 			Predicate<Object> factoryPredicate,
 			Predicate<EPackage> ePackagePredicate,
+			Consumer<Diagnostic> diagnosticConsumer,
 			ProgressMonitor progressMonitor) {
 
 		return load(
@@ -92,13 +93,15 @@ public class ActionGenerator {
 				factoryPredicate,
 				ePackagePredicate,
 				new CapabilityLoader(),
+				diagnosticConsumer,
 				progressMonitor);
 	}	
 	
 	public static record NodeProcessorFactoryRequirement(
 			Predicate<Object> factoryPredicate,
 			Context context, 
-			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider) {
+			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider,
+			Consumer<Diagnostic> diagnosticConsumer) {
 		
 	}
 	
@@ -117,6 +120,7 @@ public class ActionGenerator {
 			Predicate<Object> factoryPredicate,
 			Predicate<EPackage> ePackagePredicate,
 			CapabilityLoader capabilityLoader, 
+			Consumer<Diagnostic> diagnosticConsumer,
 			ProgressMonitor progressMonitor) {
 		
 		Predicate<ResourceSetContributor> contributorPredicate = contributor -> contributor instanceof EPackageResourceSetContributor && (ePackagePredicate == null || ePackagePredicate.test(((EPackageResourceSetContributor) contributor).getEPackage()));		
@@ -144,7 +148,11 @@ public class ActionGenerator {
 		};
 				
 		List<Object> nodeProcessorFactories = Collections.synchronizedList(new ArrayList<>());
-		NodeProcessorFactoryRequirement requirement = new NodeProcessorFactoryRequirement(factoryPredicate, context, prototypeProvider);
+		NodeProcessorFactoryRequirement requirement = new NodeProcessorFactoryRequirement(
+				factoryPredicate, 
+				context, 
+				prototypeProvider, 
+				diagnosticConsumer);
 		for (CapabilityProvider<Object> nodeProcessorProvider: capabilityLoader.load(requirement, progressMonitor)) {
 			nodeProcessorProvider.getPublisher().subscribe(nodeProcessorFactories::add);
 		}
