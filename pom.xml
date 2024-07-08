@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika.html</groupId>
-	<version>2024.6.0</version>
+	<version>2024.7.0</version>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Nasdanika HTML Parent</name>
@@ -11,7 +11,7 @@
 	<url>https://docs.nasdanika.org/modules/html/index.html</url>
 		
 	<properties>
-		<core.version>2024.6.0</core.version>
+		<core.version>2024.7.0</core.version>
 		<jacoco.version>0.8.12</jacoco.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
@@ -95,8 +95,45 @@
 							<linksource>true</linksource>	
 							<additionalOptions><![CDATA[--allow-script-in-comments]]></additionalOptions>
 							<links>
-								<link>https://download.eclipse.org/modeling/emf/emf/javadoc/2.11/</link>
+								<link>https://javadoc.io/doc/org.eclipse.emf/org.eclipse.emf.common/2.28.0/</link>
 								<link>https://picocli.info/apidocs/</link>
+								
+								<!-- Core -->
+								<link>https://javadoc.io/doc/org.nasdanika.core/drawio/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/drawio.model/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/diagram/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/common/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/persistence/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/resources/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/graph/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/graph.model/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/ncore/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/ncore.gen/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/exec/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/exec.gen/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/emf/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/maven/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/capability/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/cli/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/http/latest/</link>
+
+								<!-- HTML -->
+								<link>https://javadoc.io/doc/org.nasdanika.html//latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/html/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/bootstrap/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/jstree/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/emf/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/html-model/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/html-model-gen/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/bootstrap-model/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/bootstrap-model-gen/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/app-model/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/app-model-gen/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/app-model-gen-cli/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/app-model-graph/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/app-model-gen-maven/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/app-model-gen-maven-archetype/latest/</link>
+
 							</links>
 							<offlineLinks>
                                                                 <!-- Core -->
