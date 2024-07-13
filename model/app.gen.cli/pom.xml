@@ -46,5 +46,10 @@
 			<artifactId>app-model-graph</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.models.ecore</groupId>
+			<artifactId>graph</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>

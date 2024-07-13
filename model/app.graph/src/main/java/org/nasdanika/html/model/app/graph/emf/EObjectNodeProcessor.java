@@ -870,8 +870,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 	@OutgoingEndpoint
 	public final void setEClassEndpoint(EClassConnection connection, WidgetFactory eClassWidgetFactory) {
 		this.eClassWidgetFactory = eClassWidgetFactory;
-	}	
-	
+	}		
 	
 	/**
 	 * Creates and configures an action for eObject. 

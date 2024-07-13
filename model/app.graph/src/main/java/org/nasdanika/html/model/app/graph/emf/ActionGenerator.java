@@ -142,8 +142,7 @@ public class ActionGenerator {
 				capabilityLoader, 
 				diagnosticConsumer,
 				ActionGenerator::new,
-				progressMonitor);
-				
+				progressMonitor);			
 		
 	}
 	

@@ -18,6 +18,7 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.emf.ActionGenerator;
+import org.nasdanika.models.ecore.graph.processors.EcoreActionGenerator;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
@@ -80,14 +81,15 @@ public class ModelDocSiteCommand extends AbstractSiteCommand {
 				rootAction.setText(rootActionText);
 				rootAction.setLocation(rootActionLocation);
 				
-				ActionGenerator actionGenerator = ActionGenerator.load(
+				EcoreActionGenerator actionGenerator = EcoreActionGenerator.loadEcoreActionGenerator(
 						eObj, 
 						context, 
 						null, 
 						null, 
-						null,
+						null, 
 						diagnosticConsumer, 
-						actionGeneratorProgressMonitor); 
+						actionGeneratorProgressMonitor);
+				
 				Map<EObject, Collection<Label>> labelMap = actionGenerator.generateActionModel(diagnosticConsumer, progressMonitor);
 				labelMap
 					.values()

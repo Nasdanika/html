@@ -11,7 +11,7 @@ import org.nasdanika.common.Context;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.exec.util.ModelMixIn;
-import org.nasdanika.html.model.app.graph.emf.ActionGenerator;
+import org.nasdanika.models.ecore.graph.processors.EcoreActionGenerator;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
@@ -54,14 +54,15 @@ public class ActionModelCommand extends CommandBase {
 			Consumer<Diagnostic> diagnosticConsumer = d -> d.dump(progressMonitor.split("Diagnostic", 1));		
 			Context context = contextMixIn.createContext(progressMonitor.split("Creating context", 1));
 			try (ProgressMonitor actionGeneratorProgressMonitor = progressMonitor.split("Generating action model", 1)) {
-				ActionGenerator actionGenerator = ActionGenerator.load(
+				EcoreActionGenerator actionGenerator = EcoreActionGenerator.loadEcoreActionGenerator(
 						eObj, 
 						context, 
 						null, 
 						null, 
 						null, 
 						diagnosticConsumer, 
-						actionGeneratorProgressMonitor); 
+						actionGeneratorProgressMonitor);
+				
 				actionGenerator.generateActionModel(
 						diagnosticConsumer, 
 						output,
