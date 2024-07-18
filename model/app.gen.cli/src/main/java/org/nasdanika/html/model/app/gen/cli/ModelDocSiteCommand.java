@@ -72,7 +72,7 @@ public class ModelDocSiteCommand extends AbstractSiteCommand {
 	@Override
 	protected int generate(Context context, ProgressMonitor progressMonitor) throws IOException, DiagnosticException {
 		try (ProgressMonitor gpm = progressMonitor.scale(4)) {
-			EObject eObj = modelMixIn.getEObject(model, progressMonitor.split("Loading architecture model", 1));
+			EObject eObj = modelMixIn.getEObject(model, progressMonitor.split("Loading model", 1));
 			
 			Consumer<Diagnostic> diagnosticConsumer = d -> d.dump(progressMonitor.split("Diagnostic", 1));		
 			try (ProgressMonitor actionGeneratorProgressMonitor = progressMonitor.split("Generating action model", 1)) {
