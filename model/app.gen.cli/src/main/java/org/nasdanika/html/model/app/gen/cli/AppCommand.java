@@ -10,7 +10,6 @@ import picocli.CommandLine.Command;
 		versionProvider = ModuleVersionProvider.class,
 		mixinStandardHelpOptions = true,
 		subcommands = {
-			ModelCommand.class,	
 			SiteCommand.class
 			// TODO - serve command to serve a site over HTTP instead of generating. Netty, caching, ...
 		})

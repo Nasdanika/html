@@ -4,12 +4,14 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2024.7.1</version>
-	    <relativePath>../..</relativePath>
+	    <version>2024.7.0</version>
+	    <relativePath>..</relativePath>
 	  </parent>
-	<artifactId>app-model-gen-cli</artifactId>
+	<artifactId>jstree</artifactId>
 	<packaging>jar</packaging>
-	<name>HTML App CLI commands</name>
+	<name>Nasdanika HTML JsTree</name>
+	<description>Classes for generating JsTree nodes and context menus.</description>
+	<url>https://docs.nasdanika.org/modules/html/modules/jstree/index.html</url>
 	<build>
 	    <plugins>
 			<plugin>
@@ -34,17 +36,12 @@
 			</plugin>
 	    </plugins>
 	</build>
-	
 	<dependencies>
 		<dependency>
-			<groupId>org.nasdanika.core</groupId>
-			<artifactId>cli</artifactId>
-			<version>${core.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>app-model-graph</artifactId>
+			<artifactId>html</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
 	</dependencies>
 </project>

@@ -4,12 +4,13 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2024.7.1</version>
+	    <version>2024.7.0</version>
 	    <relativePath>../..</relativePath>
 	  </parent>
-	<artifactId>app-model-gen-cli</artifactId>
+	<artifactId>html-model-gen</artifactId>
 	<packaging>jar</packaging>
-	<name>HTML App CLI commands</name>
+	<name>Nasdanika HTML Model Generation Adapters</name>
+	<url>https://docs.nasdanika.org/modules/html/modules/models/modules/html/modules/gen/index.html</url>
 	<build>
 	    <plugins>
 			<plugin>
@@ -37,14 +38,19 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>org.nasdanika.core</groupId>
-			<artifactId>cli</artifactId>
-			<version>${core.version}</version>
-		</dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>html-model</artifactId>
+			<version>${project.version}</version>
+		</dependency>	
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>app-model-graph</artifactId>
+			<artifactId>html</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+		</dependency>	
+		<dependency>
+			<groupId>org.nasdanika.core</groupId>
+			<artifactId>exec-gen</artifactId>
+			<version>${core.version}</version>
+		</dependency>	
 	</dependencies>
 </project>

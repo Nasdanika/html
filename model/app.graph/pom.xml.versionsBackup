@@ -4,12 +4,12 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2024.7.1</version>
+	    <version>2024.7.0</version>
 	    <relativePath>../..</relativePath>
 	  </parent>
-	<artifactId>app-model-gen-cli</artifactId>
+	<artifactId>app-model-graph</artifactId>
 	<packaging>jar</packaging>
-	<name>HTML App CLI commands</name>
+	<name>Graph processors generating application models</name>
 	<build>
 	    <plugins>
 			<plugin>
@@ -38,13 +38,13 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.core</groupId>
-			<artifactId>cli</artifactId>
+			<artifactId>graph</artifactId>
 			<version>${core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>app-model-graph</artifactId>
+			<artifactId>app-model-gen</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+		</dependency>	
 	</dependencies>
 </project>

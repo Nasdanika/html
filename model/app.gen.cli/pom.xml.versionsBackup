@@ -4,7 +4,7 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2024.7.1</version>
+	    <version>2024.7.0</version>
 	    <relativePath>../..</relativePath>
 	  </parent>
 	<artifactId>app-model-gen-cli</artifactId>
@@ -44,6 +44,11 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>app-model-graph</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nasdanika.models.ecore</groupId>
+			<artifactId>graph</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

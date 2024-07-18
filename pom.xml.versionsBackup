@@ -1,0 +1,274 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.nasdanika.html</groupId>
+	<version>2024.7.0</version>
+	<artifactId>parent</artifactId>
+	<packaging>pom</packaging>
+	<name>Nasdanika HTML Parent</name>
+	<description>Classes for generating HTML UI.</description>
+
+	<url>https://docs.nasdanika.org/modules/html/index.html</url>
+		
+	<properties>
+		<core.version>2024.7.0</core.version>
+		<jacoco.version>0.8.12</jacoco.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
+	</properties>	
+
+	<licenses>
+		<license>
+			<name>Eclipse Public License 2.0</name>
+			<url>https://www.nasdanika.org/builds/master/eclipse-public-license-2.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/Nasdanika/html</url>
+	</scm>
+
+	<build>
+	    <extensions>
+	      <extension>
+	        <groupId>org.apache.maven.wagon</groupId>
+	         <artifactId>wagon-ssh</artifactId>
+	         <version>3.5.3</version>
+	      </extension>
+	    </extensions>
+	
+		<plugins>
+		        <plugin>
+		            <groupId>org.apache.maven.plugins</groupId>
+		            <artifactId>maven-surefire-plugin</artifactId>
+		            <version>3.3.0</version>
+		            <dependencies>
+		                <dependency>
+		                    <groupId>org.junit.jupiter</groupId>
+		                    <artifactId>junit-jupiter-engine</artifactId>
+		                    <version>5.10.2</version>
+		                </dependency>
+		            </dependencies>
+		        </plugin>
+		        <plugin>
+		            <groupId>org.apache.maven.plugins</groupId>
+		            <artifactId>maven-site-plugin</artifactId>
+		            <version>4.0.0-M15</version>
+		        </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<source>17</source>
+					<target>17</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.3.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.7.0</version>
+			
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<failOnError>false</failOnError>
+							<additionalOptions>-Xdoclint:none</additionalOptions>
+							<linksource>true</linksource>	
+							<additionalOptions><![CDATA[--allow-script-in-comments]]></additionalOptions>
+							<links>
+								<link>https://javadoc.io/doc/org.eclipse.emf/org.eclipse.emf.common/2.28.0/</link>
+								<link>https://picocli.info/apidocs/</link>
+								
+								<!-- Core -->
+								<link>https://javadoc.io/doc/org.nasdanika.core/drawio/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/drawio-model/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/diagram/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/common/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/persistence/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/resources/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/graph/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/graph.model/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/ncore/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/ncore.gen/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/exec/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/exec.gen/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/emf/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/maven/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/capability/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/cli/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.core/http/latest/</link>
+
+								<!-- HTML -->
+								<link>https://javadoc.io/doc/org.nasdanika.html//latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/html/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/bootstrap/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/jstree/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/emf/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/html-model/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/html-model-gen/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/bootstrap-model/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/bootstrap-model-gen/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/app-model/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/app-model-gen/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/app-model-gen-cli/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/app-model-graph/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/app-model-gen-maven/latest/</link>
+								<link>https://javadoc.io/doc/org.nasdanika.html/app-model-gen-maven-archetype/latest/</link>
+
+							</links>
+							<offlineLinks>
+                                                                <!-- Core -->
+								<offlineLink>
+									<url>https://docs.nasdanika.org/modules/core/apidocs/</url>
+									<location>${project.parent.basedir}/../core/target/apidocs/</location>
+								</offlineLink>
+							</offlineLinks>
+							<header>
+								<![CDATA[
+								      <script async src="https://www.googletagmanager.com/gtag/js?id=G-9BRJVLK8CC"></script>
+								      <script>
+								        window.dataLayer = window.dataLayer || [];
+								        function gtag(){dataLayer.push(arguments);}
+								        gtag('js', new Date());
+      
+								        gtag('config', 'G-9BRJVLK8CC');
+								      </script>    
+								]]>
+							</header>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <version>5.10.2</version>
+		    <scope>test</scope>
+		</dependency>		
+
+		<dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-engine</artifactId>
+		    <version>5.10.2</version>
+		    <scope>test</scope>
+		</dependency>		
+		
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.26.0</version>
+			<scope>test</scope>
+		</dependency>				
+	</dependencies>
+
+	<organization>
+		<name>Nasdanika</name>
+		<url>https://nasdanika.org</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>pvlasov</id>
+			<name>Pavel Vlasov</name>
+			<email>Pavel.Vlasov@nasdanika.org</email>
+			<roles>
+				<role>Lead Developer</role>
+			</roles>
+			<timezone>-5</timezone>
+		</developer>
+	</developers>
+	
+	<modules>
+		<module>html</module>
+		<module>bootstrap</module>
+		<module>jstree</module>
+		<module>emf</module>
+
+		<module>model/html</module>
+		<module>model/html.gen</module>
+		<module>model/bootstrap</module>
+		<module>model/bootstrap.gen</module>
+		<module>model/app</module>
+		<module>model/app.gen</module>
+		<module>model/app.gen.cli</module>
+		<module>model/app.graph</module>
+		<module>model/app.gen.maven</module>
+		<module>model/app.gen.maven.archetype</module>
+	</modules>	
+
+	<distributionManagement>
+		<!-- For site staging to work --> 
+		<site>
+			<id>docs.nasdanika.org</id>
+			<url>scp://docs.nasdanika.org/html/maven-site</url>
+		</site>
+	</distributionManagement>	
+
+	 <profiles>
+		<profile>
+			<id>ossrh</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.2.4</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>	
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.7.0</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>								
+				</plugins>
+			</build>
+			<distributionManagement>
+				<repository>
+					<id>ossrh</id>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+				</repository>
+				<snapshotRepository>
+					<id>ossrh</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+				</snapshotRepository>
+			</distributionManagement>	
+		</profile>
+	</profiles>
+</project>

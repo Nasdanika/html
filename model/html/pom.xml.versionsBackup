@@ -4,46 +4,47 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2024.7.1</version>
+	    <version>2024.7.0</version>
 	    <relativePath>../..</relativePath>
 	  </parent>
-	<artifactId>app-model-gen-cli</artifactId>
+	<artifactId>html-model</artifactId>
 	<packaging>jar</packaging>
-	<name>HTML App CLI commands</name>
+	<name>Nasdanika HTML Model</name>
+	<url>https://docs.nasdanika.org/modules/html/modules/models/modules/html/modules/model/index.html</url>
 	<build>
-	    <plugins>
+		<plugins>
 			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.4.2</version>
 				<executions>
 					<execution>
-						<id>default-prepare-agent</id>
+						<phase>package</phase>
 						<goals>
-							<goal>prepare-agent</goal>
+							<goal>jar</goal>
 						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
+						<configuration>
+							<classifier>model</classifier>
+							<includes>
+								<include>model/**</include>
+							</includes>
+							<classesDirectory>${project.basedir}</classesDirectory>
+						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-	    </plugins>
+			</plugin>		
+		</plugins>
 	</build>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.core</groupId>
-			<artifactId>cli</artifactId>
+			<artifactId>exec</artifactId>
 			<version>${core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>app-model-graph</artifactId>
+			<artifactId>html</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
