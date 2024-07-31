@@ -160,8 +160,7 @@ public abstract class AbstractSiteCommand extends DelegatingCommand {
 		URI modelURI = getModelURI(contextURI);
 		URI pageTemplateURI = pageTemplate == null ? Theme.Cerulean.pageTemplateCdnURI : URI.createURI(pageTemplate).resolve(contextURI);
 		
-		URI baseDirURI = URI.createFileURI(baseDir.getCanonicalPath());
-		URI outputURI = URI.createFileURI(getOutput()).resolve(baseDirURI);
+		URI outputURI = URI.createFileURI(getOutput()).resolve(contextURI);
 		File outputDir = new File(outputURI.toFileString());
 		
 		Map<String, Collection<String>> errors = actionSiteGenerator.generate(
