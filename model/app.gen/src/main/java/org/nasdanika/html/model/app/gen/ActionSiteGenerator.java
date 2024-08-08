@@ -73,14 +73,23 @@ public class ActionSiteGenerator extends SiteGenerator {
 	}	
 			
 	public Map<String, Collection<String>> generate(
-		URI rootActionURI,
+		Action root,
 		URI pageTemplateURI,
 		String siteMapDomain,
 		File outputDir,
 		File workDir,
 		boolean cleanWorkDir) throws IOException, org.eclipse.emf.common.util.DiagnosticException  {
-		
-		String modelName = rootActionURI.lastSegment();
+				
+		String modelName = null;
+		ResourceSet rootActionResourceSet = null;
+		Resource rootResource = root.eResource();
+		if (rootResource != null) {
+			rootActionResourceSet = rootResource.getResourceSet();
+			URI rootActionURI = rootResource.getURI();
+			if (rootActionURI != null) {
+				modelName = rootActionURI.lastSegment();
+			}
+		}
 		if (org.nasdanika.common.Util.isBlank(modelName)) {
 			modelName = "action-model";
 		}
@@ -114,15 +123,15 @@ public class ActionSiteGenerator extends SiteGenerator {
 						progressMonitor);
 				context = Context.singleton(ResolutionListener.class, resolutionListener).compose(context);
 				
-				ResourceSet rootActionResourceSet = createActionModelResourceSet(context, progressMonitor);
-				Action root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);	
+				if (rootActionResourceSet == null) {
+					rootActionResourceSet = createActionModelResourceSet(context, progressMonitor);
+				}
 				
 				org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) rootActionResourceSet.getEObject(pageTemplateURI, true);
 				
 				URI resourceModelsURI = URI.createFileURI(resourceModelsDir.getAbsolutePath() + "/");	
 				URI resourceURI = URI.createURI(modelName + ".xml").resolve(resourceModelsURI);
 				
-
 				Resource resourceModel = generateResourceModel(
 						root, 
 						semanticInfoSource(rootActionResourceSet), 
@@ -152,6 +161,32 @@ public class ActionSiteGenerator extends SiteGenerator {
 			if (cleanWorkDir) {
 				org.nasdanika.common.Util.delete(workDir);
 			}
+		}
+	}
+			
+	public Map<String, Collection<String>> generate(
+		URI rootActionURI,
+		URI pageTemplateURI,
+		String siteMapDomain,
+		File outputDir,
+		File workDir,
+		boolean cleanWorkDir) throws IOException, org.eclipse.emf.common.util.DiagnosticException  {
+		
+		String modelName = rootActionURI.lastSegment();
+		if (org.nasdanika.common.Util.isBlank(modelName)) {
+			modelName = "action-model";
+		}
+		try (ProgressMonitor progressMonitor = createProgressMonitor()) {				
+			Context context = Context.singleton("model-name", modelName).compose(createContext(progressMonitor));
+			ResourceSet rootActionResourceSet = createActionModelResourceSet(context, progressMonitor);
+			Action root = (Action) rootActionResourceSet.getEObject(rootActionURI, true);
+			return generate(
+					root,
+					pageTemplateURI,
+					siteMapDomain,
+					outputDir,
+					workDir, 
+					cleanWorkDir);
 		}
 	}
 	
