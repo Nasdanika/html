@@ -648,7 +648,7 @@ public class SiteGenerator {
 					ol.content(computeTableOfContents(layer, context));
 				} else {
 					Tag li = htmlFactory.tag(TagName.li,
-							org.nasdanika.common.Util.isBlank(layer.getLink()) || layer.getLinkedPage() != null
+							org.nasdanika.common.Util.isBlank(layer.getLink()) || layer.getLinkTarget() instanceof Page
 									? layer.getLabel()
 									: htmlFactory.tag(TagName.a, layer.getLabel()).attribute("href", layer.getLink()),
 							org.nasdanika.common.Util.isBlank(layer.getTooltip()) ? ""
@@ -679,7 +679,7 @@ public class SiteGenerator {
 						ol.content(computeTableOfContents(layerElement, context));
 					} else {
 						Tag li = htmlFactory.tag(TagName.li, org.nasdanika.common.Util.isBlank(layerElement.getLink())
-								|| layerElement.getLinkedPage() != null
+								|| layerElement.getLinkTarget() instanceof Page
 										? Jsoup.parse(layerElement.getLabel()).text()
 										: htmlFactory.tag(TagName.a, Jsoup.parse(layerElement.getLabel()).text())
 												.attribute("href", layerElement.getLink()),
@@ -785,8 +785,8 @@ public class SiteGenerator {
 				info.put("tooltip", tooltip);
 			}
 
-			if (modelElement.isPageLink()) {
-				info.put("linked-page", modelElement.getLinkedPage().toString());
+			if (modelElement.isTargetLink()) {
+				info.put("linked-page", modelElement.getLinkTarget().toString());
 			} else {
 				String link = modelElement.getLink();
 				if (!org.nasdanika.common.Util.isBlank(link)) {
