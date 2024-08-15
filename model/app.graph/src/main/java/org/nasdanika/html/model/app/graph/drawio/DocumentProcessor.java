@@ -19,13 +19,10 @@ import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 
-public class DocumentProcessor extends BaseProcessor {
+public class DocumentProcessor extends BaseProcessor<Document> {
 	
 	@ChildProcessors
 	public Map<Page, ProcessorInfo<PageProcessor>> pageProcessors;
-	
-	@ProcessorElement
-	public Document document;
 	
 	@Override
 	public void resolve(URI base, ProgressMonitor progressMonitor) {
@@ -53,7 +50,7 @@ public class DocumentProcessor extends BaseProcessor {
 				.toList();
 		
 		if (topLevelPageProcessorSuppliers.isEmpty()) {
-			PageProcessor firstPageProcessor = pageProcessors.get(document.getPages().iterator().next()).getProcessor();
+			PageProcessor firstPageProcessor = pageProcessors.get(element.getPages().iterator().next()).getProcessor();
 			firstPageProcessor.isTopLevelPage = true; // Forcing
 			return firstPageProcessor.createLabelsSupplier();			
 		}

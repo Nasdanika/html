@@ -6,13 +6,18 @@ import java.util.Collections;
 import org.eclipse.emf.common.util.URI;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
+import org.nasdanika.drawio.Element;
+import org.nasdanika.graph.processor.ProcessorElement;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 /**
  * Base class for processors
  */
-public class BaseProcessor implements WidgetFactory {
+public class BaseProcessor<T extends Element> implements WidgetFactory {
+	
+	@ProcessorElement
+	public T element;	
 	
 	protected URI uri;
 

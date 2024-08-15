@@ -16,7 +16,9 @@ import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Transformer;
+import org.nasdanika.drawio.ConnectionBase;
 import org.nasdanika.drawio.Document;
+import org.nasdanika.drawio.LinkTarget;
 import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.graph.Connection;
 import org.nasdanika.graph.Element;
@@ -36,8 +38,9 @@ import org.nasdanika.html.model.app.graph.drawio.LinkTargetProcessor;
 
 public class TestDrawioActionSiteGenerator {
 	
+	@SuppressWarnings("unchecked")
 	@Test
-	@Disabled
+//	@Disabled
 	public void testGenerateDrawioActionSite() throws Exception {
 		Document document = Document.load(getClass().getResource("app/aws.drawio")); 
 		
@@ -53,7 +56,7 @@ public class TestDrawioActionSiteGenerator {
 		ProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		
 		Collection<Element> elements = new ArrayList<>();
-		Consumer<org.nasdanika.drawio.Element> consumer = org.nasdanika.drawio.Util.withLinkTargets(elements::add, null);
+		Consumer<org.nasdanika.drawio.Element> consumer = org.nasdanika.drawio.Util.withLinkTargets(elements::add, ConnectionBase.SOURCE);
 		document.accept(consumer, null);
 		Map<Element, ProcessorConfig> configs = processorConfigTransformer.transform(elements, false, progressMonitor);
 		
@@ -67,7 +70,7 @@ public class TestDrawioActionSiteGenerator {
 			.filter(ModelElement.class::isInstance)
 			.map(ModelElement.class::cast)
 			.filter(ModelElement::isTargetLink)
-			.forEach(source -> ((LinkTargetProcessor) processors.get(source.getLinkTarget()).getProcessor()).referrers.add(source));
+			.forEach(source -> ((LinkTargetProcessor<LinkTarget>) processors.get(source.getLinkTarget()).getProcessor()).referrers.add(source));
 		
 		System.out.println(processors.size());
 		
