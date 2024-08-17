@@ -3,9 +3,14 @@ package org.nasdanika.html.model.app.graph.drawio;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Stream;
 
+import org.eclipse.emf.ecore.EObject;
+import org.jsoup.Jsoup;
 import org.nasdanika.common.MapCompoundSupplier;
+import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
+import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Layer;
 import org.nasdanika.drawio.Root;
 import org.nasdanika.graph.processor.ChildProcessors;
@@ -15,6 +20,10 @@ import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 public class RootProcessor extends BaseProcessor<Root> {
 	
+	public RootProcessor(DrawioProcessorFactory factory) {
+		super(factory);
+	}
+
 	@ChildProcessors
 	public Map<Layer, ProcessorInfo<WidgetFactory>> layerProcessorInfos;
 	
@@ -26,11 +35,15 @@ public class RootProcessor extends BaseProcessor<Root> {
 			childLabelsSupplier.put(ce.getKey(), ce.getValue().getProcessor().createLabelsSupplier());
 		}
 		
-		return childLabelsSupplier.then(this::createLabelsSupplier);
+		return childLabelsSupplier.then(this::createRootLabels);
 	}
 	
-	protected Collection<Label> createLabelsSupplier(Map<Layer, Collection<Label>> childLabels) {
-		throw new UnsupportedOperationException("Label, action, or pass-through");
+	protected Collection<Label> createRootLabels(Map<Layer, Collection<Label>> childLabels, ProgressMonitor progressMonitor) {
+		return childLabels.entrySet()
+			.stream()
+			.sorted((a,b) -> compareModelElementsByLabel(a.getKey(), b.getKey()))
+			.flatMap(e -> e.getValue().stream())
+			.toList();
 	}
 
 }

@@ -1,5 +1,6 @@
 package org.nasdanika.html.model.app.util;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -7,8 +8,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Util;
+import org.nasdanika.emf.SpecLoadingDrawioFactory;
 import org.nasdanika.exec.ExecPackage;
-import org.nasdanika.exec.util.DocLoadingDrawioFactory;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppPackage;
 import org.nasdanika.html.model.app.Label;
@@ -22,7 +23,7 @@ import org.nasdanika.ncore.NcorePackage;
  * @param <G>
  * @param <E>
  */
-public abstract class AppDrawioFactory extends DocLoadingDrawioFactory<EObject> {
+public abstract class AppDrawioFactory extends SpecLoadingDrawioFactory<EObject> {
 	
 	public AppDrawioFactory(ResourceSet resourceSet) {
 		super(resourceSet);
@@ -55,9 +56,10 @@ public abstract class AppDrawioFactory extends DocLoadingDrawioFactory<EObject> 
 		}
 	}
 	
-	protected void addDocumentation(EObject semanticElement, EObject documentation) {
+	@Override
+	protected void addDocumentation(EObject semanticElement, Collection<EObject> documentation) {
 		if (semanticElement instanceof Action) {
-			((Action) semanticElement).getContent().add(documentation);
+			((Action) semanticElement).getContent().addAll(documentation);
 		} else {
 			super.addDocumentation(semanticElement, documentation);
 		}

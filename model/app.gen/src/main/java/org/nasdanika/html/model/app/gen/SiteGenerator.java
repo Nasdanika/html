@@ -1150,6 +1150,8 @@ public class SiteGenerator {
 				Files.copy(org.nasdanika.common.Util.join(concatenatedStream), new File(contentDir, fileName).toPath(),
 						StandardCopyOption.REPLACE_EXISTING);
 			}
+		} catch (NasdanikaException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new NasdanikaException(e);
 		}

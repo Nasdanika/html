@@ -14,13 +14,16 @@ import org.nasdanika.common.Supplier;
 import org.nasdanika.drawio.Document;
 import org.nasdanika.drawio.Page;
 import org.nasdanika.graph.processor.ChildProcessors;
-import org.nasdanika.graph.processor.ProcessorElement;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 public class DocumentProcessor extends BaseProcessor<Document> {
 	
+	public DocumentProcessor(DrawioProcessorFactory factory) {
+		super(factory);
+	}
+
 	@ChildProcessors
 	public Map<Page, ProcessorInfo<PageProcessor>> pageProcessors;
 	

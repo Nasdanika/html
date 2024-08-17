@@ -8,6 +8,12 @@ import org.nasdanika.drawio.ModelElement;
 
 public class LinkTargetProcessor<T extends LinkTarget> extends BaseProcessor<T> {
 	
+	public LinkTargetProcessor(DrawioProcessorFactory factory) {
+		super(factory);
+	}
+
 	public Collection<ModelElement> referrers = new ArrayList<>();
+	
+	// TODO - Linked things
 
 }

@@ -125,6 +125,9 @@ public class ActionSiteGenerator extends SiteGenerator {
 				
 				if (rootActionResourceSet == null) {
 					rootActionResourceSet = createActionModelResourceSet(context, progressMonitor);
+					Resource rootActionResource = rootActionResourceSet.createResource(URI.createFileURI(new File(workDir, "action-model.xml").getCanonicalPath()));
+					rootActionResource.getContents().add(root);
+					rootActionResource.save(null);
 				}
 				
 				org.nasdanika.html.model.bootstrap.Page pageTemplate = (org.nasdanika.html.model.bootstrap.Page) rootActionResourceSet.getEObject(pageTemplateURI, true);
