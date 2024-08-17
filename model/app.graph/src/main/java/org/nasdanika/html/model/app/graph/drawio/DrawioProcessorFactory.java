@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import org.eclipse.emf.common.util.URI;
 import org.nasdanika.capability.CapabilityLoader;
 import org.nasdanika.capability.CapabilityProvider;
 import org.nasdanika.capability.ServiceCapabilityFactory;
@@ -160,6 +161,47 @@ public class DrawioProcessorFactory {
 	 */
 	public String getViewer() {
 		return DiagramGenerator.JSDELIVR_DRAWIO_VIEWER;
+	}
+		
+	/**
+	 * Default base URI for the Drawio application to resolve library relative URL's.
+	 */
+	public static final URI DEFAULT_APP_BASE = URI.createURI("https://app.diagrams.net/");
+	
+	/**
+	 * Application base for resolving relative image URL's. 
+	 * This implementation returns DEFAULT_APP_BASE. 
+	 * Override to customize for different (e.g. intranet) installations.
+	 * App sources - https://github.com/jgraph/drawio/tree/dev/src/main/webapp.
+	 * For the purposes of serving images and a diagram editor the web app can be deployed as a static site.
+	 * It can also be deployed as a Docker container - https://www.drawio.com/blog/diagrams-docker-app, https://hub.docker.com/r/jgraph/drawio 
+	 * @return
+	 */
+	public URI getAppBase() {
+		return DEFAULT_APP_BASE;
+	}
+	
+	/**
+	 * This implementation returns the argument. 
+	 * Override to rewrite URL's before conversion to icons. For example, read representations from a file system and convert to data URL's.
+	 * @param imageRepr
+	 * @return
+	 */
+	public String rewriteImage(String imageRepr, ProgressMonitor progressMonitor) {
+		return imageRepr;
+	}
+	
+	/**
+	 * Icons size for UI generation - jsTree displays icons up to 24x24 pixels, leaving 4 pixes for padding
+	 */
+	public static final int ICON_SIZE = 20;
+	
+	/**
+	 * Icon size to scale image representations to
+	 * @return
+	 */
+	protected int getIconSize() {
+		return ICON_SIZE;
 	}
 
 }

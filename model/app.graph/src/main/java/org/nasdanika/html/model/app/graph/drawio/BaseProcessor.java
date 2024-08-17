@@ -181,8 +181,9 @@ public class BaseProcessor<T extends Element> implements WidgetFactory {
 	/**
 	 * Set icon, tooltip, ...
 	 * @param label
+	 * @param progressMonitor TODO
 	 */
-	public void configureLabel(Label label) {
+	public void configureLabel(Label label, ProgressMonitor progressMonitor) {
 		if (element instanceof ModelElement) {
 			ModelElement modelElement = (ModelElement) element;
 			if (Util.isBlank(label.getIcon())) {

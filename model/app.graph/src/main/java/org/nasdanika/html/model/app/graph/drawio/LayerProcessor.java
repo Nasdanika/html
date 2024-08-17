@@ -68,7 +68,7 @@ public class LayerProcessor extends BaseProcessor<Layer> {
 		Label mLabel = documentation.isEmpty() ? AppFactory.eINSTANCE.createLabel() : AppFactory.eINSTANCE.createAction();
 		mLabel.setText(Jsoup.parse(label).text());
 		mLabel.getChildren().addAll(childLabelsList);
-		configureLabel(mLabel);
+		configureLabel(mLabel, progressMonitor);
 				
 		if (!documentation.isEmpty() ) {
 			((Action) mLabel).getContent().addAll(documentation);

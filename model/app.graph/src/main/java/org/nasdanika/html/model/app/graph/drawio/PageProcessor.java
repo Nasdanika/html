@@ -65,7 +65,7 @@ public class PageProcessor extends LinkTargetProcessor<Page> {
 		action.setText(element.getName());
 		action.setLocation("index.html");
 		action.getChildren().addAll(rootLabels);
-		rootProcessor.configureLabel(action);
+		rootProcessor.configureLabel(action, progressMonitor);
 		Text representationText = ContentFactory.eINSTANCE.createText(); // Interpolate with element properties?
 		try {
 			representationText.setContent(createRepresentation(progressMonitor).toHtml(true, factory.getViewer()));

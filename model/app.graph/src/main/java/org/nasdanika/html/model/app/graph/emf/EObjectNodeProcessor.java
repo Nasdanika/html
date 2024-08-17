@@ -260,7 +260,7 @@ public class EObjectNodeProcessor<T extends EObject> implements WidgetFactory, E
 	}
 	
 	/**
-	 * This implementation returns the argumet. 
+	 * This implementation returns the argument. 
 	 * Override to rewrite URL's before conversion to icons. For example, read representations from a file system and convert to data URL's.
 	 * @param imageRepr
 	 * @return

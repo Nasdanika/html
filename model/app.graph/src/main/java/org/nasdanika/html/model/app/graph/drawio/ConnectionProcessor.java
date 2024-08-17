@@ -27,14 +27,14 @@ public class ConnectionProcessor extends LinkTargetProcessor<Connection> {
 		Action action = AppFactory.eINSTANCE.createAction();
 		action.setText(element.getLabel());
 		action.getContent().addAll(documentation);
-		configureLabel(action);
+		configureLabel(action, progressMonitor);
 		action.setLocation(element.getId() + "/index.html");
 		return action; 
 	}
 	
 	@Override
-	public void configureLabel(Label label) {
-		super.configureLabel(label);
+	public void configureLabel(Label label, ProgressMonitor progressMonitor) {
+		super.configureLabel(label, progressMonitor);
 		if (Util.isBlank(label.getIcon())) {
 			label.setIcon("fas fa-long-arrow-alt-right");
 		}
