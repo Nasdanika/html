@@ -102,7 +102,9 @@ public class DrawioProcessorFactory {
 		return new RootProcessor(this);
 	}
 				
-	@Processor(type = org.nasdanika.drawio.Layer.class)
+	@Processor(
+			type = org.nasdanika.drawio.Layer.class,
+			value = "visible = true")
 	public WidgetFactory createLayerProcessor(
 		ProcessorConfig config, 
 		boolean parallel, 
@@ -113,7 +115,9 @@ public class DrawioProcessorFactory {
 		return new LayerProcessor(this);
 	}
 	
-	@Processor(type = org.nasdanika.drawio.Node.class)
+	@Processor(
+			type = org.nasdanika.drawio.Node.class,
+			value = "visible = true")
 	public WidgetFactory createNodeProcessor(
 		NodeProcessorConfig<?,?> config, 
 		boolean parallel, 
@@ -124,7 +128,9 @@ public class DrawioProcessorFactory {
 		return new NodeProcessor(this);
 	}
 	
-	@Processor(type = org.nasdanika.drawio.Connection.class)
+	@Processor(
+			type = org.nasdanika.drawio.Connection.class,
+			value = "visible = true")
 	public WidgetFactory createConnectionProcessor(
 		ConnectionProcessorConfig<?,?> config, 
 		boolean parallel, 

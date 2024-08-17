@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
+import org.nasdanika.graph.processor.SourceHandler;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
@@ -27,6 +28,7 @@ public class ConnectionProcessor extends LinkTargetProcessor<Connection> {
 		action.setText(element.getLabel());
 		action.getContent().addAll(documentation);
 		configureLabel(action);
+		action.setLocation(element.getId() + "/index.html");
 		return action; 
 	}
 	
@@ -37,5 +39,10 @@ public class ConnectionProcessor extends LinkTargetProcessor<Connection> {
 			label.setIcon("fas fa-long-arrow-alt-right");
 		}
 	}	
+	
+	@SourceHandler
+	public ConnectionProcessor getSourceHandler() {
+		return this;
+	}
 
 }

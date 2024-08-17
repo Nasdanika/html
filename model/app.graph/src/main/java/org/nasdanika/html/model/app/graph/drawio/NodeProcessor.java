@@ -3,9 +3,11 @@ package org.nasdanika.html.model.app.graph.drawio;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.emf.ecore.EObject;
 import org.jsoup.Jsoup;
@@ -17,6 +19,7 @@ import org.nasdanika.drawio.Connection;
 import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.drawio.Node;
 import org.nasdanika.graph.processor.ChildProcessors;
+import org.nasdanika.graph.processor.OutgoingEndpoints;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
@@ -32,16 +35,39 @@ public class NodeProcessor extends LinkTargetProcessor<Node> {
 	@ChildProcessors
 	public Map<ModelElement, ProcessorInfo<WidgetFactory>> childInfos;
 	
+	@OutgoingEndpoints
+	public Map<Connection, CompletableFuture<ConnectionProcessor>> outgoingEndpoints;
+	
 	@SuppressWarnings("resource")
 	@Override
 	public Supplier<Collection<Label>> createLabelsSupplier() {
 		MapCompoundSupplier<ModelElement, Collection<Label>> childLabelsSupplier = new MapCompoundSupplier<>("Child labels supplier");
 		for (Entry<ModelElement, ProcessorInfo<WidgetFactory>> ce: childInfos.entrySet()) {
-			childLabelsSupplier.put(ce.getKey(), ce.getValue().getProcessor().createLabelsSupplier());
+			ModelElement child = ce.getKey();
+			if (child instanceof Connection && ((Connection) child).getSource() != null) {
+				continue;
+			}
+			childLabelsSupplier.put(child, ce.getValue().getProcessor().createLabelsSupplier());
 		}
-		
-		return childLabelsSupplier.then(this::createNodeLabels);
+		MapCompoundSupplier<Connection, Collection<Label>> outgoingConnectionsLabelsSupplier = new MapCompoundSupplier<>("Outgoing connections labels supplier");
+		for (Entry<Connection, CompletableFuture<ConnectionProcessor>> ce: outgoingEndpoints.entrySet()) {
+			outgoingConnectionsLabelsSupplier.put(ce.getKey(), ce.getValue().join().createLabelsSupplier());
+		}
+						
+		return childLabelsSupplier
+				.then(outgoingConnectionsLabelsSupplier.asFunction(this::logicalChildrenLabels))
+				.then(this::createNodeLabels);
 	}
+	
+	protected Map<ModelElement, Collection<Label>> logicalChildrenLabels(
+			Map<ModelElement, Collection<Label>> childLabels, 
+			Map<Connection,Collection<Label>> connectionLabels) {
+		
+		Map<ModelElement, Collection<Label>> ret = new HashMap<>(childLabels);
+		ret.putAll(connectionLabels);
+		return ret;
+	}
+	
 	
 	@Override
 	public void configureLabel(Label label) {
@@ -50,22 +76,35 @@ public class NodeProcessor extends LinkTargetProcessor<Node> {
 		// TODO - icon scaling
 	}
 	
-	protected Collection<Label> createNodeLabels(Map<ModelElement, Collection<Label>> childLabels, ProgressMonitor progressMonitor) {
-		List<Label> childNodesLabelsList = childLabels.entrySet()
+	protected boolean isLogicalChildConnection(ModelElement modelElement) {
+		if (modelElement instanceof Connection) {
+			Node source = ((Connection) modelElement).getSource();
+			if (source != null) {
+				return source == element;
+			}
+		}
+		return element == modelElement.getParent();
+	}
+	
+	protected Collection<Label> createNodeLabels(
+			Map<ModelElement, Collection<Label>> logicalChildLabels, 
+			ProgressMonitor progressMonitor) {
+		
+		List<Label> childNodesLabelsList = logicalChildLabels.entrySet()
 			.stream()
 			.filter(e -> e.getKey() instanceof Node)
 			.sorted((a,b) -> compareModelElementsByLabel(a.getKey(), b.getKey()))
 			.flatMap(e -> e.getValue().stream())
 			.toList();		
 		
-		List<Action> childConnectionsActionList = childLabels.entrySet()
+		List<Action> childConnectionsActionList = logicalChildLabels.entrySet()
 				.stream()
-				.filter(e -> e.getKey() instanceof Connection)
+				.filter(e -> isLogicalChildConnection(e.getKey()))
 				.sorted((a,b) -> compareModelElementsByLabel(a.getKey(), b.getKey()))
 				.flatMap(e -> e.getValue().stream())
 				.filter(Action.class::isInstance)
 				.map(Action.class::cast)
-				.toList();		
+				.toList();				
 		
 		String label = element.getLabel();
 		if (Util.isBlank(label)) {
@@ -75,7 +114,7 @@ public class NodeProcessor extends LinkTargetProcessor<Node> {
 		}
 		
 		Collection<EObject> documentation = getDocumentation(progressMonitor);
-		int childLabelsSum = childLabels.values()
+		int childLabelsSum = logicalChildLabels.values()
 				.stream()
 				.mapToInt(Collection::size)
 				.sum();
