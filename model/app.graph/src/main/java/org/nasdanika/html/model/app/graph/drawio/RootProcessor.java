@@ -3,15 +3,11 @@ package org.nasdanika.html.model.app.graph.drawio;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.jsoup.Jsoup;
 import org.nasdanika.common.MapCompoundSupplier;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Supplier;
-import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Layer;
 import org.nasdanika.drawio.Root;
 import org.nasdanika.graph.processor.ChildProcessors;

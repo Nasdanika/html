@@ -2,6 +2,7 @@ package org.nasdanika.html.model.app.graph.drawio;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
@@ -16,6 +17,8 @@ import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
 import org.nasdanika.graph.processor.ProcessorElement;
+import org.nasdanika.graph.processor.ProcessorInfo;
+import org.nasdanika.graph.processor.Registry;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 import org.nasdanika.persistence.ConfigurationException;
@@ -38,7 +41,17 @@ public class BaseProcessor<T extends Element> implements WidgetFactory {
 		this.element = element;
 	}
 	
+	@Registry 
+	public Map<Element, ProcessorInfo<WidgetFactory>> registry;
+	
 	protected URI uri;
+	
+	/**
+	 * @return Action URI if this processor creates an action or null otherwise.
+	 */
+	public URI getActionURI(ProgressMonitor progressMonitor) {
+		throw new UnsupportedOperationException();
+	}
 
 	@Override
 	public Object createLabel(ProgressMonitor progressMonitor) {

@@ -19,8 +19,10 @@ import org.nasdanika.common.Status;
 import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
+import org.nasdanika.drawio.LinkTarget;
 import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.drawio.Node;
+import org.nasdanika.drawio.Page;
 import org.nasdanika.graph.processor.ChildProcessors;
 import org.nasdanika.graph.processor.OutgoingEndpoints;
 import org.nasdanika.graph.processor.ProcessorElement;
@@ -30,7 +32,7 @@ import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 
-public class NodeProcessor extends LinkTargetProcessor<Node> {
+public class NodeProcessor extends LayerElementProcessor<Node> {
 		
 	private static final String DATA_URI_PNG_PREFIX_NO_BASE_64 = "data:image/png,";
 	private static final String DATA_URI_JPEG_PREFIX_NO_BASE_64 = "data:image/jpeg,";	
@@ -62,7 +64,16 @@ public class NodeProcessor extends LinkTargetProcessor<Node> {
 		}		
 		for (Entry<Connection, CompletableFuture<ConnectionProcessor>> oe: outgoingEndpoints.entrySet()) {
 			oe.getValue().thenAccept(cp -> cp.resolve(uri, progressMonitor));
-		}		
+		}	
+		if (element.isTargetLink()) {
+			LinkTarget linkTarget = element.getLinkTarget();
+			if (linkTarget instanceof Page) {
+				ProcessorInfo<WidgetFactory> ppi = registry.get(linkTarget);
+				if (ppi != null) {
+					ppi.getProcessor().resolve(uri, progressMonitor);
+				}
+			}
+		}
 	}
 	
 	@SuppressWarnings("resource")
@@ -81,9 +92,20 @@ public class NodeProcessor extends LinkTargetProcessor<Node> {
 			outgoingConnectionsLabelsSupplier.put(ce.getKey(), ce.getValue().join().createLabelsSupplier());
 		}
 						
-		return childLabelsSupplier
+		Supplier<Collection<Label>> labelSupplier = childLabelsSupplier
 				.then(outgoingConnectionsLabelsSupplier.asFunction(this::logicalChildrenLabels))
 				.then(this::createNodeLabels);
+		
+		if (element.isTargetLink()) {
+			LinkTarget linkTarget = element.getLinkTarget();
+			if (linkTarget instanceof Page) {
+				ProcessorInfo<WidgetFactory> ppi = registry.get(linkTarget);
+				Supplier<Collection<Label>> pageLabelSupplier = ppi.getProcessor().createLabelsSupplier();
+				return labelSupplier.then(pageLabelSupplier.asFunction(this::addPageLabels));
+			}
+		}		
+		
+		return labelSupplier;
 	}
 	
 	protected Map<ModelElement, Collection<Label>> logicalChildrenLabels(

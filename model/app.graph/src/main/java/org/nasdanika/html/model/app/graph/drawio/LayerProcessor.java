@@ -15,7 +15,6 @@ import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Layer;
 import org.nasdanika.drawio.LayerElement;
-import org.nasdanika.drawio.Page;
 import org.nasdanika.graph.processor.ChildProcessors;
 import org.nasdanika.graph.processor.ProcessorElement;
 import org.nasdanika.graph.processor.ProcessorInfo;
@@ -59,10 +58,18 @@ public class LayerProcessor extends BaseProcessor<Layer> {
 		}
 	}
 	
+	@Override
+	public URI getActionURI(ProgressMonitor progressMonitor) {
+		Collection<EObject> documentation = getDocumentation(progressMonitor);
+		if (documentation.isEmpty()) {
+			return null;
+		}
+		return uri;
+	}
+	
 	protected Collection<Label> createLayerLabels(Map<LayerElement, Collection<Label>> childLabels, ProgressMonitor progressMonitor) {
 		List<Label> childLabelsList = childLabels.entrySet()
 			.stream()
-			.filter(e -> !e.getKey().isTargetLink() || e.getKey().getLinkTarget() instanceof Page)
 			.sorted((a,b) -> compareModelElementsByLabel(a.getKey(), b.getKey()))
 			.flatMap(e -> e.getValue().stream())
 			.toList();		

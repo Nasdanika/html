@@ -2,11 +2,13 @@ package org.nasdanika.html.model.app.graph.drawio;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.capability.CapabilityLoader;
 import org.nasdanika.capability.CapabilityProvider;
 import org.nasdanika.capability.ServiceCapabilityFactory;
@@ -14,6 +16,8 @@ import org.nasdanika.capability.ServiceCapabilityFactory.Requirement;
 import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.DocumentationFactory;
 import org.nasdanika.common.ProgressMonitor;
+import org.nasdanika.drawio.Document;
+import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.graph.Element;
 import org.nasdanika.graph.processor.ConnectionProcessorConfig;
 import org.nasdanika.graph.processor.NodeProcessorConfig;
@@ -126,6 +130,10 @@ public class DrawioProcessorFactory {
 		Function<ProgressMonitor, Object> next,		
 		ProgressMonitor progressMonitor) {
 		
+		org.nasdanika.drawio.Node node = (org.nasdanika.drawio.Node) config.getElement();
+		if (node.isTargetLink() && node.getLinkTarget() instanceof ModelElement) {
+			return null;			
+		}
 		return new NodeProcessor(this);
 	}
 	
@@ -139,6 +147,11 @@ public class DrawioProcessorFactory {
 		Function<ProgressMonitor, Object> next,		
 		ProgressMonitor progressMonitor) {
 		
+		org.nasdanika.drawio.Connection connection = (org.nasdanika.drawio.Connection) config.getElement();
+		if (connection.isTargetLink() && connection.getLinkTarget() instanceof ModelElement) {
+			return null;			
+		}
+		
 		return new ConnectionProcessor(this);
 	}
 	
@@ -149,7 +162,8 @@ public class DrawioProcessorFactory {
 	 * @param progressMonitor
 	 */
 	public void filterRepresentationElement(
-			Element representationElement,
+			ModelElement sourceElement,
+			ModelElement representationElement,
 			Map<org.nasdanika.drawio.Element, ProcessorInfo<WidgetFactory>> registry,
 			ProgressMonitor progressMonitor) {
 		
@@ -202,6 +216,22 @@ public class DrawioProcessorFactory {
 	 */
 	protected int getIconSize() {
 		return ICON_SIZE;
+	}
+
+	/**
+	 * Override to create additional content from a representation (page).
+	 * For example, aria for screen readers and AI explaining the diagrams.
+	 * This implementation returns an empty collection.
+	 * @param representation
+	 * @param registry
+	 * @param progressMonitor
+	 * @return
+	 */
+	public Collection<? extends EObject> createRepresentationContent(
+			Document representation,
+			Map<org.nasdanika.drawio.Element, ProcessorInfo<WidgetFactory>> registry,
+			ProgressMonitor progressMonitor) {
+		return Collections.emptyList();
 	}
 
 }
