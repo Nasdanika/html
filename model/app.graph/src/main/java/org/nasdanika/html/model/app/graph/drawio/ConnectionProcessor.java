@@ -1,10 +1,7 @@
 package org.nasdanika.html.model.app.graph.drawio;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.util.URI;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
 import org.nasdanika.graph.processor.ProcessorElement;
