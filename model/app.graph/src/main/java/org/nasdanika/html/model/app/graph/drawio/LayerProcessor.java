@@ -37,7 +37,10 @@ public class LayerProcessor extends BaseProcessor<Layer> {
 	public Supplier<Collection<Label>> createLabelsSupplier() {
 		MapCompoundSupplier<LayerElement, Collection<Label>> childLabelsSupplier = new MapCompoundSupplier<>("Child labels supplier");
 		for (Entry<LayerElement, ProcessorInfo<WidgetFactory>> ce: childInfos.entrySet()) {
-			childLabelsSupplier.put(ce.getKey(), ce.getValue().getProcessor().createLabelsSupplier());
+			WidgetFactory processor = ce.getValue().getProcessor();
+			if (processor != null) {
+				childLabelsSupplier.put(ce.getKey(), processor.createLabelsSupplier());
+			}
 		}
 		
 		return childLabelsSupplier.then(this::createLayerLabels);
@@ -54,7 +57,10 @@ public class LayerProcessor extends BaseProcessor<Layer> {
 	public void resolve(URI base, ProgressMonitor progressMonitor) {
 		super.resolve(base, progressMonitor);
 		for (ProcessorInfo<WidgetFactory> cpi: childInfos.values()) {
-			cpi.getProcessor().resolve(uri, progressMonitor);
+			WidgetFactory processor = cpi.getProcessor();
+			if (processor != null) {
+				processor.resolve(uri, progressMonitor);
+			}
 		}
 	}
 	

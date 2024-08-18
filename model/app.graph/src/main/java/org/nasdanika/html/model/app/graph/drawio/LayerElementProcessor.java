@@ -30,11 +30,24 @@ public class LayerElementProcessor<T extends LayerElement> extends LinkTargetPro
 	}
 
 	public Collection<ModelElement> referrers = new ArrayList<>();	
-		
+
+	/**
+	 * Has documentation or has a page link (which implies having documentation)
+	 */
 	@Override
 	public URI getActionURI(ProgressMonitor progressMonitor) {
-		Collection<EObject> documentation = getDocumentation(progressMonitor);
-		if (documentation.isEmpty()) {
+		LinkTarget linkTarget = element.getLinkTarget();
+		if (linkTarget instanceof Page) {
+			ProcessorInfo<WidgetFactory> ppi = registry.get(linkTarget);
+			if (ppi != null) {
+				PageProcessor pageProcessor = (PageProcessor) ppi.getProcessor();
+				if (pageProcessor != null) {
+					return uri;
+				}
+			}
+		}
+		
+		if (super.getDocumentation(progressMonitor).isEmpty()) {
 			return null;
 		}
 		return uri;
