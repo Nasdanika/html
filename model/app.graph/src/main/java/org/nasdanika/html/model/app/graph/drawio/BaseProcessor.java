@@ -26,13 +26,17 @@ import org.nasdanika.persistence.ConfigurationException;
 public class BaseProcessor<T extends Element> implements WidgetFactory {
 	
 	protected DrawioProcessorFactory factory;
-
+	
 	public BaseProcessor(DrawioProcessorFactory factory) {
 		this.factory = factory;
 	}
+		
+	protected T element;
 	
-	@ProcessorElement
-	public T element;	
+	@ProcessorElement	
+	public void setElement(T element) {
+		this.element = element;
+	}
 	
 	protected URI uri;
 
@@ -68,7 +72,9 @@ public class BaseProcessor<T extends Element> implements WidgetFactory {
 
 	@Override
 	public void resolve(URI base, ProgressMonitor progressMonitor) {
-
+		if (uri != null && uri.isRelative() && base != null && base.isHierarchical() && !base.isRelative()) {
+			uri = uri.resolve(base);
+		}
 	}
 
 	@Override

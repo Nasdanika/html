@@ -16,6 +16,7 @@ import org.nasdanika.drawio.Element;
 import org.nasdanika.drawio.Page;
 import org.nasdanika.exec.content.ContentFactory;
 import org.nasdanika.exec.content.Text;
+import org.nasdanika.graph.processor.ProcessorElement;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.graph.processor.Registry;
 import org.nasdanika.graph.processor.RegistryEntry;
@@ -34,7 +35,14 @@ public class PageProcessor extends LinkTargetProcessor<Page> {
 	public PageProcessor(DrawioProcessorFactory factory) {
 		super(factory);
 	}
-
+	
+	@ProcessorElement
+	@Override
+	public void setElement(Page element) {
+		super.setElement(element);
+		uri = URI.createURI("index.html");
+	}
+	
 	/**
 	 * Forcing top-level page
 	 */
@@ -48,8 +56,8 @@ public class PageProcessor extends LinkTargetProcessor<Page> {
 	
 	@Override
 	public void resolve(URI base, ProgressMonitor progressMonitor) {
-		// TODO Auto-generated method stub
 		super.resolve(base, progressMonitor);
+		rootProcessor.resolve(base, progressMonitor);
 	}
 	
 	@Override
@@ -63,8 +71,9 @@ public class PageProcessor extends LinkTargetProcessor<Page> {
 	protected Collection<Label> createPageLabels(Collection<Label> rootLabels, ProgressMonitor progressMonitor) {
 		Action action = AppFactory.eINSTANCE.createAction();		
 		action.setText(element.getName());
-		action.setLocation("index.html");
+		action.setLocation(uri.toString());
 		action.getChildren().addAll(rootLabels);
+		rootLabels.forEach(rl -> rl.rebase(null, uri));
 		rootProcessor.configureLabel(action, progressMonitor);
 		Text representationText = ContentFactory.eINSTANCE.createText(); // Interpolate with element properties?
 		try {

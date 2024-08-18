@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.jsoup.Jsoup;
 import org.nasdanika.common.MapCompoundSupplier;
@@ -44,6 +45,14 @@ public class RootProcessor extends BaseProcessor<Root> {
 			.sorted((a,b) -> compareModelElementsByLabel(a.getKey(), b.getKey()))
 			.flatMap(e -> e.getValue().stream())
 			.toList();
+	}
+	
+	@Override
+	public void resolve(URI base, ProgressMonitor progressMonitor) {
+		super.resolve(base, progressMonitor);
+		for (ProcessorInfo<WidgetFactory> cpi: layerProcessorInfos.values()) {
+			cpi.getProcessor().resolve(base, progressMonitor);
+		}
 	}
 
 }

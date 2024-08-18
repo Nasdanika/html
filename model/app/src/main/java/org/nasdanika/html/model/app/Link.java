@@ -190,6 +190,7 @@ public interface Link extends Label {
 	 * @param from
 	 * @param to
 	 */
+	@Override
 	default void rebase(URI from, URI to) {
 		String location = getLocation();
 		if (!Util.isBlank(location)) {						
@@ -201,8 +202,7 @@ public interface Link extends Label {
 				locationURI = locationURI.deresolve(to, true, true, true);
 			}
 			setLocation(locationURI.toString());
-		}
-		
+		}		
 	}
 
 } // Link

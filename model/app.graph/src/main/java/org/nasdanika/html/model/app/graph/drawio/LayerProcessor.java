@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.jsoup.Jsoup;
 import org.nasdanika.common.MapCompoundSupplier;
@@ -16,6 +17,7 @@ import org.nasdanika.drawio.Layer;
 import org.nasdanika.drawio.LayerElement;
 import org.nasdanika.drawio.Page;
 import org.nasdanika.graph.processor.ChildProcessors;
+import org.nasdanika.graph.processor.ProcessorElement;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
@@ -40,6 +42,21 @@ public class LayerProcessor extends BaseProcessor<Layer> {
 		}
 		
 		return childLabelsSupplier.then(this::createLayerLabels);
+	}
+	
+	@ProcessorElement
+	@Override
+	public void setElement(Layer element) {
+		super.setElement(element);
+		uri = URI.createURI(Util.isBlank(element.getLabel()) ? "index.html" : element.getId() + "/index.html");
+	}
+	
+	@Override
+	public void resolve(URI base, ProgressMonitor progressMonitor) {
+		super.resolve(base, progressMonitor);
+		for (ProcessorInfo<WidgetFactory> cpi: childInfos.values()) {
+			cpi.getProcessor().resolve(uri, progressMonitor);
+		}
 	}
 	
 	protected Collection<Label> createLayerLabels(Map<LayerElement, Collection<Label>> childLabels, ProgressMonitor progressMonitor) {
@@ -75,7 +92,8 @@ public class LayerProcessor extends BaseProcessor<Layer> {
 		}
 		
 		if (mLabel instanceof Action) {
-			((Action) mLabel).setLocation(element.getId() + "/index.html");
+			((Action) mLabel).setLocation(uri.toString());						
+			childLabelsList.forEach(cl -> cl.rebase(null, uri));
 		}		
 		
 		return Collections.singleton(mLabel);			

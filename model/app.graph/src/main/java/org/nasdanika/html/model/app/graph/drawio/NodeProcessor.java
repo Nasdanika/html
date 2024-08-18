@@ -23,6 +23,7 @@ import org.nasdanika.drawio.ModelElement;
 import org.nasdanika.drawio.Node;
 import org.nasdanika.graph.processor.ChildProcessors;
 import org.nasdanika.graph.processor.OutgoingEndpoints;
+import org.nasdanika.graph.processor.ProcessorElement;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
@@ -43,6 +44,26 @@ public class NodeProcessor extends LinkTargetProcessor<Node> {
 	
 	@OutgoingEndpoints
 	public Map<Connection, CompletableFuture<ConnectionProcessor>> outgoingEndpoints;
+
+	@ProcessorElement
+	@Override
+	public void setElement(Node element) {
+		super.setElement(element);
+		uri = URI.createURI(element.getId() + "/index.html");
+	}
+	
+	@Override
+	public void resolve(URI base, ProgressMonitor progressMonitor) {
+		super.resolve(base, progressMonitor);
+		for (Entry<ModelElement, ProcessorInfo<WidgetFactory>> cpe: childInfos.entrySet()) {
+			if (cpe.getKey() instanceof Node || isLogicalChildConnection(cpe.getKey())) {
+				cpe.getValue().getProcessor().resolve(uri, progressMonitor);
+			}
+		}		
+		for (Entry<Connection, CompletableFuture<ConnectionProcessor>> oe: outgoingEndpoints.entrySet()) {
+			oe.getValue().thenAccept(cp -> cp.resolve(uri, progressMonitor));
+		}		
+	}
 	
 	@SuppressWarnings("resource")
 	@Override
@@ -114,8 +135,9 @@ public class NodeProcessor extends LinkTargetProcessor<Node> {
 			if (source != null) {
 				return source == element;
 			}
+			return element == modelElement.getParent();
 		}
-		return element == modelElement.getParent();
+		return false;
 	}
 	
 	protected Collection<Label> createNodeLabels(
@@ -167,7 +189,9 @@ public class NodeProcessor extends LinkTargetProcessor<Node> {
 		
 		if (mLabel instanceof Action) {
 			((Action) mLabel).getAnonymous().addAll(childConnectionsActionList);
-			((Action) mLabel).setLocation(element.getId() + "/index.html");
+			((Action) mLabel).setLocation(uri.toString());
+			childNodesLabelsList.forEach(cl -> cl.rebase(null, uri));		
+			childConnectionsActionList.forEach(cl -> cl.rebase(null, uri));		
 		}		
 		
 		return Collections.singleton(mLabel);			

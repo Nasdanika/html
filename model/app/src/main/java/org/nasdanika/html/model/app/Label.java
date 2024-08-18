@@ -3,6 +3,7 @@
 package org.nasdanika.html.model.app;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;
 import org.nasdanika.html.model.bootstrap.Item;
@@ -196,5 +197,18 @@ public interface Label extends BootstrapElement, Item {
 	 * @generated
 	 */
 	void setDecorator(Label value);
+	
+	/**
+	 * Rebases children
+	 * @param from
+	 * @param to
+	 */
+	default void rebase(URI from, URI to) {
+		for (EObject child: getChildren()) {
+			if (child instanceof Label) {
+				((Label) child).rebase(from, to);
+			}
+		}
+	}	
 
 } // Label

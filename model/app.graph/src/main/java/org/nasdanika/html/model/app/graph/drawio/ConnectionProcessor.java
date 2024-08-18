@@ -2,10 +2,12 @@ package org.nasdanika.html.model.app.graph.drawio;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Connection;
+import org.nasdanika.graph.processor.ProcessorElement;
 import org.nasdanika.graph.processor.SourceHandler;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.AppFactory;
@@ -15,6 +17,13 @@ public class ConnectionProcessor extends LinkTargetProcessor<Connection> {
 
 	public ConnectionProcessor(DrawioProcessorFactory factory) {
 		super(factory);
+	}
+
+	@ProcessorElement
+	@Override
+	public void setElement(Connection element) {
+		super.setElement(element);
+		uri = URI.createURI(element.getId() + "/index.html");
 	}
 
 	@Override
@@ -28,7 +37,7 @@ public class ConnectionProcessor extends LinkTargetProcessor<Connection> {
 		action.setText(element.getLabel());
 		action.getContent().addAll(documentation);
 		configureLabel(action, progressMonitor);
-		action.setLocation(element.getId() + "/index.html");
+		action.setLocation(uri.toString());
 		return action; 
 	}
 	
