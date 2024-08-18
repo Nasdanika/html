@@ -32,15 +32,6 @@ public class ConnectionProcessor extends LayerElementProcessor<Connection> {
 		}
 	}	
 	
-	@Override
-	public Supplier<Collection<Label>> createLabelsSupplier() {
-		if (element.getId().equals("send-email-using")) {
-			System.out.println("Here we are!");
-		}
-		// TODO Auto-generated method stub
-		return super.createLabelsSupplier();
-	}
-	
 	@SourceHandler
 	public ConnectionProcessor getSourceHandler() {
 		return this;
