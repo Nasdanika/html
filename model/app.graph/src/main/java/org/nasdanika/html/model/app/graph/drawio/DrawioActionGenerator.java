@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -69,7 +67,7 @@ public class DrawioActionGenerator extends Configuration {
 			.map(ModelElement.class::cast)
 			.filter(ModelElement::isTargetLink)
 			.map(DrawioActionGenerator::getLinkTargetRecursive)
-			.forEach(entry ->  ((LinkTargetProcessor<LinkTarget>) processors.get(entry.getValue()).getProcessor()).referrers.add(entry.getKey()));
+			.forEach(entry ->  ((LinkTargetProcessor<LinkTarget>) processors.get(entry.getValue()).getProcessor()).addReferrer(entry.getKey()));
 		
 		System.out.println(processors.size());
 		
@@ -194,22 +192,23 @@ public class DrawioActionGenerator extends Configuration {
 		};
 	}
 
-	private static Map.Entry<ModelElement, LinkTarget> getLinkTargetRecursive(ModelElement source) {
-		return getLinkTargetRecursive(source, source, new HashSet<ModelElement>()::add);
-	}
-	
-	private static Map.Entry<ModelElement, LinkTarget> getLinkTargetRecursive(ModelElement source, ModelElement modelElement, Predicate<ModelElement> predicate) {
-		if (modelElement.isTargetLink() && predicate.test(modelElement)) {
-			LinkTarget linkTarget = modelElement.getLinkTarget();
-			if (linkTarget instanceof ModelElement) {
-				Entry<ModelElement, LinkTarget> ret = getLinkTargetRecursive(source, (ModelElement) linkTarget, predicate);
-				if (ret != null) {
-					return ret;
-				}
-			}
-			return linkTarget == null ? null : Map.entry(source, linkTarget);
+	private static Map.Entry<ModelElement, LinkTarget> getLinkTargetRecursive(ModelElement source) {				
+		// Preventing infinite loops
+		HashSet<ModelElement> tracker = new HashSet<ModelElement>();
+		ModelElement modelElement = source; 
+		while (tracker.add(modelElement) && modelElement.isTargetLink() && modelElement.getLinkTarget() instanceof ModelElement) { 
+			modelElement = (ModelElement) modelElement.getLinkTarget();			
 		}
+		
+		if (source != modelElement) {
+			return Map.entry(source, modelElement); // Not going to pages
+		}
+		
+		if (source.isTargetLink()) {
+			return Map.entry(source, source.getLinkTarget());
+		}
+		
 		return null;
 	}
-	
+				
 }

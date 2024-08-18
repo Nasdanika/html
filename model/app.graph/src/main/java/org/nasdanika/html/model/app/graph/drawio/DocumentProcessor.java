@@ -32,7 +32,7 @@ public class DocumentProcessor extends BaseProcessor<Document> {
 		List<Map.Entry<Page, ProcessorInfo<PageProcessor>>> topLevelPageProcessors = pageProcessors
 			.entrySet()
 			.stream()
-			.filter(ppe -> ppe.getValue().getProcessor().referrers.isEmpty())
+			.filter(ppe -> ppe.getValue().getProcessor().getReferrers().isEmpty())
 			.toList();
 		
 		if (topLevelPageProcessors.size() == 1) {
@@ -47,7 +47,7 @@ public class DocumentProcessor extends BaseProcessor<Document> {
 		List<Supplier<Collection<Label>>> topLevelPageProcessorSuppliers = pageProcessors
 				.values()				
 				.stream()
-				.filter(pp -> pp.getProcessor().referrers.isEmpty())
+				.filter(pp -> pp.getProcessor().getReferrers().isEmpty())
 				.map(ProcessorInfo::getProcessor)
 				.map(WidgetFactory::createLabelsSupplier)
 				.toList();

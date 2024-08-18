@@ -58,7 +58,7 @@ public class PageProcessor extends LinkTargetProcessor<Page> {
 	
 	@Override
 	public Supplier<Collection<Label>> createLabelsSupplier() {
-		if (isTopLevelPage || referrers.isEmpty()) {
+		if (isTopLevelPage || getReferrers().isEmpty()) {
 			return rootProcessor.createLabelsSupplier().then(this::createPageLabels);			
 		}
 		return rootProcessor.createLabelsSupplier();
