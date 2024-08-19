@@ -128,9 +128,12 @@ public class PageProcessor extends LinkTargetProcessor<Page> {
 		
 		// Links
 		if (representationElement instanceof LayerElement) {
+			if (sourceElement.isTargetLink()) {
+				representationElement.setLink(null);
+			}
 			while (sourceElement.isTargetLink() && sourceElement.getLinkTarget() instanceof ModelElement) {
 				sourceElement = (ModelElement) sourceElement.getLinkTarget();
-			}
+			}						
 			
 			ProcessorInfo<WidgetFactory> sourceElementProcessorInfo = registry.get(sourceElement);
 			if (sourceElementProcessorInfo != null) {
