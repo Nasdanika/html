@@ -190,7 +190,7 @@ public class BaseProcessor<T extends Element> implements WidgetFactory {
 				}
 			} catch (Exception e) {
 				Text text = ContentFactory.eINSTANCE.createText(); // Interpolate with element properties?
-				text.setContent("<div class=\"alert alert-danger\" role=\"alert\">" + e + "</div>");
+				text.setContent("<div class=\"nsd-error\">" + e + "</div>");
 				return Collections.singleton(text);
 			}
 		}

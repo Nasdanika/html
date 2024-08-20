@@ -77,7 +77,7 @@ public class PageProcessor extends LinkTargetProcessor<Page> {
 			representationText.setContent(representation.toHtml(true, factory.getViewer()));
 			action.getContent().addAll(factory.createRepresentationContent(representation, registry, progressMonitor));
 		} catch (TransformerException | IOException | ParserConfigurationException e) {
-			representationText.setContent("<div class=\"alert alert-danger\" role=\"alert\">Error creating representation:" + e + "</div>");
+			representationText.setContent("<div class=\"nsd-error\">Error creating representation: " + e + "</div>");
 		}
 		action.getContent().add(representationText);
 		action.getContent().addAll(rootProcessor.getDocumentation(progressMonitor));

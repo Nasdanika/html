@@ -44,7 +44,7 @@ public class LayerElementProcessor<T extends LayerElement> extends LinkTargetPro
 	
 	protected Map<Connection, CompletableFuture<ConnectionProcessor>> outgoingEndpoints = new ConcurrentHashMap<>();	
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addReferrer(ModelElement referrer) {
 		super.addReferrer(referrer);		
@@ -60,7 +60,7 @@ public class LayerElementProcessor<T extends LayerElement> extends LinkTargetPro
 		ProcessorInfo<WidgetFactory> referrerInfo = registry.get(referrer);
 		if (referrerInfo instanceof NodeProcessorInfo) {
 			NodeProcessorInfo<WidgetFactory, WidgetFactory, WidgetFactory> npi = (NodeProcessorInfo<WidgetFactory, WidgetFactory, WidgetFactory>) referrerInfo;
-			outgoingEndpoints.putAll((Map<? extends Connection, ? extends CompletableFuture<ConnectionProcessor>>) npi.getOutgoingEndpoints());			
+			outgoingEndpoints.putAll((Map) npi.getOutgoingEndpoints());			
 		}
 	}
 	
