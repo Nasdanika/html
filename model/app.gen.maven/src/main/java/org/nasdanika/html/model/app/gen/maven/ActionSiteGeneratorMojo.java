@@ -91,7 +91,8 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 	private String drawioViewer;	
 	
 	/**
-	 * Number of known/expected errors. E.g. some blank pages or broken links. Build fails if the number of actual errors reported is different from this parameter. 
+	 * Number of known/expected errors. E.g. some blank pages or broken links. Build fails if the number of actual errors reported is different from this parameter.
+	 * A negative number means any number of errors (don't fail on errors) 
 	 */
 	@Parameter(required = false)	
 	private int errors;
@@ -158,7 +159,7 @@ public class ActionSiteGeneratorMojo extends AbstractCommandMojo {
 					getLog().error("\t" + error);
 				}
 			}
-			if (errorCount != this.errors) {
+			if (this.errors >= 0 && errorCount != this.errors) {
 				String message = "There are " + errorCount + " site errors";
 				getLog().error(message);
 				throw new NasdanikaException(message);

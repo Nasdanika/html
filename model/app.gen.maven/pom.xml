@@ -11,7 +11,7 @@
 	<artifactId>site-generator-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>Site Generator Maven Plugin</name>
-	<url>https://docs.nasdanika.org/html/app/gen.maven/index.html</url>
+	<url>https://docs.nasdanika.org/maven-sites/html/app/gen.maven/index.html</url>
 	<build>
 		<plugins>
 			<plugin>
@@ -21,21 +21,22 @@
 			</plugin>			
 		</plugins>
 	</build>
-	<reporting>
-	    <plugins>
-	        <plugin>
-	            <groupId>org.apache.maven.plugins</groupId>
-	            <artifactId>maven-plugin-plugin</artifactId>
-        	    <reportSets>
-	                <reportSet>
-        	            <reports>
-                	        <report>report</report>
-	                    </reports>
-	                </reportSet>
-        	    </reportSets>
-	        </plugin>
-	    </plugins>
-	</reporting>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-report-plugin</artifactId>
+        <version>3.14.0</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report-no-fork</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
@@ -62,7 +63,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>app-model-gen</artifactId>
+			<artifactId>app-model-graph</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
