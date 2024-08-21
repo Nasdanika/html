@@ -96,7 +96,7 @@ public class EObjectLabelBuilder<T extends EObject> extends AdapterImpl implemen
 	}	
 	
 	/**
-	 * Adapts child eObject to {@link ActionSupplier} and adds to the list of children to be configured.
+	 * Adapts child eObject to and adds to the list of children to be configured.
 	 * @param child
 	 * @return
 	 */

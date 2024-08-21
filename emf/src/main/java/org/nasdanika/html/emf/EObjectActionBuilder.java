@@ -628,7 +628,7 @@ public class EObjectActionBuilder<T extends EObject> extends AdapterImpl impleme
 	}	
 	
 	/**
-	 * Adapts child eObject to {@link ActionSupplier}.
+	 * Adapts child eObject to
 	 * If there is a resolver adapter attached to the child and resolveConsumer is not null, calls resolveConsumer with the adapter as an argument.
 	 * @param child
 	 * @return

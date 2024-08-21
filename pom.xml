@@ -215,7 +215,9 @@
 		<module>model/app.gen</module>
 		<module>model/app.gen.cli</module>
 		<module>model/app.graph</module>
-		<module>model/app.gen.maven</module>
+		<!--
+		<module>model/app.gen.maven</module>  Maven plugins are not module-aware, capability framework does not work
+		-->
 		<module>model/app.gen.maven.archetype</module>
 	</modules>	
 
