@@ -1,6 +1,7 @@
 import org.nasdanika.capability.CapabilityFactory;
 import org.nasdanika.html.model.app.gen.cli.ActionHelpMixInFactory;
 import org.nasdanika.html.model.app.gen.cli.AppCommandFactory;
+import org.nasdanika.html.model.app.gen.cli.DrawioActionGeneratorCommandFactory;
 import org.nasdanika.html.model.app.gen.cli.HelpSiteCommandFactory;
 
 module org.nasdanika.html.model.app.gen.cli {
@@ -18,6 +19,7 @@ module org.nasdanika.html.model.app.gen.cli {
 	provides CapabilityFactory with 
 		AppCommandFactory, 
 		HelpSiteCommandFactory,
-		ActionHelpMixInFactory;
+		ActionHelpMixInFactory,
+		DrawioActionGeneratorCommandFactory;
 
 }
