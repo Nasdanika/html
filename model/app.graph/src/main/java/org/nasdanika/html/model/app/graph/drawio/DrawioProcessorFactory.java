@@ -56,7 +56,8 @@ public class DrawioProcessorFactory extends Configuration {
 		Function<ProgressMonitor, Object> next,		
 		ProgressMonitor progressMonitor) {
 		
-		return new DocumentProcessor(this);
+		DocumentProcessor processor = new DocumentProcessor(this);
+		return filter(config, processor, infoProvider, progressMonitor);
 	}
 				
 	@Processor(type = org.nasdanika.drawio.Page.class)
@@ -67,7 +68,8 @@ public class DrawioProcessorFactory extends Configuration {
 		Function<ProgressMonitor, Object> next,		
 		ProgressMonitor progressMonitor) {
 		
-		return new PageProcessor(this);
+		PageProcessor processor = new PageProcessor(this);
+		return filter(config, processor, infoProvider, progressMonitor);
 	}
 				
 	@Processor(type = org.nasdanika.drawio.Root.class)
@@ -78,12 +80,11 @@ public class DrawioProcessorFactory extends Configuration {
 		Function<ProgressMonitor, Object> next,		
 		ProgressMonitor progressMonitor) {
 		
-		return new RootProcessor(this);
+		RootProcessor processor = new RootProcessor(this);
+		return filter(config, processor, infoProvider, progressMonitor);
 	}
 				
-	@Processor(
-			type = org.nasdanika.drawio.Layer.class,
-			value = "visible = true")
+	@Processor(type = org.nasdanika.drawio.Layer.class)
 	public WidgetFactory createLayerProcessor(
 		ProcessorConfig config, 
 		boolean parallel, 
@@ -91,12 +92,11 @@ public class DrawioProcessorFactory extends Configuration {
 		Function<ProgressMonitor, Object> next,		
 		ProgressMonitor progressMonitor) {
 		
-		return new LayerProcessor(this);
+		LayerProcessor processor = new LayerProcessor(this);
+		return filter(config, processor, infoProvider, progressMonitor);
 	}
 	
-	@Processor(
-			type = org.nasdanika.drawio.Node.class,
-			value = "visible = true")
+	@Processor(type = org.nasdanika.drawio.Node.class)
 	public WidgetFactory createNodeProcessor(
 		NodeProcessorConfig<?,?> config, 
 		boolean parallel, 
@@ -108,12 +108,11 @@ public class DrawioProcessorFactory extends Configuration {
 		if (node.isTargetLink() && node.getLinkTarget() instanceof ModelElement) {
 			return null;			
 		}
-		return new NodeProcessor(this);
+		NodeProcessor processor = new NodeProcessor(this);
+		return filter(config, processor, infoProvider, progressMonitor);
 	}
 	
-	@Processor(
-			type = org.nasdanika.drawio.Connection.class,
-			value = "visible = true")
+	@Processor(type = org.nasdanika.drawio.Connection.class)
 	public WidgetFactory createConnectionProcessor(
 		ConnectionProcessorConfig<?,?> config, 
 		boolean parallel, 
@@ -126,7 +125,8 @@ public class DrawioProcessorFactory extends Configuration {
 			return null;			
 		}
 		
-		return new ConnectionProcessor(this);
+		ConnectionProcessor processor = new ConnectionProcessor(this);
+		return filter(config, processor, infoProvider, progressMonitor);
 	}
-
+	
 }

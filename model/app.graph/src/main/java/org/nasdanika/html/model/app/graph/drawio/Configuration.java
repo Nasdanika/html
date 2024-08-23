@@ -3,6 +3,7 @@ package org.nasdanika.html.model.app.graph.drawio;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -10,6 +11,8 @@ import org.nasdanika.common.DiagramGenerator;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.drawio.Document;
 import org.nasdanika.drawio.ModelElement;
+import org.nasdanika.graph.Element;
+import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 
@@ -120,5 +123,22 @@ public class Configuration {
 			ProgressMonitor progressMonitor) {
 		return Collections.emptyList();
 	}
+	
+	/**
+	 * Filters processor. This implementation returns the processor AS-IS.
+	 * @param <T>
+	 * @param config
+	 * @param processor
+	 * @param infoProvider
+	 * @param progressMonitor
+	 */
+	protected <T extends WidgetFactory> T filter(
+			ProcessorConfig config, 
+			T processor, 
+			BiConsumer<Element,BiConsumer<ProcessorInfo<Object>,ProgressMonitor>> infoProvider,
+			ProgressMonitor progressMonitor) {
+		
+		return processor;
+	}	
 
 }

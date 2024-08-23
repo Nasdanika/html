@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.common.util.URI;
@@ -187,6 +188,15 @@ public class DrawioActionGenerator extends Configuration {
 					ProgressMonitor progressMonitor) {
 				
 				return DrawioActionGenerator.this.createRepresentationContent(representation, registry, progressMonitor);
+			}
+			
+			@Override
+			protected <T extends WidgetFactory> T filter(
+					ProcessorConfig config, 
+					T processor,
+					BiConsumer<Element, BiConsumer<ProcessorInfo<Object>, ProgressMonitor>> infoProvider,
+					ProgressMonitor progressMonitor) {
+				return DrawioActionGenerator.this.filter(config, processor, infoProvider, progressMonitor);
 			}
 			
 		};
