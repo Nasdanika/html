@@ -1,3 +1,6 @@
+import org.nasdanika.capability.CapabilityFactory;
+import org.nasdanika.html.model.app.gen.AppAdapterCapabilityFactory;
+
 module org.nasdanika.html.model.app.gen {
 		
 	requires transitive org.nasdanika.html.model.bootstrap.gen;
@@ -12,4 +15,6 @@ module org.nasdanika.html.model.app.gen {
 	
 	exports org.nasdanika.html.model.app.gen;
 	opens org.nasdanika.html.model.app.gen;
+	
+	provides CapabilityFactory with AppAdapterCapabilityFactory;
 }

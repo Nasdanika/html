@@ -18,6 +18,7 @@ import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.SupplierFactory;
+import org.nasdanika.common.Util;
 import org.nasdanika.html.bootstrap.Theme;
 import org.nasdanika.html.model.app.gen.AppSiteGenerator;
 import org.nasdanika.html.model.app.util.AppDrawioResourceFactory;
@@ -90,6 +91,14 @@ public class SiteGeneratorCommand extends DelegatingCommand {
 					"to the current directory"
 				})
 	private String pageTemplate;
+		
+	@Option(
+			names = {"-F", "--page-template-file"},
+			description = {
+					"Page template file relative ",
+					"to the current directory"
+				})
+	private File pageTemplateFile;
 	
 	@Option(
 			names = {"-r", "--errors"},	
@@ -177,8 +186,18 @@ public class SiteGeneratorCommand extends DelegatingCommand {
 			baseDir = new File(".");
 		}
 		URI contextURI = URI.createFileURI(baseDir.getCanonicalPath()).appendSegment("");
-		URI pageTemplateURI = pageTemplate == null ? Theme.Cerulean.pageTemplateCdnURI : URI.createURI(pageTemplate).resolve(contextURI);
-		
+		URI pageTemplateURI;
+		if (!Util.isBlank(pageTemplate)) {
+			pageTemplateURI = URI.createURI(pageTemplate).resolve(contextURI);			
+		} else if (pageTemplateFile != null) {
+			pageTemplateURI = URI.createFileURI(pageTemplateFile.getAbsolutePath());						
+		} else {
+			pageTemplateURI = Theme.Cerulean.pageTemplateCdnURI;			
+		}
+		if (!pageTemplateURI.hasFragment()) {
+			pageTemplateURI = pageTemplateURI.appendFragment("/");
+		}
+				
 		URI outputURI = URI.createFileURI(output).resolve(contextURI);
 		File outputDir = new File(outputURI.toFileString());
 		

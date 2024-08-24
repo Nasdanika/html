@@ -1,29 +1,21 @@
 package org.nasdanika.html.model.app.gen.cli;
 
 import java.io.File;
-import java.net.URL;
 import java.util.Collection;
-import java.util.function.Consumer;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.cli.CommandGroup;
 import org.nasdanika.cli.ResourceSetMixIn;
-import org.nasdanika.common.Context;
-import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.ProgressMonitor;
-import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Document;
-import org.nasdanika.emf.persistence.EObjectLoader;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.util.LabelSupplier;
-import org.nasdanika.ncore.util.NcoreUtil;
-import org.nasdanika.persistence.ObjectLoader;
 
 import picocli.CommandLine.Mixin;
 import picocli.CommandLine.Option;
@@ -79,14 +71,6 @@ public abstract class AbstractHtmlAppGeneratorCommand extends CommandGroup imple
 		Collection<Label> labels = getLabels(progressMonitor);
 		return reduce(labels, progressMonitor);
 	}
-
-	protected Consumer<Diagnostic> createDiagnosticConsumer(ProgressMonitor progressMonitor) {
-		return d -> d.dump(System.out, 0); // TODO - to progress monitor
-	}
-
-	protected Context createContext(ProgressMonitor progressMonitor) {
-		return Context.EMPTY_CONTEXT;
-	};
 	
 	protected Label reduce(
 			Collection<Label> labels, 
@@ -99,32 +83,12 @@ public abstract class AbstractHtmlAppGeneratorCommand extends CommandGroup imple
 		}
 		
 		try {
-			ResourceSet rSet = resourceSetMixIn.createResourceSet(progressMonitor);
-			EObjectLoader eObjectLoader = new EObjectLoader((ObjectLoader) null) {
-				
-				@Override
-				public ResolutionResult resolveEClass(String type) {
-					EClass eClass = (EClass) NcoreUtil.getType(type, rSet, msg -> new NasdanikaException(msg + " in " + rootAction));
-					return new ResolutionResult(eClass, null);
-				}
-				
-				@Override
-				public ResourceSet getResourceSet() {
-					return rSet;
-				}
-				
-			};
-			Label root;
-			if (isFile) {
-				Consumer<Diagnostic> diagnosticConsumer = createDiagnosticConsumer(progressMonitor);
-				@SuppressWarnings("unchecked")
-				SupplierFactory<Label> rootSupplierFactory = (SupplierFactory<Label>) eObjectLoader.loadYaml(new File(this.rootAction), null, progressMonitor);				
-				root = rootSupplierFactory.create(createContext(progressMonitor)).call(progressMonitor, diagnosticConsumer);
-			} else {							
-				File baseDir = new File(".");
-				URL url = new URL(baseDir.toURI().toURL(), this.rootAction);
-				root = (Label) eObjectLoader.loadYaml(url, null, progressMonitor);
+			URI rootURI = isFile ? URI.createFileURI(new File(this.rootAction).getAbsolutePath()) : URI.createURI(this.rootAction).resolve(URI.createFileURI(new File(".").getAbsolutePath()));
+			if (!rootURI.hasFragment()) {
+				rootURI = rootURI.appendFragment("/");
 			}
+			ResourceSet rSet = resourceSetMixIn.createResourceSet(progressMonitor);		
+			Label root = (Label) rSet.getEObject(rootURI, true);
 			EList<EObject> rootChildren = root.getChildren();
 			if (rootChildren.isEmpty()) {
 				rootChildren.addAll(labels);
