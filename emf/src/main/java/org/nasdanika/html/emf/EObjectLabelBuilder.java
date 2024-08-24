@@ -14,7 +14,6 @@ import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.ActionReference;
 import org.nasdanika.html.model.app.AppFactory;
 import org.nasdanika.html.model.app.Label;
-import org.nasdanika.html.model.app.util.ActionSupplier;
 import org.nasdanika.html.model.app.util.LabelBuilder;
 import org.nasdanika.html.model.app.util.LabelProvider;
 import org.nasdanika.html.model.app.util.LabelProvider.Resolver;

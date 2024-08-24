@@ -74,17 +74,36 @@ public class DrawioActionGenerator extends Configuration {
 		
 		DocumentProcessor docProcessor = (DocumentProcessor) processors.get(document).getProcessor();
 				
-		URI baseURI = URI.createURI("tmp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
+		URI baseURI = getBaseURI();
 		docProcessor.resolve(baseURI, progressMonitor);
 		
 		Supplier<Collection<Label>> labelsSupplier = docProcessor.createLabelsSupplier();
 		return labelsSupplier.then(labels -> {
 			for (Label label: labels) {
-				label.rebase(null, baseURI);
+				label.rebase(null, getRebaseURI());
 			}
 			
 			return labels;
 		});
+	}
+	
+	protected URI baseURI = URI.createURI("tmp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
+	
+	/**
+	 * Base URI for resolving and link locations.
+	 * @return
+	 */
+	protected URI getBaseURI() {
+		return baseURI;
+	}
+	
+	/**
+	 * URI for rebasing labels to make locations relative.
+	 * This method returns the base URI. Override to, for example, add prefix to all locations. 
+	 * @return
+	 */
+	protected URI getRebaseURI() {
+		return baseURI;
 	}
 
 	protected DrawioProcessorFactory createProcessorFactory() {

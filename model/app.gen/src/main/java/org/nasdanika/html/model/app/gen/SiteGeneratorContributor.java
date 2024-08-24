@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.emf.RepresentationProcessor;
-import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.Label;
 
 /**
  * Contributor to generation which can be used by {@link SiteGenerator} subclasses. 
@@ -78,12 +78,12 @@ public interface SiteGeneratorContributor extends RepresentationProcessor {
 	}
 	
 	/**
-	 * Processes the root action. This method is called by {@link ActionSiteGenerator} and {@link SemanticSiteGenerator}.
+	 * Processes the root action. This method is called by {@link AppSiteGenerator} and {@link SemanticSiteGenerator}.
 	 * @param semanticResource
 	 * @param context
 	 * @param progressMonitor
 	 */
-	default void processRootAction(Action rootAction, Context context, ProgressMonitor progressMonitor) {
+	default void processRoot(Label root, Context context, ProgressMonitor progressMonitor) {
 		
 	}
 	

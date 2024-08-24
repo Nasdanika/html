@@ -64,7 +64,6 @@ import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.NavigationPanel;
 import org.nasdanika.html.model.app.util.ActionBuilder;
 import org.nasdanika.html.model.app.util.ActionProvider;
-import org.nasdanika.html.model.app.util.ActionSupplier;
 import org.nasdanika.html.model.bootstrap.Alert;
 import org.nasdanika.html.model.bootstrap.Appearance;
 import org.nasdanika.html.model.bootstrap.BootstrapElement;

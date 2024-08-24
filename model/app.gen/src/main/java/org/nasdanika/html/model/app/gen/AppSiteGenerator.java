@@ -16,14 +16,15 @@ import org.nasdanika.common.PrintStreamProgressMonitor;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.emf.ResolutionListener;
 import org.nasdanika.html.model.app.Action;
+import org.nasdanika.html.model.app.Label;
 import org.nasdanika.ncore.util.SemanticInfo;
 
 /**
- * Generates a web site from an action model as a semantic model.
+ * Generates a web site from an HTML application model as a semantic model.
  * @author Pavel
  *
  */
-public class ActionSiteGenerator extends SiteGenerator {
+public class AppSiteGenerator extends SiteGenerator {
 	
 	/**
 	 * Generates a resource model from an action model.
@@ -73,7 +74,7 @@ public class ActionSiteGenerator extends SiteGenerator {
 	}	
 			
 	public Map<String, Collection<String>> generate(
-		Action root,
+		Label root,
 		URI pageTemplateURI,
 		String siteMapDomain,
 		File outputDir,

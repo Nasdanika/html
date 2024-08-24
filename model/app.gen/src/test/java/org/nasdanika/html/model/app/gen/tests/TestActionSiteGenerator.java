@@ -10,7 +10,7 @@ import org.eclipse.emf.common.util.DiagnosticException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.jupiter.api.Test;
-import org.nasdanika.html.model.app.gen.ActionSiteGenerator;
+import org.nasdanika.html.model.app.gen.AppSiteGenerator;
 import org.nasdanika.ncore.util.SemanticInfo;
 
 public class TestActionSiteGenerator {
@@ -19,7 +19,7 @@ public class TestActionSiteGenerator {
 	public void testActionSiteGenerator() throws IOException, DiagnosticException {
 //		URI semanticMapURI = URI.createURI("https://docs.nasdanika.org/demo-action-site/semantic-map.json");				
 		
-		ActionSiteGenerator actionSiteGenerator = new ActionSiteGenerator() {
+		AppSiteGenerator actionSiteGenerator = new AppSiteGenerator() {
 			
 //			Map<ModelElement, Label> semanticMap = new LinkedHashMap<>();
 			
@@ -71,7 +71,7 @@ public class TestActionSiteGenerator {
 	
 	@Test
 	public void testDrawioActionSiteGenerator() throws IOException, DiagnosticException {
-		ActionSiteGenerator actionSiteGenerator = new ActionSiteGenerator();		
+		AppSiteGenerator actionSiteGenerator = new AppSiteGenerator();		
 		URI rootActionURI = URI.createURI(getClass().getResource("drawio/actions.drawio").toString()).appendFragment("/");
 		URI pageTemplateURI = URI.createURI(getClass().getResource("drawio/page-template.yml").toString());
 		Map<String, Collection<String>> errors = actionSiteGenerator.generate(

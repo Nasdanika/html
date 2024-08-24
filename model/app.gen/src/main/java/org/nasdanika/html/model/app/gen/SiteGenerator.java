@@ -156,7 +156,7 @@ public class SiteGenerator {
 	 * @throws Exception
 	 */
 	protected Resource generateResourceModel(
-			Action root, 
+			Label root, 
 			Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource,
 			org.nasdanika.html.model.bootstrap.Page pageTemplate, 
 			URI resourceURI, 
@@ -167,7 +167,7 @@ public class SiteGenerator {
 			ProgressMonitor progressMonitor) throws IOException {
 
 		for (SiteGeneratorContributor contributor : getContributors()) {
-			contributor.processRootAction(root, context, progressMonitor);
+			contributor.processRoot(root, context, progressMonitor);
 		}
 
 		java.util.function.Consumer<Diagnostic> diagnosticConsumer = diagnostic -> {
@@ -280,7 +280,7 @@ public class SiteGenerator {
 	 * @param context
 	 * @return
 	 */
-	protected JSONArray semanticInfo(Action root, Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource,
+	protected JSONArray semanticInfo(Label root, Iterable<Map.Entry<SemanticInfo, ?>> semanticInfoSource,
 			Context context) {
 		// Semantic info
 		JSONArray semanticInfo = new JSONArray();

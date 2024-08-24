@@ -11,19 +11,19 @@ import org.nasdanika.common.ProgressMonitor;
 
 import picocli.CommandLine;
 
-public class DrawioActionGeneratorCommandFactory extends SubCommandCapabilityFactory<DrawioActionGeneratorCommand> {
+public class DrawioHtmlAppGeneratorCommandFactory extends SubCommandCapabilityFactory<DrawioHtmlAppGeneratorCommand> {
 
 	@Override
-	protected Class<DrawioActionGeneratorCommand> getCommandType() {
-		return DrawioActionGeneratorCommand.class;
+	protected Class<DrawioHtmlAppGeneratorCommand> getCommandType() {
+		return DrawioHtmlAppGeneratorCommand.class;
 	}
 	
 	@Override
-	protected CompletionStage<DrawioActionGeneratorCommand> doCreateCommand(
+	protected CompletionStage<DrawioHtmlAppGeneratorCommand> doCreateCommand(
 			List<CommandLine> parentPath,
 			BiFunction<Object, ProgressMonitor, CompletionStage<Iterable<CapabilityProvider<Object>>>> resolver,
 			ProgressMonitor progressMonitor) {
-		return CompletableFuture.completedStage(new DrawioActionGeneratorCommand());
+		return CompletableFuture.completedStage(new DrawioHtmlAppGeneratorCommand());
 	}
 
 }

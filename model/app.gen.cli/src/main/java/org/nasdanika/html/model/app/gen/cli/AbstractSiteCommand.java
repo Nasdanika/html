@@ -17,7 +17,7 @@ import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Status;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.html.bootstrap.Theme;
-import org.nasdanika.html.model.app.gen.ActionSiteGenerator;
+import org.nasdanika.html.model.app.gen.AppSiteGenerator;
 import org.nasdanika.html.model.app.util.AppDrawioResourceFactory;
 import org.springframework.util.AntPathMatcher;
 
@@ -25,7 +25,9 @@ import picocli.CommandLine.Option;
 
 /**
  * Base class for site generation commands
+ * @deprecated Use {@link SiteGeneratorCommand}
  */
+@Deprecated
 public abstract class AbstractSiteCommand extends DelegatingCommand {
 	
 	protected abstract String getOutput();
@@ -77,7 +79,13 @@ public abstract class AbstractSiteCommand extends DelegatingCommand {
 				})
 	private String pageTemplate;
 	
-	@Option(names = {"-r", "--errors"},	description = "Expected number of page errors")
+	@Option(
+			names = {"-r", "--errors"},	
+			description = {
+				"Expected number of page errors",
+				"-1 for any (not fail on errors)",
+				"default is 0"	
+			})
 	private int pageErrors;
 
 	@Override
@@ -108,7 +116,7 @@ public abstract class AbstractSiteCommand extends DelegatingCommand {
 	
 	protected int generate(Context context, ProgressMonitor progressMonitor) throws IOException, DiagnosticException {
 		
-		ActionSiteGenerator actionSiteGenerator = new ActionSiteGenerator() {
+		AppSiteGenerator actionSiteGenerator = new AppSiteGenerator() {
 			
 			@Override
 			protected ResourceSet createResourceSet(Context context, ProgressMonitor progressMonitor) {
