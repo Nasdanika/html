@@ -39,33 +39,29 @@ public class HtmlAppGeneratorCommand extends AbstractHtmlAppGeneratorCommand {
 	ContextMixIn contextMixin;
 	
 	@Override
-	protected Collection<Label> getLabels(ProgressMonitor progressMonitor) {
-//		EObject source,
-//		Context context, 
-//		java.util.function.BiFunction<URI, ProgressMonitor, Label> prototypeProvider,			
-//		Predicate<Object> factoryPredicate,
-//		Predicate<EPackage> ePackagePredicate,
-//		Consumer<Diagnostic> diagnosticConsumer,
-//		ProgressMonitor progressMonitor) {
-		
+	protected Collection<Label> getLabels(ProgressMonitor progressMonitor) {		
 		try {
 			Context context = contextMixin.createContext(progressMonitor);
 			EObject source = eObjectSupplier.getEObject(progressMonitor); 
 			Consumer<Diagnostic> diagnosticConsumer = createDiagnosticConsumer();
-			HtmlAppGenerator generator = HtmlAppGenerator.load(
-					source, 
-					context, 
-					createPrototypeProvider(progressMonitor), 
-					createFactoryPredicate(progressMonitor),
-					createEPackagePredicate(progressMonitor),
-					diagnosticConsumer, 
-					progressMonitor);
-			
+			HtmlAppGenerator generator = createHtmlAppGenerator(progressMonitor, context, source, diagnosticConsumer);			
 			Map<EObject, Collection<Label>> labelMap = generator.generateHtmlAppModel(diagnosticConsumer, progressMonitor);
 			return flatMap(labelMap);
 		} catch (IOException e) {
 			throw new NasdanikaException(e);
 		}		
+	}
+
+	protected HtmlAppGenerator createHtmlAppGenerator(ProgressMonitor progressMonitor, Context context, EObject source,
+			Consumer<Diagnostic> diagnosticConsumer) {
+		return HtmlAppGenerator.load(
+				source, 
+				context, 
+				createPrototypeProvider(progressMonitor), 
+				createFactoryPredicate(progressMonitor),
+				createEPackagePredicate(progressMonitor),
+				diagnosticConsumer, 
+				progressMonitor);
 	}		
 	
 	protected Collection<Label> flatMap(Map<EObject, Collection<Label>> labelMap) {
