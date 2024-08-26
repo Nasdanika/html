@@ -3,6 +3,7 @@ import org.nasdanika.html.model.app.gen.cli.ActionHelpMixInFactory;
 import org.nasdanika.html.model.app.gen.cli.AppCommandFactory;
 import org.nasdanika.html.model.app.gen.cli.DrawioHtmlAppGeneratorCommandFactory;
 import org.nasdanika.html.model.app.gen.cli.HelpSiteCommandFactory;
+import org.nasdanika.html.model.app.gen.cli.HtmlAppGeneratorCommandFactory;
 import org.nasdanika.html.model.app.gen.cli.SiteGeneratorCommandFactory;
 
 module org.nasdanika.html.model.app.gen.cli {
@@ -21,6 +22,7 @@ module org.nasdanika.html.model.app.gen.cli {
 		AppCommandFactory, 
 		HelpSiteCommandFactory,
 		ActionHelpMixInFactory,
+		HtmlAppGeneratorCommandFactory,
 		DrawioHtmlAppGeneratorCommandFactory,
 		SiteGeneratorCommandFactory;
 

@@ -41,18 +41,17 @@ import org.nasdanika.graph.processor.ProcessorConfig;
 import org.nasdanika.graph.processor.ProcessorInfo;
 import org.nasdanika.graph.processor.ReflectiveProcessorFactoryProvider;
 import org.nasdanika.graph.processor.emf.EObjectNodeProcessorReflectiveFactory;
-import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.Link;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 
 /**
- * Base class for action generation using node processor factory
+ * Base class for HTML application (site) generation using node processor factory
  * @param <F> Node processor factory type.
  */
-public class ActionGenerator {
+public class HtmlAppGenerator {
 	
-	public interface Factory<T extends ActionGenerator> {
+	public interface Factory<T extends HtmlAppGenerator> {
 		
 		T create(
 				Collection<? extends EObject> sources,
@@ -67,7 +66,7 @@ public class ActionGenerator {
 	protected Collection<? extends EObject> references;
 	protected Function<? super EObject, URI> uriResolver;
 	
-	public ActionGenerator(
+	public HtmlAppGenerator(
 			Collection<? extends EObject> sources,
 			Collection<? extends EObject> references,
 			Function<? super EObject, URI> uriResolver,
@@ -87,10 +86,10 @@ public class ActionGenerator {
 	 * @param progressMonitor
 	 * @return
 	 */
-	public static ActionGenerator load(
+	public static HtmlAppGenerator load(
 			EObject source,
 			Context context, 
-			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider,			
+			java.util.function.BiFunction<URI, ProgressMonitor, Label> prototypeProvider,			
 			Predicate<Object> factoryPredicate,
 			Predicate<EPackage> ePackagePredicate,
 			Consumer<Diagnostic> diagnosticConsumer,
@@ -110,7 +109,7 @@ public class ActionGenerator {
 	public static record NodeProcessorFactoryRequirement(
 			Predicate<Object> factoryPredicate,
 			Context context, 
-			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider,
+			java.util.function.BiFunction<URI, ProgressMonitor, Label> prototypeProvider,
 			Consumer<Diagnostic> diagnosticConsumer) {
 		
 	}
@@ -123,10 +122,10 @@ public class ActionGenerator {
 	 * @param progressMonitor
 	 * @return
 	 */
-	public static ActionGenerator load(
+	public static HtmlAppGenerator load(
 			EObject source,
 			Context context, 
-			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider,			
+			java.util.function.BiFunction<URI, ProgressMonitor, Label> prototypeProvider,			
 			Predicate<Object> factoryPredicate,
 			Predicate<EPackage> ePackagePredicate,
 			CapabilityLoader capabilityLoader, 
@@ -141,7 +140,7 @@ public class ActionGenerator {
 				ePackagePredicate,
 				capabilityLoader, 
 				diagnosticConsumer,
-				ActionGenerator::new,
+				HtmlAppGenerator::new,
 				progressMonitor);			
 		
 	}
@@ -154,10 +153,10 @@ public class ActionGenerator {
 	 * @param progressMonitor
 	 * @return
 	 */
-	public static <T extends ActionGenerator> T load(
+	public static <T extends HtmlAppGenerator> T load(
 			EObject source,
 			Context context, 
-			java.util.function.BiFunction<URI, ProgressMonitor, Action> prototypeProvider,			
+			java.util.function.BiFunction<URI, ProgressMonitor, Label> prototypeProvider,			
 			Predicate<Object> factoryPredicate,
 			Predicate<EPackage> ePackagePredicate,
 			CapabilityLoader capabilityLoader, 
@@ -216,7 +215,7 @@ public class ActionGenerator {
 	 * @param progressMonitor Progress monitor
 	 * @return A map of source objects to a collection of labels created from those objects
 	 */
-	public Map<EObject,Collection<Label>> generateActionModel(Consumer<Diagnostic> diagnosticConsumer, ProgressMonitor progressMonitor) {
+	public Map<EObject,Collection<Label>> generateHtmlAppModel(Consumer<Diagnostic> diagnosticConsumer, ProgressMonitor progressMonitor) {
 		Transformer<EObject,Element> graphFactory = new Transformer<>(createGraphFactory());
 		Map<EObject, Element> graph = graphFactory.transform(sources, false, progressMonitor);
 		
@@ -339,12 +338,12 @@ public class ActionGenerator {
 	 * @param progressMonitor
 	 * @throws IOException
 	 */
-	public void generateActionModel(
+	public void generateHtmlAppModel(
 			Consumer<Diagnostic> diagnosticConsumer,
 			URI actionModelResourceURI,
 			ProgressMonitor progressMonitor) throws IOException {
 	
-		Map<EObject, Collection<Label>> labelMap = generateActionModel(
+		Map<EObject, Collection<Label>> labelMap = generateHtmlAppModel(
 				diagnosticConsumer, 
 				progressMonitor);
 		
@@ -381,12 +380,12 @@ public class ActionGenerator {
 	 * @param progressMonitor
 	 * @throws IOException
 	 */
-	public void generateActionModel(
+	public void generateHtmlAppModel(
 			Consumer<Diagnostic> diagnosticConsumer,
 			File actionModelFile,
 			ProgressMonitor progressMonitor) throws IOException {
 		
-		generateActionModel(
+		generateHtmlAppModel(
 				diagnosticConsumer, 
 				URI.createFileURI(actionModelFile.getCanonicalFile().getAbsolutePath()), progressMonitor);
 	}
