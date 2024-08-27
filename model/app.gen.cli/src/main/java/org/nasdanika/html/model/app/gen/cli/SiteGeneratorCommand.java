@@ -215,7 +215,10 @@ public class SiteGeneratorCommand extends DelegatingCommand {
 			errorCount += ee.getValue().size();
 		}				
 		progressMonitor.worked(Status.ERROR, 1, "There are " + errorCount + " page errors");
-		return Math.abs(errors.size() - errorCount);
+		if (pageErrors == -1) {
+			return 0;
+		}
+		return Math.abs(pageErrors - errorCount);
 	}
 	
 }

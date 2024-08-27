@@ -43,7 +43,7 @@ public class HtmlAppGeneratorCommand extends AbstractHtmlAppGeneratorCommand {
 		try {
 			Context context = contextMixin.createContext(progressMonitor);
 			EObject source = eObjectSupplier.getEObject(progressMonitor); 
-			Consumer<Diagnostic> diagnosticConsumer = createDiagnosticConsumer();
+			Consumer<Diagnostic> diagnosticConsumer = createDiagnosticConsumer(progressMonitor);
 			HtmlAppGenerator generator = createHtmlAppGenerator(progressMonitor, context, source, diagnosticConsumer);			
 			Map<EObject, Collection<Label>> labelMap = generator.generateHtmlAppModel(diagnosticConsumer, progressMonitor);
 			return flatMap(labelMap);
@@ -73,8 +73,8 @@ public class HtmlAppGeneratorCommand extends AbstractHtmlAppGeneratorCommand {
 		
 	}
 
-	protected Consumer<Diagnostic> createDiagnosticConsumer() {
-		return d -> d.dump(System.out, 0);
+	protected Consumer<Diagnostic> createDiagnosticConsumer(ProgressMonitor progressMonitor) {
+		return d -> progressMonitor.worked(d.getStatus(), 1, "Diagnostic: " + d.getMessage(), d);
 	}	
 	
 	protected java.util.function.BiFunction<URI, ProgressMonitor, Label> createPrototypeProvider(ProgressMonitor progressMonitor) {

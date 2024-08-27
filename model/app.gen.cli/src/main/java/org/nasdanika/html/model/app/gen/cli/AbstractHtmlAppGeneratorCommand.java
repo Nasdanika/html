@@ -11,14 +11,12 @@ import org.nasdanika.cli.CommandGroup;
 import org.nasdanika.cli.ResourceSetMixIn;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
-import org.nasdanika.drawio.Document;
 import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.util.LabelSupplier;
 
 import picocli.CommandLine.Mixin;
 import picocli.CommandLine.Option;
-import picocli.CommandLine.ParentCommand;
 
 /**
  * Base class for action supplier commands.
@@ -27,10 +25,7 @@ import picocli.CommandLine.ParentCommand;
  * 
  */
 public abstract class AbstractHtmlAppGeneratorCommand extends CommandGroup implements LabelSupplier {
-	
-	@ParentCommand
-	private Document.Supplier documentSupplier;
-	
+		
 	protected abstract Collection<Label> getLabels(ProgressMonitor progressMonitor);
 	
 	@Mixin

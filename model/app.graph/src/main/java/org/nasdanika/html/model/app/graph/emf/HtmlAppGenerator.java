@@ -171,12 +171,14 @@ public class HtmlAppGenerator {
 				contributorPredicate);
 
 		Map<EPackage, URI> references = new IdentityHashMap<EPackage, URI>();
-		for (CapabilityProvider<Object> ePackageProvider: capabilityLoader.load(contributorRequirement, progressMonitor)) {
-			ePackageProvider.getPublisher().subscribe(contributor -> {
-				EPackageResourceSetContributor ePackageResourceSetContributor = (EPackageResourceSetContributor) contributor;
-				URI docURI = ePackageResourceSetContributor.getDocumentationURI();
-				if (docURI != null) {
-					references.put(ePackageResourceSetContributor.getEPackage(), docURI);
+		for (CapabilityProvider<Object> resourceSetContributorProvider: capabilityLoader.load(contributorRequirement, progressMonitor)) {
+			resourceSetContributorProvider.getPublisher().subscribe(contributor -> {
+				if (contributor instanceof EPackageResourceSetContributor) {
+					EPackageResourceSetContributor ePackageResourceSetContributor = (EPackageResourceSetContributor) contributor;
+					URI docURI = ePackageResourceSetContributor.getDocumentationURI();
+					if (docURI != null) {
+						references.put(ePackageResourceSetContributor.getEPackage(), docURI);
+					}
 				}
 			});
 		}

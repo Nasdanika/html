@@ -29,8 +29,8 @@ public class DrawioHtmlAppGeneratorCommand extends AbstractHtmlAppGeneratorComma
 	@ParentCommand
 	private Document.Supplier documentSupplier;
 
-	protected Consumer<Diagnostic> createDiagnosticConsumer() {
-		return d -> d.dump(System.out, 0);
+	protected Consumer<Diagnostic> createDiagnosticConsumer(ProgressMonitor progressMonitor) {		
+		return d -> progressMonitor.worked(d.getStatus(), 1, "Diagnostic: " + d.getMessage(), d);
 	}
 
 	protected DrawioActionGenerator createDrawioActionGenerator() {
@@ -63,7 +63,7 @@ public class DrawioHtmlAppGeneratorCommand extends AbstractHtmlAppGeneratorComma
 		Document document = documentSupplier.getDocument(progressMonitor); 
 		DrawioActionGenerator actionGenerator = createDrawioActionGenerator();
 		Supplier<Collection<Label>> labelSupplier = actionGenerator.createLabelsSupplier(document, progressMonitor);
-		Consumer<Diagnostic> diagnosticConsumer = createDiagnosticConsumer();
+		Consumer<Diagnostic> diagnosticConsumer = createDiagnosticConsumer(progressMonitor);
 		return labelSupplier.call(progressMonitor, diagnosticConsumer);
 	}		
 
