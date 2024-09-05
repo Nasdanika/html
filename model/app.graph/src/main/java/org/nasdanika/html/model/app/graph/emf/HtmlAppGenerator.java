@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +88,7 @@ public class HtmlAppGenerator {
 	 * @return
 	 */
 	public static HtmlAppGenerator load(
-			EObject source,
+			Collection<EObject> sources,
 			Context context, 
 			java.util.function.BiFunction<URI, ProgressMonitor, Label> prototypeProvider,			
 			Predicate<Object> factoryPredicate,
@@ -96,7 +97,7 @@ public class HtmlAppGenerator {
 			ProgressMonitor progressMonitor) {
 
 		return load(
-				source,
+				sources,
 				context, 
 				prototypeProvider,
 				factoryPredicate,
@@ -123,7 +124,7 @@ public class HtmlAppGenerator {
 	 * @return
 	 */
 	public static HtmlAppGenerator load(
-			EObject source,
+			Collection<EObject> sources,
 			Context context, 
 			java.util.function.BiFunction<URI, ProgressMonitor, Label> prototypeProvider,			
 			Predicate<Object> factoryPredicate,
@@ -133,7 +134,7 @@ public class HtmlAppGenerator {
 			ProgressMonitor progressMonitor) {
 
 		return load(
-				source,
+				sources,
 				context, 
 				prototypeProvider,			
 				factoryPredicate,
@@ -154,7 +155,7 @@ public class HtmlAppGenerator {
 	 * @return
 	 */
 	public static <T extends HtmlAppGenerator> T load(
-			EObject source,
+			Collection<EObject> sources,
 			Context context, 
 			java.util.function.BiFunction<URI, ProgressMonitor, Label> prototypeProvider,			
 			Predicate<Object> factoryPredicate,
@@ -184,9 +185,20 @@ public class HtmlAppGenerator {
 		}
 		URI baseURI = URI.createURI("tmp://" + UUID.randomUUID() + "/" + UUID.randomUUID() + "/");
 		Function<? super EObject, URI> uriResolver = eObj -> {
-			if (eObj == source) {
-				return baseURI;
+			if (sources.size() == 1) {
+				 if (eObj == sources.iterator().next()) {
+					 return baseURI;
+				 }
+			} else {
+				Iterator<EObject> sit = sources.iterator();
+				for (int idx = 0; sit.hasNext(); ++idx) {
+					EObject nextSource = sit.next();
+					if (eObj == nextSource) {
+						return baseURI.appendSegments(new String[] { String.valueOf(idx), "" });
+					}
+				}
 			}
+			
 			return references.get(eObj);
 		};
 				
@@ -201,7 +213,7 @@ public class HtmlAppGenerator {
 		}
 		
 		return factory.create(
-				Collections.singleton(source),
+				sources,
 				references.keySet(),
 				uriResolver,
 				nodeProcessorFactories.toArray());

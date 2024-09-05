@@ -2,6 +2,7 @@ package org.nasdanika.html.model.app.gen.cli;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -11,7 +12,6 @@ import org.nasdanika.cli.CommandGroup;
 import org.nasdanika.cli.ResourceSetMixIn;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.common.Util;
-import org.nasdanika.html.model.app.Action;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.util.LabelSupplier;
 
@@ -19,8 +19,8 @@ import picocli.CommandLine.Mixin;
 import picocli.CommandLine.Option;
 
 /**
- * Base class for action supplier commands.
- * Reduces a list of {@link Label}s to an {@link Action} by either using the first and only label if it is an Action,
+ * Base class for label supplier commands.
+ * Reduces a list of {@link Label}s to a single label by either using the first and only label,
  * or adding the labels to a root or principal action (https://html-app.models.nasdanika.org/index.html#action-types) 
  * 
  */
@@ -32,12 +32,12 @@ public abstract class AbstractHtmlAppGeneratorCommand extends CommandGroup imple
 	private ResourceSetMixIn resourceSetMixIn;
 	
 	@Option(
-		names = {"-r", "--root-action" },
+		names = {"-r", "--root-label" },
 		description = {  
-			"Root action URL or file path, resolved relative",
+			"Root label URL or file path, resolved relative",
 			"to the current directory"
 		})
-	private String rootAction;
+	private String rootLabel;
 	
 	@Option(
 			names = {"-R", "--add-to-root" },
@@ -61,22 +61,19 @@ public abstract class AbstractHtmlAppGeneratorCommand extends CommandGroup imple
 	private boolean isFile;
 
 	@Override
-	public Label getEObject(ProgressMonitor progressMonitor) {
+	public Collection<Label> getEObjects(ProgressMonitor progressMonitor) {
 		Collection<Label> labels = getLabels(progressMonitor);
 		return reduce(labels, progressMonitor);
 	}
 	
-	protected Label reduce(
+	protected Collection<Label> reduce(
 			Collection<Label> labels, 
 			ProgressMonitor progressMonitor) {
-		if (Util.isBlank(rootAction)) {
-			if (labels.size() == 1) {
-				return (Action) labels.iterator().next();
-			}
-			throw new UnsupportedOperationException("Multiple labels, use root action option");
+		if (Util.isBlank(rootLabel)) {
+			return labels;
 		}
 		
-		URI rootURI = isFile ? URI.createFileURI(new File(this.rootAction).getAbsolutePath()) : URI.createURI(this.rootAction).resolve(URI.createFileURI(new File(".").getAbsolutePath()).appendSegment(""));
+		URI rootURI = isFile ? URI.createFileURI(new File(this.rootLabel).getAbsolutePath()) : URI.createURI(this.rootLabel).resolve(URI.createFileURI(new File(".").getAbsolutePath()).appendSegment(""));
 		if (!rootURI.hasFragment()) {
 			rootURI = rootURI.appendFragment("/");
 		}
@@ -100,7 +97,7 @@ public abstract class AbstractHtmlAppGeneratorCommand extends CommandGroup imple
 				rootChildren.addAll(insertionIndex, labels);					
 			}
 		}
-		return root;
+		return Collections.singleton(root);
 	}
 
 }

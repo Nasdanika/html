@@ -11,6 +11,7 @@ import org.eclipse.emf.common.util.DiagnosticException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.cli.DelegatingCommand;
+import org.nasdanika.cli.Description;
 import org.nasdanika.cli.ModuleVersionProvider;
 import org.nasdanika.cli.ParentCommands;
 import org.nasdanika.common.Context;
@@ -20,6 +21,7 @@ import org.nasdanika.common.Status;
 import org.nasdanika.common.SupplierFactory;
 import org.nasdanika.common.Util;
 import org.nasdanika.html.bootstrap.Theme;
+import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.gen.AppSiteGenerator;
 import org.nasdanika.html.model.app.util.AppDrawioResourceFactory;
 import org.nasdanika.html.model.app.util.LabelSupplier;
@@ -36,6 +38,7 @@ import picocli.CommandLine.ParentCommand;
 		mixinStandardHelpOptions = true,
 		name = "site")
 @ParentCommands(LabelSupplier.class)
+@Description(icon = "https://img.icons8.com/material-two-tone/20/web.png")
 public class SiteGeneratorCommand extends DelegatingCommand {
 	
 	@Parameters(
@@ -45,7 +48,7 @@ public class SiteGeneratorCommand extends DelegatingCommand {
 	private String output;
 	
 	@ParentCommand
-	LabelSupplier actionSupplier;	
+	LabelSupplier labelSupplier;	
 		
 	@Option(
 			names = {"-e", "--exclude"},
@@ -201,8 +204,12 @@ public class SiteGeneratorCommand extends DelegatingCommand {
 		URI outputURI = URI.createFileURI(output).resolve(contextURI);
 		File outputDir = new File(outputURI.toFileString());
 		
+		Collection<Label> labels = labelSupplier.getEObjects(progressMonitor);
+		if (labels.size() != 1) {
+			throw new IllegalArgumentException("Expected one label, got " + labels.size());
+		}
 		Map<String, Collection<String>> errors = actionSiteGenerator.generate(
-				actionSupplier.getEObject(progressMonitor), 
+				labels.iterator().next(), 
 				pageTemplateURI, 
 				domian, 
 				outputDir,  

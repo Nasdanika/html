@@ -10,6 +10,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.cli.ContextMixIn;
+import org.nasdanika.cli.Description;
 import org.nasdanika.cli.ModuleVersionProvider;
 import org.nasdanika.cli.ParentCommands;
 import org.nasdanika.common.Context;
@@ -30,6 +31,7 @@ import picocli.CommandLine.ParentCommand;
 		mixinStandardHelpOptions = true,
 		name = "html-app")
 @ParentCommands(EObjectSupplier.class)
+@Description(icon = "https://img.icons8.com/external-flatart-icons-outline-flatarticons/20/external-html-programming-and-coding-flatart-icons-outline-flatarticons-5.png")
 public class HtmlAppGeneratorCommand extends AbstractHtmlAppGeneratorCommand {
 	
 	@ParentCommand
@@ -42,9 +44,9 @@ public class HtmlAppGeneratorCommand extends AbstractHtmlAppGeneratorCommand {
 	protected Collection<Label> getLabels(ProgressMonitor progressMonitor) {		
 		try {
 			Context context = contextMixin.createContext(progressMonitor);
-			EObject source = eObjectSupplier.getEObject(progressMonitor); 
+			Collection<EObject> sources = eObjectSupplier.getEObjects(progressMonitor); 
 			Consumer<Diagnostic> diagnosticConsumer = createDiagnosticConsumer(progressMonitor);
-			HtmlAppGenerator generator = createHtmlAppGenerator(progressMonitor, context, source, diagnosticConsumer);			
+			HtmlAppGenerator generator = createHtmlAppGenerator(sources, context, progressMonitor, diagnosticConsumer);			
 			Map<EObject, Collection<Label>> labelMap = generator.generateHtmlAppModel(diagnosticConsumer, progressMonitor);
 			return flatMap(labelMap);
 		} catch (IOException e) {
@@ -52,10 +54,13 @@ public class HtmlAppGeneratorCommand extends AbstractHtmlAppGeneratorCommand {
 		}		
 	}
 
-	protected HtmlAppGenerator createHtmlAppGenerator(ProgressMonitor progressMonitor, Context context, EObject source,
+	protected HtmlAppGenerator createHtmlAppGenerator(
+			Collection<EObject> sources,
+			Context context, 
+			ProgressMonitor progressMonitor, 
 			Consumer<Diagnostic> diagnosticConsumer) {
 		return HtmlAppGenerator.load(
-				source, 
+				sources, 
 				context, 
 				createPrototypeProvider(progressMonitor), 
 				createFactoryPredicate(progressMonitor),
