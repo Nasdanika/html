@@ -11,7 +11,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.nasdanika.cli.ContextMixIn;
 import org.nasdanika.cli.Description;
-import org.nasdanika.cli.ModuleVersionProvider;
 import org.nasdanika.cli.ParentCommands;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.Diagnostic;

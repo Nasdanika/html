@@ -12,7 +12,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.nasdanika.cli.DelegatingCommand;
 import org.nasdanika.cli.Description;
-import org.nasdanika.cli.ModuleVersionProvider;
 import org.nasdanika.cli.ParentCommands;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.NasdanikaException;

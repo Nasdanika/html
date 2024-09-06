@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.common.util.URI;
-import org.nasdanika.cli.ModuleVersionProvider;
 import org.nasdanika.cli.ParentCommands;
 import org.nasdanika.common.Diagnostic;
 import org.nasdanika.common.ProgressMonitor;
