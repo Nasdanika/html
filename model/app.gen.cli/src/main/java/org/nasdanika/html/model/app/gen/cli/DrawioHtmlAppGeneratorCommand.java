@@ -11,7 +11,7 @@ import org.nasdanika.common.Supplier;
 import org.nasdanika.common.Util;
 import org.nasdanika.drawio.Document;
 import org.nasdanika.html.model.app.Label;
-import org.nasdanika.html.model.app.graph.drawio.DrawioActionGenerator;
+import org.nasdanika.html.model.app.graph.drawio.DrawioHtmlAppGenerator;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -32,8 +32,8 @@ public class DrawioHtmlAppGeneratorCommand extends AbstractHtmlAppGeneratorComma
 		return d -> progressMonitor.worked(d.getStatus(), 1, "Diagnostic: " + d.getMessage(), d);
 	}
 
-	protected DrawioActionGenerator createDrawioActionGenerator() {
-		return new DrawioActionGenerator() {
+	protected DrawioHtmlAppGenerator createDrawioActionGenerator() {
+		return new DrawioHtmlAppGenerator() {
 			
 			@Override
 			protected URI getBaseURI() {
@@ -60,7 +60,7 @@ public class DrawioHtmlAppGeneratorCommand extends AbstractHtmlAppGeneratorComma
 	@Override
 	protected Collection<Label> getLabels(ProgressMonitor progressMonitor) {
 		Document document = documentSupplier.getDocument(progressMonitor); 
-		DrawioActionGenerator actionGenerator = createDrawioActionGenerator();
+		DrawioHtmlAppGenerator actionGenerator = createDrawioActionGenerator();
 		Supplier<Collection<Label>> labelSupplier = actionGenerator.createLabelsSupplier(document, progressMonitor);
 		Consumer<Diagnostic> diagnosticConsumer = createDiagnosticConsumer(progressMonitor);
 		return labelSupplier.call(progressMonitor, diagnosticConsumer);

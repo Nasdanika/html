@@ -27,15 +27,15 @@ import org.nasdanika.graph.processor.ReflectiveProcessorFactoryProvider;
 import org.nasdanika.html.model.app.Label;
 import org.nasdanika.html.model.app.graph.WidgetFactory;
 
-public class DrawioActionGenerator extends Configuration {
+public class DrawioHtmlAppGenerator extends Configuration {
 
 	protected CapabilityLoader capabilityLoader;
 		
-	public DrawioActionGenerator() {
+	public DrawioHtmlAppGenerator() {
 		this(new CapabilityLoader());
 	}
 	
-	public DrawioActionGenerator(CapabilityLoader capabilityLoader) {
+	public DrawioHtmlAppGenerator(CapabilityLoader capabilityLoader) {
 		this.capabilityLoader = capabilityLoader;
 	}
 	
@@ -67,7 +67,7 @@ public class DrawioActionGenerator extends Configuration {
 			.filter(ModelElement.class::isInstance)
 			.map(ModelElement.class::cast)
 			.filter(ModelElement::isTargetLink)
-			.map(DrawioActionGenerator::getLinkTargetRecursive)
+			.map(DrawioHtmlAppGenerator::getLinkTargetRecursive)
 			.forEach(entry ->  ((LinkTargetProcessor<LinkTarget>) processors.get(entry.getValue()).getProcessor()).addReferrer(entry.getKey()));
 		
 		System.out.println(processors.size());
@@ -111,27 +111,27 @@ public class DrawioActionGenerator extends Configuration {
 			
 			@Override
 			protected String getIconProperty() {
-				return DrawioActionGenerator.this.getIconProperty();
+				return DrawioHtmlAppGenerator.this.getIconProperty();
 			}	
 			
 			@Override
 			protected String getTitleProperty() {
-				return DrawioActionGenerator.this.getTitleProperty();
+				return DrawioHtmlAppGenerator.this.getTitleProperty();
 			}	
 				
 			@Override
 			protected String getDocumentationProperty() {
-				return DrawioActionGenerator.this.getDocumentationProperty();
+				return DrawioHtmlAppGenerator.this.getDocumentationProperty();
 			}	
 				
 			@Override
 			protected String getDocRefProperty() {
-				return DrawioActionGenerator.this.getDocRefProperty();
+				return DrawioHtmlAppGenerator.this.getDocRefProperty();
 			}	
 			
 			@Override
 			protected String getDocFormatProperty() {
-				return DrawioActionGenerator.this.getDocFormatProperty();
+				return DrawioHtmlAppGenerator.this.getDocFormatProperty();
 			}		
 			
 			/**
@@ -147,7 +147,7 @@ public class DrawioActionGenerator extends Configuration {
 					Map<org.nasdanika.drawio.Element, ProcessorInfo<WidgetFactory>> registry,
 					ProgressMonitor progressMonitor) {
 				
-				DrawioActionGenerator.this.filterRepresentationElement(sourceElement, representationElement, registry, progressMonitor);				
+				DrawioHtmlAppGenerator.this.filterRepresentationElement(sourceElement, representationElement, registry, progressMonitor);				
 			}
 
 			/**
@@ -156,7 +156,7 @@ public class DrawioActionGenerator extends Configuration {
 			 */
 			@Override
 			protected String getViewer() {
-				return DrawioActionGenerator.this.getViewer();
+				return DrawioHtmlAppGenerator.this.getViewer();
 			}
 				
 			/**
@@ -170,7 +170,7 @@ public class DrawioActionGenerator extends Configuration {
 			 */
 			@Override
 			protected URI getAppBase() {
-				return DrawioActionGenerator.this.getAppBase();
+				return DrawioHtmlAppGenerator.this.getAppBase();
 			}
 			
 			/**
@@ -181,7 +181,7 @@ public class DrawioActionGenerator extends Configuration {
 			 */
 			@Override
 			protected String rewriteImage(String imageRepr, ProgressMonitor progressMonitor) {
-				return DrawioActionGenerator.this.rewriteImage(imageRepr, progressMonitor);
+				return DrawioHtmlAppGenerator.this.rewriteImage(imageRepr, progressMonitor);
 			}
 			
 			/**
@@ -189,7 +189,7 @@ public class DrawioActionGenerator extends Configuration {
 			 * @return
 			 */
 			protected int getIconSize() {
-				return DrawioActionGenerator.this.getIconSize();
+				return DrawioHtmlAppGenerator.this.getIconSize();
 			}
 
 			/**
@@ -206,7 +206,7 @@ public class DrawioActionGenerator extends Configuration {
 					Map<org.nasdanika.drawio.Element, ProcessorInfo<WidgetFactory>> registry,
 					ProgressMonitor progressMonitor) {
 				
-				return DrawioActionGenerator.this.createRepresentationContent(representation, registry, progressMonitor);
+				return DrawioHtmlAppGenerator.this.createRepresentationContent(representation, registry, progressMonitor);
 			}
 			
 			@Override
@@ -215,7 +215,7 @@ public class DrawioActionGenerator extends Configuration {
 					T processor,
 					BiConsumer<Element, BiConsumer<ProcessorInfo<Object>, ProgressMonitor>> infoProvider,
 					ProgressMonitor progressMonitor) {
-				return DrawioActionGenerator.this.filter(config, processor, infoProvider, progressMonitor);
+				return DrawioHtmlAppGenerator.this.filter(config, processor, infoProvider, progressMonitor);
 			}
 			
 		};
