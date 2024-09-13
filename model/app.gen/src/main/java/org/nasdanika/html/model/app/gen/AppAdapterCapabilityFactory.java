@@ -1,7 +1,6 @@
 package org.nasdanika.html.model.app.gen;
 
 import java.util.concurrent.CompletionStage;
-import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -20,7 +19,7 @@ public class AppAdapterCapabilityFactory extends ResourceSetContributorCapabilit
 	protected CompletionStage<Iterable<CapabilityProvider<ResourceSetContributor>>> createService(
 			Class<ResourceSetContributor> serviceType, 
 			Predicate<ResourceSetContributor> serviceRequirement,
-			BiFunction<Object, ProgressMonitor, CompletionStage<Iterable<CapabilityProvider<Object>>>> resolver,
+			Loader loader,
 			ProgressMonitor progressMonitor) {
 		
 		return wrap(new ResourceSetContributor() {

@@ -3,9 +3,7 @@ package org.nasdanika.html.model.app.gen.cli;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.function.BiFunction;
 
-import org.nasdanika.capability.CapabilityProvider;
 import org.nasdanika.cli.SubCommandCapabilityFactory;
 import org.nasdanika.common.ProgressMonitor;
 import org.nasdanika.html.model.app.util.LabelSupplier;
@@ -22,7 +20,7 @@ public class HtmlAppGeneratorCommandFactory extends SubCommandCapabilityFactory<
 	@Override
 	protected CompletionStage<HtmlAppGeneratorCommand> doCreateCommand(
 			List<CommandLine> parentPath,
-			BiFunction<Object, ProgressMonitor, CompletionStage<Iterable<CapabilityProvider<Object>>>> resolver,
+			Loader loader,
 			ProgressMonitor progressMonitor) {
 		
 		// Do not bind to LabelSuppliers - would be an infinite loop

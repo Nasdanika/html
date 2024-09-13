@@ -3,9 +3,7 @@ package org.nasdanika.html.model.app.gen.cli;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.function.BiFunction;
 
-import org.nasdanika.capability.CapabilityProvider;
 import org.nasdanika.cli.HelpCommand;
 import org.nasdanika.cli.MixInCapabilityFactory;
 import org.nasdanika.common.ProgressMonitor;
@@ -22,7 +20,7 @@ public class ActionHelpMixInFactory extends MixInCapabilityFactory<ActionHelpMix
 	@Override
 	protected CompletionStage<ActionHelpMixIn> doCreateMixIn(
 			List<CommandLine> commandPath, 
-			BiFunction<Object, ProgressMonitor, CompletionStage<Iterable<CapabilityProvider<Object>>>> resolver,
+			Loader loader,
 			ProgressMonitor progressMonitor) {
 		if (commandPath != null && commandPath.size() > 1) {
 			Object userObj = commandPath.get(commandPath.size() - 1).getCommandSpec().userObject();
