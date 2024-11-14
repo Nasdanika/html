@@ -1,1 +1,0 @@
-Documentation for a connection from S3 to CodePipeline.
