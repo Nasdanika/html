@@ -80,15 +80,12 @@ public enum Theme {
 	}
 	private Theme() {
 		stylesheetCdnURL = "https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/"+name().toLowerCase()+"/bootstrap.min.css";
-		pageTemplateCdnURI = URI.createURI("https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/page-templates/"+name().toLowerCase()+".yml");
+		pageTemplateCdnURI = URI.createURI("https://cdn.jsdelivr.net/gh/Nasdanika-Models/html-app@master/gen/web-resources/page-templates/"+name().toLowerCase()+".yml");
 	}
 	
 	private Theme(String stylesheetCdnURL) {
 		this.stylesheetCdnURL = stylesheetCdnURL;
-		pageTemplateCdnURI = URI.createURI("https://cdn.jsdelivr.net/gh/Nasdanika/html@master/model/app.gen/web-resources/page-templates/"+name().toLowerCase()+".yml");
+		pageTemplateCdnURI = URI.createURI("https://cdn.jsdelivr.net/gh/Nasdanika-Models/html-app@master/gen/web-resources/page-templates/"+name().toLowerCase()+".yml");
 	}
-	
-	
-	
-	
+		
 }
