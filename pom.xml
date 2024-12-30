@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nasdanika.html</groupId>
-	<version>2024.11.0</version>
+	<version>2024.12.0</version>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Nasdanika HTML Parent</name>
@@ -11,7 +11,7 @@
 	<url>https://docs.nasdanika.org/html/index.html</url>
 		
 	<properties>
-		<core.version>2024.11.1</core.version>
+		<core.version>2024.12.0</core.version>
 		<jacoco.version>0.8.12</jacoco.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
@@ -42,19 +42,19 @@
 		        <plugin>
 		            <groupId>org.apache.maven.plugins</groupId>
 		            <artifactId>maven-surefire-plugin</artifactId>
-		            <version>3.5.0</version>
+		            <version>3.5.2</version>
 		            <dependencies>
 		                <dependency>
 		                    <groupId>org.junit.jupiter</groupId>
 		                    <artifactId>junit-jupiter-engine</artifactId>
-		                    <version>5.11.0</version>
+		                    <version>5.11.4</version>
 		                </dependency>
 		            </dependencies>
 		        </plugin>
 		        <plugin>
 		            <groupId>org.apache.maven.plugins</groupId>
 		            <artifactId>maven-site-plugin</artifactId>
-		            <version>3.20.0</version>
+		            <version>3.21.0</version>
 		        </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -81,7 +81,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.10.0</version>
+				<version>3.11.2</version>
 			
 				<executions>
 					<execution>
@@ -165,14 +165,14 @@
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-api</artifactId>
-		    <version>5.11.0</version>
+		    <version>5.11.4</version>
 		    <scope>test</scope>
 		</dependency>		
 
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-engine</artifactId>
-		    <version>5.11.0</version>
+		    <version>5.11.4</version>
 		    <scope>test</scope>
 		</dependency>		
 		
@@ -223,7 +223,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>3.2.6</version>
+						<version>3.2.7</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
