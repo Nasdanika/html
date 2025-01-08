@@ -15,6 +15,12 @@ public interface HTMLPage extends Producer {
 	HTMLPage lang(Object lang);
 	
 	/**
+	 * Adds content before the opening html tag.
+	 * @param content
+	 */
+	HTMLPage prolog(Object... content);
+	
+	/**
 	 * Adds content to html head element of the page.
 	 * @param content
 	 */
@@ -44,6 +50,12 @@ public interface HTMLPage extends Producer {
 	 * @return
 	 */
 	HTMLPage body(Object... content);
+	
+	/**
+	 * Adds content after the closing html tag.
+	 * @param content
+	 */
+	HTMLPage epilog(Object... content);
 	
 	HTMLFactory getFactory();
 	

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.nasdanika.common.Adaptable;
+import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Tag;
@@ -13,25 +14,53 @@ import org.nasdanika.html.TagName;
 public class HTMLPageImpl implements HTMLPage, Adaptable {
 
 	private HTMLFactory factory;
+	private Fragment prolog;
 	private Tag html;
 	private Tag head;
 	private Tag body;
+	private Fragment epilog;
 	
 	HTMLPageImpl(HTMLFactory factory) {
 		this.factory = factory;
+		prolog = factory.fragment();
 		head = factory.tag(TagName.head);
 		body = factory.tag(TagName.body);
 		html = factory.tag(TagName.html, head, body);
+		epilog = factory.fragment();
 	}
 	
 	@Override
 	public Object produce(int indent) {
-		return "<!DOCTYPE html>"+html.produce(indent);
+		return factory.fragment(
+				prolog.isEmpty() ? "<!DOCTYPE html>" : prolog.produce(indent), 
+				html.produce(indent), 
+				epilog.produce(indent));
+	}
+
+	@Override
+	public HTMLPage prolog(Object... content) {
+		prolog.content(content);
+		return this;
+	}	
+	
+	/**
+	 * Adds content to html head element of the page.
+	 * @param content
+	 */
+	public HTMLPage head(Object... content) {
+		head.content(content);
+		return this;
 	}
 	
 	@Override
 	public HTMLPage body(Object... content) {
 		body.content(content);
+		return this;
+	}
+
+	@Override
+	public HTMLPage epilog(Object... content) {
+		epilog.content(content);
 		return this;
 	}
 	
@@ -53,15 +82,6 @@ public class HTMLPageImpl implements HTMLPage, Adaptable {
 		Tag stylesheet = factory.tag(TagName.link).attribute("rel", "stylesheet").attribute("href", url);
 		head(stylesheet);
 		return stylesheet;
-	}
-	
-	/**
-	 * Adds content to html head element of the page.
-	 * @param content
-	 */
-	public HTMLPage head(Object... content) {
-		head.content(content);
-		return this;
 	}
 	
 	/**
