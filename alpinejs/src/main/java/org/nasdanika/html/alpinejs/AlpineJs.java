@@ -33,7 +33,9 @@ public interface AlpineJs<H extends HTMLElement<?>> {
 	AlpineJs<H> id(Object ids);
 	JSONArray id();	
 	
-//	x-transition	
+	AlpineJs<H> transition();
+	AlpineJs<H> transition(String modifier);
+	AlpineJs<H> transition(String modifier, Object expression);
 	
 	H toHTMLElement();
 

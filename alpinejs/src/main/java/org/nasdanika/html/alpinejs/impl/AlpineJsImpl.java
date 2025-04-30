@@ -8,6 +8,8 @@ import org.nasdanika.html.alpinejs.AlpineJsFactory;
 
 class AlpineJsImpl<T extends HTMLElement<?>> implements AlpineJs<T> {
 
+	private static final String X_TRANSITION_ATTRIBUTE = "x-transition";
+
 	private T htmlElement;
 	
 	private AlpineJsFactory factory;
@@ -136,6 +138,24 @@ class AlpineJsImpl<T extends HTMLElement<?>> implements AlpineJs<T> {
 		JSONArray ids = new JSONArray();
 		id(ids);
 		return ids;
+	}
+
+	@Override
+	public AlpineJs<T> transition() {
+		htmlElement.attribute(X_TRANSITION_ATTRIBUTE, true);
+		return this;
+	}
+
+	@Override
+	public AlpineJs<T> transition(String modifier) {
+		htmlElement.attribute(X_TRANSITION_ATTRIBUTE + modifier, true);
+		return this;
+	}
+
+	@Override
+	public AlpineJs<T> transition(String modifier, Object expression) {
+		htmlElement.attribute(X_TRANSITION_ATTRIBUTE + modifier, expression);
+		return this;
 	}
 	
 }
