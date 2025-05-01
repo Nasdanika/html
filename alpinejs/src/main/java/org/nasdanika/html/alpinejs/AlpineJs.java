@@ -22,13 +22,10 @@ public interface AlpineJs<H extends HTMLElement<?>> {
 	AlpineJs<H> on(String event, Object expression);
 	AlpineJs<H> model(Object dataField);
 	AlpineJs<H> modelable(Object dataField);
-	AlpineJs<H> _for(Object expression);
 	AlpineJs<H> effect(Object expression);
 	AlpineJs<H> ignore();
 	AlpineJs<H> ref(Object name);
 	AlpineJs<H> cloak();
-	AlpineJs<H> teleport(Object selector);
-	AlpineJs<H> _if(Object expression);
 
 	AlpineJs<H> id(Object ids);
 	JSONArray id();	

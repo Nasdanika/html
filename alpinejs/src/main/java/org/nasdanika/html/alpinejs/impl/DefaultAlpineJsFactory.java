@@ -3,6 +3,7 @@ package org.nasdanika.html.alpinejs.impl;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
+import org.nasdanika.html.Tag;
 import org.nasdanika.html.alpinejs.AlpineJs;
 import org.nasdanika.html.alpinejs.AlpineJsFactory;
 
@@ -32,6 +33,25 @@ public class DefaultAlpineJsFactory implements AlpineJsFactory {
 	public <P extends HTMLPage> P cdn(P page) {
 		page.script("https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js");
 		return page;
+	}
+	
+	protected Tag createTemplateTag(HTMLElement<?> contents) {
+		return htmlFactory.tag("template", contents);
+	}
+
+	@Override
+	public Tag teleport(Object selector, HTMLElement<?> element) {
+		return createTemplateTag(element).attribute("x-teleport", selector);
+	}
+
+	@Override
+	public Tag _for(Object expression, HTMLElement<?> element) {
+		return createTemplateTag(element).attribute("x-for", expression);
+	}
+
+	@Override
+	public Tag _if(Object condition, HTMLElement<?> element) {
+		return createTemplateTag(element).attribute("x-if", condition);
 	}
 
 }

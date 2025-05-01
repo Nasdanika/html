@@ -86,12 +86,6 @@ class AlpineJsImpl<T extends HTMLElement<?>> implements AlpineJs<T> {
 	}
 
 	@Override
-	public AlpineJs<T> _for(Object expression) {
-		htmlElement.attribute("x-for", expression);
-		return this;
-	}
-
-	@Override
 	public AlpineJs<T> effect(Object expression) {
 		htmlElement.attribute("x-effect", expression);
 		return this;
@@ -112,18 +106,6 @@ class AlpineJsImpl<T extends HTMLElement<?>> implements AlpineJs<T> {
 	@Override
 	public AlpineJs<T> cloak() {
 		htmlElement.attribute("x-cloak", true);
-		return this;
-	}
-
-	@Override
-	public AlpineJs<T> teleport(Object selector) {
-		htmlElement.attribute("x-teleport", selector);
-		return this;
-	}
-
-	@Override
-	public AlpineJs<T> _if(Object expression) {
-		htmlElement.attribute("x-if", expression);
 		return this;
 	}
 
