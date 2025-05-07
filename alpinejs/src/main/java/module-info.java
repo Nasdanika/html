@@ -1,7 +1,7 @@
 import org.nasdanika.html.alpinejs.AlpineJsFactory;
 import org.nasdanika.html.alpinejs.impl.DefaultAlpineJsFactory;
 
-module org.nasdanika.html.jstree {
+module org.nasdanika.html.alpinejs {
 		
 	requires transitive org.nasdanika.html;
 	requires org.apache.commons.text;

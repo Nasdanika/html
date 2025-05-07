@@ -31,7 +31,7 @@ public class DefaultAlpineJsFactory implements AlpineJsFactory {
 
 	@Override
 	public <P extends HTMLPage> P cdn(P page) {
-		page.script("https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js");
+		page.script("https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js").attribute("defer", true);
 		return page;
 	}
 	
