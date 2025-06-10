@@ -206,6 +206,7 @@
 		<module>bootstrap</module>
 		<module>jstree</module>
 		<module>alpinejs</module>
+		<module>3d-force-graph</module>
 	</modules>	
 
 	<distributionManagement>
