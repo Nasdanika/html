@@ -4,11 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.nasdanika.html.HTMLElement;
 
-/**
- * Knockout.js interface.
- * @author Pavel Vlasov
- *
- */
 public interface AlpineJs<H extends HTMLElement<?>> {
 	
 	AlpineJs<H> data(Object data);

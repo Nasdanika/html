@@ -15,7 +15,7 @@ public interface AlpineJsFactory {
 	HTMLFactory getHTMLFactory();
 	
 	/**
-	 * Adds CDN KnockoutJS script declaration to the page head. 
+	 * Adds CDN script declaration to the page head. 
 	 * @param page
 	 * @return
 	 */
