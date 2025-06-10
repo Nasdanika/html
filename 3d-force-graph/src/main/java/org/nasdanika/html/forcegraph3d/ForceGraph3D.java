@@ -51,6 +51,13 @@ public interface ForceGraph3D extends Producer {
 		return selector("document.getElementById('" + elementId + "')");
 	}	
 	
+	/**
+	 * Force graph variable name. If set, generates a constant declaration <code>const &lt;name&gt; = new ForceGraph3D(...);</code>. 
+	 * If not, just the right part without the closing semicolon.
+	 * @param name
+	 * @return
+	 */
+	ForceGraph3D name(String name);
 	
 	
 //	### Data input

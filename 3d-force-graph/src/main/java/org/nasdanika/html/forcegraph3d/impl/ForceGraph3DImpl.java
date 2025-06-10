@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.nasdanika.common.NasdanikaException;
+import org.nasdanika.common.Util;
 import org.nasdanika.html.Producer;
 import org.nasdanika.html.forcegraph3d.ForceGraph3D;
 
@@ -21,16 +22,21 @@ class ForceGraph3DImpl implements ForceGraph3D {
 	private Map<String, Object> config = new LinkedHashMap<>();
 	private String selector;
 	private List<Object> extraRenderers;
+	private String name;
 
 	@Override
 	public Object produce(int indent) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < indent; ++i) {
-			sb.append(" ");
+			sb.append("  ");
 		}
-		sb
-			.append("new ForceGraph3D(");
-		
+		if (!Util.isBlank(name)) {
+			sb
+				.append("const ")
+				.append(name)
+				.append(" = ");
+		}
+		sb.append("new ForceGraph3D(");		
 		
 		if (config.isEmpty()) {
 			sb.append(selector);
@@ -38,13 +44,13 @@ class ForceGraph3DImpl implements ForceGraph3D {
 			sb.append(System.lineSeparator());
 			int argIndent = indent + 4;
 			for (int i = 0; i < argIndent; ++i) {
-				sb.append(" ");
+				sb.append("  ");
 			}
 			sb.append(selector);
 			sb.append(", ");
 			sb.append(System.lineSeparator());
 			for (int i = 0; i < argIndent; ++i) {
-				sb.append(" ");
+				sb.append("  ");
 			}
 			sb.append("{");
 			int configIndent = argIndent + 4;
@@ -57,7 +63,7 @@ class ForceGraph3DImpl implements ForceGraph3D {
 				}
 				sb.append(System.lineSeparator());
 				for (int i = 0; i < configIndent; ++i) {
-					sb.append(" ");
+					sb.append("  ");
 				}
 				sb
 					.append(ce.getKey())
@@ -74,7 +80,7 @@ class ForceGraph3DImpl implements ForceGraph3D {
 			}
 			sb.append(System.lineSeparator());
 			for (int i = 0; i < argIndent; ++i) {
-				sb.append(" ");
+				sb.append("  ");
 			}
 			sb.append("}");
 		}
@@ -88,7 +94,7 @@ class ForceGraph3DImpl implements ForceGraph3D {
 			if (arg != null) {
 				sb.append(System.lineSeparator());
 				for (int i = 0; i < mcIndent; ++i) {
-					sb.append(" ");
+					sb.append("  ");
 				}
 				
 				if (arg instanceof Producer) {
@@ -105,6 +111,10 @@ class ForceGraph3DImpl implements ForceGraph3D {
 					.append(")");
 			}
 		}
+		if (!Util.isBlank(name)) {
+			sb.append(";");
+		}
+
 		return sb.toString();
 	}
 
@@ -146,7 +156,7 @@ class ForceGraph3DImpl implements ForceGraph3D {
 					public Object produce(int indent) {
 						StringBuilder sb = new StringBuilder();
 						for (int i = 0; i < indent; ++i) {
-							sb.append(" ");
+							sb.append("  ");
 						}
 						sb.append("[");						
 						int elementIndent = indent + 4;
@@ -159,7 +169,7 @@ class ForceGraph3DImpl implements ForceGraph3D {
 							}
 							sb.append(System.lineSeparator());
 							for (int i = 0; i < elementIndent; ++i) {
-								sb.append(" ");
+								sb.append("  ");
 							}
 							if (ee instanceof Producer) {
 								ee = ((Producer) ee).produce(elementIndent);  
@@ -171,7 +181,7 @@ class ForceGraph3DImpl implements ForceGraph3D {
 						}
 						sb.append(System.lineSeparator());
 						for (int i = 0; i < indent; ++i) {
-							sb.append(" ");
+							sb.append("  ");
 						}
 						sb.append("]");
 						return sb.toString();
@@ -523,99 +533,38 @@ class ForceGraph3DImpl implements ForceGraph3D {
 	private List<Object> nodes;
 	private List<Object> links;
 	
-	/**
-	 * Wraps iterables and maps into producers recursively
-	 * @param obj
-	 * @return
-	 */
-	private static Object wrap(Object obj) {
-		if (obj instanceof Producer) {
-			return obj;
-		}
-		if (obj instanceof Map) {
-			
-		}
-		if (obj instanceof Iterable) {
-			
-		}
-		if (obj instanceof JSONObject) {
-			return new Producer() {
-
-				@Override
-				public Object produce(int indent) {
-					Writer sw = new StringWriter();
-					try {
-						try (sw) {
-							((JSONObject) obj).write(null, 2, indent);
-						}
-					} catch (IOException e) {
-						throw new NasdanikaException(e); // Should never happen
-					}
-					return sw.toString();					
-				}
-				
-			};
-		}
-		
-		if (obj instanceof JSONArray) {
-			return new Producer() {
-
-				@Override
-				public Object produce(int indent) {
-					Writer sw = new StringWriter();
-					try {
-						try (sw) {
-							((JSONArray) obj).write(null, 2, indent);
-						}
-					} catch (IOException e) {
-						throw new NasdanikaException(e); // Should never happen
-					}
-					return sw.toString();					
-				}
-				
-			};
-		}
-		
-		return obj;		
-	}
-	
 	private void createNodesAndLinksGraphData() {
+		links = new ArrayList<>();
+		nodes = new ArrayList<>();				
 		graphData(new Producer() {
 
 				@Override
 				public Object produce(int indent) {
-					777
-					StringBuilder sb = new StringBuilder();
-					for (int i = 0; i < indent; ++i) {
-						sb.append(" ");
+					JSONObject data = new JSONObject();
+					if (!nodes.isEmpty()) {
+						JSONArray jNodes = new JSONArray();
+						for (Object node: nodes) {
+							jNodes.put(node);
+						}
+						data.put("nodes", jNodes);
 					}
-					sb.append("[");						
-					int elementIndent = indent + 4;
-					boolean first = true;
-					for (Object ee: extraRenderers) {
-						if (first) {
-							first = false;
-						} else {
-							sb.append(",");
+					if (!links.isEmpty()) {
+						JSONArray jLinks = new JSONArray();
+						for (Object link: links) {
+							jLinks.put(link);
 						}
-						sb.append(System.lineSeparator());
-						for (int i = 0; i < elementIndent; ++i) {
-							sb.append(" ");
-						}
-						if (ee instanceof Producer) {
-							ee = ((Producer) ee).produce(elementIndent);  
-						}
-						if (ee instanceof String) {
-							ee = ((String) ee).trim();
-						}
-						sb.append(ee);
+						data.put("links", jLinks);
 					}
-					sb.append(System.lineSeparator());
-					for (int i = 0; i < indent; ++i) {
-						sb.append(" ");
+					
+					Writer sw = new StringWriter();
+					try {
+						try (sw) {
+							data.write(sw, 2, indent);
+						}
+					} catch (IOException e) {
+						throw new NasdanikaException(e); // Should never happen
 					}
-					sb.append("]");
-					return sb.toString();
+					return sw.toString();					
 				}
 				 
 			 });
@@ -624,7 +573,6 @@ class ForceGraph3DImpl implements ForceGraph3D {
 	@Override
 	public ForceGraph3D addNode(Object node) {
 		if (nodes == null) {
-			nodes = new ArrayList<>();
 			createNodesAndLinksGraphData();
 		}
 		nodes.add(node);
@@ -636,10 +584,15 @@ class ForceGraph3DImpl implements ForceGraph3D {
 	@Override
 	public ForceGraph3D addLink(Object link) {
 		if (links == null) {
-			links = new ArrayList<>();
 			createNodesAndLinksGraphData();
 		}
-		nodes.add(link);
+		links.add(link);
+		return this;
+	}
+
+	@Override
+	public ForceGraph3D name(String name) {
+		this.name = name;
 		return this;
 	}
 	
