@@ -15,6 +15,7 @@ import org.nasdanika.common.NasdanikaException;
 import org.nasdanika.common.Util;
 import org.nasdanika.html.Producer;
 import org.nasdanika.html.forcegraph3d.ForceGraph3D;
+import org.nasdanika.html.forcegraph3d.ForceGraph3DFactory;
 
 class ForceGraph3DImpl implements ForceGraph3D {
 	
@@ -23,6 +24,12 @@ class ForceGraph3DImpl implements ForceGraph3D {
 	private String selector;
 	private List<Object> extraRenderers;
 	private String name;
+	
+	private ForceGraph3DFactory factory;
+	
+	public ForceGraph3DImpl(ForceGraph3DFactory factory) {
+		this.factory = factory;
+	}
 
 	@Override
 	public Object produce(int indent) {
@@ -594,6 +601,11 @@ class ForceGraph3DImpl implements ForceGraph3D {
 	public ForceGraph3D name(String name) {
 		this.name = name;
 		return this;
+	}
+
+	@Override
+	public ForceGraph3DFactory getFactory() {
+		return factory;
 	}
 	
 }

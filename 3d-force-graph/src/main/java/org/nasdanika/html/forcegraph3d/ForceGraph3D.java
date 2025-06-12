@@ -10,6 +10,8 @@ public interface ForceGraph3D extends Producer {
 	
 	enum ControlType { trackball, orbit, fly }
 	
+	ForceGraph3DFactory getFactory();
+	
 	// Config and initialization
 	
 	/**

@@ -14,7 +14,7 @@ public class DefaultForceGraph3DFactory implements ForceGraph3DFactory {
 
 	@Override
 	public ForceGraph3D create() {
-		return new ForceGraph3DImpl();
+		return new ForceGraph3DImpl(this);
 	}
 
 }
