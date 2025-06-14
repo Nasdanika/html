@@ -4,13 +4,13 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2025.6.0</version>
+	    <version>2025.5.0</version>
 	    <relativePath>..</relativePath>
 	  </parent>
-	<artifactId>alpinejs</artifactId>
+	<artifactId>3d-force-graph</artifactId>
 	<packaging>jar</packaging>
-	<name>Nasdanika HTML AlpineJS</name>
-	<description>Classes for adding AlpineJS attributes to HTML elements</description>
+	<name>Nasdanika HTML 3D Force Graph</name>
+	<description>Classes for generating 3D force graph visualizations</description>
 	<url>https://docs.nasdanika.org/modules/html/modules/jstree/index.html</url>
 	<build>
 	    <plugins>
