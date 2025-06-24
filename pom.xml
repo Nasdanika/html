@@ -208,6 +208,7 @@
 		<module>alpinejs</module>
 		<module>3d-force-graph</module>
 		<module>producer</module>
+		<module>http</module>
 	</modules>	
 
 	<distributionManagement>
