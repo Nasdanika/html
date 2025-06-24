@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.nasdanika.common.Adaptable;
@@ -28,6 +29,8 @@ import org.nasdanika.html.ProducerException;
 import org.nasdanika.html.Style;
 import org.nasdanika.html.TagName;
 
+import reactor.core.publisher.Mono;
+
 /**
  * Base class for UI elements
  * @author Pavel
@@ -35,7 +38,6 @@ import org.nasdanika.html.TagName;
  * @param <T>
  */
 public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLElement<T>, Adaptable {
-
 
 	private static final String STYLE = "style";
 	
@@ -340,7 +342,7 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 			}
 			
 			if (content instanceof Producer) {
-				return stringify(((Producer) content).produce(indent), indent);
+				return stringify(((Producer<?>) content).produce(indent), indent);
 			}
 			
 			if (content instanceof InputStream) {
@@ -440,6 +442,56 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 		}
 		return sb.append("</").append(getTagName()).append(">").toString();
 	}
+
+	@Override
+	public Mono<Object> produceAsync(int indent) {		
+		List<Object> theContent = new ArrayList<>();
+		for (Object c: getContent()) {
+			if (c instanceof FragmentImpl) {
+				theContent.addAll(((FragmentImpl) c).getAllContent());
+			} else if (c!=null) {
+				theContent.add(c);
+			}			
+		}
+		if (theContent.isEmpty()) {
+			if (nonEmpty) {
+				return Mono.just("");
+			}
+			
+			if (!forceEndTag()) {
+				return Mono.just(indent(renderComment(indent), indent).append("<"+getTagName()+attributes()+"/>").toString());
+			}
+		}
+		
+		List<Mono<Object>> contentProducers = theContent
+				.stream()
+				.map(Producer::of)
+				.map(p -> p.produceAsync(indent))
+				.toList();
+		
+		return Mono.zip(contentProducers, (Function<Object[], String>) elements -> combine(elements, indent));
+	}
+	
+	private String combine(Object[] elements, int indent) {
+		boolean hasNonUIElementContent = false;
+		
+		StringBuilder contentBuilder = new StringBuilder(); 
+		for (Object c: elements) {
+			contentBuilder.append(stringify(c, indent == -1 ? indent : indent+1));
+			if (!(c instanceof Markup)) {
+				hasNonUIElementContent = true;
+			}
+		}		
+		String strContent = contentBuilder.toString();
+		if (nonEmpty && strContent.trim().length() == 0) {
+			return "";
+		}
+		StringBuilder sb = indent(renderComment(indent), indent).append("<").append(getTagName()).append(attributes()).append(">").append(strContent);		
+		if (strContent.length() > 0 && !hasNonUIElementContent) {
+			indent(sb, indent);
+		}
+		return sb.append("</").append(getTagName()).append(">").toString();
+	}			
 
 	private boolean forceEndTag() {
 		for (TagName tagName: TagName.values()) {

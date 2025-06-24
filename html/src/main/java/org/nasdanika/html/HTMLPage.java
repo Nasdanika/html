@@ -5,7 +5,7 @@ package org.nasdanika.html;
  * @author Pavel Vlasov
  *
  */
-public interface HTMLPage extends Producer {
+public interface HTMLPage extends Producer<String> {
 	
 	/**
 	 * Adds lang attribute to html tag.

@@ -2,9 +2,13 @@ package org.nasdanika.html.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.nasdanika.html.Fragment;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Producer;
+
+import reactor.core.publisher.Mono;
 
 class FragmentImpl implements Fragment {
 	
@@ -48,6 +52,25 @@ class FragmentImpl implements Fragment {
 		}
 		return sb.toString();
 	}
+		
+	@Override
+	public Mono<String> produceAsync(int indent) {
+		List<Mono<Object>> contentProducers = content
+			.stream()
+			.map(Producer::of)
+			.map(p -> p.produceAsync(indent))
+			.toList();
+				
+		return Mono.zip(contentProducers, (Function<Object[], String>) elements -> combine(elements, indent));
+	}
+	
+	private String combine(Object[] elements, int indent) {
+		StringBuilder sb = new StringBuilder();
+		for (Object o: elements) {
+			sb.append(HTMLElementImpl.stringify(o, indent));
+		}
+		return sb.toString();			
+	}		
 	
 	@Override
 	public boolean isEmpty() {

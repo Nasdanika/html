@@ -4,7 +4,7 @@ import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.Markup;
 import org.nasdanika.html.Producer;
 
-public interface BootstrapElement<H extends HTMLElement<?>, B extends BootstrapElement<H,?>> extends Producer, Markup {
+public interface BootstrapElement<H extends HTMLElement<?>, B extends BootstrapElement<H,?>> extends Producer<Object>, Markup {
 	
 	H toHTMLElement();
 	

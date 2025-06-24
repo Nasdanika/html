@@ -17,6 +17,8 @@ import org.nasdanika.html.Producer;
 import org.nasdanika.html.forcegraph3d.ForceGraph3D;
 import org.nasdanika.html.forcegraph3d.ForceGraph3DFactory;
 
+import reactor.core.publisher.Mono;
+
 class ForceGraph3DImpl implements ForceGraph3D {
 	
 	private Map<String, Object> methodCalls = new LinkedHashMap<>();
@@ -32,7 +34,7 @@ class ForceGraph3DImpl implements ForceGraph3D {
 	}
 
 	@Override
-	public Object produce(int indent) {
+	public String produce(int indent) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < indent; ++i) {
 			sb.append("  ");
@@ -78,7 +80,7 @@ class ForceGraph3DImpl implements ForceGraph3D {
 				
 				Object cVal = ce.getValue();
 				if (cVal instanceof Producer) {
-					cVal = ((Producer) cVal).produce(configIndent);  
+					cVal = ((Producer<?>) cVal).produce(configIndent);  
 				}
 				if (cVal instanceof String) {
 					cVal = ((String) cVal).trim();
@@ -105,7 +107,7 @@ class ForceGraph3DImpl implements ForceGraph3D {
 				}
 				
 				if (arg instanceof Producer) {
-					arg = ((Producer) arg).produce(mcArgIndent);  
+					arg = ((Producer<?>) arg).produce(mcArgIndent);  
 				}
 				if (arg instanceof String) {
 					arg = ((String) arg).trim();
@@ -123,6 +125,11 @@ class ForceGraph3DImpl implements ForceGraph3D {
 		}
 
 		return sb.toString();
+	}
+	
+	@Override
+	public Mono<String> produceAsync(int indent) {
+		return Mono.just(produce(indent));
 	}
 
 	@Override
@@ -157,10 +164,10 @@ class ForceGraph3DImpl implements ForceGraph3D {
 		if (extraRenderer != null) {
 			if (extraRenderers == null) {
 				 extraRenderers = new ArrayList<>();
-				 config.put("extraRenderers", new Producer() {
+				 config.put("extraRenderers", new Producer<String>() {
 	
 					@Override
-					public Object produce(int indent) {
+					public String produce(int indent) {
 						StringBuilder sb = new StringBuilder();
 						for (int i = 0; i < indent; ++i) {
 							sb.append("  ");
@@ -179,7 +186,7 @@ class ForceGraph3DImpl implements ForceGraph3D {
 								sb.append("  ");
 							}
 							if (ee instanceof Producer) {
-								ee = ((Producer) ee).produce(elementIndent);  
+								ee = ((Producer<?>) ee).produce(elementIndent);  
 							}
 							if (ee instanceof String) {
 								ee = ((String) ee).trim();
@@ -192,6 +199,11 @@ class ForceGraph3DImpl implements ForceGraph3D {
 						}
 						sb.append("]");
 						return sb.toString();
+					}
+					
+					@Override
+					public Mono<String> produceAsync(int indent) {
+						return Mono.just(produce(indent));
 					}
 					 
 				 });
@@ -543,10 +555,10 @@ class ForceGraph3DImpl implements ForceGraph3D {
 	private void createNodesAndLinksGraphData() {
 		links = new ArrayList<>();
 		nodes = new ArrayList<>();				
-		graphData(new Producer() {
+		graphData(new Producer<String>() {
 
 				@Override
-				public Object produce(int indent) {
+				public String produce(int indent) {
 					JSONObject data = new JSONObject();
 					if (!nodes.isEmpty()) {
 						JSONArray jNodes = new JSONArray();
@@ -572,6 +584,11 @@ class ForceGraph3DImpl implements ForceGraph3D {
 						throw new NasdanikaException(e); // Should never happen
 					}
 					return sw.toString();					
+				}
+				
+				@Override
+				public Mono<String> produceAsync(int indent) {
+					return Mono.just(produce(indent));
 				}
 				 
 			 });

@@ -25,5 +25,23 @@ public class TestHtml {
 		page.epilog("I'm epilog");
 		System.out.println(page);
 	}
+	
+	@Test
+	public void testTagAsync() {
+		Tag tag = HTMLFactory.INSTANCE.tag(TagName.a, "Hello");
+		Object tagVal = tag.produceAsync(0).block();
+		assertThat(tagVal instanceof String).isTrue();
+		assertThat(((String) tagVal).trim()).isEqualTo("<a>Hello</a>");
+	}
+	
+	@Test 
+	public void testPageAsync() {
+		HTMLPage page = HTMLFactory.INSTANCE.page();
+		page.prolog("<!-- I'm prolog -->");
+		page.head("I'm head");
+		page.body("I'm body");
+		page.epilog("I'm epilog");
+		System.out.println(page.produceAsync(0).block());
+	}
 
 }

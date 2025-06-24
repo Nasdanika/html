@@ -6,7 +6,7 @@ import org.nasdanika.html.Producer;
  * Fluent API to build and generates <a href="https://github.com/vasturiano/3d-force-graph?tab=readme-ov-file">3d-force-graph</a> ForceGraph3D declaration.
  * Documentation is copied verbatim from the above page.
  */
-public interface ForceGraph3D extends Producer {
+public interface ForceGraph3D extends Producer<String> {
 	
 	enum ControlType { trackball, orbit, fly }
 	

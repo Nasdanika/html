@@ -7,11 +7,11 @@
 	    <version>2025.6.0</version>
 	    <relativePath>..</relativePath>
 	  </parent>
-	<artifactId>alpinejs</artifactId>
+	<artifactId>producer</artifactId>
 	<packaging>jar</packaging>
-	<name>Nasdanika HTML AlpineJS</name>
-	<description>Classes for adding AlpineJS attributes to HTML elements</description>
-	<url>https://docs.nasdanika.org/html/alpine-js/index.html</url>
+	<name>Nasdanika HTML Producers</name>
+	<description>Requirement and core producers factory for HTML generation</description>
+	<url>https://docs.nasdanika.org/html/html-graph/index.html</url>
 	<build>
 	    <plugins>
 			<plugin>
@@ -41,7 +41,11 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>html</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		
+		</dependency>		
+        <dependency>
+            <groupId>org.nasdanika.core</groupId>
+            <artifactId>exec</artifactId>
+            <version>${core.version}</version>
+        </dependency>       
 	</dependencies>
 </project>

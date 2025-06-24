@@ -11,6 +11,8 @@ import org.nasdanika.html.HTMLPage;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 
+import reactor.core.publisher.Mono;
+
 public class HTMLPageImpl implements HTMLPage, Adaptable {
 
 	private HTMLFactory factory;
@@ -30,11 +32,20 @@ public class HTMLPageImpl implements HTMLPage, Adaptable {
 	}
 	
 	@Override
-	public Object produce(int indent) {
+	public String produce(int indent) {
+		return asFragment().produce(indent);
+	}
+	
+	@Override
+	public Mono<String> produceAsync(int indent) {
+		return asFragment().produceAsync(indent);
+	}
+
+	protected Fragment asFragment() {
 		return factory.fragment(
-				prolog.isEmpty() ? "<!DOCTYPE html>" : prolog.produce(indent), 
-				html.produce(indent), 
-				epilog.produce(indent));
+				prolog.isEmpty() ? "<!DOCTYPE html>" : prolog, 
+				html, 
+				epilog);
 	}
 
 	@Override

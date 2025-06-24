@@ -207,6 +207,7 @@
 		<module>jstree</module>
 		<module>alpinejs</module>
 		<module>3d-force-graph</module>
+		<module>producer</module>
 	</modules>	
 
 	<distributionManagement>

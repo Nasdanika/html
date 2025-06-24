@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.List;
 
+import reactor.core.publisher.Mono;
+
 public class HTMLElementFilter<T extends HTMLElement<T>> implements HTMLElement<T> {
 
 	private T target;
@@ -120,10 +122,13 @@ public class HTMLElementFilter<T extends HTMLElement<T>> implements HTMLElement<
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Object produce(int indent) {
-		target.produce(indent);
-		return (T) this;
+		return target.produce(indent);
+	}
+	
+	@Override
+	public Mono<Object> produceAsync(int indent) {
+		return target.produceAsync(indent);
 	}
 
 	@Override

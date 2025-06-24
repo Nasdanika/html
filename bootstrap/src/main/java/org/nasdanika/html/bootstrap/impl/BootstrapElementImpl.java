@@ -9,6 +9,8 @@ import org.nasdanika.html.bootstrap.Placement;
 import org.nasdanika.html.bootstrap.Spacing;
 import org.nasdanika.html.bootstrap.Text;
 
+import reactor.core.publisher.Mono;
+
 public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends BootstrapElement<H,?>> implements BootstrapElement<H,B> {
 	
 	private BootstrapFactory factory;
@@ -30,6 +32,11 @@ public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends Bo
 	@Override
 	public Object produce(int indent) {
 		return toHTMLElement().produce(indent);
+	}
+	
+	@Override
+	public Mono<Object> produceAsync(int indent) {
+		return toHTMLElement().produceAsync(indent);
 	}
 	
 	@SuppressWarnings("unchecked")

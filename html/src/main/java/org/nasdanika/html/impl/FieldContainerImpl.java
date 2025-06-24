@@ -2,6 +2,7 @@ package org.nasdanika.html.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.nasdanika.html.Button;
 import org.nasdanika.html.FieldContainer;
@@ -10,7 +11,9 @@ import org.nasdanika.html.FormFragment;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.Producer;
 
-class FieldContainerImpl<T extends FieldContainer<T>> implements FieldContainer<T>, Producer {
+import reactor.core.publisher.Mono;
+
+class FieldContainerImpl<T extends FieldContainer<T>> implements FieldContainer<T>, Producer<String> {
 	
 	private FormImpl form;
 	private T master;
@@ -67,6 +70,25 @@ class FieldContainerImpl<T extends FieldContainer<T>> implements FieldContainer<
 		}
 		return sb.toString();
 	}
+	
+	@Override
+	public Mono<String> produceAsync(int indent) {
+		List<Mono<Object>> contentProducers = content
+			.stream()
+			.map(Producer::of)
+			.map(p -> p.produceAsync(indent))
+			.toList();
+				
+		return Mono.zip(contentProducers, (Function<Object[], String>) elements -> combine(elements, indent));
+	}
+	
+	private String combine(Object[] elements, int indent) {
+		StringBuilder sb = new StringBuilder();
+		for (Object o: elements) {
+			sb.append(stringify(o, indent));
+		}
+		return sb.toString();			
+	}	
 		
 	protected String stringify(Object content, int indent) {
 		return HTMLElementImpl.stringify(content, indent);

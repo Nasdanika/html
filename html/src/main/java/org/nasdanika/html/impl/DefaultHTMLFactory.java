@@ -31,6 +31,8 @@ import org.nasdanika.html.TagName;
 import org.nasdanika.html.TextArea;
 import org.nasdanika.html.TokenSource;
 
+import reactor.core.publisher.Mono;
+
 /**
  * HTML factory which relies on Bootstrap styles and scripts.
  * @author Pavel
@@ -326,12 +328,17 @@ public class DefaultHTMLFactory implements HTMLFactory {
 
 	@Override
 	public NamedItemsContainer tagNamedItemsContainer(TagName tagName) {
-		class NamedItemsContainerImpl implements NamedItemsContainer, Producer {
+		class NamedItemsContainerImpl implements NamedItemsContainer, Producer<String> {
 			Fragment fragment = fragment();
 
 			@Override
-			public Object produce(int indent) {
+			public String produce(int indent) {
 				return fragment.produce(indent);
+			}
+			
+			@Override
+			public Mono<String> produceAsync(int indent) {
+				return fragment.produceAsync(indent);
 			}
 			
 			@Override

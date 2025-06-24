@@ -7,7 +7,7 @@ import java.util.List;
  * @author Pavel Vlasov
  *
  */
-public interface Fragment extends Container<Fragment>, Producer {
+public interface Fragment extends Container<Fragment>, Producer<String> {
 	
 	boolean isEmpty();
 		

@@ -16,7 +16,7 @@ import org.json.JSONObject;
  * @author Pavel
  *
  */
-public interface HTMLElement<T extends HTMLElement<T>> extends Producer, Markup {
+public interface HTMLElement<T extends HTMLElement<T>> extends Producer<Object>, Markup {
 	
 	/**
 	 * 
