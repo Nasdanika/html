@@ -24,6 +24,9 @@ public interface Producer<T> {
 	
 	@SuppressWarnings("unchecked")
 	static <T> Producer<T> of(T content) {
+		if (content == null) {
+			return null;
+		}
 		if (content instanceof Producer) {
 			return (Producer<T>) content; 
 		}

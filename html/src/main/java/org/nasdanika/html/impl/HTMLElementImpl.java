@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.function.Function;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -466,10 +467,11 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 		List<Mono<Object>> contentProducers = theContent
 				.stream()
 				.map(Producer::of)
+				.filter(Objects::nonNull)
 				.map(p -> p.produceAsync(indent))
 				.toList();
 		
-		return Mono.zip(contentProducers, (Function<Object[], String>) elements -> combine(elements, indent));
+		return contentProducers.isEmpty() ? Mono.just("") : Mono.zip(contentProducers, (Function<Object[], String>) elements -> combine(elements, indent));
 	}
 	
 	private String combine(Object[] elements, int indent) {

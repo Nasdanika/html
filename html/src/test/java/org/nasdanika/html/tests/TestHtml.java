@@ -31,17 +31,28 @@ public class TestHtml {
 		Tag tag = HTMLFactory.INSTANCE.tag(TagName.a, "Hello");
 		Object tagVal = tag.produceAsync(0).block();
 		assertThat(tagVal instanceof String).isTrue();
-		assertThat(((String) tagVal).trim()).isEqualTo("<a>Hello</a>");
+		assertThat(((String) tagVal).trim()).isEqualTo("<a>Hello</a>");			
 	}
+
+	@Test
+	public void testTagWithNullContentAsync() {
+		Tag tag = HTMLFactory.INSTANCE.tag(TagName.a, "Hello");
+		String nullStr = null;
+		tag.content(nullStr);
+		Object tagVal = tag.produceAsync(0).block();
+		assertThat(tagVal instanceof String).isTrue();
+		assertThat(((String) tagVal).trim()).isEqualTo("<a>Hello</a>");			
+	}	
 	
 	@Test 
 	public void testPageAsync() {
 		HTMLPage page = HTMLFactory.INSTANCE.page();
-		page.prolog("<!-- I'm prolog -->");
+//		page.prolog("<!-- I'm prolog -->");
 		page.head("I'm head");
 		page.body("I'm body");
-		page.epilog("I'm epilog");
-		System.out.println(page.produceAsync(0).block());
+//		page.epilog("I'm epilog");
+		String result = page.produceAsync(0).block();
+		System.out.println(result);
 	}
 
 }

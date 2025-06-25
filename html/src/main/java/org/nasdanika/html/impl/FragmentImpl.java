@@ -2,6 +2,7 @@ package org.nasdanika.html.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 import org.nasdanika.html.Fragment;
@@ -58,16 +59,19 @@ class FragmentImpl implements Fragment {
 		List<Mono<Object>> contentProducers = content
 			.stream()
 			.map(Producer::of)
+			.filter(Objects::nonNull)
 			.map(p -> p.produceAsync(indent))
 			.toList();
 				
-		return Mono.zip(contentProducers, (Function<Object[], String>) elements -> combine(elements, indent));
+		return contentProducers.isEmpty() ? Mono.just("") : Mono.zip(contentProducers, (Function<Object[], String>) elements -> combine(elements, indent));
 	}
 	
 	private String combine(Object[] elements, int indent) {
 		StringBuilder sb = new StringBuilder();
 		for (Object o: elements) {
-			sb.append(HTMLElementImpl.stringify(o, indent));
+			if (o != null) {
+				sb.append(HTMLElementImpl.stringify(o, indent));
+			}
 		}
 		return sb.toString();			
 	}		

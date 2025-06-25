@@ -1,11 +1,8 @@
 package org.nasdanika.html.producer.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Collections;
-import java.util.Map;
-
-import org.eclipse.emf.ecore.EObject;
 import org.junit.jupiter.api.Test;
 import org.nasdanika.common.Context;
 import org.nasdanika.common.PrintStreamProgressMonitor;
@@ -17,18 +14,19 @@ public class TestHtmlGeneration {
 
 	@Test
 	public void testString() {
-		org.nasdanika.ncore.String str = NcoreFactory.eINSTANCE.createString();
-		str.setValue("Hello World");
-		
 		PrintStreamProgressMonitor progressMonitor = new PrintStreamProgressMonitor();
 		HtmlGenerator htmlGenerator = HtmlGenerator.load(
-				Collections.singleton(str), 
 				Context.EMPTY_CONTEXT, 
 				null, 
 				progressMonitor);
+
+		org.nasdanika.ncore.String str = NcoreFactory.eINSTANCE.createString();
+		str.setValue("Hello World");
 		
-		Map<EObject, Producer<Object>> processors = htmlGenerator.createProcessors(progressMonitor);
-		Object result = processors.get(str).produce(0);
+		assertTrue(htmlGenerator.canHandle(str));
+				
+		Producer<Object> processor = htmlGenerator.createProducer(str, progressMonitor);
+		Object result = processor.produce(0);
 		
 		assertEquals(str.getValue(), result);
 	}
