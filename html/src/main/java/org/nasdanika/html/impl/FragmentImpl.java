@@ -1,6 +1,7 @@
 package org.nasdanika.html.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -13,7 +14,7 @@ import reactor.core.publisher.Mono;
 
 class FragmentImpl implements Fragment {
 	
-	private List<Object> content = new ArrayList<>();
+	private List<Object> content = Collections.synchronizedList(new ArrayList<>());
 	private HTMLFactory factory; 
 	
 	FragmentImpl(HTMLFactory factory, Object... content) {

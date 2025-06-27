@@ -11,6 +11,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -50,9 +51,9 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 		return attributes.get(ID);
 	}
 	
-	protected Map<String, Object> attributes = new LinkedHashMap<>();
+	protected Map<String, Object> attributes = Collections.synchronizedMap(new LinkedHashMap<>());
 	
-	private Map<String, Object> styles = new LinkedHashMap<>();
+	private Map<String, Object> styles = Collections.synchronizedMap(new LinkedHashMap<>());
 
 	protected HTMLFactory factory;
 
@@ -393,7 +394,7 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 		return indent(new StringBuilder(), indent);
 	}
 	
-	protected List<Object> content = new ArrayList<>();	
+	protected List<Object> content = Collections.synchronizedList(new ArrayList<>());	
 	
 	public List<Object> getContent() {
 		return content;
