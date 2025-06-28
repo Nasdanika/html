@@ -383,7 +383,7 @@ class ForceGraph3DImpl implements ForceGraph3D {
 
 	@Override
 	public ForceGraph3D linkCurveRotation(Object graplinkCurveRotationhData) {
-		methodCalls.put("graplinkCurveRotationhData", graplinkCurveRotationhData);
+		methodCalls.put("linkCurveRotation", graplinkCurveRotationhData);
 		return this;
 	}
 
