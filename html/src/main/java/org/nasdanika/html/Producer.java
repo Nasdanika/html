@@ -60,5 +60,14 @@ public interface Producer<T> {
 			
 		};
 	}
+	
+	/**
+	 * One producer may delegate building of its contents to another producer.
+	 * Optional operation.
+	 * @param obj
+	 */
+	default void build(Object obj) {
+		throw new UnsupportedOperationException();
+	}
 
 }
