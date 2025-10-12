@@ -4,13 +4,13 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2025.7.0</version>
+	    <version>2025.10.0</version>
 	    <relativePath>..</relativePath>
 	  </parent>
 	<artifactId>bootstrap</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML Bootstrap</name>
-	<description>Classes for generating Bootstrap UI.</description>
+	<description>Classes for generating Bootstrap 4 UI.</description>
 	<url>https://docs.nasdanika.org/modules/html/modules/bootstrap/index.html</url>
 	<build>
 	    <plugins>

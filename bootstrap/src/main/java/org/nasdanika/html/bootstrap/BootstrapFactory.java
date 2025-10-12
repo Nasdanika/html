@@ -76,8 +76,7 @@ public interface BootstrapFactory {
 	 * @return
 	 */
 	RowContainer.Row.Cell cell(org.nasdanika.html.RowContainer.Row.Cell htmlCell);
-	
-	
+		
 	/**
 	 * Creates a new HTML Table, wraps it into Bootstrap table and returns.
 	 * @return

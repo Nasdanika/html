@@ -1,6 +1,7 @@
 package org.nasdanika.html.bootstrap.impl;
 
 import org.nasdanika.html.HTMLElement;
+import org.nasdanika.html.Producer;
 import org.nasdanika.html.bootstrap.BootstrapElement;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
 import org.nasdanika.html.bootstrap.Color;
@@ -57,7 +58,7 @@ public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends Bo
 	
 	@SuppressWarnings("unchecked")
 	public B background(Color color) {
-		toHTMLElement().addClassConditional(color != null && color.code != null, "bg-"+color.code);
+		toHTMLElement().addClassConditional(color != null && color.code != null, Producer.from(() -> "bg-" + color.code));
 		return (B) this;
 	}
 	
@@ -73,7 +74,7 @@ public abstract class BootstrapElementImpl<H extends HTMLElement<?>,B extends Bo
 
 			@Override
 			public Text<B> color(Color color) {
-				toHTMLElement().addClassConditional(color != null && color.code != null, "text-"+color.code);
+				toHTMLElement().addClassConditional(color != null && color.code != null, Producer.from(() -> "text-" + color.code));
 				return this;
 			}
 

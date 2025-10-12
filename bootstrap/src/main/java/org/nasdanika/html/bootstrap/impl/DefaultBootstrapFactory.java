@@ -7,6 +7,7 @@ import org.nasdanika.html.Event;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
 import org.nasdanika.html.HTMLPage;
+import org.nasdanika.html.Producer;
 import org.nasdanika.html.Select;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
@@ -66,7 +67,7 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	public Tag alert(Color color, Object... content) {
 		return getHTMLFactory().div(content)
 				.addClass("alert")
-				.addClassConditional(color != null && color.code != null, "alert-"+color.code)
+				.addClassConditional(color != null && color.code != null, Producer.from(() -> "alert-" + color.code))
 				.attribute("role", "alert");
 	}
 
@@ -74,7 +75,7 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	public Tag badge(boolean pill, Color color, Object... content) {
 		Tag ret = getHTMLFactory().span(content)
 				.addClass("badge")
-				.addClassConditional(color != null && color.code != null, "badge-"+color.code)
+				.addClassConditional(color != null && color.code != null, Producer.from(() -> "badge-" + color.code))
 				.addClassConditional(pill, "badge-pill");
 		return ret;
 	}
@@ -91,7 +92,7 @@ public class DefaultBootstrapFactory implements BootstrapFactory {
 	public Tag badgeLink(Object href, boolean pill, Color color, Object... content) {
 		Tag ret = getHTMLFactory().link(href, content)
 				.addClass("badge")
-				.addClassConditional(color != null && color.code != null, "badge-"+color.code)
+				.addClassConditional(color != null && color.code != null, Producer.from(() -> "badge-" + color.code))
 				.addClassConditional(pill, "badge-pill");
 		return ret;
 	}

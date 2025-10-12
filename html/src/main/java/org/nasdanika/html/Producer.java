@@ -69,5 +69,21 @@ public interface Producer<T> {
 	default void build(Object obj) {
 		throw new UnsupportedOperationException();
 	}
+	
+	static <T> Producer<T> from(Supplier<T> supplier) {
+		return new Producer<T>() {
+			
+			@Override
+			public T produce(int indent) {
+				return supplier.get();
+			}
+
+			@Override
+			public Mono<T> produceAsync(int indent) {
+				return Mono.fromSupplier(supplier);
+			}
+			
+		};
+	}
 
 }

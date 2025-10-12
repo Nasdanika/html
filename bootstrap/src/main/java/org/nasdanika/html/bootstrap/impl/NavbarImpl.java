@@ -5,11 +5,12 @@ import org.nasdanika.html.Button.Type;
 import org.nasdanika.html.Form;
 import org.nasdanika.html.HTMLElement;
 import org.nasdanika.html.HTMLFactory;
+import org.nasdanika.html.Producer;
 import org.nasdanika.html.Tag;
 import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Color;
 import org.nasdanika.html.bootstrap.Dropdown;
 import org.nasdanika.html.bootstrap.Navbar;
 
@@ -28,7 +29,7 @@ public class NavbarImpl extends WrappingBootstrapElementImpl<Tag, Navbar> implem
 		htmlElement
 			.addClass("navbar-expand-"+expandSize.code)
 			.addClass(dark ? "navbar-dark" : "navbar-light")
-			.addClassConditional(background !=null && background.code != null, "bg-"+background.code);
+			.addClassConditional(background !=null && background.code != null, Producer.from(() -> "bg-" + background.code));
 		
 		this.brand = brand;
 		if (brand != null) {
