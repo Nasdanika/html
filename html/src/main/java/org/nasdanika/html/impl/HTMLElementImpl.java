@@ -134,12 +134,20 @@ public abstract class HTMLElementImpl<T extends HTMLElement<T>> implements HTMLE
 	}
 
 	protected StringBuilder classes() {
-		StringBuilder classBuilder = new StringBuilder();
+		List<String> classList = new ArrayList<>();
 		for (Object cls: classes) {
+			String classString = stringify(cls, 0).trim();
+			if (!classList.contains(classString)) {
+				classList.add(classString);
+			}
+		}
+		
+		StringBuilder classBuilder = new StringBuilder();
+		for (String classString: classList) {
 			if (classBuilder.length()>0) {
 				classBuilder.append(" ");
 			}
-			classBuilder.append(stringify(cls, 0));
+			classBuilder.append(stringify(classString, 0));
 		}
 		if (attributes.containsKey(CLASS)) {
 			if (classBuilder.length()>0) {
