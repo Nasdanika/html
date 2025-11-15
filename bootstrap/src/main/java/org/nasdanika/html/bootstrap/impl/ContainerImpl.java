@@ -1,9 +1,10 @@
 package org.nasdanika.html.bootstrap.impl;
 
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 import org.nasdanika.html.bootstrap.BootstrapFactory;
-import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Breakpoint;
+import org.nasdanika.html.bootstrap.Container;
 import org.nasdanika.html.bootstrap.Size;
 
 public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> implements Container {
@@ -23,10 +24,10 @@ public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> i
 			htmlElement.addClass("row");
 		}
 		
-		class ColImpl extends DivWrappingBootstrapElementImpl<Col> implements Col {
+		class ColImpl extends WrappingBootstrapElementImpl<Tag,Col> implements Col {
 
-			protected ColImpl(BootstrapFactory factory, Object... content) {
-				super(factory, true);
+			protected ColImpl(TagName tagName, BootstrapFactory factory, Object... content) {
+				super(factory, factory.getHTMLFactory().nonEmptyTag(tagName));
 				htmlElement.addClass("col");
 				htmlElement.content(content);
 			}
@@ -52,8 +53,8 @@ public class ContainerImpl extends WrappingBootstrapElementImpl<Tag,Container> i
 		}
 
 		@Override
-		public Col col(Object... content) {
-			Col ret = new ColImpl(getFactory(), content);
+		public Col col(TagName tagName, Object... content) {
+			Col ret = new ColImpl(tagName, getFactory(), content);
 			htmlElement.content(ret.toHTMLElement());
 			return ret;
 		}

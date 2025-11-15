@@ -1,6 +1,7 @@
 package org.nasdanika.html.bootstrap;
 
 import org.nasdanika.html.Tag;
+import org.nasdanika.html.TagName;
 
 /**
  * Bootstrap container.
@@ -17,7 +18,11 @@ public interface Container extends BootstrapElement<Tag,Container> {
 			
 		}
 		
-		Col col(Object... content);
+		default Col col(Object... content) {
+			return col(TagName.div, content);
+		}
+		
+		Col col(TagName tagName, Object... content);		
 		
 	}
 	
