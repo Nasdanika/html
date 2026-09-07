@@ -4,44 +4,18 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2026.6.0</version>
+	    <version>2026.9.0</version>
 	    <relativePath>..</relativePath>
 	  </parent>
 	<artifactId>html</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML</name>
 	<description>Classes for generating HTML UI.</description>
-	<url>https://docs.nasdanika.org/modules/html/modules/html/index.html</url>
-	<build>
-	    <plugins>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
-				<executions>
-					<execution>
-						<id>default-prepare-agent</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-	    </plugins>
-	</build>
-
+	<url>https://docs.nasdanika.org/html/html/index.html</url>
 	<dependencies>
 		<dependency>
 			<groupId>org.nasdanika.core</groupId>
 			<artifactId>common</artifactId>
-			<version>${core.version}</version>
 		</dependency>	
 	</dependencies>
 </project>

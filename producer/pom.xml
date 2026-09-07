@@ -4,38 +4,14 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2026.6.0</version>
+	    <version>2026.9.0</version>
 	    <relativePath>..</relativePath>
 	  </parent>
 	<artifactId>producer</artifactId>
 	<packaging>jar</packaging>
 	<name>Nasdanika HTML Producers</name>
 	<description>Requirement and core producers factory for HTML generation</description>
-	<url>https://docs.nasdanika.org/html/html-graph/index.html</url>
-	<build>
-	    <plugins>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
-				<executions>
-					<execution>
-						<id>default-prepare-agent</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-	    </plugins>
-	</build>
+	<url>https://docs.nasdanika.org/html/index.html</url>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -45,7 +21,6 @@
         <dependency>
             <groupId>org.nasdanika.core</groupId>
             <artifactId>exec</artifactId>
-            <version>${core.version}</version>
         </dependency>       
 	</dependencies>
 </project>

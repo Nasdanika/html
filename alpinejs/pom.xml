@@ -4,7 +4,7 @@
 	  <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.nasdanika.html</groupId>
-	    <version>2026.6.0</version>
+	    <version>2026.9.0</version>
 	    <relativePath>..</relativePath>
 	  </parent>
 	<artifactId>alpinejs</artifactId>
@@ -12,36 +12,11 @@
 	<name>Nasdanika HTML AlpineJS</name>
 	<description>Classes for adding AlpineJS attributes to HTML elements</description>
 	<url>https://docs.nasdanika.org/html/alpine-js/index.html</url>
-	<build>
-	    <plugins>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
-				<executions>
-					<execution>
-						<id>default-prepare-agent</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-	    </plugins>
-	</build>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>html</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
 	</dependencies>
 </project>
